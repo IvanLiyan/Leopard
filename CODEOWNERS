@@ -1,0 +1,12 @@
+# CODEOWNERS file
+#
+# Define teams that are responsible for code in the repository
+# This file provides easy to parse list for ownership tracking, which is _currently_ only used for automatically tagging teams for PRs.
+#
+# NB!: This does not _enforce_ what reviewers need to review the annotated code
+# Enforcement is handled by .policy.yml. Please make sure you add your team to both files.
+#
+# Docs here: https://help.github.com/en/github/creating-cloning-and-archiving-repositories/about-code-owners
+#
+
+* @ContextLogic/marketplace_web_and_mobile
