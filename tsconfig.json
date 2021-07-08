@@ -15,7 +15,9 @@
     "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
-      "@toolkit/*": ["src/toolkit/*"]
+      "@components/*": ["src/components/*"],
+      "@toolkit/*": ["src/toolkit/*"],
+      "@riptide/*": ["src/riptide/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

@@ -2,8 +2,7 @@ html,
 body {
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  background-color: #f7f9fa; /* PALETTE.GREY["100"] */
 }
 
 a {
@@ -13,4 +12,49 @@ a {
 
 * {
   box-sizing: border-box;
+}
+
+@font-face {
+  font-family: Proxima-Regular;
+  src: url("//d2ujdsqe3ri19m.cloudfront.net/latest/assets/fonts/proximanova-regular")
+    format("opentype");
+}
+@font-face {
+  font-family: Proxima-Regular;
+  font-style: italic;
+  src: url("//d2ujdsqe3ri19m.cloudfront.net/latest/assets/fonts/proximanova-regularit")
+    format("opentype");
+}
+@font-face {
+  font-family: Proxima-Medium;
+  src: url("//d2ujdsqe3ri19m.cloudfront.net/latest/assets/fonts/proximanova-medium")
+    format("opentype");
+}
+@font-face {
+  font-family: Proxima-Medium;
+  font-style: italic;
+  src: url("//d2ujdsqe3ri19m.cloudfront.net/latest/assets/fonts/proximanova-mediumit")
+    format("opentype");
+}
+@font-face {
+  font-family: Proxima-Semibold;
+  src: url("//d2ujdsqe3ri19m.cloudfront.net/latest/assets/fonts/proximanova-semibold")
+    format("opentype");
+}
+@font-face {
+  font-family: Proxima-Semibold;
+  font-style: italic;
+  src: url("//d2ujdsqe3ri19m.cloudfront.net/latest/assets/fonts/proximanova-semiboldit")
+    format("opentype");
+}
+@font-face {
+  font-family: Proxima-Bold;
+  src: url("//d2ujdsqe3ri19m.cloudfront.net/latest/assets/fonts/proximanova-bold")
+    format("opentype");
+}
+@font-face {
+  font-family: Proxima-Bold;
+  font-style: italic;
+  src: url("//d2ujdsqe3ri19m.cloudfront.net/latest/assets/fonts/proximanova-boldit")
+    format("opentype");
 }
