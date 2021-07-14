@@ -18,9 +18,9 @@ export type Props = BaseProps & {
 };
 
 const Text: React.FC<Props> = (props: Props) => {
-  const { style, className, children } = props;
+  const { style, children } = props;
   const styles = useStylesheet(props);
-  return <div className={css(style, className, styles.root)}>{children}</div>;
+  return <div className={css(styles.root, style)}>{children}</div>;
 };
 
 export default Text;

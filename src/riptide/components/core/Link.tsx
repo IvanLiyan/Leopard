@@ -9,10 +9,10 @@ export type Props = BaseProps &
   Pick<React.AnchorHTMLAttributes<HTMLAnchorElement>, "href">;
 
 const Link = React.forwardRef<HTMLAnchorElement, Props>(
-  ({ style, className, children, href }, ref) => {
+  ({ style, children, href }, ref) => {
     const styles = useStylesheet();
     return (
-      <a className={css(style, className, styles.root)} href={href} ref={ref}>
+      <a className={css(styles.root, style)} href={href} ref={ref}>
         {children}
       </a>
     );

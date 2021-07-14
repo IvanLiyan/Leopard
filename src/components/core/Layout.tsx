@@ -1,6 +1,6 @@
 /* eslint-disable react/display-name */
 import React, { useMemo } from "react";
-import { CSSProperties, StyleSheet } from "aphrodite";
+import { StyleSheet, CSSProperties } from "aphrodite";
 import { css } from "@toolkit/styling";
 import { BaseProps, CleanedBaseDivProps } from "@toolkit/types";
 
@@ -12,20 +12,13 @@ type FlexProps = BaseProps &
 
 const FlexRow = React.forwardRef<HTMLDivElement, FlexProps>(
   (
-    {
-      style,
-      className,
-      children,
-      alignItems = "center",
-      justifyContent,
-      ...divProps
-    },
+    { style, children, alignItems = "center", justifyContent, ...divProps },
     ref,
   ) => {
     const styles = useStylesheet({ alignItems, justifyContent });
     return (
       <div
-        className={css(style, className, styles.root, styles.row)}
+        className={css(styles.root, styles.row, style)}
         {...divProps}
         ref={ref}
       >
@@ -36,14 +29,11 @@ const FlexRow = React.forwardRef<HTMLDivElement, FlexProps>(
 );
 
 const FlexColumn = React.forwardRef<HTMLDivElement, FlexProps>(
-  (
-    { style, className, children, alignItems, justifyContent, ...divProps },
-    ref,
-  ) => {
+  ({ style, children, alignItems, justifyContent, ...divProps }, ref) => {
     const styles = useStylesheet({ alignItems, justifyContent });
     return (
       <div
-        className={css(style, className, styles.root, styles.column)}
+        className={css(styles.root, styles.column, style)}
         {...divProps}
         ref={ref}
       >

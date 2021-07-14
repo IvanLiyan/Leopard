@@ -1,7 +1,8 @@
 import { NextPage } from "next";
+import H1 from "@riptide/components/core/H1";
 
 const MerchantStorefront: NextPage = () => {
-  return <h1>404 - Page Not Found</h1>;
+  return <H1>404 - Page Not Found</H1>;
 };
 
 export default MerchantStorefront;

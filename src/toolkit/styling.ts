@@ -1,59 +1,64 @@
-// copied in, can bring up to spec later
-/* eslint-disable */
-import { StyleSheet, css as _css } from "aphrodite";
+import { StyleSheet, css as _css, CSSProperties } from "aphrodite";
 
-const cssRecursive = ({ configs, mergedStyles, styleFragment }: any) => {
+export type Style =
+  | string
+  | ItemOf<Parameters<typeof _css>>
+  | Parameters<typeof _css>;
+
+const cssRecursive = ({
+  configs,
+  classNamesSoFar,
+  stylesSoFar,
+}: {
+  readonly configs: ReadonlyArray<Style>;
+  readonly classNamesSoFar: string;
+  readonly stylesSoFar: Parameters<typeof _css>;
+}): { classNames: string; styles: Parameters<typeof _css> } => {
   for (const config of configs) {
     if (!config) {
       continue;
     }
 
     if (typeof config === "string") {
-      mergedStyles.push(_css(styleFragment));
-      mergedStyles.push(config);
-      styleFragment.length = 0; // an awesome way to empty an array
+      classNamesSoFar = `${classNamesSoFar} ${config}`;
     } else if (Array.isArray(config)) {
-      cssRecursive({
+      const { classNames, styles } = cssRecursive({
         configs: config,
-        mergedStyles,
-        styleFragment,
+        classNamesSoFar,
+        stylesSoFar,
       });
+      classNamesSoFar = classNames;
+      stylesSoFar = styles;
     } else if (typeof config === "object") {
+      // @ts-ignore:: _len exists on object returned from .create
       // eslint-disable-next-line no-underscore-dangle
-      if (config._len == null) {
+      if (config._len == undefined) {
         // config is a plain style object
-        styleFragment.push(
-          StyleSheet.create({
-            inline: config,
-          }).inline,
-        );
+        stylesSoFar = [
+          ...stylesSoFar,
+          StyleSheet.create({ style: config as CSSProperties }).style,
+        ];
       } else {
         // config is a return value from StyleSheet.create()
-        styleFragment.push(config);
+        stylesSoFar = [...stylesSoFar, config];
       }
     }
   }
+
+  return { classNames: classNamesSoFar, styles: stylesSoFar };
 };
 
-export const css = (
-  ...configs: ReadonlyArray<any | null | undefined>
-): string => {
+export const css = (...configs: ReadonlyArray<Style>): string => {
   /*
-   * [styleObj1, styleObj2, className1, styleObj3]
+   * [styleObj1, styleObj2, className1, styleObj3, className2]
    * will be merged into:
-   * [styleObj1_styleObj2, className1, styleObj3]
+   * "styleObj1_styleObj2_styleObj3 className1 className2"
    */
-  const mergedStyles: string[] = [];
-  // TODO [lliepert]: fix legacy any types
-  const styleFragment: any[] = [];
-  cssRecursive({ configs, mergedStyles, styleFragment });
-  mergedStyles.push(_css(styleFragment));
-
-  return mergedStyles.join(" ");
-};
-
-export const sleep = (interval: number): Promise<boolean> => {
-  return new Promise((resolve) => {
-    setTimeout(() => resolve(true), interval);
+  const { classNames, styles } = cssRecursive({
+    configs,
+    classNamesSoFar: "",
+    stylesSoFar: [],
   });
+
+  return `${_css(styles)} ${classNames}`;
 };

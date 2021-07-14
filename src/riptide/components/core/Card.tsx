@@ -6,9 +6,9 @@ import { BaseProps } from "@riptide/toolkit/types";
 
 export type Props = BaseProps;
 
-const Card: React.FC<Props> = ({ style, className, children }: Props) => {
+const Card: React.FC<Props> = ({ style, children }: Props) => {
   const styles = useStylesheet();
-  return <div className={css(style, className, styles.root)}>{children}</div>;
+  return <div className={css(styles.root, style)}>{children}</div>;
 };
 
 export default Card;

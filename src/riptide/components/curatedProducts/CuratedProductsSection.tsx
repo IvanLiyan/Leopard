@@ -1,6 +1,5 @@
 import React, { useMemo } from "react";
 import { StyleSheet } from "aphrodite";
-import { css } from "@riptide/toolkit/styling";
 import { BaseProps } from "@riptide/toolkit/types";
 
 import Layout from "@components/core/Layout";
@@ -9,10 +8,7 @@ import ProductsRow from "@riptide/components/core/products/ProductsRow";
 
 export type Props = BaseProps;
 
-const CuratedProductsSection: React.FC<Props> = ({
-  style,
-  className,
-}: Props) => {
+const CuratedProductsSection: React.FC<Props> = ({ style }: Props) => {
   const styles = useStylesheet();
   const products = [
     { pid: 1, name: "1" },
@@ -26,8 +22,8 @@ const CuratedProductsSection: React.FC<Props> = ({
   ];
 
   return (
-    <Layout.FlexColumn className={css(style, className)}>
-      <H3 className={css(styles.title)}>Curated from the seller</H3>
+    <Layout.FlexColumn style={style}>
+      <H3 style={styles.title}>Curated from the seller</H3>
       <ProductsRow products={products} />
     </Layout.FlexColumn>
   );

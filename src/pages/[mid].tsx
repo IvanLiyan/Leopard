@@ -7,7 +7,6 @@ import {
 } from "next";
 import Head from "next/head";
 import { StyleSheet } from "aphrodite";
-import { css } from "@toolkit/styling";
 
 import Text from "@riptide/components/core/Text";
 import StorefrontBackground from "@riptide/components/StorefrontBackground";
@@ -81,15 +80,15 @@ const MerchantStorefront: NextPage<Props> = (
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <StorefrontBackground colorA="teal" colorB="darkslateblue" deg={130}>
-        <StoreInfoSection {...props} className={css(styles.infoCard)} />
-        <PromotionsSection className={css(styles.promotionsSection)} />
-        <CuratedProductsSection className={css(styles.cardsSection)} />
-        <HighestRatedProductsSection className={css(styles.cardsSection)} />
+        <StoreInfoSection {...props} style={styles.infoCard} />
+        <PromotionsSection style={styles.promotionsSection} />
+        <CuratedProductsSection style={styles.cardsSection} />
+        <HighestRatedProductsSection style={styles.cardsSection} />
         <Text
           fontSize={10}
           fontWeight="MEDIUM"
           color="LIGHT"
-          className={css(styles.footer)}
+          style={styles.footer}
         >
           &copy; Wish 2021
         </Text>

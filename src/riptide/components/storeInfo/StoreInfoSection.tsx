@@ -1,7 +1,6 @@
 import React, { useState, useMemo } from "react";
 import NextLink from "next/link";
 import { StyleSheet } from "aphrodite";
-import { css } from "@riptide/toolkit/styling";
 import { BaseProps } from "@riptide/toolkit/types";
 
 import Card from "@riptide/components/core/Card";
@@ -36,7 +35,6 @@ const SubText = ({ children }: BaseProps) => {
 
 const StoreInfoSection: React.FC<Props> = ({
   style,
-  className,
   storeName,
   isFollowing: isFollowingProp,
   sellerSince,
@@ -48,20 +46,14 @@ const StoreInfoSection: React.FC<Props> = ({
   const [isFollowing, setIsFollowing] = useState<boolean>(isFollowingProp);
 
   return (
-    <Card className={css(style, className, styles.root)}>
+    <Card style={[style, styles.root]}>
       <Layout.FlexColumn>
-        <Layout.FlexRow
-          style={{ marginTop: 32 }}
-          className={css(styles.margin)}
-        >
+        <Layout.FlexRow style={[{ marginTop: 32 }, styles.margin]}>
           <ProfilePhoto style={{ marginRight: 16 }} />
           <H1>{storeName}</H1>
         </Layout.FlexRow>
 
-        <Layout.FlexRow
-          justifyContent="space-between"
-          className={css(styles.margin)}
-        >
+        <Layout.FlexRow justifyContent="space-between" style={styles.margin}>
           <Layout.FlexColumn>
             <SubText>Store rating:</SubText>
             <SubText>Seller since: {sellerSince}</SubText>
@@ -75,10 +67,10 @@ const StoreInfoSection: React.FC<Props> = ({
           />
         </Layout.FlexRow>
 
-        <Text className={css(styles.margin)}>{storeDescription}</Text>
+        <Text style={[styles.margin]}>{storeDescription}</Text>
 
         <NextLink href="/" passHref>
-          <RiptideLink className={css(styles.link)}>
+          <RiptideLink style={styles.link}>
             See {numReviews} merchant reviews
           </RiptideLink>
         </NextLink>

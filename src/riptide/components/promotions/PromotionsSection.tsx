@@ -11,13 +11,13 @@ import Text from "@riptide/components/core/Text";
 
 export type Props = BaseProps;
 
-const PromotionsSection: React.FC<Props> = ({ style, className }: Props) => {
+const PromotionsSection: React.FC<Props> = ({ style }: Props) => {
   const styles = useStylesheet();
   return (
-    <Layout.FlexColumn className={css(style, className)}>
+    <Layout.FlexColumn style={style}>
       <H3>Current promotions</H3>
-      <Layout.FlexColumn alignItems="center" className={css(styles.card)}>
-        <Text fontSize={10} lineHeight={"10px"} className={css(styles.terms)}>
+      <Layout.FlexColumn alignItems="center" style={styles.card}>
+        <Text fontSize={10} lineHeight={"10px"} style={styles.terms}>
           Valid $%-1. Max discount $100.
         </Text>
         <H2>Title title title title</H2>
@@ -25,7 +25,7 @@ const PromotionsSection: React.FC<Props> = ({ style, className }: Props) => {
           fontSize={14}
           fontWeight="MEDIUM"
           color="BLACK"
-          className={css(styles.text)}
+          style={styles.text}
         >
           Enjoy up to XX% off with code:{" "}
           <span className={css(styles.code)}>CODE</span>

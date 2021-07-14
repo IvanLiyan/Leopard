@@ -1,12 +1,11 @@
 import React from "react";
-import { css } from "@riptide/toolkit/styling";
 import { BaseProps } from "@riptide/toolkit/types";
 
 import Text from "@riptide/components/core/Text";
 
 export type Props = BaseProps;
 
-const H2: React.FC<Props> = ({ style, className, children }: Props) => {
+const H2: React.FC<Props> = ({ style, children }: Props) => {
   return (
     <Text
       fontWeight="SEMIBOLD"
@@ -14,7 +13,7 @@ const H2: React.FC<Props> = ({ style, className, children }: Props) => {
       lineHeight="28px"
       letterSpacing="0.01em"
       color="BLACK"
-      className={css(style, className)}
+      style={style}
     >
       {children}
     </Text>

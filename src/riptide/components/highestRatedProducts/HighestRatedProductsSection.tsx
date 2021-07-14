@@ -1,6 +1,5 @@
 import React, { useMemo } from "react";
 import { StyleSheet } from "aphrodite";
-import { css } from "@riptide/toolkit/styling";
 import { BaseProps } from "@riptide/toolkit/types";
 
 import Layout from "@components/core/Layout";
@@ -9,10 +8,7 @@ import ProductsRow from "@riptide/components/core/products/ProductsRow";
 
 export type Props = BaseProps;
 
-const HighestRatedProductsSection: React.FC<Props> = ({
-  style,
-  className,
-}: Props) => {
+const HighestRatedProductsSection: React.FC<Props> = ({ style }: Props) => {
   const styles = useStylesheet();
   const products = [
     { pid: 11, name: "A" },
@@ -26,8 +22,8 @@ const HighestRatedProductsSection: React.FC<Props> = ({
   ];
 
   return (
-    <Layout.FlexColumn className={css(style, className)}>
-      <H3 className={css(styles.title)}>Highest rated products</H3>
+    <Layout.FlexColumn style={style}>
+      <H3 style={styles.title}>Highest rated products</H3>
       <ProductsRow products={products} />
     </Layout.FlexColumn>
   );

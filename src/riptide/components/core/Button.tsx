@@ -7,15 +7,10 @@ import { BaseProps } from "@riptide/toolkit/types";
 export type Props = BaseProps &
   Pick<React.HTMLAttributes<HTMLDivElement>, "onClick">;
 
-const Button: React.FC<Props> = ({
-  style,
-  className,
-  children,
-  onClick,
-}: Props) => {
+const Button: React.FC<Props> = ({ style, children, onClick }: Props) => {
   const styles = useStylesheet();
   return (
-    <div className={css(style, className, styles.root)} onClick={onClick}>
+    <div className={css(styles.root, style)} onClick={onClick}>
       {children}
     </div>
   );

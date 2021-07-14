@@ -1,9 +1,8 @@
 import React from "react";
-import { CSSProperties } from "aphrodite";
+import { Style } from "@riptide/toolkit/styling";
 
 export type BaseProps = {
-  readonly style?: CSSProperties;
-  readonly className?: string;
+  readonly style?: Style;
   readonly children?: React.ReactNode;
 };
 

@@ -6,9 +6,9 @@ import { BaseProps } from "@riptide/toolkit/types";
 
 export type Props = BaseProps;
 
-const ProfilePhoto: React.FC<Props> = ({ style, className }: Props) => {
+const ProfilePhoto: React.FC<Props> = ({ style }: Props) => {
   const styles = useStylesheet();
-  return <div className={css(style, className, styles.root)} />;
+  return <div className={css(styles.root, style)} />;
 };
 
 export default ProfilePhoto;

@@ -1,6 +1,5 @@
 import React, { useMemo } from "react";
 import { StyleSheet } from "aphrodite";
-import { css } from "@riptide/toolkit/styling";
 import { BaseProps } from "@riptide/toolkit/types";
 
 import Card from "@riptide/components/core/Card";
@@ -11,10 +10,10 @@ export type Props = Omit<BaseProps, "children"> & {
   readonly name: string;
 };
 
-const ProductCard: React.FC<Props> = ({ style, className, name }: Props) => {
+const ProductCard: React.FC<Props> = ({ style, name }: Props) => {
   const styles = useStylesheet();
   return (
-    <Card className={css(style, className, styles.root)}>
+    <Card style={[styles.root, style]}>
       <Text fontSize={24} fontWeight="BOLD" color="LIGHT">
         {name}
       </Text>
