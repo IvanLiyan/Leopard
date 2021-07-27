@@ -7,6 +7,8 @@ import {
 } from "next";
 import Head from "next/head";
 import { StyleSheet } from "aphrodite";
+import { gql } from "@apollo/client";
+import client from "@toolkit/apollo-client";
 
 import Text from "@riptide/components/core/Text";
 import StorefrontBackground from "@riptide/components/StorefrontBackground";
@@ -22,7 +24,14 @@ export const getStaticPaths: GetStaticPaths = () => {
 type SellerTags = "WISH_EXPRESS" | "VERIFIED_SELLER";
 type CountryCode = "CN";
 
+type InitialData = {
+  readonly storefront: {
+    readonly serviceEnabled: boolean;
+  };
+};
+
 type Props = {
+  readonly serviceEnabled: boolean;
   readonly sellerSince: number;
   readonly location: {
     readonly cc: CountryCode;
@@ -36,7 +45,15 @@ type Props = {
   readonly isFollowing: boolean;
 };
 
-export const getStaticProps: GetStaticProps<Props> = ({ params }) => {
+const INITIAL_DATA_QUERY = gql`
+  query Leopard_StorefrontPageInitialData {
+    storefront {
+      serviceEnabled
+    }
+  }
+`;
+
+export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
   if (!params?.mid || params.mid == "404me") {
     return {
       redirect: {
@@ -46,7 +63,21 @@ export const getStaticProps: GetStaticProps<Props> = ({ params }) => {
     };
   }
 
+  const { data } = await client.query<InitialData, never>({
+    query: INITIAL_DATA_QUERY,
+  });
+
+  if (data == null) {
+    return {
+      redirect: {
+        destination: "/404",
+        permanent: false,
+      },
+    };
+  }
+
   const props: Props = {
+    serviceEnabled: data.storefront.serviceEnabled,
     sellerSince: 2016,
     location: {
       cc: "CN",
@@ -70,7 +101,7 @@ export const getStaticProps: GetStaticProps<Props> = ({ params }) => {
 const MerchantStorefront: NextPage<Props> = (
   props: InferGetStaticPropsType<typeof getStaticProps>,
 ) => {
-  const { storeName } = props;
+  const { storeName, serviceEnabled } = props;
   const styles = useStylesheet();
 
   return (
@@ -81,6 +112,9 @@ const MerchantStorefront: NextPage<Props> = (
       </Head>
       <StorefrontBackground colorA="teal" colorB="darkslateblue" deg={130}>
         <StoreInfoSection {...props} style={styles.infoCard} />
+        <Text style={{ margin: "32px 16px" }}>
+          Enabled: {serviceEnabled.toString()}
+        </Text>
         <PromotionsSection style={styles.promotionsSection} />
         <CuratedProductsSection style={styles.cardsSection} />
         <HighestRatedProductsSection style={styles.cardsSection} />

@@ -10,11 +10,11 @@ import {
 import { BaseProps } from "@riptide/toolkit/types";
 
 export type Props = BaseProps & {
-  color?: FontColor;
-  fontWeight?: FontWeight;
-  fontSize?: CSSProperties["fontSize"];
-  lineHeight?: CSSProperties["lineHeight"];
-  letterSpacing?: CSSProperties["letterSpacing"];
+  readonly color?: FontColor;
+  readonly fontWeight?: FontWeight;
+  readonly fontSize?: CSSProperties["fontSize"];
+  readonly lineHeight?: CSSProperties["lineHeight"];
+  readonly letterSpacing?: CSSProperties["letterSpacing"];
 };
 
 const Text: React.FC<Props> = (props: Props) => {

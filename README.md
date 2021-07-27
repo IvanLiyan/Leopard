@@ -1,3 +1,13 @@
+# Leopard
+
+## Getting Started
+
+Before running leopard, add the root file `.env.local` populated with the following environment variables:
+
+```
+NEXT_PUBLIC_MD_URL=<url to your instance of merch-fe, ex: https://yourid-ec2-merch.vpn.contextlogic.com>
+```
+
 # Default-service
 
 This is a barebones project, that gives you the CI/CD benefits of a new service. The entire application is intended to be discarded. Users of this template are required to re-write their Dockerfile along with everything within the application. This **IS NOT** a ready made template project. It requires full customization by the user.
