@@ -8,6 +8,7 @@ import Layout from "@riptide/components/core/Layout";
 
 export type Props = Omit<BaseProps, "children"> & {
   readonly pid: string;
+  readonly productName: string;
   readonly originalPrice: string;
   readonly discountedPrice: string;
   readonly numPurchasers: number;
@@ -15,6 +16,7 @@ export type Props = Omit<BaseProps, "children"> & {
 
 const ProductCard: React.FC<Props> = ({
   style,
+  productName,
   originalPrice,
   discountedPrice,
   numPurchasers,
@@ -27,7 +29,7 @@ const ProductCard: React.FC<Props> = ({
         src={"/images/TEMP.png"}
         height={128}
         width={128}
-        alt="TODO [lliepert]"
+        alt={productName}
       />
       <Layout.FlexRow style={{ marginTop: 8 }}>
         <Text

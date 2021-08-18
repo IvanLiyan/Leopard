@@ -8,22 +8,14 @@ import H1 from "@riptide/components/core/H1";
 import Text from "@riptide/components/core/Text";
 import RiptideLink from "@riptide/components/core/Link";
 import { useTheme } from "@riptide/toolkit/theme";
+import { useStorefrontState } from "@toolkit/context/storefront-state";
 
 import Layout from "@components/core/Layout";
 import Flag from "@components/core/Flag";
 import Rating from "@riptide/components/storeInfo/Rating";
 import ProfilePhoto from "@riptide/components/storeInfo/ProfilePhoto";
 
-export type Props = BaseProps & {
-  readonly storeName: string;
-  readonly merchantCreationDate: string;
-  readonly location: {
-    readonly cc: string;
-    readonly name: string;
-  };
-  readonly numReviews: number;
-  readonly averageRating: number;
-};
+export type Props = Pick<BaseProps, "style">;
 
 const SubText = ({ children }: BaseProps) => {
   return (
@@ -40,15 +32,14 @@ const SubText = ({ children }: BaseProps) => {
   );
 };
 
-const StoreInfoSection: React.FC<Props> = ({
-  style,
-  storeName,
-  merchantCreationDate,
-  location: { name: locationName, cc },
-  averageRating,
-  numReviews,
-}: Props) => {
+const StoreInfoSection: React.FC<Props> = ({ style }: Props) => {
   const styles = useStylesheet();
+  const {
+    storeName,
+    merchantCreationDate,
+    location: { name: locationName, cc },
+    numReviews,
+  } = useStorefrontState();
 
   return (
     <Layout.FlexColumn style={[styles.root, style]}>
@@ -60,7 +51,7 @@ const StoreInfoSection: React.FC<Props> = ({
 
       <Layout.FlexColumn style={styles.margin}>
         <SubText>
-          Store rating: <Rating rating={averageRating} />
+          Store rating: <Rating />
         </SubText>
         <SubText>Seller since: {merchantCreationDate}</SubText>
         <SubText>

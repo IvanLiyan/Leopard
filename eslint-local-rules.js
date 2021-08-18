@@ -105,7 +105,8 @@ module.exports = {
   "no-non-riptide-import": {
     meta: {
       docs: {
-        description: "Only import from @riptide or @components/core",
+        description:
+          "Only import from @riptide, @components/core, or @toolkit/context",
         category: "Possible Errors",
         recommended: false,
       },
@@ -119,12 +120,14 @@ module.exports = {
             !(
               node.source.value.startsWith("@riptide") ||
               node.source.value.startsWith("@components/core") ||
+              node.source.value.startsWith("@toolkit/context") ||
               node.source.value.startsWith("@ContextLogic")
             )
           ) {
             context.report({
               node: node,
-              message: "Only import from @riptide or @components/core",
+              message:
+                "Only import from @riptide, @components/core, or @toolkit/context",
             });
           }
         },

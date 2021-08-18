@@ -8,7 +8,7 @@ import Text from "@riptide/components/core/Text";
 
 export type Props = Omit<BaseProps, "style">;
 
-const StorefrontBackground: React.FC<Props> = (props: Props) => {
+const PageContainer: React.FC<Props> = (props: Props) => {
   const { children } = props;
   const styles = useStylesheet();
 
@@ -28,7 +28,7 @@ const StorefrontBackground: React.FC<Props> = (props: Props) => {
   );
 };
 
-export default StorefrontBackground;
+export default PageContainer;
 
 const useStylesheet = () => {
   return useMemo(

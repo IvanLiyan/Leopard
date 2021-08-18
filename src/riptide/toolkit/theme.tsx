@@ -173,7 +173,6 @@ export const useTheme = (): Theme => {
   return useContext(ThemeContext);
 };
 
-// TODO [lliepert]: better these types
 export type FontColor = "LIGHT" | "DARK" | "BLACK" | "INHERIT";
 export type FontWeight = "REGULAR" | "MEDIUM" | "SEMIBOLD" | "BOLD";
 type FontFamily =

@@ -2,6 +2,7 @@ import React, { useMemo } from "react";
 import { StyleSheet } from "aphrodite";
 import { useTheme } from "@riptide/toolkit/theme";
 import { BaseProps } from "@riptide/toolkit/types";
+import { useStorefrontState } from "@toolkit/context/storefront-state";
 
 import Layout from "@components/core/Layout";
 import H2 from "@riptide/components/core/H2";
@@ -10,10 +11,11 @@ export type Props = BaseProps;
 
 const ProfilePhoto: React.FC<Props> = ({ style }: Props) => {
   const styles = useStylesheet();
-  // TODO [lliepert]: create and plug into local state
+  const { storeName } = useStorefrontState();
+
   return (
     <Layout.FlexRow justifyContent="center" style={[styles.root, style]}>
-      <H2 color="LIGHT">S</H2>
+      <H2 color="LIGHT">{storeName.charAt(0).toUpperCase()}</H2>
     </Layout.FlexRow>
   );
 };

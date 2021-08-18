@@ -13,7 +13,10 @@ import {
   StorefrontDataParams,
   StorefrontDataResponse,
 } from "@toolkit/queries";
-import { CountryCode } from "@toolkit/schema";
+import {
+  StorefrontState,
+  StorefrontStateProvider,
+} from "@toolkit/context/storefront-state";
 
 import PageContainer from "@riptide/components/core/PageContainer";
 import StoreInfoSection from "@riptide/components/storeInfo/StoreInfoSection";
@@ -23,22 +26,9 @@ export const getStaticPaths: GetStaticPaths = () => {
   return { paths: [], fallback: "blocking" }; // TODO [lliepert]: query the top x merchants and pre-render their pages
 };
 
-type Props = {
-  readonly storeName: string;
-  readonly merchantCreationDate: string;
-  readonly location: {
-    readonly cc: CountryCode;
-    readonly name: string;
-  };
-  readonly numReviews: number;
-  readonly averageRating: number;
-  readonly productFeeds: {
-    readonly id: string;
-    readonly name: string;
-  }[];
-};
-
-export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
+export const getStaticProps: GetStaticProps<StorefrontState> = async ({
+  params,
+}) => {
   if (!params?.mid || typeof params.mid !== "string") {
     return {
       redirect: {
@@ -80,7 +70,7 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
     customization: { feeds: productFeeds },
   } = data.storefront.forMerchant;
 
-  const props: Props = {
+  const props = {
     storeName,
     merchantCreationDate,
     location: {
@@ -98,7 +88,7 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
   };
 };
 
-const MerchantStorefront: NextPage<Props> = (
+const MerchantStorefront: NextPage<StorefrontState> = (
   props: InferGetStaticPropsType<typeof getStaticProps>,
 ) => {
   const { storeName, productFeeds } = props;
@@ -119,16 +109,16 @@ const MerchantStorefront: NextPage<Props> = (
   );
 
   return (
-    <>
+    <StorefrontStateProvider state={props}>
       <Head>
         <title>{storeName}</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <PageContainer>
-        <StoreInfoSection {...props} />
+        <StoreInfoSection />
         <Feeds />
       </PageContainer>
-    </>
+    </StorefrontStateProvider>
   );
 };
 

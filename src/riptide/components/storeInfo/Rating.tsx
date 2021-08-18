@@ -2,18 +2,13 @@ import React from "react";
 import { Icon } from "@ContextLogic/zeus";
 
 import { useTheme } from "@riptide/toolkit/theme";
+import { useStorefrontState } from "@toolkit/context/storefront-state";
 
-export type Props = {
-  readonly rating: number;
-};
-
-type StarProps = {
-  readonly key: number;
-};
-
-const Rating: React.FC<Props> = ({ rating: ratingProp }: Props) => {
+const Rating: React.FC = () => {
   const { textLight } = useTheme();
-  const rating = Math.round(ratingProp * 2) / 2;
+  const { averageRating } = useStorefrontState();
+
+  const rating = Math.round(averageRating * 2) / 2;
   const numFullStars = Math.floor(rating);
   const numHalfStars = (rating - numFullStars) * 2;
 
@@ -23,12 +18,12 @@ const Rating: React.FC<Props> = ({ rating: ratingProp }: Props) => {
     colors: { color1: textLight },
   };
 
-  const HalfStar: React.FC<StarProps> = ({ key }: StarProps) => {
-    return <Icon key={key} name="halfStar" {...commonProps} />;
+  const HalfStar: React.FC = () => {
+    return <Icon name="halfStar" {...commonProps} />;
   };
 
-  const FullStar: React.FC<StarProps> = ({ key }: StarProps) => {
-    return <Icon key={key} name="starFilled" {...commonProps} />;
+  const FullStar: React.FC = () => {
+    return <Icon name="starFilled" {...commonProps} />;
   };
 
   const fullStars =
