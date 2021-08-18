@@ -153,12 +153,8 @@ const defaultTheme = {
   border: PALETTE.GREY["300"],
 
   surfaceWhite: PALETTE.WHITE,
-
-  surfaceLight: PALETTE.GREY["100"],
-
-  accentA: PALETTE.CYAN["500"],
-  accentB: PALETTE.PURPLE["700"],
-  accentAngle: 90,
+  surfaceLight: PALETTE.GREY["200"],
+  surfaceMediumLight: PALETTE.GREY["300"],
 };
 
 export type Theme = Readonly<typeof defaultTheme>;

@@ -15,6 +15,7 @@ module.exports = {
     "prettier",
   ],
   rules: {
+    "no-console": "error",
     // we allow -ignore and -nocheck with comment due to aphrodite's SSR setup
     // requirements
     "@typescript-eslint/ban-ts-comment": [

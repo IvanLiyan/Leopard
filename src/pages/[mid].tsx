@@ -7,54 +7,39 @@ import {
 } from "next";
 import Head from "next/head";
 import { StyleSheet } from "aphrodite";
-import { gql } from "@apollo/client";
 import client from "@toolkit/apollo-client";
+import {
+  STOREFRONT_DATA_QUERY,
+  StorefrontDataParams,
+  StorefrontDataResponse,
+} from "@toolkit/queries";
+import { CountryCode } from "@toolkit/schema";
 
-import Text from "@riptide/components/core/Text";
-import StorefrontBackground from "@riptide/components/StorefrontBackground";
+import PageContainer from "@riptide/components/core/PageContainer";
 import StoreInfoSection from "@riptide/components/storeInfo/StoreInfoSection";
-import PromotionsSection from "@riptide/components/promotions/PromotionsSection";
-import CuratedProductsSection from "@riptide/components/curatedProducts/CuratedProductsSection";
-import HighestRatedProductsSection from "@riptide/components/highestRatedProducts/HighestRatedProductsSection";
+import ProductFeed from "@riptide/components/productFeed/ProductFeed";
 
 export const getStaticPaths: GetStaticPaths = () => {
   return { paths: [], fallback: "blocking" }; // TODO [lliepert]: query the top x merchants and pre-render their pages
 };
 
-type SellerTags = "WISH_EXPRESS" | "VERIFIED_SELLER";
-type CountryCode = "CN";
-
-type InitialData = {
-  readonly storefront: {
-    readonly serviceEnabled: boolean;
-  };
-};
-
 type Props = {
-  readonly serviceEnabled: boolean;
-  readonly sellerSince: number;
+  readonly storeName: string;
+  readonly merchantCreationDate: string;
   readonly location: {
     readonly cc: CountryCode;
-    readonly formatted: string;
+    readonly name: string;
   };
-  readonly refundRate: number;
-  readonly storeName: string;
-  readonly tags: ReadonlyArray<SellerTags>;
-  readonly storeDescription: string;
   readonly numReviews: number;
-  readonly isFollowing: boolean;
+  readonly averageRating: number;
+  readonly productFeeds: {
+    readonly id: string;
+    readonly name: string;
+  }[];
 };
 
-const INITIAL_DATA_QUERY = gql`
-  query Leopard_StorefrontPageInitialData {
-    storefront {
-      serviceEnabled
-    }
-  }
-`;
-
 export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
-  if (!params?.mid || params.mid == "404me") {
+  if (!params?.mid || typeof params.mid !== "string") {
     return {
       redirect: {
         destination: "/404",
@@ -63,11 +48,22 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
     };
   }
 
-  const { data } = await client.query<InitialData, never>({
-    query: INITIAL_DATA_QUERY,
+  const { data, error } = await client.query<
+    StorefrontDataResponse,
+    StorefrontDataParams
+  >({
+    query: STOREFRONT_DATA_QUERY,
+    variables: {
+      mid: params.mid,
+    },
   });
 
-  if (data == null) {
+  if (
+    error ||
+    data == null ||
+    !data.storefront.serviceEnabled ||
+    !data.storefront.merchantEnabled
+  ) {
     return {
       redirect: {
         destination: "/404",
@@ -76,20 +72,24 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
     };
   }
 
+  const {
+    name: storeName,
+    creationDate: { formatted: merchantCreationDate },
+    location: { code: cc, name },
+    reviewSummary: { count: numReviews, averageRating },
+    customization: { feeds: productFeeds },
+  } = data.storefront.forMerchant;
+
   const props: Props = {
-    serviceEnabled: data.storefront.serviceEnabled,
-    sellerSince: 2016,
+    storeName,
+    merchantCreationDate,
     location: {
-      cc: "CN",
-      formatted: "China",
+      cc,
+      name,
     },
-    refundRate: 0.2,
-    storeName: `${params.mid as string}Super Nintendo Sega Genesis`,
-    tags: ["WISH_EXPRESS", "VERIFIED_SELLER"],
-    storeDescription:
-      "Quidem mollitia sit porro corrupti nihil facere. Voluptas necessitatibus repudiandae.",
-    numReviews: 1839,
-    isFollowing: false,
+    numReviews,
+    averageRating,
+    productFeeds,
   };
 
   return {
@@ -101,8 +101,22 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
 const MerchantStorefront: NextPage<Props> = (
   props: InferGetStaticPropsType<typeof getStaticProps>,
 ) => {
-  const { storeName, serviceEnabled } = props;
+  const { storeName, productFeeds } = props;
   const styles = useStylesheet();
+
+  const Feeds = () => (
+    <>
+      {/* TODO [lliepert]: temp doubling of product feeds for UI testing purposes */}
+      {[...productFeeds, ...productFeeds].map(({ id, name }, i) => (
+        <ProductFeed
+          key={`${id}_${i}`}
+          id={id}
+          name={name}
+          style={styles.upperMargin}
+        />
+      ))}
+    </>
+  );
 
   return (
     <>
@@ -110,23 +124,10 @@ const MerchantStorefront: NextPage<Props> = (
         <title>{storeName}</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
-      <StorefrontBackground colorA="teal" colorB="darkslateblue" deg={130}>
-        <StoreInfoSection {...props} style={styles.infoCard} />
-        <Text style={{ margin: "32px 16px" }}>
-          Enabled: {serviceEnabled.toString()}
-        </Text>
-        <PromotionsSection style={styles.promotionsSection} />
-        <CuratedProductsSection style={styles.cardsSection} />
-        <HighestRatedProductsSection style={styles.cardsSection} />
-        <Text
-          fontSize={10}
-          fontWeight="MEDIUM"
-          color="LIGHT"
-          style={styles.footer}
-        >
-          &copy; Wish 2021
-        </Text>
-      </StorefrontBackground>
+      <PageContainer>
+        <StoreInfoSection {...props} />
+        <Feeds />
+      </PageContainer>
     </>
   );
 };
@@ -135,18 +136,8 @@ const useStylesheet = () =>
   useMemo(
     () =>
       StyleSheet.create({
-        infoCard: {
-          margin: "34px 8px",
-        },
-        promotionsSection: {
-          margin: "32px 16px",
-        },
-        cardsSection: {
-          margin: "32px 0px 32px 16px",
-        },
-        footer: {
-          textAlign: "end",
-          padding: 8,
+        upperMargin: {
+          marginTop: "16px",
         },
       }),
     [],

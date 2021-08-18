@@ -2,7 +2,7 @@ html,
 body {
   padding: 0;
   margin: 0;
-  background-color: #f7f9fa; /* PALETTE.GREY["100"] */
+  background-color: #eff4f6; /* PALETTE.GREY["200"] / SURFACE_LIGHT */
 }
 
 a {
@@ -58,3 +58,5 @@ a {
   src: url("//d2ujdsqe3ri19m.cloudfront.net/latest/assets/fonts/proximanova-boldit")
     format("opentype");
 }
+
+/* TODO [lliepert]: update fonts (https://jira.wish.site/browse/MKL-38316) */

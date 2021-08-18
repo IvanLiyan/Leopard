@@ -23,6 +23,7 @@ const PromotionsSection: React.FC<Props> = ({ style }: Props) => {
         <H2>Title title title title</H2>
         <Text
           fontSize={14}
+          lineHeight={"20px"}
           fontWeight="MEDIUM"
           color="BLACK"
           style={styles.text}

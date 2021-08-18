@@ -118,7 +118,8 @@ module.exports = {
             node.source.value.startsWith("@") &&
             !(
               node.source.value.startsWith("@riptide") ||
-              node.source.value.startsWith("@components/core")
+              node.source.value.startsWith("@components/core") ||
+              node.source.value.startsWith("@ContextLogic")
             )
           ) {
             context.report({

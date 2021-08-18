@@ -1,33 +1,40 @@
-import React, { useState, useMemo } from "react";
+import React, { useMemo } from "react";
 import NextLink from "next/link";
 import { StyleSheet } from "aphrodite";
+import { css } from "@riptide/toolkit/styling";
 import { BaseProps } from "@riptide/toolkit/types";
 
-import Card from "@riptide/components/core/Card";
 import H1 from "@riptide/components/core/H1";
 import Text from "@riptide/components/core/Text";
 import RiptideLink from "@riptide/components/core/Link";
 import { useTheme } from "@riptide/toolkit/theme";
 
 import Layout from "@components/core/Layout";
-import FollowButton from "@riptide/components/storeInfo/FollowButton";
+import Flag from "@components/core/Flag";
+import Rating from "@riptide/components/storeInfo/Rating";
 import ProfilePhoto from "@riptide/components/storeInfo/ProfilePhoto";
 
 export type Props = BaseProps & {
   readonly storeName: string;
-  readonly isFollowing: boolean;
-  readonly sellerSince: number;
+  readonly merchantCreationDate: string;
   readonly location: {
     readonly cc: string;
-    readonly formatted: string;
+    readonly name: string;
   };
-  readonly storeDescription: string;
   readonly numReviews: number;
+  readonly averageRating: number;
 };
 
 const SubText = ({ children }: BaseProps) => {
   return (
-    <Text color="LIGHT" fontSize={14} lineHeight="20px">
+    <Text
+      color="LIGHT"
+      fontSize="14px"
+      lineHeight="14px"
+      style={{
+        ":not(:last-child)": { marginBottom: "6px" },
+      }}
+    >
       {children}
     </Text>
   );
@@ -36,66 +43,71 @@ const SubText = ({ children }: BaseProps) => {
 const StoreInfoSection: React.FC<Props> = ({
   style,
   storeName,
-  isFollowing: isFollowingProp,
-  sellerSince,
-  location: { formatted: locationFormatted },
-  storeDescription,
+  merchantCreationDate,
+  location: { name: locationName, cc },
+  averageRating,
   numReviews,
 }: Props) => {
   const styles = useStylesheet();
-  const [isFollowing, setIsFollowing] = useState<boolean>(isFollowingProp);
 
   return (
-    <Card style={[style, styles.root]}>
-      <Layout.FlexColumn>
-        <Layout.FlexRow style={[{ marginTop: 32 }, styles.margin]}>
-          <ProfilePhoto style={{ marginRight: 16 }} />
-          <H1>{storeName}</H1>
-        </Layout.FlexRow>
+    <Layout.FlexColumn style={[styles.root, style]}>
+      <div className={css(styles.header)} />
+      <ProfilePhoto style={styles.profilePhoto} />
+      <Layout.FlexRow style={[styles.margin, { marginTop: 48 }]}>
+        <H1>{storeName}</H1>
+      </Layout.FlexRow>
 
-        <Layout.FlexRow justifyContent="space-between" style={styles.margin}>
-          <Layout.FlexColumn>
-            <SubText>Store rating:</SubText>
-            <SubText>Seller since: {sellerSince}</SubText>
-            <SubText>Location: {locationFormatted}</SubText>
-          </Layout.FlexColumn>
-          <FollowButton
-            isFollowing={isFollowing}
-            onClick={() => {
-              setIsFollowing((prev) => !prev);
-            }}
-          />
-        </Layout.FlexRow>
-
-        <Text style={[styles.margin]}>{storeDescription}</Text>
-
-        <NextLink href="/" passHref>
-          <RiptideLink style={styles.link}>
-            See {numReviews} merchant reviews
-          </RiptideLink>
-        </NextLink>
+      <Layout.FlexColumn style={styles.margin}>
+        <SubText>
+          Store rating: <Rating rating={averageRating} />
+        </SubText>
+        <SubText>Seller since: {merchantCreationDate}</SubText>
+        <SubText>
+          Location: <Flag cc={cc} height={11} /> {locationName}
+        </SubText>
       </Layout.FlexColumn>
-    </Card>
+
+      <NextLink href="/" passHref>
+        <RiptideLink style={styles.link}>
+          See {numReviews} merchant reviews
+        </RiptideLink>
+      </NextLink>
+    </Layout.FlexColumn>
   );
 };
 
 export default StoreInfoSection;
 
 const useStylesheet = () => {
-  const { border } = useTheme();
+  const { surfaceWhite, border } = useTheme();
 
   return useMemo(
     () =>
       StyleSheet.create({
-        root: {},
+        root: {
+          backgroundColor: surfaceWhite,
+        },
+        header: {
+          height: "96px",
+          width: "100vw",
+          background: "linear-gradient(113.79deg, #10774C 0%, #8B66E5 100%)",
+          backgroundSize: "100vw 240px",
+        },
+        profilePhoto: {
+          position: "absolute",
+          left: 16,
+          top: 64,
+        },
         margin: {
-          margin: 16,
+          margin: "0px 16px 16px 16px",
         },
         link: {
           borderTop: `1px solid ${border}`,
-          padding: 16,
+          padding: "16px 0px",
+          margin: "0px 16px 0px 16px",
         },
       }),
-    [border],
+    [surfaceWhite, border],
   );
 };
