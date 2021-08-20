@@ -13,6 +13,7 @@ import {
   StorefrontDataParams,
   StorefrontDataResponse,
 } from "@toolkit/queries";
+import { fetchAllProducts } from "@toolkit/rest-api";
 import {
   StorefrontState,
   StorefrontStateProvider,
@@ -67,8 +68,10 @@ export const getStaticProps: GetStaticProps<StorefrontState> = async ({
     creationDate: { formatted: merchantCreationDate },
     location: { code: cc, name },
     reviewSummary: { count: numReviews, averageRating },
-    customization: { feeds: productFeeds },
+    // customization: { feeds: productFeeds },
   } = data.storefront.forMerchant;
+
+  const allProducts = await fetchAllProducts({ mid: params.mid });
 
   const props = {
     storeName,
@@ -79,7 +82,13 @@ export const getStaticProps: GetStaticProps<StorefrontState> = async ({
     },
     numReviews,
     averageRating,
-    productFeeds,
+    productFeeds: [],
+    serverSideProductFeeds: [
+      {
+        name: "All products",
+        products: allProducts,
+      },
+    ],
   };
 
   return {
@@ -91,17 +100,24 @@ export const getStaticProps: GetStaticProps<StorefrontState> = async ({
 const MerchantStorefront: NextPage<StorefrontState> = (
   props: InferGetStaticPropsType<typeof getStaticProps>,
 ) => {
-  const { storeName, productFeeds } = props;
+  const { storeName, productFeeds, serverSideProductFeeds } = props;
   const styles = useStylesheet();
 
   const Feeds = () => (
     <>
-      {/* TODO [lliepert]: temp doubling of product feeds for UI testing purposes */}
-      {[...productFeeds, ...productFeeds].map(({ id, name }, i) => (
+      {productFeeds.map(({ id, name }, i) => (
         <ProductFeed
           key={`${id}_${i}`}
           id={id}
           name={name}
+          style={styles.upperMargin}
+        />
+      ))}
+      {serverSideProductFeeds.map(({ name, products }, i) => (
+        <ProductFeed
+          key={`${name}_${i}`}
+          name={name}
+          products={products}
           style={styles.upperMargin}
         />
       ))}

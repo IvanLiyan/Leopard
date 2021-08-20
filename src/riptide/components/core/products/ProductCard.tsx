@@ -6,46 +6,56 @@ import { BaseProps } from "@riptide/toolkit/types";
 import Text from "@riptide/components/core/Text";
 import Layout from "@riptide/components/core/Layout";
 
-export type Props = Omit<BaseProps, "children"> & {
+export type Product = {
   readonly pid: string;
+  readonly imageUrl: string;
+  readonly productUrl: string;
   readonly productName: string;
   readonly originalPrice: string;
   readonly discountedPrice: string;
-  readonly numPurchasers: number;
+  readonly numPurchasersText: string;
 };
+
+export type Props = Omit<BaseProps, "children"> & Product;
 
 const ProductCard: React.FC<Props> = ({
   style,
+  imageUrl,
   productName,
   originalPrice,
   discountedPrice,
-  numPurchasers,
+  numPurchasersText,
 }: Props) => {
   const styles = useStylesheet();
+
+  const showOriginalPrice = originalPrice !== discountedPrice;
+
   return (
     <Layout.FlexColumn style={[styles.root, style]}>
       <Image
         objectFit="cover"
-        src={"/images/TEMP.png"}
+        src={imageUrl}
         height={128}
         width={128}
         alt={productName}
       />
       <Layout.FlexRow style={{ marginTop: 8 }}>
-        <Text
-          fontSize={14}
-          lineHeight={"20px"}
-          color="LIGHT"
-          style={{ textDecoration: "line-through", marginRight: 4 }}
-        >
-          {originalPrice}
-        </Text>
+        {showOriginalPrice && (
+          <Text
+            fontSize={14}
+            lineHeight={"20px"}
+            color="LIGHT"
+            style={{ textDecoration: "line-through", marginRight: 4 }}
+          >
+            {originalPrice}
+          </Text>
+        )}
         <Text fontSize={14} lineHeight={"20px"} color="BLACK">
           {discountedPrice}
         </Text>
       </Layout.FlexRow>
       <Text fontSize={10} lineHeight={"12px"} color="LIGHT">
-        {numPurchasers} bought this
+        {numPurchasersText}
       </Text>
     </Layout.FlexColumn>
   );

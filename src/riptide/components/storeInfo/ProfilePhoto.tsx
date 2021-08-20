@@ -15,7 +15,9 @@ const ProfilePhoto: React.FC<Props> = ({ style }: Props) => {
 
   return (
     <Layout.FlexRow justifyContent="center" style={[styles.root, style]}>
-      <H2 color="LIGHT">{storeName.charAt(0).toUpperCase()}</H2>
+      <H2 color="LIGHT" fontSize={24} lineHeight={"24px"}>
+        {storeName.charAt(0).toUpperCase()}
+      </H2>
     </Layout.FlexRow>
   );
 };

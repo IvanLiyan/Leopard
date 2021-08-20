@@ -6,7 +6,14 @@ Before running leopard, add the root file `.env.local` populated with the follow
 
 ```
 NEXT_PUBLIC_MD_URL=<url to your instance of merch-fe, ex: https://yourid-ec2-merch.vpn.contextlogic.com>
+AUTHORIZATION_HEADER=<authorization header from your Wish request, ex: Basic qwertyuiopasdfgh>
+XSRFTOKEN=<value from x-xsrftoken in your Wish request>
 ```
+
+## MIDs for Testing
+
+- `590cece8ee77233e8153dffa`: contains backfilled feed
+- `593528d9e81e8a481cac4ea7`: contains products
 
 # Default-service
 

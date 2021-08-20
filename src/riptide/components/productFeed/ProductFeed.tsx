@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useMemo } from "react";
 import { StyleSheet } from "aphrodite";
 import { BaseProps } from "@riptide/toolkit/types";
 
@@ -8,90 +8,74 @@ import Layout from "@components/core/Layout";
 import H4 from "@riptide/components/core/H4";
 import Link from "@riptide/components/core/Link";
 import ProductsRow from "@riptide/components/core/products/ProductsRow";
-
-// eslint-disable-next-line local-rules/no-non-riptide-import
-import { fetchProductFeed } from "@toolkit/rest-api";
+import { Product } from "@riptide/components/core/products/ProductCard";
 
 export type Props = BaseProps & {
-  readonly id: string;
   readonly name: string;
-};
+} & (
+    | {
+        readonly id: string;
+        readonly products?: never;
+      }
+    | {
+        readonly id?: never;
+        readonly products: ReadonlyArray<Product>;
+      }
+  );
 
 const CuratedProductsSection: React.FC<Props> = ({
   style,
   name,
-  id,
+  products: productsProp,
 }: Props) => {
   const styles = useStylesheet();
-  const products = [
+  const products = productsProp || [
     {
       pid: "1",
+      imageUrl: "/images/TEMP.png",
+      productUrl: "/",
+      productName: "Product Name",
       originalPrice: "$80",
       discountedPrice: "$20",
-      numPurchasers: 10000,
-      productName: "Product Name",
+      numPurchasersText: "10000",
     },
     {
-      pid: "2",
+      pid: "1",
+      imageUrl: "/images/TEMP.png",
+      productUrl: "/",
+      productName: "Product Name",
       originalPrice: "$80",
       discountedPrice: "$20",
-      numPurchasers: 10000,
-      productName: "Product Name",
+      numPurchasersText: "10000",
     },
     {
-      pid: "3",
+      pid: "1",
+      imageUrl: "/images/TEMP.png",
+      productUrl: "/",
+      productName: "Product Name",
       originalPrice: "$80",
       discountedPrice: "$20",
-      numPurchasers: 10000,
-      productName: "Product Name",
+      numPurchasersText: "10000",
     },
     {
-      pid: "4",
+      pid: "1",
+      imageUrl: "/images/TEMP.png",
+      productUrl: "/",
+      productName: "Product Name",
       originalPrice: "$80",
       discountedPrice: "$20",
-      numPurchasers: 10000,
-      productName: "Product Name",
+      numPurchasersText: "10000",
     },
     {
-      pid: "5",
+      pid: "1",
+      imageUrl: "/images/TEMP.png",
+      productUrl: "/",
+      productName: "Product Name",
       originalPrice: "$80",
       discountedPrice: "$20",
-      numPurchasers: 10000,
-      productName: "Product Name",
-    },
-    {
-      pid: "6",
-      originalPrice: "$80",
-      discountedPrice: "$20",
-      numPurchasers: 10000,
-      productName: "Product Name",
-    },
-    {
-      pid: "7",
-      originalPrice: "$80",
-      discountedPrice: "$20",
-      numPurchasers: 10000,
-      productName: "Product Name",
-    },
-    {
-      pid: "8",
-      originalPrice: "$80",
-      discountedPrice: "$20",
-      numPurchasers: 10000,
-      productName: "Product Name",
+      numPurchasersText: "10000",
     },
   ];
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const resp = await fetchProductFeed({ id });
-      // TODO [lliepert]: integrate with product feed
-      // eslint-disable-next-line no-console
-      console.log(resp);
-    };
-
-    void fetchData();
-  }, [id]);
 
   return (
     <Layout.FlexColumn style={[styles.root, style]}>

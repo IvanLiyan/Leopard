@@ -1,6 +1,7 @@
 import React, { createContext, useContext } from "react";
 import { CountryCode } from "@toolkit/schema";
 import { BaseProps } from "@toolkit/types";
+import { Product } from "@riptide/components/core/products/ProductCard";
 
 export type StorefrontState = {
   readonly storeName: string;
@@ -15,6 +16,10 @@ export type StorefrontState = {
     readonly id: string;
     readonly name: string;
   }[];
+  readonly serverSideProductFeeds: {
+    readonly name: string;
+    readonly products: ReadonlyArray<Product>;
+  }[];
 };
 
 const defaultStorefrontState: StorefrontState = {
@@ -27,6 +32,7 @@ const defaultStorefrontState: StorefrontState = {
   numReviews: 0,
   averageRating: 0,
   productFeeds: [],
+  serverSideProductFeeds: [],
 };
 
 const StorefrontStateContext = createContext(defaultStorefrontState);
