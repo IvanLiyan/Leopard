@@ -81,7 +81,9 @@ const CuratedProductsSection: React.FC<Props> = ({
     <Layout.FlexColumn style={[styles.root, style]}>
       <Layout.FlexRow justifyContent="space-between" style={styles.title}>
         <H4>{name}</H4>
-        <Link style={styles.link}>View all</Link>
+        <Link style={styles.link} disabled={products.length === 0}>
+          View all
+        </Link>
       </Layout.FlexRow>
       <ProductsRow products={products} />
     </Layout.FlexColumn>

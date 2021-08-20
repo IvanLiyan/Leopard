@@ -49,13 +49,44 @@ export const fetchAllProducts = async ({
 }: FetchAllProductsArgs): Promise<ReadonlyArray<Product>> => {
   // see https://github.com/ContextLogic/clroot/blob/master/sweeper/api/merchant.py#L24
   const resp = await fetchWishAPI({
-    url: `https://staging.wish.com/api/merchant`,
+    url: `${process.env.NEXT_PUBLIC_WISH_URL}/api/merchant`,
     body: `query=${mid}&count=20`,
   });
 
   const json = await resp.json();
 
   return json.data.results.map((result: any): Product => {
+    const product: Product = {
+      pid: result.id,
+      imageUrl: result.display_picture,
+      productUrl: result.external_mobile_url,
+      productName:
+        result.product_name_translation.translation ||
+        result.product_name_translation.product_original_name,
+      originalPrice: `${result.localized_value.symbol}${result.localized_value.localized_value}`,
+      discountedPrice: `${result.commerce_product_info.variations[0].localized_price.symbol}${result.commerce_product_info.variations[0].localized_price.localized_value}`,
+      numPurchasersText: result.feed_tile_text,
+    };
+    return product;
+  });
+};
+
+export type FetchProductFeedArgs = {
+  readonly fid: string;
+};
+
+export const fetchProductFeed = async ({
+  fid,
+}: FetchProductFeedArgs): Promise<ReadonlyArray<Product>> => {
+  // see https://github.com/ContextLogic/clroot/blob/master/sweeper/api/collection_tiles.py#L29
+  const resp = await fetchWishAPI({
+    url: `${process.env.NEXT_PUBLIC_WISH_URL}/api/collection/get-products`,
+    body: `collection_id=${fid}&count=5`,
+  });
+
+  const json = await resp.json();
+
+  return json.data.items.map((result: any): Product => {
     const product: Product = {
       pid: result.id,
       imageUrl: result.display_picture,

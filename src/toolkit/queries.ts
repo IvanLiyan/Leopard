@@ -9,35 +9,6 @@ import {
   StorefrontServiceSchemaForMerchantArgs,
 } from "@toolkit/schema";
 
-// TODO [lliepert]: bring back feeds once BE backfill is complete
-// export const STOREFRONT_DATA_QUERY = gql`
-//   query Leopard_StorefrontPageInitialData($mid: ObjectIdType!) {
-//     storefront {
-//       serviceEnabled
-//       merchantEnabled(id: $mid)
-//       forMerchant(id: $mid) {
-//         name
-//         creationDate {
-//           formatted(fmt: "yyyy")
-//         }
-//         location {
-//           code
-//           name
-//         }
-//         reviewSummary {
-//           count
-//           averageRating
-//         }
-//         customization {
-//           feeds {
-//             id
-//             name
-//           }
-//         }
-//       }
-//     }
-//   }
-// `;
 export const STOREFRONT_DATA_QUERY = gql`
   query Leopard_StorefrontPageInitialData($mid: ObjectIdType!) {
     storefront {
@@ -55,6 +26,12 @@ export const STOREFRONT_DATA_QUERY = gql`
         reviewSummary {
           count
           averageRating
+        }
+        customization {
+          feeds {
+            id
+            name
+          }
         }
       }
     }
@@ -84,7 +61,7 @@ export type PickedForMerchant = Pick<StorefrontSchema, "name"> & {
   readonly creationDate: PickedCreationDate;
   readonly reviewSummary: PickedReviewSummary;
   readonly location: PickedLocation;
-  // readonly customization: PickedCustomization;
+  readonly customization: PickedCustomization;
 };
 
 export type StorefrontDataResponse = {

@@ -146,6 +146,7 @@ const defaultTheme = {
   primary: PALETTE.BLUE["400"],
   primaryDark: PALETTE.BLUE["600"],
 
+  textUltraLight: PALETTE.GREY["500"],
   textLight: PALETTE.GREY["600"],
   textDark: PALETTE.GREY["900"],
   textBlack: PALETTE.GREY["900"],

@@ -13,7 +13,7 @@ import {
   StorefrontDataParams,
   StorefrontDataResponse,
 } from "@toolkit/queries";
-import { fetchAllProducts } from "@toolkit/rest-api";
+import { fetchAllProducts, fetchProductFeed } from "@toolkit/rest-api";
 import {
   StorefrontState,
   StorefrontStateProvider,
@@ -68,10 +68,24 @@ export const getStaticProps: GetStaticProps<StorefrontState> = async ({
     creationDate: { formatted: merchantCreationDate },
     location: { code: cc, name },
     reviewSummary: { count: numReviews, averageRating },
-    // customization: { feeds: productFeeds },
+    customization: { feeds },
   } = data.storefront.forMerchant;
 
+  const serverSideProductFeeds = [];
+
+  for (const { id: fid, name } of feeds) {
+    const feedProducts = await fetchProductFeed({ fid });
+    serverSideProductFeeds.push({
+      name,
+      products: feedProducts,
+    });
+  }
+
   const allProducts = await fetchAllProducts({ mid: params.mid });
+  serverSideProductFeeds.push({
+    name: "All products",
+    products: allProducts,
+  });
 
   const props = {
     storeName,
@@ -83,12 +97,7 @@ export const getStaticProps: GetStaticProps<StorefrontState> = async ({
     numReviews,
     averageRating,
     productFeeds: [],
-    serverSideProductFeeds: [
-      {
-        name: "All products",
-        products: allProducts,
-      },
-    ],
+    serverSideProductFeeds,
   };
 
   return {
