@@ -46,3 +46,20 @@ schedule:leopard_string_extraction:
   rules:
     - if: '$SCHEDULE == "leopard_string_extraction" && $CI_PIPELINE_SOURCE == "schedule"'
       when: on_success
+
+schedule:leopard_string_build:
+  stage: schedule
+  image: $CI_REGISTRY/contextlogic/strings:8175aba802be05a1c20d32f222b5562a7708e89a
+  script:
+    - export LEOPARD_HOME=$(pwd)
+    - mkdir /root/.ssh/ && touch /root/.ssh/id_rsa
+    - echo $GITHUB_DEPLOY_KEY | base64 -di > /root/.ssh/id_rsa
+    - git config --global user.email "gitlab@wish.com"
+    - git config --global user.name "Gitlab Bot"
+    - git remote set-url origin git@github.com:ContextLogic/leopard.git
+    - chmod 600 /root/.ssh/id_rsa
+    - ssh-keyscan -t rsa github.com >> /root/.ssh/known_hosts
+    - sh $LEOPARD_HOME/localization_sync.sh # includes pushing prometheus metrics
+  rules:
+    - if: '$SCHEDULE == "leopard_string_build" && $CI_PIPELINE_SOURCE == "schedule"'
+      when: on_success

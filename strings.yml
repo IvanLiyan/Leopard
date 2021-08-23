@@ -2,13 +2,12 @@ project:
   name: "leopard"
 
 smartling:
-  # project_name: "Consumer Content"
-  project_name: "Test Project"
+  project_name: "Consumer Content"
 
 package:
   platforms:
     javascript:
-      package_name: wishstrings
+      package_name: leopardstrings
 
 extraction:
   disallow_jsx_inference: true
