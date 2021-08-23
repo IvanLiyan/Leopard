@@ -9,6 +9,7 @@ import Text from "@riptide/components/core/Text";
 import RiptideLink from "@riptide/components/core/Link";
 import { useTheme } from "@riptide/toolkit/theme";
 import { useStorefrontState } from "@toolkit/context/storefront-state";
+import { useLocalization } from "@toolkit/context/localization";
 
 import Layout from "@components/core/Layout";
 import Flag from "@components/core/Flag";
@@ -40,6 +41,7 @@ const StoreInfoSection: React.FC<Props> = ({ style }: Props) => {
     location: { name: locationName, cc },
     numReviews,
   } = useStorefrontState();
+  const { ci18n, cni18n } = useLocalization();
 
   return (
     <Layout.FlexColumn style={[styles.root, style]}>
@@ -51,17 +53,30 @@ const StoreInfoSection: React.FC<Props> = ({ style }: Props) => {
 
       <Layout.FlexColumn style={styles.margin}>
         <SubText>
-          Store rating: <Rating />
+          {ci18n("label for the store's rating", "Store rating: ")}
+          <Rating />
         </SubText>
-        <SubText>Seller since: {merchantCreationDate}</SubText>
         <SubText>
-          Location: <Flag cc={cc} height={11} /> {locationName}
+          {ci18n(
+            "label for how long the merchant has been on Wish",
+            "Seller since: ",
+          )}
+          {merchantCreationDate}
+        </SubText>
+        <SubText>
+          {ci18n("label for the merchant's location", "Location: ")}
+          <Flag cc={cc} height={11} /> {locationName}
         </SubText>
       </Layout.FlexColumn>
 
       <NextLink href="/" passHref>
         <RiptideLink style={styles.link}>
-          See {numReviews} merchant reviews
+          {cni18n(
+            "button taking the user to the merchant's reviews page",
+            numReviews,
+            "See merchant review",
+            "See {%1=number of reviews} merchant reviews",
+          )}
         </RiptideLink>
       </NextLink>
     </Layout.FlexColumn>

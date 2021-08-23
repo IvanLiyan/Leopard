@@ -1,0 +1,30 @@
+project:
+  name: "leopard"
+
+smartling:
+  # project_name: "Consumer Content"
+  project_name: "Test Project"
+
+package:
+  platforms:
+    javascript:
+      package_name: wishstrings
+
+extraction:
+  disallow_jsx_inference: true
+
+features:
+  - name: Leopard
+    owners:
+      - lliepert@wish.com
+    files:
+      - src/components/*
+      - src/riptide/components/*
+      - src/pages/*
+    description: >
+      The Leopard project provides the front end for the Storefronts project.
+      The strings contained are part of a merchant's storefront page shown to
+      Wish consumers in the mobile apps and on desktop. These pages contain
+      basic information about the merchant, such as their rating, creation date,
+      and a basic store description, and include lists of products that
+      consumers can browse.

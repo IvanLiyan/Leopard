@@ -82,8 +82,13 @@ export const getStaticProps: GetStaticProps<StorefrontState> = async ({
   }
 
   const allProducts = await fetchAllProducts({ mid: params.mid });
+
+  // TODO [lliepert]: server side mock of i18n, only used for string extraction.
+  // product feeds code will be moved client side once cookies are fixed
+  const i18n = (s: string) => s;
+
   serverSideProductFeeds.push({
-    name: "All products",
+    name: i18n("All products"),
     products: allProducts,
   });
 

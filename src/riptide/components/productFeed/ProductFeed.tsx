@@ -3,6 +3,7 @@ import { StyleSheet } from "aphrodite";
 import { BaseProps } from "@riptide/toolkit/types";
 
 import { useTheme } from "@riptide/toolkit/theme";
+import { useLocalization } from "@toolkit/context/localization";
 
 import Layout from "@components/core/Layout";
 import H4 from "@riptide/components/core/H4";
@@ -29,6 +30,8 @@ const CuratedProductsSection: React.FC<Props> = ({
   products: productsProp,
 }: Props) => {
   const styles = useStylesheet();
+  const { i18n } = useLocalization();
+
   const products = productsProp || [
     {
       pid: "1",
@@ -82,7 +85,7 @@ const CuratedProductsSection: React.FC<Props> = ({
       <Layout.FlexRow justifyContent="space-between" style={styles.title}>
         <H4>{name}</H4>
         <Link style={styles.link} disabled={products.length === 0}>
-          View all
+          {i18n("View all")}
         </Link>
       </Layout.FlexRow>
       <ProductsRow products={products} />

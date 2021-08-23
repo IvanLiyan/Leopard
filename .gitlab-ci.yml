@@ -1,22 +1,5 @@
-variables:
-  ITA_TEMPLATE: default-service # DO NOT change this
-  ITA_ADD_BUILD_ARGS: "ITA_JOB_TOKEN ITA_PROJECT_NAME"
-
-stages:
-  - pre-test
-  - build
-  - test
-  - tag
-  - release
-
-include:
-  - project: "contextlogic/includes"
-    ref: master
-    file: "/templates/job-build-tag-and-deploy/default.yml"
-
 # Note for customized jobs, please use the Gitlab rules syntax instead of only/except.
 # Gitlab rules - https://docs.gitlab.com/ee/ci/yaml/#rules
-
 
 # Below is an example of integration test
 # Please note this is only for reference, you should always write your own integration tests.
@@ -33,3 +16,33 @@ include:
 #   script:
 #     # These scripts should be replaced with actual tests that validate the expected logic
 #     - curl -X GET http://default-service-ci:8080/
+
+variables:
+  ITA_TEMPLATE: default-service # DO NOT change this
+  ITA_ADD_BUILD_ARGS: "ITA_JOB_TOKEN ITA_PROJECT_NAME"
+
+stages:
+  - schedule
+  - pre-test
+  - build
+  - test
+  - tag
+  - release
+
+include:
+  - project: "contextlogic/includes"
+    ref: master
+    file: "/templates/job-build-tag-and-deploy/default.yml"
+
+schedule:leopard_string_extraction:
+  stage: schedule
+  image: $CI_REGISTRY/contextlogic/strings:8175aba802be05a1c20d32f222b5562a7708e89a
+  script:
+    - export LEOPARD_HOME=$(pwd)
+    - START_TIME=$SECONDS
+    - /go/bin/strings extract $LEOPARD_HOME --smartling-api-secrets="${SMARTLING_API_SECRETS}"
+    - echo 'leopard_string_extraction_runtime_seconds' $((SECONDS-START_TIME)) | curl --data-binary @- http://pushgateway.infra.wish.com:9091/metrics/job/gitlab
+    - echo 'leopard_string_extraction_last_success_timestamp' $(date -u +%s) | curl --data-binary @- http://pushgateway.infra.wish.com:9091/metrics/job/gitlab
+  rules:
+    - if: '$SCHEDULE == "leopard_string_extraction" && $CI_PIPELINE_SOURCE == "schedule"'
+      when: on_success

@@ -2,6 +2,8 @@ import React, { useMemo } from "react";
 import { StyleSheet } from "aphrodite";
 import { BaseProps } from "@riptide/toolkit/types";
 
+import { useLocalization } from "@toolkit/context/localization";
+
 import Layout from "@components/core/Layout";
 import Text from "@riptide/components/core/Text";
 import ProductCard, {
@@ -14,6 +16,7 @@ export type Props = Omit<BaseProps, "children"> & {
 
 const ProductsRow: React.FC<Props> = ({ style, products }: Props) => {
   const styles = useStylesheet();
+  const { i18n } = useLocalization();
 
   if (products.length === 0) {
     return (
@@ -21,7 +24,7 @@ const ProductsRow: React.FC<Props> = ({ style, products }: Props) => {
         justifyContent="center"
         style={[styles.noProducts, style]}
       >
-        <Text color="LIGHT">Check back later for products.</Text>
+        <Text color="LIGHT">{i18n("No products found")}</Text>
       </Layout.FlexRow>
     );
   }

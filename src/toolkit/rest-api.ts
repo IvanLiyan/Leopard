@@ -9,6 +9,8 @@
 
 import { Product } from "@riptide/components/core/products/ProductCard";
 
+const COUNT = 20;
+
 type FetchWishAPIArgs = {
   readonly url: string;
   readonly body?: string;
@@ -50,7 +52,7 @@ export const fetchAllProducts = async ({
   // see https://github.com/ContextLogic/clroot/blob/master/sweeper/api/merchant.py#L24
   const resp = await fetchWishAPI({
     url: `${process.env.NEXT_PUBLIC_WISH_URL}/api/merchant`,
-    body: `query=${mid}&count=20`,
+    body: `query=${mid}&count=${COUNT}`,
   });
 
   const json = await resp.json();
@@ -81,7 +83,7 @@ export const fetchProductFeed = async ({
   // see https://github.com/ContextLogic/clroot/blob/master/sweeper/api/collection_tiles.py#L29
   const resp = await fetchWishAPI({
     url: `${process.env.NEXT_PUBLIC_WISH_URL}/api/collection/get-products`,
-    body: `collection_id=${fid}&count=5`,
+    body: `collection_id=${fid}&count=${COUNT}`,
   });
 
   const json = await resp.json();
