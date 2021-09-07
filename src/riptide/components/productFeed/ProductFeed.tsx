@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { StyleSheet } from "aphrodite";
 import { BaseProps } from "@riptide/toolkit/types";
 
@@ -8,87 +8,54 @@ import { useLocalization } from "@toolkit/context/localization";
 import Layout from "@components/core/Layout";
 import H4 from "@riptide/components/core/H4";
 import Link from "@riptide/components/core/Link";
+import Text from "@riptide/components/core/Text";
 import ProductsRow from "@riptide/components/core/products/ProductsRow";
 import { Product } from "@riptide/components/core/products/ProductCard";
 
 export type Props = BaseProps & {
   readonly name: string;
-} & (
-    | {
-        readonly id: string;
-        readonly products?: never;
-      }
-    | {
-        readonly id?: never;
-        readonly products: ReadonlyArray<Product>;
-      }
-  );
+  readonly viewAllLink: string;
+  readonly productsReq: () => Promise<ReadonlyArray<Product>>;
+};
 
 const CuratedProductsSection: React.FC<Props> = ({
   style,
   name,
-  products: productsProp,
+  viewAllLink,
+  productsReq,
 }: Props) => {
   const styles = useStylesheet();
   const { i18n } = useLocalization();
+  const [loading, setLoading] = useState(true);
+  const [products, setProducts] = useState<ReadonlyArray<Product> | null>(null);
 
-  const products = productsProp || [
-    {
-      pid: "1",
-      imageUrl: "/images/TEMP.png",
-      productUrl: "/",
-      productName: "Product Name",
-      originalPrice: "$80",
-      discountedPrice: "$20",
-      numPurchasersText: "10000",
-    },
-    {
-      pid: "1",
-      imageUrl: "/images/TEMP.png",
-      productUrl: "/",
-      productName: "Product Name",
-      originalPrice: "$80",
-      discountedPrice: "$20",
-      numPurchasersText: "10000",
-    },
-    {
-      pid: "1",
-      imageUrl: "/images/TEMP.png",
-      productUrl: "/",
-      productName: "Product Name",
-      originalPrice: "$80",
-      discountedPrice: "$20",
-      numPurchasersText: "10000",
-    },
-    {
-      pid: "1",
-      imageUrl: "/images/TEMP.png",
-      productUrl: "/",
-      productName: "Product Name",
-      originalPrice: "$80",
-      discountedPrice: "$20",
-      numPurchasersText: "10000",
-    },
-    {
-      pid: "1",
-      imageUrl: "/images/TEMP.png",
-      productUrl: "/",
-      productName: "Product Name",
-      originalPrice: "$80",
-      discountedPrice: "$20",
-      numPurchasersText: "10000",
-    },
-  ];
+  useEffect(() => {
+    const fetchData = async () => {
+      const products = await productsReq();
+      setProducts(products);
+      setLoading(false);
+    };
+
+    void fetchData();
+  }, [productsReq]);
 
   return (
     <Layout.FlexColumn style={[styles.root, style]}>
       <Layout.FlexRow justifyContent="space-between" style={styles.title}>
         <H4>{name}</H4>
-        <Link style={styles.link} disabled={products.length === 0}>
+        <Link
+          style={styles.link}
+          disabled={loading || products?.length === 0}
+          href={viewAllLink}
+        >
           {i18n("View all")}
         </Link>
       </Layout.FlexRow>
-      <ProductsRow products={products} />
+      {loading ? (
+        <Text>loading</Text>
+      ) : (
+        <ProductsRow products={products || []} />
+      )}
     </Layout.FlexColumn>
   );
 };

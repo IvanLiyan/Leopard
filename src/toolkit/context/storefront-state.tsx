@@ -1,9 +1,9 @@
 import React, { createContext, useContext } from "react";
 import { CountryCode } from "@toolkit/schema";
 import { BaseProps } from "@toolkit/types";
-import { Product } from "@riptide/components/core/products/ProductCard";
 
 export type StorefrontState = {
+  readonly mid: string;
   readonly storeName: string;
   readonly merchantCreationDate: string;
   readonly location: {
@@ -16,13 +16,10 @@ export type StorefrontState = {
     readonly id: string;
     readonly name: string;
   }[];
-  readonly serverSideProductFeeds: {
-    readonly name: string;
-    readonly products: ReadonlyArray<Product>;
-  }[];
 };
 
 const defaultStorefrontState: StorefrontState = {
+  mid: "",
   storeName: "",
   merchantCreationDate: "",
   location: {
@@ -32,7 +29,6 @@ const defaultStorefrontState: StorefrontState = {
   numReviews: 0,
   averageRating: 0,
   productFeeds: [],
-  serverSideProductFeeds: [],
 };
 
 const StorefrontStateContext = createContext(defaultStorefrontState);

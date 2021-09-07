@@ -1,11 +1,17 @@
-import { ApolloClient, InMemoryCache } from "@apollo/client";
+import { from, ApolloClient, InMemoryCache } from "@apollo/client";
 import { BatchHttpLink } from "@apollo/client/link/batch-http";
+import { RetryLink } from "@apollo/client/link/retry";
 
-const link = new BatchHttpLink({
-  uri: `${process.env.NEXT_PUBLIC_MD_URL || ""}/api/graphql/batch`,
-  credentials: "same-origin",
-  batchMax: 50,
-});
+import { MD_URL } from "@toolkit/context/constants";
+
+const link = from([
+  new RetryLink(),
+  new BatchHttpLink({
+    uri: `${MD_URL}/api/graphql/batch`,
+    credentials: "same-origin",
+    batchMax: 50,
+  }),
+]);
 
 const cache = new InMemoryCache();
 

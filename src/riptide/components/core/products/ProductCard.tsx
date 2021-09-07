@@ -2,8 +2,10 @@ import React, { useMemo } from "react";
 import Image from "next/image";
 import { StyleSheet } from "aphrodite";
 import { BaseProps } from "@riptide/toolkit/types";
+import { WISH_URL } from "@toolkit/context/constants";
 
 import Text from "@riptide/components/core/Text";
+import Link from "@riptide/components/core/Link";
 import Layout from "@riptide/components/core/Layout";
 
 export type Product = {
@@ -20,6 +22,7 @@ export type Props = Omit<BaseProps, "children"> & Product;
 
 const ProductCard: React.FC<Props> = ({
   style,
+  pid,
   imageUrl,
   productName,
   originalPrice,
@@ -32,31 +35,33 @@ const ProductCard: React.FC<Props> = ({
 
   return (
     <Layout.FlexColumn style={[styles.root, style]}>
-      <Image
-        objectFit="cover"
-        src={imageUrl}
-        height={128}
-        width={128}
-        alt={productName}
-      />
-      <Layout.FlexRow style={{ marginTop: 8 }}>
-        {showOriginalPrice && (
-          <Text
-            fontSize={14}
-            lineHeight={"20px"}
-            color="LIGHT"
-            style={{ textDecoration: "line-through", marginRight: 4 }}
-          >
-            {originalPrice}
+      <Link href={`${WISH_URL}/product/${pid}`}>
+        <Image
+          objectFit="cover"
+          src={imageUrl}
+          height={128}
+          width={128}
+          alt={productName}
+        />
+        <Layout.FlexRow style={{ marginTop: 8 }}>
+          {showOriginalPrice && (
+            <Text
+              fontSize={14}
+              lineHeight={"20px"}
+              color="LIGHT"
+              style={{ textDecoration: "line-through", marginRight: 4 }}
+            >
+              {originalPrice}
+            </Text>
+          )}
+          <Text fontSize={14} lineHeight={"20px"} color="BLACK">
+            {discountedPrice}
           </Text>
-        )}
-        <Text fontSize={14} lineHeight={"20px"} color="BLACK">
-          {discountedPrice}
+        </Layout.FlexRow>
+        <Text fontSize={10} lineHeight={"12px"} color="LIGHT">
+          {numPurchasersText}
         </Text>
-      </Layout.FlexRow>
-      <Text fontSize={10} lineHeight={"12px"} color="LIGHT">
-        {numPurchasersText}
-      </Text>
+      </Link>
     </Layout.FlexColumn>
   );
 };

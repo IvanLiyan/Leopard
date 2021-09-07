@@ -6,6 +6,7 @@ import {
   NextPage,
 } from "next";
 import Head from "next/head";
+import * as Sentry from "@sentry/nextjs";
 import { StyleSheet } from "aphrodite";
 import client from "@toolkit/apollo-client";
 import {
@@ -18,6 +19,8 @@ import {
   StorefrontState,
   StorefrontStateProvider,
 } from "@toolkit/context/storefront-state";
+import { useLocalization } from "@toolkit/context/localization";
+import { WISH_URL } from "@toolkit/context/constants";
 
 import PageContainer from "@riptide/components/core/PageContainer";
 import StoreInfoSection from "@riptide/components/storeInfo/StoreInfoSection";
@@ -32,14 +35,11 @@ export const getStaticProps: GetStaticProps<StorefrontState> = async ({
 }) => {
   if (!params?.mid || typeof params.mid !== "string") {
     return {
-      redirect: {
-        destination: "/404",
-        permanent: false,
-      },
+      notFound: true,
     };
   }
 
-  const { data, error } = await client.query<
+  const { data, error, errors } = await client.query<
     StorefrontDataResponse,
     StorefrontDataParams
   >({
@@ -47,20 +47,23 @@ export const getStaticProps: GetStaticProps<StorefrontState> = async ({
     variables: {
       mid: params.mid,
     },
+    errorPolicy: "all",
   });
 
+  if (error) {
+    Sentry.captureException(error);
+    return { notFound: true };
+  }
+  if (errors) {
+    Sentry.captureException(errors);
+    return { notFound: true };
+  }
   if (
-    error ||
     data == null ||
     !data.storefront.serviceEnabled ||
     !data.storefront.merchantEnabled
   ) {
-    return {
-      redirect: {
-        destination: "/404",
-        permanent: false,
-      },
-    };
+    return { notFound: true };
   }
 
   const {
@@ -68,31 +71,11 @@ export const getStaticProps: GetStaticProps<StorefrontState> = async ({
     creationDate: { formatted: merchantCreationDate },
     location: { code: cc, name },
     reviewSummary: { count: numReviews, averageRating },
-    customization: { feeds },
+    customization: { feeds: productFeeds },
   } = data.storefront.forMerchant;
 
-  const serverSideProductFeeds = [];
-
-  for (const { id: fid, name } of feeds) {
-    const feedProducts = await fetchProductFeed({ fid });
-    serverSideProductFeeds.push({
-      name,
-      products: feedProducts,
-    });
-  }
-
-  const allProducts = await fetchAllProducts({ mid: params.mid });
-
-  // TODO [lliepert]: server side mock of i18n, only used for string extraction.
-  // product feeds code will be moved client side once cookies are fixed
-  const i18n = (s: string) => s;
-
-  serverSideProductFeeds.push({
-    name: i18n("All products"),
-    products: allProducts,
-  });
-
   const props = {
+    mid: params.mid,
     storeName,
     merchantCreationDate,
     location: {
@@ -101,8 +84,7 @@ export const getStaticProps: GetStaticProps<StorefrontState> = async ({
     },
     numReviews,
     averageRating,
-    productFeeds: [],
-    serverSideProductFeeds,
+    productFeeds,
   };
 
   return {
@@ -114,27 +96,28 @@ export const getStaticProps: GetStaticProps<StorefrontState> = async ({
 const MerchantStorefront: NextPage<StorefrontState> = (
   props: InferGetStaticPropsType<typeof getStaticProps>,
 ) => {
-  const { storeName, productFeeds, serverSideProductFeeds } = props;
+  const { storeName, productFeeds } = props;
   const styles = useStylesheet();
+  const { i18n } = useLocalization();
 
   const Feeds = () => (
     <>
       {productFeeds.map(({ id, name }, i) => (
         <ProductFeed
           key={`${id}_${i}`}
-          id={id}
+          productsReq={() => fetchProductFeed({ fid: id })}
           name={name}
           style={styles.upperMargin}
+          viewAllLink={`${WISH_URL}/collection/${id}`}
         />
       ))}
-      {serverSideProductFeeds.map(({ name, products }, i) => (
-        <ProductFeed
-          key={`${name}_${i}`}
-          name={name}
-          products={products}
-          style={styles.upperMargin}
-        />
-      ))}
+      <ProductFeed
+        key={`allProducts`}
+        productsReq={() => fetchAllProducts({ mid: props.mid })}
+        name={i18n("All Products")}
+        style={styles.upperMargin}
+        viewAllLink={`${WISH_URL}/merchant/${props.mid}`}
+      />
     </>
   );
 

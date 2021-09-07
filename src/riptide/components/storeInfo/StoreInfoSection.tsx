@@ -1,12 +1,12 @@
 import React, { useMemo } from "react";
-import NextLink from "next/link";
 import { StyleSheet } from "aphrodite";
 import { css } from "@riptide/toolkit/styling";
 import { BaseProps } from "@riptide/toolkit/types";
+import { WISH_URL } from "@toolkit/context/constants";
 
 import H1 from "@riptide/components/core/H1";
 import Text from "@riptide/components/core/Text";
-import RiptideLink from "@riptide/components/core/Link";
+import Link from "@riptide/components/core/Link";
 import { useTheme } from "@riptide/toolkit/theme";
 import { useStorefrontState } from "@toolkit/context/storefront-state";
 import { useLocalization } from "@toolkit/context/localization";
@@ -36,6 +36,7 @@ const SubText = ({ children }: BaseProps) => {
 const StoreInfoSection: React.FC<Props> = ({ style }: Props) => {
   const styles = useStylesheet();
   const {
+    mid,
     storeName,
     merchantCreationDate,
     location: { name: locationName, cc },
@@ -69,16 +70,14 @@ const StoreInfoSection: React.FC<Props> = ({ style }: Props) => {
         </SubText>
       </Layout.FlexColumn>
 
-      <NextLink href="/" passHref>
-        <RiptideLink style={styles.link}>
-          {cni18n(
-            "button taking the user to the merchant's reviews page",
-            numReviews,
-            "See merchant review",
-            "See {%1=number of reviews} merchant reviews",
-          )}
-        </RiptideLink>
-      </NextLink>
+      <Link style={styles.link} href={`${WISH_URL}/ratings/${mid}`}>
+        {cni18n(
+          "button taking the user to the merchant's reviews page",
+          numReviews,
+          "See merchant review",
+          "See {%1=number of reviews} merchant reviews",
+        )}
+      </Link>
     </Layout.FlexColumn>
   );
 };

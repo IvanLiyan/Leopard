@@ -7,39 +7,47 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
+import * as Sentry from "@sentry/nextjs";
+
+import axios, { AxiosResponse } from "axios";
+import qs from "qs";
+import retry from "async-retry";
+
 import { Product } from "@riptide/components/core/products/ProductCard";
 
 const COUNT = 20;
+const NUM_RETRIES = 5;
+const INITIAL_DELAY_MS = 300;
 
 type FetchWishAPIArgs = {
   readonly url: string;
-  readonly body?: string;
+  readonly body?: { [index: string]: string | number };
 };
 
 const fetchWishAPI = async ({
   url,
   body,
-}: FetchWishAPIArgs): Promise<Response> => {
-  const resp = await fetch(url, {
-    headers: {
-      accept: "application/json, text/plain, */*",
-      "accept-language": "en-US,en;q=0.9",
-      authorization: process.env.AUTHORIZATION_HEADER || "",
-      "cache-control": "no-cache",
-      "content-type": "application/x-www-form-urlencoded",
-      pragma: "no-cache",
-      "sec-fetch-dest": "empty",
-      "sec-fetch-mode": "cors",
-      "sec-fetch-site": "same-origin",
-      "x-xsrftoken": process.env.XSRFTOKEN || "",
-      cookie: `_xsrf=${process.env.XSRFTOKEN || ""};`,
+}: FetchWishAPIArgs): Promise<AxiosResponse> => {
+  return await retry(
+    async () => {
+      // see https://github.com/ContextLogic/web/blob/96d1c2fb7704fb1a225f75759213af87d33ae496/cozy/utils/InternalCall.tsx#L58
+      return await axios({
+        method: "post",
+        url,
+        data: qs.stringify({ ...body }, { arrayFormat: "brackets" }),
+        xsrfCookieName: "_xsrf", // default
+        xsrfHeaderName: "X-XSRFToken", // default
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      });
     },
-    body,
-    method: "POST",
-    mode: "cors",
-  });
-
-  return resp;
+    {
+      retries: NUM_RETRIES,
+      minTimeout: INITIAL_DELAY_MS,
+      randomize: true,
+    },
+  );
 };
 
 export type FetchAllProductsArgs = {
@@ -50,27 +58,32 @@ export const fetchAllProducts = async ({
   mid,
 }: FetchAllProductsArgs): Promise<ReadonlyArray<Product>> => {
   // see https://github.com/ContextLogic/clroot/blob/master/sweeper/api/merchant.py#L24
-  const resp = await fetchWishAPI({
-    url: `${process.env.NEXT_PUBLIC_WISH_URL}/api/merchant`,
-    body: `query=${mid}&count=${COUNT}`,
-  });
+  try {
+    const resp = await fetchWishAPI({
+      url: `${process.env.NEXT_PUBLIC_WISH_URL}/api/merchant`,
+      body: { query: mid, count: COUNT },
+    });
 
-  const json = await resp.json();
+    const data = await resp.data();
 
-  return json.data.results.map((result: any): Product => {
-    const product: Product = {
-      pid: result.id,
-      imageUrl: result.display_picture,
-      productUrl: result.external_mobile_url,
-      productName:
-        result.product_name_translation.translation ||
-        result.product_name_translation.product_original_name,
-      originalPrice: `${result.localized_value.symbol}${result.localized_value.localized_value}`,
-      discountedPrice: `${result.commerce_product_info.variations[0].localized_price.symbol}${result.commerce_product_info.variations[0].localized_price.localized_value}`,
-      numPurchasersText: result.feed_tile_text,
-    };
-    return product;
-  });
+    return data.results.map((result: any): Product => {
+      const product: Product = {
+        pid: result.id,
+        imageUrl: result.display_picture,
+        productUrl: result.external_mobile_url,
+        productName:
+          result.product_name_translation.translation ||
+          result.product_name_translation.product_original_name,
+        originalPrice: `${result.localized_value.symbol}${result.localized_value.localized_value}`,
+        discountedPrice: `${result.commerce_product_info.variations[0].localized_price.symbol}${result.commerce_product_info.variations[0].localized_price.localized_value}`,
+        numPurchasersText: result.feed_tile_text,
+      };
+      return product;
+    });
+  } catch (err) {
+    Sentry.captureException(err);
+    return [];
+  }
 };
 
 export type FetchProductFeedArgs = {
@@ -81,25 +94,30 @@ export const fetchProductFeed = async ({
   fid,
 }: FetchProductFeedArgs): Promise<ReadonlyArray<Product>> => {
   // see https://github.com/ContextLogic/clroot/blob/master/sweeper/api/collection_tiles.py#L29
-  const resp = await fetchWishAPI({
-    url: `${process.env.NEXT_PUBLIC_WISH_URL}/api/collection/get-products`,
-    body: `collection_id=${fid}&count=${COUNT}`,
-  });
+  try {
+    const resp = await fetchWishAPI({
+      url: `${process.env.NEXT_PUBLIC_WISH_URL}/api/collection/get-products`,
+      body: { collection_id: fid, count: COUNT },
+    });
 
-  const json = await resp.json();
+    const data = await resp.data();
 
-  return json.data.items.map((result: any): Product => {
-    const product: Product = {
-      pid: result.id,
-      imageUrl: result.display_picture,
-      productUrl: result.external_mobile_url,
-      productName:
-        result.product_name_translation.translation ||
-        result.product_name_translation.product_original_name,
-      originalPrice: `${result.localized_value.symbol}${result.localized_value.localized_value}`,
-      discountedPrice: `${result.commerce_product_info.variations[0].localized_price.symbol}${result.commerce_product_info.variations[0].localized_price.localized_value}`,
-      numPurchasersText: result.feed_tile_text,
-    };
-    return product;
-  });
+    return data.items.map((result: any): Product => {
+      const product: Product = {
+        pid: result.id,
+        imageUrl: result.display_picture,
+        productUrl: result.external_mobile_url,
+        productName:
+          result.product_name_translation.translation ||
+          result.product_name_translation.product_original_name,
+        originalPrice: `${result.localized_value.symbol}${result.localized_value.localized_value}`,
+        discountedPrice: `${result.commerce_product_info.variations[0].localized_price.symbol}${result.commerce_product_info.variations[0].localized_price.localized_value}`,
+        numPurchasersText: result.feed_tile_text,
+      };
+      return product;
+    });
+  } catch (err) {
+    Sentry.captureException(err);
+    return [];
+  }
 };

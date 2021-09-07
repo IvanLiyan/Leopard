@@ -36,7 +36,7 @@ include:
 
 schedule:leopard_string_extraction:
   stage: schedule
-  image: $CI_REGISTRY/contextlogic/strings:8175aba802be05a1c20d32f222b5562a7708e89a
+  image: $CI_REGISTRY/contextlogic/strings:79bee9cf19c07bee8f248caf61c1ccd8e4d66a23
   script:
     - export LEOPARD_HOME=$(pwd)
     - START_TIME=$SECONDS
@@ -49,7 +49,7 @@ schedule:leopard_string_extraction:
 
 schedule:leopard_string_build:
   stage: schedule
-  image: $CI_REGISTRY/contextlogic/strings:8175aba802be05a1c20d32f222b5562a7708e89a
+  image: $CI_REGISTRY/contextlogic/strings:79bee9cf19c07bee8f248caf61c1ccd8e4d66a23
   script:
     - export LEOPARD_HOME=$(pwd)
     - mkdir /root/.ssh/ && touch /root/.ssh/id_rsa

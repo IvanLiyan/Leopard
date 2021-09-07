@@ -20,6 +20,12 @@
       "@riptide/*": ["src/riptide/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "sentry.client.config.js",
+    "sentry.server.config.js"
+  ],
   "exclude": ["node_modules"]
 }
