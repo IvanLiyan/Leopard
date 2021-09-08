@@ -8,7 +8,7 @@ import Layout from "@components/core/Layout";
 import Text from "@riptide/components/core/Text";
 import ProductCard, {
   Props as ProductProps,
-} from "@riptide/components/core/products/ProductCard";
+} from "@riptide/components/productFeed/ProductCard";
 
 export type Props = Omit<BaseProps, "children"> & {
   readonly products: ReadonlyArray<ProductProps>;

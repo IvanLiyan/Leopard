@@ -8,9 +8,9 @@ import { useLocalization } from "@toolkit/context/localization";
 import Layout from "@components/core/Layout";
 import H4 from "@riptide/components/core/H4";
 import Link from "@riptide/components/core/Link";
-import Text from "@riptide/components/core/Text";
-import ProductsRow from "@riptide/components/core/products/ProductsRow";
-import { Product } from "@riptide/components/core/products/ProductCard";
+import LoadingRow from "@riptide/components/productFeed/LoadingRow";
+import ProductsRow from "@riptide/components/productFeed/ProductsRow";
+import { Product } from "@riptide/components/productFeed/ProductCard";
 
 export type Props = BaseProps & {
   readonly name: string;
@@ -51,11 +51,7 @@ const CuratedProductsSection: React.FC<Props> = ({
           {i18n("View all")}
         </Link>
       </Layout.FlexRow>
-      {loading ? (
-        <Text>loading</Text>
-      ) : (
-        <ProductsRow products={products || []} />
-      )}
+      {loading ? <LoadingRow /> : <ProductsRow products={products || []} />}
     </Layout.FlexColumn>
   );
 };

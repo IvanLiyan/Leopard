@@ -25,7 +25,7 @@ const ProfilePhoto: React.FC<Props> = ({ style }: Props) => {
 export default ProfilePhoto;
 
 const useStylesheet = () => {
-  const { surfaceMediumLight } = useTheme();
+  const { surfaceMedium } = useTheme();
 
   return useMemo(
     () =>
@@ -34,9 +34,9 @@ const useStylesheet = () => {
           height: 64,
           width: 64,
           borderRadius: "50%",
-          backgroundColor: surfaceMediumLight,
+          backgroundColor: surfaceMedium,
         },
       }),
-    [surfaceMediumLight],
+    [surfaceMedium],
   );
 };

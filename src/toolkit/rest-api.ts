@@ -13,7 +13,7 @@ import axios, { AxiosResponse } from "axios";
 import qs from "qs";
 import retry from "async-retry";
 
-import { Product } from "@riptide/components/core/products/ProductCard";
+import { Product } from "@riptide/components/productFeed/ProductCard";
 
 const COUNT = 20;
 const NUM_RETRIES = 5;

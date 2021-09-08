@@ -155,7 +155,8 @@ const defaultTheme = {
 
   surfaceWhite: PALETTE.WHITE,
   surfaceLight: PALETTE.GREY["200"],
-  surfaceMediumLight: PALETTE.GREY["300"],
+  surfaceMedium: PALETTE.GREY["300"],
+  surfaceDark: PALETTE.GREY["500"],
 };
 
 export type Theme = Readonly<typeof defaultTheme>;
