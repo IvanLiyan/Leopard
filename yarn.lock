@@ -2,6 +2,11 @@
 # yarn lockfile v1
 
 
+"@ContextLogic/leopardstrings@^0.0.1630389929":
+  version "0.0.1630389929"
+  resolved "https://npm.infra.wish.com/@ContextLogic%2fleopardstrings/-/leopardstrings-0.0.1630389929.tgz#27f6a3399840e5ae7431e5d422d366e553621d5c"
+  integrity sha512-Nsyg98tyC24lwzKL8PZgipzw6K7SJzVmEkGvD9Paq1NZdh5btrFfl9JP7RhNnXXAilItVqXT3/RG0Yu5K8pKXw==
+
 "@ContextLogic/zeus@^0.0.1-1626803153":
   version "0.0.1-1626803153"
   resolved "https://npm.infra.wish.com/@ContextLogic%2fzeus/-/zeus-0.0.1-1626803153.tgz#7ee1504beb911a0604efaf2f66c78895a0c4b58a"

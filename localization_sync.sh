@@ -16,6 +16,7 @@ npm publish --registry https://npm.infra.wish.com --verbose --scope=@ContextLogi
 
 # bump package.json version
 cd $LEOPARD_HOME
+# TODO [lliepert]: is this correct for next js?
 npm install -g yarn@1.7.0
 yarn add "@ContextLogic/leopardstrings@${BUILD_NUMBER}"
 

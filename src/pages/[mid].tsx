@@ -114,7 +114,7 @@ const MerchantStorefront: NextPage<StorefrontState> = (
       <ProductFeed
         key={`allProducts`}
         productsReq={() => fetchAllProducts({ mid: props.mid })}
-        name={i18n("All Products")}
+        name={i18n("All products")}
         style={styles.upperMargin}
         viewAllLink={`${WISH_URL}/merchant/${props.mid}`}
       />
