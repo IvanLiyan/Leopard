@@ -1,5 +1,4 @@
 import { createContext, useContext } from "react";
-import { useRouter } from "next/router";
 import { Jed } from "jed";
 import { BaseProps } from "@toolkit/types";
 
@@ -70,64 +69,60 @@ const polishJedConfig: (_: unknown) => Record<string, unknown> = (
   return polishedJedConfiguration as Record<string, unknown>;
 };
 
-/*******************************************************************************
- * IMPORTANT: be sure to update the supported locales in next.config.js if
- *            changing the below object
- ******************************************************************************/
 const localeToJedConfig = {
   HC: polishJedConfig(hcJedConfig),
   UP: {},
-  "en-US": {},
-  "es-419": polishJedConfig(esJedConfig),
-  "pt-BR": polishJedConfig(ptJedConfig),
-  "fr-FR": polishJedConfig(frJedConfig),
-  "it-IT": polishJedConfig(itJedConfig),
-  "ja-JP": polishJedConfig(jaJedConfig),
-  "ko-KR": polishJedConfig(koJedConfig),
-  "de-DE": polishJedConfig(deJedConfig),
-  "zh-CN": polishJedConfig(zhJedConfig),
-  "tr-TR": polishJedConfig(trJedConfig),
-  "ru-RU": polishJedConfig(ruJedConfig),
-  "th-TH": polishJedConfig(thJedConfig),
-  "vi-VN": polishJedConfig(viJedConfig),
-  "da-DK": polishJedConfig(daJedConfig),
-  "id-ID": polishJedConfig(idJedConfig),
-  "sv-SE": polishJedConfig(svJedConfig),
-  "nb-NO": polishJedConfig(nbJedConfig),
-  "nl-NL": polishJedConfig(nlJedConfig),
-  "fi-FI": polishJedConfig(fiJedConfig),
-  "el-GR": polishJedConfig(elJedConfig),
-  "pl-PL": polishJedConfig(plJedConfig),
-  "ro-RO": polishJedConfig(roJedConfig),
-  "hu-HU": polishJedConfig(huJedConfig),
-  "be-BY": polishJedConfig(beJedConfig),
-  "cs-CZ": polishJedConfig(csJedConfig),
-  "sk-SK": polishJedConfig(skJedConfig),
-  "sl-SI": polishJedConfig(slJedConfig),
-  "lt-LT": polishJedConfig(ltJedConfig),
-  "et-EE": polishJedConfig(etJedConfig),
-  "lv-LV": polishJedConfig(lvJedConfig),
-  "ar-SA": polishJedConfig(arJedConfig),
-  "hr-HR": polishJedConfig(hrJedConfig),
-  "hi-IN": polishJedConfig(hiJedConfig),
-  "sq-AL": polishJedConfig(sqJedConfig),
-  "bs-BA": polishJedConfig(bsJedConfig),
-  "bg-BG": polishJedConfig(bgJedConfig),
-  "sr-RS": polishJedConfig(srJedConfig),
-  "uk-UA": polishJedConfig(ukJedConfig),
-  "km-KH": polishJedConfig(kmJedConfig),
-  "az-AZ": polishJedConfig(azJedConfig),
-  "ms-MY": polishJedConfig(msJedConfig),
-  "tl-PH": polishJedConfig(tlJedConfig),
-  "kk-KZ": polishJedConfig(kkJedConfig),
-  "zh-TW": polishJedConfig(zhJedConfig),
+  en: {},
+  es: polishJedConfig(esJedConfig),
+  pt: polishJedConfig(ptJedConfig),
+  fr: polishJedConfig(frJedConfig),
+  it: polishJedConfig(itJedConfig),
+  ja: polishJedConfig(jaJedConfig),
+  ko: polishJedConfig(koJedConfig),
+  de: polishJedConfig(deJedConfig),
+  zh: polishJedConfig(zhJedConfig),
+  tr: polishJedConfig(trJedConfig),
+  ru: polishJedConfig(ruJedConfig),
+  th: polishJedConfig(thJedConfig),
+  vi: polishJedConfig(viJedConfig),
+  da: polishJedConfig(daJedConfig),
+  id: polishJedConfig(idJedConfig),
+  sv: polishJedConfig(svJedConfig),
+  nb: polishJedConfig(nbJedConfig),
+  nl: polishJedConfig(nlJedConfig),
+  fi: polishJedConfig(fiJedConfig),
+  el: polishJedConfig(elJedConfig),
+  pl: polishJedConfig(plJedConfig),
+  ro: polishJedConfig(roJedConfig),
+  hu: polishJedConfig(huJedConfig),
+  be: polishJedConfig(beJedConfig),
+  cs: polishJedConfig(csJedConfig),
+  sk: polishJedConfig(skJedConfig),
+  sl: polishJedConfig(slJedConfig),
+  lt: polishJedConfig(ltJedConfig),
+  et: polishJedConfig(etJedConfig),
+  lv: polishJedConfig(lvJedConfig),
+  ar: polishJedConfig(arJedConfig),
+  hr: polishJedConfig(hrJedConfig),
+  hi: polishJedConfig(hiJedConfig),
+  sq: polishJedConfig(sqJedConfig),
+  bs: polishJedConfig(bsJedConfig),
+  bg: polishJedConfig(bgJedConfig),
+  sr: polishJedConfig(srJedConfig),
+  uk: polishJedConfig(ukJedConfig),
+  km: polishJedConfig(kmJedConfig),
+  az: polishJedConfig(azJedConfig),
+  ms: polishJedConfig(msJedConfig),
+  tl: polishJedConfig(tlJedConfig),
+  kk: polishJedConfig(kkJedConfig),
 };
-/*******************************************************************************
- * IMPORTANT: be sure to update the supported locales in next.config.js if
- *            changing the above object
- ******************************************************************************/
 
 type Locale = keyof typeof localeToJedConfig;
+
+const validLocales: ReadonlyArray<string> = Object.keys(localeToJedConfig);
+
+const isValidLocale = (locale: string): boolean =>
+  validLocales.includes(locale);
 
 type LocalizationState = {
   readonly locale: Locale;
@@ -135,7 +130,7 @@ type LocalizationState = {
 };
 
 const defaultLocalizationState: LocalizationState = {
-  locale: "en-US",
+  locale: "en",
   // this and following disables required since jed does not have types
   // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   jed: new Jed({}),
@@ -144,22 +139,15 @@ const defaultLocalizationState: LocalizationState = {
 const LocalizationContext = createContext(defaultLocalizationState);
 
 type LocalizationProviderProps = Pick<BaseProps, "children"> & {
-  readonly locale?: Locale;
+  readonly locale?: string;
 };
 
 export const LocalizationProvider: React.FC<LocalizationProviderProps> = ({
   locale: localeProp,
   children,
 }: LocalizationProviderProps) => {
-  const { locales } = useRouter();
-
   const locale: Locale =
-    localeProp ||
-    (locales?.find((locale) =>
-      Object.keys(localeToJedConfig).includes(locale),
-    ) as Locale) ||
-    "en-US";
-
+    localeProp && isValidLocale(localeProp) ? (localeProp as Locale) : "en";
   const jedConfig = localeToJedConfig[locale];
 
   const jed: unknown =

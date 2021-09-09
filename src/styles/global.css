@@ -18,45 +18,103 @@ a {
   font-family: Proxima-Regular;
   src: url("//d2ujdsqe3ri19m.cloudfront.net/latest/assets/fonts/proximanova-regular")
     format("opentype");
+  unicode-range: U+0000-00FF, U+20AC;
 }
 @font-face {
   font-family: Proxima-Regular;
   font-style: italic;
   src: url("//d2ujdsqe3ri19m.cloudfront.net/latest/assets/fonts/proximanova-regularit")
     format("opentype");
+  unicode-range: U+0000-00FF, U+20AC;
 }
 @font-face {
   font-family: Proxima-Medium;
   src: url("//d2ujdsqe3ri19m.cloudfront.net/latest/assets/fonts/proximanova-medium")
     format("opentype");
+  unicode-range: U+0000-00FF, U+20AC;
 }
 @font-face {
   font-family: Proxima-Medium;
   font-style: italic;
   src: url("//d2ujdsqe3ri19m.cloudfront.net/latest/assets/fonts/proximanova-mediumit")
     format("opentype");
+  unicode-range: U+0000-00FF, U+20AC;
 }
 @font-face {
   font-family: Proxima-Semibold;
   src: url("//d2ujdsqe3ri19m.cloudfront.net/latest/assets/fonts/proximanova-semibold")
     format("opentype");
+  unicode-range: U+0000-00FF, U+20AC;
 }
 @font-face {
   font-family: Proxima-Semibold;
   font-style: italic;
   src: url("//d2ujdsqe3ri19m.cloudfront.net/latest/assets/fonts/proximanova-semiboldit")
     format("opentype");
+  unicode-range: U+0000-00FF, U+20AC;
 }
 @font-face {
   font-family: Proxima-Bold;
   src: url("//d2ujdsqe3ri19m.cloudfront.net/latest/assets/fonts/proximanova-bold")
     format("opentype");
+  unicode-range: U+0000-00FF, U+20AC;
 }
 @font-face {
   font-family: Proxima-Bold;
   font-style: italic;
   src: url("//d2ujdsqe3ri19m.cloudfront.net/latest/assets/fonts/proximanova-boldit")
     format("opentype");
+  unicode-range: U+0000-00FF, U+20AC;
 }
-
-/* TODO [lliepert]: update fonts (https://jira.wish.site/browse/MKL-38316) */
+@font-face {
+  font-family: Proxima-Regular;
+  src: url("//d2ujdsqe3ri19m.cloudfront.net/latest/assets/fonts/proximanova-regular.extended-a.woff2")
+    format("woff2");
+  unicode-range: U+0100-017F;
+}
+@font-face {
+  font-family: Proxima-Regular;
+  font-style: italic;
+  src: url("//d2ujdsqe3ri19m.cloudfront.net/latest/assets/fonts/proximanova-regular-italic.extended-a.woff2")
+    format("woff2");
+  unicode-range: U+0100-017F;
+}
+@font-face {
+  font-family: Proxima-Medium;
+  src: url("//d2ujdsqe3ri19m.cloudfront.net/latest/assets/fonts/proximanova-medium.extended-a.woff2")
+    format("woff2");
+  unicode-range: U+0100-017F;
+}
+@font-face {
+  font-family: Proxima-Medium;
+  font-style: italic;
+  src: url("//d2ujdsqe3ri19m.cloudfront.net/latest/assets/fonts/proximanova-medium-italic.extended-a.woff2")
+    format("woff2");
+  unicode-range: U+0100-017F;
+}
+@font-face {
+  font-family: Proxima-Semibold;
+  src: url("//d2ujdsqe3ri19m.cloudfront.net/latest/assets/fonts/proximanova-semibold.extended-a.woff2")
+    format("woff2");
+  unicode-range: U+0100-017F;
+}
+@font-face {
+  font-family: Proxima-Semibold;
+  font-style: italic;
+  src: url("//d2ujdsqe3ri19m.cloudfront.net/latest/assets/fonts/proximanova-semibold-italic.extended-a.woff2")
+    format("woff2");
+  unicode-range: U+0100-017F;
+}
+@font-face {
+  font-family: Proxima-Bold;
+  src: url("//d2ujdsqe3ri19m.cloudfront.net/latest/assets/fonts/proximanova-bold.extended-a.woff2")
+    format("woff2");
+  unicode-range: U+0100-017F;
+}
+@font-face {
+  font-family: Proxima-Bold;
+  font-style: italic;
+  src: url("//d2ujdsqe3ri19m.cloudfront.net/latest/assets/fonts/proximanova-bold-italic.extended-a.woff2")
+    format("woff2");
+  unicode-range: U+0100-017F;
+}
