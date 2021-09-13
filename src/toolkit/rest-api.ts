@@ -13,6 +13,7 @@ import axios, { AxiosResponse } from "axios";
 import qs from "qs";
 import retry from "async-retry";
 
+import { WISH_URL } from "@toolkit/context/constants";
 import { Product } from "@riptide/components/productFeed/ProductCard";
 
 const COUNT = 20;
@@ -32,11 +33,11 @@ const fetchWishAPI = async ({
     async () => {
       // see https://github.com/ContextLogic/web/blob/96d1c2fb7704fb1a225f75759213af87d33ae496/cozy/utils/InternalCall.tsx#L58
       return await axios({
-        method: "post",
+        method: "POST",
         url,
         data: qs.stringify({ ...body }, { arrayFormat: "brackets" }),
-        xsrfCookieName: "_xsrf", // default
-        xsrfHeaderName: "X-XSRFToken", // default
+        xsrfCookieName: "_xsrf",
+        xsrfHeaderName: "X-XSRFToken",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
         },
@@ -60,7 +61,7 @@ export const fetchAllProducts = async ({
   // see https://github.com/ContextLogic/clroot/blob/master/sweeper/api/merchant.py#L24
   try {
     const resp = await fetchWishAPI({
-      url: `${process.env.NEXT_PUBLIC_WISH_URL}/api/merchant`,
+      url: `${WISH_URL}/api/merchant`,
       body: { query: mid, count: COUNT },
     });
 
@@ -96,7 +97,7 @@ export const fetchProductFeed = async ({
   // see https://github.com/ContextLogic/clroot/blob/master/sweeper/api/collection_tiles.py#L29
   try {
     const resp = await fetchWishAPI({
-      url: `${process.env.NEXT_PUBLIC_WISH_URL}/api/collection/get-products`,
+      url: `${WISH_URL}/api/collection/get-products`,
       body: { collection_id: fid, count: COUNT },
     });
 

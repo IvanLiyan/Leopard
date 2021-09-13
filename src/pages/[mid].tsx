@@ -6,9 +6,10 @@ import {
   NextPage,
 } from "next";
 import Head from "next/head";
+import axios from "axios";
 import * as Sentry from "@sentry/nextjs";
 import { StyleSheet } from "aphrodite";
-import client from "@toolkit/apollo-client";
+import { createClient } from "@toolkit/apollo-client";
 import {
   STOREFRONT_DATA_QUERY,
   StorefrontDataParams,
@@ -20,7 +21,7 @@ import {
   StorefrontStateProvider,
 } from "@toolkit/context/storefront-state";
 import { useLocalization } from "@toolkit/context/localization";
-import { WISH_URL } from "@toolkit/context/constants";
+import { MD_URL, WISH_URL } from "@toolkit/context/constants";
 
 import PageContainer from "@riptide/components/core/PageContainer";
 import StoreInfoSection from "@riptide/components/storeInfo/StoreInfoSection";
@@ -38,6 +39,26 @@ export const getStaticProps: GetStaticProps<StorefrontState> = async ({
       notFound: true,
     };
   }
+
+  // the following is used to set the _xsrf token
+  // if further gql queries are required, a better method will be required
+  const req = await axios({
+    method: "GET",
+    url: MD_URL,
+    headers: { Authorization: process.env.STAGING_AUTH_HEADER },
+    xsrfCookieName: "_xsrf",
+    xsrfHeaderName: "X-XSRFToken",
+    withCredentials: true,
+  });
+
+  // AxiosResponse types header as any
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+  const xsrfToken = req?.headers["set-cookie"]
+    ?.find((cookie: string) => cookie.substr(0, 5) == "_xsrf")
+    .split(";")[0]
+    .split("=")[1];
+
+  const client = createClient(xsrfToken);
 
   const { data, error, errors } = await client.query<
     StorefrontDataResponse,
