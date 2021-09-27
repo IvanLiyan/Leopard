@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="none" viewBox="0 0 64 64">
+    <mask id="prefix__a" width="64" height="64" x="0" y="0" maskUnits="userSpaceOnUse">
+        <path fill="#fff" d="M32 64c17.673 0 32-14.327 32-32C64 14.327 49.673 0 32 0 14.327 0 0 14.327 0 32c0 17.673 14.327 32 32 32z"/>
+    </mask>
+    <g mask="url(#prefix__a)">
+        <path fill="#92F1D3" fill-opacity=".2" d="M32 64c17.673 0 32-14.327 32-32C64 14.327 49.673 0 32 0 14.327 0 0 14.327 0 32c0 17.673 14.327 32 32 32z"/>
+        <path fill="url(#prefix__paint0_linear)" d="M30.238 65C49.437 65 65 49.486 65 30.345 65 17.725 58.234 6.68 48.123.619 47.767.41 47.408.202 47.047 0L14 60.996c5.01 2.639 10.582 4.013 16.236 4.004h.002z"/>
+    </g>
+    <path fill="#2EE3AA" d="M32 52c11.046 0 20-8.954 20-20s-8.954-20-20-20-20 8.954-20 20 8.954 20 20 20z"/>
+    <path fill="#fff" d="M29.72 35.275l9.369-9.823c.574-.603 1.507-.603 2.082 0 .574.602.574 1.579 0 2.182L30.759 38.548c-.574.602-1.506.602-2.082 0L22.431 32c-.277-.296-.431-.686-.431-1.091 0-.406.154-.796.431-1.092.575-.602 1.507-.602 2.082 0l5.206 5.458z"/>
+    <defs>
+        <linearGradient id="prefix__paint0_linear" x1="47.86" x2="21.09" y1="4.377" y2="58.087" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#92F1D3" stop-opacity=".1"/>
+            <stop offset="1" stop-color="#92F1D3" stop-opacity=".4"/>
+        </linearGradient>
+    </defs>
+</svg>

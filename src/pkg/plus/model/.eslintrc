@@ -1,0 +1,7 @@
+{
+  "rules": {
+    "filenames/match-exported": "warn",
+    "no-restricted-globals": ["off"],
+    "filenames/match-regex": ["warn", "^[A-Za-z]+[A-Za-z\\d]+$", true]
+  }
+}

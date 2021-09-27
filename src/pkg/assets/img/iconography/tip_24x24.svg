@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.3 (57544) - http://www.bohemiancoding.com/sketch -->
+    <title>Tip / 24x24 / black</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Tip-/-24x24-/-black" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path d="M10,15.6585886 L10,17 L14,17 L14,15.6585886 C16.3303847,14.8349158 18,12.6124377 18,10 C18,6.6862915 15.3137085,4 12,4 C8.6862915,4 6,6.6862915 6,10 C6,12.6124377 7.66961525,14.8349158 10,15.6585886 Z M8,16.9297424 C5.60879452,15.5465048 4,12.9611294 4,10 C4,5.581722 7.581722,2 12,2 C16.418278,2 20,5.581722 20,10 C20,12.9611294 18.3912055,15.5465048 16,16.9297424 L16,19 L8,19 L8,16.9297424 Z" id="Combined-Shape" fill="#000000" fill-rule="nonzero"></path>
+        <path d="M8,20 L16,20 L16,21 C16,21.5522847 15.5522847,22 15,22 L9,22 C8.44771525,22 8,21.5522847 8,21 L8,20 Z" id="Rectangle" fill="#000000" fill-rule="nonzero"></path>
+    </g>
+</svg>

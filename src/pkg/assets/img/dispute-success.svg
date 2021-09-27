@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="40" height="40" viewBox="0 0 40 40">
+    <defs>
+        <path id="a" d="M0 0h40v40H0z"/>
+        <circle id="c" cx="21" cy="22" r="16"/>
+        <path id="d" d="M21 39.993c4.502 0 12 .5 12-6.997 0-4.999-4-9.33-12-12.996-8 3.665-12 7.997-12 12.996 0 7.497 7.498 6.997 12 6.997z"/>
+        <path id="e" d="M16 17.296l2.522.608a.5.5 0 0 0 .321-.03l1.748-.783a1 1 0 0 1 .818 0l1.748.783a.5.5 0 0 0 .322.03L26 17.296C26 21.444 23.5 23 21 23s-5.02-1.556-5-5.704z"/>
+        <path id="f" d="M4 3.85c0 .83-.55 1.403-1.554 1.521V6h-.774v-.629C.934 5.301.397 5.039 0 4.659l.634-.892c.335.332.85.609 1.484.609.412 0 .662-.173.662-.394 0-.263-.3-.367-.794-.47-.766-.153-1.84-.346-1.84-1.438C.146 1.376.69.76 1.672.65V0h.774v.657c.557.069 1.052.283 1.443.615l-.656.85a2.17 2.17 0 0 0-1.31-.477c-.397 0-.55.16-.55.36 0 .242.286.324.801.421C2.941 2.586 4 2.806 4 3.85z"/>
+        <path id="g" d="M8 6.35c0 .83-.55 1.403-1.554 1.521V8.5h-.774v-.629c-.738-.07-1.275-.332-1.672-.712l.634-.892c.335.332.85.609 1.484.609.412 0 .662-.173.662-.394 0-.263-.3-.367-.794-.47-.766-.153-1.84-.346-1.84-1.438 0-.698.544-1.314 1.526-1.424V2.5h.774v.657c.557.069 1.052.283 1.443.615l-.656.85a2.17 2.17 0 0 0-1.31-.477c-.397 0-.55.16-.55.36 0 .242.286.324.801.421C6.941 5.086 8 5.306 8 6.35z"/>
+        <path id="h" d="M8 6.35c0 .83-.55 1.403-1.554 1.521V8.5h-.774v-.629c-.738-.07-1.275-.332-1.672-.712l.634-.892c.335.332.85.609 1.484.609.412 0 .662-.173.662-.394 0-.263-.3-.367-.794-.47-.766-.153-1.84-.346-1.84-1.438 0-.698.544-1.314 1.526-1.424V2.5h.774v.657c.557.069 1.052.283 1.443.615l-.656.85a2.17 2.17 0 0 0-1.31-.477c-.397 0-.55.16-.55.36 0 .242.286.324.801.421C6.941 5.086 8 5.306 8 6.35z"/>
+    </defs>
+    <g fill="none" fill-rule="evenodd">
+        <mask id="b" fill="#fff">
+            <use xlink:href="#a"/>
+        </mask>
+        <use fill="#FF5353" fill-opacity="0" fill-rule="nonzero" xlink:href="#a"/>
+        <g mask="url(#b)">
+            <g transform="translate(-1 -2)">
+                <g fill-rule="nonzero">
+                    <use fill="#FFF" xlink:href="#c"/>
+                    <use fill="#2F88EC" fill-opacity=".3" xlink:href="#c"/>
+                </g>
+                <use fill="#FFF" xlink:href="#d"/>
+                <path fill="#42D46C" fill-opacity=".4" stroke="#2F88EC" stroke-linejoin="square" stroke-width="2" d="M21 21.102c-7.402 3.475-11 7.453-11 11.894 0 3.997 2.22 5.581 6.731 5.924.971.074 1.784.087 3.44.077a124.203 124.203 0 0 1 1.659 0c1.655.01 2.468-.003 3.439-.077C29.78 38.577 32 36.993 32 32.996c0-4.441-3.598-8.419-11-11.894z"/>
+                <use fill="#FFF" xlink:href="#e"/>
+                <path fill="#2F88EC" stroke="#2F88EC" stroke-linejoin="square" stroke-width="1.5" d="M16.799 18.26c.296 2.652 1.917 3.99 4.201 3.99 2.277 0 3.889-1.334 4.197-3.989l-1.543.372a1.25 1.25 0 0 1-.804-.074l-1.748-.784a.25.25 0 0 0-.204 0l-1.748.784a1.25 1.25 0 0 1-.804.074l-1.547-.373z"/>
+                <g transform="translate(15 25)">
+                    <ellipse cx="6" cy="5.5" fill="#FFF" rx="6" ry="5.5"/>
+                    <use fill="#42D46C" transform="translate(4 2.5)" xlink:href="#f"/>
+                </g>
+                <path fill="#FED428" stroke="#FFF" stroke-linecap="round" stroke-linejoin="round" d="M32.302 25.698L34.472 27l-2.17 1.302L31 30.472l-1.302-2.17L27.528 27l2.17-1.302L31 23.528l1.302 2.17zM38.302 20.198l2.17 1.302-2.17 1.302L37 24.972l-1.302-2.17-2.17-1.302 2.17-1.302L37 18.028l1.302 2.17z"/>
+                <g transform="rotate(30 14.067 56.23)">
+                    <g stroke-linejoin="square">
+                        <ellipse cx="6" cy="5.5" fill="#FFF" stroke="#FFF" rx="5.5" ry="5"/>
+                        <ellipse cx="6" cy="5.5" stroke="#42D46C" stroke-opacity=".4" rx="5.5" ry="5"/>
+                    </g>
+                    <use fill="#42D46C" xlink:href="#g"/>
+                </g>
+                <path stroke="#2F88EC" stroke-linecap="round" stroke-linejoin="round" d="M24.571 11c-2.824.901-2.565 4.584-2.565 4.584M17 11c2.824.901 2.565 4.584 2.565 4.584"/>
+                <g stroke-linejoin="square">
+                    <circle cx="15" cy="8" r="2.5" fill="#FFF" stroke="#FFF"/>
+                    <circle cx="15" cy="8" r="2.5" stroke="#42D46C" stroke-opacity=".4"/>
+                </g>
+                <g transform="rotate(-30 15.37 4.118)">
+                    <g stroke-linejoin="square">
+                        <ellipse cx="6" cy="5.5" fill="#FFF" stroke="#FFF" rx="5.5" ry="5"/>
+                        <ellipse cx="6" cy="5.5" stroke="#42D46C" stroke-opacity=".4" rx="5.5" ry="5"/>
+                    </g>
+                    <use fill="#42D46C" xlink:href="#h"/>
+                </g>
+                <rect width="2" height="2" x="9" y="16" fill="#42D46C" fill-opacity=".8" fill-rule="nonzero" rx="1" transform="matrix(-1 0 0 1 20 0)"/>
+                <rect width="24" height="2" x="9" y="38" fill="#2F88EC" fill-opacity=".4" fill-rule="nonzero" rx="1"/>
+                <rect width="4" height="2" x="34" y="38" fill="#2F88EC" fill-opacity=".4" fill-rule="nonzero" rx="1"/>
+                <rect width="2" height="2" x="6" y="38" fill="#2F88EC" fill-opacity=".4" fill-rule="nonzero" rx="1"/>
+            </g>
+        </g>
+    </g>
+</svg>

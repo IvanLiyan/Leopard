@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="56" height="56" viewBox="0 0 56 56">
+    <defs>
+        <circle id="a" cx="28" cy="28" r="28"/>
+        <linearGradient id="b" x1="50%" x2="50%" y1="0%" y2="100%">
+            <stop offset="0%" stop-color="#FFA39E" stop-opacity=".4"/>
+            <stop offset="100%" stop-color="#FFA39E" stop-opacity="0"/>
+        </linearGradient>
+        <linearGradient id="d" x1="0%" y1="74.913%" y2="25.087%">
+            <stop offset="0%" stop-color="#FFF" stop-opacity=".8"/>
+            <stop offset="100%" stop-color="#EEF2F5"/>
+        </linearGradient>
+        <linearGradient id="e" x1="0%" y1="37.5%" y2="62.5%">
+            <stop offset="0%" stop-color="#FFA39E" stop-opacity=".4"/>
+            <stop offset="100%" stop-color="#E14D4C"/>
+        </linearGradient>
+        <path id="f" d="M0 10V0h4v10H0zm0 3a2 2 0 1 1 4 0 2 2 0 1 1-4 0z"/>
+    </defs>
+    <g fill="none" fill-rule="evenodd">
+        <mask id="c" fill="#fff">
+            <use xlink:href="#a"/>
+        </mask>
+        <use fill="#FFF" xlink:href="#a"/>
+        <use fill="#FFA39E" fill-opacity=".4" xlink:href="#a"/>
+        <circle cx="28" cy="28" r="16" fill="url(#b)" mask="url(#c)"/>
+        <g mask="url(#c)">
+            <path fill="#FFF" d="M29 32h18v12H29z"/>
+            <path fill="#EEF2F5" d="M9 32h20v12H9z"/>
+            <path fill="url(#d)" d="M3 6h17v12H8z" transform="translate(9 26)"/>
+            <path fill="#AFC7D1" d="M12 35h2v4h-2zM16 35h2v4h-2zM24 35h2v4h-2zM20 35h2v4h-2z"/>
+            <path fill="#FFF" d="M38 26l9 6H29z"/>
+            <path fill="#AFC7D1" d="M18 26h20l-9 6.001L9 32z"/>
+            <path fill="#E14D4C" d="M33 40h10v4H33z"/>
+            <path fill="url(#e)" d="M26 14h8v4h-8z" transform="translate(9 26)"/>
+        </g>
+        <g fill-rule="nonzero" mask="url(#c)">
+            <g transform="translate(26 9)">
+                <use fill="#FFF" xlink:href="#f"/>
+                <use fill="#E14D4C" fill-opacity=".9" xlink:href="#f"/>
+            </g>
+        </g>
+        <path fill="#AFC7D1" fill-opacity=".4" d="M38 34a2 2 0 1 1 0-4 2 2 0 0 1 0 4z" mask="url(#c)"/>
+    </g>
+</svg>

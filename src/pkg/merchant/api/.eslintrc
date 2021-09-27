@@ -1,0 +1,8 @@
+{
+  "rules": {
+    "filenames/match-exported": "warn",
+    "filenames/match-regex": ["warn", "^[a-z\\d\\-]+$", true],
+    "local-rules/prefer-readonly-array": "error",
+    "babel/camelcase": "off"
+  }
+}

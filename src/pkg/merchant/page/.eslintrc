@@ -1,0 +1,9 @@
+{
+  "rules": {
+    "local-rules/no-pageParams": "off",
+    "local-rules/validate-root": "off",
+    "filenames/match-exported": "off",
+    "local-rules/no-internal-import": "off",
+    "filenames/match-regex": ["warn", "^[a-z_]+_page$", true]
+  }
+}

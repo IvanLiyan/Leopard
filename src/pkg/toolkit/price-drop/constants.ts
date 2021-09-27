@@ -1,0 +1,20 @@
+//
+//  toolkit/price-drop/constants
+//  Project-Lego
+//
+//  Created by Yuqing He on 12/16/19.
+//  Copyright © 2019-present ContextLogic Inc. All rights reserved.
+//
+
+export const PriceDropConstants = {
+  V1_CAMPAIGN_AUTO_RENEW_DAYS: 28,
+  V2_CAMPAIGN_AUTO_RENEW_DAYS: 7,
+  CREATE_BY_MERCHANT_IMPRESSION_BOOSTER_DURATION: 7,
+  CREATE_CAMPAIGN_DELAY_DAYS: 2,
+  DEFAULT_MIN_DROP_PERCENTAGE: 5,
+  DEFAULT_MAX_DROP_PERCENTAGE: 100,
+  DEFAULT_DROP_PERCENTAGE: 20,
+  PREFILTER_MIN_RATING_COUNT: 10,
+  PREFILTER_MIN_AVERAGE_RATING: 3.17,
+  PREFILTER_MIN_SALE_COUNT: 1,
+};

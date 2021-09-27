@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="160" height="96" viewBox="0 0 160 96">
+    <defs>
+        <path id="a" d="M0 0h160v96H0z"/>
+        <linearGradient id="c" x1="0%" y1="0%" y2="100%">
+            <stop offset="0%" stop-color="#D6E2EB"/>
+            <stop offset="100%" stop-color="#EEF2F5" stop-opacity=".5"/>
+        </linearGradient>
+        <linearGradient id="d" x1="100%" x2="6.217%" y1="100%" y2="25.143%">
+            <stop offset="0%" stop-color="#CEF2FD"/>
+            <stop offset="100%" stop-color="#CEF2FD" stop-opacity="0"/>
+        </linearGradient>
+        <path id="e" d="M69.828 6.828l12.344 12.344A4 4 0 0 1 79.343 26H63V9.657a4 4 0 0 1 6.828-2.829z"/>
+        <linearGradient id="f" x1="0%" y1="0%" y2="100%">
+            <stop offset="0%" stop-color="#D6E2EB"/>
+            <stop offset="100%" stop-color="#EEF2F5" stop-opacity="0"/>
+        </linearGradient>
+    </defs>
+    <g fill="none" fill-rule="evenodd">
+        <mask id="b" fill="#fff">
+            <use xlink:href="#a"/>
+        </mask>
+        <use fill="#D8D8D8" fill-opacity="0" fill-rule="nonzero" xlink:href="#a"/>
+        <g mask="url(#b)">
+            <g transform="translate(20 7)">
+                <path fill="url(#c)" d="M25 0h88v54L89 78H29a4 4 0 0 1-4-4V0z" transform="matrix(1 0 0 -1 0 78)"/>
+                <g transform="translate(16 8)">
+                    <path fill="#FFF" stroke="#2FB7EC" stroke-width="4" d="M2 72V4a2 2 0 0 1 2-2h59.172L86 24.828V72H2z"/>
+                    <path fill="url(#d)" d="M61 27h23v12H61z" style="mix-blend-mode:darken"/>
+                    <rect width="26" height="4" x="61" y="23" fill="#2FB7EC" fill-rule="nonzero" rx="2" transform="matrix(1 0 0 -1 0 50)"/>
+                    <rect width="4" height="26" x="61" y="1" fill="#2FB7EC" fill-rule="nonzero" rx="2" transform="matrix(1 0 0 -1 0 28)"/>
+                    <g fill-rule="nonzero" transform="translate(2)">
+                        <path fill="#FFF" d="M2 0h52v4H2z"/>
+                        <rect width="19" height="4" fill="#2FB7EC" rx="2"/>
+                        <rect width="6" height="4" x="22" fill="#2FB7EC" rx="2"/>
+                        <rect width="25" height="4" x="31" fill="#2FB7EC" rx="2"/>
+                    </g>
+                    <path fill="#2FB7EC" fill-rule="nonzero" d="M12 14h38a2 2 0 1 1 0 4H12a2 2 0 1 1 0-4zM12 24h38a2 2 0 1 1 0 4H12a2 2 0 1 1 0-4zM12 34h38a2 2 0 1 1 0 4H12a2 2 0 1 1 0-4z"/>
+                    <path fill="#CEF2FD" fill-rule="nonzero" d="M35 48h24a2 2 0 1 1 0 4H35a2 2 0 1 1 0-4zM35 56h12a2 2 0 1 1 0 4H35a2 2 0 1 1 0-4z"/>
+                    <g style="mix-blend-mode:darken">
+                        <use fill="#FFF" xlink:href="#e"/>
+                        <use fill="#8BDCFB" xlink:href="#e"/>
+                    </g>
+                </g>
+                <g transform="translate(0 78)">
+                    <path fill="#FFF" d="M0 0h120v4H0z"/>
+                    <rect width="120" height="4" fill="url(#f)" rx="2"/>
+                </g>
+                <rect width="6" height="6" x="117" y="46" fill="#2F88EC" fill-opacity=".12" rx="3"/>
+                <path fill="#FFC72C" fill-rule="nonzero" stroke="#FFF" stroke-width="2" d="M102 48l9.405 3.056 5.812 8v9.888l-5.812 8L102 80l-9.405-3.056-5.812-8v-9.888l5.812-8z"/>
+                <path fill="#FFF" fill-rule="nonzero" d="M101.547 70.448l-4.672 2.44a.977.977 0 0 1-1.316-.406.963.963 0 0 1-.097-.614l.978-5.672-4.146-4.017a.964.964 0 0 1-.017-1.369.976.976 0 0 1 .557-.282l5.73-.828 2.562-5.16a.977.977 0 0 1 1.748 0l2.562 5.16 5.73.828a.97.97 0 0 1 .54 1.651l-4.146 4.017.978 5.672a.969.969 0 0 1-.795 1.118.98.98 0 0 1-.618-.097l-4.672-2.441a.98.98 0 0 0-.906 0z"/>
+                <rect width="20" height="16" x="25" y="52" fill="#CEF2FD" fill-rule="nonzero" rx="2"/>
+            </g>
+        </g>
+    </g>
+</svg>

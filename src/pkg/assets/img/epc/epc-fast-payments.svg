@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+    <defs>
+        <linearGradient id="a" x1="0%" y1="0%" y2="100%">
+            <stop offset="0%" stop-color="#A5E15D"/>
+            <stop offset="100%" stop-color="#88C43F"/>
+        </linearGradient>
+        <linearGradient id="b" x1="50%" x2="50%" y1="0%" y2="100%">
+            <stop offset="0%" stop-color="#88C43F"/>
+            <stop offset="100%" stop-color="#4A8305" stop-opacity=".5"/>
+        </linearGradient>
+    </defs>
+    <g fill="none" fill-rule="evenodd">
+        <path fill="#FFF" d="M0 0h24v24H0z"/>
+        <path fill="#C2EF8A" fill-opacity=".6" d="M0 0h24v24H0z"/>
+        <circle cx="12" cy="12" r="8"/>
+        <circle cx="12" cy="12" r="8" fill="url(#a)"/>
+        <path fill="url(#b)" d="M6.343 17.657A8 8 0 0 1 17.657 6.343L6.343 17.657z"/>
+        <path fill="#FFF" fill-rule="nonzero" d="M15.81 11.092c-.045-.048-.134-.062-.203-.09-.007-.003-.016 0-.023 0H12.17c.01-.05.016-.084.024-.118.28-1.201.557-2.402.839-3.603.029-.122.01-.216-.114-.281h-.07c-.064.052-.141.095-.19.156-1.347 1.734-2.692 3.47-4.037 5.206-.174.224-.353.446-.517.676-.039.053-.06.148-.033.198.028.05.127.066.197.095.016.006.038 0 .057 0h3.385l-.164.653-.694 2.735c-.04.159-.016.21.13.28h.069c.06-.05.128-.096.176-.155 1.347-1.638 2.691-3.277 4.036-4.917l.515-.626c.054-.066.092-.146.031-.21z"/>
+    </g>
+</svg>

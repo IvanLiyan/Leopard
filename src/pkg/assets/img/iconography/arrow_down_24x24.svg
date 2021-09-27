@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.3 (57544) - http://www.bohemiancoding.com/sketch -->
+    <title>Arrow_down / 24x24 / black</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Arrow_down-/-24x24-/-black" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path d="M11,18.5661634 L11,3 C11,2.44771525 11.4477153,2 12,2 C12.5522847,2 13,2.44771525 13,3 L13,18.5661634 L21.2771519,10.295367 C21.6712772,9.90154432 22.3102806,9.90154432 22.704406,10.295367 C23.0985313,10.6891898 23.0985313,11.3277026 22.704406,11.7215253 L12.7136271,21.704633 C12.3195017,22.0984557 11.6804983,22.0984557 11.2863729,21.704633 L1.29559401,11.7215253 C0.901468664,11.3277026 0.901468664,10.6891898 1.29559401,10.295367 C1.68971935,9.90154432 2.3287228,9.90154432 2.72284814,10.295367 L11,18.5661634 Z" id="Combined-Shape" fill="#000000" fill-rule="nonzero"></path>
+    </g>
+</svg>

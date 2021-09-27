@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 55.2 (78181) - https://sketchapp.com -->
+    <title>Confirmed delivery / 24x24@1x</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Confirmed-delivery-/-24x24" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <circle id="Oval" fill="#CEF2FD" fill-rule="nonzero" cx="12" cy="12" r="12"></circle>
+        <rect id="Rectangle" stroke="#326BEE" stroke-width="2" fill="#FFFFFF" x="5" y="5" width="14" height="14" rx="2"></rect>
+        <rect id="Rectangle-path" fill="#326BEE" fill-rule="nonzero" x="15" y="3" width="2.00125" height="5"></rect>
+        <rect id="Rectangle-path" fill="#326BEE" fill-rule="nonzero" x="7" y="3" width="2.00125" height="5"></rect>
+        <rect id="Rectangle-path" fill="#326BEE" fill-rule="nonzero" x="11" y="3" width="2.00125" height="5"></rect>
+        <path d="M11.4009506,12.993945 L14.1413384,10.3108734 C14.5604093,9.90056753 15.2447942,9.89580336 15.6699548,10.3002324 C15.6732136,10.3033323 15.676452,10.3064521 15.6796697,10.3095917 C16.1063659,10.7259229 16.1068356,11.3959841 15.6807235,11.8128721 L11.4009506,16 L8.32005716,12.993945 C7.89331428,12.5775682 7.89331428,11.9072944 8.32005716,11.4909176 C8.74079761,11.0803974 9.42671587,11.0767657 9.85209849,11.4828059 C9.85491564,11.4854949 9.85771748,11.4881989 9.86050388,11.4909176 L11.4009506,12.993945 Z" id="Path" fill="#2EE3AA" fill-rule="nonzero"></path>
+    </g>
+</svg>

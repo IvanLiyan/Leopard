@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="40px" height="40px" viewBox="0 0 40 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 55.2 (78181) - https://sketchapp.com -->
+    <title>Award_outlined@1x</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="0%" y1="0%" x2="100%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#FFE380" offset="0%"></stop>
+            <stop stop-color="#FFC72C" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="37.5%" y1="0%" x2="62.5%" y2="100%" id="linearGradient-2">
+            <stop stop-color="#FFFFFF" stop-opacity="0.2" offset="0%"></stop>
+            <stop stop-color="#FFE380" stop-opacity="0.6" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="0%" y1="0%" x2="100%" y2="100%" id="linearGradient-3">
+            <stop stop-color="#F0B616" offset="0%"></stop>
+            <stop stop-color="#EF8D2E" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Award_outlined-/-40x40">
+            <rect id="Award_outlined" fill-opacity="0" fill="#D8D8D8" x="0" y="0" width="40" height="40"></rect>
+            <polygon id="Path-2" fill="#FFC72C" fill-rule="nonzero" points="15.1321234 24 10.8 30.5447917 14.5132486 30.2331349 16.0604356 33.9730159 19.7736842 26.8049107"></polygon>
+            <polygon id="Path-2-Copy" fill="#F0B616" fill-rule="nonzero" transform="translate(24.913158, 28.986508) scale(-1, 1) translate(-24.913158, -28.986508) " points="24.7584394 24 20.426316 30.5447917 24.1395646 30.2331349 25.6867516 33.9730159 29.4000002 26.8049107"></polygon>
+            <polygon id="Path" fill="url(#linearGradient-1)" fill-rule="nonzero" points="19.9954133 27.3582451 16.7932126 28.9969611 16.0525066 27.8515595 14.8399459 25.9764961 11.229602 25.7958668 11.1588961 24.3974834 11.0473456 22.1911901 8.00008639 20.2224389 8.64784294 18.9576895 9.65217921 16.9967247 8 13.7724202 9.18027864 13.0094763 11.0473626 11.8025748 11.2295709 8.19737568 12.5976695 8.12892826 14.8403164 8.01673029 16.7939367 5.00044554 17.9939902 5.61426692 19.9985971 6.63961666 23.2041349 5 23.9446939 6.14517449 25.1572424 8.02021905 28.7699579 8.20080858 28.8406376 9.5992854 28.9521638 11.8060641 32 13.7762159 31.3512689 15.0410285 30.3463878 17.0002107 31.9999137 20.2256295 30.8189514 20.988617 28.9521918 22.1946792 28.7699268 25.79942 27.4017976 25.867809 25.1572462 25.9800042 23.2042817 29 22.003477 28.3860964"></polygon>
+            <path d="M20,6.63869144 L20,27.3633941 L19.9954133,27.361046 L16.7932126,29 L16.0525066,27.854432 L14.8399459,25.9790964 L11.229602,25.7984409 L11.1588961,24.3998544 L11.0473456,22.1932408 L8,20.2242036 L8.64784294,18.9592706 L9.65217921,16.9980211 L8,13.7732484 L9.18027864,13.0101937 L11.0473626,11.803117 L11.2295709,8.19739435 L12.5976695,8.12893699 L14.8403164,8.01672273 L16.7939367,5 L17.9939902,5.61391051 L19.9985971,6.63940913 L20,6.63869144 Z" id="Combined-Shape" fill="url(#linearGradient-2)" fill-rule="nonzero"></path>
+            <circle id="Oval" fill="url(#linearGradient-3)" fill-rule="nonzero" cx="20.021052" cy="17.052381" r="6"></circle>
+            <polygon id="Star-2" fill="#FFFFFF" fill-rule="nonzero" points="20.021052 19.0274586 18.16695 20.052381 18.521052 17.8815606 17.021052 16.3441771 19.094001 16.0274586 20.021052 14.052381 20.948103 16.0274586 23.021052 16.3441771 21.521052 17.8815606 21.875154 20.052381"></polygon>
+        </g>
+    </g>
+</svg>

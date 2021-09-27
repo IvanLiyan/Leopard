@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.2 (57519) - http://www.bohemiancoding.com/sketch -->
+    <title>Oval 2</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M10.5128869,14.3385564 L17.2048957,7.32288724 C17.6155506,6.89237094 18.2813539,6.8923709 18.6920088,7.32288724 C19.1026637,7.75340358 19.1026637,8.45140852 18.6920088,8.88192483 L11.2564435,16.6771127 C10.8457885,17.1076291 10.1799853,17.1076291 9.7693304,16.6771127 L5.3079912,12 C4.89733627,11.5694837 4.89733627,10.8714787 5.3079912,10.4409624 C5.71864614,10.0104461 6.38444933,10.0104461 6.79510427,10.4409624 L10.5128869,14.3385564 Z" id="path-1"></path>
+    </defs>
+    <g id="Component-Library-Page" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Platform-Design-System_full-width-banners" transform="translate(-394.000000, -2438.000000)">
+            <g id="Group-4" transform="translate(394.000000, 2438.000000)">
+                <circle id="Oval-2" fill="#2EE3AA" fill-rule="nonzero" cx="12" cy="12" r="12"></circle>
+                <mask id="mask-2" fill="white">
+                    <use xlink:href="#path-1"></use>
+                </mask>
+                <use id="Checkmark_16x16-Copy-3" fill="#FFFFFF" fill-rule="nonzero" xlink:href="#path-1"></use>
+            </g>
+        </g>
+    </g>
+</svg>

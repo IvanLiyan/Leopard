@@ -1,0 +1,5 @@
+{
+    "rules": {
+      "local-rules/forgot-alignItems": "error",
+    }
+}

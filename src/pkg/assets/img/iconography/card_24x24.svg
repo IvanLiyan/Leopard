@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.3 (57544) - http://www.bohemiancoding.com/sketch -->
+    <title>Card_24x24</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Card_24x24" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group-2" transform="translate(0.000000, 2.000000)" fill="#000000" fill-rule="nonzero">
+            <path d="M2,2 L2,18 L22,18 L22,2 L2,2 Z M2,0 L22,0 C23.1045695,-2.16501571e-15 24,0.8954305 24,2 L24,18 C24,19.1045695 23.1045695,20 22,20 L2,20 C0.8954305,20 1.91162759e-15,19.1045695 1.77635684e-15,18 L1.77635684e-15,2 C1.64108609e-15,0.8954305 0.8954305,2.02906125e-16 2,0 Z" id="Rectangle-26"></path>
+            <rect id="Rectangle-26" x="0" y="4" width="24" height="4"></rect>
+            <path d="M9,14 L16,14 L16,16 L9,16 L9,14 Z M18,14 L20,14 L20,16 L18,16 L18,14 Z" id="Combined-Shape"></path>
+        </g>
+    </g>
+</svg>

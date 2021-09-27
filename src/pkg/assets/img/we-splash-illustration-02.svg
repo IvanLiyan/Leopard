@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="68" height="68" viewBox="0 0 68 68">
+    <defs>
+        <linearGradient id="b" x1="0%" y1="0%" y2="100%">
+            <stop offset="0%" stop-color="#E6F7FF"/>
+            <stop offset="100%" stop-color="#8BDCFB"/>
+        </linearGradient>
+        <circle id="a" cx="28" cy="28" r="28"/>
+        <path id="d" d="M0 0h12v12H0z"/>
+    </defs>
+    <g fill="none" fill-rule="evenodd">
+        <circle cx="34" cy="34" r="34" fill="#EEF2F5" fill-opacity=".5" fill-rule="nonzero"/>
+        <g transform="translate(6 6)">
+            <mask id="c" fill="#fff">
+                <use xlink:href="#a"/>
+            </mask>
+            <use fill="url(#b)" xlink:href="#a"/>
+            <g mask="url(#c)">
+                <path fill="#2FB7EC" d="M-4 14h64v32H-4z"/>
+                <path fill="#F8FAFB" d="M0 29h70v20H0z"/>
+                <g transform="translate(0 29)">
+                    <path fill="#FFF" d="M0 0h46v17H0z"/>
+                    <path fill="#2FB7EC" d="M6 16h40v4H6z"/>
+                    <rect width="18" height="6" x="20" y="5" fill="#AFC7D1" fill-opacity=".4" rx="1"/>
+                    <g transform="translate(6 2)">
+                        <mask id="e" fill="#fff">
+                            <use xlink:href="#d"/>
+                        </mask>
+                        <g mask="url(#e)">
+                            <path fill="#BC7633" fill-rule="nonzero" d="M11.996 7.614l.004.075v.61c0 .656-.53 1.19-1.175 1.19h-.128c-.347.564-.96.931-1.654.931a1.954 1.954 0 0 1-1.653-.932h-.884c-.346.565-.96.932-1.654.932a1.954 1.954 0 0 1-1.653-.932h-.045A1.185 1.185 0 0 1 1.98 8.3v-.561a1.041 1.041 0 0 1-.392-1.213 1.04 1.04 0 0 1-.67-1.32 1.038 1.038 0 0 1 .21-2.05h1.089c.218-.496.632-.856 1.219-.856h4.314a1.5 1.5 0 0 1 1.254.664l.063.065.417 1.345.589.05c.82.018 1.483.71 1.483 1.54v.793c.242.209.404.517.441.857z"/>
+                            <path fill="#FBBA7B" d="M10.855 5.963c0-.458-.372-.84-.817-.84l-1.084-.091-.507-1.635c-.015-.015-.015-.03-.03-.046A.802.802 0 0 0 7.75 3H3.435c-.416 0-.643.459-.688.856h-1.62a.334.334 0 0 0-.327.336c0 .183.149.336.327.336h1.597a.34.34 0 0 1 .283.336.334.334 0 0 1-.327.336h-.79a.334.334 0 0 0-.327.336c0 .183.148.336.326.336h1.45c.178 0 .327.152.327.336a.334.334 0 0 1-.327.336h-.762a.34.34 0 0 0-.352.336c0 .183.148.336.327.336h.484a.475.475 0 0 0-.357.473v.61c0 .26.208.49.475.49h.495c.149.534.639.931 1.203.931.58 0 1.054-.397 1.203-.932H7.84c.148.535.638.932 1.203.932.579 0 1.054-.397 1.203-.932h.579A.485.485 0 0 0 11.3 8.3v-.611c-.03-.275-.223-.489-.445-.504V5.963z"/>
+                        </g>
+                    </g>
+                </g>
+                <path fill="#0098D3" d="M-4 10h64v4H-4z"/>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="56" height="56" viewBox="0 0 56 56">
+    <defs>
+        <circle id="a" cx="28" cy="28" r="28"/>
+        <linearGradient id="b" x1="83.91%" x2="16.09%" y1="0%" y2="100%">
+            <stop offset="0%" stop-color="#F8FAFB"/>
+            <stop offset="100%" stop-color="#FFF"/>
+        </linearGradient>
+        <circle id="d" cx="10" cy="10" r="10"/>
+    </defs>
+    <g fill="none" fill-rule="evenodd">
+        <mask id="c" fill="#fff">
+            <use xlink:href="#a"/>
+        </mask>
+        <use fill="#FFF" xlink:href="#a"/>
+        <use fill="#AFC7D1" fill-opacity=".4" xlink:href="#a"/>
+        <path fill="url(#b)" fill-rule="nonzero" d="M16 11h21l5 5v27a2 2 0 0 1-2 2H16a2 2 0 0 1-2-2V13a2 2 0 0 1 2-2z" mask="url(#c)"/>
+        <g mask="url(#c)">
+            <g fill="#8BDCFB" fill-rule="nonzero" transform="translate(8 22)">
+                <rect width="16" height="3" rx="1.5"/>
+                <rect width="16" height="3" y="5" rx="1.5"/>
+                <path d="M1.5 10h13a1.5 1.5 0 0 1 0 3h-13a1.5 1.5 0 0 1 0-3z"/>
+            </g>
+            <g transform="translate(12 14)">
+                <circle cx="14" cy="14" r="12" fill="#FFF" stroke="#2F88EC" stroke-width="4"/>
+                <path fill="#2F88EC" fill-rule="nonzero" d="M23.536 21l6.717 6.718a2.5 2.5 0 1 1-3.536 3.536L20 24.535 23.536 21z"/>
+                <circle cx="14" cy="14" r="12" fill="#FFF" stroke="#2F88EC" stroke-width="4"/>
+                <g transform="translate(4 4)">
+                    <mask id="e" fill="#fff">
+                        <use xlink:href="#d"/>
+                    </mask>
+                    <use fill="#FFF" fill-opacity=".4" xlink:href="#d"/>
+                    <rect width="16" height="3" x="-3" y="4" fill="#CEF2FD" fill-rule="nonzero" mask="url(#e)" rx="1.5"/>
+                    <rect width="16" height="3" x="-3" y="9" fill="#CEF2FD" fill-rule="nonzero" mask="url(#e)" rx="1.5"/>
+                    <path fill="#CEF2FD" fill-rule="nonzero" d="M-1.5 14h7a1.5 1.5 0 0 1 0 3h-7a1.5 1.5 0 0 1 0-3z" mask="url(#e)"/>
+                </g>
+            </g>
+        </g>
+        <path fill="#AFC7D1" fill-opacity=".8" fill-rule="nonzero" d="M37 11h5v5z" mask="url(#c)" transform="rotate(180 39.5 13.5)"/>
+    </g>
+</svg>
