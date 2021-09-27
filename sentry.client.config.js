@@ -17,10 +17,7 @@ Sentry.init(
   true
     ? {}
     : {
-        dsn:
-          SENTRY_DSN ||
-          "https://346261e9302d40f091ea74b719183fba@sentry.infra.wish.com/280",
-        // Adjust this value in production, or use tracesSampler for greater control
+        dsn: SENTRY_DSN, // Adjust this value in production, or use tracesSampler for greater control
         tracesSampleRate: 1.0,
         environment: ENV,
         // ...
