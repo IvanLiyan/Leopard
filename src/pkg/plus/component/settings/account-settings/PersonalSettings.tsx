@@ -28,7 +28,7 @@ import SettingsRow from "@plus/component/settings/toolkit/SettingsRow";
 import ShippingAddress from "@plus/component/orders/fulfillment/ShippingAddress";
 import VerificationStatusLabel from "@plus/component/seller-verification/VerificationStatusLabel";
 
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* Relative Imports */
 import ChangePhoneNumberModal from "./modals/change-phone-number-modal/ChangePhoneNumberModal";
@@ -60,7 +60,7 @@ const KYCLabelText: { [status in KycProfileVerificationStatus]: string } = {
 };
 
 const PersonalSettings: React.FC<PersonalSettingsProps> = (
-  props: PersonalSettingsProps
+  props: PersonalSettingsProps,
 ) => {
   const { className, style, hasBottomBorder, initialData } = props;
   const styles = useStylesheet(props);
@@ -76,7 +76,7 @@ const PersonalSettings: React.FC<PersonalSettingsProps> = (
     },
   } = initialData;
   const [phoneNumber, setPhoneNumber] = useState<string | null | undefined>(
-    initialData.currentUser.phoneNumber
+    initialData.currentUser.phoneNumber,
   );
 
   const supportEmailLink = "mailto:merchant_support@wish.com";
@@ -153,7 +153,7 @@ const PersonalSettings: React.FC<PersonalSettingsProps> = (
     platformConstants: { interselectablePhoneCountries },
   } = initialData;
   const interselectablePhoneCountryCodes = interselectablePhoneCountries.map(
-    ({ code }) => code as CountryCode
+    ({ code }) => code as CountryCode,
   );
 
   return (
@@ -281,6 +281,6 @@ const useStylesheet = (props: PersonalSettingsProps) => {
           alignSelf: "flex-start",
         },
       }),
-    [textLight]
+    [textLight],
   );
 };

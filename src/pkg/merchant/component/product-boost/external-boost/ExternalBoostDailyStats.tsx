@@ -30,7 +30,7 @@ import {
 } from "@toolkit/product-boost/external-boost/external-boost";
 import { DatetimeInput, ExternalBoostChargingMethod } from "@schema/types";
 import DailyStatsChart from "./DailyStatsChart";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import DailyStatsFilter from "./DailyStatsFilter";
 import { useStringSetQueryParam } from "@toolkit/url";
 
@@ -54,9 +54,8 @@ const ExternalBoostDailyStats: React.FC<Props> = ({
 }: Props) => {
   const styles = useStylesheet();
 
-  const [excludedMetrics] = useStringSetQueryParam<DailyStatsLineType>(
-    "hidden-metrics"
-  );
+  const [excludedMetrics] =
+    useStringSetQueryParam<DailyStatsLineType>("hidden-metrics");
 
   const metrics = useMemo(() => {
     const includedMetrics = new Set(ChargingMethodDailyStats[chargingMethod]);
@@ -189,6 +188,6 @@ const useStylesheet = () => {
           margin: "0px 8px",
         },
       }),
-    [textDark]
+    [textDark],
   );
 };

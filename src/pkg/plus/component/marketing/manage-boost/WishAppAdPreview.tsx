@@ -22,7 +22,7 @@ import {
   StaggeredFadeIn,
 } from "@ContextLogic/lego";
 import { Illustration } from "@merchant/component/core";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import ProductImage from "@merchant/component/products/ProductImage";
 
 import BoostProductsState from "@plus/model/BoostProductsState";
@@ -159,6 +159,6 @@ const useStylesheet = () => {
           color: textUltralight,
         },
       }),
-    [textUltralight, borderPrimary, surfaceLight]
+    [textUltralight, borderPrimary, surfaceLight],
   );
 };

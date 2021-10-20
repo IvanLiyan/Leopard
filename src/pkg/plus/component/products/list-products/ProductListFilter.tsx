@@ -14,7 +14,7 @@ import { useStringEnumArrayQueryParam } from "@toolkit/url";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { CommerceProductStatus, WarehouseShippingType } from "@schema/types";
 
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 type Props = BaseProps & {
   readonly canManageShipping: boolean;
@@ -24,13 +24,11 @@ const ProductListFilter: React.FC<Props> = (props: Props) => {
   const { className, style, canManageShipping } = props;
   const styles = useStylesheet();
 
-  const [saleStatuses, setSaleStatuses] = useStringEnumArrayQueryParam(
-    "sales_status"
-  );
+  const [saleStatuses, setSaleStatuses] =
+    useStringEnumArrayQueryParam("sales_status");
 
-  const [shippingTypes, setShippingTypes] = useStringEnumArrayQueryParam<
-    WarehouseShippingType
-  >("shipping_type");
+  const [shippingTypes, setShippingTypes] =
+    useStringEnumArrayQueryParam<WarehouseShippingType>("shipping_type");
 
   const addSaleStatus = (status: CommerceProductStatus) => {
     if (saleStatuses.includes(status)) {
@@ -129,6 +127,6 @@ const useStylesheet = () => {
           margin: "5px 0px",
         },
       }),
-    [textDark]
+    [textDark],
   );
 };

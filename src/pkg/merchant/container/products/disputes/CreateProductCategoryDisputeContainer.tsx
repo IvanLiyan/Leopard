@@ -22,7 +22,7 @@ import WelcomeHeader from "@merchant/component/core/WelcomeHeader";
 import CreateProductCategoryDisputeSection from "@merchant/component/products/disputes/create/CreateProductCategoryDisputeSection";
 
 /* Merchant Stores */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* Model */
 import ProductCategoryDisputeState from "@merchant/model/products/ProductCategoryDisputeState";
@@ -47,7 +47,7 @@ const CreateProductCategoryDisputeContainer: React.FC<Props> = ({
         source:
           sourceQuery === "EU_COMPLIANCE" ? sourceQuery : "PRODUCT_CATELOG",
       }),
-    [productCatalog, sourceQuery]
+    [productCatalog, sourceQuery],
   );
 
   if (productCatalog == null) {
@@ -123,6 +123,6 @@ const useStylesheet = () => {
           marginTop: 32,
         },
       }),
-    [pageBackground]
+    [pageBackground],
   );
 };

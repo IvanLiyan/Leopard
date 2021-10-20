@@ -14,7 +14,7 @@ import { css } from "@toolkit/styling";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
 /* Merchant Stores */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import { useTaxStore } from "@merchant/stores/TaxStore";
 
 /* Merchant Components */
@@ -83,9 +83,9 @@ const EUTable: React.FC<EUTableProps> = ({
           lastUpdated: lastUpdated.unix,
           ustSt1T1Number,
           certificateFileUrl,
-        })
+        }),
       ),
-    [euCountriesSettings, styles.flag, styles.info]
+    [euCountriesSettings, styles.flag, styles.info],
   );
 
   const deData = _.find(data || [], { countryCode: "DE" });
@@ -197,6 +197,6 @@ const useStylesheet = () => {
           marginLeft: 6,
         },
       }),
-    [borderPrimary]
+    [borderPrimary],
   );
 };

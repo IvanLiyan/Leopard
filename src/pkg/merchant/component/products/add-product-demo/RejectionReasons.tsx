@@ -5,7 +5,7 @@ import { observer } from "mobx-react";
 import { ci18n } from "@legacy/core/i18n";
 import { css } from "@toolkit/styling";
 import { H5, Card, Text } from "@ContextLogic/lego";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import RejectionReasonList from "./RejectionReasonList";
 
@@ -26,7 +26,7 @@ const RejectionReasons: React.FC<Props> = ({ className, style }: Props) => {
           <RejectionReasonList
             title={ci18n(
               "Placed in front of video attribute. E.g 'Video is Blank', 'Video is Small or blurry'",
-              "Video is"
+              "Video is",
             )}
             list={[
               ci18n("Meaning blank or empty video", "Blank"),
@@ -40,13 +40,13 @@ const RejectionReasons: React.FC<Props> = ({ className, style }: Props) => {
           <RejectionReasonList
             title={ci18n(
               "Placed in front of video attribute. E.g 'Video has Nudity'",
-              "Video has"
+              "Video has",
             )}
             list={[
               i`Prominent non-English text`,
               ci18n(
                 "Short form for 'Video has a person talking to the camera'",
-                "Person talking to the camera"
+                "Person talking to the camera",
               ),
               i`Hateful symbols`,
               i`Obscenity or graphic content`,
@@ -60,7 +60,7 @@ const RejectionReasons: React.FC<Props> = ({ className, style }: Props) => {
           <RejectionReasonList
             title={ci18n(
               "Placed in front of video attribute. E.g 'Video does: Refer customer off platform'",
-              "Video does"
+              "Video does",
             )}
             list={[
               i`Refer customer off platform`,
@@ -105,6 +105,6 @@ const useStylesheet = () => {
           marginTop: 10,
         },
       }),
-    [borderPrimary]
+    [borderPrimary],
   );
 };

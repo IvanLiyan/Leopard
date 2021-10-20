@@ -8,11 +8,11 @@ import { css } from "@toolkit/styling";
 /* Lego Components */
 import { Card, Markdown, PrimaryButton } from "@ContextLogic/lego";
 
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import { SecureFileInput } from "@merchant/component/core";
 
 import StorePhotoSettingsState from "@plus/model/StorePhotoSettingsState";
-import { useToastStore } from "@merchant/stores/ToastStore";
+import { useToastStore } from "@stores/ToastStore";
 
 /* Type Imports */
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
@@ -108,6 +108,6 @@ const useStylesheet = () => {
           },
         },
       }),
-    [textBlack, textDark]
+    [textBlack, textDark],
   );
 };

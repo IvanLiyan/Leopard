@@ -10,7 +10,7 @@ import { css } from "@toolkit/styling";
 import * as fonts from "@toolkit/fonts";
 
 /* Merchant Store */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import { CurrencyCodeDisplay } from "@merchant/component/payments/currency/CurrencyCodeDisplay";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
@@ -80,6 +80,6 @@ const useStylesheet = () => {
           margin: "24px 0",
         },
       }),
-    [textDark, surfaceLightest]
+    [textDark, surfaceLightest],
   );
 };

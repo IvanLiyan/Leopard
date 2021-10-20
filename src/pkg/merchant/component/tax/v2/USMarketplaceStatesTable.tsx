@@ -13,7 +13,7 @@ import { Table } from "@ContextLogic/lego";
 /* Lego Toolkit */
 import { css } from "@toolkit/styling";
 import { getStateName } from "@ContextLogic/lego/toolkit/states";
-import { useDeviceStore } from "@merchant/stores/DeviceStore";
+import { useDeviceStore } from "@stores/DeviceStore";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
 type Props = BaseProps & {
@@ -32,7 +32,7 @@ const USMarketplaceStatesTable: React.FC<Props> = (props: Props) => {
       stateCodes
         .map((stateCode) => ({ state: getStateName("US", stateCode) }))
         .sort(),
-    [stateCodes]
+    [stateCodes],
   );
 
   const rows = _.chunk(tableData, isSmallScreen ? 1 : 4);
@@ -86,5 +86,5 @@ const useStylesheet = () =>
           fontSize: 14,
         },
       }),
-    []
+    [],
   );

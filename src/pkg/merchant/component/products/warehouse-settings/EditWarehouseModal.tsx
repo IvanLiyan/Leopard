@@ -16,7 +16,7 @@ import EditWarehouseForm from "./create/EditWarehouseForm";
 import WarehouseSettingsState from "@merchant/model/products/WarehouseSettingsState";
 
 /* Merchant Store */
-import { useDimenStore } from "@merchant/stores/DimenStore";
+import { useDeviceStore } from "@stores/DeviceStore";
 
 type EditWarehouseModalContentProps = BaseProps & {
   readonly state: WarehouseSettingsState;
@@ -30,7 +30,7 @@ type EditWarehouseModalProps = {
 const EditWarehouseModalContent = observer(
   (props: EditWarehouseModalContentProps) => {
     const { state, onClose } = props;
-    const dimenStore = useDimenStore();
+    const DeviceStore = useDeviceStore();
 
     const sendButtonProps = {
       style: { flex: 1 },
@@ -53,7 +53,7 @@ const EditWarehouseModalContent = observer(
       <>
         <EditWarehouseForm state={state} style={{ padding: 24 }} />
         <ModalFooter
-          layout={dimenStore.isSmallScreen ? "vertical" : "horizontal"}
+          layout={DeviceStore.isSmallScreen ? "vertical" : "horizontal"}
           action={sendButtonProps}
           extraFooterContent={<Link {...closeButtonProps}>Cancel</Link>}
         />

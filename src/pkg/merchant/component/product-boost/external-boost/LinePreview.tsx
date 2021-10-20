@@ -16,7 +16,7 @@ import {
   DailyStatsLineType,
   useDailyStatsLineStroke,
 } from "@toolkit/product-boost/external-boost/external-boost";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 type Props = BaseProps & {
   readonly metric: DailyStatsLineType;
@@ -56,6 +56,6 @@ const useStylesheet = () => {
           borderRadius: 2,
         },
       }),
-    []
+    [],
   );
 };

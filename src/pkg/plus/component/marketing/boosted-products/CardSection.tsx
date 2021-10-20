@@ -9,7 +9,7 @@ import { css } from "@toolkit/styling";
 
 /* Type Imports */
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 type Props = BaseProps & {
   readonly title: string;
@@ -70,7 +70,7 @@ const useStylesheet = () => {
           flex: 1,
         },
       }),
-    [textDark]
+    [textDark],
   );
 };
 

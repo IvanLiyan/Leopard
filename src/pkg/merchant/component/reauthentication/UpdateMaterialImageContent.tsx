@@ -5,13 +5,13 @@ import { ImageList } from "@merchant/component/core";
 
 import { ImageGroupProps } from "@merchant/component/core/modal/ImageViewer";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import LocalizationStore from "@merchant/stores/LocalizationStore";
+import LocalizationStore from "@stores/LocalizationStore";
 
 type ImageContentProps = BaseProps & {
   readonly imageGroup?: ImageGroupProps;
   readonly onClickImage: (
     imageGroup?: ImageGroupProps,
-    imageId?: string
+    imageId?: string,
   ) => unknown;
 };
 

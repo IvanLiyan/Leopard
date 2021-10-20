@@ -8,7 +8,7 @@ import { Link } from "@ContextLogic/lego";
 import { Accordion } from "@ContextLogic/lego";
 
 /* Merchant Store */
-import { useUserStore } from "@merchant/stores/UserStore";
+import { useUserStore } from "@stores/UserStore";
 
 /* Lego Toolkit */
 import { css } from "@toolkit/styling";
@@ -18,7 +18,7 @@ import { formatCurrency } from "@ContextLogic/lego/toolkit/currency";
 import { MaxSpendingBreakdown } from "@merchant/model/product-boost/Campaign";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { useProductBoostMerchantInfo } from "@merchant/stores/product-boost/ProductBoostContextStore";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 type BreakDownTableRowButton = {
   title: string;
@@ -99,7 +99,7 @@ const BudgetBreakDownTable = (props: BudgetBreakDownTableProps) => {
     const sign = val > 0 ? "+" : "-";
     return `${sign} ${formatCurrency(
       Math.abs(val),
-      maxSpendingBreakdown.currency
+      maxSpendingBreakdown.currency,
     )}`;
   };
 
@@ -118,7 +118,7 @@ const BudgetBreakDownTable = (props: BudgetBreakDownTableProps) => {
       <span
         className={css(
           styles.descriptionStyle,
-          row.key === "maxAllowedSpending" ? styles.summaryStyle : null
+          row.key === "maxAllowedSpending" ? styles.summaryStyle : null,
         )}
       >
         {row.description}
@@ -146,7 +146,7 @@ const BudgetBreakDownTable = (props: BudgetBreakDownTableProps) => {
       <span
         className={css(
           styles.amountStyle,
-          row.key === "maxAllowedSpending" ? styles.summaryStyle : null
+          row.key === "maxAllowedSpending" ? styles.summaryStyle : null,
         )}
         style={
           row.key === "maxAllowedSpending" ? undefined : { color: row.color }
@@ -286,7 +286,7 @@ const BudgetBreakDownTable = (props: BudgetBreakDownTableProps) => {
                 key={row.key}
                 className={css(
                   styles.rowContainer,
-                  row.key === "maxAllowedSpending" ? styles.summaryRow : null
+                  row.key === "maxAllowedSpending" ? styles.summaryRow : null,
                 )}
               >
                 <div className={css(styles.columnLeft)}>
@@ -418,7 +418,7 @@ const useStyleSheet = () => {
           marginLeft: 4,
         },
       }),
-    [textBlack, textDark, surfaceLight, borderPrimaryDark]
+    [textBlack, textDark, surfaceLight, borderPrimaryDark],
   );
 };
 

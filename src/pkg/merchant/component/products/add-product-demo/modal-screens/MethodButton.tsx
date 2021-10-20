@@ -7,7 +7,7 @@ import { StyleSheet } from "aphrodite";
 import { css } from "@toolkit/styling";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { Illustration, IllustrationName } from "@merchant/component/core";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import { weightSemibold } from "@toolkit/fonts";
 
 type Props = BaseProps & {
@@ -63,6 +63,6 @@ const useStylesheet = () => {
           color: textDark,
         },
       }),
-    [textDark]
+    [textDark],
   );
 };

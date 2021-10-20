@@ -9,7 +9,7 @@ import { Text } from "@ContextLogic/lego";
 /* Lego Toolkit */
 import { css } from "@toolkit/styling";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 export type MPFDescriptionProps = BaseProps;
 
@@ -70,6 +70,6 @@ const useStylesheet = () => {
           color: textBlack,
         },
       }),
-    [surfaceLightest, textBlack]
+    [surfaceLightest, textBlack],
   );
 };

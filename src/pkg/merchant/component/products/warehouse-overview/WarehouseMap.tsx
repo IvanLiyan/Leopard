@@ -16,7 +16,7 @@ import { ComposableMap, PlusMinusButton, Text } from "@ContextLogic/lego";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
 /* Merchant Stores */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* Schema */
 import { CountryCode } from "@schema/types";

@@ -1,9 +1,9 @@
 import gql from "graphql-tag";
 import { observable, action, computed } from "mobx";
 
-import ToastStore from "@merchant/stores/ToastStore";
-import ApolloStore from "@merchant/stores/ApolloStore";
-import NavigationStore from "@merchant/stores/NavigationStore";
+import ToastStore from "@stores/ToastStore";
+import ApolloStore from "@stores/ApolloStore";
+import NavigationStore from "@stores/NavigationStore";
 import {
   EuvatTaxQuestionnaireInput,
   UploadEuvatTaxQuestionnaire,

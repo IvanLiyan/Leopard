@@ -8,7 +8,7 @@ import { SheetItem } from "@merchant/component/core";
 
 /* Lego Toolkit */
 import { css } from "@toolkit/styling";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { zendeskURL } from "@toolkit/url";
 import { RevShareQualifier } from "@schema/types";
@@ -28,7 +28,7 @@ type RevShareTableProps = BaseProps & {
 };
 
 const RevShareDetails: React.FC<RevShareTableProps> = (
-  props: RevShareTableProps
+  props: RevShareTableProps,
 ) => {
   const styles = useStylesheet();
   const { revShare, qualifiers, revShareAdjustmentData } = props;
@@ -188,7 +188,7 @@ const useStylesheet = () => {
           margin: "0px 10px 10px 10px",
         },
       }),
-    [borderPrimary, textBlack]
+    [borderPrimary, textBlack],
   );
 };
 

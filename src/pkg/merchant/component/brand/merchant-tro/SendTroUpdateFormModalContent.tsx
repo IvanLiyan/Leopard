@@ -16,9 +16,9 @@ import * as fonts from "@toolkit/fonts";
 import { DEPRECATEDFileInput } from "@merchant/component/core";
 
 /* Merchant Store */
-import { useDimenStore } from "@merchant/stores/DimenStore";
-import { useToastStore } from "@merchant/stores/ToastStore";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useDeviceStore } from "@stores/DeviceStore";
+import { useToastStore } from "@stores/ToastStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* Merchant API */
 import * as troApi from "@merchant/api/brand/merchant-tro";
@@ -36,11 +36,11 @@ export type SendTroUpdateFormModalContentProps = BaseProps & {
 type FormStatus = "LAWYER" | "RESOLVED" | "OTHER";
 
 const SendTroUpdateFormModalContent = (
-  props: SendTroUpdateFormModalContentProps
+  props: SendTroUpdateFormModalContentProps,
 ) => {
   const styles = useStylesheet(props);
   const toastStore = useToastStore();
-  const { isSmallScreen } = useDimenStore();
+  const { isSmallScreen } = useDeviceStore();
   const { injunctionId, onClose, onUpdate } = props;
   const formOptions = [
     { value: "LAWYER", text: i`I hired a lawyer` },
@@ -56,10 +56,8 @@ const SendTroUpdateFormModalContent = (
 
   const [actionButtonLoading, setSecondaryButtonLoading] = useState(false);
 
-  const [
-    screenshotFile,
-    setScreenshotFile,
-  ] = useState<AttachmentServerParams | null>(null);
+  const [screenshotFile, setScreenshotFile] =
+    useState<AttachmentServerParams | null>(null);
   const [screenshotAttachments, setScreenshotAttachments] = useState<
     ReadonlyArray<AttachmentInfo>
   >([]);
@@ -253,7 +251,7 @@ const SendTroUpdateFormModalContent = (
                 accepts=".jpeg,.jpg,.png,.pdf"
                 maxAttachments={1}
                 onAttachmentsChanged={(
-                  attachments: ReadonlyArray<AttachmentInfo>
+                  attachments: ReadonlyArray<AttachmentInfo>,
                 ) => {
                   setScreenshotAttachments(attachments);
                   if (attachments.length > 0) {
@@ -328,7 +326,7 @@ const SendTroUpdateFormModalContent = (
 export default SendTroUpdateFormModalContent;
 
 const useStylesheet = (props: SendTroUpdateFormModalContentProps) => {
-  const { isSmallScreen } = useDimenStore();
+  const { isSmallScreen } = useDeviceStore();
   const { borderPrimaryDark } = useTheme();
 
   return useMemo(
@@ -381,6 +379,6 @@ const useStylesheet = (props: SendTroUpdateFormModalContentProps) => {
         },
         section: {},
       }),
-    [isSmallScreen, borderPrimaryDark]
+    [isSmallScreen, borderPrimaryDark],
   );
 };

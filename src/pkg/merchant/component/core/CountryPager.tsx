@@ -20,7 +20,7 @@ import { palettes } from "@toolkit/lego-legacy/DEPRECATED_colors";
 import * as fonts from "@toolkit/fonts";
 import { getCountryName } from "@toolkit/countries";
 
-import DimenStore from "@merchant/stores/DimenStore";
+import DeviceStore from "@stores/DeviceStore";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { CountryCode } from "@toolkit/countries";
 
@@ -45,7 +45,7 @@ class CountryPager extends Component<CountryPagerProps> {
       React.HTMLAttributes<HTMLDivElement>,
       HTMLDivElement
     > &
-      ContentProps
+      ContentProps,
   ) => {
     const { countryCode, ...otherProps } = props;
     return <div {...otherProps}>{props.children}</div>;
@@ -113,7 +113,7 @@ class CountryPager extends Component<CountryPagerProps> {
 
   @computed
   get styles() {
-    const dimenStore = DimenStore.instance();
+    const DeviceStore = DeviceStore.instance();
 
     return StyleSheet.create({
       root: {},
@@ -123,7 +123,7 @@ class CountryPager extends Component<CountryPagerProps> {
         alignItems: "center",
         justifyContent: "center",
         backgroundColor: palettes.textColors.White,
-        minWidth: dimenStore.isSmallScreen ? 100 : 150,
+        minWidth: DeviceStore.isSmallScreen ? 100 : 150,
       },
       headerContent: {
         display: "flex",
@@ -166,11 +166,11 @@ class CountryPager extends Component<CountryPagerProps> {
       className,
     } = this.props;
 
-    const dimenStore = DimenStore.instance();
+    const DeviceStore = DeviceStore.instance();
     return (
       <Pager
         className={css(this.styles.root, className)}
-        maxVisibleTabs={dimenStore.isSmallScreen ? 2 : maxVisibleTabs}
+        maxVisibleTabs={DeviceStore.isSmallScreen ? 2 : maxVisibleTabs}
         selectedTabKey={currentCountryCode && currentCountryCode.toUpperCase()}
         onTabChange={onTabChange}
         hideHeaderBorder={hideHeaderBorder}

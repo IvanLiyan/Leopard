@@ -34,7 +34,7 @@ import BrandPerformanceChart from "./BrandPerformanceChart";
 import BrandPerformanceTable from "./BrandPerformanceTable";
 
 /* Merchant Store */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* Merchant API */
 import { getBrandPerformanceOverviewMetcis } from "@merchant/api/brand/branded-product-overview";
@@ -65,7 +65,7 @@ const getNWeeksBackDate = (timestamp: number, numWeeks: number) => {
 const getLocalizedNWeeksBackDate = (timestamp: number, numWeeks: number) => {
   return formatDatetimeLocalized(
     moment.unix(timestamp).subtract(numWeeks, "weeks").add(1, "day"),
-    "M/D/YY"
+    "M/D/YY",
   );
 };
 
@@ -77,7 +77,7 @@ const getDateRangeOptions = (timestamp: number) => {
       value: n,
       text: `${weekOrWeeks} (${getLocalizedNWeeksBackDate(
         timestamp,
-        n
+        n,
       )} - ${lastDate})`,
     };
   });
@@ -93,21 +93,21 @@ const BrandPerformanceOverview = ({
 
   const [numWeeks, setNumWeeks] = useIntEnumQueryParam<NumWeeks>(
     "num_weeks",
-    1
+    1,
   );
   const [tabKey, setTabKeyParam] = useStringEnumQueryParam<TabKey>(
     "tab",
-    "gmv"
+    "gmv",
   );
   const [pageState] = useState<BrandPerformanceOverviewState>(
-    new BrandPerformanceOverviewState({ currencyCode, tabKey })
+    new BrandPerformanceOverviewState({ currencyCode, tabKey }),
   );
 
   const [response] = useRequest(
     getBrandPerformanceOverviewMetcis({
       start_date: getNWeeksBackDate(lastDayUnix, numWeeks),
       end_date: getDateDisplayText(lastDayUnix, "M/D/YY"),
-    })
+    }),
   );
 
   useEffect(() => {
@@ -238,5 +238,5 @@ const useStylesheet = () =>
           marginBottom: 30,
         },
       }),
-    []
+    [],
   );

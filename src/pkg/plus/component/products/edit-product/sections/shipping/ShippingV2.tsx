@@ -29,11 +29,11 @@ import AddShippingProfileOption from "./AddShippingProfileOption";
 import Section, {
   SectionProps,
 } from "@plus/component/products/edit-product/Section";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import { useDebouncer } from "@ContextLogic/lego/toolkit/hooks";
 
 import ProductEditState from "@plus/model/ProductEditState";
-import { useApolloStore } from "@merchant/stores/ApolloStore";
+import { useApolloStore } from "@stores/ApolloStore";
 import { PickedShippingProfileSchema } from "@toolkit/product-edit";
 
 import {
@@ -281,7 +281,7 @@ const useStylesheet = () => {
           height: InputHeight,
         },
       }),
-    [borderPrimary]
+    [borderPrimary],
   );
 };
 

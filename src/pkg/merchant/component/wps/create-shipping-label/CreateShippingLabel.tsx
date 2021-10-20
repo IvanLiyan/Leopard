@@ -22,8 +22,8 @@ import SummaryCard from "./create-shipping-label-cards/SummaryCard";
 import TosBanner from "./create-shipping-label-cards/TosBanner";
 
 /* Merchant Store */
-import { useTheme } from "@merchant/stores/ThemeStore";
-import { useToastStore } from "@merchant/stores/ToastStore";
+import { useTheme } from "@stores/ThemeStore";
+import { useToastStore } from "@stores/ToastStore";
 
 /* Merchant Model */
 import CreateShippingLabelState from "@merchant/model/CreateShippingLabelState";
@@ -152,7 +152,7 @@ const useStylesheet = () => {
           },
         },
       }),
-    [pageBackground]
+    [pageBackground],
   );
 };
 

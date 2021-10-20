@@ -23,7 +23,7 @@ import * as productBoostApi from "@merchant/api/product-boost";
 import { BulkResumeCampaign } from "@merchant/api/product-boost";
 
 /* Merchant Stores */
-import { useToastStore } from "@merchant/stores/ToastStore";
+import { useToastStore } from "@stores/ToastStore";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
@@ -35,25 +35,20 @@ export type BulkEnableFBWCampaignModalContentProps = BaseProps & {
 };
 
 const BulkEnableFBWCampaignModalContent = (
-  props: BulkEnableFBWCampaignModalContentProps
+  props: BulkEnableFBWCampaignModalContentProps,
 ) => {
-  const {
-    fbwCampaignsToEnable,
-    maxAllowedSpending,
-    onClose,
-    currencyCode,
-  } = props;
+  const { fbwCampaignsToEnable, maxAllowedSpending, onClose, currencyCode } =
+    props;
   const styles = useStylesheet();
 
   const toastStore = useToastStore();
 
   const initCampaignIds = fbwCampaignsToEnable.map(
-    (campaign) => campaign.campaign_id
+    (campaign) => campaign.campaign_id,
   );
 
-  const [selectedCampaignIds, setSelectedCampaignIds] = useState(
-    initCampaignIds
-  );
+  const [selectedCampaignIds, setSelectedCampaignIds] =
+    useState(initCampaignIds);
 
   const selectedRows = fbwCampaignsToEnable.reduce(
     //disabled to satisfy the callback requirement on .reduce
@@ -64,7 +59,7 @@ const BulkEnableFBWCampaignModalContent = (
       }
       return accumulator;
     },
-    []
+    [],
   );
 
   const onResumeCampaignRowSelectionToggled = ({
@@ -316,7 +311,7 @@ const useStylesheet = () =>
           overflow: "hidden",
         },
       }),
-    []
+    [],
   );
 
 export class BulkEnableFBWCampaignModal extends Modal {

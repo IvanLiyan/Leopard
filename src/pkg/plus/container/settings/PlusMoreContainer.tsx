@@ -13,7 +13,7 @@ import { observer } from "mobx-react";
 import { css } from "@toolkit/styling";
 
 import { Card, Layout, Link, Text } from "@ContextLogic/lego";
-import { useNavigationStore } from "@merchant/stores/NavigationStore";
+import { useNavigationStore } from "@stores/NavigationStore";
 
 /* Merchant Plus Components */
 import PageRoot from "@plus/component/nav/PageRoot";
@@ -24,7 +24,7 @@ import {
   SettingsHomeInitialData,
 } from "@toolkit/settings-home";
 import { Icon } from "@merchant/component/core";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import LegacySettingsHome from "@plus/component/settings/LegacySettingsHome";
 
 type Props = {
@@ -37,12 +37,12 @@ const PlusMoreContainer: React.FC<Props> = ({ initialData }: Props) => {
 
   const overviewNode = useMemo(
     () => userGraph?.children.find((node) => node.nodeid == "overview"),
-    [userGraph]
+    [userGraph],
   );
 
   const moreNode = useMemo(
     () => userGraph?.children.find((node) => node.nodeid == "more"),
-    [userGraph]
+    [userGraph],
   );
 
   if (moreNode != null) {
@@ -105,7 +105,7 @@ const PlusMoreContainer: React.FC<Props> = ({ initialData }: Props) => {
                           style={{
                             gridAutoFlow: "column",
                             gridTemplateRows: `repeat(${Math.ceil(
-                              categoryNode.children.length / 3
+                              categoryNode.children.length / 3,
                             )}, max-content)`,
                           }}
                         >
@@ -116,7 +116,7 @@ const PlusMoreContainer: React.FC<Props> = ({ initialData }: Props) => {
                                   <Text
                                     className={css(
                                       styles.linkNodeSubLabel,
-                                      styles.subLinkNodeMargin
+                                      styles.subLinkNodeMargin,
                                     )}
                                   >
                                     {linkNode.overview_label || linkNode.label}
@@ -218,7 +218,7 @@ const useStylesheet = () => {
           },
         },
       }),
-    [textBlack, borderPrimary, textDark]
+    [textBlack, borderPrimary, textDark],
   );
 };
 

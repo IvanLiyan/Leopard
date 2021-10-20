@@ -23,7 +23,7 @@ import {
   YAxis,
 } from "@ContextLogic/lego";
 
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import {
   DailyStatsDataKeys,
   DailyStatsLineType,
@@ -55,7 +55,7 @@ const DailyStatsChart: React.FC<Props> = ({
   // for each line
   const tooltipDataKey: string | undefined = useMemo(() => {
     const oneShownMetric = DailyStatsLineTypes.find((lineType) =>
-      shownMetrics.has(lineType)
+      shownMetrics.has(lineType),
     );
     return oneShownMetric == null
       ? undefined
@@ -88,12 +88,12 @@ const DailyStatsChart: React.FC<Props> = ({
         {shownMetrics.has("CLICKS") &&
           renderTooltipRow(
             "CLICKS",
-            numeral(dayStats.clicks).format("0,0").toString()
+            numeral(dayStats.clicks).format("0,0").toString(),
           )}
         {shownMetrics.has("ORDERS") &&
           renderTooltipRow(
             "ORDERS",
-            numeral(dayStats.orders).format("0,0").toString()
+            numeral(dayStats.orders).format("0,0").toString(),
           )}
         {shownMetrics.has("GMV") &&
           renderTooltipRow("GMV", dayStats.gmv.display)}
@@ -102,14 +102,14 @@ const DailyStatsChart: React.FC<Props> = ({
         {shownMetrics.has("ATTRIBUTED_GMV") &&
           renderTooltipRow(
             "ATTRIBUTED_GMV",
-            dayStats.attributed?.gmv.display || "--"
+            dayStats.attributed?.gmv.display || "--",
           )}
         {shownMetrics.has("ATTRIBUTED_ORDERS") &&
           renderTooltipRow(
             "ATTRIBUTED_ORDERS",
             dayStats.attributed == null
               ? "--"
-              : numeral(dayStats.attributed?.orders).format("0,0").toString()
+              : numeral(dayStats.attributed?.orders).format("0,0").toString(),
           )}
       </div>
     </div>
@@ -366,6 +366,6 @@ const useStylesheet = () => {
           color: textBlack,
         },
       }),
-    [textBlack]
+    [textBlack],
   );
 };

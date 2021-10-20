@@ -13,7 +13,7 @@ import { css } from "@toolkit/styling";
 import { RequiredValidator, UrlValidator } from "@toolkit/validators";
 
 /* Merchant Store */
-import { useDimenStore } from "@merchant/stores/DimenStore";
+import { useDeviceStore } from "@stores/DeviceStore";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
@@ -35,15 +35,15 @@ export type CreateWebhookModalContentProps = BaseProps & {
 
 const CreateWebhookModalContent = (props: CreateWebhookModalContentProps) => {
   const styles = useStylesheet();
-  const { isSmallScreen } = useDimenStore();
+  const { isSmallScreen } = useDeviceStore();
   const { isNew, onClose, state, topicOptions, subscription } = props;
   const [actionButtonLoading] = useState(state.isSubmitting);
   const [isValid, setIsValid] = useState(false);
   const [topicId, setTopicId] = useState(
-    subscription ? subscription.topic.id : topicOptions[0].id
+    subscription ? subscription.topic.id : topicOptions[0].id,
   );
   const [endpoint, setEndpoint] = useState(
-    subscription ? subscription.endpoint : ""
+    subscription ? subscription.endpoint : "",
   );
 
   const sendButtonProps = {
@@ -65,7 +65,7 @@ const CreateWebhookModalContent = (props: CreateWebhookModalContentProps) => {
       value: topic.id,
       text: MerchantAppWebhookTopicName[topic.name],
     })),
-    (topic) => topic.text
+    (topic) => topic.text,
   );
 
   const requiredValidator = new RequiredValidator();
@@ -172,6 +172,6 @@ const useStylesheet = () => {
           width: "100%",
         },
       }),
-    []
+    [],
   );
 };

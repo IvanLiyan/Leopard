@@ -20,14 +20,14 @@ import {
 
 /* Lego Toolkit */
 import { css } from "@toolkit/styling";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { formatCurrency } from "@toolkit/currency";
 
 /* Merchant Components */
 import { DEPRECATEDIcon as Icon, IconName } from "@merchant/component/core";
 import StoreChart from "@merchant/component/performance/overview/StoreChart";
-import { useDimenStore } from "@merchant/stores/DimenStore";
+import { useDeviceStore } from "@stores/DeviceStore";
 
 /* Model */
 import {
@@ -87,7 +87,7 @@ const StoreSalesCharts = (props: Props) => {
   const { className, style } = props;
   const { primary, primaryDark, wishBlue, darkBlueSurface } = useTheme();
   const styles = useStylesheet();
-  const dimenStore = useDimenStore();
+  const DeviceStore = useDeviceStore();
   const [lastNDays, setLastNDays] = useState(7);
 
   const { data, loading, refetch } = useQuery<
@@ -126,7 +126,7 @@ const StoreSalesCharts = (props: Props) => {
       dayStat.orders > 0
         ? formatCurrency(
             dayStat.gmv.amount / dayStat.orders,
-            dayStat.gmv.currencyCode
+            dayStat.gmv.currencyCode,
           )
         : formatCurrency(0, dayStat.gmv.currencyCode),
   }));
@@ -159,7 +159,7 @@ const StoreSalesCharts = (props: Props) => {
       alignRule = { alignItems: "flex-end" };
     }
 
-    if (dimenStore.isSmallScreen) {
+    if (DeviceStore.isSmallScreen) {
       alignRule = { alignItems: "flex-start" };
     }
 
@@ -194,7 +194,7 @@ const StoreSalesCharts = (props: Props) => {
     >
       <Layout.FlexRow>
         <span className={css(styles.percentStat)}>{percent}</span>
-        {dimenStore.isLargeScreen && <Icon name="rightArrowPalaceBlue" />}
+        {DeviceStore.isLargeScreen && <Icon name="rightArrowPalaceBlue" />}
       </Layout.FlexRow>
     </Popover>
   );
@@ -260,7 +260,7 @@ const StoreSalesCharts = (props: Props) => {
                   storeStatsTotals.orders > 0
                     ? formatCurrency(
                         storeStatsTotals.gmv.amount / storeStatsTotals.orders,
-                        storeStatsTotals.gmv.currencyCode
+                        storeStatsTotals.gmv.currencyCode,
                       )
                     : formatCurrency(0, storeStatsTotals.gmv.currencyCode),
                 tooltip: i`Average per-order GMV for all orders received during the selected time period.`,
@@ -308,8 +308,8 @@ const StoreSalesCharts = (props: Props) => {
               {renderPercentPill(
                 i`Product details page views divided by impressions.`,
                 numeral(
-                  storeStatsTotals.pageViews / storeStatsTotals.impressions
-                ).format("0.00%")
+                  storeStatsTotals.pageViews / storeStatsTotals.impressions,
+                ).format("0.00%"),
               )}
               {renderAggregates({
                 metric: i`Product page views`,
@@ -322,8 +322,8 @@ const StoreSalesCharts = (props: Props) => {
               {renderPercentPill(
                 i`Buy button clicks divided by product details page views.`,
                 numeral(
-                  storeStatsTotals.addToCarts / storeStatsTotals.pageViews
-                ).format("0.00%")
+                  storeStatsTotals.addToCarts / storeStatsTotals.pageViews,
+                ).format("0.00%"),
               )}
               {renderAggregates({
                 metric: i`Buy button clicks`,
@@ -334,8 +334,8 @@ const StoreSalesCharts = (props: Props) => {
               {renderPercentPill(
                 i`Orders divided by Buy button clicks.`,
                 numeral(
-                  storeStatsTotals.orders / storeStatsTotals.addToCarts
-                ).format("0.00%")
+                  storeStatsTotals.orders / storeStatsTotals.addToCarts,
+                ).format("0.00%"),
               )}
               {renderAggregates({
                 metric: i`Orders`,
@@ -459,7 +459,7 @@ const useStylesheet = () => {
           maxWidth: 200,
         },
       }),
-    [borderPrimary, primary, primaryLight, lightBlueSurface]
+    [borderPrimary, primary, primaryLight, lightBlueSurface],
   );
 };
 

@@ -11,8 +11,8 @@ import { css } from "@toolkit/styling";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
 /* Merchant Stores */
-import { useTheme } from "@merchant/stores/ThemeStore";
-import { useDeciderKey } from "@merchant/stores/ExperimentStore";
+import { useTheme } from "@stores/ThemeStore";
+import { useDeciderKey } from "@stores/ExperimentStore";
 
 export type Props = BaseProps;
 
@@ -150,6 +150,6 @@ const useStylesheet = () => {
           },
         },
       }),
-    [textBlack, lightPurpleSurface, pageBackground]
+    [textBlack, lightPurpleSurface, pageBackground],
   );
 };

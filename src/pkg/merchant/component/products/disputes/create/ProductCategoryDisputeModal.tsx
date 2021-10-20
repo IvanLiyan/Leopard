@@ -11,8 +11,8 @@ import { Layout, Link, H6, Text } from "@ContextLogic/lego";
 import { Icon } from "@merchant/component/core";
 
 /* Merchant Store */
-import { useDimenStore } from "@merchant/stores/DimenStore";
-import NavigationStore from "@merchant/stores/NavigationStore";
+import { useDeviceStore } from "@stores/DeviceStore";
+import NavigationStore from "@stores/NavigationStore";
 
 type Props = {
   readonly fromEuCompliance?: boolean;
@@ -20,7 +20,7 @@ type Props = {
 
 const ProductCategoryDisputeModalContent = (props: Props) => {
   const { fromEuCompliance } = props;
-  const { isSmallScreen } = useDimenStore();
+  const { isSmallScreen } = useDeviceStore();
 
   const styles = useStylesheet();
 
@@ -101,6 +101,6 @@ const useStylesheet = () => {
           marginBottom: 26,
         },
       }),
-    []
+    [],
   );
 };

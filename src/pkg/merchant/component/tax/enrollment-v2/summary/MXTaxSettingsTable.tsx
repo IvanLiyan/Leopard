@@ -10,7 +10,7 @@ import { HorizontalFieldProps } from "@ContextLogic/lego";
 /* Lego Toolkit */
 import { css } from "@toolkit/styling";
 import { weightSemibold } from "@toolkit/fonts";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { UserEntityType } from "@schema/types";
@@ -39,7 +39,7 @@ const MXTaxSettingsTable = ({
         countryCode: "MX",
         authorityLevel: "COUNTRY",
       }),
-    [taxInfos]
+    [taxInfos],
   );
 
   const fieldProps: Partial<HorizontalFieldProps> = {
@@ -107,6 +107,6 @@ const useStylesheet = () => {
           fontWeight: weightSemibold,
         },
       }),
-    [borderPrimary, textBlack]
+    [borderPrimary, textBlack],
   );
 };

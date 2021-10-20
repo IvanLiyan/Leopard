@@ -9,7 +9,7 @@ import { H5, H7, Card } from "@ContextLogic/lego";
 import { PrimaryButton } from "@ContextLogic/lego";
 import { Illustration } from "@merchant/component/core";
 
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* Type Imports */
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
@@ -79,6 +79,6 @@ const useStylesheet = () => {
           fontSize: 17,
         },
       }),
-    [textLight]
+    [textLight],
   );
 };

@@ -9,7 +9,7 @@ import Modal from "@merchant/component/core/modal/Modal";
 import ModalFooter from "@merchant/component/core/modal/ModalFooter";
 
 /* Mechant Home */
-import { useDimenStore } from "@merchant/stores/DimenStore";
+import { useDeviceStore } from "@stores/DeviceStore";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
@@ -27,7 +27,7 @@ type AnnouncementModalContentProps = BaseProps &
 
 const AnnouncementModalContent = (props: AnnouncementModalContentProps) => {
   const styles = useStylesheet();
-  const { isSmallScreen } = useDimenStore();
+  const { isSmallScreen } = useDeviceStore();
   const { onClose, message, ctaText, ctaLink } = props;
 
   const sendButtonProps =
@@ -98,6 +98,6 @@ const useStylesheet = () => {
           width: "100%",
         },
       }),
-    []
+    [],
   );
 };

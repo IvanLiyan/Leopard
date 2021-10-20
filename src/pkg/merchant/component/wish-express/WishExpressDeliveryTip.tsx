@@ -10,7 +10,7 @@ import { Link } from "@ContextLogic/lego";
 /* Lego Toolkit */
 import { css } from "@toolkit/styling";
 
-import { ThemeContext } from "@merchant/stores/ThemeStore";
+import { ThemeContext } from "@stores/ThemeStore";
 
 /* Toolkit */
 import { zendeskURL } from "@toolkit/url";

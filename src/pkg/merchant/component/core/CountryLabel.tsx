@@ -16,7 +16,7 @@ import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { Layout, Text, Popover } from "@ContextLogic/lego";
 
 /* Merchant Store */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 import Flag from "./Flag";
 
@@ -75,6 +75,6 @@ const useStylesheet = () => {
           marginLeft: 8,
         },
       }),
-    [surfaceLight, textDark]
+    [surfaceLight, textDark],
   );
 };

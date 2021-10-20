@@ -7,9 +7,9 @@ import { css } from "@toolkit/styling";
 
 /* Merchant Stores */
 import { useReleaseNotesStore } from "@merchant/stores/release-notes/ReleaseNotesStore";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import { usePathParams } from "@toolkit/url";
-import { useNavigationStore } from "@merchant/stores/NavigationStore";
+import { useNavigationStore } from "@stores/NavigationStore";
 
 /* Type Imports */
 
@@ -71,6 +71,6 @@ const useStylesheet = () => {
           color: primaryDark,
         },
       }),
-    [primaryDark, surfaceLightest]
+    [primaryDark, surfaceLightest],
   );
 };

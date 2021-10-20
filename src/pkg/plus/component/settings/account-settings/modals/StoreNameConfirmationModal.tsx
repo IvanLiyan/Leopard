@@ -15,8 +15,8 @@ import Modal from "@merchant/component/core/modal/Modal";
 import ConfirmationScreen from "./ConfirmationScreen";
 
 /* Type Imports */
-import ToastStore from "@merchant/stores/ToastStore";
-import DeviceStore from "@merchant/stores/DeviceStore";
+import ToastStore from "@stores/ToastStore";
+import DeviceStore from "@stores/DeviceStore";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
 export type StoreNameConfirmationModalProps = BaseProps;

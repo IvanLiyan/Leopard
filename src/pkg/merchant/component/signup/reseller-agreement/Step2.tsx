@@ -14,7 +14,7 @@ import StepBase from "./StepBase";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { OnTextChangeEvent } from "@ContextLogic/lego";
-import LocalizationStore from "@merchant/stores/LocalizationStore";
+import LocalizationStore from "@stores/LocalizationStore";
 
 type Step2Props = BaseProps & {
   readonly brandNames: string;
@@ -77,6 +77,6 @@ const useStylesheet = () => {
           fontWeight: fonts.weightMedium,
         },
       }),
-    []
+    [],
   );
 };

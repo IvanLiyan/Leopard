@@ -29,7 +29,7 @@ import SelectVariationsModal from "./SelectVariationsModal";
 import CreateShippingPlanState, {
   VariationState,
 } from "@merchant/model/fbw/CreateShippingPlanState";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
 type Props = BaseProps & {
@@ -76,7 +76,7 @@ const SelectSKUs: React.FC<Props> = ({ state, style, className }: Props) => {
             rangeStart={offset + 1}
             rangeEnd={Math.min(
               totalVariationCount ?? 0,
-              offset + visibleVariations.length
+              offset + visibleVariations.length,
             )}
             hasNext={
               totalVariationCount != null &&
@@ -154,7 +154,7 @@ const SelectSKUs: React.FC<Props> = ({ state, style, className }: Props) => {
                     onChange={({ valueAsNumber }) =>
                       state.inventoryByWarehouseId.set(
                         warehouse.id,
-                        Math.max(valueAsNumber || 0, 0)
+                        Math.max(valueAsNumber || 0, 0),
                       )
                     }
                     validators={[new RequiredValidator()]}
@@ -213,6 +213,6 @@ const useStylesheet = () => {
           width: 120,
         },
       }),
-    [textLight]
+    [textLight],
   );
 };

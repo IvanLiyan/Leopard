@@ -26,10 +26,10 @@ import * as taxApi from "@merchant/api/tax";
 import * as logger from "@toolkit/logger";
 
 /* Relative Imports */
-import ToastStore from "./ToastStore";
-import UserStore from "./UserStore";
+import ToastStore from "../../stores/ToastStore";
+import UserStore from "../../stores/UserStore";
 import TodoStore from "./TodoStore";
-import NavigationStore from "./NavigationStore";
+import NavigationStore from "../../stores/NavigationStore";
 
 import { TaxNonEUCountries, TaxEUCountries } from "@toolkit/tax/enrollment";
 import { UserEntityType } from "@schema/types";
@@ -309,7 +309,7 @@ export default class TaxStore {
 
   async deleteCountry(
     countryCode: CountryCode | UnionCode,
-    dropdown?: DropdownData
+    dropdown?: DropdownData,
   ) {
     const toastStore = ToastStore.instance();
     const navigationStore = NavigationStore.instance();
@@ -323,7 +323,7 @@ export default class TaxStore {
     new ConfirmationModal(
       i`Are you sure you want to delete tax settings ` +
         i`for ${displayName}? Please note that this may ` +
-        i`stop sales tax collection in ${thisCountry}.`
+        i`stop sales tax collection in ${thisCountry}.`,
     )
       .setHeader({
         title: i`Remove ${displayName}`,
@@ -347,8 +347,8 @@ export default class TaxStore {
                     .deleteCountrySettings({ country_code: code })
                     .call();
                 }
-              }
-            )
+              },
+            ),
           );
         } else {
           await taxApi
@@ -362,7 +362,7 @@ export default class TaxStore {
           i`Tax settings for ${displayName} have been deleted`,
           {
             deferred: !navigationStore.isNavyBlueNav,
-          }
+          },
         );
       })
       .render();
@@ -380,7 +380,7 @@ export default class TaxStore {
             title: i`View tax settings`,
           },
           timeoutMs: 12000,
-        }
+        },
       );
     });
   }
@@ -394,7 +394,7 @@ export default class TaxStore {
       i`By declining to configure Tax Settings, you indicate that you do ` +
         i`not elect to provide any tax information to Wish for your store. ` +
         i`Merchants are still ultimately responsible and liable for the ` +
-        i`accuracy and remittance of applicable VAT/GST and Sales Taxes due.`
+        i`accuracy and remittance of applicable VAT/GST and Sales Taxes due.`,
     )
       .setHeader({
         title: i`Decline configuring Tax Settings`,

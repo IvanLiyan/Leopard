@@ -31,7 +31,7 @@ import { Measurements } from "@merchant/model/Product";
 /* Type Imports */
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { GetSizeChartResponse } from "@merchant/api/size-chart";
-import { useNavigationStore } from "@merchant/stores/NavigationStore";
+import { useNavigationStore } from "@stores/NavigationStore";
 
 export type SizeChartProps = BaseProps & {
   readonly isCreate: boolean;
@@ -45,13 +45,16 @@ const SizeChart = (props: SizeChartProps) => {
   const [isDetailsOpen, setIsDetailsOpen] = useState(true);
   const [name, setName] = useState(sizeChart?.name);
   const [genderCategory, setGenderCategory] = useState(
-    sizeChart?.gender_category || 0
+    sizeChart?.gender_category || 0,
   );
   const [unit, setUnit] = useState(sizeChart?.unit || 0);
   const [isMeasurementsOpen, setIsMeasurementsOpen] = useState(true);
   const [success, setSuccess] = useState(false);
-  const [sizes] = useStringArrayQueryParam("sizes");
-  const [productId] = useStringQueryParam("pid");
+  // TODO [lliepert]: fix nav store in next ticket
+  const sizes: string[] = [];
+  const productId = undefined;
+  // const [sizes] = useStringArrayQueryParam("sizes");
+  // const [productId] = useStringQueryParam("pid");
   const sizeChartMeasurements = sizeChart?.measurements_list;
   const sizeList = Array.from(sizes || []);
   const originalMeasurements = new Measurements([]);
@@ -59,7 +62,7 @@ const SizeChart = (props: SizeChartProps) => {
     originalMeasurements.fromJson(sizeChartMeasurements);
   }
   const [measurements] = useState(
-    sizeChartMeasurements ? originalMeasurements : new Measurements(sizeList)
+    sizeChartMeasurements ? originalMeasurements : new Measurements(sizeList),
   );
   const navigationStore = useNavigationStore();
 
@@ -77,7 +80,7 @@ const SizeChart = (props: SizeChartProps) => {
       if (response) {
         setSuccess(true);
         navigationStore.navigate(
-          `/product-detail/${productId}?sizechart=${name || ""}#sizechart`
+          `/product-detail/${productId}?sizechart=${name || ""}#sizechart`,
         );
       }
     } catch (e) {
@@ -290,5 +293,5 @@ const useStylesheet = () =>
           marginRight: 24,
         },
       }),
-    []
+    [],
   );

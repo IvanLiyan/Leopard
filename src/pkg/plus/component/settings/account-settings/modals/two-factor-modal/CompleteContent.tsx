@@ -23,7 +23,7 @@ import { Illustration } from "@merchant/component/core";
 
 /* Type Imports */
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 type Props = BaseProps & {
   readonly onCancel: () => unknown;
@@ -147,6 +147,6 @@ const useStylesheet = () => {
           minWidth: 160,
         },
       }),
-    [surfaceDark]
+    [surfaceDark],
   );
 };

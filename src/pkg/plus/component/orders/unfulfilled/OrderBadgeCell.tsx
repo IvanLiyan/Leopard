@@ -21,7 +21,7 @@ import { Flag, Illustration, IllustrationName } from "@merchant/component/core";
 import { getCountryName } from "@toolkit/countries";
 import DeliveryDeadlinePopover from "@plus/component/orders/fulfillment/icons/DeliveryDeadlinePopover";
 import Ul from "@merchant/component/core/Ul";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 type Props = BaseProps & {
   readonly order: OrderType;
@@ -107,7 +107,7 @@ const OrderBadgeCell: React.FC<Props> = ({
               i`The VAT amount collected from customers will be remitted to the merchant when ` +
               i`the merchant receives payment for this order (VAT amount will subsequently be ` +
               i`forwarded to the freight forwarder). [Learn More](${zendeskURL(
-                "360034845594"
+                "360034845594",
               )})`
             }
             openLinksInNewTab
@@ -142,7 +142,7 @@ const OrderBadgeCell: React.FC<Props> = ({
               i`The VAT amount collected from customers will be remitted to the merchant when ` +
               i`the merchant receives payment for this order (VAT amount will subsequently be ` +
               i`forwarded to the freight forwarder). [Learn More](${zendeskURL(
-                "360034845594"
+                "360034845594",
               )})`
             }
             openLinksInNewTab
@@ -366,14 +366,8 @@ const OrderBadgeCell: React.FC<Props> = ({
   const renderBadges = () => (
     <>
       {badges.map((badge) => {
-        const {
-          text,
-          icon,
-          country,
-          popoverContent,
-          theme,
-          showFullTitle,
-        } = orderBadgeMap[badge];
+        const { text, icon, country, popoverContent, theme, showFullTitle } =
+          orderBadgeMap[badge];
         const flag = country != null && (
           <div className={css(styles.flagContainer)}>
             <Flag className={css(styles.flag)} countryCode={country} />
@@ -501,6 +495,6 @@ const useStylesheet = () => {
           margin: "8px 0px",
         },
       }),
-    [textBlack]
+    [textBlack],
   );
 };

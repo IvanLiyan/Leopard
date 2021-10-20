@@ -16,7 +16,7 @@ import { Card, Layout, Link, Text } from "@ContextLogic/lego";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
 /* Toolkit */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import {
   formatProductAmount,
   PlpTierNames,
@@ -73,16 +73,16 @@ const Details: React.FC<Props> = ({
             text={i`${
               PlpTierNames.TIER_TWO
             } allows you to offer more than ${formatProductAmount(
-              tier1.higherBound
+              tier1.higherBound,
             )} high-quality listings with a small amount of investment per month (your first ${formatProductAmount(
-              tier1.higherBound
+              tier1.higherBound,
             )} listings are still free).`}
           />
           <Point
             text={i`${
               PlpTierNames.TIER_THREE
             } may be the right investment for your store if you have more than ${formatProductAmount(
-              tier2.higherBound
+              tier2.higherBound,
             )} unique and high-quality products.`}
           />
           <Point
@@ -147,6 +147,6 @@ const useStylesheet = () => {
           marginRight: 16,
         },
       }),
-    [textBlack]
+    [textBlack],
   );
 };

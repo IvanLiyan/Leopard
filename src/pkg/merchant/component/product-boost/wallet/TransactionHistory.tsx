@@ -27,8 +27,8 @@ import {
 } from "@merchant/api/product-boost";
 
 /* Merchant Store */
-import { useTheme } from "@merchant/stores/ThemeStore";
-import { useUserStore } from "@merchant/stores/UserStore";
+import { useTheme } from "@stores/ThemeStore";
+import { useUserStore } from "@stores/UserStore";
 
 /* Toolkit */
 import { zendeskURL } from "@toolkit/url";
@@ -171,12 +171,12 @@ const TransactionHistory = (props: TransactionHistoryProps) => {
 
   const currentCreditEnd = Math.min(
     creditTotalCount,
-    currentCreditOffset + PageSize
+    currentCreditOffset + PageSize,
   );
 
   const currentBalanceEnd = Math.min(
     balanceTotalCount,
-    currentBalanceOffset + PageSize
+    currentBalanceOffset + PageSize,
   );
 
   const tipContent = !isSubUser && (
@@ -317,7 +317,7 @@ const useStyleSheet = () => {
           marginLeft: 10,
         },
       }),
-    [textBlack]
+    [textBlack],
   );
 };
 

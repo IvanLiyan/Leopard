@@ -6,8 +6,8 @@ import { useMutation } from "@apollo/react-hooks";
 /* Lego Components */
 import { PrimaryButton } from "@ContextLogic/lego";
 
-import { useToastStore } from "@merchant/stores/ToastStore";
-import { useNavigationStore } from "@merchant/stores/NavigationStore";
+import { useToastStore } from "@stores/ToastStore";
+import { useNavigationStore } from "@stores/NavigationStore";
 
 import {
   AcceptTermsOfService,

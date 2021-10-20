@@ -36,10 +36,10 @@ import {
   ExternalBoostInitialData,
 } from "@toolkit/product-boost/external-boost/external-boost";
 import { PaymentCurrencyCode } from "@schema/types";
-import { useToastStore } from "@merchant/stores/ToastStore";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useToastStore } from "@stores/ToastStore";
+import { useTheme } from "@stores/ThemeStore";
 import { CurrencyValidator, MinMaxValueValidator } from "@toolkit/validators";
-import { useNavigationStore } from "@merchant/stores/NavigationStore";
+import { useNavigationStore } from "@stores/NavigationStore";
 import { zendeskURL } from "@toolkit/url";
 
 type Props = BaseProps & {
@@ -70,18 +70,19 @@ const ExternalBoostToggle: React.FC<Props> = ({
 
   const [isRefetching, setIsRefetching] = useState(false);
 
-  const { data, loading: isLoadingQuery, refetch } = useQuery<
-    GetExternalBoostDailyBudgetResponseType,
-    {}
-  >(GET_EXTERNAL_BOOST_DAILY_BUDGET);
+  const {
+    data,
+    loading: isLoadingQuery,
+    refetch,
+  } = useQuery<GetExternalBoostDailyBudgetResponseType, {}>(
+    GET_EXTERNAL_BOOST_DAILY_BUDGET,
+  );
 
-  const [
-    setExternalBoostToggle,
-    { loading: isLoadingEnabledMutation },
-  ] = useMutation<
-    SetExternalBoostToggleResponseType,
-    SetExternalBoostToggleInputType
-  >(SET_EXTERNAL_BOOST_TOGGLE);
+  const [setExternalBoostToggle, { loading: isLoadingEnabledMutation }] =
+    useMutation<
+      SetExternalBoostToggleResponseType,
+      SetExternalBoostToggleInputType
+    >(SET_EXTERNAL_BOOST_TOGGLE);
 
   const [
     setExternalBoostDailyBudget,
@@ -94,7 +95,7 @@ const ExternalBoostToggle: React.FC<Props> = ({
   useEffect(() => {
     if (data != null) {
       setBudgetToAdd(
-        data.marketing.currentMerchant.offsiteBoost.dailyBudget.amount
+        data.marketing.currentMerchant.offsiteBoost.dailyBudget.amount,
       );
     }
   }, [data]);
@@ -134,7 +135,7 @@ const ExternalBoostToggle: React.FC<Props> = ({
 
     if (!isValidBudget) {
       setBudgetToAdd(
-        data.marketing.currentMerchant.offsiteBoost.dailyBudget.amount
+        data.marketing.currentMerchant.offsiteBoost.dailyBudget.amount,
       );
       return;
     }
@@ -157,7 +158,7 @@ const ExternalBoostToggle: React.FC<Props> = ({
       setIsRefetching(false);
       toastStore.positive(i`ExternalBoost daily budget updated`);
       setBudgetToAdd(
-        result.data.marketing.currentMerchant.offsiteBoost.dailyBudget.amount
+        result.data.marketing.currentMerchant.offsiteBoost.dailyBudget.amount,
       );
       return;
     }
@@ -182,7 +183,7 @@ const ExternalBoostToggle: React.FC<Props> = ({
       }),
       new CurrencyValidator(),
     ],
-    [minDailyBudget, maxDailyBudget, isToggleOn]
+    [minDailyBudget, maxDailyBudget, isToggleOn],
   );
 
   if (data == null) {
@@ -259,7 +260,7 @@ const ExternalBoostToggle: React.FC<Props> = ({
                 value={budgetToAdd}
                 onChange={({ textAsNumber }: OnTextChangeEvent) => {
                   navigationStore.placeNavigationLock(
-                    i`You have unsaved changed. Are you sure want to leave?`
+                    i`You have unsaved changed. Are you sure want to leave?`,
                   );
                   setBudgetToAdd(textAsNumber || 0);
                 }}
@@ -343,6 +344,6 @@ const useStylesheet = () => {
           cursor: "default",
         },
       }),
-    [textDark, negative]
+    [textDark, negative],
   );
 };

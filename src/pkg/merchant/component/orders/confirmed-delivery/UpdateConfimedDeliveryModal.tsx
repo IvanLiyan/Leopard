@@ -28,10 +28,10 @@ import {
 
 /* Lego Toolkit */
 import { css } from "@toolkit/styling";
-import { useTheme } from "@merchant/stores/ThemeStore";
-import { useToastStore } from "@merchant/stores/ToastStore";
-import ApolloStore from "@merchant/stores/ApolloStore";
-import LocalizationStore from "@merchant/stores/LocalizationStore";
+import { useTheme } from "@stores/ThemeStore";
+import { useToastStore } from "@stores/ToastStore";
+import ApolloStore from "@stores/ApolloStore";
+import LocalizationStore from "@stores/LocalizationStore";
 
 const UPDATE_CONFIRMED_DELIVERY_MUTATION = gql`
   mutation ProductEditState_EditOrCreateProduct(
@@ -60,16 +60,16 @@ export type UpdateConfimedDeliveryModalProps = {
   readonly onClose: () => unknown;
 };
 
-const UpdateConfimedDeliveryModalContent: React.FC<UpdateConfimedDeliveryModalProps> = observer(
-  ({ onClose, orderId }: UpdateConfimedDeliveryModalProps) => {
+const UpdateConfimedDeliveryModalContent: React.FC<UpdateConfimedDeliveryModalProps> =
+  observer(({ onClose, orderId }: UpdateConfimedDeliveryModalProps) => {
     const [attachment, setAttachment] = useState<AttachmentInfo | undefined>(
-      undefined
+      undefined,
     );
     const [trackingUrl, setTrackingUrl] = useState<string | undefined>(
-      undefined
+      undefined,
     );
     const [deliveryDate, setDeliveryDate] = useState<Date | undefined>(
-      undefined
+      undefined,
     );
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const toastStore = useToastStore();
@@ -128,7 +128,7 @@ const UpdateConfimedDeliveryModalContent: React.FC<UpdateConfimedDeliveryModalPr
               accepts=".jpeg,.png,.pdf"
               onAttachmentsChanged={(attachments) => {
                 setAttachment(
-                  attachments.length == 0 ? undefined : attachments[0]
+                  attachments.length == 0 ? undefined : attachments[0],
                 );
               }}
               maxSizeMB={5}
@@ -140,7 +140,7 @@ const UpdateConfimedDeliveryModalContent: React.FC<UpdateConfimedDeliveryModalPr
           <H5 className={css(styles.header)}>
             {ci18n(
               "Meaning 'or'. Placed inbetween two options given to the user: Option A or Option B",
-              "OR"
+              "OR",
             )}
           </H5>
           <Field
@@ -184,8 +184,7 @@ const UpdateConfimedDeliveryModalContent: React.FC<UpdateConfimedDeliveryModalPr
         </div>
       </div>
     );
-  }
-);
+  });
 
 const useStylesheet = () => {
   const { borderPrimary } = useTheme();
@@ -250,7 +249,7 @@ const useStylesheet = () => {
           textAlign: "center",
         },
       }),
-    [borderPrimary]
+    [borderPrimary],
   );
 };
 export class UpdateConfimedDeliveryModal extends Modal {

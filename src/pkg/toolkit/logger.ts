@@ -8,8 +8,8 @@
 import { useMemo, useState } from "react";
 import gql from "graphql-tag";
 
-import UserStore from "@merchant/stores/UserStore";
-import ApolloStore from "@merchant/stores/ApolloStore";
+import UserStore from "@stores/UserStore";
+import ApolloStore from "@stores/ApolloStore";
 
 import { LoggableTable, LogToTreasureDataInput } from "@schema/types";
 
@@ -60,6 +60,6 @@ export const useLogger = (table: LoggableTable) => {
         log(table, { ...data, session_id: sessionId });
       },
     }),
-    [table, sessionId]
+    [table, sessionId],
   );
 };

@@ -3,7 +3,7 @@ import { StyleSheet } from "aphrodite";
 import { observer } from "mobx-react";
 
 /* Merchant Store */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* Lego Components */
 import { Card, H6, Link } from "@ContextLogic/lego";
@@ -55,6 +55,6 @@ const useStylesheet = () => {
           color: textBlack,
         },
       }),
-    [textBlack]
+    [textBlack],
   );
 };

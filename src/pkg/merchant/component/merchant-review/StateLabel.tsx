@@ -12,7 +12,7 @@ import { palettes } from "@toolkit/lego-legacy/DEPRECATED_colors";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
 import { LabelProps } from "@ContextLogic/lego";
-import LocalizationStore from "@merchant/stores/LocalizationStore";
+import LocalizationStore from "@stores/LocalizationStore";
 
 export type TicketState =
   | "new"

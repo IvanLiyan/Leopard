@@ -27,7 +27,7 @@ import ProductEditState from "@merchant/model/products/ProductEditState";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { GetSizeChartResponse } from "@merchant/api/size-chart";
 import { useStringQueryParam } from "@toolkit/url";
-import { useNavigationStore } from "@merchant/stores/NavigationStore";
+import { useNavigationStore } from "@stores/NavigationStore";
 
 export type ProductSizeChartProps = BaseProps & {
   readonly sizeChart?: GetSizeChartResponse | null | undefined;
@@ -87,7 +87,7 @@ const ProductSizeChart = (props: ProductSizeChartProps) => {
     if (editState.hasNonSizeChartUpdates && !editState.submitSuccess) {
       return new ConfirmationModal(
         i`You will be redirected to a new page to create or edit your size ` +
-          i`chart. Please save your changes to continue.`
+          i`chart. Please save your changes to continue.`,
       )
         .setHeader({ title: i`Save changes to continue` })
         .setCancel(i`Continue without saving`, async () => {
@@ -362,5 +362,5 @@ const useStylesheet = () =>
           },
         },
       }),
-    []
+    [],
   );

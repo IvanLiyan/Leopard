@@ -17,7 +17,7 @@ import ProductImage from "@merchant/component/products/ProductImage";
 
 /* Lego Toolkit */
 import { css } from "@toolkit/styling";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import BoostedProductsRowState from "@plus/model/BoostedProductsRowState";
 
@@ -91,7 +91,7 @@ const useStylesheet = () => {
           margin: "5px 0px",
         },
       }),
-    [textDark]
+    [textDark],
   );
 };
 

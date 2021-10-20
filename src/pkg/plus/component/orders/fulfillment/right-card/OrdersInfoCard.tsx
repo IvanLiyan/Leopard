@@ -14,7 +14,7 @@ import ProductImage from "@merchant/component/products/ProductImage";
 import BaseRightCard from "./BaseRightCard";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 export type Props = BaseProps & {
   readonly orderId: string;
@@ -107,6 +107,6 @@ const useStylesheet = () => {
           marginRight: 15,
         },
       }),
-    [surfaceLightest, primary, textDark]
+    [surfaceLightest, primary, textDark],
   );
 };

@@ -19,7 +19,7 @@ import { weightSemibold } from "@toolkit/fonts";
 
 /* Type Imports */
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 type CodeInputElementProps = BaseProps & {
   readonly value: string;

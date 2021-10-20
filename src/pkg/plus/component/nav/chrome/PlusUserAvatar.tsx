@@ -13,12 +13,12 @@ import { Card, Chevron, LoadingIndicator } from "@ContextLogic/lego";
 import { Link, Layout } from "@ContextLogic/lego";
 
 /* Merchant Store */
-import { useEnvironmentStore } from "@merchant/stores/EnvironmentStore";
-import { useLocalizationStore } from "@merchant/stores/LocalizationStore";
-import { useNavigationStore } from "@merchant/stores/NavigationStore";
-import { useTheme } from "@merchant/stores/ThemeStore";
-import { useApolloStore } from "@merchant/stores/ApolloStore";
-import { useExperiment } from "@merchant/stores/ExperimentStore";
+import { useEnvironmentStore } from "@stores/EnvironmentStore";
+import { useLocalizationStore } from "@stores/LocalizationStore";
+import { useNavigationStore } from "@stores/NavigationStore";
+import { useTheme } from "@stores/ThemeStore";
+import { useApolloStore } from "@stores/ApolloStore";
+import { useExperiment } from "@stores/ExperimentStore";
 
 /* Type Imports */
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
@@ -41,10 +41,8 @@ const PlusUserAvatar: React.FC<BaseProps> = ({
 
   const isMerchantPlus = data?.currentMerchant?.isMerchantPlus;
 
-  const {
-    bucket: phase2Bucket,
-    isLoading: isLoadingPhase2Bucket,
-  } = useExperiment("md_new_nav_phase_2");
+  const { bucket: phase2Bucket, isLoading: isLoadingPhase2Bucket } =
+    useExperiment("md_new_nav_phase_2");
 
   const {
     value: prefersNewNav,
@@ -251,6 +249,6 @@ const useStylesheet = () => {
           borderTop: `1px solid ${surfaceLight}`,
         },
       }),
-    [isRightToLeft, surfaceLightest, textDark, surfaceLight, textColor]
+    [isRightToLeft, surfaceLightest, textDark, surfaceLight, textColor],
   );
 };

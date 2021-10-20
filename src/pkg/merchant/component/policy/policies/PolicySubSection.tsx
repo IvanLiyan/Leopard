@@ -19,10 +19,10 @@ import { H6, Alert } from "@ContextLogic/lego";
 import { css } from "@toolkit/styling";
 
 /* Merchant Store */
-import LocalizationStore from "@merchant/stores/LocalizationStore";
+import LocalizationStore from "@stores/LocalizationStore";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { PickedPolicyAnnouncementItemSchema } from "@merchant/container/policy/policies/MerchantPoliciesContainer";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 import HeadingNumber from "./HeadingNumber";
 
@@ -46,18 +46,19 @@ const PolicySubSection = ({
     return LocalizationStore.instance();
   }, []);
 
-  const announcement: PickedPolicyAnnouncementItemSchema | null = useMemo(() => {
-    if (subSectionNumber && announcementsMap) {
-      return announcementsMap.get(subSectionNumber) || null;
-    }
-    return null;
-  }, [subSectionNumber, announcementsMap]);
+  const announcement: PickedPolicyAnnouncementItemSchema | null =
+    useMemo(() => {
+      if (subSectionNumber && announcementsMap) {
+        return announcementsMap.get(subSectionNumber) || null;
+      }
+      return null;
+    }, [subSectionNumber, announcementsMap]);
 
   const lastUpdatedDate: string | null = useMemo(() => {
     if (announcement && announcement.effectiveDate) {
       // Our backend dates are in seconds, but JS Date takes in milleseconds
       return new Date(
-        announcement.effectiveDate.unix * 1000
+        announcement.effectiveDate.unix * 1000,
       ).toLocaleDateString(preferredProperLocale);
     }
     return null;
@@ -80,7 +81,7 @@ const PolicySubSection = ({
           styles.indented,
           currentSection &&
             subSectionNumber == currentSection &&
-            styles.highlight
+            styles.highlight,
         )}
       >
         {children}
@@ -157,7 +158,7 @@ const useStylesheet = ({
           animationIterationCount: 1,
         },
       }),
-    [textWhite, warning]
+    [textWhite, warning],
   );
 
 export default observer(PolicySubSection);

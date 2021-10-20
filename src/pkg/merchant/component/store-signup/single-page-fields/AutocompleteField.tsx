@@ -29,10 +29,10 @@ import {
 import StoreSignupSinglePageState, {
   SignupPhoneNumber,
 } from "@merchant/model/StoreSignupSinglePageState";
-import { useDimenStore } from "@merchant/stores/DimenStore";
+import { useDeviceStore } from "@stores/DeviceStore";
 import { FieldMaxWidth, SideMargin } from "@toolkit/store-signup";
-import { useTheme } from "@merchant/stores/ThemeStore";
-import { useLocalizationStore } from "@merchant/stores/LocalizationStore";
+import { useTheme } from "@stores/ThemeStore";
+import { useLocalizationStore } from "@stores/LocalizationStore";
 
 export type AutocompleteField = "STORE_NAME" | "STREET_ADDRESS_LINE_1";
 
@@ -172,10 +172,8 @@ const AutocompleteField = (props: AutocompleteFieldProps) => {
       place_id: placeId,
     } = result.data.result;
 
-    const {
-      result: resultObj,
-      html_attributions: htmlAttributions,
-    } = result.data;
+    const { result: resultObj, html_attributions: htmlAttributions } =
+      result.data;
 
     let storeAddressLine1: string | undefined,
       storeAddressLine2: string | undefined,
@@ -187,10 +185,10 @@ const AutocompleteField = (props: AutocompleteFieldProps) => {
 
     if (addressComponents != null) {
       const detailsStreetNumber = addressComponents.find(({ types }) =>
-        types.includes("street_number")
+        types.includes("street_number"),
       )?.long_name;
       const detailsRoute = addressComponents.find(({ types }) =>
-        types.includes("route")
+        types.includes("route"),
       )?.long_name;
       // Sometimes street number is in the route and not in streetNumber
       storeAddressLine1 =
@@ -199,18 +197,19 @@ const AutocompleteField = (props: AutocompleteFieldProps) => {
           : `${detailsStreetNumber} ${detailsRoute}`;
 
       storeAddressLine2 = addressComponents.find(({ types }) =>
-        types.includes("subpremise")
+        types.includes("subpremise"),
       )?.long_name;
-      city = addressComponents.find(({ types }) => types.includes("locality"))
-        ?.long_name;
+      city = addressComponents.find(({ types }) =>
+        types.includes("locality"),
+      )?.long_name;
       stateOrProvince = addressComponents.find(({ types }) =>
-        types.includes("administrative_area_level_1")
+        types.includes("administrative_area_level_1"),
       )?.long_name;
       countryCode = addressComponents.find(({ types }) =>
-        types.includes("country")
+        types.includes("country"),
       )?.short_name as CountryCode;
       zipOrPostalCode = addressComponents.find(({ types }) =>
-        types.includes("postal_code")
+        types.includes("postal_code"),
       )?.long_name;
     }
 
@@ -225,7 +224,7 @@ const AutocompleteField = (props: AutocompleteFieldProps) => {
         const countryNumber = parseInt(countryMatch[1]);
         let phoneNumberCountry = findKey(
           AreaCodes,
-          (code) => code == countryNumber
+          (code) => code == countryNumber,
         );
 
         // Some phone country numbers are duplicated (e.g. Canada and US are
@@ -328,7 +327,7 @@ const AutocompleteField = (props: AutocompleteFieldProps) => {
     if (key === `ArrowDown`) {
       event.preventDefault();
       setHighlightedPrediction(
-        Math.min(highlightedPrediction + 1, predictions.length - 1)
+        Math.min(highlightedPrediction + 1, predictions.length - 1),
       );
     } else if (key === `ArrowUp`) {
       event.preventDefault();
@@ -338,7 +337,7 @@ const AutocompleteField = (props: AutocompleteFieldProps) => {
     }
   };
 
-  const { screenInnerWidth } = useDimenStore();
+  const { screenInnerWidth } = useDeviceStore();
   const contentWidth =
     screenInnerWidth > FieldMaxWidth + SideMargin * 2
       ? FieldMaxWidth
@@ -417,7 +416,7 @@ const useStylesheet = () => {
           fontStyle: "italic",
         },
       }),
-    [textLight]
+    [textLight],
   );
 };
 

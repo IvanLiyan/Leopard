@@ -18,7 +18,7 @@ import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { weightSemibold } from "@toolkit/fonts";
 
 /* Merchant Stores */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* Merchant Components */
 import StoreSignupTOSText from "./StoreSignupTOSText";

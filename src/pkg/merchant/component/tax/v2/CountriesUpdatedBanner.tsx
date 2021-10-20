@@ -11,7 +11,7 @@ import * as fonts from "@toolkit/fonts";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
 /* Merchant Stores */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 type CountriesUpdatedBannerProps = BaseProps & {
   readonly countries: ReadonlyArray<string>;
@@ -134,6 +134,6 @@ const useStylesheet = () => {
           width: 24,
         },
       }),
-    [borderPrimary, textBlack, pageBackground]
+    [borderPrimary, textBlack, pageBackground],
   );
 };

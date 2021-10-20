@@ -13,7 +13,7 @@ import { css } from "@toolkit/styling";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
 /* Merchant Store */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 type Props = BaseProps;
 
@@ -34,7 +34,7 @@ const useStylesheet = () => {
           borderBottom: `1px dashed ${borderPrimary}`,
         },
       }),
-    [borderPrimary]
+    [borderPrimary],
   );
 };
 

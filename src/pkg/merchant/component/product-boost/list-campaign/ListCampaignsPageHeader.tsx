@@ -10,13 +10,13 @@ import { formatCurrency } from "@ContextLogic/lego/toolkit/currency";
 import { useRequest } from "@toolkit/api";
 import { zendeskURL } from "@toolkit/url";
 /* Stores */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 /* Merchant Components */
 import BudgetBreakDownTable from "@merchant/component/product-boost/BudgetBreakDownTable";
 import ProductBoostHeader from "@merchant/component/product-boost/ProductBoostHeader";
 import ProductBoostBanner from "@merchant/component/product-boost/ProductBoostBanner";
 /* Merchant Store */
-import DimenStore from "@merchant/stores/DimenStore";
+import DeviceStore from "@stores/DeviceStore";
 /* Merchant API */
 import {
   BannerLocation,
@@ -34,7 +34,7 @@ type ListCampaignsPageHeaderProps = BaseProps & {
 };
 
 const ListCampaignsPageHeader = (props: ListCampaignsPageHeaderProps) => {
-  const { isSmallScreen, pageGuideXForPageWithTable } = DimenStore.instance();
+  const { isSmallScreen, pageGuideXForPageWithTable } = DeviceStore.instance();
   const pageX = pageGuideXForPageWithTable;
 
   const styles = useStyleSheet(pageX, isSmallScreen);
@@ -46,16 +46,17 @@ const ListCampaignsPageHeader = (props: ListCampaignsPageHeaderProps) => {
 
   const { campaignCount } = props;
 
-  const maxSpendingBreakdown: MaxSpendingBreakdown = response?.max_spending_breakdown || {
-    balance: 0,
-    bonus: 0,
-    current_unpaid: 0,
-    product_boost_balance: 0,
-    bonus_reason: 0,
-    is_payable: false,
-    max_spending: 0,
-    currency: "USD",
-  };
+  const maxSpendingBreakdown: MaxSpendingBreakdown =
+    response?.max_spending_breakdown || {
+      balance: 0,
+      bonus: 0,
+      current_unpaid: 0,
+      product_boost_balance: 0,
+      bonus_reason: 0,
+      is_payable: false,
+      max_spending: 0,
+      currency: "USD",
+    };
   const maxAllowedSpending = response?.max_allowed_spending || 0;
   const isPayable = response?.is_payable || false;
   const { currency: currencyCode } = maxSpendingBreakdown;
@@ -113,7 +114,7 @@ const ListCampaignsPageHeader = (props: ListCampaignsPageHeaderProps) => {
               className={css(styles.text)}
               openLinksInNewTab
               text={i`Create campaigns and boost the impressions of your products! [Learn more](${zendeskURL(
-                "360018979833"
+                "360018979833",
               )})`}
             />
             <PrimaryButton
@@ -172,7 +173,7 @@ const useStyleSheet = (pageX: string | number, isSmallScreen: boolean) => {
           minWidth: !isSmallScreen ? 410 : undefined,
         },
       }),
-    [pageX, isSmallScreen, textBlack, primary]
+    [pageX, isSmallScreen, textBlack, primary],
   );
 };
 

@@ -8,7 +8,7 @@ import { css } from "@toolkit/styling";
 import CodeWrapper from "@merchant/component/external/release-notes/CodeWrapper";
 
 /* Merchant Stores */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* Type Imports */
 import {
@@ -237,7 +237,7 @@ const useStylesheet = () => {
           color: negative,
         },
       }),
-    [positive, negative]
+    [positive, negative],
   );
 };
 

@@ -15,10 +15,10 @@ import { Layout, PrimaryButton, Text } from "@ContextLogic/lego";
 import { css } from "@toolkit/styling";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import { useUIStateBool } from "@toolkit/ui-state";
 import { Illustration } from "@merchant/component/core";
-import { useApolloStore } from "@merchant/stores/ApolloStore";
+import { useApolloStore } from "@stores/ApolloStore";
 
 export type Props = BaseProps & {
   readonly closeModal: () => void;
@@ -29,10 +29,10 @@ const SwitchNavBackTutorial = (props: Props) => {
   const styles = useStylesheet();
   const { client } = useApolloStore();
 
-  const {
-    isLoading,
-    update: dismissSwitchNavBack,
-  } = useUIStateBool("DISMISSED_SWITCH_NAV_BACK_TUTORIAL", { client });
+  const { isLoading, update: dismissSwitchNavBack } = useUIStateBool(
+    "DISMISSED_SWITCH_NAV_BACK_TUTORIAL",
+    { client },
+  );
 
   const handleDismissModal = async () => {
     await dismissSwitchNavBack(true);
@@ -113,6 +113,6 @@ const useStylesheet = () => {
           borderTop: `1px solid ${borderPrimary}`,
         },
       }),
-    [textBlack, borderPrimary]
+    [textBlack, borderPrimary],
   );
 };

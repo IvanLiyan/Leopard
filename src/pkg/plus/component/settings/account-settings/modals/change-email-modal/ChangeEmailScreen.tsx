@@ -30,8 +30,8 @@ import HorizontalField from "@plus/component/form/HorizontalField";
 import PasswordInput from "@plus/component/settings/account-settings/modals/change-password-modal/PasswordInput";
 
 /* Merchant Stores */
-import { useApolloStore } from "@merchant/stores/ApolloStore";
-import { useToastStore } from "@merchant/stores/ToastStore";
+import { useApolloStore } from "@stores/ApolloStore";
+import { useToastStore } from "@stores/ToastStore";
 
 /* Type Imports */
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
@@ -39,7 +39,7 @@ import {
   ChangeEmailMutation,
   UserMutationChangeEmailArgs,
 } from "@schema/types";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 const CHANGE_EMAIL = gql`
   mutation ChangeEmailScreen_ChangeEmail($input: ChangeEmailInput!) {
@@ -112,12 +112,12 @@ const ChangeEmailScreen: React.FC<Props> = (props: Props) => {
   const headerText =
     ci18n(
       "referring to an email address",
-      "We'll use this address if we need to contact you about your store."
+      "We'll use this address if we need to contact you about your store.",
     ) +
     "\n\n" +
     ci18n(
       "referring to an email address",
-      "Your customers will see this address if you email them."
+      "Your customers will see this address if you email them.",
     );
 
   const emailPopover = () => (
@@ -220,6 +220,6 @@ const useStylesheet = () => {
           minWidth: 160,
         },
       }),
-    [borderPrimaryDark]
+    [borderPrimaryDark],
   );
 };

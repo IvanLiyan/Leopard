@@ -20,8 +20,8 @@ import IllustrationOrRender from "./IllustrationOrRender";
 
 import { css } from "@ContextLogic/lego/toolkit/styling";
 
-import DimenStore from "@merchant/stores/DimenStore";
-import { ThemeContext } from "@merchant/stores/ThemeStore";
+import DeviceStore from "@stores/DeviceStore";
+import { ThemeContext } from "@stores/ThemeStore";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
 export type WelcomeHeaderProps = BaseProps & {
@@ -49,12 +49,12 @@ class WelcomeHeader extends Component<WelcomeHeaderProps> {
 
   @computed
   get styles() {
-    const dimenStore = DimenStore.instance();
+    const DeviceStore = DeviceStore.instance();
     const {
       hideBorder,
       maxIllustrationWidth,
       maxIllustrationHeight,
-      paddingX = dimenStore.pageGuideX,
+      paddingX = DeviceStore.pageGuideX,
       paddingY = "20px",
     } = this.props;
 
@@ -171,7 +171,7 @@ class WelcomeHeader extends Component<WelcomeHeaderProps> {
       breadcrumbs,
     } = this.props;
 
-    const dimenStore = DimenStore.instance();
+    const DeviceStore = DeviceStore.instance();
     return (
       <StaggeredFadeIn
         className={css(this.styles.root, className, style)}
@@ -200,7 +200,7 @@ class WelcomeHeader extends Component<WelcomeHeaderProps> {
           </div>
           {children}
         </div>
-        {!dimenStore.isSmallScreen && illustration != null && (
+        {!DeviceStore.isSmallScreen && illustration != null && (
           <IllustrationOrRender
             className={css(this.styles.image)}
             value={illustration}

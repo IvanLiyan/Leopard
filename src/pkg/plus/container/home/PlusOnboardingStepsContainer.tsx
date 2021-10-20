@@ -23,7 +23,7 @@ import PlusWelcomeHeader from "@plus/component/nav/PlusWelcomeHeader";
 import OnboardingSteps from "@plus/component/onboarding/OnboardingSteps";
 
 import { OnboardingSchema, MerchantSchema } from "@schema/types";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* Model */
 import { PickedOnboardingStep } from "@toolkit/home";
@@ -109,7 +109,7 @@ const useStylesheet = () => {
           color: textDark,
         },
       }),
-    [textDark]
+    [textDark],
   );
 };
 export default observer(PlusOnboardingStepsContainer);

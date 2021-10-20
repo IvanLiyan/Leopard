@@ -10,7 +10,7 @@ import React from "react";
 import { Text, Tip } from "@ContextLogic/lego";
 
 import { css } from "@toolkit/styling";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
 type Props = BaseProps & {};

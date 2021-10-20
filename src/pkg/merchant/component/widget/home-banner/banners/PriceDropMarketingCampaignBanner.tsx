@@ -4,7 +4,7 @@ import React from "react";
 import { SimpleBannerItem } from "@ContextLogic/lego";
 
 /* Merchant Stores */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* SVGs */
 import priceDropBannerImg from "@assets/img/price-drop/price_drop_lto_branding.svg";
@@ -18,7 +18,7 @@ export type PriceDropMarketingCampaignBannerProps = BaseProps & {
 };
 
 const PriceDropMarketingCampaignBanner = (
-  props: PriceDropMarketingCampaignBannerProps
+  props: PriceDropMarketingCampaignBannerProps,
 ) => {
   const { logParams } = props;
   const { textBlack, textWhite, primaryLight } = useTheme();

@@ -15,8 +15,8 @@ import { weightSemibold } from "@toolkit/fonts";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
 /* Merchant Store */
-import { useTheme } from "@merchant/stores/ThemeStore";
-import NavigationStore from "@merchant/stores/NavigationStore";
+import { useTheme } from "@stores/ThemeStore";
+import NavigationStore from "@stores/NavigationStore";
 
 /* Plus */
 import SettingsSection from "@plus/component/settings/toolkit/SettingsSection";
@@ -66,7 +66,7 @@ const PaymentSettingsEmpty: React.FC = () => {
         <div className={css(styles.footerContainer)}>
           <Markdown
             text={`Having trouble? [View our guide](${zendeskURL(
-              "205212517"
+              "205212517",
             )})`}
           />
         </div>
@@ -248,6 +248,6 @@ const useStylesheet = () => {
       textBlack,
       pageBackground,
       borderPrimary,
-    ]
+    ],
   );
 };

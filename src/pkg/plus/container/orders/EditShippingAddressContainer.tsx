@@ -23,8 +23,8 @@ import { css } from "@toolkit/styling";
 import { Button } from "@ContextLogic/lego";
 import { PrimaryButton } from "@ContextLogic/lego";
 
-import { useToastStore } from "@merchant/stores/ToastStore";
-import { useNavigationStore } from "@merchant/stores/NavigationStore";
+import { useToastStore } from "@stores/ToastStore";
+import { useNavigationStore } from "@stores/NavigationStore";
 
 import HttpError from "@merchant/component/errors/HttpError";
 
@@ -93,8 +93,8 @@ const EditShippingAddressContainer: React.FC<Props> = ({
         new OrderEditState({
           order: { ...initialOrderData },
           countriesWeShipTo,
-        })
-    )
+        }),
+    ),
   );
 
   type MutationResponseType = {
@@ -204,13 +204,13 @@ const EditShippingAddressContainer: React.FC<Props> = ({
       ni18n(
         editStates.length,
         "Shipping address update is being processed!",
-        "Shipping address updates are being processed!"
-      )
+        "Shipping address updates are being processed!",
+      ),
     );
   };
 
   const isReadySave = editStates.every(
-    (editState) => editState.shippingAddressIsValid
+    (editState) => editState.shippingAddressIsValid,
   );
   const isSubmitting = editStates.some((editState) => editState.isSubmitting);
   const actions = (
@@ -227,7 +227,7 @@ const EditShippingAddressContainer: React.FC<Props> = ({
   const title = ni18n(
     editStates.length,
     "Edit shipping address",
-    "Edit shipping addresses"
+    "Edit shipping addresses",
   );
   return (
     <PageRoot>
@@ -306,7 +306,7 @@ const useStylesheet = () =>
           },
         },
       }),
-    []
+    [],
   );
 
 export default observer(EditShippingAddressContainer);

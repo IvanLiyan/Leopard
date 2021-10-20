@@ -12,7 +12,7 @@ import { useStringArrayQueryParam } from "@toolkit/url";
 import { wishExpressTruck } from "@assets/illustrations";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 export type UnfulfilledOrdersFilterType = "wish_express" | "none";
 
 type Props = BaseProps & {};
@@ -57,6 +57,6 @@ const useStylesheet = () => {
           userSelect: "none",
         },
       }),
-    [textBlack]
+    [textBlack],
   );
 };

@@ -31,7 +31,7 @@ import EuMerchantTermsOfService2021 from "@merchant/component/policy/terms/versi
 import AcceptTermsOfServiceComponent from "@merchant/component/policy/terms/AcceptTermsOfServiceComponent";
 
 /* Merchant Store */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* Type Imports */
 import { useUIStateBool } from "@toolkit/ui-state";

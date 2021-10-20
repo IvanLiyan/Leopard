@@ -23,8 +23,8 @@ import PartnerDeveloperSection from "@merchant/component/external/partner-develo
 import PartnerDeveloperGlobalState from "@merchant/model/external/partner-developer/PartnerDeveloperGlobalState";
 
 /* Merchant Stores */
-import { useTheme } from "@merchant/stores/ThemeStore";
-import { useUserStore } from "@merchant/stores/UserStore";
+import { useTheme } from "@stores/ThemeStore";
+import { useUserStore } from "@stores/UserStore";
 
 import { OnTextChangeEvent } from "@ContextLogic/lego";
 import { PrimaryButtonProps } from "@ContextLogic/lego";
@@ -166,7 +166,7 @@ const useStylesheet = () => {
           },
         },
       }),
-    [textBlack, surfaceLightest]
+    [textBlack, surfaceLightest],
   );
 };
 

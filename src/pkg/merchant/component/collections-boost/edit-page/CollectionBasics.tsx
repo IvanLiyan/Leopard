@@ -9,7 +9,7 @@ import { TextInput, HorizontalField, ProgressBar } from "@ContextLogic/lego";
 import { css } from "@toolkit/styling";
 import { useDebouncer } from "@ContextLogic/lego/toolkit/hooks";
 import { weightMedium } from "@toolkit/fonts";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* Merchant Model */
 import Collection from "@merchant/model/collections-boost/Collection";
@@ -33,13 +33,8 @@ type CollectionBasicsProps = BaseProps & {
 
 const CollectionBasics = (props: CollectionBasicsProps) => {
   const { collection, className } = props;
-  const {
-    name,
-    logoUrl,
-    oldLogoUrl,
-    searchQueries,
-    relatedProducts,
-  } = collection;
+  const { name, logoUrl, oldLogoUrl, searchQueries, relatedProducts } =
+    collection;
 
   const suggestionInfo = useMemo(
     () => ({
@@ -51,17 +46,12 @@ const CollectionBasics = (props: CollectionBasicsProps) => {
       maxNumWordTitle: i`Search terms with too many words`,
       searchQueries: collection.searchQueries || "",
     }),
-    [collection.searchQueries]
+    [collection.searchQueries],
   );
 
   const styles = useStylesheet();
-  const {
-    pageBackground,
-    surfaceLight,
-    positive,
-    warning,
-    negative,
-  } = useTheme();
+  const { pageBackground, surfaceLight, positive, warning, negative } =
+    useTheme();
 
   const [suggestionsMap, setSuggestionsMap] = useState<
     Map<string, Map<string, []>>
@@ -76,7 +66,7 @@ const CollectionBasics = (props: CollectionBasicsProps) => {
     const update = async () => {
       const result = await new CollectionBoostSearchTermSuggestionsHelper(
         debouncedSearchTerms,
-        suggestionInfo
+        suggestionInfo,
       ).updateSuggestions();
 
       if (result && result.size > 0) {
@@ -319,6 +309,6 @@ const useStylesheet = () => {
           color: textBlack,
         },
       }),
-    [textBlack, textLight]
+    [textBlack, textLight],
   );
 };

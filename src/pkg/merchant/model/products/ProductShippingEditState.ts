@@ -24,9 +24,9 @@ import {
   Maybe,
   Datetime,
 } from "@schema/types";
-import ToastStore from "@merchant/stores/ToastStore";
-import NavigationStore from "@merchant/stores/NavigationStore";
-import ApolloStore from "@merchant/stores/ApolloStore";
+import ToastStore from "@stores/ToastStore";
+import NavigationStore from "@stores/NavigationStore";
+import ApolloStore from "@stores/ApolloStore";
 import gql from "graphql-tag";
 import {
   MinMaxValueValidator,

@@ -26,7 +26,7 @@ import VariationSKUColumn, { VARIATION_ICON_WIDTH } from "./VariationSKUColumn";
 import CreateShippingPlanState, {
   VariationState,
 } from "@merchant/model/fbw/CreateShippingPlanState";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
 type Props = BaseProps & {
@@ -73,7 +73,7 @@ const EnterLogisticsInfo: React.FC<Props> = ({
             rangeStart={offset + 1}
             rangeEnd={Math.min(
               totalVariationCount ?? 0,
-              offset + visibleVariations.length
+              offset + visibleVariations.length,
             )}
             hasNext={
               totalVariationCount != null &&
@@ -242,6 +242,6 @@ const useStylesheet = () => {
           width: 120,
         },
       }),
-    [textLight]
+    [textLight],
   );
 };

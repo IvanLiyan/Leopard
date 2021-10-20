@@ -3,7 +3,7 @@ import { StyleSheet } from "aphrodite";
 import { observer } from "mobx-react";
 
 import { useQuery } from "@apollo/react-hooks";
-import { useApolloStore } from "@merchant/stores/ApolloStore";
+import { useApolloStore } from "@stores/ApolloStore";
 
 /* Lego Components */
 import { Link, Layout } from "@ContextLogic/lego";
@@ -19,8 +19,8 @@ import {
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { Icon } from "@merchant/component/core";
-import { useTheme } from "@merchant/stores/ThemeStore";
-import { useEnvironmentStore } from "@merchant/stores/EnvironmentStore";
+import { useTheme } from "@stores/ThemeStore";
+import { useEnvironmentStore } from "@stores/EnvironmentStore";
 
 type Props = BaseProps;
 
@@ -31,7 +31,7 @@ const NotificationsButton: React.FC<Props> = ({ style, className }: Props) => {
     GET_NOTIFICATION_BUTTON_QUERY,
     {
       client: apolloStore.client,
-    }
+    },
   );
   const notificationCount = data?.notifications.notificationCount;
   const { isDev, isStaging } = useEnvironmentStore();
@@ -76,6 +76,6 @@ const useStylesheet = () => {
           marginLeft: 5,
         },
       }),
-    []
+    [],
   );
 };

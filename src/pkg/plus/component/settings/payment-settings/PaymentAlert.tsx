@@ -12,7 +12,7 @@ import { css } from "@toolkit/styling";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
 /* Merchant Store */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* Schema */
 import { PaymentSettingsInitialData } from "@toolkit/payment-settings";
@@ -125,6 +125,6 @@ const useStylesheet = () => {
           border: `1px solid ${warning}`,
         },
       }),
-    [warning]
+    [warning],
   );
 };

@@ -13,8 +13,8 @@ import { useMutation } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 
 /* Merchant Stores */
-import { useApolloStore } from "@merchant/stores/ApolloStore";
-import { useToastStore } from "@merchant/stores/ToastStore";
+import { useApolloStore } from "@stores/ApolloStore";
+import { useToastStore } from "@stores/ToastStore";
 
 /* Legacy */
 import { zendeskURL } from "@legacy/core/url";
@@ -58,7 +58,7 @@ type TurnOnResponseType = {
 type Props = BaseProps & {
   readonly onCancel: () => unknown;
   readonly onNext: (
-    backupCodes: TwoFactorTurnOnMutation["backupCodes"]
+    backupCodes: TwoFactorTurnOnMutation["backupCodes"],
   ) => unknown;
   readonly sendCode: (force?: "FORCE") => unknown;
   readonly isSendingCode: boolean;
@@ -117,7 +117,7 @@ const CodeOnContent: React.FC<Props> = (props: Props) => {
 
         if (!isOn) {
           toastStore.negative(
-            error || i`Something went wrong. Please try again later.`
+            error || i`Something went wrong. Please try again later.`,
           );
           return;
         }

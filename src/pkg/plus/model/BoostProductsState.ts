@@ -17,9 +17,9 @@ import {
   BoostProductsInitialData,
   BoostProductsMerchantSpending,
 } from "@toolkit/marketing/boost-products";
-import ToastStore from "@merchant/stores/ToastStore";
-import ApolloStore from "@merchant/stores/ApolloStore";
-import NavigationStore from "@merchant/stores/NavigationStore";
+import ToastStore from "@stores/ToastStore";
+import ApolloStore from "@stores/ApolloStore";
+import NavigationStore from "@stores/NavigationStore";
 
 const UPSERT_PROMOTIONS_MUTATION = gql`
   mutation BoostProductsState_UpsertProductPromotions(
@@ -73,7 +73,7 @@ export default class BoostProductsState {
   deselectProducts(productIds: ReadonlyArray<string>) {
     const { productBudgetById } = this;
     this.selectedProducts = this.selectedProducts.filter(
-      ({ product }) => !productIds.includes(product.id)
+      ({ product }) => !productIds.includes(product.id),
     );
     for (const productId of productIds) {
       productBudgetById.delete(productId);
@@ -173,7 +173,7 @@ export default class BoostProductsState {
       if (budget < dailyMinBudget) {
         return i`On all your products, please set a daily boost budget of at least ${formatCurrency(
           dailyMinBudget,
-          currencyCode
+          currencyCode,
         )}`;
       }
     }
@@ -284,7 +284,7 @@ export default class BoostProductsState {
         : i`You've boosted ${selectedProducts.length} products!`,
       {
         timeoutMs: 7000,
-      }
+      },
     );
   }
 }

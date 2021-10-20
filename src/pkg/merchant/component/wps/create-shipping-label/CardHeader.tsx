@@ -18,7 +18,7 @@ import { Text } from "@ContextLogic/lego";
 import { Illustration, IllustrationName } from "@merchant/component/core";
 
 /* Merchant Stores */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 type Props = BaseProps & {
   readonly icon?: IllustrationName;
@@ -92,7 +92,7 @@ const useStylesheet = () => {
           gridRow: 2,
         },
       }),
-    [textBlack, surfaceLight]
+    [textBlack, surfaceLight],
   );
 };
 

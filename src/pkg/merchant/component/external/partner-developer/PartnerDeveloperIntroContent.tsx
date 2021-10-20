@@ -20,8 +20,8 @@ import {
 import PartnerDeveloperSection from "@merchant/component/external/partner-developer/PartnerDeveloperSection";
 
 /* Merchant Stores */
-import { useTheme } from "@merchant/stores/ThemeStore";
-import { useUserStore } from "@merchant/stores/UserStore";
+import { useTheme } from "@stores/ThemeStore";
+import { useUserStore } from "@stores/UserStore";
 
 /* Merchant Model */
 import PartnerDeveloperGlobalState from "@merchant/model/external/partner-developer/PartnerDeveloperGlobalState";
@@ -189,7 +189,7 @@ const useStylesheet = () => {
           },
         },
       }),
-    [textBlack, textLight, surfaceLightest]
+    [textBlack, textLight, surfaceLightest],
   );
 };
 

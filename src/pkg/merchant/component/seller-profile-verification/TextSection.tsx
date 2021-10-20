@@ -9,7 +9,7 @@ import { weightBold } from "@toolkit/fonts";
 import { css } from "@toolkit/styling";
 
 /* Store */
-import { useTheme, AppTheme } from "@merchant/stores/ThemeStore";
+import { useTheme, AppTheme } from "@stores/ThemeStore";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
@@ -34,14 +34,8 @@ export interface TextSectionProps extends BaseProps {
 }
 
 const TextSection = (props: TextSectionProps) => {
-  const {
-    className,
-    style,
-    title,
-    subtitle,
-    paragraphs,
-    textSectionStyles,
-  } = props;
+  const { className, style, title, subtitle, paragraphs, textSectionStyles } =
+    props;
 
   const theme = useTheme();
   const styles = useStylesheet(theme, textSectionStyles);
@@ -79,7 +73,7 @@ export default TextSection;
 
 const useStylesheet = (
   theme: AppTheme,
-  textSectionStyles?: TextSectionStyles
+  textSectionStyles?: TextSectionStyles,
 ) => {
   return useMemo(() => {
     const {

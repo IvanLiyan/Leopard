@@ -15,8 +15,8 @@ import Modal from "@merchant/component/core/modal/Modal";
 import ConfirmationScreen from "./ConfirmationScreen";
 
 /* Type Imports */
-import ToastStore from "@merchant/stores/ToastStore";
-import DeviceStore from "@merchant/stores/DeviceStore";
+import ToastStore from "@stores/ToastStore";
+import DeviceStore from "@stores/DeviceStore";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
 export type VacationModeConfirmationModalProps = BaseProps & {
@@ -47,11 +47,11 @@ export default class VacationModeConfirmationModal extends Modal {
       if (this.props.turningOnVacationMode) {
         toastStore.warning(
           i`Vacation mode is now on, enjoy your vacation! ` +
-            i`Your products will be updated shortly.`
+            i`Your products will be updated shortly.`,
         );
       } else {
         toastStore.info(
-          i`Vacation mode is now off! Your products are now for sale again.`
+          i`Vacation mode is now off! Your products are now for sale again.`,
         );
       }
     }, 300);

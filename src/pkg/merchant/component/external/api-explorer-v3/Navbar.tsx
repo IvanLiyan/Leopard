@@ -20,8 +20,8 @@ import {
   MenuItem,
   MenuSubItem,
 } from "@merchant/stores/v3-api-explorer/ApiExplorerStore";
-import { useTheme, useThemeStore } from "@merchant/stores/ThemeStore";
-import { useNavigationStore } from "@merchant/stores/NavigationStore";
+import { useTheme, useThemeStore } from "@stores/ThemeStore";
+import { useNavigationStore } from "@stores/NavigationStore";
 
 export type NavbarProps = BaseProps & {
   readonly store: ApiExplorerStore;
@@ -34,7 +34,7 @@ const Navbar = (props: NavbarProps) => {
   const rootStyle = css(style, className);
 
   const [expandedList, setExpandedList] = useState<Array<boolean>>(
-    menuItems.map(() => false)
+    menuItems.map(() => false),
   );
   const navigationStore = useNavigationStore();
 
@@ -75,7 +75,7 @@ const Navbar = (props: NavbarProps) => {
               subItems.map(
                 (
                   { title, httpVerb, operationId }: MenuSubItem,
-                  idx: number
+                  idx: number,
                 ) => (
                   <SideMenu.Item
                     key={operationId}
@@ -85,11 +85,11 @@ const Navbar = (props: NavbarProps) => {
                     style={styles.itemTitleContent}
                     onClick={() => {
                       navigationStore.pushPath(
-                        `${baseUrl || ""}/${operationId}`
+                        `${baseUrl || ""}/${operationId}`,
                       );
                     }}
                   />
-                )
+                ),
               )}
           </SideMenu.Section>
         ))}

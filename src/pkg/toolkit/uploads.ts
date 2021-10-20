@@ -1,6 +1,6 @@
 import gql from "graphql-tag";
-import ApolloStore from "@merchant/stores/ApolloStore";
-import ToastStore from "@merchant/stores/ToastStore";
+import ApolloStore from "@stores/ApolloStore";
+import ToastStore from "@stores/ToastStore";
 
 import {
   InitiateUploadInput,
@@ -60,7 +60,7 @@ export type UploadResponse = Pick<InitiateUploadMutation, "downloadUrl">;
 
 export const upload = async (
   file: File,
-  input: InitiateUploadInput
+  input: InitiateUploadInput,
 ): Promise<Pick<InitiateUploadMutation, "downloadUrl"> | undefined> => {
   const { client } = ApolloStore.instance();
   const toastStore = ToastStore.instance();

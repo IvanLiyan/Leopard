@@ -5,8 +5,8 @@ import {
   PopoverProps as LegoPopoverProps,
 } from "@ContextLogic/lego";
 import { ApolloProvider } from "@apollo/react-hooks";
-import { useApolloStore } from "@merchant/stores/ApolloStore";
-import { ThemeWrapper as MerchantThemeWrapper } from "@merchant/stores/ThemeStore";
+import { useApolloStore } from "@stores/ApolloStore";
+import { ThemeWrapper as MerchantThemeWrapper } from "@stores/ThemeStore";
 
 export type PopoverProps = Omit<LegoPopoverProps, "themeWrapper">;
 

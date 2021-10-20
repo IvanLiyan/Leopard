@@ -24,8 +24,8 @@ import { Illustration } from "@merchant/component/core";
 import CountryFlagsGroup from "@merchant/component/products/product-shipping/CountryFlagsGroup";
 
 /* Merchant Stores */
-import { useTheme } from "@merchant/stores/ThemeStore";
-import ApolloStore from "@merchant/stores/ApolloStore";
+import { useTheme } from "@stores/ThemeStore";
+import ApolloStore from "@stores/ApolloStore";
 
 /* Type Imports */
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
@@ -233,6 +233,6 @@ const useStylesheet = () => {
           marginRight: 30,
         },
       }),
-    [borderPrimaryDark]
+    [borderPrimaryDark],
   );
 };

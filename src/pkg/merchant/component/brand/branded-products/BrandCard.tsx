@@ -10,7 +10,7 @@ import { DEPRECATEDIcon as Icon } from "@merchant/component/core";
 /* Lego Toolkit */
 import { css } from "@toolkit/styling";
 
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
@@ -140,6 +140,6 @@ const useStylesheet = (padding?: number) => {
           cursor: "pointer",
         },
       }),
-    [padding, borderPrimary, surfaceLightest]
+    [padding, borderPrimary, surfaceLightest],
   );
 };

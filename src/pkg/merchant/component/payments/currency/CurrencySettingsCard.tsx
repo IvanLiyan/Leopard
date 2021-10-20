@@ -17,7 +17,7 @@ import * as fonts from "@toolkit/fonts";
 import { getCurrencySymbol } from "@ContextLogic/lego/toolkit/currency";
 
 /* Merchant Store */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* Relative Imports */
 import { CurrencyUpdateBanner } from "./CurrencyUpdateBanner";
@@ -39,7 +39,7 @@ type CurrencySettingsCardProps = BaseProps & {
   readonly conversionRate: number | null | undefined;
   readonly conversionStatus: ConversionStatus;
   readonly requestConversion: (
-    requestedEndDate: Date
+    requestedEndDate: Date,
   ) => Promise<void> | null | undefined;
   readonly cancelConversion: () => Promise<void> | null | undefined;
   readonly isPayPal: boolean;
@@ -81,9 +81,9 @@ export const CurrencySettingsCard = (props: CurrencySettingsCardProps) => {
     "%1$s - %2$s",
     formatDatetimeLocalized(
       moment(new Date()).add(-30, "days"),
-      exchangeRateRangeDateFormat
+      exchangeRateRangeDateFormat,
     ),
-    formatDatetimeLocalized(moment(new Date()), exchangeRateRangeDateFormat)
+    formatDatetimeLocalized(moment(new Date()), exchangeRateRangeDateFormat),
   );
 
   const canCancel = hoursDiffStart < 24 && pendingCurrency != currentCurrency;
@@ -247,6 +247,6 @@ const useStylesheet = () => {
           marginBottom: 12,
         },
       }),
-    [textBlack, textDark, pageBackground, borderPrimary]
+    [textBlack, textDark, pageBackground, borderPrimary],
   );
 };

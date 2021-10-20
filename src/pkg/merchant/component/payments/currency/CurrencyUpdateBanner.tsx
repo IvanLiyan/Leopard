@@ -15,7 +15,7 @@ import { moneyIcon } from "@assets/illustrations";
 import { getCurrencySymbol } from "@ContextLogic/lego/toolkit/currency";
 
 /* Merchant Store */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
@@ -33,7 +33,7 @@ export const CurrencyUpdateBanner = (props: CurrencyUpdateBannerProps) => {
   const { requestConversion, isPayPal, isPayoneer, allowedMigration } = props;
 
   const currencyCodeAndSymbol = `${allowedMigration} (${getCurrencySymbol(
-    allowedMigration
+    allowedMigration,
   )})`;
 
   const title = (
@@ -49,14 +49,14 @@ export const CurrencyUpdateBanner = (props: CurrencyUpdateBannerProps) => {
           allowedMigration == "BRL"
             ? i`You now have the option to conduct business in
               ${currencyCodeAndSymbol} by converting your Local Currency
-              Code from USD ($) to ${currencyCodeAndSymbol}. Upon completing 
-              currency conversion, product and shipping prices may be edited 
-              in ${currencyCodeAndSymbol} while payments will still be 
+              Code from USD ($) to ${currencyCodeAndSymbol}. Upon completing
+              currency conversion, product and shipping prices may be edited
+              in ${currencyCodeAndSymbol} while payments will still be
               disbursed in USD ($).`
-            : i`You now have the option to conduct business in 
+            : i`You now have the option to conduct business in
               ${currencyCodeAndSymbol} by converting your Local Currency
-              Code. Once you convert your Local Currency Code to 
-              ${currencyCodeAndSymbol}, your product prices, shipping prices,  
+              Code. Once you convert your Local Currency Code to
+              ${currencyCodeAndSymbol}, your product prices, shipping prices,
               and payments will be reflected in ${currencyCodeAndSymbol}.`
         }
       />
@@ -125,6 +125,6 @@ const useStylesheet = () => {
           fontSize: 16,
         },
       }),
-    [textBlack, textDark]
+    [textBlack, textDark],
   );
 };

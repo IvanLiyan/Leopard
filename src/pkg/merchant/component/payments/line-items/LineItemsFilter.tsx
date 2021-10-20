@@ -22,7 +22,7 @@ import { CheckboxGroupFieldOptionType as OptionType } from "@ContextLogic/lego";
 import { RadioOption } from "@ContextLogic/lego";
 
 /* Merchant Store */
-import LocalizationStore from "@merchant/stores/LocalizationStore";
+import LocalizationStore from "@stores/LocalizationStore";
 
 type BaseProps = any;
 

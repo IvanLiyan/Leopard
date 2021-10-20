@@ -29,10 +29,10 @@ import {
   EntityProps,
 } from "@toolkit/merchant-review/material-types";
 import { TicketState } from "@merchant/component/merchant-review/StateLabel";
-import LocalizationStore from "@merchant/stores/LocalizationStore";
-import DimenStore from "@merchant/stores/DimenStore";
-import ToastStore from "@merchant/stores/ToastStore";
-import NavigationStore from "@merchant/stores/NavigationStore";
+import LocalizationStore from "@stores/LocalizationStore";
+import DeviceStore from "@stores/DeviceStore";
+import ToastStore from "@stores/ToastStore";
+import NavigationStore from "@stores/NavigationStore";
 
 type ActionType = "requestInfo" | "approve" | "reject";
 
@@ -90,7 +90,7 @@ export default class Reply extends Component<ReplyProps> {
 
   @computed
   get styles() {
-    const { pageGuideX } = DimenStore.instance();
+    const { pageGuideX } = DeviceStore.instance();
 
     return StyleSheet.create({
       root: {

@@ -16,7 +16,7 @@ import { Card, Layout, Markdown, Text } from "@ContextLogic/lego";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
 /* Toolkit */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import BoxIconGroup from "./BoxIconGroup";
 import {
   formatProductAmount,

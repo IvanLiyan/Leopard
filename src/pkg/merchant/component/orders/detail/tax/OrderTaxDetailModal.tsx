@@ -7,7 +7,7 @@ import { Modal } from "@merchant/component/core";
 /* Lego Toolkit */
 import { css } from "@toolkit/styling";
 import * as fonts from "@toolkit/fonts";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* Relative Imports */
 import OrderTaxTable, { OrderTaxTableProps } from "./OrderTaxTable";
@@ -50,7 +50,7 @@ const useStylesheet = () => {
           marginBottom: 18,
         },
       }),
-    [textBlack]
+    [textBlack],
   );
 };
 

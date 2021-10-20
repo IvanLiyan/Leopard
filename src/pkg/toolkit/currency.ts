@@ -3,11 +3,11 @@ import { formatCurrency as _formatCurrency } from "@ContextLogic/lego/toolkit/cu
 import { getCountryName } from "@toolkit/countries";
 import { PaymentCurrencyCode, CountryCode } from "@schema/types";
 
-import LocalizationStore from "@merchant/stores/LocalizationStore";
+import LocalizationStore from "@stores/LocalizationStore";
 
 export const formatCurrency = (
   amount: number,
-  currencyCode: CurrencyCode | string | undefined = "USD"
+  currencyCode: CurrencyCode | string | undefined = "USD",
 ): string => {
   const { preferredProperLocale } = LocalizationStore.instance();
 

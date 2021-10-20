@@ -15,7 +15,7 @@ import { Layout } from "@ContextLogic/lego";
 /* Lego Toolkit */
 import { css } from "@toolkit/styling";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* Merchant Components */
 import { WelcomeHeader, PageGuide } from "@merchant/component/core";
@@ -77,7 +77,7 @@ const useStylesheet = () => {
           marginTop: 32,
         },
       }),
-    [pageBackground, textBlack]
+    [pageBackground, textBlack],
   );
 };
 

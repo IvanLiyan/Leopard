@@ -37,8 +37,8 @@ import {
 /* Type Imports */
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { EarlyPaymentPolicy } from "@merchant/api/early-payment";
-import LocalizationStore from "@merchant/stores/LocalizationStore";
-import { useNavigationStore } from "@merchant/stores/NavigationStore";
+import LocalizationStore from "@stores/LocalizationStore";
+import { useNavigationStore } from "@stores/NavigationStore";
 import { formatDatetimeLocalized } from "@toolkit/datetime";
 
 export type RequestEarlyPaymentModalProps = BaseProps;
@@ -63,12 +63,8 @@ export type RequestEarlyPaymentDetailProps = BaseProps & {
 
 const EarlyPaymentDetail = (props: RequestEarlyPaymentDetailProps) => {
   const styles = useStylesheet();
-  const {
-    earlyPaymentPolicy,
-    requestedAmount,
-    earlyPaymentTermType,
-    isZh,
-  } = props;
+  const { earlyPaymentPolicy, requestedAmount, earlyPaymentTermType, isZh } =
+    props;
   const nextPaymentDate = moment(earlyPaymentPolicy.next_payment_date);
   const installmentFeeRate =
     earlyPaymentPolicy.term_info_dict[earlyPaymentTermType]
@@ -109,7 +105,7 @@ const EarlyPaymentDetail = (props: RequestEarlyPaymentDetailProps) => {
     const installmentNum = repaymentDates.length;
     const totalPaybackAmount =
       Math.ceil(
-        requestedAmount * (100 + (installmentFeeRate * installmentNum) / 2) // Since two repayments each month
+        requestedAmount * (100 + (installmentFeeRate * installmentNum) / 2), // Since two repayments each month
       ) / 100;
     let remainingAmount = totalPaybackAmount;
 
@@ -144,11 +140,11 @@ const EarlyPaymentDetail = (props: RequestEarlyPaymentDetailProps) => {
                 {isZh
                   ? `${formatDatetimeLocalized(
                       moment(deductionDate),
-                      "YYYY/MM/DD"
+                      "YYYY/MM/DD",
                     )}结款日`
                   : i`Disbursement of ${formatDatetimeLocalized(
                       moment(deductionDate),
-                      "dddd, MMMM DD, YYYY"
+                      "dddd, MMMM DD, YYYY",
                     )}`}
               </SheetItem>
             </React.Fragment>
@@ -219,7 +215,7 @@ const EarlyPaymentDetail = (props: RequestEarlyPaymentDetailProps) => {
             ? `${formatDatetimeLocalized(nextPaymentDate, "YYYY/MM/DD")}结款日`
             : i`Disbursement of ${formatDatetimeLocalized(
                 nextPaymentDate,
-                "dddd, MMMM DD, YYYY"
+                "dddd, MMMM DD, YYYY",
               )}`}
         </SheetItem>
         {renderDeductionDetail()}
@@ -229,7 +225,7 @@ const EarlyPaymentDetail = (props: RequestEarlyPaymentDetailProps) => {
 };
 
 const RequestEarlyPaymentContentWrapper = (
-  props: RequestEarlyPaymentContentWrapperProps
+  props: RequestEarlyPaymentContentWrapperProps,
 ) => {
   const styles = useStylesheet();
   const { earlyPaymentPolicy, onClose } = props;
@@ -268,7 +264,7 @@ const RequestEarlyPaymentContent = (props: RequestEarlyPaymentContentProps) => {
   const [earlyPaymentAmount, setEarlyPaymentAmount] = useState(0);
   const [actionButtonLoading, setSecondaryButtonLoading] = useState(false);
   const [earlyPaymentTermType, setEarlyPaymentTermType] = useState<number>(
-    earlyPaymentPolicy.default_term
+    earlyPaymentPolicy.default_term,
   );
   const [step, setStep] = useState(STEPS.REQUEST);
   const [requestResult, setRequestResult] = useState<
@@ -384,7 +380,7 @@ const RequestEarlyPaymentContent = (props: RequestEarlyPaymentContentProps) => {
       message =
         i`You are eligible to request to receive up to ${formatCurrency(
           Math.floor(earlyPaymentPolicy.maximum_amount),
-          earlyPaymentPolicy.currency
+          earlyPaymentPolicy.currency,
         )} of the current Total Cost of your recently confirmed fulfilled ` +
         i`orders as an Early Payment. ` +
         i`The requested Early Payment amount will be included in your ` +
@@ -395,13 +391,13 @@ const RequestEarlyPaymentContent = (props: RequestEarlyPaymentContentProps) => {
       message = isZh
         ? `您现有资格请求获取您近期确认履行订单的现总成本金额中最高${formatCurrency(
             Math.floor(earlyPaymentPolicy.maximum_amount),
-            earlyPaymentPolicy.currency
+            earlyPaymentPolicy.currency,
           )}作为提前放款金额。请求的提前放款金额将在您的下一个结款日放款。` +
           `提前放款金额将从您下一个结款日之后的、所选还款期限期间的每个结款日中分别均等扣除；` +
           `每一次扣除金额将包含一项${installmentFeeRate}%的每月费用。`
         : i`You are eligible to request to receive up to ${formatCurrency(
             Math.floor(earlyPaymentPolicy.maximum_amount),
-            earlyPaymentPolicy.currency
+            earlyPaymentPolicy.currency,
           )} of the current Total Cost of your recently confirmed fulfilled ` +
           i`orders as an Early Payment. ` +
           i`The requested Early Payment amount will be included in your ` +
@@ -435,7 +431,7 @@ const RequestEarlyPaymentContent = (props: RequestEarlyPaymentContentProps) => {
         i`Please review the following information and confirm that you would ` +
         i`like to receive ${formatCurrency(
           earlyPaymentAmount,
-          earlyPaymentPolicy.currency
+          earlyPaymentPolicy.currency,
         )} of the current Total Cost of your recently confirmed ` +
         i`fulfilled orders as an Early Payment. ` +
         i`The requested Early Payment amount will be included in ` +
@@ -446,14 +442,14 @@ const RequestEarlyPaymentContent = (props: RequestEarlyPaymentContentProps) => {
       message = isZh
         ? `请检查以下信息并确认您希望获取您近期确认履行订单的现总成本中的${formatCurrency(
             earlyPaymentAmount,
-            earlyPaymentPolicy.currency
+            earlyPaymentPolicy.currency,
           )}来作为提前放款金额。请求的提前放款金额将在您的下一个结款日放款。` +
           `提前放款金额将从您下一个结款日之后的、所选还款期限期间的每个结款日中分别均等扣除；` +
           `每一次扣除金额将包含一项${installmentFeeRate}%的每月费用。`
         : i`Please review the following information and confirm that you would ` +
           i`like to receive ${formatCurrency(
             earlyPaymentAmount,
-            earlyPaymentPolicy.currency
+            earlyPaymentPolicy.currency,
           )} of the current Total Cost of your recently confirmed ` +
           i`fulfilled orders as an Early Payment. ` +
           i`The requested Early Payment amount will be included in ` +
@@ -742,6 +738,6 @@ const useStylesheet = () => {
           marginTop: 8,
         },
       }),
-    []
+    [],
   );
 };

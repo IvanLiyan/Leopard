@@ -14,7 +14,7 @@ import PartnerDeveloperSection from "@merchant/component/external/partner-develo
 import PartnerDeveloperCodeSection from "@merchant/component/external/partner-developer/PartnerDeveloperCodeSection";
 
 /* Merchant Stores */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* Toolkit */
 import { zendeskURL } from "@toolkit/url";

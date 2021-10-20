@@ -27,9 +27,9 @@ import * as logger from "@toolkit/logger";
 import { MerchantAPIRequest } from "@toolkit/api";
 
 /* Relative Imports */
-import UserStore from "./UserStore";
-import ToastStore from "./ToastStore";
-import EnvironmentStore from "./EnvironmentStore";
+import UserStore from "../../stores/UserStore";
+import ToastStore from "../../stores/ToastStore";
+import EnvironmentStore from "../../stores/EnvironmentStore";
 
 export default class TodoStore {
   @computed
@@ -184,7 +184,7 @@ export default class TodoStore {
 
   async declineTodo(
     item: TodoItem<unknown>,
-    action: DeclineTodoAction
+    action: DeclineTodoAction,
   ): Promise<void> {
     const decline = async () => {
       await this.markCompleted({ id: item.id, declined: true });

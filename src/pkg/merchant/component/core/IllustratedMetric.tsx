@@ -19,7 +19,7 @@ import * as fonts from "@toolkit/fonts";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { IllustrationName } from "./Illustration";
 
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 export type IllustratedMetricProps = PopoverProps &
   BaseProps & {
@@ -28,20 +28,14 @@ export type IllustratedMetricProps = PopoverProps &
   };
 
 const IllustratedMetric: React.FC<IllustratedMetricProps> = (
-  props: IllustratedMetricProps
+  props: IllustratedMetricProps,
 ) => {
-  const {
-    title,
-    illustration,
-    children,
-    className,
-    style,
-    ...popoverProps
-  } = props;
+  const { title, illustration, children, className, style, ...popoverProps } =
+    props;
   const styles = useStylesheet(props);
 
   const validChildren = React.Children.toArray(children).filter(
-    (e) => e != null
+    (e) => e != null,
   );
 
   const childIsText =
@@ -106,6 +100,6 @@ const useStylesheet = (props: IllustratedMetricProps) => {
           marginRight: 20,
         },
       }),
-    [textDark, textLight]
+    [textDark, textLight],
   );
 };

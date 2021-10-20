@@ -11,7 +11,7 @@ import { ci18n } from "@legacy/core/i18n";
 
 /* Lego Toolkit */
 import { css } from "@toolkit/styling";
-import { useExperimentStore } from "@merchant/stores/ExperimentStore";
+import { useExperimentStore } from "@stores/ExperimentStore";
 
 import CardSection from "./CardSection";
 import BalanceBreakdown from "./BalanceBreakdown";
@@ -71,7 +71,7 @@ const BalanceOverviewCard: React.FC<Props> = (props: Props) => {
         <Button href="/plus/marketing/wallet">
           {ci18n(
             "'Charge' is a verb, meaning to reload their marketing balance with new funds",
-            "Charge balance"
+            "Charge balance",
           )}
         </Button>
       )}
@@ -107,7 +107,7 @@ const useStylesheet = () => {
           margin: "5px 0px",
         },
       }),
-    []
+    [],
   );
 };
 

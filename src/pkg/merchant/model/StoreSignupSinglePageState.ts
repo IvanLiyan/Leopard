@@ -15,10 +15,10 @@ import { PickedCountriesType } from "@toolkit/store-signup";
 import { call } from "@toolkit/api";
 
 /* Merchant Stores */
-import ApolloStore from "@merchant/stores/ApolloStore";
-import ToastStore from "@merchant/stores/ToastStore";
-import NavigationStore from "@merchant/stores/NavigationStore";
-import LocalizationStore from "@merchant/stores/LocalizationStore";
+import ApolloStore from "@stores/ApolloStore";
+import ToastStore from "@stores/ToastStore";
+import NavigationStore from "@stores/NavigationStore";
+import LocalizationStore from "@stores/LocalizationStore";
 import { CountryType } from "@merchant/component/core/CountrySelect";
 import { StoreSignupSinglePageInitialData } from "@toolkit/store-signup";
 
@@ -303,7 +303,7 @@ export default class StoreSignupSinglePageState {
     this.isSaving = true;
 
     const countryName = countriesWeShipTo.find(
-      ({ code }) => code == countryOrRegion
+      ({ code }) => code == countryOrRegion,
     )?.name;
 
     if (

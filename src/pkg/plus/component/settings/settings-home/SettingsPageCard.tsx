@@ -21,7 +21,7 @@ import { weightSemibold } from "@toolkit/fonts";
 
 /* Type Imports */
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 import { SettingsHomeInitialData } from "@toolkit/settings-home";
 
@@ -154,6 +154,6 @@ const useStylesheet = (highlight: ConstrainBoolean) => {
           flex: 1,
         },
       }),
-    [highlight, primary, textLight]
+    [highlight, primary, textLight],
   );
 };

@@ -10,7 +10,7 @@ import { Button } from "@ContextLogic/lego";
 import { css } from "@toolkit/styling";
 import * as fonts from "@toolkit/fonts";
 
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
 export type ValidateStoreBannerProps = BaseProps & {
@@ -95,6 +95,6 @@ const useStylesheet = () => {
           color: textBlack,
         },
       }),
-    [textBlack]
+    [textBlack],
   );
 };

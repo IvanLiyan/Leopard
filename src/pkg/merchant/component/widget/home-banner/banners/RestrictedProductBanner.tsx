@@ -6,7 +6,7 @@ import { zendeskURL } from "@toolkit/url";
 import { restrictedProduct } from "@assets/illustrations";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 export type RestrictedProductBannerProps = BaseProps & {
   readonly logParams: {

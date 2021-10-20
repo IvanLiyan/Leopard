@@ -25,7 +25,7 @@ import {
   campaignIcon,
   calendarIcon,
 } from "@assets/illustrations";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* Merchant Components */
 import LineChartMetric from "@merchant/component/product-boost/campaign-detail/LineChartMetric";
@@ -48,7 +48,7 @@ type ProductPerformanceLifetimeGraphProps = BaseProps & {
 };
 
 const ProductPerformanceLifetimeGraph = (
-  props: ProductPerformanceLifetimeGraphProps
+  props: ProductPerformanceLifetimeGraphProps,
 ) => {
   const styles = useStylesheet();
   const {
@@ -116,7 +116,7 @@ const ProductPerformanceLifetimeGraph = (
       .map((stats) => moment(stats.date, "YYYY-MM-DD"))
       .map(
         (date) =>
-          startDate.isSameOrBefore(date) && oneDayBeforeEndDate.isAfter(date)
+          startDate.isSameOrBefore(date) && oneDayBeforeEndDate.isAfter(date),
       );
   }, [startDate, endDate, dailyStats]);
 
@@ -159,7 +159,7 @@ const ProductPerformanceLifetimeGraph = (
               value: string | number | Array<string | number>,
               name: string,
               entry: TooltipPayload,
-              index: number
+              index: number,
             ): React.ReactNode => {
               if (typeof value !== "string" && typeof value !== "number") {
                 return null;
@@ -298,7 +298,7 @@ const useStylesheet = () => {
           flex: 1,
         },
       }),
-    [textWhite]
+    [textWhite],
   );
 };
 

@@ -17,7 +17,7 @@ import WelcomeHeader, { WelcomeHeaderProps } from "./WelcomeHeader";
 /* Lego Toolkit */
 import { css } from "@toolkit/styling";
 
-import DimenStore from "@merchant/stores/DimenStore";
+import DeviceStore from "@stores/DeviceStore";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
 export type PagerHeaderProps = BaseProps & {
@@ -41,15 +41,15 @@ class PagerHeader extends Component<PagerHeaderProps> {
 
   render() {
     const { headerProps, pagerProps, children, className, style } = this.props;
-    const dimenStore = DimenStore.instance();
+    const DeviceStore = DeviceStore.instance();
     return (
       <div className={css(this.styles.root, className, style)}>
         <WelcomeHeader
           hideBorder
-          paddingX={dimenStore.pageGuideX}
+          paddingX={DeviceStore.pageGuideX}
           {...headerProps}
         />
-        <Pager tabsPadding={`0px ${dimenStore.pageGuideX}`} {...pagerProps}>
+        <Pager tabsPadding={`0px ${DeviceStore.pageGuideX}`} {...pagerProps}>
           {children}
         </Pager>
       </div>

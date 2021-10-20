@@ -22,16 +22,14 @@ import { zendeskURL } from "@toolkit/url";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
 /* Merchant Stores */
-import { ThemeContext } from "@merchant/stores/ThemeStore";
+import { ThemeContext } from "@stores/ThemeStore";
 
 export type WishExpressApplicationCompletedSignUpProps = BaseProps & {
   readonly closeModal: () => void;
 };
 
 @observer
-export default class WishExpressApplicationCompletedSignUp extends Component<
-  WishExpressApplicationCompletedSignUpProps
-> {
+export default class WishExpressApplicationCompletedSignUp extends Component<WishExpressApplicationCompletedSignUpProps> {
   static contextType = ThemeContext;
   context!: React.ContextType<typeof ThemeContext>;
 

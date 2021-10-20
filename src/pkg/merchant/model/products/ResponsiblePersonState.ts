@@ -17,9 +17,9 @@ import {
 
 import { PickedResponsiblePerson } from "@toolkit/products/responsible-person";
 
-import ToastStore from "@merchant/stores/ToastStore";
-import ApolloStore from "@merchant/stores/ApolloStore";
-import NavigationStore from "@merchant/stores/NavigationStore";
+import ToastStore from "@stores/ToastStore";
+import ApolloStore from "@stores/ApolloStore";
+import NavigationStore from "@stores/NavigationStore";
 
 const ACCEPT_EU_TERMS_MUTATION = gql`
   mutation ResponsiblePersonState_AcceptEuTermsMutation {

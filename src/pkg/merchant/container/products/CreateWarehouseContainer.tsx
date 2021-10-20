@@ -20,7 +20,7 @@ import { PageGuide } from "@merchant/component/core";
 import WelcomeHeader from "@merchant/component/core/WelcomeHeader";
 
 /* Merchant Stores */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* Model */
 import WarehouseSettingsState from "@merchant/model/products/WarehouseSettingsState";
@@ -85,6 +85,6 @@ const useStylesheet = () => {
           marginTop: 64,
         },
       }),
-    [pageBackground]
+    [pageBackground],
   );
 };

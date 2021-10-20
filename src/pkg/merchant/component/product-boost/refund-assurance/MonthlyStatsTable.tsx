@@ -12,7 +12,7 @@ import _ from "lodash";
 /* Lego Components */
 import { css } from "@toolkit/styling";
 
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import {
   LearnMoreLink,
   PickedMonthlyRefundAssuranceStats,
@@ -179,6 +179,6 @@ const useStylesheet = () => {
           flex: 1,
         },
       }),
-    [pageBackground]
+    [pageBackground],
   );
 };

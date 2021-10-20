@@ -14,7 +14,7 @@ import { css } from "@toolkit/styling";
 import { NavigationNode } from "@toolkit/chrome";
 
 import { Layout } from "@ContextLogic/lego";
-import { useNavigationStore } from "@merchant/stores/NavigationStore";
+import { useNavigationStore } from "@stores/NavigationStore";
 
 /* Merchant Plus Components */
 import PageRoot from "@plus/component/nav/PageRoot";
@@ -35,7 +35,7 @@ const SettingsHome: React.FC<Props> = ({ initialData }: Props) => {
 
   const moreNode = useMemo(
     () => userGraph?.children.find((node) => node.nodeid == "more"),
-    [userGraph]
+    [userGraph],
   );
 
   const nonGroupChildren = useMemo(
@@ -44,9 +44,9 @@ const SettingsHome: React.FC<Props> = ({ initialData }: Props) => {
         (node) =>
           node.show_in_side_menu &&
           (node.url || node.path) &&
-          node.children.find((item) => item.show_in_side_menu) == null
+          node.children.find((item) => item.show_in_side_menu) == null,
       ),
-    [moreNode]
+    [moreNode],
   );
 
   const groupChildren = useMemo(
@@ -54,9 +54,9 @@ const SettingsHome: React.FC<Props> = ({ initialData }: Props) => {
       moreNode?.children.filter(
         (node) =>
           node.show_in_side_menu &&
-          node.children.find((item) => item.show_in_side_menu) != null
+          node.children.find((item) => item.show_in_side_menu) != null,
       ),
-    [moreNode]
+    [moreNode],
   );
 
   if (moreNode == null || nonGroupChildren == null || groupChildren == null) {
@@ -102,7 +102,7 @@ const useStylesheet = () => {
           marginTop: 40,
         },
       }),
-    []
+    [],
   );
 };
 

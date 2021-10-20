@@ -23,7 +23,7 @@ import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import ProductImage from "@merchant/component/products/ProductImage";
 
 import OrderEditState from "@plus/model/OrderEditState";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 type Props = BaseProps & {
   readonly editState: OrderEditState;
@@ -178,6 +178,6 @@ const useStylesheet = () => {
           marginRight: 15,
         },
       }),
-    [primary, textDark]
+    [primary, textDark],
   );
 };

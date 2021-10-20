@@ -20,7 +20,7 @@ import {
 /* Lego Toolkit */
 import { css } from "@toolkit/styling";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* Model */
 import { MsrCategory, LinkProductComplianceState } from "@schema/types";
@@ -31,11 +31,11 @@ type Props = BaseProps & {
   readonly onSubmit: () => void;
   readonly statesQuery: LinkProductComplianceState[];
   readonly onSetStatesQuery: (
-    value: readonly LinkProductComplianceState[]
+    value: readonly LinkProductComplianceState[],
   ) => void;
   readonly categoriesQuery: MsrCategory[];
   readonly onSetCategoriesQuery: (
-    value: ReadonlyArray<MsrCategory | "NO_CATEGORY">
+    value: ReadonlyArray<MsrCategory | "NO_CATEGORY">,
   ) => void;
 };
 
@@ -194,7 +194,7 @@ const useStylesheet = () => {
           flex: 1,
         },
       }),
-    [borderPrimary, textBlack]
+    [borderPrimary, textBlack],
   );
 };
 

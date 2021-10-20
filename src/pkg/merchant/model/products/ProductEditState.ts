@@ -7,7 +7,7 @@ import * as productApi from "@merchant/api/product";
 import { ProductDetail, ProductUpdateData } from "@merchant/api/product";
 
 /* Merchant Store */
-import ApolloStore from "@merchant/stores/ApolloStore";
+import ApolloStore from "@stores/ApolloStore";
 import {
   UpsertProduct,
   ProductUpsertInput,
@@ -15,9 +15,9 @@ import {
   VariationInput,
   PaymentCurrencyCode,
 } from "@schema/types";
-import NavigationStore from "@merchant/stores/NavigationStore";
-import UserStore from "@merchant/stores/UserStore";
-import ToastStore from "@merchant/stores/ToastStore";
+import NavigationStore from "@stores/NavigationStore";
+import UserStore from "@stores/UserStore";
+import ToastStore from "@stores/ToastStore";
 
 import { CurrencyInput, Maybe } from "@schema/types";
 
@@ -189,7 +189,7 @@ export default class ProductEditState {
   }
 
   hasUpdates(
-    attributeValues?: ReadonlyArray<unknown> | null | undefined
+    attributeValues?: ReadonlyArray<unknown> | null | undefined,
   ): boolean {
     const { updateData } = this;
     const values = attributeValues
@@ -510,7 +510,7 @@ export default class ProductEditState {
 
     if (!data?.productCatalog.upsertProduct.ok) {
       toastStore.error(
-        data?.productCatalog.upsertProduct.message || i`Something went wrong`
+        data?.productCatalog.upsertProduct.message || i`Something went wrong`,
       );
       return;
     }

@@ -12,7 +12,7 @@ import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 /* Toolkit */
 import { zendeskURL } from "@toolkit/url";
 
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 import Row from "./Row";
 import Tip from "./Tip";

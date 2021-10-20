@@ -7,7 +7,7 @@ import { Modal } from "@merchant/component/core/modal";
 /* Lego Toolkit */
 import { css } from "@toolkit/styling";
 
-import DimenStore from "@merchant/stores/DimenStore";
+import DeviceStore from "@stores/DeviceStore";
 
 import Screen1 from "./Screen1";
 import Screen2 from "./Screen2";
@@ -67,7 +67,7 @@ const useStylesheet = () => {
         },
         footer: {},
       }),
-    []
+    [],
   );
 };
 
@@ -83,7 +83,7 @@ export default class WishExpressIntroductionModal extends Modal {
 
     this.setRenderFooter(() => null);
     this.setNoMaxHeight(true);
-    const { screenInnerWidth } = DimenStore.instance();
+    const { screenInnerWidth } = DeviceStore.instance();
     const targetPercentage = 800 / screenInnerWidth;
     this.setWidthPercentage(targetPercentage);
   }

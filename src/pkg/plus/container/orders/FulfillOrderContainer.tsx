@@ -23,8 +23,8 @@ import { css } from "@toolkit/styling";
 import { Button } from "@ContextLogic/lego";
 import { PrimaryButton } from "@ContextLogic/lego";
 
-import { useToastStore } from "@merchant/stores/ToastStore";
-import { useNavigationStore } from "@merchant/stores/NavigationStore";
+import { useToastStore } from "@stores/ToastStore";
+import { useNavigationStore } from "@stores/NavigationStore";
 
 import HttpError from "@merchant/component/errors/HttpError";
 
@@ -82,8 +82,8 @@ const FulfillOrderContainer: React.FC<Props> = ({ initialData }: Props) => {
           new OrderEditState({
             order: { ...initialOrderData },
             countriesWeShipTo,
-          })
-      )
+          }),
+      ),
   );
 
   useEffect(() => {
@@ -126,11 +126,11 @@ const FulfillOrderContainer: React.FC<Props> = ({ initialData }: Props) => {
         providerId != null &&
         originCountryCode != null &&
         trackingId != null &&
-        originCountryCode != null
+        originCountryCode != null,
     );
     const [createEditStates, modifyEditStates] = _.partition(
       validEditStates,
-      ({ initialData: { state } }) => state === "APPROVED"
+      ({ initialData: { state } }) => state === "APPROVED",
     );
 
     const createInput = createEditStates.reduce(
@@ -142,7 +142,7 @@ const FulfillOrderContainer: React.FC<Props> = ({ initialData }: Props) => {
           shippingOriginCode: originCountryCode,
           shipNote,
           trackingId,
-        }
+        },
       ) => {
         if (
           !isReadyFulFill ||
@@ -164,7 +164,7 @@ const FulfillOrderContainer: React.FC<Props> = ({ initialData }: Props) => {
           },
         ];
       },
-      [] as ShipTransactionsInputType["input"]
+      [] as ShipTransactionsInputType["input"],
     );
 
     const modifyInput = modifyEditStates.reduce(
@@ -176,7 +176,7 @@ const FulfillOrderContainer: React.FC<Props> = ({ initialData }: Props) => {
           shippingOriginCode: originCountryCode,
           shipNote,
           trackingId,
-        }
+        },
       ) => {
         if (
           !isReadyFulFill ||
@@ -198,7 +198,7 @@ const FulfillOrderContainer: React.FC<Props> = ({ initialData }: Props) => {
           },
         ];
       },
-      [] as ModifyTrackingInputType["input"]
+      [] as ModifyTrackingInputType["input"],
     );
 
     runInAction(() => {
@@ -224,12 +224,12 @@ const FulfillOrderContainer: React.FC<Props> = ({ initialData }: Props) => {
           if (data == null || !data.fulfillment.cancelWpsTrackingId.ok) {
             toastStore.negative(
               data?.fulfillment.cancelWpsTrackingId?.errorMessage ||
-                i`Something went wrong`
+                i`Something went wrong`,
             );
             return false;
           }
           return true;
-        })
+        }),
       );
 
       if (wpsOks.some((ok) => !ok)) {
@@ -311,13 +311,13 @@ const FulfillOrderContainer: React.FC<Props> = ({ initialData }: Props) => {
         "'Fulfill' here is a VERB. Means to ship the order",
         editStates.length,
         "Order is being processed for fulfillment!",
-        "Orders are being processed for fulfillment!"
-      )
+        "Orders are being processed for fulfillment!",
+      ),
     );
   };
 
   const isReadyFulFill = editStates.every(
-    (editState) => editState.isReadyFulFill
+    (editState) => editState.isReadyFulFill,
   );
   const isSubmitting = editStates.some((editState) => editState.isSubmitting);
   const actions = (
@@ -330,7 +330,7 @@ const FulfillOrderContainer: React.FC<Props> = ({ initialData }: Props) => {
           "'Fulfill' here is a VERB. Means to ship the order",
           editStates.length,
           "Fulfill order",
-          "Fulfill orders"
+          "Fulfill orders",
         )}
       </PrimaryButton>
     </>
@@ -340,7 +340,7 @@ const FulfillOrderContainer: React.FC<Props> = ({ initialData }: Props) => {
     "'Fulfill' here is a VERB. Means to ship the order",
     editStates.length,
     "Fulfill order",
-    "Fulfill orders"
+    "Fulfill orders",
   );
   return (
     <PageRoot>
@@ -386,7 +386,7 @@ const useStylesheet = () =>
           margin: "15px 0px",
         },
       }),
-    []
+    [],
   );
 
 export default observer(FulfillOrderContainer);

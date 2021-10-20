@@ -32,8 +32,8 @@ import * as disputeApi from "@merchant/api/disputes";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { AttachmentInfo } from "@ContextLogic/lego";
 import { OnTextChangeEvent } from "@ContextLogic/lego";
-import NavigationStore from "@merchant/stores/NavigationStore";
-import DimenStore from "@merchant/stores/DimenStore";
+import NavigationStore from "@stores/NavigationStore";
+import DeviceStore from "@stores/DeviceStore";
 
 type FakeTrackingDisputeCreateProps = BaseProps & {
   readonly disputeType: "fk" | "uc";
@@ -251,7 +251,7 @@ class FakeTrackingDisputeCreate extends Component<FakeTrackingDisputeCreateProps
 
   @computed
   get pageX(): string | number {
-    const { pageGuideX } = DimenStore.instance();
+    const { pageGuideX } = DeviceStore.instance();
     return pageGuideX;
   }
 

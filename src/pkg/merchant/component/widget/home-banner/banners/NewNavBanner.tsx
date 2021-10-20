@@ -12,9 +12,9 @@ import { SimpleBannerItem } from "@ContextLogic/lego";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
 /* Merchant Store */
-import { useTheme } from "@merchant/stores/ThemeStore";
-import { useNavigationStore } from "@merchant/stores/NavigationStore";
-import { useApolloStore } from "@merchant/stores/ApolloStore";
+import { useTheme } from "@stores/ThemeStore";
+import { useNavigationStore } from "@stores/NavigationStore";
+import { useApolloStore } from "@stores/ApolloStore";
 
 import { useUIStateBool } from "@toolkit/ui-state";
 import bannerGif from "@assets/img/new-nav-banner.gif";
@@ -34,7 +34,7 @@ const NewNavBanner = (props: NewNavBannerProps) => {
     "PREFERS_NEW_NAV",
     {
       client,
-    }
+    },
   );
 
   const onSwitch = async () => {

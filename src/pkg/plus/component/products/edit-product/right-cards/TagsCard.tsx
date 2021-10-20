@@ -18,7 +18,7 @@ import RightCard from "@plus/component/products/edit-product/RightCard";
 import ProductEditState from "@plus/model/ProductEditState";
 
 /* Merchant Store */
-import { useToastStore } from "@merchant/stores/ToastStore";
+import { useToastStore } from "@stores/ToastStore";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 

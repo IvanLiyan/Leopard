@@ -18,7 +18,7 @@ import CardHeader from "@merchant/component/wps/create-shipping-label/CardHeader
 import Separator from "@merchant/component/wps/create-shipping-label/Separator";
 
 /* Merchant Store */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* Lego Components */
 import { Alert, Card, Text } from "@ContextLogic/lego";
@@ -140,7 +140,7 @@ const useStylesheet = () => {
           maxWidth: 296,
         },
       }),
-    [textDark, textBlack]
+    [textDark, textBlack],
   );
 };
 

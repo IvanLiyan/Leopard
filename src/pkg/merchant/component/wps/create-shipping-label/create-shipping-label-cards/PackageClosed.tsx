@@ -19,7 +19,7 @@ import { Text } from "@ContextLogic/lego";
 import CreateShippingLabelState from "@merchant/model/CreateShippingLabelState";
 
 /* Merchant Stores */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* Toolkit */
 import {
@@ -67,7 +67,7 @@ const ShipFromClosed: React.FC<Props> = ({
 
     const unit = LengthUnitNames[lengthUnit];
     return `${roundPackageDimension(width)}${unit} x ${roundPackageDimension(
-      height
+      height,
     )}${unit} x ${roundPackageDimension(length)}${unit}`;
   }, [lengthUnit, width, height, length, packageType]);
 
@@ -130,7 +130,7 @@ const useStylesheet = () => {
           margin: "16px 0px",
         },
       }),
-    [textDark]
+    [textDark],
   );
 };
 

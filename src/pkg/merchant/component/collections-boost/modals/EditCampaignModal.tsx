@@ -40,10 +40,10 @@ import { CollectionsBoostSearchQuery } from "@merchant/api/collections-boost";
 import Campaign from "@merchant/model/collections-boost/Campaign";
 
 /* Merchant Store */
-import { useNavigationStore } from "@merchant/stores/NavigationStore";
-import { useTheme } from "@merchant/stores/ThemeStore";
-import { useUserStore } from "@merchant/stores/UserStore";
-import { useLocalizationStore } from "@merchant/stores/LocalizationStore";
+import { useNavigationStore } from "@stores/NavigationStore";
+import { useTheme } from "@stores/ThemeStore";
+import { useUserStore } from "@stores/UserStore";
+import { useLocalizationStore } from "@stores/LocalizationStore";
 
 /* Merchant API */
 import * as collectionsBoostApi from "@merchant/api/collections-boost";
@@ -111,7 +111,7 @@ const EditCampaignModalContent = (props: EditCampaignModalContextProps) => {
   const { locale } = useLocalizationStore();
 
   const [merchantInfoResponse] = useRequest(
-    collectionsBoostApi.getCollectionsBoostMerchantInfo({})
+    collectionsBoostApi.getCollectionsBoostMerchantInfo({}),
   );
   const merchantInfoStats = merchantInfoResponse?.data;
   const merchantAccountConversionRate =
@@ -147,14 +147,11 @@ const EditCampaignModalContent = (props: EditCampaignModalContextProps) => {
 
   const priceDropEnabled = merchantInfoStats?.price_drop_enabled;
 
-  const [campaignSearchQueries, setCampaignSearchQueries] = useState<
-    Array<CollectionsBoostSearchQuery>
-  >(searchQueries);
+  const [campaignSearchQueries, setCampaignSearchQueries] =
+    useState<Array<CollectionsBoostSearchQuery>>(searchQueries);
 
-  const [
-    campaignPriceDropPercentage,
-    setCampaignPriceDropPercentage,
-  ] = useState<number>(campaignDropPercentage);
+  const [campaignPriceDropPercentage, setCampaignPriceDropPercentage] =
+    useState<number>(campaignDropPercentage);
 
   const [bidNotifierSet, setBidNotifierSet] = useState<Set<string>>(new Set());
 
@@ -178,7 +175,7 @@ const EditCampaignModalContent = (props: EditCampaignModalContextProps) => {
           merchantAccountPreferredCurrency == localizedCurrency
             ? searchQuery.bid
             : parseFloat(
-                ((searchQuery.bid / conversionRate) * policyRate).toFixed(2)
+                ((searchQuery.bid / conversionRate) * policyRate).toFixed(2),
               );
         const bid =
           campaignId && searchQuery.bid ? convertedBid : 1.0 * policyRate;
@@ -187,7 +184,7 @@ const EditCampaignModalContent = (props: EditCampaignModalContextProps) => {
           bid,
           rawBid: bid.toString(),
         };
-      }
+      },
     );
     setCampaignSearchQueries(preFilledSearchQueries);
   }, [
@@ -207,15 +204,14 @@ const EditCampaignModalContent = (props: EditCampaignModalContextProps) => {
 
   const [campaignStartDate, setCampaignStartDate] = useState<Date>(startDate);
 
-  const [campaignIsAutoRenew, setCampaignIsAutoRenew] = useState<boolean>(
-    isAutoRenew
-  );
+  const [campaignIsAutoRenew, setCampaignIsAutoRenew] =
+    useState<boolean>(isAutoRenew);
 
   const [getSearchTermThresholdBidResponse] = useRequest(
     collectionsBoostApi.getSearchTermThresholdBid({
       search_queries: JSON.stringify(searchQueries),
       start_date: formatDate(campaignStartDate) || "",
-    })
+    }),
   );
 
   const finalCampaignDropPercentage = () => {
@@ -375,12 +371,12 @@ const EditCampaignModalContent = (props: EditCampaignModalContextProps) => {
                       rawBid: text,
                     }
                   : campaignSearchQuery;
-              }
+              },
             );
             setCampaignSearchQueries(rawQueries);
             updateBidNotifierSet(
               row.search_term,
-              parseFloat(text) / currencyRate
+              parseFloat(text) / currencyRate,
             );
           }}
           placeholder={i`Not promote`}
@@ -391,7 +387,7 @@ const EditCampaignModalContent = (props: EditCampaignModalContextProps) => {
   };
 
   const renderDropPercentage = (
-    priceDropRecord: collectionsBoostApi.CollectionsBoostPriceDropExistingOverlap
+    priceDropRecord: collectionsBoostApi.CollectionsBoostPriceDropExistingOverlap,
   ) => {
     const dropPercentage = priceDropRecord.drop_percentage;
     if (dropPercentage > 0) {
@@ -401,7 +397,7 @@ const EditCampaignModalContent = (props: EditCampaignModalContextProps) => {
             {ci18n(
               "placeholder is a sale/discount",
               "%1$s OFF",
-              numeral(dropPercentage / 100.0).format("0%")
+              numeral(dropPercentage / 100.0).format("0%"),
             )}
           </Text>
         </Layout.FlexRow>
@@ -515,7 +511,7 @@ const EditCampaignModalContent = (props: EditCampaignModalContextProps) => {
                 onChange={({ valueAsNumber }) => {
                   const newValue = Math.min(
                     Math.max(valueAsNumber || 0, 0),
-                    100
+                    100,
                   );
                   setCampaignPriceDropPercentage(newValue);
                 }}
@@ -584,7 +580,7 @@ const EditCampaignModalContent = (props: EditCampaignModalContextProps) => {
           <Table.Column
             title={i`Bid (min bid is ${formatCurrency(
               1.0 * policyRate,
-              currency
+              currency,
             )}, leave blank to not promote)`}
             columnKey="rawBid"
             width={150}
@@ -693,7 +689,7 @@ const useStylesheet = () => {
           marginTop: 14,
         },
       }),
-    [textWhite, textBlack]
+    [textWhite, textBlack],
   );
 };
 

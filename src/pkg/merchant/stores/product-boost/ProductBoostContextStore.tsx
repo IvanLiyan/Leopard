@@ -25,7 +25,7 @@ import {
 } from "@schema/types";
 
 /* Merchant Store */
-import ApolloStore from "@merchant/stores/ApolloStore";
+import ApolloStore from "@stores/ApolloStore";
 
 /* ProductBoost Campaign & Merchant Property Query */
 export interface ProductBoostPropertyType {
@@ -130,16 +130,15 @@ export const useProductBoostProperty = ():
   | ProductBoostPropertyType
   | undefined => {
   const { data } = useQuery<ProductBoostPropertyResponseType, void>(
-    PB_PROPERTY_QUERY
+    PB_PROPERTY_QUERY,
   );
   return data?.marketing;
 };
 
-export const ProductBoostPropertyContext = React.createContext<
-  ProductBoostPropertyType
-  // Bypass check here and force unwrap, as the context will be loaded upon container start
-  // eslint-disable-next-line local-rules/ts-no-force-unrwap
->(undefined!);
+export const ProductBoostPropertyContext =
+  React.createContext<ProductBoostPropertyType>(undefined!);
+// Bypass check here and force unwrap, as the context will be loaded upon container start
+// eslint-disable-next-line local-rules/ts-no-force-unrwap
 
 export const ProductBoostPropertyProvider = ({
   pbContext,
@@ -193,20 +192,19 @@ export const useProductBoostFlexibleBudgetInfo = ():
   | FlexibleBudgetResponseType
   | undefined => {
   const { data } = useQuery<FlexibleBudgetResponseType, void>(
-    PB_FLEXIBLE_BUDGET_INFO_QUERY
+    PB_FLEXIBLE_BUDGET_INFO_QUERY,
   );
   return data;
 };
 
-export const queryFlexibleBudgetInfo = async (): Promise<
-  FlexibleBudgetResponseType
-> => {
-  const { client } = ApolloStore.instance();
-  const { data } = await client.query<FlexibleBudgetResponseType, void>({
-    query: PB_FLEXIBLE_BUDGET_INFO_QUERY,
-  });
-  return data;
-};
+export const queryFlexibleBudgetInfo =
+  async (): Promise<FlexibleBudgetResponseType> => {
+    const { client } = ApolloStore.instance();
+    const { data } = await client.query<FlexibleBudgetResponseType, void>({
+      query: PB_FLEXIBLE_BUDGET_INFO_QUERY,
+    });
+    return data;
+  };
 
 /* ProductBoost Merchant Info Query */
 type MerchantInfoResponseType = {
@@ -263,7 +261,7 @@ export const useProductBoostMerchantInfo = ():
   | MerchantInfoResponseType
   | undefined => {
   const { data } = useQuery<MerchantInfoResponseType, void>(
-    PB_MERCHANT_INFO_QUERY
+    PB_MERCHANT_INFO_QUERY,
   );
   return data;
 };
@@ -325,7 +323,7 @@ export const useProductBoostMarketingSpendingBreakdown = ():
   | MarketingSpendingBreakdownResponseType
   | undefined => {
   const { data } = useQuery<MarketingSpendingBreakdownResponseType, void>(
-    PB_MARKETING_SPENDING_BREAKDOWN_QUERY
+    PB_MARKETING_SPENDING_BREAKDOWN_QUERY,
   );
   return data;
 };

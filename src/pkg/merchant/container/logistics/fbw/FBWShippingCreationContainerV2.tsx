@@ -20,7 +20,7 @@ import {
   PrimaryButton,
   StepsIndicator,
 } from "@ContextLogic/lego";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import SelectSKUs from "@merchant/component/logistics/shipping-plan/create/SelectSKUs";
 import SubmitShippingPlan from "@merchant/component/logistics/shipping-plan/create/SubmitShippingPlan";
 import EnterLogisticsInfo from "@merchant/component/logistics/shipping-plan/create/EnterLogisticsInfo";
@@ -172,6 +172,6 @@ const useStylesheet = () => {
           minWidth: 240,
         },
       }),
-    [borderPrimary]
+    [borderPrimary],
   );
 };

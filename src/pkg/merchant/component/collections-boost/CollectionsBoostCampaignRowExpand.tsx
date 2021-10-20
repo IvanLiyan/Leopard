@@ -8,7 +8,7 @@ import { Info } from "@ContextLogic/lego";
 
 /* Lego Toolkit */
 import { css } from "@toolkit/styling";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import { weightMedium } from "@toolkit/fonts";
 
 /* Merchant Components */
@@ -173,6 +173,6 @@ const useStyleSheet = () => {
           marginLeft: 5,
         },
       }),
-    [pageBackground, textBlack]
+    [pageBackground, textBlack],
   );
 };

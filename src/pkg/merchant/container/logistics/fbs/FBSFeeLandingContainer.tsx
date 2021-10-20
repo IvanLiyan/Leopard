@@ -7,7 +7,7 @@ import { Link, Markdown, Text } from "@ContextLogic/lego";
 
 /* Lego Toolkit */
 import { css } from "@toolkit/styling";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 const FBSFeeLandingContainer = () => {
   const styles = useStyleSheet();
@@ -328,7 +328,7 @@ const useStyleSheet = () => {
           color: textDark,
         },
       }),
-    [pageBackground, borderPrimary, textBlack, textDark]
+    [pageBackground, borderPrimary, textBlack, textDark],
   );
 };
 

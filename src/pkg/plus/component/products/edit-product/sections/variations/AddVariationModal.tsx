@@ -23,8 +23,8 @@ import { PrimaryButton } from "@ContextLogic/lego";
 
 /* Lego Toolkit */
 import { css } from "@toolkit/styling";
-import { useTheme } from "@merchant/stores/ThemeStore";
-import ToastStore from "@merchant/stores/ToastStore";
+import { useTheme } from "@stores/ThemeStore";
+import ToastStore from "@stores/ToastStore";
 
 import ProductEditState, {
   UniqueSkuValidator,
@@ -50,7 +50,7 @@ const AddVariationModalContent: React.FC<AddVariationModalProps> = observer(
     const [priceIsValid, setPriceIsValid] = useState(false);
     const [inventoryIsValid, setInventoryIsValid] = useState(false);
     const [inventory, setInventory] = useState<number | undefined | null>(
-      undefined
+      undefined,
     );
     const [quantityValue, setQuantityValue] = useState<number | undefined>();
     const [quantityValueIsValid, setQuantityValueIsValid] = useState(false);
@@ -103,7 +103,7 @@ const AddVariationModalContent: React.FC<AddVariationModalProps> = observer(
           toastStore.negative(i`A variation of this color already exists`);
         } else {
           toastStore.negative(
-            i`A variation of this size and color already exists`
+            i`A variation of this size and color already exists`,
           );
         }
         return;
@@ -296,7 +296,7 @@ const AddVariationModalContent: React.FC<AddVariationModalProps> = observer(
                       setQuantityValue(
                         valueAsNumber == null
                           ? undefined
-                          : Math.max(0, valueAsNumber)
+                          : Math.max(0, valueAsNumber),
                       );
                     }}
                     placeholder="0"
@@ -333,7 +333,7 @@ const AddVariationModalContent: React.FC<AddVariationModalProps> = observer(
         </div>
       </div>
     );
-  }
+  },
 );
 
 const useStylesheet = () => {
@@ -397,7 +397,7 @@ const useStylesheet = () => {
           width: 100,
         },
       }),
-    [borderPrimary]
+    [borderPrimary],
   );
 };
 export default class AddVariationModal extends Modal {

@@ -30,8 +30,8 @@ import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { css } from "@toolkit/styling";
 
 /* Stores */
-import { useTheme } from "@merchant/stores/ThemeStore";
-import { useToastStore } from "@merchant/stores/ToastStore";
+import { useTheme } from "@stores/ThemeStore";
+import { useToastStore } from "@stores/ToastStore";
 import { Icon } from "@merchant/component/core";
 
 export type ImageInfo = {
@@ -101,7 +101,7 @@ const ImageUploadGroup = (props: ImageUploadGroupProps) => {
     const formats = accepts.replace(",", ", ").replace(".", "");
     toastStore.error(
       i`Image file is not valid. Please upload a ${formats} file ` +
-        i`less than ${maxSizeMB}MB`
+        i`less than ${maxSizeMB}MB`,
     );
   };
 
@@ -188,7 +188,7 @@ const ImageUploadGroup = (props: ImageUploadGroupProps) => {
             className={css(
               styles.cleanImageButtonContainer,
               styles.hoverable,
-              isHovered && styles.hovered
+              isHovered && styles.hovered,
             )}
           >
             <Button
@@ -226,7 +226,7 @@ const ImageUploadGroup = (props: ImageUploadGroupProps) => {
         const [width, height] = await getImageSize(file);
         if (width < minImageWidth || height < minImageHeight) {
           toastStore.negative(
-            i`Image resolution too low. Minimum is ${minImageWidth}x${minImageHeight}`
+            i`Image resolution too low. Minimum is ${minImageWidth}x${minImageHeight}`,
           );
           return;
         }
@@ -249,7 +249,7 @@ const ImageUploadGroup = (props: ImageUploadGroupProps) => {
         }
 
         const stillWantImage = newPendingImages.some(
-          (pi) => pi.id === pendingImage.id
+          (pi) => pi.id === pendingImage.id,
         );
         if (!stillWantImage) {
           return;
@@ -272,7 +272,7 @@ const ImageUploadGroup = (props: ImageUploadGroupProps) => {
           onImagesChanged(newImages);
 
           newPendingImages = newPendingImages.filter(
-            (i) => i.id !== pendingImage.id
+            (i) => i.id !== pendingImage.id,
           );
           removePendingImage(pendingImage);
         });
@@ -287,7 +287,7 @@ const ImageUploadGroup = (props: ImageUploadGroupProps) => {
         }
 
         newPendingImages = newPendingImages.filter(
-          (i) => i.id !== pendingImage.id
+          (i) => i.id !== pendingImage.id,
         );
         removePendingImage(pendingImage);
 
@@ -448,6 +448,6 @@ const useStylesheet = (props: ImageUploadGroupProps) => {
           borderRadius: 2,
         },
       }),
-    [imageWidth, surfaceLight, surfaceLightest, textDark, borderPrimary]
+    [imageWidth, surfaceLight, surfaceLightest, textDark, borderPrimary],
   );
 };

@@ -14,7 +14,7 @@ import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { IllustrationName } from "@merchant/component/core";
 
 /* Merchant Stores */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 type CampaignSuggestionsProps = BaseProps & {
   readonly illustration: IllustrationName;

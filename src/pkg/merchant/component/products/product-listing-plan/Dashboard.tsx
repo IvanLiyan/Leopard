@@ -54,7 +54,7 @@ import { Icon } from "@merchant/component/core";
 import ProductCountCard from "./ProductCountCard";
 
 /* Stores */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import { useQuery } from "react-apollo";
 
 type Props = BaseProps & {
@@ -91,21 +91,19 @@ const Dashboard: React.FC<Props> = ({
         value: `${0}`,
         text: i`Current`,
       },
-      ..._.range(1, MonthsAgoToShow).map(
-        (monthsAgo): Option<string> => {
-          const month = moment().startOf("month").subtract(monthsAgo, "months");
-          return {
-            value: `${monthsAgo}`,
-            text: `${MonthNameMap[month.get("month")]} ${month.get("year")}`,
-          };
-        }
-      ),
+      ..._.range(1, MonthsAgoToShow).map((monthsAgo): Option<string> => {
+        const month = moment().startOf("month").subtract(monthsAgo, "months");
+        return {
+          value: `${monthsAgo}`,
+          text: `${MonthNameMap[month.get("month")]} ${month.get("year")}`,
+        };
+      }),
     ];
   }, []);
 
   const isCurrent = useMemo(
     () => moment().isSame(moment(inputStartDate), "month"),
-    [inputStartDate]
+    [inputStartDate],
   );
 
   const monthName = useMemo(
@@ -113,7 +111,7 @@ const Dashboard: React.FC<Props> = ({
       isCurrent
         ? i`Current`
         : MonthNameMap[moment(inputStartDate).startOf("month").get("month")],
-    [inputStartDate, isCurrent]
+    [inputStartDate, isCurrent],
   );
 
   const monthNamePossessive = useMemo(
@@ -123,7 +121,7 @@ const Dashboard: React.FC<Props> = ({
         : MonthNamePossessiveMap[
             moment(inputStartDate).startOf("month").get("month")
           ],
-    [inputStartDate, isCurrent]
+    [inputStartDate, isCurrent],
   );
 
   const yearName = useMemo(
@@ -131,7 +129,7 @@ const Dashboard: React.FC<Props> = ({
       isCurrent
         ? undefined
         : moment(inputStartDate).startOf("month").get("year"),
-    [inputStartDate, isCurrent]
+    [inputStartDate, isCurrent],
   );
 
   const startUnix = useMemo(
@@ -139,7 +137,7 @@ const Dashboard: React.FC<Props> = ({
       isCurrent
         ? moment().subtract(60, "days").startOf("day").add(12, "hours").unix()
         : moment(inputStartDate).startOf("month").add(1, "day").unix(),
-    [inputStartDate, isCurrent]
+    [inputStartDate, isCurrent],
   );
 
   const endUnix = useMemo(
@@ -151,7 +149,7 @@ const Dashboard: React.FC<Props> = ({
             .startOf("day")
             .add(1, "day")
             .unix(),
-    [inputStartDate, isCurrent]
+    [inputStartDate, isCurrent],
   );
 
   const { data, loading } = useQuery<
@@ -180,10 +178,10 @@ const Dashboard: React.FC<Props> = ({
       },
     } = data;
     const tier2Breakdown = priceBreakdownPerTier.find(
-      ({ tier }) => tier == "TIER_TWO"
+      ({ tier }) => tier == "TIER_TWO",
     );
     const tier3Breakdown = priceBreakdownPerTier.find(
-      ({ tier }) => tier == "TIER_THREE"
+      ({ tier }) => tier == "TIER_THREE",
     );
     if (tier3Breakdown != null && tier3Breakdown.productCount != 0) {
       return "TIER_THREE";
@@ -219,9 +217,9 @@ const Dashboard: React.FC<Props> = ({
     return formatCurrency(
       priceBreakdownPerTier.reduce(
         (acc, { price: { amount } }) => acc + amount,
-        0
+        0,
       ),
-      cc
+      cc,
     );
   }, [data]);
 
@@ -344,7 +342,7 @@ const Dashboard: React.FC<Props> = ({
               moment()
                 .startOf("month")
                 .subtract(parseInt(monthsAgo), "months")
-                .toDate()
+                .toDate(),
             );
           }}
         />
@@ -360,7 +358,7 @@ const Dashboard: React.FC<Props> = ({
         <ListingAmountCard
           className={css(
             styles.horizontalCardPadding,
-            styles.listingAmountCard
+            styles.listingAmountCard,
           )}
           title={
             isCurrent
@@ -372,7 +370,7 @@ const Dashboard: React.FC<Props> = ({
         <ListingAmountCard
           className={css(
             styles.horizontalCardPadding,
-            styles.listingAmountCard
+            styles.listingAmountCard,
           )}
           title={
             isCurrent
@@ -617,6 +615,6 @@ const useStylesheet = () => {
           flex: 1,
         },
       }),
-    [textDark, textBlack]
+    [textDark, textBlack],
   );
 };

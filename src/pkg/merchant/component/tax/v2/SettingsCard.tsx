@@ -24,9 +24,9 @@ import { getCountryName } from "@toolkit/countries";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
 /* Merchant Stores */
-import { useTheme } from "@merchant/stores/ThemeStore";
-import { useLocalizationStore } from "@merchant/stores/LocalizationStore";
-import { useNavigationStore } from "@merchant/stores/NavigationStore";
+import { useTheme } from "@stores/ThemeStore";
+import { useLocalizationStore } from "@stores/LocalizationStore";
+import { useNavigationStore } from "@stores/NavigationStore";
 import { useTaxStore } from "@merchant/stores/TaxStore";
 import { Popover } from "@merchant/component/core";
 

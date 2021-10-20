@@ -35,9 +35,9 @@ import {
 import { StateField, CountrySelect } from "@merchant/component/core";
 
 /* Merchant Stores */
-import { useApolloStore } from "@merchant/stores/ApolloStore";
-import { useToastStore } from "@merchant/stores/ToastStore";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useApolloStore } from "@stores/ApolloStore";
+import { useToastStore } from "@stores/ToastStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* Type Imports */
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
@@ -76,7 +76,7 @@ type HorizontalFieldProps = BaseHorizontalFieldProps & {
 };
 
 const HorizontalField: React.FC<HorizontalFieldProps> = (
-  props: HorizontalFieldProps
+  props: HorizontalFieldProps,
 ) => {
   const { className, style, children, noError, ...rest } = props;
   const styles = useStylesheet();
@@ -110,9 +110,8 @@ const GenerateTestOrdersScreen: React.FC<Props> = (props: Props) => {
   const [variantId, setVariantId] = useState<string | undefined>();
   const [variantIdValid, setVariantIdValid] = useState<boolean | undefined>();
   const [quantity, setQuantity] = useState<number | undefined | null>();
-  const [logisticsOption, setLogisticsOption] = useState<
-    GenerateTestOrdersLogisticsOptions
-  >("RANDOM");
+  const [logisticsOption, setLogisticsOption] =
+    useState<GenerateTestOrdersLogisticsOptions>("RANDOM");
   const [countryCode, setCountryCode] = useState<CountryCode | undefined>();
   const [stateName, setStateName] = useState<string | undefined>();
   const [postalCode, setPostalCode] = useState<string | undefined>();
@@ -153,7 +152,7 @@ const GenerateTestOrdersScreen: React.FC<Props> = (props: Props) => {
 
     if (!ok) {
       toastStore.negative(
-        errorMessage || i`Something went wrong. Please try again later.`
+        errorMessage || i`Something went wrong. Please try again later.`,
       );
       return;
     }
@@ -163,7 +162,7 @@ const GenerateTestOrdersScreen: React.FC<Props> = (props: Props) => {
     // display the toast after the modal has closed
     toastStore.positive(
       i`Your orders will be successfully generated. ` +
-        i`It may take a few minutes for them to populate.`
+        i`It may take a few minutes for them to populate.`,
     );
   };
 
@@ -374,6 +373,6 @@ const useStylesheet = () => {
           minWidth: 160,
         },
       }),
-    [borderPrimaryDark]
+    [borderPrimaryDark],
   );
 };

@@ -48,7 +48,7 @@ import { useQuery } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 import { RowSelectionArgs } from "@ContextLogic/lego";
 import OrderHistoryFilter from "@plus/component/orders/order-history/OrderHistoryFilter";
-import { useApolloStore } from "@merchant/stores/ApolloStore";
+import { useApolloStore } from "@stores/ApolloStore";
 import {
   OrderHistorySort,
   FulfillmentSchema,

@@ -19,7 +19,7 @@ import { Text } from "@ContextLogic/lego";
 
 /* Merchant Model */
 import CreateShippingLabelState from "@merchant/model/CreateShippingLabelState";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import { formatDatetimeLocalized } from "@toolkit/datetime";
 
 type Props = BaseProps & {
@@ -43,12 +43,12 @@ const ShippingClosed: React.FC<Props> = ({
 
   const methodString = `${option.name} - ${formatCurrency(
     estimatedTotal,
-    option.price.currencyCode
+    option.price.currencyCode,
   )}`;
 
   const deliveryDate = formatDatetimeLocalized(
     moment().add(option.daysToDeliver, "d"),
-    "MMM DD, YYYY"
+    "MMM DD, YYYY",
   );
 
   return (
@@ -85,7 +85,7 @@ const useStylesheet = () => {
           margin: "16px 0px",
         },
       }),
-    [textDark]
+    [textDark],
   );
 };
 

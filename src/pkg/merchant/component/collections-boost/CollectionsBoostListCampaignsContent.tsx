@@ -55,8 +55,8 @@ import { useLogger } from "@toolkit/logger";
 import { formatCurrency } from "@toolkit/currency";
 
 /* Merchant Store */
-import { useToastStore } from "@merchant/stores/ToastStore";
-import { useUserStore } from "@merchant/stores/UserStore";
+import { useToastStore } from "@stores/ToastStore";
+import { useUserStore } from "@stores/UserStore";
 import { Info, Layout, Text } from "@ContextLogic/lego";
 
 /* Legacy */
@@ -82,13 +82,13 @@ const CollectionsBoostListCampaignsContent = () => {
 
   const [pageOffsetArg, setPageOffsetArg] = useIntQueryParam("offset");
 
-  const [searchType, setSearchType] = useStringEnumQueryParam<
-    CampaignSearchType
-  >("search_type", "campaign_id");
+  const [searchType, setSearchType] =
+    useStringEnumQueryParam<CampaignSearchType>("search_type", "campaign_id");
   const [searchInput, setSearchInput] = useStringQueryParam("search_value");
-  const [filterStates, setFilterStates] = useStringEnumArrayQueryParam<
-    CollectionsBoostCampaignState
-  >("filter_states");
+  const [filterStates, setFilterStates] =
+    useStringEnumArrayQueryParam<CollectionsBoostCampaignState>(
+      "filter_states",
+    );
 
   const [expandedRows, setExpandedRows] = useState<Set<number>>(new Set([]));
 
@@ -104,7 +104,7 @@ const CollectionsBoostListCampaignsContent = () => {
   const pageOffset = pageOffsetArg || 0;
 
   const [merchantInfoResponse] = useRequest(
-    collectionsBoostApi.getCollectionsBoostMerchantInfo({})
+    collectionsBoostApi.getCollectionsBoostMerchantInfo({}),
   );
   const merchantInfoStats = merchantInfoResponse?.data;
   const priceDropEnabled = merchantInfoStats?.price_drop_enabled;
@@ -121,7 +121,7 @@ const CollectionsBoostListCampaignsContent = () => {
       search_value: searchInput,
       filter_start_date: filterStartDateString,
       filter_end_date: filterEndDateString,
-    })
+    }),
   );
 
   const onRowExpandToggled = (index: number, shouldExpand: boolean) => {
@@ -151,7 +151,7 @@ const CollectionsBoostListCampaignsContent = () => {
   const rangeEnd = Math.min(pageOffset + PageSize, numResults);
 
   const renderStateLabel = (
-    row: collectionsBoostApi.CollectionsBoostApiCampaign
+    row: collectionsBoostApi.CollectionsBoostApiCampaign,
   ) => {
     const { state, cancel_reason: cancelReason } = row;
     const cancelReasonDetail = getCancelReasonDetail(cancelReason || "");
@@ -176,7 +176,7 @@ const CollectionsBoostListCampaignsContent = () => {
   };
 
   const renderCollectionName = (
-    row: collectionsBoostApi.CollectionsBoostApiCampaign
+    row: collectionsBoostApi.CollectionsBoostApiCampaign,
   ) => {
     const campaignName = row.name;
     const url = `/collection-boost/campaign/${row.id}`;
@@ -211,7 +211,7 @@ const CollectionsBoostListCampaignsContent = () => {
   };
 
   const renderCampaignDropPercentage = (
-    row: collectionsBoostApi.CollectionsBoostApiCampaign
+    row: collectionsBoostApi.CollectionsBoostApiCampaign,
   ) => {
     const dropPercentage = row.campaign_drop_percentage;
     if (dropPercentage > 0) {
@@ -221,7 +221,7 @@ const CollectionsBoostListCampaignsContent = () => {
             {ci18n(
               "placeholder is a sale/discount",
               "%1$s OFF",
-              numeral(dropPercentage / 100.0).format("0%")
+              numeral(dropPercentage / 100.0).format("0%"),
             )}
           </Text>
         </Layout.FlexRow>
@@ -333,7 +333,7 @@ const CollectionsBoostListCampaignsContent = () => {
           if (respCollection.data.collection.state != "APPROVED") {
             toastStore.error(
               i`Associated collection not approved. ` +
-                `Please go to create campaigns from approved collections.`
+                `Please go to create campaigns from approved collections.`,
             );
             return;
           }
@@ -404,7 +404,7 @@ const CollectionsBoostListCampaignsContent = () => {
         expandedRows={Array.from(expandedRows)}
         onRowExpandToggled={onRowExpandToggled}
         renderExpanded={(
-          campaign: collectionsBoostApi.CollectionsBoostApiCampaign
+          campaign: collectionsBoostApi.CollectionsBoostApiCampaign,
         ) => <CollectionsBoostCampaignRowExpand campaign={campaign} />}
         rowHeight={65}
         cellStyle={() => ({ fontSize: 16 })}
@@ -507,7 +507,7 @@ const CollectionsBoostListCampaignsContent = () => {
           {({ row }) =>
             formatCurrency(
               row.gmv * row.conversion_rate,
-              row.localized_currency
+              row.localized_currency,
             )
           }
         </Table.Column>
@@ -654,7 +654,7 @@ const useStylesheet = () => {
           padding: 8,
         },
       }),
-    []
+    [],
   );
 };
 

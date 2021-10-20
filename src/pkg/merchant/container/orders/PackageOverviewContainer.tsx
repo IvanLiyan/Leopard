@@ -18,7 +18,7 @@ import { PackageOverviewInitialData } from "@toolkit/orders/package-overview";
 import { Illustration } from "@merchant/component/core";
 import { PrimaryButton } from "@ContextLogic/lego";
 import { weightBold } from "@toolkit/fonts";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import Error404 from "@merchant/component/errors/Error404";
 import { formatCurrency } from "@ContextLogic/lego/toolkit/currency";
 
@@ -258,7 +258,7 @@ const PackageOverviewContainer: React.FC<Props> = ({ initialData }: Props) => {
           <div className={css(styles.font, styles.cell)}>{vatDisplay}</div>
           <div className={css(styles.font, styles.cell)}>{grossDisplay}</div>
         </React.Fragment>
-      )
+      ),
     );
 
     const shippingRow = (
@@ -473,7 +473,7 @@ const useStylesheet = () => {
           borderBottom: `1px solid ${borderPrimary}`,
         },
       }),
-    [textBlack, textDark, borderPrimary, surfaceLight]
+    [textBlack, textDark, borderPrimary, surfaceLight],
   );
 };
 

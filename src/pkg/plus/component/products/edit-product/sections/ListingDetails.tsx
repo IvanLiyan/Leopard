@@ -25,7 +25,7 @@ import ProductEditState from "@plus/model/ProductEditState";
 import { Option } from "@ContextLogic/lego/component/form/SimpleSelect";
 import { CommerceProductCondition } from "@schema/types";
 import { ConditionDisplay } from "@toolkit/product-edit";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 type Props = Omit<SectionProps, "title"> & {
   readonly editState: ProductEditState;
@@ -36,12 +36,11 @@ const ConditionOrder: ReadonlyArray<CommerceProductCondition> = [
   "USED",
   "REFURBISHED",
 ];
-const ConditionOptions: ReadonlyArray<Option<
-  CommerceProductCondition
->> = ConditionOrder.map((value: CommerceProductCondition) => ({
-  value,
-  text: ConditionDisplay[value],
-}));
+const ConditionOptions: ReadonlyArray<Option<CommerceProductCondition>> =
+  ConditionOrder.map((value: CommerceProductCondition) => ({
+    value,
+    text: ConditionDisplay[value],
+  }));
 
 const ListingDetails: React.FC<Props> = (props: Props) => {
   const styles = useStylesheet();
@@ -158,6 +157,6 @@ const useStylesheet = () => {
           cursor: "default",
         },
       }),
-    [negative]
+    [negative],
   );
 };

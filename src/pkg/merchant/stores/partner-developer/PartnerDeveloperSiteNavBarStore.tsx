@@ -12,9 +12,9 @@ import { logout } from "@merchant/api/authentication";
 import { zendeskURL } from "@toolkit/url";
 
 /* Merchant Stores */
-import UserStore from "@merchant/stores/UserStore";
-import ExperimentStore from "@merchant/stores/ExperimentStore";
-import NavigationStore from "@merchant/stores/NavigationStore";
+import UserStore from "@stores/UserStore";
+import ExperimentStore from "@stores/ExperimentStore";
+import NavigationStore from "@stores/NavigationStore";
 
 type Visibility =
   | "ALL"

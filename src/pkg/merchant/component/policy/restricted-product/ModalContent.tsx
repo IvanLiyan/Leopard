@@ -10,7 +10,7 @@ import gql from "graphql-tag";
 import { useQuery } from "@apollo/react-hooks";
 
 /* Merchant Store */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* Lego Components */
 import { Flag } from "@merchant/component/core";
@@ -38,9 +38,7 @@ type CountryType = Pick<Country, "name" | "code">;
 type ResponseType = {
   readonly policy: {
     readonly restrictedProduct: {
-      readonly restrictedProductEuropeCountries: ReadonlyArray<
-        CountryType
-      > | null;
+      readonly restrictedProductEuropeCountries: ReadonlyArray<CountryType> | null;
     };
   };
 };
@@ -55,7 +53,7 @@ const ModalContent = ({}: ModalContentlProps) => {
   const countryToName = (country: CountryType) => country.name;
   const countries = _.sortBy(
     data?.policy?.restrictedProduct?.restrictedProductEuropeCountries,
-    countryToName
+    countryToName,
   );
 
   const styles = useStylesheet();
@@ -123,6 +121,6 @@ const useStylesheet = () => {
           fontSize: 14,
         },
       }),
-    [surfaceLightest, pageBackground]
+    [surfaceLightest, pageBackground],
   );
 };

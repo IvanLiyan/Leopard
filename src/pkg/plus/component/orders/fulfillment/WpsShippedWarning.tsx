@@ -15,7 +15,7 @@ import { Button } from "@ContextLogic/lego";
 /* Lego Toolkit */
 import { css } from "@toolkit/styling";
 
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
 export type WpsShippedWarningProps = BaseProps & {
@@ -70,6 +70,6 @@ const useStylesheet = () => {
           color: textBlack,
         },
       }),
-    [textBlack]
+    [textBlack],
   );
 };

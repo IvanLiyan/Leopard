@@ -14,7 +14,7 @@ import { css } from "@toolkit/styling";
 import PartnerDeveloperSection from "@merchant/component/external/partner-developer/PartnerDeveloperSection";
 
 /* Merchant Stores */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 const infoMessageData = [
   {
@@ -166,7 +166,7 @@ const useStylesheet = () => {
           },
         },
       }),
-    [textWhite, textBlack]
+    [textWhite, textBlack],
   );
 };
 

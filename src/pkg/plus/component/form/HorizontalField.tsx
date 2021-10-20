@@ -8,7 +8,7 @@ import {
 
 /* Lego Toolkit */
 import * as fonts from "@toolkit/fonts";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 const HorizontalField = (props: HorizontalFieldProps) => {
   const { textBlack } = useTheme();

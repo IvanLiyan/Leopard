@@ -12,8 +12,8 @@ import { SimpleBannerItem } from "@ContextLogic/lego";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
 /* Merchant Store */
-import { useTheme } from "@merchant/stores/ThemeStore";
-import { useNavigationStore } from "@merchant/stores/NavigationStore";
+import { useTheme } from "@stores/ThemeStore";
+import { useNavigationStore } from "@stores/NavigationStore";
 import { Illustration } from "@merchant/component/core";
 
 export type ProductListingPlanBannerProps = BaseProps & {

@@ -4,7 +4,7 @@ import {
   LogEventNames,
   Page,
 } from "@toolkit/performance/constants";
-import NavigationStore from "@merchant/stores/NavigationStore";
+import NavigationStore from "@stores/NavigationStore";
 
 type LogPayload = {
   readonly action: keyof typeof LogActions;

@@ -11,7 +11,7 @@ import { Layout, Text } from "@ContextLogic/lego";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
 /* Merchant Store */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 export type Event = {
   topic: string;
@@ -88,7 +88,7 @@ const useStylesheet = () => {
           padding: 16,
         },
       }),
-    [textBlack, textWhite, borderPrimary, borderPrimaryDark]
+    [textBlack, textWhite, borderPrimary, borderPrimaryDark],
   );
 };
 

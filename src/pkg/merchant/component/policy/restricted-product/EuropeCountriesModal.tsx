@@ -1,6 +1,6 @@
 import React from "react";
 
-import DimenStore from "@merchant/stores/DimenStore";
+import DeviceStore from "@stores/DeviceStore";
 
 /* Lego Components */
 import Modal from "@merchant/component/core/modal/Modal";
@@ -26,7 +26,7 @@ export default class EuropeCountriesModal extends Modal {
     this.props = props;
     this.noMaxHeight = true;
 
-    const { screenInnerWidth } = DimenStore.instance();
+    const { screenInnerWidth } = DeviceStore.instance();
     const targetPercentage = 980 / screenInnerWidth;
     this.setWidthPercentage(targetPercentage);
   }

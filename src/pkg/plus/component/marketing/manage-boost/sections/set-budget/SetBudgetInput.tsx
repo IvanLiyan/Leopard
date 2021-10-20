@@ -26,7 +26,7 @@ import { formatCurrency } from "@ContextLogic/lego/toolkit/currency";
 
 import * as fonts from "@toolkit/fonts";
 
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 import { BoostableProduct } from "@toolkit/marketing/boost-products";
 import BoostProductsState from "@plus/model/BoostProductsState";
@@ -47,12 +47,8 @@ const SetBudgetInput: React.FC<Props> = ({
   const {
     product: { id: productId },
   } = boostableProduct;
-  const {
-    currencyCode,
-    forceValidation,
-    isSubmitting,
-    dailyMinBudget,
-  } = boostState;
+  const { currencyCode, forceValidation, isSubmitting, dailyMinBudget } =
+    boostState;
   const styles = useStylesheet();
   const [validationError, setValidationError] = useState<
     string | null | undefined
@@ -134,6 +130,6 @@ const useStylesheet = () => {
           marginLeft: 10,
         },
       }),
-    [negative]
+    [negative],
   );
 };

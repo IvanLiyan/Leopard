@@ -19,8 +19,8 @@ import StoreSignupSinglePageState from "@merchant/model/StoreSignupSinglePageSta
 import { weightSemibold } from "@toolkit/fonts";
 
 /* Merchant Stores */
-import { useDimenStore } from "@merchant/stores/DimenStore";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useDeviceStore } from "@stores/DeviceStore";
+import { useTheme } from "@stores/ThemeStore";
 import AutocompleteField from "./AutocompleteField";
 
 type AddressFieldsProps = {
@@ -28,7 +28,7 @@ type AddressFieldsProps = {
 };
 
 const AddressFields: React.FC<AddressFieldsProps> = (
-  props: AddressFieldsProps
+  props: AddressFieldsProps,
 ) => {
   const { signupState } = props;
   const styles = useStylesheet();
@@ -50,7 +50,7 @@ const AddressFields: React.FC<AddressFieldsProps> = (
     forceValidation,
   } = signupState;
 
-  const { isSmallScreen } = useDimenStore();
+  const { isSmallScreen } = useDeviceStore();
 
   const { borderPrimaryDark, negative } = useTheme();
 
@@ -205,7 +205,7 @@ const useStylesheet = () => {
           cursor: "default",
         },
       }),
-    [negative]
+    [negative],
   );
 };
 

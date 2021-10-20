@@ -15,9 +15,9 @@ import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
 /* Lego Toolkit */
 import { css } from "@toolkit/styling";
-import { useTheme } from "@merchant/stores/ThemeStore";
-import { useNavigationStore } from "@merchant/stores/NavigationStore";
-import { useDimenStore } from "@merchant/stores/DimenStore";
+import { useTheme } from "@stores/ThemeStore";
+import { useNavigationStore } from "@stores/NavigationStore";
+import { useDeviceStore } from "@stores/DeviceStore";
 import { useStringQueryParam } from "@toolkit/url";
 
 import HeadingNumber from "./HeadingNumber";
@@ -53,7 +53,7 @@ const PolicyNav = ({
         offset: -offset - 50,
         scrollDuration: 200,
       }),
-    [offset]
+    [offset],
   );
 
   const [currentPolicy, setCurrentPolicy] = useState(getLocationHash());
@@ -90,7 +90,7 @@ const PolicyNav = ({
     }
   }, [navigationStore, currentSection]);
 
-  const { isSmallScreen } = useDimenStore();
+  const { isSmallScreen } = useDeviceStore();
   const { textLight, textBlack } = useTheme();
   const styles = useStylesheet(offset, { textLight, textBlack });
 
@@ -116,7 +116,7 @@ const PolicyNav = ({
                         <div
                           className={css(
                             styles.sideMenuText,
-                            selected && styles.sideMenuTextSelected
+                            selected && styles.sideMenuTextSelected,
                           )}
                         >
                           <HeadingNumber
@@ -144,7 +144,7 @@ const PolicyNav = ({
 
 const useStylesheet = (
   offset: number,
-  { textLight, textBlack }: { textLight: string; textBlack: string }
+  { textLight, textBlack }: { textLight: string; textBlack: string },
 ) =>
   useMemo(
     () =>
@@ -193,7 +193,7 @@ const useStylesheet = (
           },
         },
       }),
-    [offset, textLight, textBlack]
+    [offset, textLight, textBlack],
   );
 
 export default observer(PolicyNav);

@@ -16,8 +16,8 @@ import { css } from "@toolkit/styling";
 
 /* Type Imports */
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import { useTheme } from "@merchant/stores/ThemeStore";
-import { useApolloStore } from "@merchant/stores/ApolloStore";
+import { useTheme } from "@stores/ThemeStore";
+import { useApolloStore } from "@stores/ApolloStore";
 import { MarketingServiceSchemaImpressionStatsArgs } from "@schema/types";
 
 import { ImpressionOverviewStatsResponseType } from "@toolkit/marketing/boosted-products";

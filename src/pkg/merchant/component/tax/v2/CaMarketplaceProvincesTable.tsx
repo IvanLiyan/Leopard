@@ -13,7 +13,7 @@ import { Table, Layout } from "@ContextLogic/lego";
 /* Lego Toolkit */
 import { css } from "@toolkit/styling";
 import { getStateName } from "@ContextLogic/lego/toolkit/states";
-import { useDeviceStore } from "@merchant/stores/DeviceStore";
+import { useDeviceStore } from "@stores/DeviceStore";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { Info } from "@ContextLogic/lego";
 

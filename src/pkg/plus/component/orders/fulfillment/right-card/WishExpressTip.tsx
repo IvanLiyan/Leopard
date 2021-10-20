@@ -21,7 +21,7 @@ import WishExpressIcon from "@plus/component/orders/fulfillment/icons/WishExpres
 import { Markdown } from "@ContextLogic/lego";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 type Props = BaseProps & {
   readonly orderId: string;
@@ -55,7 +55,7 @@ const WishExpressTip: React.FC<Props> = ({
         text={
           i`Orders enrolled for Wish Express need to be confirmed ` +
           i`delivered within the required time frame. [Learn more](${zendeskURL(
-            "231264967"
+            "231264967",
           )})`
         }
       />
@@ -102,6 +102,6 @@ const useStylesheet = () => {
           marginRight: 10,
         },
       }),
-    [surfaceLightest]
+    [surfaceLightest],
   );
 };

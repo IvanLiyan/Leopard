@@ -26,7 +26,7 @@ import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { RowSelectionArgs } from "@ContextLogic/lego";
 import { CurrencyCode } from "@toolkit/currency";
 import { BulkDuplicateCampaign } from "@merchant/api/product-boost";
-import { useToastStore } from "@merchant/stores/ToastStore";
+import { useToastStore } from "@stores/ToastStore";
 
 export type BulkDuplicateAutomatedModalContentProps = BaseProps & {
   readonly campaignsToDuplicate: ReadonlyArray<BulkDuplicateCampaign>;
@@ -36,25 +36,20 @@ export type BulkDuplicateAutomatedModalContentProps = BaseProps & {
 };
 
 const BulkDuplicateAutomatedModalContent = (
-  props: BulkDuplicateAutomatedModalContentProps
+  props: BulkDuplicateAutomatedModalContentProps,
 ) => {
-  const {
-    campaignsToDuplicate,
-    maxAllowedSpending,
-    onClose,
-    currencyCode,
-  } = props;
+  const { campaignsToDuplicate, maxAllowedSpending, onClose, currencyCode } =
+    props;
   const styles = useStylesheet();
 
   const toastStore = useToastStore();
 
   const initalCampaignIds = campaignsToDuplicate.map(
-    (campaign) => campaign.campaign_id
+    (campaign) => campaign.campaign_id,
   );
 
-  const [selectedCampaignIds, setSelectedCampaignIds] = useState(
-    initalCampaignIds
-  );
+  const [selectedCampaignIds, setSelectedCampaignIds] =
+    useState(initalCampaignIds);
 
   const selectedRows = campaignsToDuplicate.reduce(
     //disabled to satisfy the callback requirement on .reduce
@@ -65,7 +60,7 @@ const BulkDuplicateAutomatedModalContent = (
       }
       return accumulator;
     },
-    []
+    [],
   );
 
   const onDuplicateRowSelectionToggled = ({
@@ -315,7 +310,7 @@ const useStylesheet = () =>
           overflow: "hidden",
         },
       }),
-    []
+    [],
   );
 
 export class BulkDuplicateAutomatedModal extends Modal {

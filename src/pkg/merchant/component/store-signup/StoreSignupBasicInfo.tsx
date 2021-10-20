@@ -34,7 +34,7 @@ import { StoreNameValidator, NoWishEmailsValidator } from "@toolkit/validators";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
 /* Merchant Stores */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 type StoreSignupBasicInfoProps = BaseProps & {
   readonly showCaptcha?: boolean | null | undefined;
@@ -43,7 +43,7 @@ type StoreSignupBasicInfoProps = BaseProps & {
 const FieldHeight = 40;
 
 const StoreSignupBasicInfo: React.FC<StoreSignupBasicInfoProps> = (
-  props: StoreSignupBasicInfoProps
+  props: StoreSignupBasicInfoProps,
 ) => {
   const { className, style, showCaptcha } = props;
 
@@ -222,6 +222,6 @@ const useStylesheet = () => {
           borderRadius: 2,
         },
       }),
-    [textBlack, surfaceLightest]
+    [textBlack, surfaceLightest],
   );
 };

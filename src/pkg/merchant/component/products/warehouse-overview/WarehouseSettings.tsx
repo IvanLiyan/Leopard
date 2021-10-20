@@ -21,7 +21,7 @@ import {
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
 /* Merchant Stores */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* Merchant Components */
 import { CountryLabel } from "@merchant/component/core";
@@ -93,7 +93,7 @@ const WarehouseSettings: React.FC<Props> = ({
         id: warehouse.id,
         unitId: warehouse.unitId,
         enabledCountries: warehouse.enabledCountries.map(
-          (country) => country.code
+          (country) => country.code,
         ),
         address: warehouse.address,
       };
@@ -210,7 +210,7 @@ const WarehouseSettings: React.FC<Props> = ({
 };
 
 const useFuse = (
-  warehouses: ReadonlyArray<PickedWarehouseType>
+  warehouses: ReadonlyArray<PickedWarehouseType>,
 ): Fuse<PickedWarehouseType, any> => {
   return useMemo((): Fuse<PickedWarehouseType, any> => {
     const documents: ReadonlyArray<PickedWarehouseType> = [...warehouses];
@@ -253,6 +253,6 @@ const useStylesheet = () => {
           margin: "12px 0",
         },
       }),
-    [borderPrimary, textBlack]
+    [borderPrimary, textBlack],
   );
 };

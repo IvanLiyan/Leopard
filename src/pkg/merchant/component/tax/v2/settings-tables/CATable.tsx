@@ -11,7 +11,7 @@ import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
 /* Merchant Stores */
 import { useTaxStore } from "@merchant/stores/TaxStore";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* Merchant Components */
 import CATaxInfo from "./CATaxInfo";
@@ -156,6 +156,6 @@ const useStylesheet = () => {
           marginLeft: 3,
         },
       }),
-    [surfaceLight, surfaceLightest, borderPrimary]
+    [surfaceLight, surfaceLightest, borderPrimary],
   );
 };

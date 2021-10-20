@@ -11,7 +11,7 @@ import { observer } from "mobx-react";
 
 import { Link } from "@ContextLogic/lego";
 
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 import { Field, CurrencyInput, Markdown } from "@ContextLogic/lego";
 
@@ -75,7 +75,7 @@ const DefaultShippingSection: React.FC<Props> = (props: Props) => {
             onChange={({ textAsNumber }) =>
               editState.setDefaultShippingPrice(
                 textAsNumber ?? NaN,
-                warehouseId
+                warehouseId,
               )
             }
             debugValue={(Math.random() * 10).toFixed(2).toString()}
@@ -130,6 +130,6 @@ const useStylesheet = () => {
           padding: 15,
         },
       }),
-    [textDark]
+    [textDark],
   );
 };

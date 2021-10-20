@@ -13,7 +13,7 @@ import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import CommerceMerchantTaxInfo from "@merchant/model/CommerceMerchantTaxInfo";
 
 /* Merchant Stores */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import {
   AccountTypeDisplayNames,
   GBNumberDisplayNameInfo,
@@ -41,7 +41,7 @@ const GBTaxSettingsTable: React.FC<GBTaxSettingsTableProps> = ({
 
   const info = useMemo(
     () => taxInfos.find(({ countryCode }) => countryCode === "GB"),
-    [taxInfos]
+    [taxInfos],
   );
 
   if (info == null) {
@@ -143,6 +143,6 @@ const useStylesheet = () => {
           marginLeft: 12,
         },
       }),
-    [textBlack, borderPrimary, surfaceLightest]
+    [textBlack, borderPrimary, surfaceLightest],
   );
 };

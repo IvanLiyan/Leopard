@@ -10,7 +10,7 @@ import BoostTermsOfService from "@merchant/component/product-boost/terms/Product
 
 /* Merchant Plus Components */
 import PageGuide from "@plus/component/nav/PageGuide";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import ProductBoostAcceptTermsOfServiceButton from "@merchant/component/product-boost/terms/ProductBoostAcceptTermsOfServiceButton";
 import { MarketingMerchantPropertySchema } from "@schema/types";
 

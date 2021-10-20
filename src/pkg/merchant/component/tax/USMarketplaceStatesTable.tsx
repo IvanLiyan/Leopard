@@ -14,7 +14,7 @@ import { Table } from "@ContextLogic/lego";
 /* Lego Toolkit */
 import { css } from "@toolkit/styling";
 import { getStateName } from "@ContextLogic/lego/toolkit/states";
-import { useDeviceStore } from "@merchant/stores/DeviceStore";
+import { useDeviceStore } from "@stores/DeviceStore";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { UsTaxConstants } from "@schema/types";
 
@@ -32,7 +32,7 @@ export default observer((props: Props) => {
     marketplaceStates.map((stateCode) => ({
       state: getStateName("US", stateCode),
     })),
-    (info) => info.state
+    (info) => info.state,
   );
 
   const rows = _.chunk(tableData, isSmallScreen ? 1 : 4);
@@ -76,5 +76,5 @@ const useStylesheet = () =>
           paddingLeft: 15,
         },
       }),
-    []
+    [],
   );

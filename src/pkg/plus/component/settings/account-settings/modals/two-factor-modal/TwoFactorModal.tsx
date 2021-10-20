@@ -23,8 +23,8 @@ import { useTimer, useMountEffect } from "@ContextLogic/lego/toolkit/hooks";
 import ConfirmationScreen from "@plus/component/settings/account-settings/modals/ConfirmationScreen";
 
 /* Merchant Stores */
-import { useApolloStore } from "@merchant/stores/ApolloStore";
-import { useToastStore } from "@merchant/stores/ToastStore";
+import { useApolloStore } from "@stores/ApolloStore";
+import { useToastStore } from "@stores/ToastStore";
 
 /* Relative Imports */
 import CodeOnContent from "./CodeOnContent";
@@ -32,8 +32,8 @@ import CodeOffContent from "./CodeOffContent";
 import CompleteContent from "./CompleteContent";
 
 /* Type Imports */
-import ToastStore from "@merchant/stores/ToastStore";
-import DeviceStore from "@merchant/stores/DeviceStore";
+import ToastStore from "@stores/ToastStore";
+import DeviceStore from "@stores/DeviceStore";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import {
   TwoFactorSendCodeMutation,
@@ -87,7 +87,7 @@ type TwoFactorModalContentProps = TwoFactorModalProps & {
 };
 
 const TwoFactorModalContent: React.FC<TwoFactorModalContentProps> = (
-  props: TwoFactorModalContentProps
+  props: TwoFactorModalContentProps,
 ) => {
   const {
     closeModal,
@@ -116,11 +116,10 @@ const TwoFactorModalContent: React.FC<TwoFactorModalContentProps> = (
   });
 
   const [state, setStateRaw] = useState<TwoFactorCodeState>(
-    turningOnTwoFactor ? "CODE_ON" : "CODE_OFF"
+    turningOnTwoFactor ? "CODE_ON" : "CODE_OFF",
   );
-  const [backupCodes, setBackupCodes] = useState<
-    TwoFactorTurnOnMutation["backupCodes"]
-  >();
+  const [backupCodes, setBackupCodes] =
+    useState<TwoFactorTurnOnMutation["backupCodes"]>();
   const { client } = useApolloStore();
   const toastStore = useToastStore();
   const setState = (newState: TwoFactorCodeState) => {
@@ -155,11 +154,11 @@ const TwoFactorModalContent: React.FC<TwoFactorModalContentProps> = (
 
       if (!sent) {
         toastStore.negative(
-          error || i`Something went wrong. Please try again later.`
+          error || i`Something went wrong. Please try again later.`,
         );
       }
     },
-    [called, sendCodeMutation, toastStore, updateTfaSentTime]
+    [called, sendCodeMutation, toastStore, updateTfaSentTime],
   );
 
   // try to send a new 2fa code on mount

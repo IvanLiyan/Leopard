@@ -25,7 +25,7 @@ import { Icon } from "@merchant/component/core";
 import BoxIconGroup from "./BoxIconGroup";
 
 /* Stores */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import ChargeBreakdown, {
   ChargeBreakdownLine,
   ChargeBreakdownTotal,

@@ -10,7 +10,7 @@ import { WelcomeHeader } from "@merchant/component/core";
 /* Lego Toolkit */
 import { css } from "@toolkit/styling";
 import { weightBold } from "@toolkit/fonts";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* Toolkit */
 import { zendeskURL } from "@toolkit/url";
@@ -35,7 +35,7 @@ const FBSHeader = (props: FBSHeaderProps) => {
             i`well as view high-potential products that you can choose to ` +
             i`stock for the FBS program. ` + // eslint-disable-next-line local-rules/no-links-in-i18n
             i`[Learn more](${zendeskURL(
-              "360037188713-Fulfillment-By-Store-FBS-FAQ"
+              "360037188713-Fulfillment-By-Store-FBS-FAQ",
             )})`
           }
           className={css(styles.bannerText)}
@@ -67,6 +67,6 @@ const useStyleSheet = () => {
           color: textDark,
         },
       }),
-    [textBlack, textDark]
+    [textBlack, textDark],
   );
 };

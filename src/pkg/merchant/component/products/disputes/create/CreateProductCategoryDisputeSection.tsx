@@ -33,7 +33,7 @@ import Ul from "@merchant/component/core/Ul";
 import { SecureFileInput } from "@merchant/component/core";
 
 /* Merchant Stores */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* Model */
 import {
@@ -59,7 +59,7 @@ const CreateProductCategoryDisputeSection: React.FC<Props> = ({
   const styles = useStylesheet();
 
   const [attachments, setAttachments] = useState<ReadonlyArray<AttachmentInfo>>(
-    []
+    [],
   );
 
   const product = initialData.productCatalog?.product;
@@ -72,7 +72,7 @@ const CreateProductCategoryDisputeSection: React.FC<Props> = ({
       initialData.productCatalog?.product?.trueTags
         ? getTopLevelTags(initialData.productCatalog.product.trueTags)
         : null,
-    [initialData]
+    [initialData],
   );
 
   const euDisputeReasons =
@@ -294,6 +294,6 @@ const useStylesheet = () => {
           marginTop: 4,
         },
       }),
-    [textBlack]
+    [textBlack],
   );
 };

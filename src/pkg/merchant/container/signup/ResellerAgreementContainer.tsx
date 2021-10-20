@@ -17,9 +17,9 @@ import * as onboardingApi from "@merchant/api/onboarding";
 
 /* Toolkit */
 import { useLogger } from "@toolkit/logger";
-import { useLoggedInUser } from "@merchant/stores/UserStore";
-import { useToastStore } from "@merchant/stores/ToastStore";
-import { useNavigationStore } from "@merchant/stores/NavigationStore";
+import { useLoggedInUser } from "@stores/UserStore";
+import { useToastStore } from "@stores/ToastStore";
+import { useNavigationStore } from "@stores/NavigationStore";
 
 const ResellerAgreementContainer: React.FC<{}> = () => {
   const user = useLoggedInUser();
@@ -128,7 +128,7 @@ const useStylesheet = () => {
           maxWidth: 720,
         },
       }),
-    []
+    [],
   );
 };
 

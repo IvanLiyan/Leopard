@@ -1513,7 +1513,7 @@ const countries = {
 export type { CountryCode };
 
 export const getCountryName = (
-  countryCode: CountryCode | "EU" | "D" | null | undefined
+  countryCode: CountryCode | "EU" | "D" | null | undefined,
 ): string => {
   if (!countryCode) {
     return "";
@@ -1558,5 +1558,5 @@ export const getCountryRegion = (countryCode: CountryCode): string => {
   return REGION_NAMES.OTHER;
 };
 
-const module = (countries as any) as { [key in CountryCode]: string };
-export default module;
+const countriesExported = countries as any as { [key in CountryCode]: string };
+export default countriesExported;

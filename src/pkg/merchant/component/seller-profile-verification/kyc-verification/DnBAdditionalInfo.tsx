@@ -9,7 +9,7 @@ import {
 } from "@ContextLogic/lego";
 
 /* Merchant Store */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* Lego Toolkit */
 import { css } from "@toolkit/styling";
@@ -112,6 +112,6 @@ const useStylesheet = () => {
           color: textBlack,
         },
       }),
-    [textDark, textBlack]
+    [textDark, textBlack],
   );
 };

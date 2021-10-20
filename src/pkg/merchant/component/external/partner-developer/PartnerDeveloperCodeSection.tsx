@@ -11,7 +11,7 @@ import { weightBold } from "@toolkit/fonts";
 import { getCodeSamples } from "@merchant/api/partner-developer";
 
 /* Merchant Stores */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* Toolkit */
 import { useRequest } from "@toolkit/api";
@@ -133,7 +133,7 @@ const useStylesheet = () => {
           borderRadius: 32,
         },
       }),
-    [borderPrimary, primary, textWhite]
+    [borderPrimary, primary, textWhite],
   );
 };
 

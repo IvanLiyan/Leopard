@@ -12,7 +12,7 @@ import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 /* Toolkit */
 import { zendeskURL } from "@toolkit/url";
 
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 import Row from "./Row";
 
@@ -57,7 +57,7 @@ const Screen3: React.FC<Props> = ({ className, style }: Props) => {
       <Markdown
         className={css(styles.row)}
         text={i`Need help or want to learn more? [Visit our FAQ](${zendeskURL(
-          "360051750674"
+          "360051750674",
         )})`}
       />
     </div>
@@ -89,6 +89,6 @@ const useStylesheet = () => {
           fontWeight: weightBold,
         },
       }),
-    [textLight, textBlack]
+    [textLight, textBlack],
   );
 };

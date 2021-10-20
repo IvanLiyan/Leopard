@@ -22,7 +22,7 @@ import { Card } from "@ContextLogic/lego";
 
 /* Type Imports */
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 const GET_STORE_STATS = gql`
   query GetStoreStats {
@@ -124,7 +124,7 @@ const InsightsCard: React.FC<Props> = ({
               <div
                 className={css(
                   styles.value,
-                  !totalImpressions && styles.blankValue
+                  !totalImpressions && styles.blankValue,
                 )}
               >
                 {numeral(totalImpressions).format("0,0").toString()}
@@ -200,6 +200,6 @@ const useStylesheet = () => {
           color: "#7790A3",
         },
       }),
-    [borderPrimary, textUltralight, textLight, textDark]
+    [borderPrimary, textUltralight, textLight, textDark],
   );
 };

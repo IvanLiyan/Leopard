@@ -59,7 +59,7 @@ const PromotedProductsTable = (props: PromotedProductsTableProps) => {
       budget = minBudget.toFixed(2);
       productsDailyBudgetMap.set(row.id, minBudget.toFixed(2));
       setProductsDailyBudgetMap(
-        new Map<string, string>(productsDailyBudgetMap)
+        new Map<string, string>(productsDailyBudgetMap),
       );
     }
 
@@ -71,7 +71,7 @@ const PromotedProductsTable = (props: PromotedProductsTableProps) => {
         onChange={({ text }: OnTextChangeEvent) => {
           productsDailyBudgetMap.set(row.id, text);
           setProductsDailyBudgetMap(
-            new Map<string, string>(productsDailyBudgetMap)
+            new Map<string, string>(productsDailyBudgetMap),
           );
         }}
         hideCheckmarkWhenValid

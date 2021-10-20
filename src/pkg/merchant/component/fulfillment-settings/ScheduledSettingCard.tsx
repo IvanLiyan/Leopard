@@ -17,7 +17,7 @@ import {
   FulfillmentSettingNames,
   getScheduledFulfillmentSetting,
 } from "@toolkit/fulfillment-settings";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
 type Props = BaseProps & {
@@ -71,7 +71,7 @@ const ScheduledSettingCard: React.FC<Props> = ({
         </HorizontalField>
       )}
       {["VACATION_MODE", "PRIMARY_WAREHOUSE_ON_VACATION"].includes(
-        scheduledSetting
+        scheduledSetting,
       ) && (
         <>
           {vacation.startDate && (
@@ -130,7 +130,7 @@ const useStylesheet = () => {
           color: textBlack,
         },
       }),
-    [surfaceLight, textBlack]
+    [surfaceLight, textBlack],
   );
 };
 

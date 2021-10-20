@@ -11,12 +11,12 @@ import { observer } from "mobx-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 /* Merchant Store */
-import NavigationStore from "@merchant/stores/NavigationStore";
-import EnvironmentStore from "@merchant/stores/EnvironmentStore";
+import NavigationStore from "@stores/NavigationStore";
+import EnvironmentStore from "@stores/EnvironmentStore";
 
 /* Lego Toolkit */
 import { css } from "@toolkit/styling";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 import { useTimer } from "@ContextLogic/lego/toolkit/hooks";
 
@@ -41,10 +41,8 @@ export default observer((props: Props) => {
   const { primary } = useTheme();
   const styles = useStylesheet(props);
   const { isProd } = EnvironmentStore.instance();
-  const {
-    progressiveLoadingStatus,
-    latestPendingNavigationPath,
-  } = NavigationStore.instance();
+  const { progressiveLoadingStatus, latestPendingNavigationPath } =
+    NavigationStore.instance();
 
   const avgLoadTime = isProd ? 1500 : 3000;
 
@@ -133,6 +131,6 @@ const useStylesheet = ({ backgroundColor: backgroundColorProp }: Props) => {
           zIndex: 99999999,
         },
       }),
-    [backgroundColor]
+    [backgroundColor],
   );
 };

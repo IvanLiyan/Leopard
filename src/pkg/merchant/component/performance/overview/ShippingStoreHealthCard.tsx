@@ -11,7 +11,7 @@ import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { formatCurrency } from "@toolkit/currency";
 
 /* Merchant Store */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* Relative Imports */
 import BaseStoreHealthCard from "./BaseStoreHealthCard";
@@ -113,7 +113,7 @@ const ShippingStoreHealthCard = (props: Props) => {
             i`released time and first recorded carrier scan is longer than 168 hours for ` +
             i`orders with (merchant price + shipping price) per item less than ${formatCurrency(
               100,
-              "USD"
+              "USD",
             )}, or ` +
             i`longer than 336 hours for orders with (merchant price + shipping price) per ` +
             i`item greater than or equal to ${formatCurrency(100, "USD")}`
@@ -238,6 +238,6 @@ const useStylesheet = () => {
           marginTop: 26,
         },
       }),
-    [borderPrimary]
+    [borderPrimary],
   );
 };

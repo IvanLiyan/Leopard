@@ -10,12 +10,12 @@ import { Layout, Text } from "@ContextLogic/lego";
 import { css } from "@toolkit/styling";
 
 /* Merchant Store */
-import { useUserStore } from "@merchant/stores/UserStore";
+import { useUserStore } from "@stores/UserStore";
 
 /* Type Imports */
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { IllustrationName } from "@merchant/component/core";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 export type MerchantPlusMode = "default" | "ink" | "white";
 type Props = BaseProps & {
@@ -113,6 +113,6 @@ const useStylesheet = ({ mode }: Props) => {
           },
         },
       }),
-    [textColor]
+    [textColor],
   );
 };

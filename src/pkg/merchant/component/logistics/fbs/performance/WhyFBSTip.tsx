@@ -19,7 +19,7 @@ import { useLogger } from "@toolkit/logger";
 import { LogActions } from "@toolkit/fbs";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import { useLocalizationStore } from "@merchant/stores/LocalizationStore";
+import { useLocalizationStore } from "@stores/LocalizationStore";
 
 type WhyFBSTipProps = BaseProps;
 
@@ -152,6 +152,6 @@ const useStyleSheet = () => {
           marginLeft: 8,
         },
       }),
-    []
+    [],
   );
 };

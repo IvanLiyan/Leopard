@@ -15,8 +15,8 @@ import { RequiredValidator } from "@toolkit/validators";
 import StoreSignupSinglePageState from "@merchant/model/StoreSignupSinglePageState";
 
 /* Merchant Stores */
-import { useDimenStore } from "@merchant/stores/DimenStore";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useDeviceStore } from "@stores/DeviceStore";
+import { useTheme } from "@stores/ThemeStore";
 
 type PersonalInfoFieldsProps = {
   readonly signupState: StoreSignupSinglePageState;
@@ -26,14 +26,9 @@ const PersonalInfoFields = (props: PersonalInfoFieldsProps) => {
   const { signupState } = props;
   const styles = useStylesheet();
 
-  const {
-    emailAddress,
-    password,
-    firstName,
-    lastName,
-    forceValidation,
-  } = signupState;
-  const { isSmallScreen } = useDimenStore();
+  const { emailAddress, password, firstName, lastName, forceValidation } =
+    signupState;
+  const { isSmallScreen } = useDeviceStore();
   const { borderPrimaryDark } = useTheme();
 
   return (
@@ -118,7 +113,7 @@ const useStylesheet = () => {
           column: 2,
         },
       }),
-    []
+    [],
   );
 };
 

@@ -13,7 +13,7 @@ import PageGuide from "@plus/component/nav/PageGuide";
 import AccountSettings from "@plus/component/settings/account-settings/AccountSettings";
 
 /* Merchant Stores */
-import { useToastStore } from "@merchant/stores/ToastStore";
+import { useToastStore } from "@stores/ToastStore";
 
 /* Schema */
 import { AccountSettingsInitialData } from "@toolkit/account-settings";
@@ -64,7 +64,7 @@ const useStylesheet = () =>
           marginTop: 20,
         },
       }),
-    []
+    [],
   );
 
 export default observer(PlusAccountSettingsContainer);

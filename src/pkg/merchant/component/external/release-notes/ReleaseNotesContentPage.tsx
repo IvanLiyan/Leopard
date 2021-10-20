@@ -12,7 +12,7 @@ import { LoadingIndicator } from "@ContextLogic/lego";
 import VersionSection from "@merchant/component/external/release-notes/VersionSection";
 
 /* Merchant Stores */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 type ReleaseNotesContentPageProps = {
   readonly resource: string;

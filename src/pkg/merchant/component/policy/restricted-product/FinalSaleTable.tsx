@@ -23,7 +23,7 @@ import { css } from "@toolkit/styling";
 import { errorFilledGrey } from "@assets/icons";
 
 /* Merchant Store */
-import { useToastStore } from "@merchant/stores/ToastStore";
+import { useToastStore } from "@stores/ToastStore";
 
 /* Type Imports */
 import {

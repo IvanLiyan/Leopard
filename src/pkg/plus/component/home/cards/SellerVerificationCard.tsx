@@ -14,7 +14,7 @@ import { useUIStateBool } from "@toolkit/ui-state";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { PickedSellerVerification } from "@toolkit/home";
 
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 import { useLogger } from "@toolkit/logger";
 import moment from "moment/moment";
@@ -49,7 +49,7 @@ const SellerVerificationCard: React.FC<Props> = ({
       } else if (gmvCapReached && gmvCapGracePeriodEndDate) {
         const formattedDate = formatDatetimeLocalized(
           moment.unix(gmvCapGracePeriodEndDate.unix),
-          "MMMM D"
+          "MMMM D",
         );
         return i`Validate your store before ${formattedDate}`;
       }
@@ -62,7 +62,7 @@ const SellerVerificationCard: React.FC<Props> = ({
     } else if (gmvCapReached && gmvCapGracePeriodEndDate) {
       const formattedDate = formatDatetimeLocalized(
         moment.unix(gmvCapGracePeriodEndDate.unix),
-        "MMMM D"
+        "MMMM D",
       );
       return i`Validate your store before ${formattedDate}`;
     }
@@ -182,6 +182,6 @@ const useStylesheet = () => {
           padding: "26px 12px",
         },
       }),
-    [textDark]
+    [textDark],
   );
 };

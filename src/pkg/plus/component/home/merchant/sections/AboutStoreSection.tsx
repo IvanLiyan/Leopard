@@ -29,7 +29,7 @@ import { css } from "@toolkit/styling";
 
 /* Type Imports */
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 import HomeSection from "@plus/component/home/HomeSection";
 
@@ -100,23 +100,18 @@ const AboutStoreSection: React.FC<Props> = ({
   const { primary } = useTheme();
 
   const { data } = useQuery<GetAccountBalance, void>(
-    getAccountBalanceQuery(primaryCurrency)
+    getAccountBalanceQuery(primaryCurrency),
   );
 
   if (data?.payments?.currentMerchant == null || data.currentMerchant == null) {
     return null;
   }
 
-  const {
-    confirmedAccountBalance,
-    pendingAccountBalance,
-  } = data.payments.currentMerchant;
+  const { confirmedAccountBalance, pendingAccountBalance } =
+    data.payments.currentMerchant;
 
-  const {
-    averageProductRating,
-    startDate,
-    endDate,
-  } = data.currentMerchant.storeStats.rating;
+  const { averageProductRating, startDate, endDate } =
+    data.currentMerchant.storeStats.rating;
 
   const renderRight = () => (
     <Link href="/performance-overview">

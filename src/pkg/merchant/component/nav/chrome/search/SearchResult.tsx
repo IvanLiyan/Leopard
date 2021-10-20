@@ -12,7 +12,7 @@ import * as fonts from "@toolkit/fonts";
 import { palettes } from "@toolkit/lego-legacy/DEPRECATED_colors";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import { NavigationSearchResult } from "@merchant/stores/NavigationStore";
+import { NavigationSearchResult } from "@stores/NavigationStore";
 
 type Props = BaseProps & {
   readonly result: NavigationSearchResult;
@@ -122,6 +122,6 @@ const useStylesheet = ({ isSelected }: Props) => {
           fontWeight: fonts.weightNormal,
         },
       }),
-    [isSelected]
+    [isSelected],
   );
 };

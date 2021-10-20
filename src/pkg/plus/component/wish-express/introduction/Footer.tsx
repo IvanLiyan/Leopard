@@ -9,7 +9,7 @@ import { PrimaryButton } from "@ContextLogic/lego";
 import { css } from "@toolkit/styling";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 import NavDot from "./NavDot";
 

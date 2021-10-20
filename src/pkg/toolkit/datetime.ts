@@ -12,7 +12,7 @@ import fr from "relative-time-format/locale/fr.json";
 import ko from "relative-time-format/locale/ko.json";
 
 /* Merchant Store */
-import LocalizationStore from "@merchant/stores/LocalizationStore";
+import LocalizationStore from "@stores/LocalizationStore";
 
 RelativeTimeFormat.addLocale(en);
 RelativeTimeFormat.addLocale(zh);
@@ -61,7 +61,7 @@ export const relativeTimeFormat = (targetDate: Moment): string => {
 
 export const formatDatetimeLocalized = (
   targetMoment: Moment,
-  format: string
+  format: string,
 ): string => {
   const { localeProper } = LocalizationStore.instance();
 

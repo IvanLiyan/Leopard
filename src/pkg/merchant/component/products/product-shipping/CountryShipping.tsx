@@ -34,7 +34,7 @@ import { Button } from "@ContextLogic/lego";
 /* Lego Toolkit */
 import * as fonts from "@toolkit/fonts";
 
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
 /* Type Imports */
@@ -60,7 +60,7 @@ const CountryShippingPrice: React.FC<CountryShippingPriceProps> = observer(
       defaultShippingPriceForWarehouse,
     } = editState;
     const shippingState = editState.getCountryShippingState(
-      shippingSetting.country
+      shippingSetting.country,
     );
     const { shippingPrice } = shippingState;
     const [text, setText] = useState<string>(shippingPrice?.toString() || "");
@@ -93,7 +93,7 @@ const CountryShippingPrice: React.FC<CountryShippingPriceProps> = observer(
         data-testid={MERCHANT_PRODUCT_SHIPPING_TEST_ID.SHIPPING_PRICE}
       />
     );
-  }
+  },
 );
 
 type CountryShippingTTDProps = {
@@ -105,12 +105,12 @@ const CountryShippingTTD: React.FC<CountryShippingTTDProps> = observer(
   ({ shippingSetting, editState }: CountryShippingTTDProps) => {
     const { forceValidation, defaultTTD, ttdValidators } = editState;
     const shippingState = editState.getCountryShippingState(
-      shippingSetting.country
+      shippingSetting.country,
     );
 
     const timeToDoor = shippingState.timeToDoorValue;
     const [text, setText] = useState<string | undefined>(
-      timeToDoor?.toString() || undefined
+      timeToDoor?.toString() || undefined,
     );
     useEffect(() => {
       if (!timeToDoor) {
@@ -140,7 +140,7 @@ const CountryShippingTTD: React.FC<CountryShippingTTDProps> = observer(
         data-testid={MERCHANT_PRODUCT_SHIPPING_TEST_ID.MAX_DELIVERY_DAYS}
       />
     );
-  }
+  },
 );
 
 type Props = BaseProps & {
@@ -149,25 +149,22 @@ type Props = BaseProps & {
 
 const CountryShipping: React.FC<Props> = ({ editState }: Props) => {
   const styles = useStylesheet();
-  const {
-    warehouseConfiguredCountries,
-    ttdColumnDescription,
-    ttdValidators,
-  } = editState;
+  const { warehouseConfiguredCountries, ttdColumnDescription, ttdValidators } =
+    editState;
   const [expandedRow, setExpandedRow] = useState<number | undefined>(undefined);
   const [selectedRows, setSelectedRows] = useState<Set<CountryCode>>(
-    new Set([])
+    new Set([]),
   );
   const [ttdValue, setTTDValue] = useState<string | undefined>(undefined);
   const [canApplyToAll, setCanApplyToAll] = useState<boolean>(true);
   const [filter, setFilter] = useState<string | undefined>();
   const [pageNumber, setPageNumber] = useState<number>(0);
   const [data, setData] = useState<ReadonlyArray<PickedShippingSettingsSchema>>(
-    warehouseConfiguredCountries
+    warehouseConfiguredCountries,
   );
 
   const onRowSelectionToggled = (
-    args: RowSelectionArgs<PickedShippingSettingsSchema>
+    args: RowSelectionArgs<PickedShippingSettingsSchema>,
   ) => {
     const { selected, row } = args;
     if (selected) {
@@ -188,7 +185,7 @@ const CountryShipping: React.FC<Props> = ({ editState }: Props) => {
 
   const renderExpanded = (shippingSetting: PickedShippingSettingsSchema) => {
     const shippingState = editState.getCountryShippingState(
-      shippingSetting.country
+      shippingSetting.country,
     );
     return (
       <Card>
@@ -202,7 +199,7 @@ const CountryShipping: React.FC<Props> = ({ editState }: Props) => {
 
   const rowExpands = (shippingSetting: PickedShippingSettingsSchema) => {
     const shippingState = editState.getCountryShippingState(
-      shippingSetting.country
+      shippingSetting.country,
     );
     return shippingState.regions != null && shippingState.regions.length > 0;
   };
@@ -220,7 +217,7 @@ const CountryShipping: React.FC<Props> = ({ editState }: Props) => {
       newData = newData.filter((shippingSetting) =>
         shippingSetting.country.name
           .toLowerCase()
-          .includes(filter.toLowerCase())
+          .includes(filter.toLowerCase()),
       );
     }
     setData(newData);
@@ -228,7 +225,7 @@ const CountryShipping: React.FC<Props> = ({ editState }: Props) => {
 
   const dataOnCurrentPage = data.slice(
     pageNumber * PAGE_SIZE,
-    (pageNumber + 1) * PAGE_SIZE
+    (pageNumber + 1) * PAGE_SIZE,
   );
   const selectedRowOnCurrentPage = dataOnCurrentPage.reduce(
     //disabled to satisfy the callback requirement on .reduce
@@ -236,14 +233,14 @@ const CountryShipping: React.FC<Props> = ({ editState }: Props) => {
     (
       accumulator: number[],
       row: PickedShippingSettingsSchema,
-      index: number
+      index: number,
     ) => {
       if (selectedRows.has(row.country.code)) {
         accumulator = [...accumulator, index];
       }
       return accumulator;
     },
-    []
+    [],
   );
 
   // todo: for now we only display configured countries for a particular warehouse.
@@ -291,14 +288,14 @@ const CountryShipping: React.FC<Props> = ({ editState }: Props) => {
           <Button
             onClick={() => {
               const selectedShippingSettings = data.filter((shippingSetting) =>
-                selectedRows.has(shippingSetting.country.code)
+                selectedRows.has(shippingSetting.country.code),
               );
               for (const shippingSetting of selectedShippingSettings) {
                 const shippingState = editState.getCountryShippingState(
-                  shippingSetting.country
+                  shippingSetting.country,
                 );
                 shippingState.setTimeToDoor(
-                  ttdValue ? parseInt(ttdValue) : undefined
+                  ttdValue ? parseInt(ttdValue) : undefined,
                 );
               }
             }}
@@ -326,7 +323,7 @@ const CountryShipping: React.FC<Props> = ({ editState }: Props) => {
             return false;
           }
           const shippingState = editState.getCountryShippingState(
-            shippingSetting.country
+            shippingSetting.country,
           );
           const enabled = shippingState.enabled;
           return enabled !== undefined && enabled !== null ? enabled : false;
@@ -416,7 +413,7 @@ const CountryShipping: React.FC<Props> = ({ editState }: Props) => {
               PickedShippingSettingsSchema
             >) => {
               const shippingState = editState.getCountryShippingState(
-                shippingSetting.country
+                shippingSetting.country,
               );
               const {
                 wishExpressTTDRequirement,
@@ -446,7 +443,7 @@ const CountryShipping: React.FC<Props> = ({ editState }: Props) => {
             row: shippingSetting,
           }: CellInfo<boolean, PickedShippingSettingsSchema>) => {
             const shippingState = editState.getCountryShippingState(
-              shippingSetting.country
+              shippingSetting.country,
             );
             return {
               isOn: !!shippingState.enabled,
@@ -523,6 +520,6 @@ const useStylesheet = () => {
           },
         },
       }),
-    [surfaceLightest]
+    [surfaceLightest],
   );
 };

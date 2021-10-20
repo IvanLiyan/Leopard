@@ -29,7 +29,7 @@ import { DEPRECATEDIcon as Icon } from "@merchant/component/core";
 import { wishURL, zendeskURL } from "@toolkit/url";
 import ProductImage from "@merchant/component/products/ProductImage";
 import { Popover } from "@merchant/component/core";
-import { useToastStore } from "@merchant/stores/ToastStore";
+import { useToastStore } from "@stores/ToastStore";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { CellInfo } from "@ContextLogic/lego";
@@ -42,7 +42,7 @@ import {
   Country,
   TrueTagSchema,
 } from "@schema/types";
-import { useDeciderKey } from "@merchant/stores/ExperimentStore";
+import { useDeciderKey } from "@stores/ExperimentStore";
 
 export type PickedCountryShippingSchema = Pick<
   CountryShippingSchema,
@@ -161,7 +161,7 @@ const ProductCell = ({
         styles.productsCell,
         canViewOnWish && styles.showEyeballOnHover,
         className,
-        style
+        style,
       )}
     >
       <Link
@@ -265,7 +265,7 @@ type Props = BaseProps & {
   readonly sortOrder: SortOrder | undefined;
   readonly onSortToggled: (
     field: ProductSortField,
-    order: SortOrder
+    order: SortOrder,
   ) => unknown;
   readonly canManageShipping: boolean;
 };
@@ -281,10 +281,8 @@ const AllProductsTable: React.FC<Props> = ({
 }: Props) => {
   const salesSortOrder = sortField == "SALES" ? sortOrder : "not-applied";
 
-  const {
-    decision: showRevShare,
-    isLoading: isLoadingShowRevShare,
-  } = useDeciderKey("rev_share_mplus");
+  const { decision: showRevShare, isLoading: isLoadingShowRevShare } =
+    useDeciderKey("rev_share_mplus");
 
   const categoriesLearnMoreLink = zendeskURL("4403535077403");
 
@@ -420,5 +418,5 @@ const useStylesheet = () =>
           whiteSpace: "nowrap",
         },
       }),
-    []
+    [],
   );

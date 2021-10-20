@@ -53,8 +53,8 @@ import { RadioOption } from "@ContextLogic/lego";
 import { AttachmentInfo } from "@ContextLogic/lego";
 import { OnTextChangeEvent } from "@ContextLogic/lego";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import DimenStore from "@merchant/stores/DimenStore";
-import NavigationStore from "@merchant/stores/NavigationStore";
+import DeviceStore from "@stores/DeviceStore";
+import NavigationStore from "@stores/NavigationStore";
 
 type WETrackingDisputeCreateProps = BaseProps & {
   readonly orderId: string;
@@ -153,7 +153,7 @@ class WETrackingDisputeCreate extends Component<WETrackingDisputeCreateProps> {
 
   @computed
   get pageX(): string | number {
-    const { pageGuideX } = DimenStore.instance();
+    const { pageGuideX } = DeviceStore.instance();
     return pageGuideX;
   }
 
@@ -244,13 +244,13 @@ class WETrackingDisputeCreate extends Component<WETrackingDisputeCreateProps> {
       "ES",
     ];
 
-    let remainingCountryCodes: CountryCode[] = (Object.keys(
-      countryNamesPartial
-    ) as CountryCode[]).filter((cc: CountryCode) => !topCountries.includes(cc));
+    let remainingCountryCodes: CountryCode[] = (
+      Object.keys(countryNamesPartial) as CountryCode[]
+    ).filter((cc: CountryCode) => !topCountries.includes(cc));
 
     remainingCountryCodes = _.sortBy(
       remainingCountryCodes,
-      (cc) => CountryNames[cc]
+      (cc) => CountryNames[cc],
     );
 
     const countryCodes: CountryCode[] = [
@@ -284,11 +284,8 @@ class WETrackingDisputeCreate extends Component<WETrackingDisputeCreateProps> {
 
   @computed
   get deliveredDateValidator() {
-    const {
-      wishDeliveredTime,
-      trackingModifiedDate,
-      deliverExpectedDeadline,
-    } = this.props;
+    const { wishDeliveredTime, trackingModifiedDate, deliverExpectedDeadline } =
+      this.props;
     return new DateSanityValidator({
       fieldName: i`confirmed delivered date`,
       sysDate: wishDeliveredTime || "",
@@ -310,7 +307,7 @@ class WETrackingDisputeCreate extends Component<WETrackingDisputeCreateProps> {
   async reportedDeliveredDateQualifiedReversedFineCheck() {
     const { deliveredDateValidator, reportedDeliveredDate } = this;
     const msg = await deliveredDateValidator.deadlineMeetsWarning(
-      reportedDeliveredDate
+      reportedDeliveredDate,
     );
     this.reportedDeliveredDateQualifiedReversedFineMessage = msg;
   }
@@ -411,7 +408,7 @@ class WETrackingDisputeCreate extends Component<WETrackingDisputeCreateProps> {
     }
 
     new ConfirmationModal(
-      i`Are you sure you want to submit the Wish Express tracking dispute?`
+      i`Are you sure you want to submit the Wish Express tracking dispute?`,
     )
       .setHeader({
         title: i`Submit tracking dispute`,
@@ -970,7 +967,7 @@ class WETrackingDisputeCreate extends Component<WETrackingDisputeCreateProps> {
                 accepts=".jpeg,.jpg,.png,.pdf"
                 maxAttachments={1}
                 onAttachmentsChanged={(
-                  attachments: ReadonlyArray<AttachmentInfo>
+                  attachments: ReadonlyArray<AttachmentInfo>,
                 ) => {
                   this.screenshotAttachments = attachments;
                   if (attachments.length > 0) {

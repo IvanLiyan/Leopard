@@ -19,8 +19,8 @@ import { useDebouncer } from "@ContextLogic/lego/toolkit/hooks";
 import { PasswordInput as NewPasswordInput } from "@merchant/component/core";
 
 /* Merchant Stores */
-import { useApolloStore } from "@merchant/stores/ApolloStore";
-import { useToastStore } from "@merchant/stores/ToastStore";
+import { useApolloStore } from "@stores/ApolloStore";
+import { useToastStore } from "@stores/ToastStore";
 
 /* Lego Components */
 import { TextInput, Markdown, HorizontalField } from "@ContextLogic/lego";
@@ -33,7 +33,7 @@ import PasswordInput from "./PasswordInput";
 /* Type Imports */
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { ChangePasswordInput, ChangePasswordMutation } from "@schema/types";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 const CHANGE_PASSWORD = gql`
   mutation ChangePassword($curPassword: String!, $newPassword: String!) {
@@ -80,7 +80,7 @@ const ChangePasswordScreen: React.FC<Props> = (props: Props) => {
     500,
     {
       returnLoading: true,
-    }
+    },
   );
   const [changePassword, { loading }] = useMutation<
     ChangePasswordResponseType,
@@ -97,7 +97,7 @@ const ChangePasswordScreen: React.FC<Props> = (props: Props) => {
   const onChangePassword = async () => {
     if (password == null || newPassword == null) {
       toastStore.negative(
-        i`Please provide your current password and a new password`
+        i`Please provide your current password and a new password`,
       );
       return;
     }
@@ -217,6 +217,6 @@ const useStylesheet = () => {
           minWidth: 160,
         },
       }),
-    [borderPrimaryDark]
+    [borderPrimaryDark],
   );
 };

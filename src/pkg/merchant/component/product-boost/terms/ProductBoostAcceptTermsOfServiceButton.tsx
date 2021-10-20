@@ -11,8 +11,8 @@ import {
 /* Lego Components */
 import { PrimaryButton } from "@ContextLogic/lego";
 
-import { useToastStore } from "@merchant/stores/ToastStore";
-import { useNavigationStore } from "@merchant/stores/NavigationStore";
+import { useToastStore } from "@stores/ToastStore";
+import { useNavigationStore } from "@stores/NavigationStore";
 
 /* Lego Toolkit */
 import { css } from "@toolkit/styling";
@@ -45,7 +45,7 @@ type ProductBoostAcceptTermsOfServiceButtonProps = BaseProps & {
 };
 
 const ProductBoostAcceptTermsOfServiceButton = (
-  props: ProductBoostAcceptTermsOfServiceButtonProps
+  props: ProductBoostAcceptTermsOfServiceButtonProps,
 ) => {
   const styles = useStylesheet();
   const toastStore = useToastStore();
@@ -107,6 +107,6 @@ const useStylesheet = () => {
           width: "100%",
         },
       }),
-    []
+    [],
   );
 };

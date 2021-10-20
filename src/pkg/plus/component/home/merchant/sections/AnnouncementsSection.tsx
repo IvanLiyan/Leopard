@@ -9,7 +9,7 @@ import { Link, Layout } from "@ContextLogic/lego";
 import { Icon } from "@merchant/component/core";
 
 /* Merchant Stores */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import AnnouncementDashboard from "@merchant/component/widget/announcement-dashboard/AnnouncementDashboard";
 
 /* Lego Toolkit */

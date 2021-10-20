@@ -12,7 +12,7 @@ import { observer } from "mobx-react";
 /* Lego Toolkit */
 import { css } from "@toolkit/styling";
 import { Text, Layout } from "@ContextLogic/lego";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import ChromeSideMenuButton, { ButtonPadding } from "./ChromeSideMenuButton";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
@@ -104,6 +104,6 @@ const useStylesheet = () => {
           color: textLight,
         },
       }),
-    [surfaceLightest, textLight]
+    [surfaceLightest, textLight],
   );
 };

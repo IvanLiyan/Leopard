@@ -19,8 +19,8 @@ import HorizontalField from "@plus/component/form/HorizontalField";
 import ProductEditState from "@plus/model/ProductEditState";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import { useTheme } from "@merchant/stores/ThemeStore";
-import { useDeciderKey } from "@merchant/stores/ExperimentStore";
+import { useTheme } from "@stores/ThemeStore";
+import { useDeciderKey } from "@stores/ExperimentStore";
 import { zendeskURL } from "@toolkit/url";
 
 export type Props = BaseProps & {
@@ -40,10 +40,8 @@ const BasicInfoCard: React.FC<Props> = (props: Props) => {
     },
   } = props;
 
-  const {
-    decision: showRevShare,
-    isLoading: isLoadingShowRevShare,
-  } = useDeciderKey("rev_share_mplus");
+  const { decision: showRevShare, isLoading: isLoadingShowRevShare } =
+    useDeciderKey("rev_share_mplus");
 
   const styles = useStylesheet();
   if (lastUpdateTime == null || createTime == null || id == null) {
@@ -186,6 +184,6 @@ const useStylesheet = () => {
           lineHeight: "20px",
         },
       }),
-    [textLight]
+    [textLight],
   );
 };

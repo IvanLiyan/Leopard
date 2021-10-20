@@ -5,7 +5,7 @@ import { observer } from "mobx-react";
 import { css } from "@toolkit/styling";
 import { ci18n } from "@legacy/core/i18n";
 import { H5, Card, Text } from "@ContextLogic/lego";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
 import Example from "./Example";

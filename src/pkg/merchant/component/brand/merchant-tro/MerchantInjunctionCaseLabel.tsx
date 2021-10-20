@@ -8,7 +8,7 @@ import { Label } from "@ContextLogic/lego";
 import { css } from "@toolkit/styling";
 
 /* Merchant Store */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { CaseStatus } from "@merchant/api/brand/merchant-tro";
@@ -18,7 +18,7 @@ export type MerchantInjunctionCaseLabelProps = BaseProps & {
 };
 
 const MerchantInjunctionCaseLabel = (
-  props: MerchantInjunctionCaseLabelProps
+  props: MerchantInjunctionCaseLabelProps,
 ) => {
   const styles = useStylesheet(props);
   const { status } = props;
@@ -80,6 +80,6 @@ const useStylesheet = (props: MerchantInjunctionCaseLabelProps) => {
           padding: 10,
         },
       }),
-    []
+    [],
   );
 };

@@ -18,7 +18,7 @@ import Error403 from "@merchant/component/errors/Error403";
 /* Merchant API */
 import * as disputeApi from "@merchant/api/disputes";
 
-import { useNavigationStore } from "@merchant/stores/NavigationStore";
+import { useNavigationStore } from "@stores/NavigationStore";
 
 /* Toolkit */
 import { useRequest } from "@toolkit/api";
@@ -27,14 +27,14 @@ import { ShippingDetails } from "@merchant/api/orders";
 const TrackingDisputeContainer = () => {
   const navigationStore = useNavigationStore();
   const { disputeType, orderId } = usePathParams(
-    "/tracking-dispute/v2/create/:disputeType/:orderId"
+    "/tracking-dispute/v2/create/:disputeType/:orderId",
   );
   // get tracking dispute form info
   const [response] = useRequest(
     disputeApi.getTrackingDisputeForm({
       order_id: orderId,
       dispute_type: disputeType,
-    })
+    }),
   );
   const result = response?.data;
 
@@ -106,7 +106,7 @@ const TrackingDisputeContainer = () => {
   const fineCurrency = lcfFine ? lcfFine.currency : "USD";
   const fakeTrackingFine = fines.find((fine) => fine.is_fake_tracking_fine);
   const merchantCancellationFine = fines.find(
-    (fine) => fine.is_cancellation_fine
+    (fine) => fine.is_cancellation_fine,
   );
 
   const shippingDetails: ShippingDetails = {

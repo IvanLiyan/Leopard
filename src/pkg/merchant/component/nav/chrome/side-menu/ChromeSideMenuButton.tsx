@@ -17,11 +17,11 @@ import NotificationCountBadge from "@merchant/component/nav/chrome/badges/Notifi
 
 /* Lego Toolkit */
 import { css } from "@toolkit/styling";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { NavigationNode, NavigationBadgeType } from "@toolkit/chrome";
-import { useNavigationStore } from "@merchant/stores/NavigationStore";
+import { useNavigationStore } from "@stores/NavigationStore";
 
 import { useNodeCount } from "@toolkit/chrome";
 import { IconName } from "@ContextLogic/zeus";
@@ -173,7 +173,7 @@ export default observer(ChromeSideMenuButton);
 
 const useStylesheet = (
   { expand, leadingPadding = 0, node }: Props,
-  isHovering: boolean
+  isHovering: boolean,
 ) => {
   const { textBlack, primary, primaryLight } = useTheme();
   return useMemo(
@@ -206,30 +206,29 @@ const useStylesheet = (
           marginRight: 16,
         },
       }),
-    [leadingPadding, textBlack, primary, primaryLight, isHovering]
+    [leadingPadding, textBlack, primary, primaryLight, isHovering],
   );
 };
 
 export const useHasNotificationBadge = (
   node: NavigationNode,
-  badgeType: NavigationBadgeType
+  badgeType: NavigationBadgeType,
 ): boolean => {
-  const getHasNotificationBadge: (
-    arg0: NavigationNode
-  ) => boolean = useCallback(
-    ({ badge, children }: NavigationNode) => {
-      const type = badge?.type;
-      if (type == badgeType) {
-        return true;
-      }
+  const getHasNotificationBadge: (arg0: NavigationNode) => boolean =
+    useCallback(
+      ({ badge, children }: NavigationNode) => {
+        const type = badge?.type;
+        if (type == badgeType) {
+          return true;
+        }
 
-      return children.some((child) => getHasNotificationBadge(child));
-    },
-    [badgeType]
+        return children.some((child) => getHasNotificationBadge(child));
+      },
+      [badgeType],
+    );
+
+  return useMemo(
+    () => getHasNotificationBadge(node),
+    [node, getHasNotificationBadge],
   );
-
-  return useMemo(() => getHasNotificationBadge(node), [
-    node,
-    getHasNotificationBadge,
-  ]);
 };

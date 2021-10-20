@@ -13,7 +13,7 @@ import objectHash from "object-hash";
 import api from "@legacy/core/api";
 
 /* Merchant Store */
-import ToastStore from "@merchant/stores/ToastStore";
+import ToastStore from "@stores/ToastStore";
 
 export type APIResponse<ResponseData> = {
   code: number;
@@ -128,39 +128,39 @@ class MerchantRequestRunner<B, D> extends BaseRequestRunner<D> {
   }
 
   async call(): Promise<APIResponse<D>> {
-    const { path, body, method, options } = this;
+    // const { path, body, method, options } = this;
 
-    // if you find this please fix the any types (legacy)
-    const bodyToQueryString = (inputBody: any) => {
-      if (inputBody) {
-        const searchParams = new URLSearchParams(inputBody);
-        return `?${searchParams.toString()}`;
-      }
-      return "";
-    };
+    // // if you find this please fix the any types (legacy)
+    // const bodyToQueryString = (inputBody: any) => {
+    //   if (inputBody) {
+    //     const searchParams = new URLSearchParams(inputBody);
+    //     return `?${searchParams.toString()}`;
+    //   }
+    //   return "";
+    // };
 
-    this.isLoading = true;
-    let resp: undefined | APIResponse<D>;
-    try {
-      const queryString =
-        method && method.toUpperCase() == "GET" ? bodyToQueryString(body) : "";
+    // this.isLoading = true;
+    // let resp: undefined | APIResponse<D>;
+    // try {
+    //   const queryString =
+    //     method && method.toUpperCase() == "GET" ? bodyToQueryString(body) : "";
 
-      resp = await callAsync(`${path}${queryString}`, body, {
-        ...options,
-        method,
-      });
-    } catch (e) {
-      if (!options.failSilently) {
-        throw e;
-      }
-      resp = e;
-    } finally {
-      this.isLoading = false;
-    }
+    //   resp = await callAsync(`${path}${queryString}`, body, {
+    //     ...options,
+    //     method,
+    //   });
+    // } catch (e) {
+    //   if (!options.failSilently) {
+    //     throw e;
+    //   }
+    //   resp = e;
+    // } finally {
+    //   this.isLoading = false;
+    // }
 
-    this.responseValue = resp;
+    // this.responseValue = resp;
 
-    return resp as APIResponse<D>;
+    return undefined as APIResponse<D>;
   }
 }
 
@@ -183,42 +183,42 @@ class ExternalRequestRunner<B, D> extends BaseRequestRunner<D> {
   }
 
   async call(): Promise<APIResponse<D>> {
-    const { url: endpointUrl, options, method } = this;
+    // const { url: endpointUrl, options, method } = this;
 
-    this.isLoading = true;
-    let resp: undefined | APIResponse<D>;
-    try {
-      const formData = new FormData();
+    // this.isLoading = true;
+    // let resp: undefined | APIResponse<D>;
+    // try {
+    //   const formData = new FormData();
 
-      const body: any = { ...this.body };
-      Object.keys(body).forEach((k) => {
-        if (body[k] != null) {
-          formData.append(k, body[k]);
-        }
-      });
+    //   const body: any = { ...this.body };
+    //   Object.keys(body).forEach((k) => {
+    //     if (body[k] != null) {
+    //       formData.append(k, body[k]);
+    //     }
+    //   });
 
-      const response = await fetch(endpointUrl, {
-        referrerPolicy: "no-referrer-when-downgrade",
-        body: method != "GET" && method != "HEAD" ? formData : undefined,
-        method,
-        mode: "cors",
-        credentials: "omit",
-      });
+    //   const response = await fetch(endpointUrl, {
+    //     referrerPolicy: "no-referrer-when-downgrade",
+    //     body: method != "GET" && method != "HEAD" ? formData : undefined,
+    //     method,
+    //     mode: "cors",
+    //     credentials: "omit",
+    //   });
 
-      const responseData = await response.json();
-      resp = { data: responseData, code: response.status };
-    } catch (e) {
-      if (!options.failSilently) {
-        throw e;
-      }
-      resp = e;
-    } finally {
-      this.isLoading = false;
-    }
+    //   const responseData = await response.json();
+    //   resp = { data: responseData, code: response.status };
+    // } catch (e) {
+    //   if (!options.failSilently) {
+    //     throw e;
+    //   }
+    //   resp = e;
+    // } finally {
+    //   this.isLoading = false;
+    // }
 
-    this.responseValue = resp;
+    // this.responseValue = resp;
 
-    return resp as APIResponse<D>;
+    return undefined as APIResponse<D>;
   }
 }
 
@@ -241,18 +241,17 @@ export class BaseAPIRequest<B, D> implements CallableRequest<D> {
   }
 
   initialize() {
-    const {
-      constructor: { runnerRepo },
-    } = this;
-    const runner: undefined | BaseRequestRunner<D> = runnerRepo.get(
-      this.hash()
-    );
-
-    if (!runner) {
-      this.leaseNewRunner();
-    } else {
-      this.runner = runner;
-    }
+    // const {
+    //   constructor: { runnerRepo },
+    // } = this;
+    // const runner: undefined | BaseRequestRunner<D> = runnerRepo.get(
+    //   this.hash(),
+    // );
+    // if (!runner) {
+    //   this.leaseNewRunner();
+    // } else {
+    //   this.runner = runner;
+    // }
   }
 
   get response(): undefined | Readonly<APIResponse<D>> {
@@ -335,7 +334,7 @@ export class MerchantAPIRequest<B, D> extends BaseAPIRequest<B, D> {
   constructor(
     path: string,
     body?: undefined | B,
-    method?: undefined | RESTMethod
+    method?: undefined | RESTMethod,
   ) {
     super(path, body, method || "POST");
     this.initialize();
@@ -351,7 +350,7 @@ export class MerchantAPIRequest<B, D> extends BaseAPIRequest<B, D> {
     const runner: BaseRequestRunner<D> = new MerchantRequestRunner(
       path,
       body || null,
-      method || "POST"
+      method || "POST",
     );
     runnerRepo.set(this.hash(), runner);
     this.runner = runner;
@@ -365,7 +364,7 @@ export const call = (url: string, body: undefined | any): Promise<any> => {
       body,
       // if you find this please fix the any types (legacy)
       (resp: any) => resolve(resp),
-      (errResponse: any) => resolve(errResponse)
+      (errResponse: any) => resolve(errResponse),
     );
   });
 };
@@ -391,7 +390,7 @@ export const callAsync = (
     failSilently?: boolean;
     noErrorToast?: boolean;
     method?: RESTMethod;
-  }
+  },
 ): Promise<any> => {
   return new Promise((resolve, reject) => {
     const method = (settings && settings.method) || "POST";
@@ -428,12 +427,12 @@ type RefreshFn = () => Promise<void>;
 
 const EmptyRequest: MerchantAPIRequest<any, any> = new MerchantAPIRequest(
   "STUB_REQUEST",
-  {}
+  {},
 );
 
 export const useRequest = function <B, D>(
   _req?: BaseAPIRequest<B, D>,
-  options: RequestOptions = { cache: true, relayError: true }
+  options: RequestOptions = { cache: true, relayError: true },
 ): [undefined | APIResponse<D>, RefreshFn] {
   const { cache: cacheResponses, relayError } = options;
 
@@ -444,7 +443,7 @@ export const useRequest = function <B, D>(
   });
 
   const [responseCache, setResponseCache] = useState<{ [key: string]: any }>(
-    {}
+    {},
   );
 
   const { [requestHash]: cachedResponse } = responseCache;
@@ -459,7 +458,7 @@ export const useRequest = function <B, D>(
         setResponseCache(
           cacheResponses
             ? { ...responseCache, [requestHash]: response }
-            : { [requestHash]: response }
+            : { [requestHash]: response },
         );
       } catch (err) {
         if (relayError) {

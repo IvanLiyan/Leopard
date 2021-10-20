@@ -9,7 +9,7 @@ import { InfoProps } from "@ContextLogic/lego";
 /* Lego Toolkit */
 import { css } from "@toolkit/styling";
 
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
@@ -106,6 +106,6 @@ const useStylesheet = ({ title, children }: RightCardProps) => {
           border: `1px solid ${negative}`,
         },
       }),
-    [title, children, negative, surfaceLight, textBlack]
+    [title, children, negative, surfaceLight, textBlack],
   );
 };

@@ -25,18 +25,18 @@ const DuplicateAutomatedCampaignContainer = () => {
   const styles = useStyleSheet();
 
   const { cid: campaignId } = usePathParams(
-    "/product-boost/duplicate-automated-campaign/:cid"
+    "/product-boost/duplicate-automated-campaign/:cid",
   );
   const [campaignResponse] = useRequest(
     productBoostApi.getProductBoostDuplicateAutomatedCampaignInfo({
       campaign_id: campaignId,
-    })
+    }),
   );
 
   const campaignInfo = campaignResponse?.data;
 
   const [maxSpendingResponse] = useRequest(
-    productBoostApi.getMerchantSpendingStats({})
+    productBoostApi.getMerchantSpendingStats({}),
   );
 
   const maxSpendingData = maxSpendingResponse?.data;
@@ -112,7 +112,7 @@ const useStyleSheet = () => {
           backgroundColor: "white",
         },
       }),
-    []
+    [],
   );
 };
 

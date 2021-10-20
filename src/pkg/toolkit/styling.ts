@@ -7,7 +7,7 @@
 //
 
 import { StyleSheet, css as _css, CSSProperties } from "aphrodite";
-import { BREAKPOINTS } from "@merchant/stores/DeviceStore";
+import { BREAKPOINTS } from "@stores/DeviceStore";
 
 type StyleBase = string | false | void | object | null; // className string plus StyleDeclarationValue | false | null | void
 interface StyleArray {

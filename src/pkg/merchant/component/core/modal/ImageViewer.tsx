@@ -25,8 +25,8 @@ import * as icons from "@assets/icons";
 import closeWhite from "@assets/img/close-white.svg";
 import showListWhite from "@assets/img/show-list-white.svg";
 
-import DimenStore from "@merchant/stores/DimenStore";
-import ToastStore from "@merchant/stores/ToastStore";
+import DeviceStore from "@stores/DeviceStore";
+import ToastStore from "@stores/ToastStore";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
 export type ImageProps = {
@@ -398,12 +398,12 @@ class ImageViewerLeftPanel extends Component<ImageViewerLeftPanelProps> {
     const zoomInCss = css(
       this.styles.tool,
       this.styles.toolZoomIn,
-      this.imageScale >= 1 && this.styles.toolDisabled
+      this.imageScale >= 1 && this.styles.toolDisabled,
     );
     const zoomOutCss = css(
       this.styles.tool,
       this.styles.toolZoomOut,
-      this.imageScale <= this.initImageScale && this.styles.toolDisabled
+      this.imageScale <= this.initImageScale && this.styles.toolDisabled,
     );
     return (
       <div className={css(this.styles.tools)}>
@@ -584,7 +584,7 @@ class ImageViewContent extends Component<ImageViewerInternalProps> {
     return StyleSheet.create({
       root: {
         boxSizing: "border-box",
-        height: DimenStore.instance().screenInnerHeight,
+        height: DeviceStore.instance().screenInnerHeight,
         userSelect: "none",
       },
       container: {
@@ -783,7 +783,7 @@ class ImageViewContent extends Component<ImageViewerInternalProps> {
     }
     const imageBoxStyle = css(
       this.styles.imageInGroup,
-      selected && this.styles.imageInGroupSelected
+      selected && this.styles.imageInGroupSelected,
     );
     return (
       <div
@@ -818,7 +818,7 @@ class ImageViewContent extends Component<ImageViewerInternalProps> {
             <div className={css(this.styles.rightPanelInner)}>
               {this.renderRightPanelTitle()}
               {imageGroups.map((group: ImageGroupProps) =>
-                this.renderOneGroup(group)
+                this.renderOneGroup(group),
               )}
             </div>
           </div>

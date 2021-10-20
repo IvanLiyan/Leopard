@@ -7,7 +7,7 @@ import { SimpleBannerItem } from "@ContextLogic/lego";
 import { Markdown } from "@ContextLogic/lego";
 
 /* Merchant Stores */
-import { useNavigationStore } from "@merchant/stores/NavigationStore";
+import { useNavigationStore } from "@stores/NavigationStore";
 
 /* Merchant API */
 import {

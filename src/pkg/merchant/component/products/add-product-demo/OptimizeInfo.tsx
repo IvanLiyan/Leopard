@@ -9,7 +9,7 @@ import { Alert, Markdown } from "@ContextLogic/lego";
 import { Illustration, IllustrationName } from "@merchant/component/core";
 import { zendeskURL } from "@toolkit/url";
 import { weightNormal, weightSemibold } from "@toolkit/fonts";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import { MAX_VIDEO_LENGTH } from "@toolkit/products/demo-video";
 
 type InfoSectionProps = BaseProps & {

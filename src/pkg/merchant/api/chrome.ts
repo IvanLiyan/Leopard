@@ -1,5 +1,5 @@
 /* Merchant Store */
-import { NavigationSearchResult } from "@merchant/stores/NavigationStore";
+import { NavigationSearchResult } from "@stores/NavigationStore";
 
 /* Toolkit */
 import { MerchantAPIRequest } from "@toolkit/api";
@@ -23,6 +23,6 @@ export type ObjectIDSearchResponse = {
 };
 
 export const objectSearch = (
-  args: ObjectIDSearchRequest
+  args: ObjectIDSearchRequest,
 ): MerchantAPIRequest<ObjectIDSearchRequest, ObjectIDSearchResponse> =>
   new MerchantAPIRequest("chrome/object-search", args);

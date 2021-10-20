@@ -38,7 +38,7 @@ import {
 } from "@toolkit/products/responsible-person";
 import { ResponsiblePersonStatus } from "@schema/types";
 import ResponsiblePersonState from "@merchant/model/products/ResponsiblePersonState";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 type Props = BaseProps & {
   readonly initialData: ResponsiblePersonInitialData;
@@ -101,7 +101,7 @@ const ResponsiblePersonsTable = (props: Props) => {
   const [offset, setOffset] = useState<number>(0);
   const [limit, setLimit] = useState<number>(10);
   const [states, setStates] = useState<Set<ResponsiblePersonStatus>>(
-    new Set([])
+    new Set([]),
   );
   const statesQueryInput = states.has("COMPLETE")
     ? [...Array.from(states), "ADMIN_APPROVED" as ResponsiblePersonStatus]
@@ -261,7 +261,7 @@ const useStylesheet = () => {
           },
         },
       }),
-    []
+    [],
   );
 };
 

@@ -13,7 +13,7 @@ import { css } from "@toolkit/styling";
 import PartnerDeveloperSection from "@merchant/component/external/partner-developer/PartnerDeveloperSection";
 
 /* Merchant Stores */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* Merchant API */
 import { getPromotedPartners } from "@merchant/api/partner-developer";
@@ -120,7 +120,7 @@ const useStylesheet = () => {
           borderRadius: 8,
         },
       }),
-    [textBlack, surfaceLightest, surfaceLight]
+    [textBlack, surfaceLightest, surfaceLight],
   );
 };
 

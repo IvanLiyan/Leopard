@@ -19,7 +19,7 @@ import { css } from "@toolkit/styling";
 import { weightMedium } from "@toolkit/fonts";
 
 /* Merchant Store */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* Type Imports */
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";

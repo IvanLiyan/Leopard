@@ -9,10 +9,10 @@ import { Layout, Text } from "@ContextLogic/lego";
 import { Illustration } from "@merchant/component/core";
 import { css } from "@toolkit/styling";
 
-import { useUserStore } from "@merchant/stores/UserStore";
-import { useNavigationStore } from "@merchant/stores/NavigationStore";
-import { useEnvironmentStore } from "@merchant/stores/EnvironmentStore";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useUserStore } from "@stores/UserStore";
+import { useNavigationStore } from "@stores/NavigationStore";
+import { useEnvironmentStore } from "@stores/EnvironmentStore";
+import { useTheme } from "@stores/ThemeStore";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { IllustrationName } from "@merchant/component/core";
@@ -80,11 +80,11 @@ const useHeaderText = ({ text }: WishForMerchantsProps): string => {
       return isNavyBlueNav
         ? ci18n(
             "placed beside a 'Wish' logo to display 'Wish Merchants'",
-            "Merchants"
+            "Merchants",
           )
         : ci18n(
             "placed beside a 'Wish' logo to display 'Wish For Merchants'",
-            "For Merchants"
+            "For Merchants",
           );
   }
 };
@@ -136,6 +136,6 @@ const useStylesheet = ({ mode }: WishForMerchantsProps) => {
           overflow: "hidden",
         },
       }),
-    [isNavyBlueNav, textColor]
+    [isNavyBlueNav, textColor],
   );
 };

@@ -18,7 +18,7 @@ import { Alert, Card, Layout, Text } from "@ContextLogic/lego";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
 /* Merchant Stores */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import WarehouseMap from "./WarehouseMap";
 import WarehousesList from "./WarehouseList";
 import { WarehouseOverviewInitialData } from "@toolkit/products/warehouse-overview";
@@ -43,23 +43,23 @@ const WarehousePerformance: React.FC<Props> = ({
   const showWithheldWarning = _.some(
     warehouses,
     ({ weekStats }) =>
-      !(weekStats.length == 0) && weekStats[0].isLateDeliveryRateHigh
+      !(weekStats.length == 0) && weekStats[0].isLateDeliveryRateHigh,
   );
   const showRiskOfWithheldWarning = _.some(
     warehouses,
     ({ weekStats }) =>
-      !(weekStats.length == 0) && weekStats[0].isLateDeliveryRateAtRisk
+      !(weekStats.length == 0) && weekStats[0].isLateDeliveryRateAtRisk,
   );
   const showWishExpressWithheldWarning = _.some(
     warehouses,
     ({ weekStats }) =>
       !(weekStats.length == 0) &&
-      weekStats.some((weekStat) => weekStat.weIsLateDeliveryRateHigh)
+      weekStats.some((weekStat) => weekStat.weIsLateDeliveryRateHigh),
   );
   const showWishExpressRiskOfWithheldWarning = _.some(
     warehouses,
     ({ weekStats }) =>
-      !(weekStats.length == 0) && weekStats[0].weIsLateDeliveryRateAtRisk
+      !(weekStats.length == 0) && weekStats[0].weIsLateDeliveryRateAtRisk,
   );
 
   return (
@@ -185,6 +185,6 @@ const useStylesheet = () => {
           borderBottom: `1px solid ${borderPrimary}`,
         },
       }),
-    [textBlack, textDark, borderPrimary]
+    [textBlack, textDark, borderPrimary],
   );
 };

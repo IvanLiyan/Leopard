@@ -38,10 +38,10 @@ import {
   ModifyTrackingOrdersResponseType,
   MODIFY_TRACKING_ORDERS,
 } from "@toolkit/wps/create-shipping-label";
-import ApolloStore from "@merchant/stores/ApolloStore";
-import ToastStore from "@merchant/stores/ToastStore";
+import ApolloStore from "@stores/ApolloStore";
+import ToastStore from "@stores/ToastStore";
 import { WeightUnit, WpsAvailableServices } from "@schema/types";
-import NavigationStore from "@merchant/stores/NavigationStore";
+import NavigationStore from "@stores/NavigationStore";
 
 export class PackageState {
   @observable
@@ -252,30 +252,30 @@ export class ShippingState {
   @computed
   get selectedShippingOption(): PickedWpsShippingOption | undefined {
     return this.shippingOptions.find(
-      ({ id }) => id === this.selectedShippingOptionId
+      ({ id }) => id === this.selectedShippingOptionId,
     );
   }
 
   cheapestShippingOptionFrom(
-    options: ReadonlyArray<PickedWpsShippingOption>
+    options: ReadonlyArray<PickedWpsShippingOption>,
   ): PickedWpsShippingOption | undefined {
     return _.minBy(options, ({ price: { amount } }) => amount);
   }
 
   fastestShippingOptionFrom(
-    options: ReadonlyArray<PickedWpsShippingOption>
+    options: ReadonlyArray<PickedWpsShippingOption>,
   ): PickedWpsShippingOption | undefined {
     return _.minBy(options, "daysToDeliver");
   }
 
   otherShippingOptionsFrom(
-    options: ReadonlyArray<PickedWpsShippingOption>
+    options: ReadonlyArray<PickedWpsShippingOption>,
   ): ReadonlyArray<PickedWpsShippingOption> {
     const cheapest = this.cheapestShippingOptionFrom(options);
     const fastest = this.fastestShippingOptionFrom(options);
 
     const excluded = [cheapest, fastest].filter(
-      (option) => option != null
+      (option) => option != null,
     ) as ReadonlyArray<PickedWpsShippingOption>;
 
     const others = _.differenceBy(options, excluded, "id");
@@ -298,16 +298,15 @@ export class ShippingState {
   }
 
   @computed
-  get selectedAdditionalServicesDetails(): ReadonlyArray<
-    PickedAdditionalServiceOptions
-  > {
+  get selectedAdditionalServicesDetails(): ReadonlyArray<PickedAdditionalServiceOptions> {
     if (this.selectedShippingOption == null) {
       return [];
     }
 
     return this.selectedShippingOption.availableAdditionalServiceOptions.filter(
       (service) =>
-        this.selectedAdditionalServices.has(service.type) && service.fee != null
+        this.selectedAdditionalServices.has(service.type) &&
+        service.fee != null,
     );
   }
 
@@ -319,7 +318,7 @@ export class ShippingState {
 
     return this.selectedAdditionalServicesDetails.reduce(
       (acc, { fee }) => acc + (fee?.amount || 0),
-      this.selectedShippingOption?.price.amount || 0
+      this.selectedShippingOption?.price.amount || 0,
     );
   }
 
@@ -355,7 +354,7 @@ export class ShippingState {
       toastStore.negative(
         errorMessage ||
           i`No shipping options found due to invalid information provided. ` +
-            i`Please correct your originating address and/or package information.`
+            i`Please correct your originating address and/or package information.`,
       );
       this.isFetching = false;
       return false;
@@ -565,7 +564,7 @@ export default class CreateShippingLabelState {
             ...(selectedAdditionalServices.size != 0
               ? {
                   additionalServiceOptions: Array.from(
-                    selectedAdditionalServices
+                    selectedAdditionalServices,
                   ),
                 }
               : {}),
@@ -615,7 +614,7 @@ export default class CreateShippingLabelState {
           (markTrackingMessages != null &&
             markTrackingMessages.length > 0 &&
             markTrackingMessages[0].message) ||
-            i`Something went wrong`
+            i`Something went wrong`,
         );
         return false;
       }
@@ -623,7 +622,7 @@ export default class CreateShippingLabelState {
       toastStore.positive(
         i`Your order is marked as shipped. Now, download your shipping label ` +
           i`and prepare your package`,
-        { deferred: true }
+        { deferred: true },
       );
 
       await navigationStore.navigate(`/order/${orderId}`);
@@ -643,7 +642,7 @@ export default class CreateShippingLabelState {
           ...(selectedAdditionalServices.size != 0
             ? {
                 additionalServiceOptions: Array.from(
-                  selectedAdditionalServices
+                  selectedAdditionalServices,
                 ),
               }
             : {}),
@@ -694,7 +693,7 @@ export default class CreateShippingLabelState {
         (markShippedMessages != null &&
           markShippedMessages.length > 0 &&
           markShippedMessages[0].message) ||
-          i`Something went wrong`
+          i`Something went wrong`,
       );
       return false;
     }
@@ -702,7 +701,7 @@ export default class CreateShippingLabelState {
     toastStore.positive(
       i`Your order is marked as shipped. Now, download your shipping label ` +
         i`and prepare your package`,
-      { deferred: true }
+      { deferred: true },
     );
 
     await navigationStore.navigate(`/order/${orderId}`);

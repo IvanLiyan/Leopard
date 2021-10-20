@@ -32,7 +32,7 @@ import legalRepIdIllustration from "@assets/img/legal-representative-illustratio
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { AttachmentInfo } from "@ContextLogic/lego";
 import { OnTextChangeEvent } from "@ContextLogic/lego";
-import NavigationStore from "@merchant/stores/NavigationStore";
+import NavigationStore from "@stores/NavigationStore";
 
 type CompanyIdentificationProps = BaseProps;
 
@@ -327,7 +327,7 @@ class CompanyIdentification extends Component<CompanyIdentificationProps> {
                     className={css(this.styles.fileInput)}
                     accepts=".jpeg,.jpg,.png,.pdf"
                     onAttachmentsChanged={(
-                      attachments: ReadonlyArray<AttachmentInfo>
+                      attachments: ReadonlyArray<AttachmentInfo>,
                     ) => {
                       if (attachments.length > 0) {
                         this.businessLicenseUploadUrl = attachments[0].url;
@@ -391,7 +391,7 @@ class CompanyIdentification extends Component<CompanyIdentificationProps> {
                     className={css(this.styles.fileInput)}
                     accepts=".jpeg,.jpg,.png,.pdf"
                     onAttachmentsChanged={(
-                      attachments: ReadonlyArray<AttachmentInfo>
+                      attachments: ReadonlyArray<AttachmentInfo>,
                     ) => {
                       if (attachments.length > 0) {
                         this.legalRepIdUploadUrl = attachments[0].url;

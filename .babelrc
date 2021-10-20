@@ -1,0 +1,25 @@
+{
+  "presets": ["next/babel"],
+  "assumptions": {
+    "setPublicClassFields": true
+  },
+  "plugins": [
+    ["@babel/plugin-proposal-decorators", { "legacy": true }],
+    ["@babel/plugin-proposal-class-properties", { "loose": true }],
+    "./build-tools/localization-plugin.js"
+  ]
+  //   "plugins": [
+  //     "@babel/plugin-proposal-optional-chaining",
+  //     "@babel/plugin-transform-modules-commonjs",
+  // ["@babel/plugin-proposal-decorators", { "legacy": true }]
+  //     ["@babel/plugin-transform-flow-strip-types", { "all": true }],
+  // ["@babel/plugin-proposal-class-properties", { "loose": true }],
+  //     ["@babel/plugin-proposal-private-methods", { "loose": true }],
+  //     ["@babel/plugin-proposal-private-property-in-object", { "loose": true }],
+  //     "@babel/plugin-syntax-dynamic-import",
+  //     "babel-plugin-transform-remove-strict-mode"
+  //     // "@loadable/babel-plugin", commented out due to chunk name conflicts, might bring back later
+  //     // "./cli/build/transforms/localization-plugin.js" TODO (lliepert) bring back
+  //   ]
+  //   "presets": ["next/babel", "@babel/preset-typescript", "@babel/preset-react"]
+}

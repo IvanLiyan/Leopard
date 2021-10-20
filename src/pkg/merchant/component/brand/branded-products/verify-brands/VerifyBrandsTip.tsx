@@ -13,7 +13,7 @@ import { Button } from "@ContextLogic/lego";
 import { getProductBrandDetectionInfoList } from "@merchant/api/brand/verify-brands";
 
 /* Merchant Store */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* Type Imports */
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";

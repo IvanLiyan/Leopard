@@ -17,7 +17,7 @@ import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { Illustration } from "@merchant/component/core";
 
 /* Merchant Stores */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* Relative Imports */
 import WarehouseSettings from "./WarehouseSettings";
@@ -98,6 +98,6 @@ const useStylesheet = () => {
           marginTop: 16,
         },
       }),
-    [textBlack]
+    [textBlack],
   );
 };

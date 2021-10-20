@@ -10,7 +10,7 @@ import { DEPRECATEDIcon as Icon } from "@merchant/component/core";
 import { css } from "@toolkit/styling";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 import Row from "./Row";
 
@@ -95,6 +95,6 @@ const useStylesheet = () => {
           marginTop: 24,
         },
       }),
-    [textBlack]
+    [textBlack],
   );
 };

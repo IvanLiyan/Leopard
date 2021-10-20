@@ -35,8 +35,8 @@ import WhatShouldIKnowCard from "./right-card/WhatShouldIKnowCard";
 import WpsCard from "./right-card/WpsCard";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import { useTheme } from "@merchant/stores/ThemeStore";
-import { useDeciderKey } from "@merchant/stores/ExperimentStore";
+import { useTheme } from "@stores/ThemeStore";
+import { useDeciderKey } from "@stores/ExperimentStore";
 import WpsShippedWarning from "./WpsShippedWarning";
 
 type Props = BaseProps & {
@@ -50,7 +50,7 @@ const FulfillOrderCard: React.FC<Props> = ({
 }: Props) => {
   const styles = useStylesheet();
   const { decision: showWPS, isLoading: showWPSIsLoading } = useDeciderKey(
-    "md_wish_parcel_service"
+    "md_wish_parcel_service",
   );
 
   const {
@@ -128,7 +128,7 @@ const FulfillOrderCard: React.FC<Props> = ({
                   text: country.name,
                 }))}
                 onSelected={(
-                  value: typeof editState.shippingOriginCode | undefined
+                  value: typeof editState.shippingOriginCode | undefined,
                 ) => {
                   editState.shippingOriginCode = value;
                 }}
@@ -303,6 +303,6 @@ const useStylesheet = () => {
           marginBottom: 20,
         },
       }),
-    [surfaceLight, surfaceLightest]
+    [surfaceLight, surfaceLightest],
   );
 };

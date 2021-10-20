@@ -15,7 +15,7 @@ import * as stringApi from "@merchant/api/merchant-string-api";
 import { MerchantStringLoadResponse } from "@merchant/api/merchant-string-api";
 
 /* Merchant Store */
-import LocalizationStore from "@merchant/stores/LocalizationStore";
+import LocalizationStore from "@stores/LocalizationStore";
 
 export type MerchantStringLoadParams = {
   name: string;

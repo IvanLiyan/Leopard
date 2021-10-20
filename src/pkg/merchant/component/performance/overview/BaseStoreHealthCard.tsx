@@ -19,7 +19,7 @@ import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { IconName, DEPRECATEDIcon as Icon } from "@merchant/component/core";
 
 /* Merchant Store */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* Toolkit */
 import { Page, LogEventNames } from "@toolkit/performance/constants";
@@ -55,7 +55,7 @@ const BaseStoreHealthCard = (props: Props) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const getAccordionLoggerEvent = (
-    title: string
+    title: string,
   ): keyof typeof LogEventNames => {
     if (title.toLowerCase().includes("shipping")) {
       return "SHIPPING_LEARN_MORE";
@@ -74,7 +74,7 @@ const BaseStoreHealthCard = (props: Props) => {
       className={css(className, style)}
       contentContainerStyle={css(
         styles.containerStyle,
-        aboveThreshold && styles.aboveThresh
+        aboveThreshold && styles.aboveThresh,
       )}
     >
       <Layout.FlexColumn
@@ -157,6 +157,6 @@ const useStylesheet = () => {
           textAlign: "right",
         },
       }),
-    [borderPrimary, negative]
+    [borderPrimary, negative],
   );
 };

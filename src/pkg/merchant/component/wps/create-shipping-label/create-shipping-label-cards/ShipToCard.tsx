@@ -16,7 +16,7 @@ import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import CardHeader from "@merchant/component/wps/create-shipping-label/CardHeader";
 
 /* Merchant Store */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* Toolkit */
 import { getCountryName } from "@toolkit/countries";
@@ -129,7 +129,7 @@ const useStylesheet = () => {
           flexDirection: "column",
         },
       }),
-    [textDark]
+    [textDark],
   );
 };
 

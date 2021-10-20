@@ -12,7 +12,7 @@ import * as fonts from "@toolkit/fonts";
 
 /* Type Imports */
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 type Props = BaseProps & {
   readonly onEdit: () => unknown;
@@ -39,7 +39,7 @@ const EditButton: React.FC<Props> = (props: Props) => {
         className,
         style,
         styles.root,
-        disabled && styles.disabled
+        disabled && styles.disabled,
       )}
       onClick={disabled ? undefined : onEdit}
     >
@@ -84,6 +84,6 @@ const useStylesheet = () => {
           fontWeight: fonts.weightMedium,
         },
       }),
-    [primary]
+    [primary],
   );
 };

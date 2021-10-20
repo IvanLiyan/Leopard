@@ -13,7 +13,7 @@ import { observer } from "mobx-react";
 import _ from "lodash";
 
 import faker from "faker/locale/en";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* Lego Toolkit */
 import { css } from "@toolkit/styling";
@@ -114,7 +114,7 @@ const useStylesheet = () => {
           borderRadius: 4,
         },
       }),
-    [borderPrimary]
+    [borderPrimary],
   );
 };
 

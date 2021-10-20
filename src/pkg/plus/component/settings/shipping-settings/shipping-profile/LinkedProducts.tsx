@@ -31,7 +31,7 @@ import { useDebouncer } from "@ContextLogic/lego/toolkit/hooks";
 import { PickedProductType } from "@toolkit/shipping-settings-v2";
 import { CellInfo } from "@ContextLogic/lego";
 import ProductImage from "@merchant/component/products/ProductImage";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
 const InputHeight = 30;
@@ -328,7 +328,7 @@ const useStylesheet = ({
           boxSizing: "border-box",
         },
       }),
-    [isLoadingProducts, borderPrimary, surfaceLightest]
+    [isLoadingProducts, borderPrimary, surfaceLightest],
   );
 };
 export default LinkedProducts;

@@ -21,7 +21,7 @@ import { zendeskURL } from "@toolkit/url";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
 /* Merchant Stores */
-import { ThemeContext } from "@merchant/stores/ThemeStore";
+import { ThemeContext } from "@stores/ThemeStore";
 
 type ApplicationStep = "WishExpressApplicationRequirements";
 

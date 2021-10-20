@@ -12,7 +12,7 @@ import { PageIndicator } from "@ContextLogic/lego";
 /* Lego Toolkit */
 import { contestImageURL } from "@toolkit/url";
 import { css } from "@toolkit/styling";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* Relative Imports */
 import ShippingPlanSKUDetailRow from "./ShippingPlanSKUDetailRow";
@@ -43,20 +43,20 @@ type FBSCreateShippingPlanTableProps = BaseProps & {
     warehouseCode,
   }: IOnChangeProps) => unknown | null | undefined;
   readonly onRowSelectionToggled?: (
-    args: RowSelectionArgs<Product>
+    args: RowSelectionArgs<Product>,
   ) => unknown | null | undefined;
   readonly selectedVariations?: ReadonlyArray<Product>;
   readonly currentPage: number;
   readonly onCurrentPageChanged: (currentPage: number) => unknown;
   readonly onAddModalRowSelectionToggled: (
-    args: RowSelectionArgs<Product>
+    args: RowSelectionArgs<Product>,
   ) => unknown | null | undefined;
   readonly handleAddToShippingPlanOnClick?: (() => unknown) | null | undefined;
   readonly handleAddPreviousSalesToShippingPlanOnClick?: (
-    args: ReadonlyArray<Product>
+    args: ReadonlyArray<Product>,
   ) => unknown | null | undefined;
   readonly clearSelectedRowsInModal: (
-    variation?: string
+    variation?: string,
   ) => unknown | null | undefined;
   readonly isRecommendedTab: boolean;
   readonly showPreviousSoldProducts?: boolean;
@@ -85,7 +85,7 @@ const FBSCreateShippingPlanTable = (props: FBSCreateShippingPlanTableProps) => {
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [expandedRows, setExpandedRows] = useState<Array<number>>([]);
   const [displayedRows, setDisplayedRows] = useState<Array<Product>>(
-    rows.slice(0, Math.min(PAGE_SIZE, rows.length))
+    rows.slice(0, Math.min(PAGE_SIZE, rows.length)),
   );
   const [gmvSortOrder, setGmvSortOrder] = useState<SortOrder>("asc");
 
@@ -110,7 +110,7 @@ const FBSCreateShippingPlanTable = (props: FBSCreateShippingPlanTableProps) => {
           })
         : rows.slice(0, Math.min(PAGE_SIZE, rows.length));
       return currentRows.sort((a, b) =>
-        gmvSortOrder === "desc" ? a.gmv - b.gmv : b.gmv - a.gmv
+        gmvSortOrder === "desc" ? a.gmv - b.gmv : b.gmv - a.gmv,
       );
     });
   }, [searchString, searchType, rows, gmvSortOrder]);
@@ -200,7 +200,7 @@ const FBSCreateShippingPlanTable = (props: FBSCreateShippingPlanTableProps) => {
     }
     const warehouseColumns = _.sortBy(
       warehouses,
-      (warehouse) => warehouse.region
+      (warehouse) => warehouse.region,
     ).map((warehouse) => {
       return (
         <Table.Column
@@ -242,7 +242,7 @@ const FBSCreateShippingPlanTable = (props: FBSCreateShippingPlanTableProps) => {
         const variationId = row.variation_id;
         let index = -1;
         index = displayedRows.findIndex(
-          (item) => item.variation_id === variationId
+          (item) => item.variation_id === variationId,
         );
         if (index !== -1) {
           selected.push(index);
@@ -375,7 +375,7 @@ const useStylesheet = (props: FBSCreateShippingPlanTableProps) => {
           marginRight: 15,
         },
       }),
-    [textBlack]
+    [textBlack],
   );
 };
 

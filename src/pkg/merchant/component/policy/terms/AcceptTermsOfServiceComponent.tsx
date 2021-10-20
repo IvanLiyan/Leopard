@@ -10,7 +10,7 @@ import { Maybe, TermsOfServiceRegionType } from "@schema/types";
 /* Lego Components */
 import { PrimaryButton, Layout, Text } from "@ContextLogic/lego";
 
-import { useToastStore } from "@merchant/stores/ToastStore";
+import { useToastStore } from "@stores/ToastStore";
 
 import { MerchantTermsAgreedMutationsAcceptTermsOfServiceArgs } from "@schema/types";
 
@@ -23,7 +23,7 @@ import {
 } from "@toolkit/policy/terms-of-service";
 
 /* Merchant Store */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 type AcceptTermsOfServiceComponentProps = BaseProps & {
   readonly isDisabled?: boolean;
@@ -34,7 +34,7 @@ type AcceptTermsOfServiceComponentProps = BaseProps & {
 };
 
 const AcceptTermsOfServiceComponent = (
-  props: AcceptTermsOfServiceComponentProps
+  props: AcceptTermsOfServiceComponentProps,
 ) => {
   const {
     isDisabled = false,
@@ -118,6 +118,6 @@ const useStylesheet = ({ hasFooter }: { readonly hasFooter: boolean }) => {
           marginBottom: 16,
         },
       }),
-    [surfaceLightest, hasFooter]
+    [surfaceLightest, hasFooter],
   );
 };

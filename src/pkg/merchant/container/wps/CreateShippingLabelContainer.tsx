@@ -29,7 +29,7 @@ import { CreateShippingLabelInitialData } from "@toolkit/wps/create-shipping-lab
 import CreateShippingLabelState from "@merchant/model/CreateShippingLabelState";
 
 /* Merchant Stores */
-import { useNavigationStore } from "@merchant/stores/NavigationStore";
+import { useNavigationStore } from "@stores/NavigationStore";
 
 type Props = {
   readonly initialData: CreateShippingLabelInitialData;
@@ -42,7 +42,7 @@ const CreateShippingLabelContainer: React.FC<Props> = ({
   const navigationStore = useNavigationStore();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [state] = useState<CreateShippingLabelState>(
-    new CreateShippingLabelState({ initialData })
+    new CreateShippingLabelState({ initialData }),
   );
 
   const {
@@ -145,7 +145,7 @@ const useStylesheet = () => {
           margin: "20px 0",
         },
       }),
-    []
+    [],
   );
 };
 

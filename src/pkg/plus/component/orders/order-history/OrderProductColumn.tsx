@@ -12,7 +12,7 @@ import ProductDetailModal from "@merchant/component/products/ProductDetailModal"
 import { css } from "@toolkit/styling";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 type Props = BaseProps & {
   readonly sku: string;
@@ -82,7 +82,7 @@ const useStylesheet = () => {
           marginRight: 15,
         },
       }),
-    [primary, textDark]
+    [primary, textDark],
   );
 };
 

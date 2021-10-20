@@ -19,7 +19,7 @@ import { Illustration } from "@merchant/component/core";
 import { zendeskURL } from "@toolkit/url";
 import { Popover } from "@merchant/component/core";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 type Props = BaseProps & {
   readonly expectedTimeToDoor: number | null | undefined;

@@ -3,7 +3,7 @@ import { StyleSheet } from "aphrodite";
 import { observer } from "mobx-react";
 
 /* Merchant Store */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* Merchant Components */
 import FinalSaleTable from "@merchant/component/policy/restricted-product/FinalSaleTable";
@@ -47,6 +47,6 @@ const useStylesheet = () => {
           width: "70%",
         },
       }),
-    [pageBackground]
+    [pageBackground],
   );
 };

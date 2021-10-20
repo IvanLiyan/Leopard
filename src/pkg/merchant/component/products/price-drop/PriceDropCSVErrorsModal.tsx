@@ -5,7 +5,7 @@ import numeral from "numeral";
 import { H7, H4, Table } from "@ContextLogic/lego";
 
 import Modal from "@merchant/component/core/modal/Modal";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import { ci18n } from "@legacy/core/i18n";
 import { UploadPriceDropCampaignCsvResponse } from "@merchant/api/price-drop";
 
@@ -17,7 +17,7 @@ export type PriceDropCSVErrorsModalProps = {
 };
 
 const PriceDropCSVErrorsModalContent: React.FC<PriceDropCSVErrorsModalProps> = (
-  props: PriceDropCSVErrorsModalProps
+  props: PriceDropCSVErrorsModalProps,
 ) => {
   const {
     response: { errors, created_count: createdCount },
@@ -38,7 +38,7 @@ const PriceDropCSVErrorsModalContent: React.FC<PriceDropCSVErrorsModalProps> = (
           <H7 className={css(styles.overviewTitle)}>
             {ci18n(
               "label for the number rows that have been succesfully processed",
-              "Rows Successfully Processed"
+              "Rows Successfully Processed",
             )}
           </H7>
           <H4>{numeral(createdCount).format("0,0").toString()}</H4>
@@ -48,7 +48,7 @@ const PriceDropCSVErrorsModalContent: React.FC<PriceDropCSVErrorsModalProps> = (
           <H7 className={css(styles.overviewTitle)}>
             {ci18n(
               "label for the number rows that have failed processing",
-              "Rows Failed"
+              "Rows Failed",
             )}
           </H7>
           <H4>
@@ -105,7 +105,7 @@ const useStylesheet = () => {
           color: negative,
         },
       }),
-    [borderPrimary, negative]
+    [borderPrimary, negative],
   );
 };
 

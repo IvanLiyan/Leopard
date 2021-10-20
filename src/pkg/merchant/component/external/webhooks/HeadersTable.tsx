@@ -11,7 +11,7 @@ import { Layout, Text } from "@ContextLogic/lego";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
 /* Merchant Store */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 type Props = BaseProps;
 
@@ -112,7 +112,7 @@ const useStylesheet = () => {
           alignItems: "center",
         },
       }),
-    [textBlack, textWhite, borderPrimary, borderPrimaryDark]
+    [textBlack, textWhite, borderPrimary, borderPrimaryDark],
   );
 };
 

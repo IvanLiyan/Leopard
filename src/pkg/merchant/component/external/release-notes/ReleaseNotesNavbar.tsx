@@ -13,8 +13,8 @@ import WishForMerchants from "@merchant/component/nav/WishForMerchants";
 
 /* Merchant Stores */
 import { useReleaseNotesStore } from "@merchant/stores/release-notes/ReleaseNotesStore";
-import { useTheme } from "@merchant/stores/ThemeStore";
-import { useNavigationStore } from "@merchant/stores/NavigationStore";
+import { useTheme } from "@stores/ThemeStore";
+import { useNavigationStore } from "@stores/NavigationStore";
 
 /* Lego Toolkit */
 import { css } from "@toolkit/styling";

@@ -31,10 +31,10 @@ import {
 } from "@ContextLogic/lego";
 
 /* Merchant Stores */
-import { useToastStore } from "@merchant/stores/ToastStore";
+import { useToastStore } from "@stores/ToastStore";
 
 /* Merchant Model */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import { SubdivisionNames } from "@ContextLogic/lego/toolkit/states";
 
 /* Merchant Toolkit */
@@ -74,33 +74,31 @@ const ShipFromAddEditAddress: React.FC<Props> = ({
   const { negative, borderPrimary, borderPrimaryDark } = useTheme();
 
   const [warehouseName, setWarehouseName] = useState<string | undefined>(
-    warehouse?.warehouseName
+    warehouse?.warehouseName,
   );
-  const [isWarehouseNameValid, setIsWarehouseNameValid] = useState<boolean>(
-    false
-  );
+  const [isWarehouseNameValid, setIsWarehouseNameValid] =
+    useState<boolean>(false);
 
   const [personName, setPersonName] = useState<string | undefined>(
-    warehouse?.address.name
+    warehouse?.address.name,
   );
   const [isPersonNameValid, setIsPersonNameValid] = useState<boolean>(false);
 
   const [country, setCountry] = useState<CountryCode | undefined>(
-    warehouse?.address.countryCode
+    warehouse?.address.countryCode,
   );
   const [hasSelectedCountry, setHasSelectedCountry] = useState<boolean>(false);
 
   const [phone, setPhone] = useState<string | null | undefined>(
-    warehouse?.address.phoneNumber
+    warehouse?.address.phoneNumber,
   );
   const [isPhoneValid, setIsPhoneValid] = useState<boolean>(true);
 
   const [streetAddress1, setStreetAddress1] = useState<string | undefined>(
-    warehouse?.address.streetAddress1
+    warehouse?.address.streetAddress1,
   );
-  const [isStreetAddress1Valid, setIsStreetAddress1Valid] = useState<boolean>(
-    false
-  );
+  const [isStreetAddress1Valid, setIsStreetAddress1Valid] =
+    useState<boolean>(false);
 
   const [streetAddress2, setStreetAddress2] = useState<
     string | null | undefined
@@ -110,17 +108,17 @@ const ShipFromAddEditAddress: React.FC<Props> = ({
   const [isCityValid, setIsCityValid] = useState<boolean>(false);
 
   const [state, setState] = useState<string | null | undefined>(
-    warehouse?.address.state
+    warehouse?.address.state,
   );
   const [hasSelectedState, setHasSelectedState] = useState<boolean>(false);
 
   const [zipcode, setZipcode] = useState<string | null | undefined>(
-    warehouse?.address.zipcode
+    warehouse?.address.zipcode,
   );
   const [isZipcodeValid, setIsZipcodeValid] = useState<boolean>(false);
 
   const [isDefault, setIsDefault] = useState<boolean | undefined>(
-    warehouse?.isDefault
+    warehouse?.isDefault,
   );
 
   const [forceValidation, setForceValidation] = useState<boolean>(false);
@@ -167,7 +165,7 @@ const ShipFromAddEditAddress: React.FC<Props> = ({
       state,
       country,
       isPhoneValid,
-    ]
+    ],
   );
 
   const [submitAddress] = useMutation<
@@ -233,7 +231,7 @@ const ShipFromAddEditAddress: React.FC<Props> = ({
     toastStore.positive(
       isEdit
         ? i`Warehouse edited successfully.`
-        : i`Warehouse added successfully.`
+        : i`Warehouse added successfully.`,
     );
     onSubmit(id);
   };
@@ -534,7 +532,7 @@ const useStylesheet = () => {
           boxSizing: "border-box",
         },
       }),
-    [textDark, negative]
+    [textDark, negative],
   );
 };
 

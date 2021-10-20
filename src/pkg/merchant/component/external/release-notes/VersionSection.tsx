@@ -12,7 +12,7 @@ import * as fonts from "@toolkit/fonts";
 import { formatDatetimeLocalized } from "@toolkit/datetime";
 
 /* Merchant Stores */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* Merchant Components */
 import DetailSection from "@merchant/component/external/release-notes/DetailSection";
@@ -150,7 +150,7 @@ const useStyleSheet = () => {
           lineHeight: "32px",
         },
       }),
-    [textWhite]
+    [textWhite],
   );
 };
 

@@ -18,7 +18,7 @@ import * as fonts from "@toolkit/fonts";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
 /* Merchant Store */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 import MerchantCsSurveyState from "@merchant/model/cs/MerchantCsSurveyState";
 
@@ -67,7 +67,7 @@ const MerchantCsSurveyQuestions = ({
         ),
       },
     ],
-    [styles.textInput, styles.radioItemText, surveyState]
+    [styles.textInput, styles.radioItemText, surveyState],
   );
 
   return (
@@ -324,6 +324,6 @@ const useStylesheet = () => {
           width: "100%",
         },
       }),
-    [textBlack]
+    [textBlack],
   );
 };

@@ -8,7 +8,7 @@ import { Alert } from "@ContextLogic/lego";
 /* Lego Toolkit */
 import { css } from "@toolkit/styling";
 import { formatCurrency } from "@ContextLogic/lego/toolkit/currency";
-import { useUserStore } from "@merchant/stores/UserStore";
+import { useUserStore } from "@stores/UserStore";
 
 /* Merchant API */
 import { getEarlyPaymentAvailableAmount } from "@merchant/api/early-payment";
@@ -29,7 +29,7 @@ const EarlyPaymentMarketingBanner = ({}) => {
           text={
             i`Accelerate your cash flow by ${formatCurrency(
               availableAmount.available_amount,
-              availableAmount.currency
+              availableAmount.currency,
             )} ` + i`in your next payment and grow your business faster!`
           }
           sentiment="info"
@@ -52,7 +52,7 @@ const useStyleSheet = () => {
           padding: "10px 0",
         },
       }),
-    []
+    [],
   );
 };
 

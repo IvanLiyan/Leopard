@@ -12,7 +12,7 @@ import { observer } from "mobx-react";
 import { Text, Markdown } from "@ContextLogic/lego";
 
 import { css } from "@toolkit/styling";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import {
   InitialData,
@@ -85,7 +85,7 @@ const useStylesheet = () => {
           margin: "10px 0",
         },
       }),
-    [surfaceLight, textBlack]
+    [surfaceLight, textBlack],
   );
 };
 

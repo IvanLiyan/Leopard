@@ -13,7 +13,7 @@ import WishRemitIcon from "./WishRemitIcon";
 import OrderTaxDetailModal from "./OrderTaxDetailModal";
 import RemittanceCurrencyDetails from "./RemittanceCurrencyDetails";
 
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
@@ -73,7 +73,7 @@ const TaxSheetItems: React.FC<Props> = ({
           styles.bottomBordered,
           styles.fixedHeightSheetItem,
           style,
-          className
+          className,
         )}
         title={i`Tax`}
       >
@@ -91,7 +91,7 @@ const TaxSheetItems: React.FC<Props> = ({
           className={css(styles.fixedHeightSheetItem)}
           title={ci18n(
             "Label for the amount of tax that we charged the user",
-            "Tax collected"
+            "Tax collected",
           )}
         >
           {salesTax.display}
@@ -102,7 +102,7 @@ const TaxSheetItems: React.FC<Props> = ({
               className={css(styles.fixedHeightSheetItem)}
               title={ci18n(
                 "Label for the amount of tax that we refunded back to the user",
-                "Tax refunded"
+                "Tax refunded",
               )}
             >
               <div
@@ -113,7 +113,7 @@ const TaxSheetItems: React.FC<Props> = ({
               className={css(styles.fixedHeightSheetItem)}
               title={ci18n(
                 "Label for the amount of tax that we is owed to the government after subtracting refunds etc",
-                "Net tax"
+                "Net tax",
               )}
             >
               <div className={css(styles.sheetContent)}>
@@ -214,6 +214,6 @@ const useStylesheet = () => {
           alignItems: "center",
         },
       }),
-    [borderPrimary, negative]
+    [borderPrimary, negative],
   );
 };

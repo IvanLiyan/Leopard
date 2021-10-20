@@ -22,9 +22,9 @@ import {
 import ValidatedLabel from "@merchant/component/tax/v2/ValidatedLabel";
 
 /* Merchant Stores */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import { getCountryName } from "@toolkit/countries";
-import { useLocalizationStore } from "@merchant/stores/LocalizationStore";
+import { useLocalizationStore } from "@stores/LocalizationStore";
 
 type Props = BaseProps & {
   readonly info: GbDropdown;
@@ -141,7 +141,7 @@ const GBMpfTaxInfo: React.FC<Props> = ({ className, style, info }: Props) => {
               <Markdown
                 className={css(styles.font)}
                 text={i`Orders are shipped from ${getCountryName(
-                  defaultShipFromLocation
+                  defaultShipFromLocation,
                 )}`}
               />
             </Table.FixtureCell>
@@ -155,7 +155,7 @@ const GBMpfTaxInfo: React.FC<Props> = ({ className, style, info }: Props) => {
           <Table.FixtureCell>
             {lastUpdated != null &&
               new Date(lastUpdated.unix * 1000).toLocaleDateString(
-                preferredProperLocale
+                preferredProperLocale,
               )}
           </Table.FixtureCell>
         </Table.FixtureRow>
@@ -208,6 +208,6 @@ const useStylesheet = () => {
           fontWeight: weightNormal,
         },
       }),
-    [textBlack]
+    [textBlack],
   );
 };

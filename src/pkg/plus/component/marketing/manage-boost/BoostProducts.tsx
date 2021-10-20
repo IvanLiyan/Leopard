@@ -24,8 +24,8 @@ import SelectProductsSection from "./sections/select-products/SelectProductsSect
 
 import BoostProductsState from "@plus/model/BoostProductsState";
 
-import { useDeviceStore } from "@merchant/stores/DeviceStore";
-import { useNavigationStore } from "@merchant/stores/NavigationStore";
+import { useDeviceStore } from "@stores/DeviceStore";
+import { useNavigationStore } from "@stores/NavigationStore";
 
 type Props = BaseProps & {
   readonly boostState: BoostProductsState;
@@ -40,7 +40,7 @@ const BoostProducts: React.FC<Props> = (props: Props) => {
   useEffect(() => {
     if (selectProductCount > 0) {
       navigationStore.placeNavigationLock(
-        i`You have unsaved changed. Are you sure want to leave?`
+        i`You have unsaved changed. Are you sure want to leave?`,
       );
     } else {
       navigationStore.releaseNavigationLock();
@@ -88,7 +88,7 @@ const useStylesheet = () => {
           marginBottom: 25,
         },
       }),
-    []
+    [],
   );
 };
 

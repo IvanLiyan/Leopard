@@ -5,7 +5,7 @@ import { StyleSheet } from "aphrodite";
 import { css } from "@toolkit/styling";
 
 /* Merchant Store */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* Lego Components */
 import { Label } from "@ContextLogic/lego";
@@ -163,6 +163,6 @@ const useStylesheet = () => {
           cursor: "pointer",
         },
       }),
-    [primary]
+    [primary],
   );
 };

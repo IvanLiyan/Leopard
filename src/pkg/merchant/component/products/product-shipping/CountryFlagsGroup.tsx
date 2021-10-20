@@ -19,7 +19,7 @@ import { Flag, Popover } from "@merchant/component/core";
 /* Lego Toolkit */
 import * as fonts from "@toolkit/fonts";
 
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
 /* Type Imports */
@@ -75,7 +75,7 @@ const CountryFlagsGroup: React.FC<Props> = ({ editState }: Props) => {
     responseData?.policy.productCompliance.productDestinationCountries ||
     [];
   const euCompliantCountryCodes = euCompliantCountries.map(
-    (country) => country.code
+    (country) => country.code,
   );
 
   return (
@@ -107,7 +107,7 @@ const CountryFlagsGroup: React.FC<Props> = ({ editState }: Props) => {
             <Flag countryCode={country.code} className={css(styles.flag)} />
             <div className={css(styles.countryName)}>{country.name}</div>
           </div>
-        )
+        ),
       )}
     </div>
   );
@@ -166,6 +166,6 @@ const useStylesheet = () => {
           fontWeight: fonts.weightMedium,
         },
       }),
-    [surfaceLightest, pageBackground, surface]
+    [surfaceLightest, pageBackground, surface],
   );
 };

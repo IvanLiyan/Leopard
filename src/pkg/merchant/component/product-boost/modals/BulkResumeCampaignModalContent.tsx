@@ -23,7 +23,7 @@ import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { CurrencyCode } from "@toolkit/currency";
 import { RowSelectionArgs } from "@ContextLogic/lego";
 import { BulkResumeCampaign } from "@merchant/api/product-boost";
-import { useToastStore } from "@merchant/stores/ToastStore";
+import { useToastStore } from "@stores/ToastStore";
 
 export type BulkResumeCampaignModalContentProps = BaseProps & {
   readonly campaignsToResume: ReadonlyArray<BulkResumeCampaign>;
@@ -33,25 +33,20 @@ export type BulkResumeCampaignModalContentProps = BaseProps & {
 };
 
 const BulkResumeCampaignModalContent = (
-  props: BulkResumeCampaignModalContentProps
+  props: BulkResumeCampaignModalContentProps,
 ) => {
-  const {
-    campaignsToResume,
-    maxAllowedSpending,
-    onClose,
-    currencyCode,
-  } = props;
+  const { campaignsToResume, maxAllowedSpending, onClose, currencyCode } =
+    props;
   const styles = useStylesheet();
 
   const toastStore = useToastStore();
 
   const initalCampaignIds = campaignsToResume.map(
-    (campaign) => campaign.campaign_id
+    (campaign) => campaign.campaign_id,
   );
 
-  const [selectedCampaignIds, setSelectedCampaignIds] = useState(
-    initalCampaignIds
-  );
+  const [selectedCampaignIds, setSelectedCampaignIds] =
+    useState(initalCampaignIds);
 
   const selectedRows = campaignsToResume.reduce(
     //disabled to satisfy the callback requirement on .reduce
@@ -62,7 +57,7 @@ const BulkResumeCampaignModalContent = (
       }
       return accumulator;
     },
-    []
+    [],
   );
 
   const onResumeCampaignRowSelectionToggled = ({
@@ -314,7 +309,7 @@ const useStylesheet = () =>
           overflow: "hidden",
         },
       }),
-    []
+    [],
   );
 
 export class BulkResumeCampaignModal extends Modal {

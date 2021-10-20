@@ -9,7 +9,7 @@ import { css } from "@toolkit/styling";
 import { weightBold } from "@toolkit/fonts";
 
 /* Store */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* Relative Imports */
 import TextSection, {

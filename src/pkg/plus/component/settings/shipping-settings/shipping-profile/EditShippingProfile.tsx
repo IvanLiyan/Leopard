@@ -27,7 +27,7 @@ import ShippingProfileDestinationTable from "./ShippingProfileDestinationTable";
 import { PrimaryButton } from "@ContextLogic/lego";
 
 import { useDebouncer } from "@ContextLogic/lego/toolkit/hooks";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
@@ -46,7 +46,7 @@ const EditShippingProfile = (props: Props) => {
   const { className, style, profileState } = props;
 
   const [selectedRowIndeces, setSelectedRowIndeces] = useState<Set<number>>(
-    new Set()
+    new Set(),
   );
 
   const [rawQuery, setRawQuery] = useState<string>("");
@@ -55,7 +55,7 @@ const EditShippingProfile = (props: Props) => {
 
   const destinations: ReadonlyArray<ShippingProfileDestinationState> = useMemo(
     () => profileState?.allDestinations ?? [],
-    [profileState]
+    [profileState],
   );
   const debouncedQuery = useDebouncer(rawQuery, 500);
   const fuse = useFuse(destinations);
@@ -80,28 +80,29 @@ const EditShippingProfile = (props: Props) => {
     setSelectedRowIndeces(new Set(selectedRowIndeces));
   };
 
-  const results: ReadonlyArray<ShippingProfileDestinationState> = useMemo(() => {
-    let results: ReadonlyArray<ShippingProfileDestinationState> = destinations;
-    if (query != null) {
-      const fuseResults = fuse.search(query);
-      results = fuseResults.map((result) => result.item);
-    }
+  const results: ReadonlyArray<ShippingProfileDestinationState> =
+    useMemo(() => {
+      let results: ReadonlyArray<ShippingProfileDestinationState> =
+        destinations;
+      if (query != null) {
+        const fuseResults = fuse.search(query);
+        results = fuseResults.map((result) => result.item);
+      }
 
-    if (query != null) {
-      return results;
-    }
+      if (query != null) {
+        return results;
+      }
 
-    return _.sortBy(
-      results,
-      ({ country }) => country?.gmvRank ?? Number.MAX_SAFE_INTEGER
-    );
-  }, [query, destinations, fuse]);
+      return _.sortBy(
+        results,
+        ({ country }) => country?.gmvRank ?? Number.MAX_SAFE_INTEGER,
+      );
+    }, [query, destinations, fuse]);
 
-  const pageResults = useMemo(() => results.slice(offset, limit + offset), [
-    results,
-    limit,
-    offset,
-  ]);
+  const pageResults = useMemo(
+    () => results.slice(offset, limit + offset),
+    [results, limit, offset],
+  );
 
   const resetPagination = () => {
     setOffset(0);
@@ -278,12 +279,12 @@ const useStylesheet = () => {
           height: InputHeight,
         },
       }),
-    [borderPrimary, surfaceLightest]
+    [borderPrimary, surfaceLightest],
   );
 };
 
 const useFuse = (
-  profileDestinations: ReadonlyArray<ShippingProfileDestinationState>
+  profileDestinations: ReadonlyArray<ShippingProfileDestinationState>,
 ): Fuse<ShippingProfileDestinationState, any> => {
   return useMemo((): Fuse<ShippingProfileDestinationState, any> => {
     const documents: ReadonlyArray<ShippingProfileDestinationState> = [

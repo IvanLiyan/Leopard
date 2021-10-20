@@ -15,7 +15,7 @@ import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { PayoutPaymentProviderType } from "@schema/types";
 
 /* Merchant Store */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 type Props = BaseProps & {
   readonly providerType: PayoutPaymentProviderType;
@@ -129,12 +129,8 @@ const PaymentProviderDetails: React.FC<Props> = (props: Props) => {
 export default observer(PaymentProviderDetails);
 
 const useStylesheet = () => {
-  const {
-    surfaceLightest,
-    pageBackground,
-    textBlack,
-    borderPrimary,
-  } = useTheme();
+  const { surfaceLightest, pageBackground, textBlack, borderPrimary } =
+    useTheme();
   return useMemo(
     () =>
       StyleSheet.create({
@@ -159,6 +155,6 @@ const useStylesheet = () => {
           padding: "20px 24px 24px 24px",
         },
       }),
-    [surfaceLightest, textBlack, pageBackground, borderPrimary]
+    [surfaceLightest, textBlack, pageBackground, borderPrimary],
   );
 };

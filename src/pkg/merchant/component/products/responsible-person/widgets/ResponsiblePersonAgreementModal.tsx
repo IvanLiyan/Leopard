@@ -14,7 +14,7 @@ import ResponsiblePersonState from "@merchant/model/products/ResponsiblePersonSt
 import AddResponsiblePersonTerms from "@merchant/component/products/responsible-person/legal-terms/AddResponsiblePersonTerms";
 
 /* Merchant Store */
-import { useDimenStore } from "@merchant/stores/DimenStore";
+import { useDeviceStore } from "@stores/DeviceStore";
 
 export type Props = {
   readonly state: ResponsiblePersonState;
@@ -26,7 +26,7 @@ export type ContentProps = {
 };
 
 const ResponsiblePersonModalContent = (props: ContentProps) => {
-  const { isSmallScreen } = useDimenStore();
+  const { isSmallScreen } = useDeviceStore();
   const { onClose, state } = props;
 
   const styles = useStylesheet();
@@ -99,6 +99,6 @@ const useStylesheet = () => {
           },
         },
       }),
-    []
+    [],
   );
 };

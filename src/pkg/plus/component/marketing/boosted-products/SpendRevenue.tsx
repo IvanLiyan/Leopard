@@ -13,7 +13,7 @@ import numeral from "numeral";
 
 /* Lego Toolkit */
 import { css } from "@toolkit/styling";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import BoostedProductsRowState from "@plus/model/BoostedProductsRowState";
@@ -77,7 +77,7 @@ const useStylesheet = () => {
           marginTop: 7,
         },
       }),
-    [textDark, textBlack]
+    [textDark, textBlack],
   );
 };
 

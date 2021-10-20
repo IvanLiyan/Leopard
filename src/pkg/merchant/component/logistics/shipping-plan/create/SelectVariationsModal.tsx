@@ -18,7 +18,7 @@ import {
 import { useMountEffect } from "@ContextLogic/lego/toolkit/hooks";
 import searchImg from "@assets/img/search.svg";
 import CreateShippingPlanState from "@merchant/model/fbw/CreateShippingPlanState";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import {
   GET_VARIATIONS,
   GetVariationsResponseType,
@@ -72,15 +72,14 @@ const SelectVariationsModalContent: React.FC<Props> = observer(
     const [rawOffset, setOffset] = useState(0);
     const [query, setQuery] = useState("");
     const [sortField, setSortField] = useState<VariationSortField | undefined>(
-      undefined
+      undefined,
     );
     const [sortOrder, setSortOrder] = useState<SortOrder | undefined>(
-      undefined
+      undefined,
     );
 
-    const [searchType, setSearchType] = useState<VariationSearchType>(
-      "PRODUCT_ID"
-    );
+    const [searchType, setSearchType] =
+      useState<VariationSearchType>("PRODUCT_ID");
     const [pageLimit, setPageLimit] = useState(0);
 
     const debouncedQuery = useDebouncer(query, 800);
@@ -242,7 +241,7 @@ const SelectVariationsModalContent: React.FC<Props> = observer(
         />
       </Layout.FlexColumn>
     );
-  }
+  },
 );
 
 const useStylesheet = ({
@@ -297,7 +296,7 @@ const useStylesheet = ({
           padding: "10px 25px",
         },
       }),
-    [borderPrimary, variationsLoading]
+    [borderPrimary, variationsLoading],
   );
 };
 export default class SelectVariationsModal extends Modal {

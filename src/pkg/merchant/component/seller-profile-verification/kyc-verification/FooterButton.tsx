@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { StyleSheet } from "aphrodite";
-import { AppTheme, useTheme } from "@merchant/stores/ThemeStore";
+import { AppTheme, useTheme } from "@stores/ThemeStore";
 
 /* Lego Toolkit */
 import { css } from "@toolkit/styling";
@@ -50,6 +50,6 @@ const useStylesheet = (theme: AppTheme) => {
           margin: "0 30%",
         },
       }),
-    [theme]
+    [theme],
   );
 };

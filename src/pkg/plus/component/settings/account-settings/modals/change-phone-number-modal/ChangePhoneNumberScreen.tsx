@@ -21,7 +21,7 @@ import { PhoneNumberUtil } from "google-libphonenumber";
 
 /* Type Imports */
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 type Props = BaseProps & {
   readonly onCancel: () => unknown;
@@ -61,12 +61,12 @@ const ChangePhoneNumberScreen: React.FC<Props> = (props: Props) => {
 
   const headerText = ci18n(
     "referring to a phone number",
-    "Enter a mobile phone number you would like authentication codes to be sent to each time you log in"
+    "Enter a mobile phone number you would like authentication codes to be sent to each time you log in",
   );
 
   const phoneNumberDesc = ci18n(
     "Tells the user that the phone number country cannot be altered",
-    "The new phone number must be within the same country you signed up your merchant account for. For further assistance, please contact your account manager at [merchant_support@wish.com](mailto:merchant_support@wish.com)"
+    "The new phone number must be within the same country you signed up your merchant account for. For further assistance, please contact your account manager at [merchant_support@wish.com](mailto:merchant_support@wish.com)",
   );
 
   return (
@@ -180,6 +180,6 @@ const useStylesheet = () => {
           minWidth: 160,
         },
       }),
-    [borderPrimaryDark]
+    [borderPrimaryDark],
   );
 };

@@ -20,7 +20,7 @@ import { Layout, Text } from "@ContextLogic/lego";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
 /* Stores */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 export type ChargeBreakdownLine = {
   readonly title?: string | (() => React.ReactNode);
@@ -81,7 +81,7 @@ const ChargeBreakdown: React.FC<Props> = ({
               className={css(
                 styles.breakdownText,
                 styles.cellMargin,
-                styles.rightAlign
+                styles.rightAlign,
               )}
               weight="semibold"
             >
@@ -97,7 +97,7 @@ const ChargeBreakdown: React.FC<Props> = ({
               className={css(
                 styles.breakdownText,
                 styles.cellMargin,
-                styles.rightAlign
+                styles.rightAlign,
               )}
               weight="semibold"
             >
@@ -113,7 +113,7 @@ const ChargeBreakdown: React.FC<Props> = ({
               className={css(
                 styles.breakdownText,
                 styles.cellMargin,
-                styles.rightAlign
+                styles.rightAlign,
               )}
               weight="semibold"
             >
@@ -178,6 +178,6 @@ const useStylesheet = () => {
           gridColumn: "1 / 7",
         },
       }),
-    [textDark, borderPrimary]
+    [textDark, borderPrimary],
   );
 };

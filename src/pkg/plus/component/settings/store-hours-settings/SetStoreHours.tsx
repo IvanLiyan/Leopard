@@ -14,7 +14,7 @@ import {
   FormSelect,
 } from "@ContextLogic/lego";
 
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 import StoreHoursSettingsState, {
   DayOfTheWeek,
@@ -184,8 +184,8 @@ const useTimeOptions = () =>
       hours.forEach((hour) =>
         minutes.forEach(
           (minute) =>
-            (timeOptions = [...timeOptions, `${hour}:${minute}${day}`])
-        )
+            (timeOptions = [...timeOptions, `${hour}:${minute}${day}`]),
+        ),
       );
     });
 
@@ -254,6 +254,6 @@ const useStylesheet = () => {
           padding: 12,
         },
       }),
-    [textDark, textLight]
+    [textDark, textLight],
   );
 };

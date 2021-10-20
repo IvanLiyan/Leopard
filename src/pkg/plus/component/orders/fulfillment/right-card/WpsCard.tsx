@@ -20,7 +20,7 @@ import {
   Text,
   ThemedLabel,
 } from "@ContextLogic/lego";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 type Props = BaseProps & {
   readonly id: string;
@@ -119,7 +119,7 @@ const useStylesheet = () => {
           marginLeft: 8,
         },
       }),
-    [textDark, textBlack]
+    [textDark, textBlack],
   );
 };
 

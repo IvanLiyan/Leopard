@@ -31,7 +31,7 @@ import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { CountryCode } from "@toolkit/countries";
 
 /* Merchant Store */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* Schema */
 import {
@@ -72,7 +72,7 @@ const PaymentSettingsForm: React.FC<Props> = (props: Props) => {
   ];
 
   const [showBusiness, setShowBusiness] = useState<boolean>(
-    editState.collectorType === "BUSINESS"
+    editState.collectorType === "BUSINESS",
   );
 
   const shouldShowPayPal = () => {
@@ -141,7 +141,7 @@ const PaymentSettingsForm: React.FC<Props> = (props: Props) => {
                   options={providerOptions}
                   onSelected={(value: PayoutPaymentProviderType) => {
                     setShowPayPal(
-                      value === "PAYPAL" || value === "PAYPAL_MERCH"
+                      value === "PAYPAL" || value === "PAYPAL_MERCH",
                     );
                     editState.paymentProvider = value;
                   }}
@@ -263,7 +263,7 @@ const PaymentSettingsForm: React.FC<Props> = (props: Props) => {
                     hasExistingData ? editState.formValues?.personalName : null
                   }
                   debugValue={faker.fake(
-                    "{{name.lastName}} {{name.firstName}}"
+                    "{{name.lastName}} {{name.firstName}}",
                   )}
                 />
               </Field>
@@ -478,6 +478,6 @@ const useStylesheet = () => {
           },
         },
       }),
-    [surfaceLightest, textDark, pageBackground, textBlack, borderPrimary]
+    [surfaceLightest, textDark, pageBackground, textBlack, borderPrimary],
   );
 };

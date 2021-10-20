@@ -27,7 +27,7 @@ import {
 import Campaign from "@merchant/model/product-boost/Campaign";
 
 /* Merchant Store */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 type Props = BaseProps & {
   readonly campaign: Campaign;

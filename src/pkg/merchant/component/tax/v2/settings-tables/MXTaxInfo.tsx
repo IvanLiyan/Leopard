@@ -17,8 +17,8 @@ import { AccountTypeDisplayNames, MxDropdown } from "@toolkit/tax/types-v2";
 import ValidatedLabel from "@merchant/component/tax/v2/ValidatedLabel";
 
 /* Merchant Stores */
-import { useTheme } from "@merchant/stores/ThemeStore";
-import { useLocalizationStore } from "@merchant/stores/LocalizationStore";
+import { useTheme } from "@stores/ThemeStore";
+import { useLocalizationStore } from "@stores/LocalizationStore";
 import { useTaxStore } from "@merchant/stores/TaxStore";
 
 type Props = BaseProps & {
@@ -174,6 +174,6 @@ const useStylesheet = () => {
           fontWeight: weightNormal,
         },
       }),
-    [textBlack]
+    [textBlack],
   );
 };

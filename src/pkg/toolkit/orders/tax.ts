@@ -9,7 +9,7 @@ import {
   TaxAuthoritySchema,
   OrderSalesTaxDetailsSchema,
 } from "@schema/types";
-import { useApolloStore } from "@merchant/stores/ApolloStore";
+import { useApolloStore } from "@stores/ApolloStore";
 
 export type PickOrderSalesTaxItem = Pick<
   OrderTaxItemSchema,
@@ -169,6 +169,6 @@ export const useOrderTaxData = (orderId: string) => {
     {
       variables: { orderId },
       client,
-    }
+    },
   );
 };

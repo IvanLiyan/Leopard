@@ -19,7 +19,7 @@ import { DEPRECATEDIcon as Icon } from "@merchant/component/core";
 
 /* Type Imports */
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 type Props = BaseProps & {
   readonly index: number;
@@ -123,6 +123,6 @@ const useStylesheet = () => {
           marginBottom: "28px",
         },
       }),
-    [primary, primaryLight, surfaceLightest]
+    [primary, primaryLight, surfaceLightest],
   );
 };

@@ -14,7 +14,7 @@ import { css } from "@toolkit/styling";
 import * as fonts from "@toolkit/fonts";
 
 /* Merchant Store */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* Relative Imports */
 import { CurrencyCodeDisplay, ConversionStatus } from "./CurrencyCodeDisplay";
@@ -170,6 +170,6 @@ const useStylesheet = () => {
           backgroundColor: pageBackground,
         },
       }),
-    [textBlack, textDark, borderPrimary, pageBackground]
+    [textBlack, textDark, borderPrimary, pageBackground],
   );
 };

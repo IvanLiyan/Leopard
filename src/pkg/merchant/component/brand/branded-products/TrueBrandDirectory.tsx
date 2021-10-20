@@ -18,7 +18,7 @@ import { css } from "@toolkit/styling";
 import { useDebouncer } from "@ContextLogic/lego/toolkit/hooks";
 
 /* Merchant Store */
-import { useApolloStore } from "@merchant/stores/ApolloStore";
+import { useApolloStore } from "@stores/ApolloStore";
 
 /* Merchant API */
 import { getABSBrands } from "@merchant/api/brand/true-brands";
@@ -31,7 +31,7 @@ import TrueBrandDirectoryTable from "./true-brand-directory/TrueBrandDirectoryTa
 import NoBrandsFound from "./true-brand-directory/NoBrandsFound";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import { useNavigationStore } from "@merchant/stores/NavigationStore";
+import { useNavigationStore } from "@stores/NavigationStore";
 
 /* Type Imports */
 import { BrandServiceSchemaTrueBrandsArgs } from "@schema/types";
@@ -86,7 +86,7 @@ const TrueBrandDirectory = ({ style }: TrueBrandDirectoryProps) => {
   const [offset, setOffset] = useState(0);
   const [brands, setBrands] = useState<ReadonlyArray<TrueBrandObject>>([]);
   const [newBrands, setNewBrands] = useState<ReadonlyArray<TrueBrandObject>>(
-    []
+    [],
   );
   const brandDirectoryElement = useRef<HTMLDivElement | null>(null);
   // Used so we don't query more results until the current query is finished
@@ -235,5 +235,5 @@ const useStylesheet = () =>
           marginTop: 20,
         },
       }),
-    []
+    [],
   );

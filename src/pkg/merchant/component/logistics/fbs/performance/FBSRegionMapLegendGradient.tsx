@@ -9,7 +9,7 @@ import { palettes } from "@toolkit/lego-legacy/DEPRECATED_colors";
 import { weightMedium } from "@toolkit/fonts";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import { useLocalizationStore } from "@merchant/stores/LocalizationStore";
+import { useLocalizationStore } from "@stores/LocalizationStore";
 
 export type FBSRegionMapLegendGradientProps = BaseProps & {
   readonly colors: ReadonlyArray<string>;
@@ -39,7 +39,7 @@ const FBSRegionMapLegendGradient = (props: FBSRegionMapLegendGradientProps) => {
           <div
             className={css(
               styles.priceText,
-              idx === 0 ? styles.edgePriceBlock : styles.priceBlock
+              idx === 0 ? styles.edgePriceBlock : styles.priceBlock,
             )}
             key={p}
           >
@@ -98,6 +98,6 @@ const useStyleSheet = () => {
           userSelect: "none",
         },
       }),
-    []
+    [],
   );
 };

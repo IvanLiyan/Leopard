@@ -14,7 +14,7 @@ import { NumericInput } from "@ContextLogic/lego";
 import PaymentDetailsFilter from "./PaymentDetailsFilter";
 
 /* Merchant Store */
-import LocalizationStore from "@merchant/stores/LocalizationStore";
+import LocalizationStore from "@stores/LocalizationStore";
 
 type FilterData = {
   readonly dateFrom: string;
@@ -139,7 +139,7 @@ const useStyleSheet = () =>
           boxSizing: "border-box",
         },
       }),
-    []
+    [],
   );
 
 export default observer(TransactionPaymentDetailsFilter);

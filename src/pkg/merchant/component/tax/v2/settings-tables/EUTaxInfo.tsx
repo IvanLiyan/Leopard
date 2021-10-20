@@ -23,8 +23,8 @@ import { TaxSettingTaxNumberType, CountryCode } from "@schema/types";
 import ValidatedLabel from "@merchant/component/tax/v2/ValidatedLabel";
 
 /* Merchant Stores */
-import { useTheme } from "@merchant/stores/ThemeStore";
-import { useLocalizationStore } from "@merchant/stores/LocalizationStore";
+import { useTheme } from "@stores/ThemeStore";
+import { useLocalizationStore } from "@stores/LocalizationStore";
 
 /* Toolkit */
 import { infoCountries, getCountryTooltipText } from "@toolkit/tax/eu-vat";

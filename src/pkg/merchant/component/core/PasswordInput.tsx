@@ -26,8 +26,8 @@ import { useLogger } from "@toolkit/logger";
 import { useDebouncer } from "@ContextLogic/lego/toolkit/hooks";
 import { weightSemibold } from "@toolkit/fonts";
 
-import { useTheme } from "@merchant/stores/ThemeStore";
-import { useApolloStore } from "@merchant/stores/ApolloStore";
+import { useTheme } from "@stores/ThemeStore";
+import { useApolloStore } from "@stores/ApolloStore";
 
 /* Type Imports */
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
@@ -75,7 +75,7 @@ export type PasswordInputProps = BaseProps &
     readonly onPasswordChange?: (newPassword: string) => unknown;
     readonly onValidityChanged?: (
       isValid: boolean,
-      errorMessage?: string | null
+      errorMessage?: string | null,
     ) => unknown;
     readonly passwordVisible?: boolean;
     readonly forceValidation?: boolean;
@@ -96,7 +96,7 @@ const PasswordInput = (props: PasswordInputProps) => {
   const [numAttempts, setNumAttempts] = useState(0);
   const styles = useStylesheet();
   const failedPasswordAttemptLogger = useLogger(
-    "MERCHANT_FAILED_PASSWORD_ATTEMPTS"
+    "MERCHANT_FAILED_PASSWORD_ATTEMPTS",
   );
   const debouncedPassword = useDebouncer(password, 500);
   const { client } = useApolloStore();
@@ -259,6 +259,6 @@ const useStylesheet = () => {
           minWidth: 160,
         },
       }),
-    [textDark, borderPrimaryDark, negative]
+    [textDark, borderPrimaryDark, negative],
   );
 };

@@ -7,9 +7,9 @@ import {
   DayStoreHoursConfiguration,
 } from "@schema/types";
 
-import ToastStore from "@merchant/stores/ToastStore";
-import ApolloStore from "@merchant/stores/ApolloStore";
-import NavigationStore from "@merchant/stores/NavigationStore";
+import ToastStore from "@stores/ToastStore";
+import ApolloStore from "@stores/ApolloStore";
+import NavigationStore from "@stores/NavigationStore";
 
 type Duration = {
   readonly startTime: string;

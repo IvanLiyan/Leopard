@@ -16,7 +16,7 @@ import { palettes } from "@toolkit/lego-legacy/DEPRECATED_colors";
 import * as fonts from "@toolkit/fonts";
 
 /* Toolkit */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
@@ -109,6 +109,6 @@ const useStylesheet = () => {
           backgroundColor: surfaceLightest,
         },
       }),
-    [surfaceLightest]
+    [surfaceLightest],
   );
 };

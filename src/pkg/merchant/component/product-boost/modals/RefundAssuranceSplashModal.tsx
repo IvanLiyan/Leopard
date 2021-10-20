@@ -20,9 +20,9 @@ import {
   Markdown,
   H4,
 } from "@ContextLogic/lego";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import { Illustration } from "@merchant/component/core";
-import { useNavigationStore } from "@merchant/stores/NavigationStore";
+import { useNavigationStore } from "@stores/NavigationStore";
 import { zendeskURL } from "@toolkit/url";
 
 export type RefundAssuranceSplashProps = BaseProps & {
@@ -63,7 +63,7 @@ const RefundAssuranceSplash = ({ onClose }: RefundAssuranceSplashProps) => {
             i`Invest in ProductBoost with confidence and assurance while being protected ` +
             i`against Advanced Logistics Program refunds. Create ProductBoost campaigns for ` +
             i`products included in the Advanced Logistics Program now. [Learn more](${zendeskURL(
-              "1260804150329"
+              "1260804150329",
             )})`
           }
         />
@@ -121,7 +121,7 @@ const useStylesheet = () => {
           height: 40,
         },
       }),
-    [borderPrimary]
+    [borderPrimary],
   );
 };
 

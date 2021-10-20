@@ -31,7 +31,7 @@ import ChromeSideMenuDrawer, {
   SideMenuDrawerSize,
 } from "./ChromeSideMenuDrawer";
 
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { NavigationNode } from "@toolkit/chrome";
 import { Layout } from "@ContextLogic/lego";
@@ -47,7 +47,7 @@ type Props = BaseProps & {
   readonly isRightToLeft?: boolean;
   readonly enableDrawer?: boolean;
   readonly renderBottomAnchor?: (
-    onClick: (node: NavigationNode) => void
+    onClick: (node: NavigationNode) => void,
   ) => ReactNode;
 };
 
@@ -86,7 +86,7 @@ const ChromeSideMenu: React.FC<Props> = (props: Props) => {
           : { marginLeft: "-100%" },
         transition: { duration: 300 },
       }),
-    [isRightToLeft]
+    [isRightToLeft],
   );
 
   const closeDrawer = useCallback(() => {
@@ -243,6 +243,6 @@ const useStylesheet = ({
       isRightToLeft,
       borderPrimary,
       surfaceLightest,
-    ]
+    ],
   );
 };

@@ -1,9 +1,9 @@
 import gql from "graphql-tag";
 import { observable, action, computed } from "mobx";
 
-import ToastStore from "@merchant/stores/ToastStore";
-import ApolloStore from "@merchant/stores/ApolloStore";
-import NavigationStore from "@merchant/stores/NavigationStore";
+import ToastStore from "@stores/ToastStore";
+import ApolloStore from "@stores/ApolloStore";
+import NavigationStore from "@stores/NavigationStore";
 import {
   UpsertProductCategoryDisputeInput,
   UpsertProductCategoryDispute,
@@ -140,8 +140,8 @@ export default class ProductCategoryDisputeState {
       ...(!makeChange
         ? {
             adminUnchangedReason: this.adminUnchangedReason,
-            adminUnchangedOtherReasonDetails: this
-              .adminUnchangedOtherReasonDetails,
+            adminUnchangedOtherReasonDetails:
+              this.adminUnchangedOtherReasonDetails,
           }
         : {}),
     };
@@ -164,13 +164,13 @@ export default class ProductCategoryDisputeState {
 
     if (!ok) {
       toastStore.negative(
-        message || i`Something went wrong, please try again.`
+        message || i`Something went wrong, please try again.`,
       );
       return;
     }
     if (nextId) {
       await navigationStore.navigate(
-        `/review-product-category-dispute/${nextId}`
+        `/review-product-category-dispute/${nextId}`,
       );
     } else {
       await navigationStore.navigate("/product-category-disputes");
@@ -217,7 +217,7 @@ export default class ProductCategoryDisputeState {
 
     if (!ok) {
       toastStore.negative(
-        message || i`Something went wrong, please try again.`
+        message || i`Something went wrong, please try again.`,
       );
       return;
     }

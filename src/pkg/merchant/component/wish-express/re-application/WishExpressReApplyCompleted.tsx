@@ -17,7 +17,7 @@ import { greenCheckmarkSolid, closeIcon } from "@assets/icons";
 import { zendeskURL } from "@toolkit/url";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 export type WishCompletedProps = BaseProps & {
   readonly closeModal: () => unknown;
@@ -195,6 +195,6 @@ const useStylesheet = () => {
           cursor: "pointer",
         },
       }),
-    [textBlack]
+    [textBlack],
   );
 };

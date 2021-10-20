@@ -40,7 +40,7 @@ import {
   ShippingProfileCollectionSchemaShippingProfileCountArgs,
 } from "@schema/types";
 
-import { useApolloStore } from "@merchant/stores/ApolloStore";
+import { useApolloStore } from "@stores/ApolloStore";
 
 type Props = {
   readonly initialData: ShippingSettingsInitialData;
@@ -189,7 +189,7 @@ const PlusShippingSettingsV2Container: React.FC<Props> = ({
                 rangeStart={offset + 1}
                 rangeEnd={Math.min(
                   shippingProfiles?.length ?? 0,
-                  offset + limit
+                  offset + limit,
                 )}
                 hasNext={limit + offset < (shippingProfiles?.length ?? 0)}
                 hasPrev={offset > 0}
@@ -272,7 +272,7 @@ const useStylesheet = () =>
           alignSelf: "stretch",
         },
       }),
-    []
+    [],
   );
 
 export default observer(PlusShippingSettingsV2Container);

@@ -22,7 +22,7 @@ import {
 /* Lego Toolkit */
 import { css } from "@toolkit/styling";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* Type Imports */
 import { DEPRECATEDIcon as Icon } from "@merchant/component/core";
@@ -54,11 +54,8 @@ const ManageResponsiblePersonsSection = (props: Props) => {
     return null;
   }
 
-  const {
-    rpCompletedCount,
-    rpPendingCount,
-    rpRejectedCount,
-  } = initialData.policy.productCompliance;
+  const { rpCompletedCount, rpPendingCount, rpRejectedCount } =
+    initialData.policy.productCompliance;
 
   const marketSurveillanceLink =
     "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=celex:32019R1020";
@@ -204,7 +201,7 @@ const useStylesheet = () => {
           width: "50%",
         },
       }),
-    [borderPrimary, textBlack]
+    [borderPrimary, textBlack],
   );
 };
 

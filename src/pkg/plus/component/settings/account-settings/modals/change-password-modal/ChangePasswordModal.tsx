@@ -20,8 +20,8 @@ import ChangePasswordScreen from "./ChangePasswordScreen";
 import ConfirmationScreen from "@plus/component/settings/account-settings/modals/ConfirmationScreen";
 
 /* Type Imports */
-import ToastStore from "@merchant/stores/ToastStore";
-import DeviceStore from "@merchant/stores/DeviceStore";
+import ToastStore from "@stores/ToastStore";
+import DeviceStore from "@stores/DeviceStore";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
 type ChangePasswordModalProps = BaseProps;
@@ -76,7 +76,7 @@ const useStylesheet = () =>
           minHeight: 340,
         },
       }),
-    []
+    [],
   );
 
 export default class ChangePasswordModal extends Modal {

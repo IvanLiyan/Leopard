@@ -12,7 +12,7 @@ import { PrimaryButton } from "@ContextLogic/lego";
 import { css } from "@toolkit/styling";
 
 /* Merchant Store */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* Type Imports */
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
@@ -21,16 +21,15 @@ import { ProductPromotionStatus } from "@schema/types";
 type DailyBudgetCampaignFilterProps = BaseProps & {
   readonly productStateFilter: ReadonlyArray<ProductPromotionStatus>;
   readonly setProductStateFilter: (
-    states: ReadonlyArray<ProductPromotionStatus>
+    states: ReadonlyArray<ProductPromotionStatus>,
   ) => void;
 };
 
 const DailyBudgetCampaignFilter = (props: DailyBudgetCampaignFilterProps) => {
   const styles = useStyleSheet();
   const { productStateFilter, setProductStateFilter, className } = props;
-  const [localProductStateFilter, setLocalProductStateFilter] = useState(
-    productStateFilter
-  );
+  const [localProductStateFilter, setLocalProductStateFilter] =
+    useState(productStateFilter);
   const hasActiveFilters = localProductStateFilter.length > 0;
 
   const productState = [
@@ -57,7 +56,7 @@ const DailyBudgetCampaignFilter = (props: DailyBudgetCampaignFilterProps) => {
         const state = option.value;
         if (localProductStateFilter.includes(state)) {
           setLocalProductStateFilter(
-            localProductStateFilter.filter((s) => s !== state)
+            localProductStateFilter.filter((s) => s !== state),
           );
         } else {
           setLocalProductStateFilter([...localProductStateFilter, state]);
@@ -145,7 +144,7 @@ const useStyleSheet = () => {
           margin: 4,
         },
       }),
-    [textDark, textBlack]
+    [textDark, textBlack],
   );
 };
 

@@ -36,10 +36,10 @@ import { OnTextChangeEvent } from "@ContextLogic/lego";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { APIResponse } from "@toolkit/api";
 import { CurrencyCode } from "@toolkit/currency";
-import DimenStore from "@merchant/stores/DimenStore";
-import ToastStore from "@merchant/stores/ToastStore";
-import NavigationStore from "@merchant/stores/NavigationStore";
-import LocalizationStore from "@merchant/stores/LocalizationStore";
+import DeviceStore from "@stores/DeviceStore";
+import ToastStore from "@stores/ToastStore";
+import NavigationStore from "@stores/NavigationStore";
+import LocalizationStore from "@stores/LocalizationStore";
 
 export type DuplicateAutomatedModalContentProps = BaseProps & {
   readonly campaignId: string;
@@ -72,9 +72,7 @@ const formatApiDate = (date: Date): string => {
 const BUDGET_FIELD_WIDTH = 238;
 
 @observer
-class DuplicateAutomatedModalContent extends Component<
-  DuplicateAutomatedModalContentProps
-> {
+class DuplicateAutomatedModalContent extends Component<DuplicateAutomatedModalContentProps> {
   @observable
   actionButtonDisabled = true;
 
@@ -136,9 +134,8 @@ class DuplicateAutomatedModalContent extends Component<
         allowMaxboost && this.isMaxboost ? productCount : 0,
     };
 
-    let resp: APIResponse<
-      productBoostApi.GetProductBoostCampaignBudgetInfoResult
-    > | null = null;
+    let resp: APIResponse<productBoostApi.GetProductBoostCampaignBudgetInfoResult> | null =
+      null;
 
     try {
       resp = await productBoostApi
@@ -183,7 +180,7 @@ class DuplicateAutomatedModalContent extends Component<
 
   @computed
   get isSmallScreen(): boolean {
-    const { isSmallScreen } = DimenStore.instance();
+    const { isSmallScreen } = DeviceStore.instance();
     return isSmallScreen;
   }
 
@@ -464,7 +461,7 @@ class DuplicateAutomatedModalContent extends Component<
           <span className={css(this.styles.text)}>
             {formatCurrency(
               maxAllowedSpending,
-              currencyCode ? currencyCode : "USD"
+              currencyCode ? currencyCode : "USD",
             )}
           </span>
         ),
@@ -504,7 +501,7 @@ class DuplicateAutomatedModalContent extends Component<
           Please note that the budget cannot exceed your maximum budget.
         </div>
         {fields.map((field) =>
-          this.horizontalField(field.title, field.content)
+          this.horizontalField(field.title, field.content),
         )}
       </div>
     );
@@ -552,7 +549,7 @@ class DuplicateAutomatedModalContent extends Component<
       <div className={css(this.styles.originalCampaign)}>
         <div className={css(this.styles.title)}>Your original campaign</div>
         {fields.map((field) =>
-          this.horizontalField(field.title, field.content)
+          this.horizontalField(field.title, field.content),
         )}
       </div>
     );

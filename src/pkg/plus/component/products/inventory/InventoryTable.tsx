@@ -28,7 +28,7 @@ import ProductImage from "@merchant/component/products/ProductImage";
 import InventoryControls from "./InventoryControls";
 import { OnChangeEvent } from "@ContextLogic/lego";
 
-import { useToastStore } from "@merchant/stores/ToastStore";
+import { useToastStore } from "@stores/ToastStore";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { CellInfo } from "@ContextLogic/lego";
 import {

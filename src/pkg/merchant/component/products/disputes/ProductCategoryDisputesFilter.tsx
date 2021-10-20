@@ -20,7 +20,7 @@ import {
 /* Lego Toolkit */
 import { css } from "@toolkit/styling";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* Model */
 import {
@@ -33,7 +33,7 @@ type Props = BaseProps & {
   readonly onSubmit: () => void;
   readonly statesQuery: ReadonlySet<ProductCategoryDisputeStatus>;
   readonly onSetStatesQuery: (
-    value: ReadonlySet<ProductCategoryDisputeStatus>
+    value: ReadonlySet<ProductCategoryDisputeStatus>,
   ) => void;
 };
 
@@ -159,7 +159,7 @@ const useStylesheet = () => {
           flex: 1,
         },
       }),
-    [borderPrimary, textBlack]
+    [borderPrimary, textBlack],
   );
 };
 

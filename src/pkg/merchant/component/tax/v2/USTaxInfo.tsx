@@ -25,8 +25,8 @@ import {
 import ValidatedLabel from "./ValidatedLabel";
 
 /* Merchant Stores */
-import { useLocalizationStore } from "@merchant/stores/LocalizationStore";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useLocalizationStore } from "@stores/LocalizationStore";
+import { useTheme } from "@stores/ThemeStore";
 
 export type PickedUSMarketplaceMunicipalities = Pick<
   UsTaxMarketplaceMunicipalities,
@@ -91,7 +91,7 @@ const USTaxInfo: React.FC<Props> = (props: Props) => {
               <Text>{getStateName("US", code)}</Text>
               {subRegions != null && subRegions.length > 0 && (
                 <Text style={styles.cities}>{`(${subRegions.join(
-                  ", "
+                  ", ",
                 )})`}</Text>
               )}
             </Layout.FlexColumn>
@@ -126,7 +126,7 @@ const USTaxInfo: React.FC<Props> = (props: Props) => {
           }: CellInfo<UsStateTaxInfo, UsStateTaxInfo>) =>
             lastUpdated &&
             new Date(lastUpdated.unix * 1000).toLocaleDateString(
-              preferredProperLocale
+              preferredProperLocale,
             )
           }
         </Table.Column>
@@ -171,6 +171,6 @@ const useStylesheet = () => {
           marginTop: 8,
         },
       }),
-    [textBlack]
+    [textBlack],
   );
 };

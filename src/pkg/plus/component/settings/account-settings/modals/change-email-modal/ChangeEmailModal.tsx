@@ -20,8 +20,8 @@ import ChangeEmailScreen from "./ChangeEmailScreen";
 import ConfirmationScreen from "@plus/component/settings/account-settings/modals/ConfirmationScreen";
 
 /* Type Imports */
-import ToastStore from "@merchant/stores/ToastStore";
-import DeviceStore from "@merchant/stores/DeviceStore";
+import ToastStore from "@stores/ToastStore";
+import DeviceStore from "@stores/DeviceStore";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
 export type ChangeEmailModalProps = BaseProps & {
@@ -82,7 +82,7 @@ const useStylesheet = () =>
           minHeight: 340,
         },
       }),
-    []
+    [],
   );
 
 export default class ChangeEmailModal extends Modal {
@@ -110,7 +110,7 @@ export default class ChangeEmailModal extends Modal {
       setTimeout(() => {
         toastStore.positive(
           i`A verification email has been sent to ${this.newEmail}, please ` +
-            i`follow the instructions to complete the change!`
+            i`follow the instructions to complete the change!`,
         );
       }, 300);
   }

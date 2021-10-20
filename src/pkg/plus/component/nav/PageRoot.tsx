@@ -13,7 +13,7 @@ import { StyleSheet } from "aphrodite";
 import { observer } from "mobx-react";
 
 import { css } from "@toolkit/styling";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 // eslint-disable-next-line local-rules/no-lego-direct-import
 import { TopBarHeight } from "@merchant/component/nav/chrome/ChromeTopBar";
 

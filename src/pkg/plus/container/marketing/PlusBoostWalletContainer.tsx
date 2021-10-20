@@ -19,7 +19,7 @@ import PlusWelcomeHeader from "@plus/component/nav/PlusWelcomeHeader";
 import PageGuide from "@plus/component/nav/PageGuide";
 
 /* Merchant Store */
-import { useDimenStore } from "@merchant/stores/DimenStore";
+import { useDeviceStore } from "@stores/DeviceStore";
 
 /* Types */
 import { CurrencyValue, MarketingMerchantPropertySchema } from "@schema/types";
@@ -136,7 +136,7 @@ const PlusBoostWalletContainer: React.FC<PlusBoostWalletContainerProps> = ({
 };
 
 const useStyleSheet = () => {
-  const { pageGuideBottom } = useDimenStore();
+  const { pageGuideBottom } = useDeviceStore();
   return useMemo(
     () =>
       StyleSheet.create({
@@ -173,7 +173,7 @@ const useStyleSheet = () => {
           marginTop: 16,
         },
       }),
-    [pageGuideBottom]
+    [pageGuideBottom],
   );
 };
 

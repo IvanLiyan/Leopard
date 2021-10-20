@@ -12,9 +12,9 @@ import {
 } from "@schema/types";
 import { PickedWebhookSubscriptionSchema } from "@toolkit/external/webhook";
 
-import ToastStore from "@merchant/stores/ToastStore";
-import ApolloStore from "@merchant/stores/ApolloStore";
-import NavigationStore from "@merchant/stores/NavigationStore";
+import ToastStore from "@stores/ToastStore";
+import ApolloStore from "@stores/ApolloStore";
+import NavigationStore from "@stores/NavigationStore";
 
 const UPSERT_WEBHOOK_SUBSCRIPTION_MUTATION = gql`
   mutation MerchantAppWebhookState_UpsertWebhookSubscription(
@@ -118,7 +118,7 @@ export default class MerchantAppWebhookState {
 
     if (!ok) {
       toastStore.negative(
-        message || i`Something went wrong, please try again.`
+        message || i`Something went wrong, please try again.`,
       );
       return;
     }
@@ -155,7 +155,7 @@ export default class MerchantAppWebhookState {
 
     if (!ok) {
       toastStore.negative(
-        message || i`Something went wrong, please try again.`
+        message || i`Something went wrong, please try again.`,
       );
       return;
     }
@@ -189,7 +189,7 @@ export default class MerchantAppWebhookState {
 
     if (!ok) {
       toastStore.negative(
-        message || i`Something went wrong, please try again.`
+        message || i`Something went wrong, please try again.`,
       );
       return;
     }

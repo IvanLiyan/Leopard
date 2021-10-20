@@ -28,7 +28,7 @@ import {
 import CreateShippingLabelState from "@merchant/model/CreateShippingLabelState";
 
 /* Merchant Stores */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* Merchant Toolkit */
 import {

@@ -10,7 +10,7 @@ import { css } from "@toolkit/styling";
 import { useIntQueryParam, useStringArrayQueryParam } from "@toolkit/url";
 import * as fonts from "@toolkit/fonts";
 
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { CheckboxGroupFieldOptionType as OptionType } from "@ContextLogic/lego";
@@ -28,7 +28,7 @@ const VerifyBrandsFilter = (props: VerifyBrandsFilterProps) => {
 
   const [, setOffset] = useIntQueryParam("offset");
   const [daysLeft, setDaysLeft] = useStringArrayQueryParam(
-    "days_left_to_verify"
+    "days_left_to_verify",
   );
 
   const onDaysLeftToggled = ({ value }: OptionType<string>) => {
@@ -114,6 +114,6 @@ const useStylesheet = () => {
           flexDirection: "row",
         },
       }),
-    [textDark]
+    [textDark],
   );
 };

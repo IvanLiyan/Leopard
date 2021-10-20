@@ -6,7 +6,7 @@ import { Illustration } from "@merchant/component/core";
 import { Popover } from "@merchant/component/core";
 
 import * as fonts from "@toolkit/fonts";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import DeliveryDeadlinePopover from "./DeliveryDeadlinePopover";
 
@@ -78,7 +78,7 @@ const useStylesheet = () => {
           margin: "2px 0px",
         },
       }),
-    [textDark]
+    [textDark],
   );
 };
 

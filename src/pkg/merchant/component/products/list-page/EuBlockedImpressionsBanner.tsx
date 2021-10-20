@@ -11,8 +11,8 @@ import { css } from "@toolkit/styling";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
 /* Merchant Stores */
-import { useTheme } from "@merchant/stores/ThemeStore";
-import { useApolloStore } from "@merchant/stores/ApolloStore";
+import { useTheme } from "@stores/ThemeStore";
+import { useApolloStore } from "@stores/ApolloStore";
 
 /* Toolkit */
 import { zendeskURL } from "@toolkit/url";
@@ -43,7 +43,7 @@ const EuBlockedImpressionsBannerContent = (props: BaseProps) => {
 
   const { data } = useQuery<HasImpressionsResponseType, void>(
     HAS_IMPRESSIONS_BLOCK,
-    {}
+    {},
   );
 
   if (data == null || !data.currentMerchant.hasEuComplianceImpressionBlock) {
@@ -100,5 +100,5 @@ const useStyleSheet = () =>
           marginLeft: 16,
         },
       }),
-    []
+    [],
   );

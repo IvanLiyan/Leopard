@@ -10,7 +10,7 @@ import { ci18n } from "@legacy/core/i18n";
 /* Lego Toolkit */
 import { css } from "@toolkit/styling";
 import * as fonts from "@toolkit/fonts";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 import { PickedOrderSalesTaxDetailsSchema } from "@toolkit/orders/tax";
 import RemitPopover from "./RemitPopover";
@@ -79,7 +79,7 @@ const OrderTaxCell: React.FC<Props> = (props: Props) => {
             <H6 className={css(styles.text)}>
               {ci18n(
                 "This is a label. Placed in from of the amount of tax that was collected",
-                "Tax collected"
+                "Tax collected",
               )}
             </H6>
             <H6 className={css(styles.text)}>{netTax.display}</H6>
@@ -88,7 +88,7 @@ const OrderTaxCell: React.FC<Props> = (props: Props) => {
             <H6 className={css(styles.text, styles.taxLiabilityText)}>
               {ci18n(
                 "This is a label. Placed in from of the amount of tax that was collected",
-                "Tax liability"
+                "Tax liability",
               )}
             </H6>
             <div className={css(styles.remitBreakdown)}>
@@ -173,7 +173,7 @@ const useStylesheet = () => {
           fontSize: 14,
         },
       }),
-    [primary, borderPrimaryDark]
+    [primary, borderPrimaryDark],
   );
 };
 

@@ -7,7 +7,7 @@ import { zendeskURL } from "@legacy/core/url";
 import { Link } from "@ContextLogic/lego";
 
 import * as fonts from "@toolkit/fonts";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
 type Props = BaseProps & {
@@ -76,7 +76,7 @@ const useStylesheet = () => {
           margin: "2px 0px",
         },
       }),
-    [textDark]
+    [textDark],
   );
 };
 

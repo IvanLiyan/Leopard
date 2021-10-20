@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import { StyleSheet } from "aphrodite";
 import { DeleteButton, Link, Popover, ObjectId } from "@ContextLogic/lego";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* Lego Toolkit */
 import * as fonts from "@toolkit/fonts";
@@ -40,7 +40,7 @@ const WebhookTable: React.FC<Props> = (props: Props) => {
     }).render();
 
   const sendTestNotification = async (
-    subscription: PickedWebhookSubscriptionSchema
+    subscription: PickedWebhookSubscriptionSchema,
   ) => state.sendTestMessage(subscription);
 
   return (
@@ -146,7 +146,7 @@ const useStylesheet = (props: Props) => {
           color: negative,
         },
       }),
-    [inactive, borderPrimary, surfaceLight, surfaceLightest, negative]
+    [inactive, borderPrimary, surfaceLight, surfaceLightest, negative],
   );
 };
 

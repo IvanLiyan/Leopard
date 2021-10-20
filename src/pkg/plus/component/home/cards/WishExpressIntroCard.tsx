@@ -12,7 +12,7 @@ import { useUIStateBool } from "@toolkit/ui-state";
 /* Type Imports */
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 import WishExpressIntroductionModal from "@plus/component/wish-express/introduction/WishExpressIntroductionModal";
 import { useLogger } from "@toolkit/logger";

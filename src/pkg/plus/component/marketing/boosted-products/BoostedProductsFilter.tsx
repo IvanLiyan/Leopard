@@ -11,7 +11,7 @@ import { css } from "@toolkit/styling";
 import { useStringEnumArrayQueryParam } from "@toolkit/url";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 import { ProductPromotionStatus } from "@schema/types";
 

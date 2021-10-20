@@ -18,7 +18,7 @@ import WishExpressTermsOfService from "@merchant/component/wish-express/terms/Wi
 import * as wishExpressApi from "@merchant/api/wish-express";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* eslint-disable local-rules/use-markdown */
 
@@ -34,7 +34,7 @@ type ApplicationStep =
   | "WishExpressApplicationCompletedSignUp";
 
 const WishExpressApplicationTermsOfService = (
-  props: WishApplicationTermsOfServiceProps
+  props: WishApplicationTermsOfServiceProps,
 ) => {
   const styles = useStylesheet(props);
   const [isDisabled, setIsDisabled] = useState(true);
@@ -199,6 +199,6 @@ const useStylesheet = (props: WishApplicationTermsOfServiceProps) => {
           paddingLeft: 16,
         },
       }),
-    [textBlack]
+    [textBlack],
   );
 };

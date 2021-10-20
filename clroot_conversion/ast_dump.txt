@@ -1,0 +1,670 @@
+("Module(body=[ImportFrom(module='bson', names=[alias(name='ObjectId')], "
+ "level=0), ImportFrom(module='tornado.web', names=[alias(name='HTTPError')], "
+ "level=0), ImportFrom(module='sweeper.merchant_dashboard.model.roles', "
+ "names=[alias(name='Roles')], level=0), "
+ "ImportFrom(module='sweeper.merchant_dashboard.model.permissions', "
+ "names=[alias(name='Permission')], level=0), "
+ "ImportFrom(module='sweeper.merchant_dashboard.lib.lego.pure', "
+ "names=[alias(name='create_pure_handler')], level=0), "
+ "ImportFrom(module='sweeper.merchant_dashboard.lib.onboarding.onboarding_steps', "
+ "names=[alias(name='MerchantOnboardingStep')], level=0), "
+ "ImportFrom(module='sweeper.merchant_dashboard.lib.onboarding.onboarding_flow', "
+ "names=[alias(name='complete_onboarding_step')], level=0), "
+ "ImportFrom(module='sweeper.merchant_dashboard.model.user', "
+ "names=[alias(name='MerchantUser')], level=0), "
+ "FunctionDef(name='authorize_plus_access', args=arguments(posonlyargs=[], "
+ "args=[arg(arg='context')], kwonlyargs=[], kw_defaults=[], defaults=[]), "
+ "body=[If(test=UnaryOp(op=Not(), operand=Attribute(value=Name(id='context', "
+ "ctx=Load()), attr='merchant', ctx=Load())), "
+ 'body=[Return(value=Constant(value=False))], orelse=[]), '
+ 'If(test=BoolOp(op=And(), values=[UnaryOp(op=Not(), operand=BoolOp(op=And(), '
+ "values=[Attribute(value=Name(id='context', ctx=Load()), attr='user', "
+ "ctx=Load()), Call(func=Attribute(value=Attribute(value=Name(id='context', "
+ "ctx=Load()), attr='user', ctx=Load()), attr='get_ui_state', ctx=Load()), "
+ "args=[Attribute(value=Attribute(value=Name(id='MerchantUser', ctx=Load()), "
+ "attr='UIState', ctx=Load()), attr='PREFERS_NEW_NAV', ctx=Load())], "
+ 'keywords=[])])), UnaryOp(op=Not(), '
+ "operand=Attribute(value=Attribute(value=Name(id='context', ctx=Load()), "
+ "attr='merchant', ctx=Load()), attr='is_merchant_plus', ctx=Load()))]), "
+ "body=[Expr(value=Call(func=Attribute(value=Name(id='context', ctx=Load()), "
+ "attr='redirect', ctx=Load()), args=[Constant(value='/')], keywords=[])), "
+ 'Return(value=Constant(value=False))], orelse=[]), '
+ 'Return(value=Constant(value=True))], decorator_list=[]), '
+ "FunctionDef(name='plus_home_page_query', args=arguments(posonlyargs=[], "
+ "args=[arg(arg='_context')], kwonlyargs=[], kw_defaults=[], defaults=[]), "
+ "body=[Return(value=Constant(value='\\ncurrentUser {\\n  onboarding {\\n    "
+ 'steps(completed: false) {\\n      title\\n      description\\n      '
+ 'illustration\\n      ctaText\\n      ctaLink\\n      name\\n    }\\n    '
+ 'numStepsLeft\\n    numSteps\\n  }\\n}\\ncurrentMerchant {\\n  '
+ 'sellerVerification {\\n    status\\n    kycVerification {\\n      '
+ 'status\\n    }\\n    isKycVerification\\n    gmvCapReached\\n    '
+ 'impressionsPaused\\n    paymentsBlocked\\n    gmvCap {\\n      display\\n    '
+ '}\\n    gmvCapGracePeriodEndDate {\\n      unix\\n    }\\n    '
+ 'actionRequired\\n  }\\n  isStoreMerchant\\n  isMerchantPlus\\n  '
+ 'primaryCurrency\\n  accountManager {\\n    name\\n    email\\n    '
+ "qqGroupNumber\\n  }\\n  standing\\n}\\n    '))], decorator_list=[]), "
+ "Assign(targets=[Name(id='PlusHomePageHandler', ctx=Store())], "
+ "value=Call(func=Name(id='create_pure_handler', ctx=Load()), args=[], "
+ "keywords=[keyword(arg='package', value=Constant(value='plus')), "
+ "keyword(arg='container', value=Constant(value='PlusHomeContainer')), "
+ "keyword(arg='roles_required', "
+ "value=List(elts=[Attribute(value=Name(id='Roles', ctx=Load()), attr='USER', "
+ "ctx=Load()), Attribute(value=Name(id='Roles', ctx=Load()), "
+ "attr='STORE_USER', ctx=Load())], ctx=Load())), keyword(arg='initial_query', "
+ "value=Name(id='plus_home_page_query', ctx=Load())), "
+ "keyword(arg='authorize_request', value=Name(id='authorize_plus_access', "
+ "ctx=Load()))])), Assign(targets=[Name(id='PlusOnboardingStepsHandler', "
+ "ctx=Store())], value=Call(func=Name(id='create_pure_handler', ctx=Load()), "
+ "args=[], keywords=[keyword(arg='package', value=Constant(value='plus')), "
+ "keyword(arg='container', "
+ "value=Constant(value='PlusOnboardingStepsContainer')), "
+ "keyword(arg='roles_required', "
+ "value=List(elts=[Attribute(value=Name(id='Roles', ctx=Load()), attr='USER', "
+ "ctx=Load()), Attribute(value=Name(id='Roles', ctx=Load()), "
+ "attr='STORE_USER', ctx=Load())], ctx=Load())), "
+ "keyword(arg='authorize_request', value=Name(id='authorize_plus_access', "
+ "ctx=Load())), keyword(arg='initial_query', value=Constant(value='\\n  "
+ 'currentUser {\\n    onboarding {\\n      steps {\\n        title\\n        '
+ 'description\\n        illustration\\n        ctaText\\n        '
+ 'ctaLink\\n        completed\\n      }\\n      numStepsCompleted\\n      '
+ 'numSteps\\n      numStepsLeft\\n    }\\n  }\\n  currentMerchant {\\n    '
+ "daysToFulfill\\n    isStoreMerchant\\n  }\\n    '))])), "
+ "Assign(targets=[Name(id='PlusMoreHandler', ctx=Store())], "
+ "value=Call(func=Name(id='create_pure_handler', ctx=Load()), args=[], "
+ "keywords=[keyword(arg='package', value=Constant(value='plus')), "
+ "keyword(arg='container', value=Constant(value='PlusMoreContainer')), "
+ "keyword(arg='roles_required', "
+ "value=List(elts=[Attribute(value=Name(id='Roles', ctx=Load()), attr='USER', "
+ "ctx=Load()), Attribute(value=Name(id='Roles', ctx=Load()), "
+ "attr='STORE_USER', ctx=Load())], ctx=Load())), "
+ "keyword(arg='authorize_request', value=Name(id='authorize_plus_access', "
+ "ctx=Load())), keyword(arg='initial_query', value=Constant(value='\\n  "
+ 'currentMerchant {\\n    sellerVerification {\\n      status\\n      '
+ 'isKycVerification\\n      gmvCapReached\\n      canStart\\n      '
+ "kycVerification {\\n        canStart\\n      }\\n    }\\n  }\\n    '))])), "
+ "Assign(targets=[Name(id='PlusAccountSettingsPageHandler', ctx=Store())], "
+ "value=Call(func=Name(id='create_pure_handler', ctx=Load()), args=[], "
+ "keywords=[keyword(arg='package', value=Constant(value='plus')), "
+ "keyword(arg='container', "
+ "value=Constant(value='PlusAccountSettingsContainer')), "
+ "keyword(arg='roles_required', "
+ "value=List(elts=[Attribute(value=Name(id='Roles', ctx=Load()), attr='USER', "
+ "ctx=Load()), Attribute(value=Name(id='Roles', ctx=Load()), "
+ "attr='STORE_USER', ctx=Load())], ctx=Load())), "
+ "keyword(arg='require_secure_relogin', value=Constant(value=True)), "
+ "keyword(arg='initial_query', value=Constant(value='\\n  platformConstants "
+ '{\\n    interselectablePhoneCountries {\\n      code\\n    }\\n  }\\n  '
+ 'currentUser {\\n    name\\n    email\\n    phoneNumber\\n    '
+ 'canEditPhoneNumber\\n    twoFactorEnabled\\n    hasTfaBackupCodes\\n    '
+ 'numCurrentDevices\\n    tfaTokenSentTime {\\n      iso8061\\n    }\\n    '
+ 'accountManager {\\n      email\\n    }\\n  }\\n  currentMerchant {\\n    '
+ 'id\\n    displayName\\n    onVacationMode\\n    revShare\\n    '
+ 'canUseVacationMode\\n    isStoreMerchant\\n    proofOfIdentity {\\n      '
+ 'fileUrl\\n      displayFilename\\n    }\\n    businessName\\n    '
+ 'businessAddress {\\n      streetAddress1\\n      streetAddress2\\n      '
+ 'city\\n      countryCode\\n      zipcode\\n      state\\n    }\\n    '
+ 'countryOfDomicile {\\n      name\\n    }\\n    sellerVerification {\\n      '
+ 'status\\n      isKycVerification\\n      canStart\\n      kycVerification '
+ '{\\n        status\\n        merchantType\\n        canStart\\n      '
+ '}\\n      gmvCapReached\\n      gmvCapGracePeriodEndDate {\\n        '
+ 'unix\\n      }\\n      paymentsBlocked\\n      lastUpdateTime {\\n        '
+ 'mmddyyyy\\n      }\\n      adminFeedback {\\n        lastNameIssue\\n        '
+ 'middleNameIssue\\n        firstNameIssue\\n        '
+ 'dateOfBirthIssue\\n        businessAddressIssue\\n        '
+ "proofOfIdentificationIssue\\n      }\\n    }\\n  }\\n    ')), "
+ "keyword(arg='authorize_request', value=Name(id='authorize_plus_access', "
+ "ctx=Load()))])), Assign(targets=[Name(id='PlusDeviceSettingsPageHandler', "
+ "ctx=Store())], value=Call(func=Name(id='create_pure_handler', ctx=Load()), "
+ "args=[], keywords=[keyword(arg='package', value=Constant(value='plus')), "
+ "keyword(arg='container', "
+ "value=Constant(value='PlusDeviceSettingsContainer')), "
+ "keyword(arg='roles_required', "
+ "value=List(elts=[Attribute(value=Name(id='Roles', ctx=Load()), attr='USER', "
+ "ctx=Load()), Attribute(value=Name(id='Roles', ctx=Load()), "
+ "attr='STORE_USER', ctx=Load())], ctx=Load())), keyword(arg='initial_query', "
+ "value=Constant(value='\\n  currentUser {\\n    phoneNumber\\n  }\\n    "
+ "'))])), Assign(targets=[Name(id='PlusLanguageSettingsPageHandler', "
+ "ctx=Store())], value=Call(func=Name(id='create_pure_handler', ctx=Load()), "
+ "args=[], keywords=[keyword(arg='package', value=Constant(value='plus')), "
+ "keyword(arg='container', "
+ "value=Constant(value='PlusLanguageSettingsContainer')), "
+ "keyword(arg='roles_required', "
+ "value=List(elts=[Attribute(value=Name(id='Roles', ctx=Load()), attr='USER', "
+ "ctx=Load()), Attribute(value=Name(id='Roles', ctx=Load()), "
+ "attr='STORE_USER', ctx=Load())], ctx=Load())), "
+ "keyword(arg='authorize_request', value=Name(id='authorize_plus_access', "
+ "ctx=Load())), keyword(arg='initial_query', value=Constant(value='\\n  "
+ "platformConstants {\\n    availableLocales\\n  }\\n    '))])), "
+ "Assign(targets=[Name(id='PlusPaymentSettingsPageHandler', ctx=Store())], "
+ "value=Call(func=Name(id='create_pure_handler', ctx=Load()), args=[], "
+ "keywords=[keyword(arg='package', value=Constant(value='plus')), "
+ "keyword(arg='container', "
+ "value=Constant(value='PlusPaymentSettingsContainer')), "
+ "keyword(arg='roles_required', "
+ "value=List(elts=[Attribute(value=Name(id='Roles', ctx=Load()), attr='USER', "
+ "ctx=Load()), Attribute(value=Name(id='Roles', ctx=Load()), "
+ "attr='STORE_USER', ctx=Load())], ctx=Load())), "
+ "keyword(arg='authorize_request', value=Name(id='authorize_plus_access', "
+ "ctx=Load())), keyword(arg='require_secure_relogin', "
+ "value=Constant(value=True)), keyword(arg='initial_query', "
+ "value=Constant(value='\\n  payments {\\n    currentMerchant {\\n      "
+ 'personalInfo {\\n        name,\\n        id,\\n        phoneNumber\\n      '
+ '},\\n      businessInfo {\\n        name,\\n        businessId\\n      '
+ '},\\n      currentProvider {\\n        name,\\n        logo,\\n        '
+ 'type\\n      },\\n      infoCollectedForPaymentProvider {\\n        '
+ 'email\\n      },\\n      canEditPaymentInfo,\\n      hasActiveLoan,\\n      '
+ 'hasPayoutInProgress,\\n      releasePayoutRequest {\\n        '
+ 'releasePaymentRequestId\\n        canResetPayout\\n      },\\n      '
+ 'nextPayoutTime {\\n        mmddyyyy\\n      },\\n      '
+ 'pendingChargeProviders\\n    }\\n  },\\n  currentMerchant {\\n    id,\\n    '
+ "primaryCurrency,\\n    isStoreMerchant\\n  }\\n    '))])), "
+ "Assign(targets=[Name(id='PlusPaymentSettingsEditPageHandler', ctx=Store())], "
+ "value=Call(func=Name(id='create_pure_handler', ctx=Load()), args=[], "
+ "keywords=[keyword(arg='package', value=Constant(value='plus')), "
+ "keyword(arg='container', "
+ "value=Constant(value='PlusPaymentSettingsEditContainer')), "
+ "keyword(arg='roles_required', "
+ "value=List(elts=[Attribute(value=Name(id='Roles', ctx=Load()), attr='USER', "
+ "ctx=Load()), Attribute(value=Name(id='Roles', ctx=Load()), "
+ "attr='STORE_USER', ctx=Load())], ctx=Load())), "
+ "keyword(arg='authorize_request', value=Name(id='authorize_plus_access', "
+ "ctx=Load())), keyword(arg='require_secure_relogin', "
+ "value=Constant(value=True)), keyword(arg='initial_query', "
+ "value=Constant(value='\\n  payments {\\n    currentMerchant {\\n      "
+ 'personalInfo {\\n        name,\\n        id,\\n        phoneNumber\\n      '
+ '},\\n      businessInfo {\\n        name,\\n        businessId\\n      '
+ '},\\n      currentProvider {\\n        name,\\n        type\\n      '
+ '},\\n      allowedProviders {\\n        name,\\n        type\\n      }\\n    '
+ '}\\n  },\\n  currentMerchant {\\n    isStoreMerchant\\n  },\\n  currentUser '
+ "{\\n    firstName,\\n    lastName,\\n    phoneNumber\\n  }\\n    '))])), "
+ "Assign(targets=[Name(id='PlusStorePhotoSettingsPageHandler', ctx=Store())], "
+ "value=Call(func=Name(id='create_pure_handler', ctx=Load()), args=[], "
+ "keywords=[keyword(arg='package', value=Constant(value='plus')), "
+ "keyword(arg='container', "
+ "value=Constant(value='PlusStorePhotoSettingsContainer')), "
+ "keyword(arg='roles_required', "
+ "value=List(elts=[Attribute(value=Name(id='Roles', ctx=Load()), attr='USER', "
+ "ctx=Load()), Attribute(value=Name(id='Roles', ctx=Load()), "
+ "attr='STORE_USER', ctx=Load())], ctx=Load())), "
+ "keyword(arg='authorize_request', value=Name(id='authorize_plus_access', "
+ 'ctx=Load()))])), '
+ "Assign(targets=[Name(id='PlusStoreHoursSettingsPageHandler', ctx=Store())], "
+ "value=Call(func=Name(id='create_pure_handler', ctx=Load()), args=[], "
+ "keywords=[keyword(arg='package', value=Constant(value='plus')), "
+ "keyword(arg='container', "
+ "value=Constant(value='PlusStoreHoursSettingsContainer')), "
+ "keyword(arg='roles_required', "
+ "value=List(elts=[Attribute(value=Name(id='Roles', ctx=Load()), attr='USER', "
+ "ctx=Load()), Attribute(value=Name(id='Roles', ctx=Load()), "
+ "attr='STORE_USER', ctx=Load())], ctx=Load())), "
+ "keyword(arg='authorize_request', value=Name(id='authorize_plus_access', "
+ "ctx=Load()))])), FunctionDef(name='authorize_shipping_settings_access', "
+ "args=arguments(posonlyargs=[], args=[arg(arg='context')], kwonlyargs=[], "
+ "kw_defaults=[], defaults=[]), body=[Assign(targets=[Name(id='has_access', "
+ "ctx=Store())], value=Call(func=Name(id='authorize_plus_access', ctx=Load()), "
+ "args=[Name(id='context', ctx=Load())], keywords=[])), "
+ "If(test=Compare(left=Name(id='has_access', ctx=Load()), ops=[Is()], "
+ 'comparators=[Constant(value=False)]), '
+ 'body=[Return(value=Constant(value=False))], orelse=[]), '
+ 'If(test=UnaryOp(op=Not(), '
+ "operand=Call(func=Attribute(value=Attribute(value=Name(id='context', "
+ "ctx=Load()), attr='user', ctx=Load()), attr='has_permission', ctx=Load()), "
+ "args=[Attribute(value=Name(id='Permission', ctx=Load()), "
+ "attr='MANAGE_SHIPPING_SETTINGS', ctx=Load())], keywords=[])), "
+ "body=[Expr(value=Call(func=Attribute(value=Name(id='context', ctx=Load()), "
+ "attr='redirect', ctx=Load()), args=[Constant(value='/')], keywords=[])), "
+ 'Return(value=Constant(value=False))], orelse=[]), If(test=BoolOp(op=And(), '
+ "values=[UnaryOp(op=Not(), operand=Attribute(value=Name(id='context', "
+ "ctx=Load()), attr='su', ctx=Load())), "
+ "Attribute(value=Attribute(value=Name(id='context', ctx=Load()), attr='user', "
+ "ctx=Load()), attr='is_new_merchant_lead', ctx=Load())]), "
+ "body=[Expr(value=Call(func=Name(id='complete_onboarding_step', ctx=Load()), "
+ "args=[Attribute(value=Name(id='context', ctx=Load()), attr='user', "
+ "ctx=Load()), Attribute(value=Name(id='MerchantOnboardingStep', ctx=Load()), "
+ "attr='SETUP_SHIPPING', ctx=Load())], keywords=[]))], orelse=[]), "
+ 'Return(value=Constant(value=True))], decorator_list=[]), '
+ "FunctionDef(name='authorize_shipping_settings_v1_access', "
+ "args=arguments(posonlyargs=[], args=[arg(arg='context')], kwonlyargs=[], "
+ 'kw_defaults=[], defaults=[]), body=[If(test=UnaryOp(op=Not(), '
+ "operand=Call(func=Name(id='authorize_shipping_settings_access', ctx=Load()), "
+ "args=[Name(id='context', ctx=Load())], keywords=[])), "
+ 'body=[Return(value=Constant(value=False))], orelse=[]), '
+ 'Return(value=Constant(value=True))], decorator_list=[]), '
+ "FunctionDef(name='authorize_shipping_settings_v2_access', "
+ "args=arguments(posonlyargs=[], args=[arg(arg='context')], kwonlyargs=[], "
+ 'kw_defaults=[], defaults=[]), body=[If(test=UnaryOp(op=Not(), '
+ "operand=Call(func=Name(id='authorize_shipping_settings_access', ctx=Load()), "
+ "args=[Name(id='context', ctx=Load())], keywords=[])), "
+ 'body=[Return(value=Constant(value=False))], orelse=[]), '
+ "Expr(value=Call(func=Attribute(value=Name(id='context', ctx=Load()), "
+ "attr='redirect', ctx=Load()), "
+ "args=[Constant(value='/plus/settings/shipping')], keywords=[])), "
+ 'Return(value=Constant(value=False))], decorator_list=[]), '
+ "Assign(targets=[Name(id='PlusShippingSettingsPageHandler', ctx=Store())], "
+ "value=Call(func=Name(id='create_pure_handler', ctx=Load()), args=[], "
+ "keywords=[keyword(arg='package', value=Constant(value='plus')), "
+ "keyword(arg='container', "
+ "value=Constant(value='PlusShippingSettingsContainer')), "
+ "keyword(arg='roles_required', "
+ "value=List(elts=[Attribute(value=Name(id='Roles', ctx=Load()), attr='USER', "
+ "ctx=Load()), Attribute(value=Name(id='Roles', ctx=Load()), "
+ "attr='STORE_USER', ctx=Load())], ctx=Load())), "
+ "keyword(arg='require_secure_relogin', value=Constant(value=True)), "
+ "keyword(arg='initial_query', value=Constant(value='\\nplatformConstants "
+ '{\\n  countriesWeShipTo {\\n    name\\n    code\\n    gmvRank\\n    '
+ 'wishExpress {\\n      supportsWishExpress\\n      expectedTimeToDoor\\n    '
+ '}\\n  }\\n  euCountriesWeShipTo {\\n    name\\n    code\\n    gmvRank\\n    '
+ 'wishExpress {\\n      supportsWishExpress\\n      expectedTimeToDoor\\n    '
+ '}\\n  }\\n}\\ncurrentMerchant {\\n  shippingSettings(enabled: true) {\\n    '
+ "enabled\\n    country {\\n      name\\n      code\\n    }\\n  }\\n}\\n')), "
+ "keyword(arg='authorize_request', "
+ "value=Name(id='authorize_shipping_settings_v1_access', ctx=Load()))])), "
+ "Assign(targets=[Name(id='PlusShippingSettingsV2PageHandler', ctx=Store())], "
+ "value=Call(func=Name(id='create_pure_handler', ctx=Load()), args=[], "
+ "keywords=[keyword(arg='package', value=Constant(value='plus')), "
+ "keyword(arg='container', "
+ "value=Constant(value='PlusShippingSettingsV2Container')), "
+ "keyword(arg='roles_required', "
+ "value=List(elts=[Attribute(value=Name(id='Roles', ctx=Load()), attr='USER', "
+ "ctx=Load()), Attribute(value=Name(id='Roles', ctx=Load()), "
+ "attr='STORE_USER', ctx=Load())], ctx=Load())), "
+ "keyword(arg='require_secure_relogin', value=Constant(value=True)), "
+ "keyword(arg='authorize_request', "
+ "value=Name(id='authorize_shipping_settings_v2_access', ctx=Load()))])), "
+ "FunctionDef(name='authorize_unfulfilled_orders_page', "
+ "args=arguments(posonlyargs=[], args=[arg(arg='context')], kwonlyargs=[], "
+ 'kw_defaults=[], defaults=[]), body=[Pass()], decorator_list=[]), '
+ "Assign(targets=[Name(id='UnfulfilledOrdersHandler', ctx=Store())], "
+ "value=Call(func=Name(id='create_pure_handler', ctx=Load()), args=[], "
+ "keywords=[keyword(arg='package', value=Constant(value='plus')), "
+ "keyword(arg='container', "
+ "value=Constant(value='UnfulfilledOrdersContainer')), "
+ "keyword(arg='roles_required', "
+ "value=List(elts=[Attribute(value=Name(id='Roles', ctx=Load()), attr='USER', "
+ "ctx=Load()), Attribute(value=Name(id='Roles', ctx=Load()), "
+ "attr='STORE_USER', ctx=Load())], ctx=Load())), "
+ "keyword(arg='authorize_request', "
+ "value=Name(id='authorize_unfulfilled_orders_page', ctx=Load())), "
+ "keyword(arg='allow_disabled_users', value=Constant(value=True)), "
+ "keyword(arg='initial_query', value=Constant(value='\\n  currentUser "
+ '{\\n      uiState {\\n        hasDismissedHowToFulfillInsight: bool(state: '
+ 'DISMISSED_HOW_TO_FULFILL_INSIGHT)\\n        '
+ 'hasDismissedFulfillmentSlaInsight: bool(state: '
+ 'DISMISSED_FULFILLMENT_SLA_INSIGHT)\\n        '
+ 'hasDismissedFulfillmentPenaltyInsight: bool(state: '
+ 'DISMISSED_FULFILLMENT_PENALTY_INSIGHT)\\n      }\\n  }\\n  currentMerchant '
+ '{\\n      isMerchantPlus\\n      isCnMerchant\\n  }\\n  platformConstants '
+ '{\\n    countriesWeShipTo {\\n      name\\n      code\\n    }\\n  }\\n  su '
+ "{\\n    isAdmin\\n  }\\n    '))])), "
+ "FunctionDef(name='authorize_bulk_fulfill_page', "
+ "args=arguments(posonlyargs=[], args=[arg(arg='context')], kwonlyargs=[], "
+ 'kw_defaults=[], defaults=[]), body=[Pass()], decorator_list=[]), '
+ "Assign(targets=[Name(id='BulkFulfillHandler', ctx=Store())], "
+ "value=Call(func=Name(id='create_pure_handler', ctx=Load()), args=[], "
+ "keywords=[keyword(arg='package', value=Constant(value='plus')), "
+ "keyword(arg='container', value=Constant(value='BulkFulfillContainer')), "
+ "keyword(arg='roles_required', "
+ "value=List(elts=[Attribute(value=Name(id='Roles', ctx=Load()), attr='USER', "
+ "ctx=Load()), Attribute(value=Name(id='Roles', ctx=Load()), "
+ "attr='STORE_USER', ctx=Load())], ctx=Load())), "
+ "keyword(arg='authorize_request', "
+ "value=Name(id='authorize_bulk_fulfill_page', ctx=Load())), "
+ "keyword(arg='initial_query', value=Constant(value='\\nquery "
+ 'BulkFulfillContainer_InitialData {\\n  fulfillment {\\n    fulfillmentCsv '
+ '{\\n      requiredColumns {\\n        name\\n        description\\n      '
+ '}\\n      optionalColumns {\\n        name\\n        description\\n      '
+ "}\\n    }\\n  }\\n}\\n'))])), "
+ "FunctionDef(name='authorize_bulk_fulfill_history_page', "
+ "args=arguments(posonlyargs=[], args=[arg(arg='context')], kwonlyargs=[], "
+ 'kw_defaults=[], defaults=[]), body=[Pass()], decorator_list=[]), '
+ "Assign(targets=[Name(id='BulkFulfillHistoryHandler', ctx=Store())], "
+ "value=Call(func=Name(id='create_pure_handler', ctx=Load()), args=[], "
+ "keywords=[keyword(arg='package', value=Constant(value='plus')), "
+ "keyword(arg='container', "
+ "value=Constant(value='BulkFulfillHistoryContainer')), "
+ "keyword(arg='roles_required', "
+ "value=List(elts=[Attribute(value=Name(id='Roles', ctx=Load()), attr='USER', "
+ "ctx=Load()), Attribute(value=Name(id='Roles', ctx=Load()), "
+ "attr='STORE_USER', ctx=Load())], ctx=Load())), "
+ "keyword(arg='authorize_request', "
+ "value=Name(id='authorize_bulk_fulfill_history_page', ctx=Load())), "
+ "keyword(arg='initial_query', value=Constant(value='\\nfulfillment {\\n  "
+ "csvFulfillmentJobsCount\\n}\\n'))])), "
+ "FunctionDef(name='authorize_bulk_add_edit_history_page', "
+ "args=arguments(posonlyargs=[], args=[arg(arg='context')], kwonlyargs=[], "
+ 'kw_defaults=[], defaults=[]), body=[Pass()], decorator_list=[]), '
+ "Assign(targets=[Name(id='BulkAddEditHistoryHandler', ctx=Store())], "
+ "value=Call(func=Name(id='create_pure_handler', ctx=Load()), args=[], "
+ "keywords=[keyword(arg='package', value=Constant(value='plus')), "
+ "keyword(arg='container', "
+ "value=Constant(value='BulkAddEditHistoryContainer')), "
+ "keyword(arg='roles_required', "
+ "value=List(elts=[Attribute(value=Name(id='Roles', ctx=Load()), attr='USER', "
+ "ctx=Load()), Attribute(value=Name(id='Roles', ctx=Load()), "
+ "attr='STORE_USER', ctx=Load())], ctx=Load())), "
+ "keyword(arg='authorize_request', "
+ "value=Name(id='authorize_bulk_add_edit_history_page', ctx=Load())), "
+ "keyword(arg='initial_query', value=Constant(value='\\nproductCatalog {\\n  "
+ "csvProductImportJobsCount\\n}\\n'))])), "
+ "Assign(targets=[Name(id='OrderHistoryHandler', ctx=Store())], "
+ "value=Call(func=Name(id='create_pure_handler', ctx=Load()), args=[], "
+ "keywords=[keyword(arg='package', value=Constant(value='plus')), "
+ "keyword(arg='container', value=Constant(value='OrderHistoryContainer')), "
+ "keyword(arg='roles_required', "
+ "value=List(elts=[Attribute(value=Name(id='Roles', ctx=Load()), attr='USER', "
+ "ctx=Load()), Attribute(value=Name(id='Roles', ctx=Load()), "
+ "attr='STORE_USER', ctx=Load())], ctx=Load())), "
+ "keyword(arg='authorize_request', value=Name(id='authorize_plus_access', "
+ "ctx=Load()))])), FunctionDef(name='product_edit_initial_query', "
+ "args=arguments(posonlyargs=[], args=[arg(arg='product_id')], kwonlyargs=[], "
+ 'kw_defaults=[], defaults=[]), '
+ "body=[Assign(targets=[Name(id='datetime_format', ctx=Store())], "
+ "value=Constant(value='%m/%d/%Y')), Assign(targets=[Name(id='query', "
+ "ctx=Store())], value=Constant(value='\\nplatformConstants {\\n  "
+ 'wishExpressCountries {\\n    code\\n  }\\n  countriesWeShipTo {\\n    '
+ 'name\\n    code\\n    gmvRank\\n    wishExpress {\\n      '
+ 'supportsWishExpress\\n      expectedTimeToDoor\\n    }\\n    isInEurope\\n  '
+ '}\\n}\\ncurrentMerchant {\\n  standardWarehouseId\\n  primaryCurrency\\n  '
+ 'canManageShipping\\n  shippingSettings(enabled: true) {\\n    country '
+ "{\\n      name\\n      code\\n    }\\n  }\\n}\\n')), "
+ "If(test=Call(func=Attribute(value=Name(id='ObjectId', ctx=Load()), "
+ "attr='is_valid', ctx=Load()), args=[Name(id='product_id', ctx=Load())], "
+ "keywords=[]), body=[AugAssign(target=Name(id='query', ctx=Store()), "
+ "op=Add(), value=BinOp(left=Constant(value='\\npolicy {\\n  "
+ 'productCategoryDispute {\\n    disputes(\\n      searchType: '
+ 'PRODUCT_ID\\n      query: "%s"\\n      states: [PENDING_REVIEW, '
+ 'RESOLVED_UNCHANGED, RESOLVED_UPDATE]\\n    ) {\\n      id\\n    }\\n  '
+ '}\\n}\\nproductCatalog {\\n  product(id: "%s") {\\n    id\\n    name\\n    '
+ 'sku\\n    description\\n    enabled\\n    reviewStatus\\n    condition\\n    '
+ 'eligibleForCategoryDispute\\n    createTime {\\n      formatted(fmt: '
+ '"%s")\\n    }\\n    lastUpdateTime {\\n      formatted(fmt: "%s")\\n    '
+ '}\\n    tags\\n    msrp {\\n      amount\\n      currencyCode\\n    }\\n    '
+ 'upc\\n    referenceWeight {\\n      unit\\n      value\\n    }\\n    '
+ 'referenceLength {\\n      unit\\n      value\\n    }\\n    referenceVolume '
+ '{\\n      unit\\n      value\\n    }\\n    referenceArea {\\n      '
+ 'unit\\n      value\\n    }\\n    referenceUnit {\\n      unit\\n      '
+ 'value\\n    }\\n    variations {\\n      id\\n      sku\\n      '
+ 'color\\n      size\\n      weight {\\n        value(targetUnit: '
+ 'GRAM)\\n      }\\n      customsHsCode\\n      price {\\n        '
+ 'amount\\n        currencyCode\\n      }\\n      image {\\n        '
+ 'id\\n        wishUrl\\n        isCleanImage\\n      }\\n      inventory '
+ '{\\n        count\\n        shippingType\\n        warehouseId\\n      '
+ '}\\n      quantityWeight {\\n        value\\n      }\\n      quantityLength '
+ '{\\n        value\\n      }\\n      quantityVolume {\\n        value\\n      '
+ '}\\n      quantityArea {\\n        value\\n      }\\n      quantityUnit '
+ '{\\n        value\\n      }\\n    }\\n    mainImage {\\n      id\\n      '
+ 'wishUrl\\n      isCleanImage\\n    }\\n    extraImages {\\n      id\\n      '
+ 'wishUrl\\n      isCleanImage\\n    }\\n    requestedBrand {\\n      '
+ 'id\\n      displayName\\n      logoUrl\\n    }\\n    shipping {\\n      '
+ 'defaultShipping {\\n        warehouseId\\n        price {\\n          '
+ 'amount\\n          currencyCode\\n        }\\n      }\\n      '
+ 'warehouseCountryShipping {\\n        shippingType\\n        countryShipping '
+ '{\\n          enabled\\n          country {\\n            code\\n            '
+ 'name\\n          }\\n          price {\\n            amount\\n            '
+ 'currencyCode\\n          }\\n        }\\n      }\\n    }\\n    '
+ 'isRemovedByWish\\n    categories {\\n      name\\n    }\\n  }\\n}\\n        '
+ "'), op=Mod(), right=Tuple(elts=[Name(id='product_id', ctx=Load()), "
+ "Name(id='product_id', ctx=Load()), Name(id='datetime_format', ctx=Load()), "
+ "Name(id='datetime_format', ctx=Load())], ctx=Load())))], orelse=[]), "
+ "Return(value=Name(id='query', ctx=Load()))], decorator_list=[]), "
+ "FunctionDef(name='edit_product_query', args=arguments(posonlyargs=[], "
+ "args=[arg(arg='context')], kwonlyargs=[], kw_defaults=[], defaults=[]), "
+ "body=[Assign(targets=[Name(id='product_id', ctx=Store())], "
+ "value=Call(func=Attribute(value=Attribute(value=Name(id='context', "
+ "ctx=Load()), attr='path_kwargs', ctx=Load()), attr='get', ctx=Load()), "
+ "args=[Constant(value='product_id')], keywords=[])), "
+ 'If(test=UnaryOp(op=Not(), '
+ "operand=Call(func=Attribute(value=Name(id='ObjectId', ctx=Load()), "
+ "attr='is_valid', ctx=Load()), args=[Name(id='product_id', ctx=Load())], "
+ "keywords=[])), body=[Raise(exc=Call(func=Name(id='HTTPError', ctx=Load()), "
+ 'args=[Constant(value=404)], keywords=[]))], orelse=[]), '
+ "Return(value=Call(func=Name(id='product_edit_initial_query', ctx=Load()), "
+ "args=[Name(id='product_id', ctx=Load())], keywords=[]))], "
+ "decorator_list=[]), Assign(targets=[Name(id='EditProductHandler', "
+ "ctx=Store())], value=Call(func=Name(id='create_pure_handler', ctx=Load()), "
+ "args=[], keywords=[keyword(arg='package', value=Constant(value='plus')), "
+ "keyword(arg='container', value=Constant(value='EditProductContainer')), "
+ "keyword(arg='roles_required', "
+ "value=List(elts=[Attribute(value=Name(id='Roles', ctx=Load()), attr='USER', "
+ "ctx=Load()), Attribute(value=Name(id='Roles', ctx=Load()), "
+ "attr='STORE_USER', ctx=Load())], ctx=Load())), keyword(arg='initial_query', "
+ "value=Name(id='edit_product_query', ctx=Load())), "
+ "keyword(arg='authorize_request', value=Name(id='authorize_plus_access', "
+ "ctx=Load()))])), FunctionDef(name='authorize_nav_opt_in', "
+ "args=arguments(posonlyargs=[], args=[arg(arg='context')], kwonlyargs=[], "
+ 'kw_defaults=[], defaults=[]), '
+ "body=[If(test=Attribute(value=Name(id='context', ctx=Load()), attr='user', "
+ 'ctx=Load()), '
+ "body=[Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='context', "
+ "ctx=Load()), attr='user', ctx=Load()), attr='set_ui_state', ctx=Load()), "
+ "args=[Attribute(value=Attribute(value=Name(id='MerchantUser', ctx=Load()), "
+ "attr='UIState', ctx=Load()), attr='PREFERS_NEW_NAV', ctx=Load()), "
+ 'Constant(value=True)], keywords=[]))], orelse=[]), '
+ "Expr(value=Call(func=Attribute(value=Name(id='context', ctx=Load()), "
+ "attr='redirect', ctx=Load()), args=[Constant(value='/')], keywords=[]))], "
+ "decorator_list=[]), Assign(targets=[Name(id='NavOptInHandler', "
+ "ctx=Store())], value=Call(func=Name(id='create_pure_handler', ctx=Load()), "
+ "args=[], keywords=[keyword(arg='package', value=Constant(value='plus')), "
+ "keyword(arg='container', value=Constant(value='PlusHomeContainer')), "
+ "keyword(arg='roles_required', "
+ "value=List(elts=[Attribute(value=Name(id='Roles', ctx=Load()), attr='USER', "
+ "ctx=Load()), Attribute(value=Name(id='Roles', ctx=Load()), "
+ "attr='STORE_USER', ctx=Load()), Attribute(value=Name(id='Roles', "
+ "ctx=Load()), attr='SUB_USER', ctx=Load())], ctx=Load())), "
+ "keyword(arg='authorize_request', value=Name(id='authorize_nav_opt_in', "
+ "ctx=Load()))])), FunctionDef(name='authorize_nav_opt_out', "
+ "args=arguments(posonlyargs=[], args=[arg(arg='context')], kwonlyargs=[], "
+ 'kw_defaults=[], defaults=[]), '
+ "body=[If(test=Attribute(value=Name(id='context', ctx=Load()), attr='user', "
+ 'ctx=Load()), '
+ "body=[Expr(value=Call(func=Attribute(value=Attribute(value=Name(id='context', "
+ "ctx=Load()), attr='user', ctx=Load()), attr='set_ui_state', ctx=Load()), "
+ "args=[Attribute(value=Attribute(value=Name(id='MerchantUser', ctx=Load()), "
+ "attr='UIState', ctx=Load()), attr='PREFERS_NEW_NAV', ctx=Load()), "
+ 'Constant(value=False)], keywords=[]))], orelse=[]), '
+ "Expr(value=Call(func=Attribute(value=Name(id='context', ctx=Load()), "
+ "attr='redirect', ctx=Load()), args=[Constant(value='/')], keywords=[]))], "
+ "decorator_list=[]), Assign(targets=[Name(id='NavOptOutHandler', "
+ "ctx=Store())], value=Call(func=Name(id='create_pure_handler', ctx=Load()), "
+ "args=[], keywords=[keyword(arg='package', value=Constant(value='plus')), "
+ "keyword(arg='container', value=Constant(value='PlusHomeContainer')), "
+ "keyword(arg='roles_required', "
+ "value=List(elts=[Attribute(value=Name(id='Roles', ctx=Load()), attr='USER', "
+ "ctx=Load()), Attribute(value=Name(id='Roles', ctx=Load()), "
+ "attr='STORE_USER', ctx=Load()), Attribute(value=Name(id='Roles', "
+ "ctx=Load()), attr='SUB_USER', ctx=Load())], ctx=Load())), "
+ "keyword(arg='authorize_request', value=Name(id='authorize_nav_opt_out', "
+ "ctx=Load()))])), FunctionDef(name='create_product_query', "
+ "args=arguments(posonlyargs=[], args=[arg(arg='context')], kwonlyargs=[], "
+ 'kw_defaults=[], defaults=[]), '
+ "body=[Assign(targets=[Name(id='source_product_id', ctx=Store())], "
+ "value=Call(func=Attribute(value=Name(id='context', ctx=Load()), "
+ "attr='get_argument', ctx=Load()), args=[Constant(value='source'), "
+ "Constant(value=None)], keywords=[])), Assign(targets=[Name(id='query', "
+ "ctx=Store())], value=Call(func=Name(id='product_edit_initial_query', "
+ "ctx=Load()), args=[Name(id='source_product_id', ctx=Load())], keywords=[])), "
+ "AugAssign(target=Name(id='query', ctx=Store()), op=Add(), "
+ "value=Constant(value='\\n    currentMerchant {\\n      "
+ 'isStoreMerchant\\n      canManageShipping\\n    }\\n    productCatalog '
+ "{\\n      productCount\\n    }\\n    ')), Return(value=Name(id='query', "
+ 'ctx=Load()))], decorator_list=[]), '
+ "Assign(targets=[Name(id='CreateProductHandler', ctx=Store())], "
+ "value=Call(func=Name(id='create_pure_handler', ctx=Load()), args=[], "
+ "keywords=[keyword(arg='package', value=Constant(value='plus')), "
+ "keyword(arg='container', value=Constant(value='CreateProductContainer')), "
+ "keyword(arg='roles_required', "
+ "value=List(elts=[Attribute(value=Name(id='Roles', ctx=Load()), attr='USER', "
+ "ctx=Load()), Attribute(value=Name(id='Roles', ctx=Load()), "
+ "attr='STORE_USER', ctx=Load())], ctx=Load())), "
+ "keyword(arg='authorize_request', value=Name(id='authorize_plus_access', "
+ "ctx=Load())), keyword(arg='initial_query', "
+ "value=Name(id='create_product_query', ctx=Load()))])), "
+ "FunctionDef(name='authorize_bulk_add_edit_v1_access', "
+ "args=arguments(posonlyargs=[], args=[arg(arg='context')], kwonlyargs=[], "
+ "kw_defaults=[], defaults=[]), body=[Assign(targets=[Name(id='has_access', "
+ "ctx=Store())], value=Call(func=Name(id='authorize_plus_access', ctx=Load()), "
+ "args=[Name(id='context', ctx=Load())], keywords=[])), "
+ "If(test=Compare(left=Name(id='has_access', ctx=Load()), ops=[Is()], "
+ 'comparators=[Constant(value=False)]), '
+ 'body=[Return(value=Constant(value=False))], orelse=[]), '
+ "Assign(targets=[Name(id='use_v2', ctx=Store())], "
+ "value=Compare(left=Call(func=Attribute(value=Name(id='context', ctx=Load()), "
+ "attr='get_bucket_for_merchant', ctx=Load()), "
+ "args=[Constant(value='mplus_product_csv_v2')], keywords=[]), ops=[Eq()], "
+ "comparators=[Constant(value='treatment')])), If(test=Name(id='use_v2', "
+ "ctx=Load()), body=[Expr(value=Call(func=Attribute(value=Name(id='context', "
+ "ctx=Load()), attr='redirect', ctx=Load()), "
+ "args=[Constant(value='/plus/products/bulk-add-edit-v2')], keywords=[])), "
+ 'Return(value=Constant(value=False))], orelse=[]), '
+ 'Return(value=Constant(value=True))], decorator_list=[]), '
+ "FunctionDef(name='authorize_bulk_add_edit_v2_access', "
+ "args=arguments(posonlyargs=[], args=[arg(arg='context')], kwonlyargs=[], "
+ "kw_defaults=[], defaults=[]), body=[Assign(targets=[Name(id='use_v1', "
+ 'ctx=Store())], '
+ "value=Compare(left=Call(func=Attribute(value=Name(id='context', ctx=Load()), "
+ "attr='get_bucket_for_merchant', ctx=Load()), "
+ "args=[Constant(value='mplus_product_csv_v2')], keywords=[]), ops=[Eq()], "
+ "comparators=[Constant(value='control')])), If(test=Name(id='use_v1', "
+ "ctx=Load()), body=[Expr(value=Call(func=Attribute(value=Name(id='context', "
+ "ctx=Load()), attr='redirect', ctx=Load()), "
+ "args=[Constant(value='/plus/products/bulk-add-edit')], keywords=[])), "
+ 'Return(value=Constant(value=False))], orelse=[]), '
+ 'Return(value=Constant(value=True))], decorator_list=[]), '
+ "Assign(targets=[Name(id='BulkAddEditProductHandler', ctx=Store())], "
+ "value=Call(func=Name(id='create_pure_handler', ctx=Load()), args=[], "
+ "keywords=[keyword(arg='package', value=Constant(value='plus')), "
+ "keyword(arg='container', "
+ "value=Constant(value='BulkAddEditProductContainer')), "
+ "keyword(arg='roles_required', "
+ "value=List(elts=[Attribute(value=Name(id='Roles', ctx=Load()), attr='USER', "
+ "ctx=Load()), Attribute(value=Name(id='Roles', ctx=Load()), "
+ "attr='STORE_USER', ctx=Load())], ctx=Load())), "
+ "keyword(arg='authorize_request', "
+ "value=Name(id='authorize_bulk_add_edit_v1_access', ctx=Load())), "
+ "keyword(arg='initial_query', value=Constant(value='\\n  platformConstants "
+ '{\\n    productCsvImportColumns {\\n      requiredColumns {\\n        '
+ 'columnId\\n        name\\n        description\\n      }\\n      '
+ 'optionalColumns(restrictCountryShipping:true) {\\n        columnId\\n        '
+ 'name\\n        description\\n      }\\n    }\\n  }\\n  currentMerchant '
+ "{\\n    canManageShipping\\n    isStoreMerchant\\n  }\\n    '))])), "
+ "Assign(targets=[Name(id='BulkAddEditProductV2Handler', ctx=Store())], "
+ "value=Call(func=Name(id='create_pure_handler', ctx=Load()), args=[], "
+ "keywords=[keyword(arg='package', value=Constant(value='plus')), "
+ "keyword(arg='container', "
+ "value=Constant(value='BulkAddEditProductV2Container')), "
+ "keyword(arg='roles_required', "
+ "value=List(elts=[Attribute(value=Name(id='Roles', ctx=Load()), attr='USER', "
+ "ctx=Load()), Attribute(value=Name(id='Roles', ctx=Load()), "
+ "attr='STORE_USER', ctx=Load())], ctx=Load())), "
+ "keyword(arg='authorize_request', "
+ "value=Name(id='authorize_bulk_add_edit_v2_access', ctx=Load())), "
+ "keyword(arg='initial_query', value=Constant(value='\\nquery "
+ 'BulkAddEditProductContainer_InitialQuery {\\n  platformConstants {\\n    '
+ 'productCsvImportColumns {\\n      columns {\\n        columnId\\n        '
+ 'upsertProductsRequired:isRequired(feedType:UPSERT_PRODUCTS)\\n        '
+ 'addProductRequired:isRequired(feedType:ADD_PRODUCTS)\\n        '
+ 'editShippingRequired:isRequired(feedType:EDIT_SHIPPING)\\n        '
+ 'updateProductsRequired:isRequired(feedType:UPDATE_PRODUCTS)\\n        '
+ 'addSizeColorRequired:isRequired(feedType:ADD_SIZE_COLOR)\\n        '
+ 'shopifyCreateProductsRequired: isRequired( feedType: '
+ 'SHOPIFY_CREATE_PRODUCTS)\\n        description\\n        name\\n        '
+ 'category {\\n          id\\n          name\\n        }\\n      }\\n    }\\n  '
+ '}\\n  productCatalog {\\n    products(limit: 1) {\\n       id\\n    }\\n  '
+ '}\\n  currentMerchant {\\n    canManageShipping\\n    isStoreMerchant\\n    '
+ 'isMerchantPlus\\n  }\\n  currentUser {\\n    gating {\\n      '
+ 'showShopifyProductCsvUpload: isAllowed(\\n        name: '
+ '"show_shopify_product_csv_upload"\\n      )\\n    }\\n  }\\n}\\n    \'))])), '
+ "Assign(targets=[Name(id='AllProductsHandler', ctx=Store())], "
+ "value=Call(func=Name(id='create_pure_handler', ctx=Load()), args=[], "
+ "keywords=[keyword(arg='package', value=Constant(value='plus')), "
+ "keyword(arg='container', value=Constant(value='AllProductsContainer')), "
+ "keyword(arg='roles_required', "
+ "value=List(elts=[Attribute(value=Name(id='Roles', ctx=Load()), attr='USER', "
+ "ctx=Load()), Attribute(value=Name(id='Roles', ctx=Load()), "
+ "attr='STORE_USER', ctx=Load())], ctx=Load())), "
+ "keyword(arg='authorize_request', value=Name(id='authorize_plus_access', "
+ "ctx=Load())), keyword(arg='initial_query', value=Constant(value='\\n  "
+ "currentMerchant {\\n    canManageShipping\\n  }\\n    '))])), "
+ "Assign(targets=[Name(id='InventoryHandler', ctx=Store())], "
+ "value=Call(func=Name(id='create_pure_handler', ctx=Load()), args=[], "
+ "keywords=[keyword(arg='package', value=Constant(value='plus')), "
+ "keyword(arg='container', value=Constant(value='InventoryContainer')), "
+ "keyword(arg='roles_required', "
+ "value=List(elts=[Attribute(value=Name(id='Roles', ctx=Load()), attr='USER', "
+ "ctx=Load()), Attribute(value=Name(id='Roles', ctx=Load()), "
+ "attr='STORE_USER', ctx=Load())], ctx=Load())), "
+ "keyword(arg='authorize_request', value=Name(id='authorize_plus_access', "
+ "ctx=Load())), keyword(arg='initial_query', value=Constant(value='\\n  "
+ 'currentMerchant {\\n    standardWarehouseId\\n    canManageShipping\\n  '
+ "}\\n    '))])), FunctionDef(name='edit_order_query', "
+ "args=arguments(posonlyargs=[], args=[arg(arg='context')], kwonlyargs=[], "
+ "kw_defaults=[], defaults=[]), body=[Assign(targets=[Name(id='order_ids', "
+ 'ctx=Store())], '
+ "value=Call(func=Attribute(value=Attribute(value=Name(id='context', "
+ "ctx=Load()), attr='path_kwargs', ctx=Load()), attr='get', ctx=Load()), "
+ "args=[Constant(value='order_ids')], keywords=[])), "
+ "Return(value=BinOp(left=Constant(value='\\nquery {\\n  platformConstants "
+ '{\\n    countriesWeShipTo {\\n      name\\n      code\\n    }\\n  }\\n  '
+ 'fulfillment {\\n      orders(query: "%s", searchType: ORDER_ID, limit: 50) '
+ '{\\n          id\\n          state\\n          productId\\n          '
+ 'totalCost {\\n              amount\\n              currencyCode\\n          '
+ '}\\n          hoursLeftToFulfill\\n          shippingDetails '
+ '{\\n              name\\n          }\\n          '
+ 'shippingProviderId\\n          quantity\\n          '
+ 'requiresConfirmedDelivery\\n          variation {\\n              '
+ 'productName\\n          }\\n          skuAtPurchaseTime\\n          '
+ 'sizeAtPurchaseTime\\n          colorAtPurchaseTime\\n          '
+ 'shippingDetails {\\n              name\\n              '
+ 'streetAddress1\\n              streetAddress2\\n              '
+ 'city\\n              countryCode\\n              zipcode\\n              '
+ 'state\\n              phoneNumber\\n              shipNote\\n              '
+ 'trackingId\\n              neighborhood\\n          }\\n          '
+ 'acceptableShippingOrigins {\\n            name\\n            '
+ 'code\\n          }\\n          shippingOrigin {\\n            '
+ 'name\\n            code\\n          }\\n          isWishExpress\\n          '
+ 'deliveryDeadline {\\n            mmddyyyy\\n          }\\n          '
+ 'canModifyTrackingInfo\\n          wpsFulfillment {\\n            '
+ 'shippingOptionId\\n          }\\n          tracking {\\n            '
+ 'confirmedFulfillmentDate {\\n              unix\\n            }\\n          '
+ "}\\n          badges\\n      }\\n  }\\n}\\n    '), op=Mod(), "
+ "right=Name(id='order_ids', ctx=Load())))], decorator_list=[]), "
+ "FunctionDef(name='authorize_fulfill_order_page', "
+ "args=arguments(posonlyargs=[], args=[arg(arg='context')], kwonlyargs=[], "
+ 'kw_defaults=[], defaults=[]), body=[Pass()], decorator_list=[]), '
+ "Assign(targets=[Name(id='FulfillOrderHandler', ctx=Store())], "
+ "value=Call(func=Name(id='create_pure_handler', ctx=Load()), args=[], "
+ "keywords=[keyword(arg='package', value=Constant(value='plus')), "
+ "keyword(arg='container', value=Constant(value='FulfillOrderContainer')), "
+ "keyword(arg='roles_required', "
+ "value=List(elts=[Attribute(value=Name(id='Roles', ctx=Load()), attr='USER', "
+ "ctx=Load()), Attribute(value=Name(id='Roles', ctx=Load()), "
+ "attr='STORE_USER', ctx=Load())], ctx=Load())), "
+ "keyword(arg='authorize_request', "
+ "value=Name(id='authorize_fulfill_order_page', ctx=Load())), "
+ "keyword(arg='initial_query', value=Name(id='edit_order_query', "
+ "ctx=Load()))])), FunctionDef(name='authorize_edit_shipping_address_page', "
+ "args=arguments(posonlyargs=[], args=[arg(arg='context')], kwonlyargs=[], "
+ 'kw_defaults=[], defaults=[]), body=[Pass()], decorator_list=[]), '
+ "Assign(targets=[Name(id='EditShippingAddressHandler', ctx=Store())], "
+ "value=Call(func=Name(id='create_pure_handler', ctx=Load()), args=[], "
+ "keywords=[keyword(arg='package', value=Constant(value='plus')), "
+ "keyword(arg='container', "
+ "value=Constant(value='EditShippingAddressContainer')), "
+ "keyword(arg='roles_required', "
+ "value=List(elts=[Attribute(value=Name(id='Roles', ctx=Load()), attr='USER', "
+ "ctx=Load()), Attribute(value=Name(id='Roles', ctx=Load()), "
+ "attr='STORE_USER', ctx=Load())], ctx=Load())), "
+ "keyword(arg='authorize_request', "
+ "value=Name(id='authorize_edit_shipping_address_page', ctx=Load())), "
+ "keyword(arg='initial_query', value=Name(id='edit_order_query', "
+ "ctx=Load()))])), Assign(targets=[Name(id='PlusAllCampaignsHandler', "
+ "ctx=Store())], value=Call(func=Name(id='create_pure_handler', ctx=Load()), "
+ "args=[], keywords=[keyword(arg='package', value=Constant(value='plus')), "
+ "keyword(arg='container', value=Constant(value='PlusAllCampaignsContainer')), "
+ "keyword(arg='roles_required', "
+ "value=List(elts=[Attribute(value=Name(id='Roles', ctx=Load()), attr='USER', "
+ "ctx=Load()), Attribute(value=Name(id='Roles', ctx=Load()), "
+ "attr='STORE_USER', ctx=Load())], ctx=Load())), "
+ "keyword(arg='authorize_request', value=Name(id='authorize_plus_access', "
+ "ctx=Load())), keyword(arg='initial_query', value=Name(id='edit_order_query', "
+ 'ctx=Load()))]))], type_ignores=[])')

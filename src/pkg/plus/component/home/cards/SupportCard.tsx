@@ -13,7 +13,7 @@ import { Illustration, IllustrationName } from "@merchant/component/core";
 import { css } from "@toolkit/styling";
 
 /* Merchant Store */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* Type Imports */
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
@@ -99,6 +99,6 @@ const useStylesheet = () => {
           maxWidth: 200,
         },
       }),
-    [textDark]
+    [textDark],
   );
 };

@@ -17,8 +17,8 @@ import ProductBoostHeader from "@merchant/component/product-boost/ProductBoostHe
 import { StatsColumnItem } from "@merchant/component/product-boost/ProductBoostHeader";
 
 /* Merchant Store */
-import { useTheme } from "@merchant/stores/ThemeStore";
-import { useDimenStore } from "@merchant/stores/DimenStore";
+import { useTheme } from "@stores/ThemeStore";
+import { useDeviceStore } from "@stores/DeviceStore";
 
 /* Types */
 import { CurrencyValue, MarketingMerchantPropertySchema } from "@schema/types";
@@ -52,7 +52,7 @@ type WalletPageProps = {
 
 const WalletContainer = ({ initialData }: WalletPageProps) => {
   const styles = useStyleSheet();
-  const { pageGuideXForPageWithTable: pageX } = useDimenStore();
+  const { pageGuideXForPageWithTable: pageX } = useDeviceStore();
 
   const [currentTabKey, setCurrentTabKey] = useState<string>(BalanceHistoryKey);
 
@@ -140,10 +140,8 @@ const WalletContainer = ({ initialData }: WalletPageProps) => {
 
 const useStyleSheet = () => {
   const { pageBackground, surfaceLightest, primary, textBlack } = useTheme();
-  const {
-    pageGuideXForPageWithTable: pageX,
-    pageGuideBottom,
-  } = useDimenStore();
+  const { pageGuideXForPageWithTable: pageX, pageGuideBottom } =
+    useDeviceStore();
   return useMemo(
     () =>
       StyleSheet.create({
@@ -186,7 +184,7 @@ const useStyleSheet = () => {
       textBlack,
       pageX,
       pageGuideBottom,
-    ]
+    ],
   );
 };
 

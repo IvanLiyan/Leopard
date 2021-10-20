@@ -18,7 +18,7 @@ import { css } from "@toolkit/styling";
 
 /* Type Imports */
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 type Props = BaseProps & {
   readonly onEdit: () => unknown;
@@ -75,6 +75,6 @@ const useStylesheet = (props: Props) => {
           opacity: 0.6,
         },
       }),
-    [textLight]
+    [textLight],
   );
 };

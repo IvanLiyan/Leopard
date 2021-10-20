@@ -27,7 +27,7 @@ import { TableProps, TableAction } from "@ContextLogic/lego";
 import { weightMedium } from "@toolkit/fonts";
 
 /* Merchant Stores */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 export type OrderType = Pick<
   OrderSchema,
@@ -165,7 +165,7 @@ const useTableActions = (props: Props): ReadonlyArray<TableAction> => {
             "VERB. Placed on a button merchants click to refund the order",
             orders.length,
             "Refund",
-            "Refund orders"
+            "Refund orders",
           ),
         sentiment: "negative",
         canApplyToRow: ({ canRefund }: OrderType) => canRefund,
@@ -212,6 +212,6 @@ const useStylesheet = () => {
           flexDirection: "row",
         },
       }),
-    [primary]
+    [primary],
   );
 };

@@ -5,7 +5,7 @@ import { StyleSheet } from "aphrodite";
 import { observer } from "mobx-react";
 import gql from "graphql-tag";
 import { useQuery } from "@apollo/react-hooks";
-import { useApolloStore } from "@merchant/stores/ApolloStore";
+import { useApolloStore } from "@stores/ApolloStore";
 
 /* Lego Components */
 import {
@@ -39,7 +39,7 @@ import {
 import { PickedRefundItems, OrderDetailData } from "@toolkit/orders/detail";
 
 /* Merchant Store */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 const GET_ORDER_INFO_QUERY = gql`
   query RefundItemsTable_GetOrderInfoQuery($orderId: String!) {
@@ -162,7 +162,7 @@ export type RefundItemsTableProps = BaseProps & {
 };
 
 const RefundItemsTable: React.FC<RefundItemsTableProps> = (
-  props: RefundItemsTableProps
+  props: RefundItemsTableProps,
 ) => {
   const styles = useStylesheet();
   const { orderId, fromOrderDetails = false } = props;
@@ -174,7 +174,7 @@ const RefundItemsTable: React.FC<RefundItemsTableProps> = (
         orderId,
       },
       client,
-    }
+    },
   );
 
   if (loading) {
@@ -498,11 +498,8 @@ const RefundItemsTable: React.FC<RefundItemsTableProps> = (
       return null;
     }
 
-    const {
-      isPartialAmountRefunded,
-      refundedQuantity,
-      refundedPercentage,
-    } = refundItemsSummary;
+    const { isPartialAmountRefunded, refundedQuantity, refundedPercentage } =
+      refundItemsSummary;
 
     const totalRefundWithWishpost = refundItems.reduce(
       (acc, { payment: { merchantAmount, merchantAmountWishpost } }) => {
@@ -512,13 +509,13 @@ const RefundItemsTable: React.FC<RefundItemsTableProps> = (
             : merchantAmount?.amount || 0;
         return acc + amount;
       },
-      0
+      0,
     );
 
     const totalResponsibleRefundWithWishpost = refundItems.reduce(
       (
         acc,
-        { merchantResponsibleAmount, merchantResponsibleAmountWishpost }
+        { merchantResponsibleAmount, merchantResponsibleAmountWishpost },
       ) => {
         const amount =
           merchantResponsibleAmountWishpost != null
@@ -526,12 +523,12 @@ const RefundItemsTable: React.FC<RefundItemsTableProps> = (
             : merchantResponsibleAmount?.amount || 0;
         return acc + amount;
       },
-      0
+      0,
     );
 
     const totalRefundTax = refundItems.reduce(
       (acc, { refundTax }) => acc + (refundTax != null ? refundTax.amount : 0),
-      0
+      0,
     );
 
     const currencyCode =
@@ -576,7 +573,7 @@ const RefundItemsTable: React.FC<RefundItemsTableProps> = (
               {formatCurrency(
                 totalResponsibleRefundWithWishpost +
                   (showTax ? totalRefundTax : 0),
-                refundTaxCurrencyCode
+                refundTaxCurrencyCode,
               )}
             </Table.FixtureCell>
           )}
@@ -705,7 +702,7 @@ const RefundItemsTable: React.FC<RefundItemsTableProps> = (
 
             return formatCurrency(
               amount,
-              row.payment.merchantAmount?.currencyCode
+              row.payment.merchantAmount?.currencyCode,
             );
           }}
         </Table.Column>
@@ -778,7 +775,7 @@ const useStylesheet = () => {
           color: textLight,
         },
       }),
-    [primaryLight, textLight]
+    [primaryLight, textLight],
   );
 };
 

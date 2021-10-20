@@ -4,7 +4,7 @@ import { css } from "@toolkit/styling";
 import { Markdown, RichTextBanner } from "@ContextLogic/lego";
 
 import { useUIStateBool } from "@toolkit/ui-state";
-import { useNavigationStore } from "@merchant/stores/NavigationStore";
+import { useNavigationStore } from "@stores/NavigationStore";
 
 import {
   StatusDescriptions,
@@ -128,7 +128,7 @@ const VerificationStatusBanner: React.FC<Props> = (props: Props) => {
       if (!paymentsBlocked && gmvCapReached && gmvCapGracePeriodEndDate) {
         const formattedDate = formatDatetimeLocalized(
           moment.unix(gmvCapGracePeriodEndDate.unix),
-          "MMMM D"
+          "MMMM D",
         );
         return i`Validate your store before ${formattedDate}`;
       }

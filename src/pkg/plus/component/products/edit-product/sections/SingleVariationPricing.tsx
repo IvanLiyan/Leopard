@@ -21,7 +21,7 @@ import Section, {
   SectionProps,
 } from "@plus/component/products/edit-product/Section";
 import ProductEditState from "@plus/model/ProductEditState";
-import { useIsSmallScreen } from "@merchant/stores/DeviceStore";
+import { useIsSmallScreen } from "@stores/DeviceStore";
 
 type Props = Omit<SectionProps, "title" | "rightCard"> & {
   readonly editState: ProductEditState;
@@ -80,7 +80,7 @@ const SingleVariationPricing: React.FC<Props> = (props: Props) => {
             i`Please refer to our ` +
             i`[Product Reference Price Policy](${"/policy/listing#2.13"}) ` +
             i`when you enter a Reference Price. [Learn more](${zendeskURL(
-              "360016868094"
+              "360016868094",
             )})`
           }
           className={css(styles.field)}
@@ -141,5 +141,5 @@ const useStylesheet = () =>
           },
         },
       }),
-    []
+    [],
   );

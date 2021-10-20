@@ -31,7 +31,7 @@ import CountryNames from "@toolkit/countries";
 import { PhoneNumberValidator } from "@toolkit/validators";
 import { Flags4x3 } from "@toolkit/countries";
 
-import DimenStore from "@merchant/stores/DimenStore";
+import DeviceStore from "@stores/DeviceStore";
 
 import { DemoProps } from "@ContextLogic/lego/toolkit/demo";
 import { CountryCode } from "@toolkit/countries";
@@ -160,7 +160,7 @@ class PhoneNumberField extends Component<PhoneNumberFieldProps> {
   @action
   onValidityChanged = (
     isValid: boolean,
-    errorMessage: string | null | undefined
+    errorMessage: string | null | undefined,
   ) => {
     const { onValidityChanged } = this.props;
     this.errorMessage = errorMessage;
@@ -302,11 +302,11 @@ class PhoneNumberField extends Component<PhoneNumberFieldProps> {
   };
 
   renderRight = () => {
-    const dimenStore = DimenStore.instance();
+    const DeviceStore = DeviceStore.instance();
     return (
       <Popover
         popoverContent={this.renderExamples}
-        position={dimenStore.isSmallScreen ? "top center" : "right center"}
+        position={DeviceStore.isSmallScreen ? "top center" : "right center"}
       >
         <section className={css(this.styles.examplesLink)}>
           View Examples

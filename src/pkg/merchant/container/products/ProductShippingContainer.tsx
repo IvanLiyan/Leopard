@@ -38,7 +38,7 @@ import ProductShippingEditState, {
 import { MerchantSchema } from "@schema/types";
 
 import AdvancedLogisticsSection from "@merchant/component/products/product-shipping/AdvancedLogisticsSection";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import EditShippingConfirmModalContent from "@merchant/component/products/product-shipping/EditShippingConfirmModalContent";
 import { useLogger } from "@toolkit/logger";
 import { zendeskURL, zendeskSectionURL } from "@toolkit/url";
@@ -92,7 +92,7 @@ const ProductShippingContainer: React.FC<Props> = ({ initialData }: Props) => {
   const styles = useStylesheet();
 
   const { productId, warehouseId } = usePathParams(
-    "/product-shipping/:productId/:warehouseId"
+    "/product-shipping/:productId/:warehouseId",
   );
 
   const pageViewLogger = useLogger("PRODUCT_SHIPPING_PAGE_VIEW");
@@ -105,13 +105,10 @@ const ProductShippingContainer: React.FC<Props> = ({ initialData }: Props) => {
   }, [pageViewLogger, productId, warehouseId]);
 
   const [aPlusSectionOpen, setAPlusSectionOpen] = useState(true);
-  const [defaultShippingSectionOpen, setDefaultShippingSectionOpen] = useState(
-    true
-  );
-  const [
-    customizeShippingSectionOpen,
-    setCustomizeShippingSectionOpen,
-  ] = useState(true);
+  const [defaultShippingSectionOpen, setDefaultShippingSectionOpen] =
+    useState(true);
+  const [customizeShippingSectionOpen, setCustomizeShippingSectionOpen] =
+    useState(true);
 
   const {
     platformConstants: { unityCountries, countriesAllowWeRegionalPrice },
@@ -149,7 +146,7 @@ const ProductShippingContainer: React.FC<Props> = ({ initialData }: Props) => {
       allowProductShippingPageWeOnly,
       countriesAllowWeRegionalPrice,
       initialState: { ...product },
-    })
+    }),
   );
 
   if (product == null) {
@@ -255,10 +252,8 @@ const ProductShippingContainer: React.FC<Props> = ({ initialData }: Props) => {
           </Text>
           <PrimaryButton
             onClick={async () => {
-              const {
-                showConfirmation,
-                defaultShippingPriceForWarehouse,
-              } = editState;
+              const { showConfirmation, defaultShippingPriceForWarehouse } =
+                editState;
               const result = await editState.validate();
               if (!result) {
                 return;
@@ -501,7 +496,7 @@ const useStylesheet = () => {
           },
         },
       }),
-    [surfaceLightest, textBlack]
+    [surfaceLightest, textBlack],
   );
 };
 

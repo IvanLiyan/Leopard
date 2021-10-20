@@ -26,9 +26,9 @@ import { getDocName } from "@toolkit/seller-profile-verification/doc-type";
 import { reverifySellerProfile } from "@merchant/api/seller-profile-verification";
 
 /* Merchant Stores */
-import { useNavigationStore } from "@merchant/stores/NavigationStore";
-import { useLocalizationStore } from "@merchant/stores/LocalizationStore";
-import { useApolloStore } from "@merchant/stores/ApolloStore";
+import { useNavigationStore } from "@stores/NavigationStore";
+import { useLocalizationStore } from "@stores/LocalizationStore";
+import { useApolloStore } from "@stores/ApolloStore";
 
 /* Types */
 import {
@@ -220,7 +220,7 @@ const SellerProfile = () => {
       const response = await client.query<SellerProfileQueryResponseType, void>(
         {
           query: GET_SELLER_PROFILE_QUERY,
-        }
+        },
       );
 
       if (response.data?.currentMerchant?.sellerVerification) {
@@ -366,7 +366,7 @@ const SellerProfile = () => {
         // ul/li is exactly what I need
         /* eslint-disable local-rules/unnecessary-list-usage */
         return <li key={comment}>{comment}</li>;
-      }
+      },
     );
 
     return (
@@ -510,7 +510,7 @@ const SellerProfile = () => {
                     renderFieldTitle(
                       entityType == "INDIVIDUAL"
                         ? i`Proof of identity`
-                        : i`KYC questionnaire`
+                        : i`KYC questionnaire`,
                     )
                   }
                   {...horizontalFieldProps}
@@ -681,6 +681,6 @@ const useStyleSheet = () => {
           width: 24,
         },
       }),
-    []
+    [],
   );
 };

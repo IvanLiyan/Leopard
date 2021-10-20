@@ -11,7 +11,7 @@ import { Markdown } from "@ContextLogic/lego";
 /* Lego Toolkit */
 import { css } from "@toolkit/styling";
 import { zendeskURL, zendeskSectionURL } from "@toolkit/url";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 import { PolicyProps } from "@merchant/component/policy/policies/PolicySection";
 import PolicySubSection from "@merchant/component/policy/policies/PolicySubSection";
@@ -164,7 +164,7 @@ const useStylesheet = (textLight: string) =>
           marginBottom: 0,
         },
       }),
-    [textLight]
+    [textLight],
   );
 
 export default observer(Section2P2);

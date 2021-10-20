@@ -6,7 +6,7 @@ import { SimpleBannerItem } from "@ContextLogic/lego";
 import { customerSupport } from "@assets/illustrations";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 export type CustomerServiceProgramBannerProps = BaseProps & {
   readonly logParams: {
@@ -15,7 +15,7 @@ export type CustomerServiceProgramBannerProps = BaseProps & {
 };
 
 const CustomerServiceProgramBanner = (
-  props: CustomerServiceProgramBannerProps
+  props: CustomerServiceProgramBannerProps,
 ) => {
   const { logParams } = props;
 

@@ -16,7 +16,7 @@ import { formatCurrency } from "@ContextLogic/lego/toolkit/currency";
 
 import { Theme } from "@ContextLogic/lego";
 
-import LocalizationStore from "@merchant/stores/LocalizationStore";
+import LocalizationStore from "@stores/LocalizationStore";
 
 // make the default props optional
 export type EarlyPaymentHistoryTableProps = Omit<TableProps, "noDataMessage">;
@@ -189,7 +189,7 @@ const EarlyPaymentHistoryTable = observer(
         </Table.Column>
       </Table>
     );
-  }
+  },
 );
 
 export default EarlyPaymentHistoryTable;
@@ -213,5 +213,5 @@ const useStyleSheet = () =>
           fontSize: "14px",
         },
       }),
-    []
+    [],
   );

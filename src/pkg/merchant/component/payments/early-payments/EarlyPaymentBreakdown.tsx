@@ -35,7 +35,7 @@ import { useRequest } from "@toolkit/api";
 import EarlyPaymentHistoryTable from "./EarlyPaymentHistoryTable";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import LocalizationStore from "@merchant/stores/LocalizationStore";
+import LocalizationStore from "@stores/LocalizationStore";
 
 const TablePageSize = 20;
 
@@ -46,14 +46,12 @@ const EarlyPaymentBreakdown = (props: BaseProps) => {
   const { locale } = LocalizationStore.instance();
   const isZh = locale === "zh";
 
-  const [savedStatusFilter, setSavedStatusFilter] = useIntArrayQueryParam(
-    "status_filter"
-  );
+  const [savedStatusFilter, setSavedStatusFilter] =
+    useIntArrayQueryParam("status_filter");
   const [statusFilter, setStatusFilter] = useState(new Set(savedStatusFilter));
 
-  const [savedPaymentIdFilter, setSavedPaymentIdFilter] = useStringQueryParam(
-    "payment_id"
-  );
+  const [savedPaymentIdFilter, setSavedPaymentIdFilter] =
+    useStringQueryParam("payment_id");
   const [paymentIdFilter, setPaymentIdFilter] = useState(savedPaymentIdFilter);
 
   const [paymentsResponse, refreshEarlyPayments] = useRequest(
@@ -62,7 +60,7 @@ const EarlyPaymentBreakdown = (props: BaseProps) => {
       count: TablePageSize,
       filter_statuses: Array.from(savedStatusFilter || []),
       early_payment_id: savedPaymentIdFilter,
-    })
+    }),
   );
   const requestEarlyPaymentResponse = paymentsResponse?.data;
   const payments = paymentsResponse?.data?.early_payments;
@@ -75,7 +73,7 @@ const EarlyPaymentBreakdown = (props: BaseProps) => {
             creation_time: moment.utc(ep.creation_time).unix(),
           }))
         : [],
-    [payments]
+    [payments],
   );
 
   const totalCount = paymentsResponse?.data?.total_count || 0;
@@ -85,7 +83,7 @@ const EarlyPaymentBreakdown = (props: BaseProps) => {
     : 0;
 
   const [filterResponse] = useRequest(
-    earlyPaymentsApi.getEarlyPaymentFilterOptions()
+    earlyPaymentsApi.getEarlyPaymentFilterOptions(),
   );
   const statuses = filterResponse?.data?.status_options || [];
 
@@ -289,5 +287,5 @@ const useStyleSheet = () =>
           margin: "0px 12px 12px 20px",
         },
       }),
-    []
+    [],
   );

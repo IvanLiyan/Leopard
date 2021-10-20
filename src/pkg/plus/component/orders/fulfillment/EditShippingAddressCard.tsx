@@ -32,7 +32,7 @@ import OrderEditState from "@plus/model/OrderEditState";
 import ConfirmedDeliveryIcon from "./icons/ConfirmedDeliveryIcon";
 import { CountryCode } from "@schema/types";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 type Props = BaseProps & {
   readonly editState: OrderEditState;
@@ -240,6 +240,6 @@ const useStylesheet = () => {
         },
         textArea: {},
       }),
-    [surfaceLight, surfaceLightest]
+    [surfaceLight, surfaceLightest],
   );
 };

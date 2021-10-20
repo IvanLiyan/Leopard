@@ -5,7 +5,7 @@ import { SimpleBannerItem } from "@ContextLogic/lego";
 import { Markdown } from "@ContextLogic/lego";
 
 /* Lego Toolkit */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import { productUploadBannerImage } from "@assets/illustrations";
 
 /* Toolkit */
@@ -69,7 +69,7 @@ const useStylesheet = () => {
           lineHeight: 1.4,
         },
       }),
-    []
+    [],
   );
 };
 

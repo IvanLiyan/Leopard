@@ -6,7 +6,7 @@ import {
   FulfillmentMutationActionRequiredOrdersCsvDownloadArgs,
 } from "@schema/types";
 import ConfirmDownloadModal from "@plus/component/orders/bulk-fulfill/ConfirmDownloadModal";
-import { useToastStore } from "@merchant/stores/ToastStore";
+import { useToastStore } from "@stores/ToastStore";
 
 export const REQUEST_DOWNLOAD_MUTATION = gql`
   mutation ActionRequiredOrdersCsvDownloadMutation(
@@ -33,7 +33,7 @@ export type RequestDownloadMutationResponseType = {
 type RequestCSVEmailCallback = () => Promise<void>;
 
 export const useRequestCSVEmail = (
-  args: FulfillmentMutationActionRequiredOrdersCsvDownloadArgs
+  args: FulfillmentMutationActionRequiredOrdersCsvDownloadArgs,
 ): RequestCSVEmailCallback => {
   const toastStore = useToastStore();
   const [requestDownload] = useMutation<

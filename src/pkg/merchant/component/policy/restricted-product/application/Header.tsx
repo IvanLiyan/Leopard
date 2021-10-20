@@ -7,7 +7,7 @@ import { H4 } from "@ContextLogic/lego";
 
 /* Lego Toolkit */
 import { css } from "@toolkit/styling";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import * as fonts from "@toolkit/fonts";
 
 /* Type Imports */
@@ -40,6 +40,6 @@ const useStylesheet = () => {
           lineHeight: 1.5,
         },
       }),
-    [textLight]
+    [textLight],
   );
 };

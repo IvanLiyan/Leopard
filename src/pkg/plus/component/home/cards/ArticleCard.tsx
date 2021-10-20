@@ -11,7 +11,7 @@ import { H4Markdown } from "@ContextLogic/lego";
 import { css } from "@toolkit/styling";
 
 /* Merchant Store */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import { IllustrationName } from "@merchant/component/core/Illustration";
 
 /* Type Imports */
@@ -93,6 +93,6 @@ const useStylesheet = ({ bannerUrl }: SupportCardProps) => {
           maxWidth: 200,
         },
       }),
-    [textDark, bannerUrl]
+    [textDark, bannerUrl],
   );
 };

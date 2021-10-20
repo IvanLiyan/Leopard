@@ -9,7 +9,7 @@ import { zendeskURL } from "@toolkit/url";
 import DemoVideosExamples from "./DemoVideosExamples";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 export type DemoVideosBannerBannerProps = BaseProps & {
   readonly logParams: {

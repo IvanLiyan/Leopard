@@ -30,7 +30,7 @@ const CampaignTrainingProcess = (props: CampaignTrainingProgressProps) => {
   const learningStatusThreshold =
     campaignInfo.campaignProperty.learningStatusThreshold;
   const remainingTrainingDays = Math.round(
-    (1 - trainingProgress) * learningStatusThreshold
+    (1 - trainingProgress) * learningStatusThreshold,
   );
 
   const tooltips: { [key in TooltipKeys]: string } = {
@@ -81,7 +81,7 @@ const useStyleSheet = () => {
           alignItems: "center",
         },
       }),
-    []
+    [],
   );
 };
 export default observer(CampaignTrainingProcess);

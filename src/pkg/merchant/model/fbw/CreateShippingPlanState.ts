@@ -12,9 +12,9 @@ import {
   ShippingPlanInput,
   FulfilledByWishMutationsCreateShippingPlanArgs,
 } from "@schema/types";
-import ToastStore from "@merchant/stores/ToastStore";
-import ApolloStore from "@merchant/stores/ApolloStore";
-import NavigationStore from "@merchant/stores/NavigationStore";
+import ToastStore from "@stores/ToastStore";
+import ApolloStore from "@stores/ApolloStore";
+import NavigationStore from "@stores/NavigationStore";
 
 const DEFAULT_INVENTORY = 10;
 
@@ -50,7 +50,7 @@ export class VariationState {
 
   initializeInventories(warehouseIds: string[]) {
     warehouseIds.forEach((wId) =>
-      this.inventoryByWarehouseId.set(wId, DEFAULT_INVENTORY)
+      this.inventoryByWarehouseId.set(wId, DEFAULT_INVENTORY),
     );
   }
 
@@ -59,7 +59,7 @@ export class VariationState {
       variation: { fbwInventory },
     } = this;
     const warehouseInventory = fbwInventory.find(
-      ({ warehouse }) => warehouse.id == warehouseId
+      ({ warehouse }) => warehouse.id == warehouseId,
     );
     if (warehouseInventory == null) {
       return 0;
@@ -80,7 +80,7 @@ export class VariationState {
       parent: { selectedWarehouseIds },
     } = this;
     return selectedWarehouseIds.every(
-      (warehouseId) => !!inventoryByWarehouseId.get(warehouseId)
+      (warehouseId) => !!inventoryByWarehouseId.get(warehouseId),
     );
   }
 
@@ -94,7 +94,7 @@ export class VariationState {
   get hasSiblings(): boolean {
     return this.parent.selectedVariations.some(
       ({ variation: { id, productId } }) =>
-        id != this.variation.id && productId == this.variation.productId
+        id != this.variation.id && productId == this.variation.productId,
     );
   }
 
@@ -132,10 +132,10 @@ export default class CreateShippingPlanState {
   get variationsHaveChanged(): boolean {
     return (
       JSON.stringify(
-        this.selectedVariations.map((v) => v.variation.id).sort()
+        this.selectedVariations.map((v) => v.variation.id).sort(),
       ) !==
       JSON.stringify(
-        this.selectedVariationsBackup.map((v) => v.variation.id).sort()
+        this.selectedVariationsBackup.map((v) => v.variation.id).sort(),
       )
     );
   }
@@ -162,7 +162,7 @@ export default class CreateShippingPlanState {
   get selectedWarehouses(): ReadonlyArray<PickedAvailableWarehouse> {
     const { availableWarehouses, selectedWarehouseIds } = this;
     return availableWarehouses.filter((warehouse) =>
-      selectedWarehouseIds.includes(warehouse.id)
+      selectedWarehouseIds.includes(warehouse.id),
     );
   }
 
@@ -196,7 +196,7 @@ export default class CreateShippingPlanState {
       if (
         selectedVariations.some(
           ({ hasInventoryForSelectedVariations }) =>
-            !hasInventoryForSelectedVariations
+            !hasInventoryForSelectedVariations,
         )
       ) {
         return i`Please specify inventory for all selected SKUs to continue`;
@@ -229,11 +229,11 @@ export default class CreateShippingPlanState {
     this.selectedWarehouseIds = [...this.selectedWarehouseIds, warehouseId];
     const navigationStore = NavigationStore.instance();
     navigationStore.placeNavigationLock(
-      i`You have unsaved changed. Are you sure want to leave?`
+      i`You have unsaved changed. Are you sure want to leave?`,
     );
 
     this.selectedVariations.forEach((variation) =>
-      variation.initializeInventories([warehouseId])
+      variation.initializeInventories([warehouseId]),
     );
   }
 
@@ -243,7 +243,7 @@ export default class CreateShippingPlanState {
       return;
     }
     this.selectedWarehouseIds = this.selectedWarehouseIds.filter(
-      (id) => id != warehouseId
+      (id) => id != warehouseId,
     );
     const navigationStore = NavigationStore.instance();
     if (this.selectedWarehouseIds.length == 0) {
@@ -254,7 +254,7 @@ export default class CreateShippingPlanState {
   isSelectedVariation(variationId: string): boolean {
     const { selectedVariations } = this;
     return selectedVariations.some(
-      ({ variation }) => variation.id == variationId
+      ({ variation }) => variation.id == variationId,
     );
   }
 
@@ -279,7 +279,7 @@ export default class CreateShippingPlanState {
       return;
     }
     this.selectedVariations = this.selectedVariations.filter(
-      ({ variation: { id } }) => id != variation.id
+      ({ variation: { id } }) => id != variation.id,
     );
   }
 
@@ -317,7 +317,7 @@ export default class CreateShippingPlanState {
     if (currentStep != "SUBMIT") {
       this.currentStepIndex = Math.min(
         StepList.length - 1,
-        this.currentStepIndex + 1
+        this.currentStepIndex + 1,
       );
       return;
     }
@@ -351,11 +351,11 @@ export default class CreateShippingPlanState {
             },
           })),
         };
-      }
+      },
     );
     this.isSubmitting = true;
     const responses = await Promise.all(
-      inputs.map((input) => this.submitWarehouse(input))
+      inputs.map((input) => this.submitWarehouse(input)),
     );
     for (const response of responses) {
       const ok = response?.logistics.fulfilledByWish.createShippingPlan.ok;
@@ -381,7 +381,7 @@ export default class CreateShippingPlanState {
   }
 
   private async submitWarehouse(
-    input: ShippingPlanInput
+    input: ShippingPlanInput,
   ): Promise<SubmitShippingPlanResponseType | undefined | null> {
     const { client } = ApolloStore.instance();
 

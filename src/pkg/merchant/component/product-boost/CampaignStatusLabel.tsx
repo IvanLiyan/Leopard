@@ -11,7 +11,7 @@ import { css } from "@toolkit/styling";
 import * as fonts from "@toolkit/fonts";
 
 /* Stores */
-import UserStore from "@merchant/stores/UserStore";
+import UserStore from "@stores/UserStore";
 
 /* Merchant Components */
 import TrainingProgressBar from "@merchant/component/product-boost/TrainingProgressBar";
@@ -92,7 +92,7 @@ class CampaignStatusLabel extends Component<CampaignStatusLabelProps> {
       return null;
     }
     const remainingTrainingDays = Math.round(
-      (1 - trainingProgress) * learningStatusThreshold
+      (1 - trainingProgress) * learningStatusThreshold,
     );
     return (
       <div className={css(this.styles.popoverContainer)}>

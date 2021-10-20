@@ -9,13 +9,13 @@ import { PrimaryButton } from "@ContextLogic/lego";
 import { Link } from "@ContextLogic/lego";
 import { ConfirmationModal } from "@merchant/component/core/modal";
 
-import { useNavigationStore } from "@merchant/stores/NavigationStore";
+import { useNavigationStore } from "@stores/NavigationStore";
 
 /* Lego Toolkit */
 import { css } from "@toolkit/styling";
 
 /* Stores */
-import { useTheme, AppTheme } from "@merchant/stores/ThemeStore";
+import { useTheme, AppTheme } from "@stores/ThemeStore";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 

@@ -11,7 +11,7 @@ import { observer } from "mobx-react";
 
 import { css } from "@toolkit/styling";
 
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 import { Text, Layout, Checkbox } from "@ContextLogic/lego";
 import { PickedAvailableWarehouse } from "@toolkit/fbw/create-shipping-plan";
@@ -106,6 +106,6 @@ const useStylesheet = ({ isSelected }: { readonly isSelected: boolean }) => {
           fontSize: 12,
         },
       }),
-    [primary, borderPrimary, isSelected]
+    [primary, borderPrimary, isSelected],
   );
 };

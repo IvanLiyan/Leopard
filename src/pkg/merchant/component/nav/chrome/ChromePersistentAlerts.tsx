@@ -8,7 +8,7 @@ import React from "react";
 import { observer } from "mobx-react";
 
 /* Merchant Store */
-import { useNavigationStore } from "@merchant/stores/NavigationStore";
+import { useNavigationStore } from "@stores/NavigationStore";
 
 /* Lego Toolkit */
 import { Banner, Layout, Markdown } from "@ContextLogic/lego";

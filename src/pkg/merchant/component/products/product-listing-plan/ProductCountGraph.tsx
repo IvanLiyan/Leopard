@@ -24,7 +24,7 @@ import {
   ReferenceLine,
 } from "@ContextLogic/lego";
 
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import { DotProps, ResponsiveContainer } from "recharts";
 import {
   formatProductAmount,
@@ -68,7 +68,7 @@ const ProductCountGraph: React.FC<Props> = ({
         const newAcc = [...acc, month];
         return newAcc;
       },
-      [] as ReadonlyArray<number>
+      [] as ReadonlyArray<number>,
     );
 
     const months =
@@ -80,9 +80,9 @@ const ProductCountGraph: React.FC<Props> = ({
       const maxCount = _.maxBy(
         data.filter(
           ({ date: { unix } }) =>
-            moment.unix(unix).startOf("month").unix() == monthUnix
+            moment.unix(unix).startOf("month").unix() == monthUnix,
         ),
-        "count"
+        "count",
       );
       if (maxCount != null) {
         result.add(maxCount.date.unix);
@@ -318,6 +318,6 @@ const useStylesheet = () => {
           color: textBlack,
         },
       }),
-    [textBlack, textDark, secondaryDark]
+    [textBlack, textDark, secondaryDark],
   );
 };

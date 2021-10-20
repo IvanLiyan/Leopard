@@ -15,9 +15,9 @@ import { css } from "@toolkit/styling";
 import { useUIStateBool } from "@toolkit/ui-state";
 
 /* Merchant Store */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
-const MerchantCsHubContainer: React.FC<void> = () => {
+const MerchantCsHubContainer: React.FC<Record<string, never>> = () => {
   const styles = useStylesheet();
   const {
     value: hasCompletedCsSurvey,

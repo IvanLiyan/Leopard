@@ -13,7 +13,7 @@ import { Card, Layout, Text } from "@ContextLogic/lego";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
 /* Toolkit */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import { PickedProductCount } from "@toolkit/products/product-listing-plan";
 import { css } from "@toolkit/styling";
 

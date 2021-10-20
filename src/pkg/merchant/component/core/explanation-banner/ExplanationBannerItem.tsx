@@ -16,7 +16,7 @@ import Illustration, {
 /* Lego Toolkit */
 import { css } from "@toolkit/styling";
 import * as fonts from "@toolkit/fonts";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 

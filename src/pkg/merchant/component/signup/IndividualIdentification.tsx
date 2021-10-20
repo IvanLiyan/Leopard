@@ -30,8 +30,8 @@ import * as onboardingApi from "@merchant/api/onboarding";
 import photoIdIllustration from "@assets/img/illustration-photo-id-instructions.svg";
 import screenshotIllustration from "@assets/img/store-screenshot-illustration.svg";
 
-import ToastStore from "@merchant/stores/ToastStore";
-import NavigationStore from "@merchant/stores/NavigationStore";
+import ToastStore from "@stores/ToastStore";
+import NavigationStore from "@stores/NavigationStore";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { AttachmentInfo } from "@ContextLogic/lego";
@@ -43,9 +43,7 @@ type ProofType = "id" | "online_store_ownership";
 type IndividualIdentificationProps = BaseProps;
 
 @observer
-class IndividualIdentification extends Component<
-  IndividualIdentificationProps
-> {
+class IndividualIdentification extends Component<IndividualIdentificationProps> {
   @observable
   proofType: ProofType = "id";
 
@@ -109,7 +107,7 @@ class IndividualIdentification extends Component<
       storeScreenshots.length < 2
     ) {
       toastStore.negative(
-        i`Please provide at least 2 screenshots of your online store`
+        i`Please provide at least 2 screenshots of your online store`,
       );
       this.isLoading = false;
       return;
@@ -279,7 +277,7 @@ class IndividualIdentification extends Component<
               className={css(this.styles.fileInput)}
               accepts=".jpeg,.jpg,.png,.pdf"
               onAttachmentsChanged={(
-                attachments: ReadonlyArray<AttachmentInfo>
+                attachments: ReadonlyArray<AttachmentInfo>,
               ) => {
                 if (attachments.length > 0) {
                   this.individualIdUploadUrl = attachments[0].url;
@@ -383,7 +381,7 @@ class IndividualIdentification extends Component<
               key="store_url_screenshot_upload"
               accepts=".jpeg,.jpg,.png"
               onAttachmentsChanged={(
-                attachments: ReadonlyArray<AttachmentInfo>
+                attachments: ReadonlyArray<AttachmentInfo>,
               ) => {
                 this.storeScreenshots = attachments;
               }}

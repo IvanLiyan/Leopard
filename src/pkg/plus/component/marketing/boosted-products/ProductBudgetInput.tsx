@@ -26,7 +26,7 @@ import { formatCurrency } from "@ContextLogic/lego/toolkit/currency";
 import { PickedMerchantProperty } from "@toolkit/marketing/boosted-products";
 import BoostedProductsRowState from "@plus/model/BoostedProductsRowState";
 
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
@@ -53,10 +53,10 @@ const ProductBudgetInput: React.FC<Props> = ({
     string | null | undefined
   >(undefined);
   const [currentValue, setCurrentValue] = useState<number>(
-    dailyPromotionBudget.amount
+    dailyPromotionBudget.amount,
   );
   const [lastSubmission, setLastSubmission] = useState<number>(
-    dailyPromotionBudget.amount
+    dailyPromotionBudget.amount,
   );
 
   const onSave = async () => {
@@ -75,7 +75,7 @@ const ProductBudgetInput: React.FC<Props> = ({
     const maximumBudget = dailyPromotionBudget.amount + budgetAvailable.amount;
     const maximumBudgetDisplay = formatCurrency(
       maximumBudget,
-      dailyPromotionBudget.currencyCode
+      dailyPromotionBudget.currencyCode,
     );
     return [
       new MinMaxValueValidator({
@@ -151,6 +151,6 @@ const useStylesheet = () => {
           whiteSpace: "normal",
         },
       }),
-    [negative]
+    [negative],
   );
 };

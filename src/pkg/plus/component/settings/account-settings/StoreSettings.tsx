@@ -19,7 +19,7 @@ import SettingsSection, {
 import SettingsRow from "@plus/component/settings/toolkit/SettingsRow";
 
 /* Merchant Stores */
-import { useToastStore } from "@merchant/stores/ToastStore";
+import { useToastStore } from "@stores/ToastStore";
 
 /* Relative Imports */
 import InlineEdit from "./InlineEdit";
@@ -34,9 +34,9 @@ import {
   MerchantMutationChangeDisplayNameArgs,
   MerchantMutationChangeVacationModeArgs,
 } from "@schema/types";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import { AccountSettingsInitialData } from "@toolkit/account-settings";
-import { useDeciderKey } from "@merchant/stores/ExperimentStore";
+import { useDeciderKey } from "@stores/ExperimentStore";
 import { zendeskURL } from "@toolkit/url";
 
 const CHANGE_DISPLAY_NAME = gql`
@@ -93,32 +93,28 @@ export type StoreSettingsProps = BaseProps & {
 };
 
 const StoreSettings: React.FC<StoreSettingsProps> = (
-  props: StoreSettingsProps
+  props: StoreSettingsProps,
 ) => {
   const { className, style, hasBottomBorder, initialData } = props;
   const styles = useStylesheet(props);
   const toastStore = useToastStore();
   const [displayName, setDisplayName] = useState(
-    initialData.currentMerchant.displayName
+    initialData.currentMerchant.displayName,
   );
   const [editingDisplayName, setEditingDisplayName] = useState(false);
-  const [
-    changeDisplayName,
-    { loading: changeDisplayNameLoading },
-  ] = useMutation<
-    ChangeDisplayNameResponse,
-    MerchantMutationChangeDisplayNameArgs
-  >(CHANGE_DISPLAY_NAME);
+  const [changeDisplayName, { loading: changeDisplayNameLoading }] =
+    useMutation<
+      ChangeDisplayNameResponse,
+      MerchantMutationChangeDisplayNameArgs
+    >(CHANGE_DISPLAY_NAME);
   const [vacationModeOn, setVacationModeOn] = useState<
     boolean | null | undefined
   >(initialData.currentMerchant.onVacationMode);
-  const [
-    changeVacationMode,
-    { loading: changeVacationModeLoading },
-  ] = useMutation<
-    ChangeVacationModeResponse,
-    MerchantMutationChangeVacationModeArgs
-  >(CHANGE_VACATION_MODE);
+  const [changeVacationMode, { loading: changeVacationModeLoading }] =
+    useMutation<
+      ChangeVacationModeResponse,
+      MerchantMutationChangeVacationModeArgs
+    >(CHANGE_VACATION_MODE);
   const {
     currentUser: { accountManager },
     currentMerchant: { id, revShare, canUseVacationMode, isStoreMerchant },
@@ -293,6 +289,6 @@ const useStylesheet = (props: StoreSettingsProps) => {
           fontWeight: weightSemibold,
         },
       }),
-    [textDark]
+    [textDark],
   );
 };

@@ -16,7 +16,7 @@ import { weightSemibold } from "@toolkit/fonts";
 import { Link } from "@ContextLogic/lego";
 import { TextInput } from "@ContextLogic/lego";
 import { TextInputProps } from "@ContextLogic/lego";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 export type PasswordInputProps = Omit<
   TextInputProps,
@@ -34,7 +34,7 @@ export type PasswordInputProps = Omit<
 };
 
 const PasswordInput: React.FC<PasswordInputProps> = (
-  props: PasswordInputProps
+  props: PasswordInputProps,
 ) => {
   const {
     className,
@@ -113,6 +113,6 @@ const useStylesheet = () => {
           textAlign: "right",
         },
       }),
-    [negative]
+    [negative],
   );
 };

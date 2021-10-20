@@ -4,7 +4,7 @@ import { StyleSheet } from "aphrodite";
 import { observer } from "mobx-react";
 
 /* Merchant Stores */
-import { useNavigationStore } from "@merchant/stores/NavigationStore";
+import { useNavigationStore } from "@stores/NavigationStore";
 
 /* Merchant API */
 import {
@@ -46,7 +46,7 @@ const ProductBoostBanner = (props: ProductBoostBannerProps) => {
   const navigationStore = useNavigationStore();
 
   const learnMoreLink = `[${i`Learn more`}](${zendeskURL(
-    "360008004474-FBW-US-FAQ"
+    "360008004474-FBW-US-FAQ",
   )})`;
 
   const BannerMap: { [banner in BannerType]: BannerContent } = {
@@ -175,6 +175,6 @@ const useStylesheet = () => {
           marginTop: 20,
         },
       }),
-    []
+    [],
   );
 };

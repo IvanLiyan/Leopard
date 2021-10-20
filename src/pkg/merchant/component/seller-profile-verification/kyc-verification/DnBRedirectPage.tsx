@@ -6,7 +6,7 @@ import { PrimaryButton } from "@ContextLogic/lego";
 import { Markdown } from "@ContextLogic/lego";
 
 /* Merchant Store */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* Lego Toolkit */
 import { css } from "@toolkit/styling";
@@ -82,6 +82,6 @@ const useStylesheet = () => {
           margin: "20px 30% 40px 30%",
         },
       }),
-    [textDark]
+    [textDark],
   );
 };

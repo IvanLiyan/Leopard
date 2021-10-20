@@ -58,7 +58,7 @@ import AllProductsTable, {
   ProductType,
 } from "@plus/component/products/list-products/AllProductsTable";
 import ProductListFilter from "@plus/component/products/list-products/ProductListFilter";
-import { useToastStore } from "@merchant/stores/ToastStore";
+import { useToastStore } from "@stores/ToastStore";
 
 import {
   MerchantSchema,
@@ -187,21 +187,18 @@ const AllProductsContainer: React.FC<InitialProps> = ({
   const actionLogger = useLogger("PLUS_PRODUCT_UPLOAD");
   const [rawOffset, setOffset] = useIntQueryParam("offset");
   const [query, setQuery] = useStringQueryParam("q");
-  const [searchType, setSearchType] = useStringEnumQueryParam<
-    ProductSearchType
-  >("search_type", "NAME");
+  const [searchType, setSearchType] =
+    useStringEnumQueryParam<ProductSearchType>("search_type", "NAME");
   const [sortField, setSortField] = useStringEnumQueryParam<
     ProductSortField | undefined
   >("sort_field", undefined);
   const [sortOrder, setSortOrder] = useStringEnumQueryParam<
     SortOrder | undefined
   >("sort_order", undefined);
-  const [salesStatuses] = useStringEnumArrayQueryParam<CommerceProductStatus>(
-    "sales_status"
-  );
-  const [shippingTypes] = useStringEnumArrayQueryParam<WarehouseShippingType>(
-    "shipping_type"
-  );
+  const [salesStatuses] =
+    useStringEnumArrayQueryParam<CommerceProductStatus>("sales_status");
+  const [shippingTypes] =
+    useStringEnumArrayQueryParam<WarehouseShippingType>("shipping_type");
   const [pageLimit, setPageLimit] = useIntQueryParam("page_limit");
 
   const toastStore = useToastStore();
@@ -212,25 +209,27 @@ const AllProductsContainer: React.FC<InitialProps> = ({
   const offset = rawOffset || 0;
   const limit = pageLimit || PageLimitOptions[0];
 
-  const commerceProductStatuses: ReadonlyArray<CommerceProductStatus> = useMemo(() => {
-    const statuses = new Set<CommerceProductStatus>([]);
-    if (salesStatuses != null) {
-      for (const salesStatus of salesStatuses) {
-        statuses.add(salesStatus);
+  const commerceProductStatuses: ReadonlyArray<CommerceProductStatus> =
+    useMemo(() => {
+      const statuses = new Set<CommerceProductStatus>([]);
+      if (salesStatuses != null) {
+        for (const salesStatus of salesStatuses) {
+          statuses.add(salesStatus);
+        }
       }
-    }
-    return Array.from(statuses);
-  }, [salesStatuses]);
+      return Array.from(statuses);
+    }, [salesStatuses]);
 
-  const warehouseShippingTypes: ReadonlyArray<WarehouseShippingType> = useMemo(() => {
-    const types = new Set<WarehouseShippingType>([]);
-    if (shippingTypes != null) {
-      for (const shippingType of shippingTypes) {
-        types.add(shippingType);
+  const warehouseShippingTypes: ReadonlyArray<WarehouseShippingType> =
+    useMemo(() => {
+      const types = new Set<WarehouseShippingType>([]);
+      if (shippingTypes != null) {
+        for (const shippingType of shippingTypes) {
+          types.add(shippingType);
+        }
       }
-    }
-    return Array.from(types);
-  }, [shippingTypes]);
+      return Array.from(types);
+    }, [shippingTypes]);
 
   const sort =
     sortField != null && sortOrder != null
@@ -395,7 +394,7 @@ const AllProductsContainer: React.FC<InitialProps> = ({
 
   const bulkAddEditText = ci18n(
     "Button that leads to a page where merchants add or edit products from a CSV file",
-    "Bulk add/edit"
+    "Bulk add/edit",
   );
   type MutationResponseType = {
     readonly productCatalog: {
@@ -544,7 +543,7 @@ const useStylesheet = ({
           marginTop: 15,
         },
       }),
-    [isLoadingProducts]
+    [isLoadingProducts],
   );
 
 export default observer(AllProductsContainer);

@@ -10,7 +10,7 @@ import { css } from "@toolkit/styling";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
 /* Merchant Store */
-import LocalizationStore from "@merchant/stores/LocalizationStore";
+import LocalizationStore from "@stores/LocalizationStore";
 
 type IdentityPageDateOfBirthFieldProps = BaseProps & {
   readonly birthDay: Date | null;
@@ -20,7 +20,7 @@ type IdentityPageDateOfBirthFieldProps = BaseProps & {
 };
 
 const IdentityPageDateOfBirthField = (
-  props: IdentityPageDateOfBirthFieldProps
+  props: IdentityPageDateOfBirthFieldProps,
 ) => {
   const { birthDay, onBirthDayChange, birthYear, onBirthYearChange } = props;
 
@@ -35,7 +35,7 @@ const IdentityPageDateOfBirthField = (
           text: String(v),
         };
       }),
-    [currYear]
+    [currYear],
   );
 
   const { locale } = LocalizationStore.instance();
@@ -85,6 +85,6 @@ const useStylesheet = () => {
           gridGap: 16,
         },
       }),
-    []
+    [],
   );
 };

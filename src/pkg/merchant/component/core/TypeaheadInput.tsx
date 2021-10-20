@@ -4,13 +4,13 @@ import {
   TypeaheadInputProps as LegoTypeaheadInputProps,
 } from "@ContextLogic/lego";
 import { ApolloProvider } from "@apollo/react-hooks";
-import { useApolloStore } from "@merchant/stores/ApolloStore";
-import { ThemeWrapper as MerchantThemeWrapper } from "@merchant/stores/ThemeStore";
+import { useApolloStore } from "@stores/ApolloStore";
+import { ThemeWrapper as MerchantThemeWrapper } from "@stores/ThemeStore";
 
 type TypeaheadInputProps = Omit<LegoTypeaheadInputProps, "themeWrapper">;
 
 const TypeaheadInput: React.FC<TypeaheadInputProps> = (
-  props: TypeaheadInputProps
+  props: TypeaheadInputProps,
 ) => {
   const { client } = useApolloStore();
   const ThemeWrapper: React.FC = ({

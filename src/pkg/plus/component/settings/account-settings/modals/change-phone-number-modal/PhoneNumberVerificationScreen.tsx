@@ -12,8 +12,8 @@ import { css } from "@toolkit/styling";
 import { ci18n } from "@legacy/core/i18n";
 
 /* Merchant Stores */
-import { useApolloStore } from "@merchant/stores/ApolloStore";
-import { useToastStore } from "@merchant/stores/ToastStore";
+import { useApolloStore } from "@stores/ApolloStore";
+import { useToastStore } from "@stores/ToastStore";
 
 /* Lego Components */
 import { Button } from "@ContextLogic/lego";
@@ -25,7 +25,7 @@ import CodeInput from "@plus/component/settings/account-settings/modals/two-fact
 
 /* Type Imports */
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import {
   ChangePhoneNumberVerifyCodeMutation,
   ChangePhoneNumberMutationVerifyCodeArgs,
@@ -91,15 +91,15 @@ const PhoneNumberVerificationScreen: React.FC<Props> = (props: Props) => {
   const headerText = ci18n(
     "referring to a code that has been sent to a phone number",
     "A five-digit verification code has been sent to %1$s",
-    newPhoneNumber
+    newPhoneNumber,
   );
   const actionText = ci18n(
     "referring to a code that has been sent to a phone number",
-    "Please enter the five-digit verification code"
+    "Please enter the five-digit verification code",
   );
   const sendCodeText = ci18n(
     "referring to the button to resend verification code",
-    "Send again"
+    "Send again",
   );
 
   const [verifyCode] = useMutation<
@@ -149,7 +149,7 @@ const PhoneNumberVerificationScreen: React.FC<Props> = (props: Props) => {
           <CodeInput
             className={css(styles.codeInput)}
             elementClassName={css(
-              codeInvalid && styles.invalidCodeInputElement
+              codeInvalid && styles.invalidCodeInputElement,
             )}
             numCharacters={CODE_LENGTH}
             value={code}
@@ -233,6 +233,6 @@ const useStylesheet = () => {
           minWidth: 160,
         },
       }),
-    [borderPrimaryDark, negative]
+    [borderPrimaryDark, negative],
   );
 };

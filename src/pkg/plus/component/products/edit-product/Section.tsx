@@ -10,7 +10,7 @@ import { AccordionProps } from "@ContextLogic/lego";
 import { css } from "@toolkit/styling";
 
 /* Toolkit */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 export type SectionProps = Omit<
   AccordionProps,
@@ -85,7 +85,7 @@ const Section = (props: SectionProps) => {
             className={css(
               styles.content,
               contentStyle,
-              hasInvalidData ? styles.invalidData : null
+              hasInvalidData ? styles.invalidData : null,
             )}
           >
             {children}
@@ -145,6 +145,6 @@ const useStylesheet = () => {
           },
         },
       }),
-    [surfaceLightest, negative, textBlack]
+    [surfaceLightest, negative, textBlack],
   );
 };

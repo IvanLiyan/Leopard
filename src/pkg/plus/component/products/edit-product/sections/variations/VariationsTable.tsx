@@ -23,7 +23,7 @@ import {
 import { zendeskURL } from "@toolkit/url";
 
 /* Merchant Store */
-import { useToastStore } from "@merchant/stores/ToastStore";
+import { useToastStore } from "@stores/ToastStore";
 
 import { Layout, RowSelectionArgs, Text } from "@ContextLogic/lego";
 import {
@@ -90,8 +90,8 @@ const VariationsTable: React.FC<Props> = (props: Props) => {
           ni18n(
             variations.length,
             "Are you sure you want to discard this variation?",
-            "Are you sure you want to discard these variations?"
-          )
+            "Are you sure you want to discard these variations?",
+          ),
         )
           .setHeader({ title: i`Confirm` })
           .setCancel(i`Cancel`)
@@ -102,8 +102,8 @@ const VariationsTable: React.FC<Props> = (props: Props) => {
               ni18n(
                 variations.length,
                 "Variation has been discarded",
-                "%1$d variations have been discarded"
-              )
+                "%1$d variations have been discarded",
+              ),
             );
           })
           .render();
@@ -215,7 +215,7 @@ const VariationsTable: React.FC<Props> = (props: Props) => {
               onChange={({ valueAsNumber }) =>
                 variation.setInventory(
                   valueAsNumber || 0,
-                  editState.standardWarehouseId
+                  editState.standardWarehouseId,
                 )
               }
               validators={[new RequiredValidator()]}

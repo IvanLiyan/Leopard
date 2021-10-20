@@ -17,7 +17,7 @@ import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { CheckboxGroupFieldOptionType as OptionType } from "@ContextLogic/lego";
 
 /* Merchant Store */
-import LocalizationStore from "@merchant/stores/LocalizationStore";
+import LocalizationStore from "@stores/LocalizationStore";
 
 export const DateFormat = "MM-DD-YYYY";
 
@@ -47,7 +47,7 @@ export type FbwFeeFilterProp = BaseProps &
 
 const checkFilterOptionIsSelected = (
   target: FbwFeeFilterOption,
-  allSelected: ReadonlyArray<number>
+  allSelected: ReadonlyArray<number>,
 ) => {
   return allSelected.includes(target.value[0]);
 };
@@ -63,10 +63,10 @@ const FbwFeeFilter = (props: FbwFeeFilterProp) => {
     isOnFBSTab,
   } = props;
   const [feeTypeSelections, setFeeTypeSelections] = useState(
-    feeTypeFilterOptionGroup.selected
+    feeTypeFilterOptionGroup.selected,
   );
   const [feeStatusSelections, setFeeStatusSelections] = useState(
-    feeStatusFilterOptionGroup.selected
+    feeStatusFilterOptionGroup.selected,
   );
   feeTypeFilterOptionGroup.selected = feeTypeSelections;
   feeStatusFilterOptionGroup.selected = feeStatusSelections;
@@ -294,6 +294,6 @@ const useStyleSheet = () => {
           alignSelf: "stretch",
         },
       }),
-    []
+    [],
   );
 };

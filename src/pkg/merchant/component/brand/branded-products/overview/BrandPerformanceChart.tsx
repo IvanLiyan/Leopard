@@ -26,7 +26,7 @@ import { getLocalizedDateDisplayText } from "@toolkit/brand/branded-products/uti
 import IllustratedMetric from "./IllustratedMetric";
 
 /* Merchant Store */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* Type Imports */
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
@@ -104,7 +104,7 @@ const BrandPerformanceChart = ({
             (v, e, { payload }) => {
               const dateString = getLocalizedDateDisplayText(
                 payload.date,
-                "dddd MM/DD/YYYY"
+                "dddd MM/DD/YYYY",
               );
               const gmv = formatCurrency(payload.gmv, pageState.currencyCode);
               const orders = formatNumeral(payload.orders);
@@ -163,6 +163,6 @@ const useStylesheet = () => {
           marginTop: 16,
         },
       }),
-    [textBlack]
+    [textBlack],
   );
 };

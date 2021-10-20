@@ -1,7 +1,7 @@
 import gql from "graphql-tag";
 import { observable } from "mobx";
-import ToastStore from "@merchant/stores/ToastStore";
-import ApolloStore from "@merchant/stores/ApolloStore";
+import ToastStore from "@stores/ToastStore";
+import ApolloStore from "@stores/ApolloStore";
 import { BoostedProductType } from "@toolkit/marketing/boosted-products";
 
 import {
@@ -100,7 +100,8 @@ export default class BoostedProductsRowState {
               productId,
               budget: {
                 amount: newBudget,
-                currencyCode: dailyPromotionBudget.currencyCode as PaymentCurrencyCode,
+                currencyCode:
+                  dailyPromotionBudget.currencyCode as PaymentCurrencyCode,
               },
               intenseBoost: null,
             },
@@ -140,7 +141,8 @@ export default class BoostedProductsRowState {
               productId,
               budget: {
                 amount: isActive ? dailyPromotionBudget.amount : 0,
-                currencyCode: dailyPromotionBudget.currencyCode as PaymentCurrencyCode,
+                currencyCode:
+                  dailyPromotionBudget.currencyCode as PaymentCurrencyCode,
               },
               intenseBoost: null,
             },
@@ -165,7 +167,7 @@ export default class BoostedProductsRowState {
         : i`Your product is no longer boosted.`,
       {
         timeoutMs: 5000,
-      }
+      },
     );
   }
 }

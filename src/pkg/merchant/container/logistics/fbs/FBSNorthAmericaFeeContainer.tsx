@@ -10,7 +10,7 @@ import ScrollableAnchor from "react-scrollable-anchor";
 /* Lego Toolkit */
 import { css } from "@toolkit/styling";
 import * as fonts from "@toolkit/fonts";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* SVGs */
 import bannerImage from "@assets/img/fbs/banner_illustration.svg";
@@ -166,7 +166,7 @@ const FBSNorthAmericaFeeContainer = () => {
             <div className={css(styles.striked)}>{`$${originalPrice}`}</div>
             <div className={css(styles.text)}>{`$${roundTwoDigits(
               originalPrice,
-              discountedPercent
+              discountedPercent,
             )}`}</div>
           </div>
         </td>
@@ -203,7 +203,7 @@ const FBSNorthAmericaFeeContainer = () => {
         weight: item[0],
         weightConverted: item[1],
         originalPrice: item[2],
-      })
+      }),
     );
   };
 
@@ -214,7 +214,7 @@ const FBSNorthAmericaFeeContainer = () => {
         weight: item[0],
         weightConverted: item[1],
         originalPrice: item[2],
-      })
+      }),
     );
   };
 
@@ -478,7 +478,7 @@ const FBSNorthAmericaFeeContainer = () => {
                       <div className={css(styles.striked)}>$3.41</div>
                       <div className={css(styles.text)}>{`$${roundTwoDigits(
                         3.41,
-                        20
+                        20,
                       )}`}</div>
                     </div>
                   </td>
@@ -719,7 +719,7 @@ const useStyleSheet = () => {
       textWhite,
       textLight,
       orangeSurface,
-    ]
+    ],
   );
 };
 

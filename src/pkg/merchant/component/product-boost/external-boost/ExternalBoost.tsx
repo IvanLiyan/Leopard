@@ -12,7 +12,7 @@ import { observer } from "mobx-react";
 import { css } from "@toolkit/styling";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import ExternalBoostDailyStats from "./ExternalBoostDailyStats";
 import ExternalBoostToggle from "./ExternalBoostToggle";
 import { Card, Text } from "@ContextLogic/lego";

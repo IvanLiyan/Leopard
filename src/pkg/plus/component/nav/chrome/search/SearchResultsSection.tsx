@@ -8,7 +8,7 @@ import * as fonts from "@toolkit/fonts";
 
 /* Type Imports */
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 type Props = BaseProps & {
   readonly title: string;
@@ -51,6 +51,6 @@ const useStylesheet = () => {
           cursor: "default",
         },
       }),
-    [surfaceLightest, textBlack]
+    [surfaceLightest, textBlack],
   );
 };

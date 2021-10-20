@@ -24,7 +24,7 @@ import {
   useStringEnumQueryParam,
   useIntArrayQueryParam,
 } from "@toolkit/url";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import { useDebouncer } from "@ContextLogic/lego/toolkit/hooks";
 import {
   Placeholders,
@@ -65,17 +65,16 @@ const TicketList: React.FC<Props> = ({
   const [rawOffset, setOffset] = useIntQueryParam("offset");
   const [searchType, setSearchType] = useStringEnumQueryParam<TicketSearchType>(
     "search_type",
-    "ID"
+    "ID",
   );
 
   const [pageLimit, setPageLimit] = useIntQueryParam("limit");
   const [issueTypes] = useIntArrayQueryParam("issue_types");
-  const [sortField, setSortField] = useStringEnumQueryParam<
-    TicketSortFieldType
-  >("sort_field");
+  const [sortField, setSortField] =
+    useStringEnumQueryParam<TicketSortFieldType>("sort_field");
   const [sortOrder, setSortOrder] = useStringEnumQueryParam<SortOrder>(
     "sort_order",
-    "asc"
+    "asc",
   );
 
   const debouncedQuery = useDebouncer(query, 800);
@@ -290,6 +289,6 @@ const useStylesheet = () => {
           boxSizing: "border-box",
         },
       }),
-    [textBlack]
+    [textBlack],
   );
 };

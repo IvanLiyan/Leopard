@@ -11,7 +11,7 @@ import { Popover } from "@merchant/component/core";
 
 /* Lego Toolkit */
 import { css } from "@toolkit/styling";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* Merchant Components */
 import CollectionBoostStatusLabel from "@merchant/component/collections-boost/CollectionBoostStatusLabel";

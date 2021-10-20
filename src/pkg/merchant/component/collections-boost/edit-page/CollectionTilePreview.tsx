@@ -5,7 +5,7 @@ import { observer } from "mobx-react";
 
 /* Lego Toolkit */
 import { css } from "@toolkit/styling";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import { weightBold } from "@toolkit/fonts";
 
 /* Type Imports */

@@ -16,16 +16,14 @@ import { zendeskURL } from "@toolkit/url";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
-import LocalizationStore from "@merchant/stores/LocalizationStore";
+import LocalizationStore from "@stores/LocalizationStore";
 
 export type LateConfirmedFulfillmentTipProps = BaseProps & {
   readonly confirmedFulfillmentTimeRequirement: number;
 };
 
 @observer
-export default class LateConfirmedFulfillmentTip extends Component<
-  LateConfirmedFulfillmentTipProps
-> {
+export default class LateConfirmedFulfillmentTip extends Component<LateConfirmedFulfillmentTipProps> {
   static demoProps: LateConfirmedFulfillmentTipProps = {
     confirmedFulfillmentTimeRequirement: 48,
   };

@@ -28,7 +28,7 @@ import { CurrencyCode } from "@toolkit/currency";
 import { OnTextChangeEvent } from "@ContextLogic/lego";
 import { RowSelectionArgs } from "@ContextLogic/lego";
 import { BulkIncreaseBudgetCampaign } from "@merchant/api/product-boost";
-import { useToastStore } from "@merchant/stores/ToastStore";
+import { useToastStore } from "@stores/ToastStore";
 
 export type BulkIncreaseBudgetModalContentProps = BaseProps & {
   readonly campaignsToIncreaseBudget: ReadonlyArray<BulkIncreaseBudgetCampaign>;
@@ -38,7 +38,7 @@ export type BulkIncreaseBudgetModalContentProps = BaseProps & {
 };
 
 const BulkIncreaseBudgetModalContent = (
-  props: BulkIncreaseBudgetModalContentProps
+  props: BulkIncreaseBudgetModalContentProps,
 ) => {
   const {
     campaignsToIncreaseBudget,
@@ -51,27 +51,24 @@ const BulkIncreaseBudgetModalContent = (
   const toastStore = useToastStore();
 
   const initalCampaignIds = campaignsToIncreaseBudget.map(
-    (campaign) => campaign.campaign_id
+    (campaign) => campaign.campaign_id,
   );
   const initalCampaignToBudgetMap = new Map();
   campaignsToIncreaseBudget.forEach((campaign) => {
     initalCampaignToBudgetMap.set(
       campaign.campaign_id,
-      campaign.suggested_budget
+      campaign.suggested_budget,
     );
   });
 
-  const [selectedCampaignIds, setSelectedCampaignIds] = useState(
-    initalCampaignIds
-  );
+  const [selectedCampaignIds, setSelectedCampaignIds] =
+    useState(initalCampaignIds);
   const [validCampaignIds, setValidCampaignIds] = useState(initalCampaignIds);
   const [campaignToBudgetMap, setCampaignToBudgetMap] = useState(
-    initalCampaignToBudgetMap
+    initalCampaignToBudgetMap,
   );
-  const [
-    displayingConfirmationTable,
-    setDisplayingConfirmationTable,
-  ] = useState(false);
+  const [displayingConfirmationTable, setDisplayingConfirmationTable] =
+    useState(false);
 
   const totalBudgetToAdd = campaignsToIncreaseBudget.reduce(
     (accumulator, row) => {
@@ -80,7 +77,7 @@ const BulkIncreaseBudgetModalContent = (
       }
       return accumulator;
     },
-    0
+    0,
   );
 
   const selectedRows = campaignsToIncreaseBudget.reduce(
@@ -92,7 +89,7 @@ const BulkIncreaseBudgetModalContent = (
       }
       return accumulator;
     },
-    []
+    [],
   );
 
   const onIncreaseBudgetRowSelectionToggled = ({
@@ -136,7 +133,7 @@ const BulkIncreaseBudgetModalContent = (
       setValidCampaignIds(
         validCampaignIds.filter((_, index) => {
           return index !== idIndex;
-        })
+        }),
       );
     }
   };
@@ -149,7 +146,7 @@ const BulkIncreaseBudgetModalContent = (
     return !campaignsToIncreaseBudget.some(
       (row) =>
         selectedCampaignIds.includes(row.campaign_id) &&
-        !validCampaignIds.includes(row.campaign_id)
+        !validCampaignIds.includes(row.campaign_id),
     );
   };
 
@@ -230,7 +227,7 @@ const BulkIncreaseBudgetModalContent = (
         }}
         onValidityChanged={(
           isValid: boolean,
-          errorMessage: string | null | undefined
+          errorMessage: string | null | undefined,
         ) => {
           if (isValid) {
             setCampaignValid(row);
@@ -244,7 +241,7 @@ const BulkIncreaseBudgetModalContent = (
   };
 
   const renderConfirmationTotalBudgetField = (
-    row: BulkIncreaseBudgetCampaign
+    row: BulkIncreaseBudgetCampaign,
   ) => {
     const addedBudget = campaignToBudgetMap.get(row.campaign_id);
     if (addedBudget == null) {
@@ -254,7 +251,7 @@ const BulkIncreaseBudgetModalContent = (
   };
 
   const renderConfirmationAddedBudgetField = (
-    row: BulkIncreaseBudgetCampaign
+    row: BulkIncreaseBudgetCampaign,
   ) => {
     const addedBudget = campaignToBudgetMap.get(row.campaign_id);
     if (addedBudget == null) {
@@ -288,7 +285,7 @@ const BulkIncreaseBudgetModalContent = (
   const selectedCampaignsToIncreaseBudget = campaignsToIncreaseBudget.filter(
     (row) => {
       return selectedCampaignIds.includes(row.campaign_id);
-    }
+    },
   );
 
   const increaseCampaigns = selectedCampaignsToIncreaseBudget.reduce(
@@ -299,7 +296,7 @@ const BulkIncreaseBudgetModalContent = (
       };
       return accumulator;
     },
-    {}
+    {},
   );
 
   const renderSpendOverGmvField = (campaign: BulkIncreaseBudgetCampaign) => {
@@ -362,7 +359,7 @@ const BulkIncreaseBudgetModalContent = (
           <Text weight="regular" className={css(styles.balanceValue)}>
             {formatCurrency(
               maxAllowedSpending - totalBudgetToAdd,
-              currencyCode
+              currencyCode,
             )}
           </Text>
           <Text weight="bold" className={css(styles.balanceHeader)}>
@@ -537,7 +534,7 @@ const useStylesheet = () => {
           overflow: "hidden",
         },
       }),
-    []
+    [],
   );
 };
 

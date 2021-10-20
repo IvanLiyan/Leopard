@@ -23,7 +23,7 @@ import {
 } from "@toolkit/url";
 import { useDebouncer } from "@ContextLogic/lego/toolkit/hooks";
 
-import { useApolloStore } from "@merchant/stores/ApolloStore";
+import { useApolloStore } from "@stores/ApolloStore";
 
 import EmptyState from "./EmptyState";
 import BalanceOverviewCard from "./BalanceOverviewCard";
@@ -127,13 +127,15 @@ type GetProductPromotionsResponseType = {
   };
 };
 
-type GetProductPromotionsRequestType = MarketingServiceSchemaProductPromotionsArgs;
+type GetProductPromotionsRequestType =
+  MarketingServiceSchemaProductPromotionsArgs;
 
 type GetProductCountResponseType = {
   readonly marketing: Pick<MarketingServiceSchema, "productPromotionsCount">;
 };
 
-type GetProductCountRequestType = MarketingServiceSchemaProductPromotionsCountArgs;
+type GetProductCountRequestType =
+  MarketingServiceSchemaProductPromotionsCountArgs;
 
 const InputHeight = 35;
 const FilterWidth = 250;
@@ -149,12 +151,10 @@ const BoostedProducts: React.FC<Props> = (props: Props) => {
   const [query, setQuery] = useStringQueryParam("q");
   const [rawLimit, setLimit] = useIntQueryParam("limit");
   const [rawOffset, setOffset] = useIntQueryParam("offset");
-  const [promotionStatuses] = useStringEnumArrayQueryParam<
-    ProductPromotionStatus
-  >("statuses");
-  const [searchType, setSearchType] = useStringEnumQueryParam<
-    ProductPromotionSearchType
-  >("search_type", "NAME");
+  const [promotionStatuses] =
+    useStringEnumArrayQueryParam<ProductPromotionStatus>("statuses");
+  const [searchType, setSearchType] =
+    useStringEnumQueryParam<ProductPromotionSearchType>("search_type", "NAME");
   const debouncedQuery = useDebouncer(query, 800);
   const [expandedRows, setExpandedRows] = useState<Set<number>>(new Set([]));
   const offset = rawOffset || 0;
@@ -258,7 +258,7 @@ const BoostedProducts: React.FC<Props> = (props: Props) => {
             style={styles.search}
             searchType={searchType}
             onSelectSearchType={(
-              selectedSearchType: ProductPromotionSearchType
+              selectedSearchType: ProductPromotionSearchType,
             ) => {
               setSearchType(selectedSearchType);
             }}
@@ -413,7 +413,7 @@ const useStylesheet = () => {
           width: FilterWidth,
         },
       }),
-    []
+    [],
   );
 };
 

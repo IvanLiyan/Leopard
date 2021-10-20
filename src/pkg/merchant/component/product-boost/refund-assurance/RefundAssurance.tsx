@@ -14,7 +14,7 @@ import _ from "lodash";
 import { css } from "@toolkit/styling";
 import { Markdown } from "@ContextLogic/lego";
 
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import {
   GetRefundAssuranceProductsCountInput,
   GetRefundAssuranceProductsCountResponse,
@@ -42,7 +42,7 @@ import {
 } from "@ContextLogic/lego";
 import ProductImage from "@merchant/component/products/ProductImage";
 import ProductDetailModal from "@merchant/component/products/ProductDetailModal";
-import { useNavigationStore } from "@merchant/stores/NavigationStore";
+import { useNavigationStore } from "@stores/NavigationStore";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import MonthlyStatsTable, {
   MonthlyStatsTableColumn,
@@ -86,14 +86,15 @@ const RefundAssurance: React.FC<Props> = ({
   const [pageLimit, setPageLimit] = useIntQueryParam("page_limit");
   const [searchField, setSearchField] = useStringQueryParam(
     "search_field",
-    "ID"
+    "ID",
   );
 
   const [expandedRows, setExpandedRows] = useState<Set<number>>(new Set());
 
-  const expandedRowsArray = useMemo(() => Array.from(expandedRows), [
-    expandedRows,
-  ]);
+  const expandedRowsArray = useMemo(
+    () => Array.from(expandedRows),
+    [expandedRows],
+  );
   const onRowExpandToggled = (index: number, shouldExpand: boolean) => {
     const newExpandedRows = new Set(expandedRows);
     shouldExpand ? newExpandedRows.add(index) : newExpandedRows.delete(index);
@@ -159,11 +160,11 @@ const RefundAssurance: React.FC<Props> = ({
             key: "create-campaign",
             name: i`Create campaign`,
             canApplyToRow: () => true,
-            apply: ([productPromotion]: ReadonlyArray<
-              PickedProductPromotion
-            >) => {
+            apply: ([
+              productPromotion,
+            ]: ReadonlyArray<PickedProductPromotion>) => {
               navigationStore.navigate(
-                `/product-boost/v2/create?product_id=${productPromotion.productId}`
+                `/product-boost/v2/create?product_id=${productPromotion.productId}`,
               );
             },
           },
@@ -446,6 +447,6 @@ const useStylesheet = () => {
           whiteSpace: "nowrap",
         },
       }),
-    [pageBackground, textBlack]
+    [pageBackground, textBlack],
   );
 };

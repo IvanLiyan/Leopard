@@ -35,8 +35,8 @@ import { AttachmentInfo } from "@ContextLogic/lego";
 import { ShippingDetails } from "@merchant/api/orders";
 import { OnTextChangeEvent } from "@ContextLogic/lego";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import NavigationStore from "@merchant/stores/NavigationStore";
-import DimenStore from "@merchant/stores/DimenStore";
+import NavigationStore from "@stores/NavigationStore";
+import DeviceStore from "@stores/DeviceStore";
 
 type OrderCancellationDisputeCreateProps = BaseProps & {
   readonly orderId: string;
@@ -55,9 +55,7 @@ type OrderCancellationDisputeCreateProps = BaseProps & {
 };
 
 @observer
-class OrderCancellationDisputeCreate extends Component<
-  OrderCancellationDisputeCreateProps
-> {
+class OrderCancellationDisputeCreate extends Component<OrderCancellationDisputeCreateProps> {
   @observable
   warningStatus: "accepted" | "declined" | "none" = "none";
 
@@ -119,7 +117,7 @@ class OrderCancellationDisputeCreate extends Component<
   }
 
   extractFileData(
-    attachments: ReadonlyArray<AttachmentInfo>
+    attachments: ReadonlyArray<AttachmentInfo>,
   ): { url: string; original_filename: string } | null | undefined {
     if (attachments.length == 0) {
       return null;
@@ -159,7 +157,7 @@ class OrderCancellationDisputeCreate extends Component<
     }
 
     new ConfirmationModal(
-      i`Are you sure you want to submit the merchant cancellation penalty dispute?`
+      i`Are you sure you want to submit the merchant cancellation penalty dispute?`,
     )
       .setHeader({
         title: i`Submit dispute`,
@@ -201,7 +199,7 @@ class OrderCancellationDisputeCreate extends Component<
 
   @computed
   get pageX(): string | number {
-    const { pageGuideX } = DimenStore.instance();
+    const { pageGuideX } = DeviceStore.instance();
     return pageGuideX;
   }
 
@@ -565,7 +563,7 @@ class OrderCancellationDisputeCreate extends Component<
                 maxAttachments={1}
                 attachments={this.screenshotAttachments}
                 onAttachmentsChanged={(
-                  attachments: ReadonlyArray<AttachmentInfo>
+                  attachments: ReadonlyArray<AttachmentInfo>,
                 ) => {
                   this.screenshotAttachments = attachments;
                 }}
@@ -625,7 +623,7 @@ class OrderCancellationDisputeCreate extends Component<
                 maxAttachments={1}
                 attachments={this.invalidAddressAttachments}
                 onAttachmentsChanged={(
-                  attachments: ReadonlyArray<AttachmentInfo>
+                  attachments: ReadonlyArray<AttachmentInfo>,
                 ) => {
                   this.invalidAddressAttachments = attachments;
                 }}

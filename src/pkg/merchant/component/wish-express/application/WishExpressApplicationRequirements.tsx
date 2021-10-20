@@ -19,7 +19,7 @@ import { palettes } from "@toolkit/lego-legacy/DEPRECATED_colors";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
 /* Merchant Stores */
-import { ThemeContext } from "@merchant/stores/ThemeStore";
+import { ThemeContext } from "@stores/ThemeStore";
 
 export type WishExpressApplicationRequirementsProps = BaseProps & {
   readonly closeModal: () => void;
@@ -30,9 +30,7 @@ export type WishExpressApplicationRequirementsProps = BaseProps & {
 type ApplicationStep = "FBWPitchModal" | "WishExpressApplicationTermsOfService";
 
 @observer
-class WishExpressApplicationRequirements extends Component<
-  WishExpressApplicationRequirementsProps
-> {
+class WishExpressApplicationRequirements extends Component<WishExpressApplicationRequirementsProps> {
   static contextType = ThemeContext;
   context!: React.ContextType<typeof ThemeContext>;
 

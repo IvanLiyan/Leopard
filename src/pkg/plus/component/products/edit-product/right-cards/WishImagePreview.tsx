@@ -14,7 +14,7 @@ import { Text, Layout } from "@ContextLogic/lego";
 import { css } from "@toolkit/styling";
 
 import { BaseProps } from "@toolkit/api";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import { CurrencyValue } from "@schema/types";
 import { formatCurrency } from "@toolkit/currency";
 import { PreviewType } from "@toolkit/product-edit";
@@ -78,13 +78,8 @@ const useStylesheet = ({
 }: {
   readonly previewType: PreviewType;
 }) => {
-  const {
-    surfaceLighter,
-    surfaceLight,
-    textDark,
-    textUltralight,
-    textBlack,
-  } = useTheme();
+  const { surfaceLighter, surfaceLight, textDark, textUltralight, textBlack } =
+    useTheme();
   return useMemo(
     () =>
       StyleSheet.create({
@@ -169,6 +164,6 @@ const useStylesheet = ({
       textUltralight,
       textBlack,
       previewType,
-    ]
+    ],
   );
 };

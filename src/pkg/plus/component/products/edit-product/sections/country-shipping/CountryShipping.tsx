@@ -23,7 +23,7 @@ import { Popover } from "@merchant/component/core";
 import RegionShippingTable from "./RegionShippingTable";
 
 import ProductEditState from "@plus/model/ProductEditState";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { useLogger } from "@toolkit/logger";
 
@@ -72,7 +72,7 @@ const CountryShippingPrice: React.FC<CountryShippingPriceProps> = observer(
         forceValidation={forceValidation}
       />
     );
-  }
+  },
 );
 
 type Props = BaseProps & {
@@ -186,9 +186,8 @@ const CountryShipping: React.FC<Props> = ({
             row: shippingSetting,
           }: CellInfo<boolean, PickedShippingSettingsSchema>) => {
             const countryCode = shippingSetting.country.code;
-            const shippingState = editState.getCountryShippingState(
-              countryCode
-            );
+            const shippingState =
+              editState.getCountryShippingState(countryCode);
             return {
               isOn: !!shippingState.enabled,
               onToggle(enabled) {
@@ -217,12 +216,10 @@ const CountryShipping: React.FC<Props> = ({
             row: shippingSetting,
           }: CellInfo<boolean, PickedShippingSettingsSchema>) => {
             const countryCode = shippingSetting.country.code;
-            const shippingState = editState.getCountryShippingState(
-              countryCode
-            );
-            const canEnableWishExpress = editState.wishExpressCountries.includes(
-              countryCode
-            );
+            const shippingState =
+              editState.getCountryShippingState(countryCode);
+            const canEnableWishExpress =
+              editState.wishExpressCountries.includes(countryCode);
             if (canEnableWishExpress) {
               return (
                 <Checkbox
@@ -293,6 +290,6 @@ const useStylesheet = () => {
           backgroundColor: pageBackground,
         },
       }),
-    [surfaceLightest, pageBackground]
+    [surfaceLightest, pageBackground],
   );
 };

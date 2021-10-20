@@ -17,7 +17,7 @@ import { css } from "@toolkit/styling";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { ImprBoosterItem } from "@merchant/api/price-drop";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 type PriceDropPerformanceCampaignFieldsProps = BaseProps & {
   readonly priceDropItem: ImprBoosterItem;
@@ -28,7 +28,7 @@ type PriceDropPerformanceCampaignFieldsProps = BaseProps & {
 };
 
 const PriceDropPerformanceCampaignFields = (
-  props: PriceDropPerformanceCampaignFieldsProps
+  props: PriceDropPerformanceCampaignFieldsProps,
 ) => {
   const styles = useStylesheet();
   const {
@@ -58,7 +58,7 @@ const PriceDropPerformanceCampaignFields = (
           {ci18n(
             "placeholder is a sale/discount",
             "%1$s OFF",
-            numeral(dropPercentage / 100.0).format("0%")
+            numeral(dropPercentage / 100.0).format("0%"),
           )}
         </Text>
       </div>
@@ -138,6 +138,6 @@ const useStylesheet = () => {
           color: textBlack,
         },
       }),
-    [textBlack]
+    [textBlack],
   );
 };

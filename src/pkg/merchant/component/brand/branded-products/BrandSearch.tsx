@@ -9,7 +9,7 @@ import { OnTextChangeEvent } from "@ContextLogic/lego";
 import { search } from "@assets/icons";
 
 /* Merchant Store */
-import { useApolloStore } from "@merchant/stores/ApolloStore";
+import { useApolloStore } from "@stores/ApolloStore";
 
 /* Type Imports */
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";

@@ -20,8 +20,8 @@ import { Illustration, Modal } from "@merchant/component/core";
 import Separator from "@merchant/component/wps/create-shipping-label/Separator";
 
 /* Merchant Stores */
-import { useTheme } from "@merchant/stores/ThemeStore";
-import { useNavigationStore } from "@merchant/stores/NavigationStore";
+import { useTheme } from "@stores/ThemeStore";
+import { useNavigationStore } from "@stores/NavigationStore";
 
 /* Merchant Model */
 import CreateShippingLabelState from "@merchant/model/CreateShippingLabelState";
@@ -71,7 +71,7 @@ const ConfirmationContent: React.FC<Props> = ({
 
   const totalPrice = formatCurrency(
     state.shippingState.estimatedTotal,
-    state.shippingState.selectedShippingOption?.price.currencyCode
+    state.shippingState.selectedShippingOption?.price.currencyCode,
   );
   const price = state.shippingState.selectedShippingOption?.price.display;
 
@@ -162,7 +162,7 @@ const ConfirmationContent: React.FC<Props> = ({
                     {service.fee?.display}
                   </Text>
                 </div>
-              )
+              ),
             )}
             <Separator className={css(styles.summaryRow)} />
             <div className={css(styles.summaryTextRow)}>
@@ -292,7 +292,7 @@ const useStylesheet = () => {
           marginTop: 16,
         },
       }),
-    [borderPrimary, textBlack, textDark]
+    [borderPrimary, textBlack, textDark],
   );
 };
 

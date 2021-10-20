@@ -13,9 +13,9 @@ import {
 
 import { PaymentSettingsInitialData } from "@toolkit/payment-settings";
 
-import ToastStore from "@merchant/stores/ToastStore";
-import ApolloStore from "@merchant/stores/ApolloStore";
-import NavigationStore from "@merchant/stores/NavigationStore";
+import ToastStore from "@stores/ToastStore";
+import ApolloStore from "@stores/ApolloStore";
+import NavigationStore from "@stores/NavigationStore";
 
 const PAYONEER_SIGNUP_MUTATION = gql`
   mutation PaymentSettingsState_PayoneerSignup {

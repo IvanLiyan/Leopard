@@ -1,5 +1,5 @@
 import { gql } from "@apollo/client/core";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import {
   CurrencyInput,
   CurrencyValue,

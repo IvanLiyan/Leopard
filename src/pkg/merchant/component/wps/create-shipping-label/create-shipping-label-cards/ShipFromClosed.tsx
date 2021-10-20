@@ -19,7 +19,7 @@ import { Layout, Text } from "@ContextLogic/lego";
 import CreateShippingLabelState from "@merchant/model/CreateShippingLabelState";
 
 /* Merchant Stores */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* Toolkit */
 import { getCountryName } from "@toolkit/countries";
@@ -91,7 +91,7 @@ const useStylesheet = () => {
           lineHeight: "20px",
         },
       }),
-    [textDark]
+    [textDark],
   );
 };
 

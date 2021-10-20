@@ -24,7 +24,7 @@ import ValidatedLabel from "./ValidatedLabel";
 import ValidatedLabelEU from "./ValidatedLabelEU";
 
 /* Merchant Stores */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 export type DomicileCardProps = BaseProps & {
   readonly hasCompletedSellerVerification: boolean;
@@ -171,7 +171,7 @@ const DomicileCard: React.FC<DomicileCardProps> = ({
             />
 
             {!["PENDING_REVIEW", "VALIDATED"].includes(
-              euVatEntityStatus || ""
+              euVatEntityStatus || "",
             ) && (
               <div className={css(styles.button)}>
                 <PrimaryButton href="/tax/eu-vat-questionnaire?redirect=/tax/settings">
@@ -245,6 +245,6 @@ const useStylesheet = () => {
           maxWidth: "190px",
         },
       }),
-    [borderPrimaryDark, textDark, textBlack]
+    [borderPrimaryDark, textDark, textBlack],
   );
 };

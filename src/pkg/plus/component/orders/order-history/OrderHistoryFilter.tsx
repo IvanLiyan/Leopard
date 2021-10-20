@@ -14,7 +14,7 @@ import { useStringArrayQueryParam } from "@toolkit/url";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { CheckboxGroupFieldOptionType as OptionType } from "@ContextLogic/lego";
 import { CommerceTransactionState } from "@schema/types";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import { wishExpressTruck } from "@assets/icons";
 
 type Props = BaseProps & {};
@@ -36,14 +36,16 @@ const OrderHistoryFilter: React.FC<Props> = (props: Props) => {
     setStates(Array.from(typeSet));
   };
 
-  const statusOptions: ReadonlyArray<OptionType<
-    CommerceTransactionState
-  >> = useMemo(() => {
-    return [
-      { value: "REFUNDED", title: () => <OrderStateLabel state="REFUNDED" /> },
-      { value: "SHIPPED", title: () => <OrderStateLabel state="SHIPPED" /> },
-    ];
-  }, []);
+  const statusOptions: ReadonlyArray<OptionType<CommerceTransactionState>> =
+    useMemo(() => {
+      return [
+        {
+          value: "REFUNDED",
+          title: () => <OrderStateLabel state="REFUNDED" />,
+        },
+        { value: "SHIPPED", title: () => <OrderStateLabel state="SHIPPED" /> },
+      ];
+    }, []);
 
   const onCheckedBadges = ({ value }: OptionType<string>) => {
     const typeSet = new Set(badges || []);
@@ -107,6 +109,6 @@ const useStylesheet = () => {
           },
         },
       }),
-    [textBlack]
+    [textBlack],
   );
 };

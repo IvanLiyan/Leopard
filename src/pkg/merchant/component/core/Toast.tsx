@@ -15,8 +15,8 @@ import { Banner, BannerProps } from "@ContextLogic/lego";
 /* Lego Toolkit */
 import { css } from "@toolkit/styling";
 
-import ToastStore from "@merchant/stores/ToastStore";
-import NavigationStore from "@merchant/stores/NavigationStore";
+import ToastStore from "@stores/ToastStore";
+import NavigationStore from "@stores/NavigationStore";
 
 export type ToastProps = Omit<BannerProps, "text" | "sentiment" | "link"> & {
   readonly insideModal?: boolean;
@@ -47,7 +47,7 @@ export default observer((props: ToastProps) => {
       className={css(
         styles.root,
         isNavyBlueNav ? null : styles.selfPositioning,
-        className
+        className,
       )}
       text={currentToast.message}
       sentiment={currentToast.sentiment}

@@ -23,7 +23,7 @@ import { editDistance } from "@ContextLogic/lego/toolkit/string";
 import { css } from "@toolkit/styling";
 import countries from "@toolkit/countries";
 import * as fonts from "@toolkit/fonts";
-import { ThemeContext } from "@merchant/stores/ThemeStore";
+import { ThemeContext } from "@stores/ThemeStore";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { CountryCode as BaseCountryCode } from "@toolkit/countries";
@@ -78,17 +78,17 @@ class CountrySearch extends Component<CountrySearchProps> {
       ],
       ([currentCountryCode, countries]: [
         CountryCode | null | undefined,
-        readonly CountryType[]
+        readonly CountryType[],
       ]) => {
         const currentCountry = countries.find(
-          (country) => country.cc === currentCountryCode
+          (country) => country.cc === currentCountryCode,
         );
 
         if (currentCountry) {
           this.value = currentCountry.name;
         }
       },
-      { fireImmediately: true }
+      { fireImmediately: true },
     );
   }
 
@@ -173,7 +173,7 @@ class CountrySearch extends Component<CountrySearchProps> {
     }
 
     const mostLikelyResults = countries.filter((country) =>
-      country.name.toLowerCase().includes(query)
+      country.name.toLowerCase().includes(query),
     );
 
     const distances: {
@@ -183,7 +183,7 @@ class CountrySearch extends Component<CountrySearchProps> {
         ...total,
         [country.cc]: editDistance(country.name.toLowerCase(), query),
       }),
-      {}
+      {},
     );
 
     return _.sortBy(mostLikelyResults, (country) => distances[country.cc]);

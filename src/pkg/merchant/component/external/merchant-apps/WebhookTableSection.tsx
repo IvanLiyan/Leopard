@@ -9,7 +9,7 @@ import { PrimaryButton, LoadingIndicator } from "@ContextLogic/lego";
 /* Lego Toolkit */
 import { css } from "@toolkit/styling";
 import * as fonts from "@toolkit/fonts";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* Merchant Model */
 import MerchantAppWebhookState from "@merchant/model/external/merchant-apps/MerchantAppWebhookState";
@@ -64,7 +64,7 @@ const WebhookTableSection = (props: Props) => {
   const [webhookState] = useState(new MerchantAppWebhookState());
 
   const { data, loading } = useQuery<MerchantAppWebhookInitialData, void>(
-    GET_WEBHOOK_SUBSCRIPTIONS_QUERY
+    GET_WEBHOOK_SUBSCRIPTIONS_QUERY,
   );
 
   const webhookTopics = data?.webhook?.topics || [];
@@ -72,21 +72,21 @@ const WebhookTableSection = (props: Props) => {
     () =>
       _.sortBy(
         (data?.webhook?.subscriptions || []).filter(
-          ({ deactivated }) => !deactivated
+          ({ deactivated }) => !deactivated,
         ),
-        (webhook) => webhook.topic.name
+        (webhook) => webhook.topic.name,
       ) as PickedWebhookSubscriptionSchema[],
-    [data]
+    [data],
   );
   const webhookSubscriptionsInactive = useMemo(
     () =>
       _.sortBy(
         (data?.webhook?.subscriptions || []).filter(
-          ({ deactivated }) => deactivated
+          ({ deactivated }) => deactivated,
         ),
-        (webhook) => webhook.topic.name
+        (webhook) => webhook.topic.name,
       ) as PickedWebhookSubscriptionSchema[],
-    [data]
+    [data],
   );
   const allowWebhookUi = data?.webhook?.allowWebhookUi || false;
 
@@ -237,6 +237,6 @@ const useStylesheet = () => {
           marginTop: 24,
         },
       }),
-    [textWhite, textBlack]
+    [textWhite, textBlack],
   );
 };

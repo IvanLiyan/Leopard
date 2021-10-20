@@ -21,7 +21,7 @@ import { palettes } from "@toolkit/lego-legacy/DEPRECATED_colors";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { ButtonProps } from "@ContextLogic/lego";
 import { PrimaryButtonProps } from "@ContextLogic/lego";
-import { useDeviceStore } from "@merchant/stores/DeviceStore";
+import { useDeviceStore } from "@stores/DeviceStore";
 
 export type ModalFooterLayout =
   | "vertical"
@@ -65,14 +65,8 @@ const FooterButton = observer((props: FooterButtonProps) => {
 const ModalFooter = (props: ModalFooterProps) => {
   const styles = useStylesheet(props);
 
-  const {
-    action,
-    cancel,
-    extraFooterContent,
-    layout,
-    className,
-    style,
-  } = props;
+  const { action, cancel, extraFooterContent, layout, className, style } =
+    props;
 
   const { isSmallScreen } = useDeviceStore();
   const defaultPadding = `7px ${isSmallScreen ? 25 : 40}px`;

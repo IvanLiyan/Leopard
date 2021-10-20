@@ -24,7 +24,7 @@ import {
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
 /* Merchant Stores */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import {
   Flag,
   DEPRECATEDIcon as Icon,
@@ -65,10 +65,10 @@ const ShippingSettings: React.FC<Props> = ({
 }: Props) => {
   const styles = useStylesheet();
   const [selectedRowIndices, setSelectedRowIndices] = useState<Set<number>>(
-    new Set()
+    new Set(),
   );
   const [enabledCountries, setEnabledCountries] = useState<Set<CountryCode>>(
-    new Set()
+    new Set(),
   );
   const [query, setQuery] = useState("");
   const [limit] = useState(20);
@@ -85,7 +85,7 @@ const ShippingSettings: React.FC<Props> = ({
     const standardWarehouse =
       warehouses != null
         ? warehouses.filter(
-            (warehouse: PickedWarehouse) => warehouse.unitId === "STANDARD"
+            (warehouse: PickedWarehouse) => warehouse.unitId === "STANDARD",
           )
         : [];
     return standardWarehouse.length > 0
@@ -95,10 +95,10 @@ const ShippingSettings: React.FC<Props> = ({
 
   const defaultEuCountries = useMemo(() => {
     const euCountryCodes = new Set(
-      euCountriesWeShipTo.map((country) => country.code)
+      euCountriesWeShipTo.map((country) => country.code),
     );
     return defaultCountries.filter((country) =>
-      euCountryCodes.has(country.code)
+      euCountryCodes.has(country.code),
     );
   }, [defaultCountries, euCountriesWeShipTo]);
 
@@ -146,7 +146,7 @@ const ShippingSettings: React.FC<Props> = ({
 
     return _.sortBy(
       data,
-      ({ country }) => country.gmvRank ?? Number.MAX_SAFE_INTEGER
+      ({ country }) => country.gmvRank ?? Number.MAX_SAFE_INTEGER,
     );
   }, [query, defaultCountries, fuse, enabledCountries, sortField, sortOrder]);
 
@@ -186,18 +186,18 @@ const ShippingSettings: React.FC<Props> = ({
       setSelectedRowIndices(new Set());
       state.enabledCountries = Array.from(enabledCountries);
     },
-    [enabledCountries, state]
+    [enabledCountries, state],
   );
 
   const tableActions = useMemo(() => {
     const topWishCountries = defaultCountries.filter((country) =>
-      isTopGMVCountry(country)
+      isTopGMVCountry(country),
     );
     const topWishCountriesSelected = topWishCountries.every(({ code }) =>
-      enabledCountries.has(code as CountryCode)
+      enabledCountries.has(code as CountryCode),
     );
     const topEUCountriesSelected = defaultEuCountries.every(({ code }) =>
-      enabledCountries.has(code as CountryCode)
+      enabledCountries.has(code as CountryCode),
     );
 
     return [
@@ -209,7 +209,7 @@ const ShippingSettings: React.FC<Props> = ({
         canApplyToRow: () => true,
         apply(countries: ReadonlyArray<DataItem>) {
           const countryCodes = countries.map(
-            ({ country: { code } }) => code
+            ({ country: { code } }) => code,
           ) as CountryCode[];
           setCountriesEnabled(countryCodes, true);
         },
@@ -222,7 +222,7 @@ const ShippingSettings: React.FC<Props> = ({
         canApplyToRow: () => true,
         apply(countries: ReadonlyArray<DataItem>) {
           const countryCodes = countries.map(
-            ({ country: { code } }) => code
+            ({ country: { code } }) => code,
           ) as CountryCode[];
           setCountriesEnabled(countryCodes, false);
         },
@@ -235,7 +235,7 @@ const ShippingSettings: React.FC<Props> = ({
         canApplyToRow: topWishCountriesSelected ? () => false : undefined,
         apply(countries: ReadonlyArray<DataItem>) {
           const countryCodes = topWishCountries.map(
-            ({ code }) => code
+            ({ code }) => code,
           ) as CountryCode[];
           setCountriesEnabled(countryCodes, true);
         },
@@ -248,7 +248,7 @@ const ShippingSettings: React.FC<Props> = ({
         canApplyToRow: topEUCountriesSelected ? () => false : undefined,
         apply(countries: ReadonlyArray<DataItem>) {
           const euCountryCodes = defaultEuCountries.map(
-            ({ code }) => code
+            ({ code }) => code,
           ) as CountryCode[];
           setCountriesEnabled(euCountryCodes, true);
         },
@@ -452,7 +452,7 @@ const ShippingSettings: React.FC<Props> = ({
 };
 
 const useFuse = (
-  countries: ReadonlyArray<PickedCountry>
+  countries: ReadonlyArray<PickedCountry>,
 ): Fuse<PickedCountry, any> => {
   return useMemo((): Fuse<PickedCountry, any> => {
     const documents: ReadonlyArray<PickedCountry> = [...countries];
@@ -535,6 +535,6 @@ const useStylesheet = () => {
           marginTop: 18,
         },
       }),
-    [borderPrimary, textBlack]
+    [borderPrimary, textBlack],
   );
 };

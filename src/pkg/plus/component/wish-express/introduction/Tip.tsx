@@ -9,7 +9,7 @@ import { IllustrationName } from "@merchant/component/core";
 import { css } from "@toolkit/styling";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 type Props = BaseProps & {
   illustration?: IllustrationName;
@@ -65,6 +65,6 @@ const useStylesheet = () => {
           flex: 1,
         },
       }),
-    [pageBackground]
+    [pageBackground],
   );
 };

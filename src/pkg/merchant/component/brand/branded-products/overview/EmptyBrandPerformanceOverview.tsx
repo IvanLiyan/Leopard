@@ -14,7 +14,7 @@ import { css } from "@toolkit/styling";
 import * as fonts from "@toolkit/fonts";
 
 /* Merchant Store */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* Type Imports */
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
@@ -89,6 +89,6 @@ const useStylesheet = () => {
           height: 160,
         },
       }),
-    [textBlack]
+    [textBlack],
   );
 };

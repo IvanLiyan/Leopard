@@ -13,7 +13,7 @@ import { Layout } from "@ContextLogic/lego";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
 /* Toolkit */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import { Icon } from "@merchant/component/core";
 import { ProductListingPlanTier } from "@schema/types";
 

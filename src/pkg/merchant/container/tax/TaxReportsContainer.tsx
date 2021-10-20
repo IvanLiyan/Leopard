@@ -29,9 +29,9 @@ import * as taxApi from "@merchant/api/tax";
 /* Merchant Model */
 import { TaxCountries, TaxEUCountries } from "@toolkit/tax/enrollment";
 
-import ToastStore from "@merchant/stores/ToastStore";
-import NavigationStore from "@merchant/stores/NavigationStore";
-import LocalizationStore from "@merchant/stores/LocalizationStore";
+import ToastStore from "@stores/ToastStore";
+import NavigationStore from "@stores/NavigationStore";
+import LocalizationStore from "@stores/LocalizationStore";
 import { OptionType } from "@ContextLogic/lego";
 
 @observer
@@ -89,9 +89,9 @@ export default class TaxReportsContainer extends Component<{
 
   @action
   onAllEUCountriesToggled = () => {
-    const euCountrySelectedCurrently = Array.from(
-      this.selectedCountries
-    ).some((countryCode) => TaxEUCountries.includes(countryCode));
+    const euCountrySelectedCurrently = Array.from(this.selectedCountries).some(
+      (countryCode) => TaxEUCountries.includes(countryCode),
+    );
 
     TaxEUCountries.forEach((countryCode) => {
       if (euCountrySelectedCurrently) {
@@ -157,7 +157,7 @@ export default class TaxReportsContainer extends Component<{
       {
         deferred: true,
         timeoutMs: 30000,
-      }
+      },
     );
     navigationStore.navigate("/tax/settings");
   };

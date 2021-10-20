@@ -8,7 +8,7 @@ import { CopyButton } from "@ContextLogic/lego";
 
 /* Lego Toolkit */
 import { css } from "@toolkit/styling";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* Relative Imports */
 import TextGroup from "@merchant/component/logistics/common/TextGroup";
@@ -95,6 +95,6 @@ const useStyleSheet = () => {
           margin: "10px 14px",
         },
       }),
-    [pageBackground]
+    [pageBackground],
   );
 };

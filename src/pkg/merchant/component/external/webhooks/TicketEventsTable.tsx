@@ -10,7 +10,7 @@ import { css } from "@toolkit/styling";
 /* Relative Imports */
 import { default as EventsTable, Event } from "./EventsTable";
 import { observer } from "mobx-react";
-import { useDeciderKey } from "@merchant/stores/ExperimentStore";
+import { useDeciderKey } from "@stores/ExperimentStore";
 
 const response = (
   <>

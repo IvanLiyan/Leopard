@@ -21,7 +21,7 @@ import { PriceDropConstants } from "@toolkit/price-drop/constants";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
-import LocalizationStore from "@merchant/stores/LocalizationStore";
+import LocalizationStore from "@stores/LocalizationStore";
 
 type PriceDropCreateCampaignBasicsSectionProps = BaseProps & {
   readonly autoRenew: boolean;
@@ -32,7 +32,7 @@ type PriceDropCreateCampaignBasicsSectionProps = BaseProps & {
 };
 
 const PriceDropCreateCampaignBasicsSection = (
-  props: PriceDropCreateCampaignBasicsSectionProps
+  props: PriceDropCreateCampaignBasicsSectionProps,
 ) => {
   const styles = useStylesheet();
   const {
@@ -52,7 +52,7 @@ const PriceDropCreateCampaignBasicsSection = (
     .clone()
     .add(
       PriceDropConstants.CREATE_BY_MERCHANT_IMPRESSION_BOOSTER_DURATION - 1,
-      "days"
+      "days",
     );
   const startDateDayPickerProps = {
     selectedDays: startDate,
@@ -143,6 +143,6 @@ const useStylesheet = () => {
           marginLeft: 10,
         },
       }),
-    []
+    [],
   );
 };

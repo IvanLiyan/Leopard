@@ -20,7 +20,7 @@ import EuVatQuestionnaire from "@merchant/component/tax/EuVatQuestionnaire";
 import { PageGuide } from "@merchant/component/core";
 
 /* Merchant Stores */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* Model */
 import { EuVatQuestionnaireInitialData } from "@toolkit/tax/eu-vat";
@@ -60,6 +60,6 @@ const useStylesheet = () => {
           marginTop: 64,
         },
       }),
-    [pageBackground]
+    [pageBackground],
   );
 };

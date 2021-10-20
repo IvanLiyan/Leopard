@@ -26,8 +26,8 @@ import { css } from "@toolkit/styling";
 import { OrderDetailInitialData } from "@toolkit/orders/detail";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import { useTheme } from "@merchant/stores/ThemeStore";
-import { useNavigationStore } from "@merchant/stores/NavigationStore";
+import { useTheme } from "@stores/ThemeStore";
+import { useNavigationStore } from "@stores/NavigationStore";
 
 type Props = BaseProps & {
   readonly initialData: OrderDetailInitialData;
@@ -124,7 +124,7 @@ const Wps: React.FC<Props> = ({ initialData, className, style }: Props) => {
             ? undefined
             : paymentProcessedDate.formatted,
         paymentId,
-      })
+      }),
     );
 
     return (
@@ -295,6 +295,6 @@ const useStylesheet = () => {
           backgroundColor: surfaceLight,
         },
       }),
-    [textBlack, borderPrimary, textDark, surfaceLight]
+    [textBlack, borderPrimary, textDark, surfaceLight],
   );
 };

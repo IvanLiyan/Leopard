@@ -12,7 +12,7 @@ import { css } from "@toolkit/styling";
 
 /* Type Imports */
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 export type EmptyStateProps = BaseProps;
 
@@ -67,6 +67,6 @@ const useStylesheet = (props: EmptyStateProps) => {
           fontWeight: fonts.weightNormal,
         },
       }),
-    [textBlack, textDark]
+    [textBlack, textDark],
   );
 };

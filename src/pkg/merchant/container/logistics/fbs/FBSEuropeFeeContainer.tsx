@@ -10,7 +10,7 @@ import ScrollableAnchor from "react-scrollable-anchor";
 
 /* Lego Toolkit */
 import { css } from "@toolkit/styling";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import { UserGateSchema } from "@schema/types";
 
 type InitialData = {
@@ -898,7 +898,7 @@ const FBSEuropeFeeContainer: React.FC<Props> = ({ initialData }: Props) => {
 
   const renderExperimentCountryFee = () => {
     return experimentFeePerCountry.map((item) =>
-      renderExperimentServiceFee(item)
+      renderExperimentServiceFee(item),
     );
   };
 
@@ -1463,7 +1463,7 @@ const useStyleSheet = () => {
       textDark,
       textWhite,
       textLight,
-    ]
+    ],
   );
 };
 

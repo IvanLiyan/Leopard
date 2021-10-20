@@ -15,7 +15,7 @@ import Modal from "@merchant/component/core/modal/Modal";
 import GenerateTestOrdersScreen from "./GenerateTestOrdersScreen";
 
 /* Type Imports */
-import DeviceStore from "@merchant/stores/DeviceStore";
+import DeviceStore from "@stores/DeviceStore";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { CountryWeShipToPick } from "@toolkit/orders/unfulfilled-orders";
 

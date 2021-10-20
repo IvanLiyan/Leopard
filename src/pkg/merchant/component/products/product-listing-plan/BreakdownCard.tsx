@@ -28,7 +28,7 @@ import {
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
 /* Stores */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import ChargeBreakdown, {
   ChargeBreakdownLine,
   ChargeBreakdownTotal,

@@ -19,7 +19,7 @@ import {
 } from "@merchant/api/product-boost";
 
 /* Merchant Store */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* Type Imports */
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
@@ -77,7 +77,7 @@ const TransactionHistoryTable = (props: TransactionHistoryTableProps) => {
           "Placeholder 1 describes a thing that expires on the day given by Placeholder 2.",
           "%1$s (expires %2$s)",
           updateReasonDescription,
-          expiredDate.formatted + " UTC"
+          expiredDate.formatted + " UTC",
         );
       }
     }
@@ -231,7 +231,7 @@ const useStyleSheet = () => {
           lineHeight: 1.5,
         },
       }),
-    [positiveDark, negativeDark, primaryDark]
+    [positiveDark, negativeDark, primaryDark],
   );
 };
 

@@ -5,7 +5,7 @@ import { StyleSheet } from "aphrodite";
 import { css } from "@toolkit/styling";
 
 /* Merchant Stores */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 type CodeWrapperProps = {
   readonly children: string | ReadonlyArray<string>;
@@ -39,7 +39,7 @@ const useStylesheet = () => {
           lineHeight: "18px",
         },
       }),
-    [primary, pageBackground, surfaceLighter]
+    [primary, pageBackground, surfaceLighter],
   );
 };
 

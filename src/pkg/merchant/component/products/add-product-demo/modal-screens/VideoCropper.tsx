@@ -10,7 +10,7 @@ import { DeleteButton, Markdown } from "@ContextLogic/lego";
 import { css } from "@toolkit/styling";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import { CropProperties } from "@toolkit/ffmpeg";
 
 type Props = BaseProps & {
@@ -58,7 +58,7 @@ const VideoCropper: React.FC<Props> = (props: Props) => {
   >(null);
 
   const [videoDimensions, setVideoDimensions] = useState<Dimensions | null>(
-    null
+    null,
   );
 
   const isDragging = dragInitialX != null;
@@ -71,7 +71,7 @@ const VideoCropper: React.FC<Props> = (props: Props) => {
       }
       return (dimensionWidth / videoDimensions.videoWidth) * width;
     },
-    [width, videoDimensions]
+    [width, videoDimensions],
   );
 
   // Compute viewportWidth in video dimensions
@@ -143,7 +143,7 @@ const VideoCropper: React.FC<Props> = (props: Props) => {
 
   // Handles initial mouse click on crop overlay (viewport)
   const handleMouseDown = (
-    event: React.MouseEvent<HTMLDivElement, MouseEvent>
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>,
   ) => {
     // Freeze these two coords in state so we can change them via diffs on drag
     if (!disabled) {
@@ -167,7 +167,7 @@ const VideoCropper: React.FC<Props> = (props: Props) => {
       // Convert user's drag to be in the units of the video dimension
       const dimensionDragDiff = (dragDiff / width) * videoDimensions.videoWidth;
       setLeftPanelWidth(
-        clamp(leftPanelInitialWidth + dimensionDragDiff, 0, maxLeftPanelWidth)
+        clamp(leftPanelInitialWidth + dimensionDragDiff, 0, maxLeftPanelWidth),
       );
     };
 
@@ -229,13 +229,10 @@ const VideoCropper: React.FC<Props> = (props: Props) => {
   const videoPath = URL.createObjectURL(video);
 
   const handleLoadedMetadata = (
-    data: React.SyntheticEvent<HTMLVideoElement, Event>
+    data: React.SyntheticEvent<HTMLVideoElement, Event>,
   ) => {
-    const {
-      videoWidth,
-      videoHeight,
-      duration,
-    } = data.target as HTMLVideoElement;
+    const { videoWidth, videoHeight, duration } =
+      data.target as HTMLVideoElement;
     if (Math.floor(duration) > maxVideoLength) {
       onRejectVideoLength();
     }
@@ -372,6 +369,6 @@ const useStylesheet = ({
           color: negativeDark,
         },
       }),
-    [viewportWidth, leftPanelWidth, overlayCursor, negativeDark]
+    [viewportWidth, leftPanelWidth, overlayCursor, negativeDark],
   );
 };

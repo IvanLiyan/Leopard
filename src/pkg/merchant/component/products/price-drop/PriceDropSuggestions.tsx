@@ -13,7 +13,7 @@ import { weightBold } from "@toolkit/fonts";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { IllustrationName } from "@merchant/component/core";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 type PriceDropSuggestionsProps = BaseProps & {
   readonly illustration: IllustrationName;
@@ -70,6 +70,6 @@ const useStylesheet = () => {
           color: textBlack,
         },
       }),
-    [textBlack]
+    [textBlack],
   );
 };

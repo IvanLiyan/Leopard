@@ -30,9 +30,9 @@ import {
   WeightUnit,
 } from "@schema/types";
 import { CheckboxState } from "@ContextLogic/lego";
-import ToastStore from "@merchant/stores/ToastStore";
-import ApolloStore from "@merchant/stores/ApolloStore";
-import NavigationStore from "@merchant/stores/NavigationStore";
+import ToastStore from "@stores/ToastStore";
+import ApolloStore from "@stores/ApolloStore";
+import NavigationStore from "@stores/NavigationStore";
 import { Validator, ValidationResponse } from "@toolkit/validators";
 
 import {
@@ -282,7 +282,7 @@ export class VariationEditState {
       : undefined;
 
     const inventory: ReadonlyArray<InventoryInput> = Array.from(
-      inventoryByWarehouseId.entries()
+      inventoryByWarehouseId.entries(),
     ).map(([warehouseId, count]) => ({ warehouseId, count }));
 
     const quantityValueInput: Pick<
@@ -403,12 +403,8 @@ export class CountryShippingState {
     readonly editState: ProductEditState;
     readonly wishExpressEnabled: boolean;
   }) {
-    const {
-      countryShipping,
-      editState,
-      countryCode,
-      wishExpressEnabled,
-    } = args;
+    const { countryShipping, editState, countryCode, wishExpressEnabled } =
+      args;
     this.countryCode = countryCode;
     this.enabled = countryShipping?.enabled ?? true;
     this.wishExpressEnabled = wishExpressEnabled;
@@ -511,10 +507,8 @@ export default class ProductEditState {
   private defaultShippingPriceByWarehouseId: Map<string, number> = new Map();
 
   @observable
-  private countryShippingStates: Map<
-    CountryCode,
-    CountryShippingState
-  > = new Map();
+  private countryShippingStates: Map<CountryCode, CountryShippingState> =
+    new Map();
 
   @observable
   isSubmitting = false;
@@ -651,7 +645,7 @@ export default class ProductEditState {
     this.primaryCurrency = primaryCurrency;
     this.storeCountries = storeCountries;
     this.wishExpressCountries = Array.from(
-      wishExpressCountries.map((country) => country.code)
+      wishExpressCountries.map((country) => country.code),
     );
     this.countriesWeShipTo = countriesWeShipTo;
     this.msrp = initialState.msrp?.amount;
@@ -663,7 +657,7 @@ export default class ProductEditState {
     for (const defaultShipping of defaultShippingPrices || []) {
       this.defaultShippingPriceByWarehouseId.set(
         defaultShipping.warehouseId,
-        defaultShipping.price.amount
+        defaultShipping.price.amount,
       );
     }
 
@@ -726,7 +720,7 @@ export default class ProductEditState {
           initialState: variationInitial,
           isCloning,
           editState: this,
-        })
+        }),
     );
 
     if (initialVariations.length == 0) {
@@ -776,13 +770,13 @@ export default class ProductEditState {
   get wishExpressEnabled(): CheckboxState {
     const { countryShippingStates, wishExpressCountries } = this;
     const wishExpressStatesArray = Array.from(
-      countryShippingStates.values()
+      countryShippingStates.values(),
     ).filter((state) => wishExpressCountries.includes(state.countryCode));
     const allOn = wishExpressStatesArray.every(
-      (state) => state.wishExpressEnabled
+      (state) => state.wishExpressEnabled,
     );
     const anyOn = wishExpressStatesArray.some(
-      (state) => state.wishExpressEnabled
+      (state) => state.wishExpressEnabled,
     );
 
     if (allOn) {
@@ -966,7 +960,7 @@ export default class ProductEditState {
     }
 
     const variationChanged = variationsList.some(
-      (variationState) => variationState.hasChanges
+      (variationState) => variationState.hasChanges,
     );
     if (variationChanged) {
       return true;
@@ -1078,10 +1072,8 @@ export default class ProductEditState {
   @action
   setVariations(variations: ReadonlyArray<VariationEditState>) {
     this.discardAllNewVariations();
-    const newVariarions: ReadonlyArray<[
-      string,
-      VariationEditState
-    ]> = variations.map((variation) => [variation.key, variation]);
+    const newVariarions: ReadonlyArray<[string, VariationEditState]> =
+      variations.map((variation) => [variation.key, variation]);
 
     for (const [variationKey, variation] of newVariarions) {
       this.variations.set(variationKey, variation);
@@ -1187,7 +1179,7 @@ export default class ProductEditState {
   }
 
   getDefaultShippingPrice(
-    warehouseId: string
+    warehouseId: string,
   ): CurrencyValue["amount"] | undefined {
     const { defaultShippingPriceByWarehouseId } = this;
     const amount = defaultShippingPriceByWarehouseId.get(warehouseId);
@@ -1288,11 +1280,11 @@ export default class ProductEditState {
             "The product name is placed in a link that leads to a page where they merchant can view the product",
           "[%1$s](%2$s) has been added to your store",
           name,
-          `/plus/products/edit/${productId}`
+          `/plus/products/edit/${productId}`,
         ),
         {
           timeoutMs: 7000,
-        }
+        },
       );
     } else {
       toastStore.positive(
@@ -1301,11 +1293,11 @@ export default class ProductEditState {
             "The product name is placed in a link that leads to a page where they merchant can view the product",
           "[%1$s](%2$s) has been updated",
           name,
-          `/plus/products/edit/${productId}`
+          `/plus/products/edit/${productId}`,
         ),
         {
           timeoutMs: 7000,
-        }
+        },
       );
     }
   }
@@ -1351,8 +1343,8 @@ export default class ProductEditState {
       ci18n(
         "popup telling the merchant a product has been removed to their store",
         '"%1$s" has been removed from your store',
-        name
-      )
+        name,
+      ),
     );
   }
 
@@ -1388,14 +1380,14 @@ export default class ProductEditState {
       : undefined;
 
     const regularCountryShippingInputList = Array.from(
-      countryShippingStates.values()
+      countryShippingStates.values(),
     )
       .filter((countryShipping) => !countryShipping.wishExpressEnabled)
       .map((countryShipping) => countryShipping.asInput)
       .filter((input) => input != null) as ReadonlyArray<CountryShippingInput>;
 
     const expressCountryShippingInputList = Array.from(
-      countryShippingStates.values()
+      countryShippingStates.values(),
     )
       .filter((countryShipping) => countryShipping.wishExpressEnabled)
       .map((countryShipping) => countryShipping.asInput)
@@ -1434,7 +1426,7 @@ export default class ProductEditState {
         : undefined;
 
     const defaultShipping: ReadonlyArray<DefaultShippingInput> = Array.from(
-      defaultShippingPriceByWarehouseId.entries()
+      defaultShippingPriceByWarehouseId.entries(),
     ).map(([warehouseId, amount]) => {
       return {
         warehouseId,
@@ -1586,7 +1578,7 @@ export class VariationsFormState {
           editState.getVariation({ color, size }) ||
           new VariationEditState({ initialState: { color, size }, editState })
         );
-      }
+      },
     );
 
     editState.setVariations(_.uniqBy([...newVariations], (v) => v.key));
@@ -1599,14 +1591,14 @@ export class VariationsFormState {
 
     const fullSizesList = _.uniq(
       editState.sizeVariations.map(
-        (variationState) => variationState.size || ""
-      )
+        (variationState) => variationState.size || "",
+      ),
     );
 
     const fullColorsList = _.uniq(
       editState.colorVariations.map(
-        (variationState) => variationState.color || ""
-      )
+        (variationState) => variationState.color || "",
+      ),
     );
 
     // Only prefill the input boxes if variations exists for all
@@ -1614,7 +1606,7 @@ export class VariationsFormState {
     if (isInitialSync) {
       const permutations = getPermutations(fullColorsList, fullSizesList);
       const hasPerfectPairs = permutations.every(({ color, size }) =>
-        editState.hasVariation({ color, size })
+        editState.hasVariation({ color, size }),
       );
       if (!hasPerfectPairs) {
         return;
@@ -1633,7 +1625,7 @@ type PermutationResult = ReadonlyArray<{
 
 const getPermutations = (
   colorsList: ReadonlyArray<string>,
-  sizesList: ReadonlyArray<string>
+  sizesList: ReadonlyArray<string>,
 ): PermutationResult => {
   return colorsList.reduce(
     (total: PermutationResult, colorValue: string): PermutationResult => {
@@ -1644,7 +1636,7 @@ const getPermutations = (
       });
       return [...total, ...colorCombinations];
     },
-    []
+    [],
   );
 };
 

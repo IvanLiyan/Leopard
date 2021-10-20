@@ -20,7 +20,7 @@ import { css } from "@toolkit/styling";
 import { palettes } from "@toolkit/lego-legacy/DEPRECATED_colors";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import DimenStore from "@merchant/stores/DimenStore";
+import DeviceStore from "@stores/DeviceStore";
 
 export type SheetItemProps = BaseProps & {
   readonly title: string | (() => ReactNode);
@@ -38,12 +38,8 @@ export type SheetItemProps = BaseProps & {
 class SheetItem extends Component<SheetItemProps> {
   @computed
   get styles() {
-    const {
-      titleWidth,
-      titleFontSize,
-      valueMinWidth,
-      freezeTitleWidth,
-    } = this.props;
+    const { titleWidth, titleFontSize, valueMinWidth, freezeTitleWidth } =
+      this.props;
     const defaultTitleWidth = 210;
 
     return StyleSheet.create({
@@ -121,7 +117,7 @@ class SheetItem extends Component<SheetItemProps> {
   render() {
     const { className, popoverContent, copy } = this.props;
 
-    const { isSmallScreen } = DimenStore.instance();
+    const { isSmallScreen } = DeviceStore.instance();
     return (
       <div className={css(this.styles.root, className)}>
         <div className={css(this.styles.titleContainer)}>

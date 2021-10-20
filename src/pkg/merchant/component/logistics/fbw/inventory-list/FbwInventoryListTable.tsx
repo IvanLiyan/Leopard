@@ -16,7 +16,7 @@ import { Select } from "@ContextLogic/lego";
 /* Lego Toolkit */
 import { css } from "@toolkit/styling";
 import { zendeskURL } from "@toolkit/url";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* Merchant API */
 import * as api from "@merchant/api/fbw";
@@ -81,7 +81,7 @@ const FbwInventoryListTable = (props: FBWInventoryListTableProps) => {
   } = props;
 
   const listingPageActionLogger = useLogger(
-    "FBW_INVENTORY_LISTING_PAGE_ACTION"
+    "FBW_INVENTORY_LISTING_PAGE_ACTION",
   );
 
   const logFilterSelection = (filter: FilterType | string) => {
@@ -92,33 +92,26 @@ const FbwInventoryListTable = (props: FBWInventoryListTableProps) => {
   };
 
   // states declaration
-  const [
-    warehouseFilterSelections,
-    setWarehouseFilterSelections,
-  ] = useStringArrayQueryParam("warehouses");
-  const [
-    productStatusFilterSelections,
-    setProductStatusFilterSelections,
-  ] = useStringArrayQueryParam("product_status");
-  const [
-    inventoryStatusFilterSelections,
-    setInventoryStatusFilterSelections,
-  ] = useStringArrayQueryParam("inventory_status");
+  const [warehouseFilterSelections, setWarehouseFilterSelections] =
+    useStringArrayQueryParam("warehouses");
+  const [productStatusFilterSelections, setProductStatusFilterSelections] =
+    useStringArrayQueryParam("product_status");
+  const [inventoryStatusFilterSelections, setInventoryStatusFilterSelections] =
+    useStringArrayQueryParam("inventory_status");
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [fbwInventories, setFbwInventories] = useState<
     ReadonlyArray<api.ProductLevelInventory>
   >([]);
-  const [numMissingShippingPrice, setNumMissingShippingPrice] = useState<
-    number
-  >(0);
+  const [numMissingShippingPrice, setNumMissingShippingPrice] =
+    useState<number>(0);
 
   const [searchType, setSearchType] = useState<SearchType>("id");
   const [searchToken, setSearchToken] = useState<string>("");
 
   // For CSV Export
   const [inventoriesToExport, setInventoriesToExport] = useState<string[][]>(
-    []
+    [],
   );
   const [isDownloading, setIsDownloading] = useState(false);
   const csvLinkRef = useRef<
@@ -134,8 +127,8 @@ const FbwInventoryListTable = (props: FBWInventoryListTableProps) => {
       }
       const selections: string[] = Array.from(
         new Set<string>(
-          data.warehouses.map((w) => w.code.slice(-3).toUpperCase())
-        )
+          data.warehouses.map((w) => w.code.slice(-3).toUpperCase()),
+        ),
       );
       setWarehouseFilterSelections(selections);
     };
@@ -171,7 +164,7 @@ const FbwInventoryListTable = (props: FBWInventoryListTableProps) => {
   const rangeStart = currentPage * itemsInOnePage + 1;
   const rangeEnd = Math.min(
     currentPage * itemsInOnePage + itemsInOnePage,
-    totalItems
+    totalItems,
   );
   const hasNext = Math.floor((totalItems - 1) / itemsInOnePage) !== currentPage;
   const hasPrev = currentPage !== 0;
@@ -284,7 +277,7 @@ const FbwInventoryListTable = (props: FBWInventoryListTableProps) => {
   };
 
   const transformToCSVFormat = (
-    productInventories: ProductLevelInventory[]
+    productInventories: ProductLevelInventory[],
   ): string[][] => {
     const csvData = [
       [
@@ -377,7 +370,7 @@ const FbwInventoryListTable = (props: FBWInventoryListTableProps) => {
             !inventoryHasShippingPrice(inventory, merchantCurrency) &&
             inventory.warehouse_code !== "store"
           );
-        }
+        },
       ).length;
       setNumMissingShippingPrice(numMissingShippingPrice);
 
@@ -410,7 +403,7 @@ const FbwInventoryListTable = (props: FBWInventoryListTableProps) => {
   };
 
   const warehouseAllowSelling = warehouses.find(
-    (warehouse) => warehouse.name === getWarehouseNameByCode(tabSelection)
+    (warehouse) => warehouse.name === getWarehouseNameByCode(tabSelection),
   )?.allow_selling;
 
   return (
@@ -421,7 +414,7 @@ const FbwInventoryListTable = (props: FBWInventoryListTableProps) => {
           text={
             i`Outbound fulfillment from this warehouse is temporarily paused ` +
             i`due to warehouse relocation. [Learn more](${zendeskURL(
-              "1260802095330"
+              "1260802095330",
             )})`
           }
         />
@@ -557,13 +550,13 @@ const useStyleSheet = () => {
           alignItems: "center",
         },
       }),
-    [textBlack]
+    [textBlack],
   );
 };
 
 const inventoryHasShippingPrice = (
   inventory: ProductLevelInventory,
-  merchantCurrency: string
+  merchantCurrency: string,
 ) => {
   if (
     merchantCurrency === "USD" &&

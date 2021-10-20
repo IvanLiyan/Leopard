@@ -12,7 +12,7 @@ import { Link } from "@ContextLogic/lego";
 import { css } from "@toolkit/styling";
 import { formatCurrency } from "@ContextLogic/lego/toolkit/currency";
 import { zendeskURL } from "@toolkit/url";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 import PolicySection, {
   PolicyProps,

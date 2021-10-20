@@ -8,9 +8,7 @@ import {
   wishURL as _wishURL,
 } from "@legacy/core/url";
 import { computed, decorate } from "mobx";
-import NavigationStore, {
-  useNavigationStore,
-} from "@merchant/stores/NavigationStore";
+import NavigationStore, { useNavigationStore } from "@stores/NavigationStore";
 
 /* eslint-disable no-underscore-dangle */
 import { useCallback, useMemo } from "react";
@@ -116,14 +114,14 @@ export const zendeskURL = (articleId: string): string => _zendeskURL(articleId);
 
 export const zendeskCategoryURL = (
   articleId: string,
-  locale?: string
+  locale?: string,
 ): string => {
   return _zendeskCategoryURL(articleId, locale);
 };
 
 export const zendeskSectionURL = (
   articleId: string,
-  locale?: string
+  locale?: string,
 ): string => {
   return _zendeskSectionURL(articleId, locale);
 };
@@ -152,7 +150,7 @@ const queryParamDecorator = (
       deserialize?: (rawValue: string) => any;
       serialize?: (domain: any) => string;
     };
-  } = { default: null }
+  } = { default: null },
 ) => {
   const navigationStore = NavigationStore.instance();
   // eslint-disable-next-line local-rules/no-large-method-params
@@ -241,7 +239,7 @@ export const params_DEPRECATED = {
   },
   date(
     queryFieldName: string,
-    args: { format: string } = { format: "YYYY-MM-DD" }
+    args: { format: string } = { format: "YYYY-MM-DD" },
   ) {
     return queryParamDecorator(queryFieldName, dateOptions(args));
   },
@@ -266,13 +264,13 @@ export class DEPRECATED_QueryParamState {
     const { __filterFieldNames } = this.constructor;
     const activeFilters = Object.keys(queryParams);
     return __filterFieldNames.some((filterName) =>
-      activeFilters.includes(filterName)
+      activeFilters.includes(filterName),
     );
   }
 }
 
 export const usePathParams = (
-  pattern: string
+  pattern: string,
 ): {
   [key: string]: any;
 } => {
@@ -290,7 +288,7 @@ export const mdList = (text: string) => {
 
 export const learnMoreLink = (
   learnMoreURL?: string,
-  addFinalPeriod?: boolean
+  addFinalPeriod?: boolean,
 ) => {
   if (!learnMoreURL) {
     return "";
@@ -302,7 +300,7 @@ export const learnMoreLink = (
 
 export const learnMoreZendesk = (
   zendeskNumber: string,
-  addFinalPeriod?: boolean
+  addFinalPeriod?: boolean,
 ) => {
   if (!zendeskNumber) {
     return "";
@@ -312,7 +310,7 @@ export const learnMoreZendesk = (
 
 export const learnMoreZendeskCategory = (
   zendeskNumber: string,
-  addFinalPeriod?: boolean
+  addFinalPeriod?: boolean,
 ) => {
   if (!zendeskNumber) {
     return "";
@@ -328,7 +326,7 @@ const useQueryParam = <T>(
       deserialize?: (rawValue: string) => T | null | undefined;
       serialize?: (domain: T) => string;
     };
-  } = { default: null }
+  } = { default: null },
 ): [T | null | undefined, (value: T | null | undefined) => void] => {
   const navigationStore = useNavigationStore();
   const { queryParams, currentPath } = navigationStore;
@@ -370,30 +368,30 @@ const useQueryParam = <T>(
     },
     // Eslint bug: it thinks `T` is dependency, but its a type.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [key, options, navigationStore, currentPath]
+    [key, options, navigationStore, currentPath],
   );
 
   return [value, setter];
 };
 
 export const useIntQueryParam = (
-  key: string
+  key: string,
 ): [number | null | undefined, (value: number | null | undefined) => void] => {
   return useQueryParam(key, IntOptions);
 };
 
 export const useIntArrayQueryParam = (
-  key: string
+  key: string,
 ): [
   ReadonlyArray<number> | null | undefined,
-  (value: ReadonlyArray<number> | null | undefined) => void
+  (value: ReadonlyArray<number> | null | undefined) => void,
 ] => {
   return useQueryParam<ReadonlyArray<number>>(key, IntArrayOptions);
 };
 
 export const useStringQueryParam = (
   key: string,
-  defaultValue = ""
+  defaultValue = "",
 ): [string, (value: string | null | undefined) => void] => {
   const [v, setter] = useQueryParam(key, StringOptions);
   return [v || defaultValue, setter];
@@ -401,7 +399,7 @@ export const useStringQueryParam = (
 
 export const useStringEnumQueryParam = <T>(
   key: string,
-  defaultValue?: null | undefined | T
+  defaultValue?: null | undefined | T,
 ): [T, (value: null | undefined | T) => void] => {
   const [v, setter] = useQueryParam(key, StringOptions);
   return [
@@ -412,21 +410,21 @@ export const useStringEnumQueryParam = <T>(
 
 export const useStringEnumArrayQueryParam = <T>(
   key: string,
-  defaultValue?: ReadonlyArray<T>
+  defaultValue?: ReadonlyArray<T>,
 ): [ReadonlyArray<T>, (value: ReadonlyArray<T>) => void] => {
   const [v, setter] = useQueryParam<ReadonlyArray<string>>(
     key,
-    StringArrayOptions
+    StringArrayOptions,
   );
   return [
     (v || defaultValue || []) as ReadonlyArray<T>,
-    (setter as any) as (value: ReadonlyArray<T>) => void,
+    setter as any as (value: ReadonlyArray<T>) => void,
   ];
 };
 
 export const useIntEnumQueryParam = <T>(
   key: string,
-  defaultValue: null | undefined | T
+  defaultValue: null | undefined | T,
 ): [T, (value: null | undefined | T) => void] => {
   const [v, setter] = useQueryParam(key, IntOptions);
   return [
@@ -438,16 +436,16 @@ export const useIntEnumQueryParam = <T>(
 // TODO: Support passing <T>
 export const useStringArrayQueryParam = (
   key: string,
-  defaultValue?: null | undefined | ReadonlyArray<string>
+  defaultValue?: null | undefined | ReadonlyArray<string>,
 ): [ReadonlyArray<string>, (value: ReadonlyArray<string>) => void] => {
   const [v, setter] = useQueryParam<ReadonlyArray<string>>(
     key,
-    StringArrayOptions
+    StringArrayOptions,
   );
 
   const value = useMemo(
     () => (v != null && v.length > 0 ? v : defaultValue || []),
-    [v, defaultValue]
+    [v, defaultValue],
   );
   return [
     value as ReadonlyArray<string>,
@@ -457,18 +455,18 @@ export const useStringArrayQueryParam = (
 
 export const useStringSetQueryParam = <T>(
   key: string,
-  defaultValue: ReadonlySet<T> = new Set()
+  defaultValue: ReadonlySet<T> = new Set(),
 ): [ReadonlySet<T>, (value: ReadonlySet<T>) => void] => {
   const [v, setter] = useQueryParam(key, SetOptions);
   const value = useMemo(() => v || defaultValue, [v, defaultValue]);
-  return [(value as any) as ReadonlySet<T>, setter];
+  return [value as any as ReadonlySet<T>, setter];
 };
 
 export const useDateQueryParam = (
   key: string,
   args: { format: string; defaultValue?: Date | null | undefined } = {
     format: "YYYY-MM-DD",
-  }
+  },
 ): [Date | null | undefined, (value: Date | null | undefined) => void] => {
   const [v, setter] = useQueryParam(key, dateOptions(args));
   const value = useMemo(() => v || args.defaultValue, [v, args.defaultValue]);
@@ -477,7 +475,7 @@ export const useDateQueryParam = (
 
 export const useBoolQueryParam = (
   key: string,
-  defaultValue = false
+  defaultValue = false,
 ): [boolean, (value: boolean | null | undefined) => void] => {
   const [val, setter] = useQueryParam(key, BoolOptions);
   return [val != null ? val : defaultValue, setter];

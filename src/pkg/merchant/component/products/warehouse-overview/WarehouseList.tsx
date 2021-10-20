@@ -25,7 +25,7 @@ import WarehousePastTable from "./WarehousePastTable";
 import { Illustration, IllustrationName } from "@merchant/component/core";
 
 /* Merchant Store */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* Toolkit */
 import { PickedWarehouseType } from "@toolkit/products/warehouse-overview";
@@ -64,9 +64,10 @@ const WarehouseList: React.FC<Props> = ({
   const styles = useStylesheet();
   const [expandedRows, setExpandedRows] = useState<Set<number>>(new Set());
 
-  const expandedRowsArray = useMemo(() => Array.from(expandedRows), [
-    expandedRows,
-  ]);
+  const expandedRowsArray = useMemo(
+    () => Array.from(expandedRows),
+    [expandedRows],
+  );
   const onRowExpandToggled = (index: number, shouldExpand: boolean) => {
     const newExpandedRows = new Set(expandedRows);
     shouldExpand ? newExpandedRows.add(index) : newExpandedRows.delete(index);
@@ -141,9 +142,9 @@ const WarehouseList: React.FC<Props> = ({
               : latestStats.weIsLateDeliveryRateAtRisk && "YELLOW",
           };
         }),
-        ({ lateDeliveryRate }) => -(lateDeliveryRate || 0)
+        ({ lateDeliveryRate }) => -(lateDeliveryRate || 0),
       ),
-    [weekRange, warehouses]
+    [weekRange, warehouses],
   );
 
   const { weekStart, weekEnd } = useMemo(
@@ -151,7 +152,7 @@ const WarehouseList: React.FC<Props> = ({
       weekStart: weekRange.start.format("M/D"),
       weekEnd: weekRange.end.format("M/D"),
     }),
-    [weekRange]
+    [weekRange],
   );
 
   return (
@@ -342,7 +343,7 @@ const WarehouseList: React.FC<Props> = ({
               "GMV is Gross Merchandise Value. placeholders are dates",
               "Previous Week's Max Expected GMV (Week of %1$s - %2$s)",
               weekStart,
-              weekEnd
+              weekEnd,
             )}
           </Text>
         )}
@@ -417,6 +418,6 @@ const useStylesheet = () => {
           marginBottom: 4,
         },
       }),
-    [textBlack, textDark]
+    [textBlack, textDark],
   );
 };

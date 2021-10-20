@@ -7,7 +7,7 @@ import { Table, CellInfo } from "@ContextLogic/lego";
 
 /* Lego Toolkit */
 import { css } from "@toolkit/styling";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
@@ -21,12 +21,12 @@ export type OrderTaxAuthoritiesTableProps = BaseProps & {
 };
 
 const OrderTaxAuthoritiesTable: React.FC<OrderTaxAuthoritiesTableProps> = (
-  props: OrderTaxAuthoritiesTableProps
+  props: OrderTaxAuthoritiesTableProps,
 ) => {
   const { data, className, style } = props;
   const items = useMemo(
     () => data.fulfillment.order?.tax?.salesTax?.merchantRemitItems || [],
-    [data.fulfillment.order?.tax?.salesTax?.merchantRemitItems]
+    [data.fulfillment.order?.tax?.salesTax?.merchantRemitItems],
   );
   const styles = useStylesheet();
   const saleRows: ReadonlyArray<DisplayRow> = useMemo(() => {
@@ -132,7 +132,7 @@ const useStylesheet = () => {
           color: negative,
         },
       }),
-    [negative]
+    [negative],
   );
 };
 
@@ -148,7 +148,7 @@ type DisplayRow = {
 };
 
 const formatTaxTypeForDisplay = (
-  taxType: string | null | undefined
+  taxType: string | null | undefined,
 ): string | null | undefined => {
   if (taxType == null) {
     return null;
@@ -163,7 +163,7 @@ const formatTaxTypeForDisplay = (
   return text
     .replace(
       /\w\S*/g,
-      (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
+      (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase(),
     )
     .replace(`Sales Use`, `Sales/Use`);
 };

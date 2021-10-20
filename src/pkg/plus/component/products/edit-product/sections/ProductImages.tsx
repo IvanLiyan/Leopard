@@ -24,7 +24,7 @@ import Section, {
   SectionProps,
 } from "@plus/component/products/edit-product/Section";
 import ProductEditState from "@plus/model/ProductEditState";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 type Props = Omit<SectionProps, "title"> & {
   readonly editState: ProductEditState;
@@ -73,7 +73,7 @@ const ProductImages: React.FC<Props> = (props: Props) => {
               id: index,
               wishUrl: imageInfo.url,
               isCleanImage: imageInfo?.isClean || false,
-            }))
+            })),
           );
         }}
         images={imageInfos}
@@ -104,6 +104,6 @@ const useStylesheet = () => {
           alignSelf: "stretch",
         },
       }),
-    [textDark]
+    [textDark],
   );
 };

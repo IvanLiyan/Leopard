@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+// @ts-nocheck will be re-writing illustrations for next compatibility anyways
 //
 //  toolkit/illustration.ts
 //  Project-Lego
@@ -396,11 +398,13 @@ export const plantLaptopHomeBox = plantLaptopHomeBoxURL;
 export const houseWithPinpoints = houseWithPinpointsURL;
 
 export const earlyPaymentEligibleBannerImg = earlyPaymentEligibleBannerImgURL;
-export const earlyPaymentNotEligibleBannerImg = earlyPaymentNotEligibleBannerImgURL;
+export const earlyPaymentNotEligibleBannerImg =
+  earlyPaymentNotEligibleBannerImgURL;
 export const wishLogoInk = wishLogoInkURL;
 export const developerDeskIllustration = developerDeskIllustrationURL;
 export const developerMerchantsIllustration = developerMerchantsIllustrationURL;
-export const developerNavigationIllustration = developerNavigationIllustrationURL;
+export const developerNavigationIllustration =
+  developerNavigationIllustrationURL;
 export const developerLandingIllustration = developerLandingIllustrationURL;
 
 export const appNoLogo = appNoLogoURL;
@@ -573,7 +577,8 @@ export const productBoostFBWFree = productBoostFBWFreeURL;
 export const productBoostFBWDiscount = productBoostFBWDiscountURL;
 export const whyFBS = whyFBSURL;
 export const fbsEmptyState = fbsEmptyStateURL;
-export const thirdPartyBrandedGoodsDeclaration = thirdPartyBrandedGoodsDeclarationURL;
+export const thirdPartyBrandedGoodsDeclaration =
+  thirdPartyBrandedGoodsDeclarationURL;
 export const returnsTruck = returnsTruckUrl;
 export const returns = returnsURL;
 export const coins = coinsURL;
@@ -594,10 +599,12 @@ export const fourthlineLogoDark = fourthlineLogoDarkURL;
 export const poweredByGoogle = poweredByGoogleURL;
 
 export const trueBrandDirectoryHeader = trueBrandDirectoryHeaderURL;
-export const merchantTrueBrandRequestsHeader = merchantTrueBrandRequestsHeaderURL;
+export const merchantTrueBrandRequestsHeader =
+  merchantTrueBrandRequestsHeaderURL;
 export const absHeader = absHeaderURL;
 export const brandedProductsHeader = brandedProductsHeaderURL;
-export const brandedProductVerificationSection = brandedProductVerificationSectionURL;
+export const brandedProductVerificationSection =
+  brandedProductVerificationSectionURL;
 export const policyArchiveHeader = policyArchiveHeaderURL;
 export const productBoostSection = productBoostSectionURL;
 export const priceDropSection = priceDropSectionURL;
@@ -617,7 +624,8 @@ export const enforceBrandIcon = enforceBrandIconURL;
 export const searchListingsIcon = searchListingsIconURL;
 export const reportViolationsIcon = reportViolationsIconURL;
 
-export const submitTrueBrandRequestConfirmation = submitTrueBrandRequestConfirmationURL;
+export const submitTrueBrandRequestConfirmation =
+  submitTrueBrandRequestConfirmationURL;
 export const ladyHoldingPackage = ladyHoldingPackageURL;
 export const houseWithFlag = houseWithFlagURL;
 
@@ -637,60 +645,84 @@ export const boxesInFrontOfEarth = boxesInFrontOfEarthURL;
 
 export const merchantPlusHome = merchantPlusHomeURL;
 export const merchantPlusAddProductsTask = merchantPlusAddProductsTaskURL;
-export const merchantPlusUploadProductsHowTo = merchantPlusUploadProductsHowToURL;
+export const merchantPlusUploadProductsHowTo =
+  merchantPlusUploadProductsHowToURL;
 export const merchantPlusVerifyEmailTask = merchantPlusVerifyEmailTaskURL;
 export const merchantPlus2FATask = merchantPlus2FATaskURL;
 export const merchantPlusSetupPaymentsTask = merchantPlusSetupPaymentsTaskURL;
 export const merchantPlusSetupShippingTask = merchantPlusSetupShippingTaskURL;
-export const merchantPlusMarkOrdersShippedTask = merchantPlusMarkOrdersShippedTaskURL;
-export const merchantPlusSellerValidationTask = merchantPlusSellerValidationTaskURL;
-export const merchantPlusBlueListFirstProductTask = merchantPlusBlueListFirstProductTaskURL;
-export const merchantPlusBlueSetPaymentInfoTask = merchantPlusBlueSetPaymentInfoTaskURL;
-export const merchantPlusBlueSetStoreHoursTask = merchantPlusBlueSetStoreHoursTaskURL;
-export const merchantPlusBlueSetStorePhotoTask = merchantPlusBlueSetStorePhotoTaskURL;
-export const merchantPlusBlueDownloadAppTask = merchantPlusBlueDownloadAppTaskURL;
+export const merchantPlusMarkOrdersShippedTask =
+  merchantPlusMarkOrdersShippedTaskURL;
+export const merchantPlusSellerValidationTask =
+  merchantPlusSellerValidationTaskURL;
+export const merchantPlusBlueListFirstProductTask =
+  merchantPlusBlueListFirstProductTaskURL;
+export const merchantPlusBlueSetPaymentInfoTask =
+  merchantPlusBlueSetPaymentInfoTaskURL;
+export const merchantPlusBlueSetStoreHoursTask =
+  merchantPlusBlueSetStoreHoursTaskURL;
+export const merchantPlusBlueSetStorePhotoTask =
+  merchantPlusBlueSetStorePhotoTaskURL;
+export const merchantPlusBlueDownloadAppTask =
+  merchantPlusBlueDownloadAppTaskURL;
 export const merchantPlus2FAOn = merchantPlus2FAOnURL;
 export const merchantPlusVacationModeOn = merchantPlusVacationModeOnURL;
 export const merchantPlusVacationModeOff = merchantPlusVacationModeOffURL;
 export const merchantPlusDeleteAllDevices = merchantPlusDeleteAllDevicesURL;
-export const absbAuthorizedResellerIllustration = absbAuthorizedResellerIllustrationURL;
+export const absbAuthorizedResellerIllustration =
+  absbAuthorizedResellerIllustrationURL;
 export const absbBrandOwnerIllustration = absbBrandOwnerIllustrationURL;
-export const absbUnauthorizedResellerIllustration = absbUnauthorizedResellerIllustrationURL;
+export const absbUnauthorizedResellerIllustration =
+  absbUnauthorizedResellerIllustrationURL;
 
 export const preorderOnboardingLogo = preorderOnboardingLogoURL;
 export const preorderOnboardingContactLogo = preorderOnboardingContactLogoURL;
 export const preorderProcessingOrderLogo = preorderProcessingOrderLogoURL;
 
-export const restrictedProductPlantAndPlantSeedsRaw = restrictedProductPlantAndPlantSeedsRawURL;
+export const restrictedProductPlantAndPlantSeedsRaw =
+  restrictedProductPlantAndPlantSeedsRawURL;
 export const restrictedProductVitaminsRaw = restrictedProductVitaminsRawURL;
 export const restrictedProductBeveragesRaw = restrictedProductBeveragesRawURL;
 export const restrictedProductFoodRaw = restrictedProductFoodRawURL;
 export const restrictedProductPetFoodRaw = restrictedProductPetFoodRawURL;
-export const restrictedProductMedicationsRaw = restrictedProductMedicationsRawURL;
+export const restrictedProductMedicationsRaw =
+  restrictedProductMedicationsRawURL;
 export const restrictedProductCarSeatsRaw = restrictedProductCarSeatsRawURL;
 export const restrictedProductCarriersRaw = restrictedProductCarriersRawURL;
 export const restrictedProductSeatBeltRaw = restrictedProductSeatBeltRawURL;
 export const restrictedProductWarrantiesRaw = restrictedProductWarrantiesRawURL;
-export const restrictedProductPlantAndPlantSeedsCircle = restrictedProductPlantAndPlantSeedsCircleURL;
-export const restrictedProductVitaminsCircle = restrictedProductVitaminsCircleURL;
-export const restrictedProductBeveragesCircle = restrictedProductBeveragesCircleURL;
+export const restrictedProductPlantAndPlantSeedsCircle =
+  restrictedProductPlantAndPlantSeedsCircleURL;
+export const restrictedProductVitaminsCircle =
+  restrictedProductVitaminsCircleURL;
+export const restrictedProductBeveragesCircle =
+  restrictedProductBeveragesCircleURL;
 export const restrictedProductFoodCircle = restrictedProductFoodCircleURL;
 export const restrictedProductPetFoodCircle = restrictedProductPetFoodCircleURL;
-export const restrictedProductMedicationsCircle = restrictedProductMedicationsCircleURL;
-export const restrictedProductCarSeatsCircle = restrictedProductCarSeatsCircleURL;
-export const restrictedProductCarriersCircle = restrictedProductCarriersCircleURL;
-export const restrictedProductSeatBeltCircle = restrictedProductSeatBeltCircleURL;
-export const restrictedProductWarrantiesCircle = restrictedProductWarrantiesCircleURL;
-export const restrictedProductPlantAndPlantSeedsColor = restrictedProductPlantAndPlantSeedsColorURL;
+export const restrictedProductMedicationsCircle =
+  restrictedProductMedicationsCircleURL;
+export const restrictedProductCarSeatsCircle =
+  restrictedProductCarSeatsCircleURL;
+export const restrictedProductCarriersCircle =
+  restrictedProductCarriersCircleURL;
+export const restrictedProductSeatBeltCircle =
+  restrictedProductSeatBeltCircleURL;
+export const restrictedProductWarrantiesCircle =
+  restrictedProductWarrantiesCircleURL;
+export const restrictedProductPlantAndPlantSeedsColor =
+  restrictedProductPlantAndPlantSeedsColorURL;
 export const restrictedProductVitaminsColor = restrictedProductVitaminsColorURL;
-export const restrictedProductBeveragesColor = restrictedProductBeveragesColorURL;
+export const restrictedProductBeveragesColor =
+  restrictedProductBeveragesColorURL;
 export const restrictedProductFoodColor = restrictedProductFoodColorURL;
 export const restrictedProductPetFoodColor = restrictedProductPetFoodColorURL;
-export const restrictedProductMedicationsColor = restrictedProductMedicationsColorURL;
+export const restrictedProductMedicationsColor =
+  restrictedProductMedicationsColorURL;
 export const restrictedProductCarSeatsColor = restrictedProductCarSeatsColorURL;
 export const restrictedProductCarriersColor = restrictedProductCarriersColorURL;
 export const restrictedProductSeatBeltColor = restrictedProductSeatBeltColorURL;
-export const restrictedProductWarrantiesColor = restrictedProductWarrantiesColorURL;
+export const restrictedProductWarrantiesColor =
+  restrictedProductWarrantiesColorURL;
 export const restrictedProduct = restrictedProductURL;
 export const weeklyDisbBannerImage = weeklyDisbBannerImageURL;
 export const productUploadBannerImage = productUploadBannerImageURL;

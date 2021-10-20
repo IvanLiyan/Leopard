@@ -20,7 +20,7 @@ import { css } from "@toolkit/styling";
 
 /* Type Imports */
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 import { SidePadding, RelaxedSidePadding } from "./PageGuide";
 
@@ -119,7 +119,7 @@ const useStylesheet = (props: PlusWelcomeHeaderProps) => {
           },
         },
       }),
-    [sticky]
+    [sticky],
   );
 };
 

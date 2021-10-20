@@ -54,7 +54,7 @@ const ScheduledBudgetForm = (props: ScheduledBudgetFormProps) => {
       }
     } else {
       campaign.scheduledAddBudgetDays = campaign.scheduledAddBudgetDays.filter(
-        (el) => el !== value
+        (el) => el !== value,
       );
       if (setValidity) {
         setValidity(!!campaign.scheduledAddBudgetDays.length);
@@ -168,7 +168,7 @@ const ScheduledBudgetForm = (props: ScheduledBudgetFormProps) => {
           ]}
           onValidityChanged={(
             isValid: boolean,
-            errorMessage: string | null | undefined
+            errorMessage: string | null | undefined,
           ) => {
             if (setValidity) {
               const days =
@@ -231,6 +231,6 @@ const useStyleSheet = () => {
           cursor: "default",
         },
       }),
-    []
+    [],
   );
 };

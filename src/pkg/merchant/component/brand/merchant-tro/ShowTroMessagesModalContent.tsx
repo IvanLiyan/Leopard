@@ -9,8 +9,8 @@ import * as fonts from "@toolkit/fonts";
 
 import { InjunctionAdminReply } from "@merchant/api/brand/merchant-tro";
 
-import { useDimenStore } from "@merchant/stores/DimenStore";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useDeviceStore } from "@stores/DeviceStore";
+import { useTheme } from "@stores/ThemeStore";
 
 export type ShowTroMessagesModalContentProps = {
   readonly replies: ReadonlyArray<InjunctionAdminReply>;
@@ -18,7 +18,7 @@ export type ShowTroMessagesModalContentProps = {
 };
 
 const ShowTroMessagesModalContent = (
-  props: ShowTroMessagesModalContentProps
+  props: ShowTroMessagesModalContentProps,
 ) => {
   const styles = useStylesheet(props);
   const { replies } = props;
@@ -38,7 +38,7 @@ const ShowTroMessagesModalContent = (
 export default ShowTroMessagesModalContent;
 
 const useStylesheet = (props: ShowTroMessagesModalContentProps) => {
-  const { pageGuideXForPageWithTable: pageX } = useDimenStore();
+  const { pageGuideXForPageWithTable: pageX } = useDeviceStore();
   const { borderPrimaryDark } = useTheme();
 
   return useMemo(
@@ -60,6 +60,6 @@ const useStylesheet = (props: ShowTroMessagesModalContentProps) => {
           borderBottom: `solid 1px ${borderPrimaryDark}`,
         },
       }),
-    [pageX, borderPrimaryDark]
+    [pageX, borderPrimaryDark],
   );
 };

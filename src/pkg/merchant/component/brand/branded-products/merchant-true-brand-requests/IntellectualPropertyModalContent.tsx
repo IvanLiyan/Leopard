@@ -19,9 +19,9 @@ import TrademarkTypeSelect from "./TrademarkTypeSelect";
 import TrademarkOfficeSelect from "./TrademarkOfficeSelect";
 
 /* Merchant Store */
-import { useNavigationStore } from "@merchant/stores/NavigationStore";
-import { useToastStore } from "@merchant/stores/ToastStore";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useNavigationStore } from "@stores/NavigationStore";
+import { useToastStore } from "@stores/ToastStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* Type Imports */
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
@@ -48,19 +48,19 @@ const IntellectualPropertyModalContent = ({
   const navigationStore = useNavigationStore();
   const { surfaceLight } = useTheme();
   const [intellectualPropertyInfo] = useState<IntellectualPropertyInfoState>(
-    new IntellectualPropertyInfoState(request.id)
+    new IntellectualPropertyInfoState(request.id),
   );
 
   if (intellectualPropertyInfo.submitted) {
     if (intellectualPropertyInfo.submitSucceeded) {
       toastStore.positive(
-        i`Intellectual property information successfully added!`
+        i`Intellectual property information successfully added!`,
       );
       closeModal();
       navigationStore.reload();
     } else {
       toastStore.negative(
-        i`Sorry, we were unable to add the intellectual property information.`
+        i`Sorry, we were unable to add the intellectual property information.`,
       );
     }
   }
@@ -94,7 +94,7 @@ const IntellectualPropertyModalContent = ({
             i`Trademark registration number`,
             i`Enter the trademark registration number provided by the ` +
               i`government trademark office. Please note that trademark ` +
-              i`application numbers are not accepted.`
+              i`application numbers are not accepted.`,
           )
         }
         className={css(styles.field)}
@@ -116,7 +116,7 @@ const IntellectualPropertyModalContent = ({
           renderPopoverTitle(
             i`Trademark office`,
             i`The trademark must be active and issued by official ` +
-              i`government trademark offices listed in the drop down menu.`
+              i`government trademark offices listed in the drop down menu.`,
           )
         }
         className={css(styles.field)}
@@ -135,7 +135,7 @@ const IntellectualPropertyModalContent = ({
             i`Trademark registration document`,
             i`The trademark text must match the brand name. If it ` +
               i`is an image based trademark with words, letters, or ` +
-              i`numbers, the image must match the trademark record.`
+              i`numbers, the image must match the trademark record.`,
           )
         }
         className={css(styles.field)}
@@ -225,5 +225,5 @@ const useStylesheet = () =>
           alignItems: "baseline",
         },
       }),
-    []
+    [],
   );

@@ -20,7 +20,7 @@ import { weightNormal, weightSemibold } from "@toolkit/fonts";
 import locales from "@toolkit/locales";
 
 /* Merchant Stores */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* Type Imports */
 import { Locale } from "@schema/types";
@@ -33,13 +33,8 @@ type Props = BaseProps & {
 };
 
 const LanguageSettings: React.FC<Props> = (props: Props) => {
-  const {
-    className,
-    style,
-    selectedLocale,
-    availableLocales,
-    onSelected,
-  } = props;
+  const { className, style, selectedLocale, availableLocales, onSelected } =
+    props;
   const styles = useStylesheet(props);
 
   return (
@@ -109,6 +104,6 @@ const useStylesheet = (props: Props) => {
           margin: "0px 8px",
         },
       }),
-    [textBlack]
+    [textBlack],
   );
 };

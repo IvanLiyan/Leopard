@@ -27,7 +27,7 @@ import Section, {
   SectionProps,
 } from "@plus/component/products/edit-product/Section";
 import ProductEditState from "@plus/model/ProductEditState";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import { useState } from "react";
 import {
   MeasurementType,
@@ -36,7 +36,7 @@ import {
   unitDisplayName,
 } from "@toolkit/product-edit";
 import { formatCurrency } from "@toolkit/currency";
-import { useUserStore } from "@merchant/stores/UserStore";
+import { useUserStore } from "@stores/UserStore";
 import { zendeskURL } from "@toolkit/url";
 import {
   IntegerValidator,
@@ -308,6 +308,6 @@ const useStylesheet = () => {
           cursor: "default",
         },
       }),
-    [borderPrimary, textDark, negative]
+    [borderPrimary, textDark, negative],
   );
 };

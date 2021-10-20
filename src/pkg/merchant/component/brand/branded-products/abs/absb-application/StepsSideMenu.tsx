@@ -9,7 +9,7 @@ import { DEPRECATEDIcon as Icon } from "@merchant/component/core";
 
 /* Lego Toolkit */
 import { css } from "@toolkit/styling";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* Type Imports */
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
@@ -113,6 +113,6 @@ const useStylesheet = () => {
           whiteSpace: "normal",
         },
       }),
-    [borderPrimary, textLight]
+    [borderPrimary, textLight],
   );
 };

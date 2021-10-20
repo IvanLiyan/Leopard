@@ -15,7 +15,7 @@ import {
 
 /* Lego Toolkit */
 import { css } from "@toolkit/styling";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* Merchant Components */
 import CollectionBoostStatusLabel from "@merchant/component/collections-boost/CollectionBoostStatusLabel";
@@ -26,7 +26,7 @@ import { CheckboxGroupFieldOptionType as OptionType } from "@ContextLogic/lego";
 import { CollectionsBoostCampaignState } from "@merchant/api/collections-boost";
 
 /* Merchant Store */
-import LocalizationStore from "@merchant/stores/LocalizationStore";
+import LocalizationStore from "@stores/LocalizationStore";
 
 type CampaignsFilterProps = BaseProps & {
   readonly filterStates: ReadonlyArray<CollectionsBoostCampaignState>;
@@ -182,7 +182,7 @@ const useFilterOptions = (): ReadonlyArray<
         title: () => <CollectionBoostStatusLabel status="CANCELED" />,
       },
     ],
-    []
+    [],
   );
 };
 
@@ -235,6 +235,6 @@ const useStyleSheet = () => {
           alignSelf: "stretch",
         },
       }),
-    [textBlack]
+    [textBlack],
   );
 };

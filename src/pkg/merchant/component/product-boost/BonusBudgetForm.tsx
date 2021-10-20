@@ -13,7 +13,7 @@ import { formatCurrency } from "@ContextLogic/lego/toolkit/currency";
 import { BonusBudgetPromotionExplanations } from "@toolkit/product-boost/resources/bonus-budget-tooltip";
 
 /* Merchant Store */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { MarketingBonusBudgetType } from "@schema/types";

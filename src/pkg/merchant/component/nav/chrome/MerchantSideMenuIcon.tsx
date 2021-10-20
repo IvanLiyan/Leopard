@@ -22,7 +22,7 @@ import { palettes } from "@toolkit/lego-legacy/DEPRECATED_colors";
 import { IconName } from "@merchant/component/core";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { NavigationNode, useNodeCount } from "@toolkit/chrome";
-import { useLocalizationStore } from "@merchant/stores/LocalizationStore";
+import { useLocalizationStore } from "@stores/LocalizationStore";
 
 type Props = BaseProps & {
   readonly node: NavigationNode;
@@ -227,6 +227,6 @@ const useStylesheet = ({
           whiteSpace: "nowrap",
         },
       }),
-    [redDotSize, tooltipTop, isRightToLeft]
+    [redDotSize, tooltipTop, isRightToLeft],
   );
 };

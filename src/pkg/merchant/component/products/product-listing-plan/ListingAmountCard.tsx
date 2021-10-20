@@ -13,7 +13,7 @@ import { Card, Layout, Text } from "@ContextLogic/lego";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
 /* Toolkit */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import { formatProductAmount } from "@toolkit/products/product-listing-plan";
 
 type Props = BaseProps & {
@@ -69,6 +69,6 @@ const useStylesheet = () => {
           color: textBlack,
         },
       }),
-    [textDark, textBlack]
+    [textDark, textBlack],
   );
 };

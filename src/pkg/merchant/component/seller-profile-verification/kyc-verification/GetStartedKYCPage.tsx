@@ -7,7 +7,7 @@ import { Illustration } from "@merchant/component/core";
 
 /* Lego Toolkit */
 import { css } from "@toolkit/styling";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import { learnMoreZendesk } from "@toolkit/url";
 
 /* Type Imports */
@@ -35,7 +35,7 @@ const GetStartedKYCPage = (props: GetStartedKYCPageProps) => {
     i`To continue operating your Wish store within the European Economic Area (EEA),` +
     i` you need to complete the validation process to comply with` +
     i` Know Your Customer (KYC) regulatory requirements. [Learn more](${zendeskURL(
-      "360045537433"
+      "360045537433",
     )})`;
 
   const content3 =
@@ -63,7 +63,7 @@ const GetStartedKYCPage = (props: GetStartedKYCPageProps) => {
         <Markdown
           openLinksInNewTab
           text={i`Country/region of domicile. ${learnMoreZendesk(
-            "360050893133"
+            "360050893133",
           )}`}
         />
       </li>
@@ -191,6 +191,6 @@ const useStylesheet = () => {
           marginBottom: 20,
         },
       }),
-    [textDark, textBlack, borderPrimaryDark]
+    [textDark, textBlack, borderPrimaryDark],
   );
 };

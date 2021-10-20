@@ -18,7 +18,7 @@ import { useIntQueryParam, useStringEnumArrayQueryParam } from "@toolkit/url";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { CheckboxGroupFieldOptionType as OptionType } from "@ContextLogic/lego";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import { ProductVideoState } from "@schema/types";
 
 type VideoStatus = "ACTIVE" | "REJECTED" | "PROCESSING" | "PENDING_REVIEW";

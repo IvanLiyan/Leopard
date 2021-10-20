@@ -26,7 +26,7 @@ import {
 } from "@ContextLogic/lego";
 
 /* Merchant Stores */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* Toolkit */
 import { getCountryName } from "@toolkit/countries";
@@ -38,7 +38,7 @@ import {
   GET_WAREHOUSES,
   WarehouseAddress,
 } from "@toolkit/wps/create-shipping-label";
-import { useToastStore } from "@merchant/stores/ToastStore";
+import { useToastStore } from "@stores/ToastStore";
 import { Illustration } from "@merchant/component/core";
 
 type Props = BaseProps & {

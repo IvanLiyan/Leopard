@@ -35,11 +35,11 @@ import {
 } from "@toolkit/wps/create-shipping-label";
 
 /* Merchant Store */
-import { useDimenStore } from "@merchant/stores/DimenStore";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useDeviceStore } from "@stores/DeviceStore";
+import { useTheme } from "@stores/ThemeStore";
 import { useMountEffect } from "@ContextLogic/lego/toolkit/hooks";
-import { useToastStore } from "@merchant/stores/ToastStore";
-import { useUserStore } from "@merchant/stores/UserStore";
+import { useToastStore } from "@stores/ToastStore";
+import { useUserStore } from "@stores/UserStore";
 
 const WpsTermsOfServiceContainer = () => {
   const styles = useStylesheet();
@@ -50,12 +50,10 @@ const WpsTermsOfServiceContainer = () => {
     configureAnchors({ offset: 0, scrollDuration: 200 });
   });
 
-  const [
-    getTosAcceptance,
-    { data, loading: loadingQuery, refetch },
-  ] = useLazyQuery<GetTosAcceptedResponseType, {}>(GET_TOS_ACCEPTED, {
-    fetchPolicy: "no-cache",
-  });
+  const [getTosAcceptance, { data, loading: loadingQuery, refetch }] =
+    useLazyQuery<GetTosAcceptedResponseType, {}>(GET_TOS_ACCEPTED, {
+      fetchPolicy: "no-cache",
+    });
 
   const [acceptTos, { loading: loadingMutation }] = useMutation<
     AcceptTosResponseType,
@@ -120,7 +118,7 @@ const WpsTermsOfServiceContainer = () => {
 };
 
 const useStylesheet = () => {
-  const { pageGuideX } = useDimenStore();
+  const { pageGuideX } = useDeviceStore();
   const { textBlack } = useTheme();
   return useMemo(
     () =>
@@ -137,7 +135,7 @@ const useStylesheet = () => {
           },
         },
       }),
-    [pageGuideX, textBlack]
+    [pageGuideX, textBlack],
   );
 };
 

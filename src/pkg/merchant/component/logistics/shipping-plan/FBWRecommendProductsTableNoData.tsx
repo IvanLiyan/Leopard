@@ -10,7 +10,7 @@ import { PrimaryButton } from "@ContextLogic/lego";
 /* Lego Toolkit */
 import { css } from "@toolkit/styling";
 import * as fonts from "@toolkit/fonts";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
@@ -20,7 +20,7 @@ type FBWRecommendProductsTableNoDataProps = BaseProps & {
 };
 
 const FBWRecommendProductsTableNoData = (
-  props: FBWRecommendProductsTableNoDataProps
+  props: FBWRecommendProductsTableNoDataProps,
 ) => {
   const styles = useStylesheet();
   const { onClick, allowAddingProduct } = props;
@@ -94,6 +94,6 @@ const useStylesheet = () => {
         },
         logo: {},
       }),
-    [textBlack]
+    [textBlack],
   );
 };

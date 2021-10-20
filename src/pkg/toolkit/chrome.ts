@@ -1,7 +1,7 @@
 import { useQuery } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 import _ from "lodash";
-import { useApolloStore } from "@merchant/stores/ApolloStore";
+import { useApolloStore } from "@stores/ApolloStore";
 import {
   UserSchema,
   MerchantSchema,
@@ -51,7 +51,7 @@ query emptyQuery {
 `;
 
 export const useNodeCount = (
-  node: NavigationNode | null | undefined
+  node: NavigationNode | null | undefined,
 ): number | null => {
   const countQuery = node?.count_query;
   const queryString = countQuery?.query;
@@ -64,7 +64,7 @@ export const useNodeCount = (
     {
       skip: countQuery == null,
       client,
-    }
+    },
   );
 
   const count =

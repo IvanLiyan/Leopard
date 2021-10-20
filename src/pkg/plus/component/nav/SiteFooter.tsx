@@ -19,8 +19,8 @@ import { css } from "@toolkit/styling";
 import * as fonts from "@toolkit/fonts";
 
 /* Merchant Stores */
-import { useDimenStore } from "@merchant/stores/DimenStore";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useDeviceStore } from "@stores/DeviceStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* Type Imports */
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
@@ -49,7 +49,7 @@ const FooterLink: React.FC<FooterLinkProps> = ({
 };
 
 const FooterDivider = () => {
-  const { isSmallScreen } = useDimenStore();
+  const { isSmallScreen } = useDeviceStore();
   const styles = useStylesheet();
 
   if (isSmallScreen) {
@@ -85,7 +85,7 @@ const SiteFooter = (props: SiteFooterProps) => {
 export default observer(SiteFooter);
 
 const useStylesheet = () => {
-  const { isSmallScreen } = useDimenStore();
+  const { isSmallScreen } = useDeviceStore();
   const { textLight, textBlack } = useTheme();
   return useMemo(
     () =>
@@ -118,6 +118,6 @@ const useStylesheet = () => {
           borderRadius: "50%",
         },
       }),
-    [isSmallScreen, textLight, textBlack]
+    [isSmallScreen, textLight, textBlack],
   );
 };

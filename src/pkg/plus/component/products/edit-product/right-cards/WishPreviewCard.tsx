@@ -16,7 +16,7 @@ import { css } from "@toolkit/styling";
 import ProductEditState from "@plus/model/ProductEditState";
 import { BaseProps } from "@toolkit/api";
 import { Icon, Illustration } from "@merchant/component/core";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import Section from "@plus/component/products/edit-product/Section";
 import {
   PreviewType,
@@ -84,7 +84,7 @@ const WishPreviewCard: React.FC<Props> = ({
       return variationsList[0];
     }
     const mainImageVariation = variationsList.find(
-      ({ image }) => image?.id == images[0].id
+      ({ image }) => image?.id == images[0].id,
     );
     if (mainImageVariation == null) {
       return variationsList[0];
@@ -99,7 +99,7 @@ const WishPreviewCard: React.FC<Props> = ({
       msrp,
       currencyCode: primaryCurrency,
     }),
-    [variation, msrp, primaryCurrency]
+    [variation, msrp, primaryCurrency],
   );
 
   // TODO: FAQ link
@@ -258,6 +258,6 @@ const useStylesheet = () => {
           lineHeight: 1.5,
         },
       }),
-    [surfaceLighter, borderPrimary, textDark]
+    [surfaceLighter, borderPrimary, textDark],
   );
 };

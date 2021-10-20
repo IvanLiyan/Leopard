@@ -9,7 +9,7 @@ import { Layout, Text } from "@ContextLogic/lego";
 import { css } from "@toolkit/styling";
 
 /* Merchant Store */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
@@ -138,6 +138,6 @@ const useStylesheet = () => {
           },
         },
       }),
-    [textBlack]
+    [textBlack],
   );
 };

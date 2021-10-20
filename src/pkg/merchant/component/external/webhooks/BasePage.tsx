@@ -15,8 +15,8 @@ import { H4, Text, Markdown } from "@ContextLogic/lego";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
 /* Merchant Store */
-import { useTheme } from "@merchant/stores/ThemeStore";
-import { useDeciderKey } from "@merchant/stores/ExperimentStore";
+import { useTheme } from "@stores/ThemeStore";
+import { useDeciderKey } from "@stores/ExperimentStore";
 
 /* Relative Imports */
 import HeadersTable from "./HeadersTable";

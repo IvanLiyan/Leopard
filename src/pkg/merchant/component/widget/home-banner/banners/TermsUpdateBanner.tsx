@@ -7,7 +7,7 @@ import moment from "moment/moment";
 import { SimpleBannerItem, Markdown } from "@ContextLogic/lego";
 
 /* Merchant Store */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* Toolkit */
 import { formatDatetimeLocalized } from "@toolkit/datetime";
@@ -26,7 +26,7 @@ export type TermsUpdateBannerProps = BaseProps & {
 };
 
 const TermsUpdateBanner: React.FC<TermsUpdateBannerProps> = (
-  props: TermsUpdateBannerProps
+  props: TermsUpdateBannerProps,
 ) => {
   const { logParams, releaseDate } = props;
   const { primary } = useTheme();
@@ -34,11 +34,11 @@ const TermsUpdateBanner: React.FC<TermsUpdateBannerProps> = (
   const dateFormat = "MMMM D, YYYY";
   const effectiveDate = useMemo(
     () => moment.unix(releaseDate?.unix || 1633320000).add(30, "days"),
-    [releaseDate]
+    [releaseDate],
   );
   const formattedEffectiveDate = formatDatetimeLocalized(
     effectiveDate,
-    dateFormat
+    dateFormat,
   );
   return (
     <SimpleBannerItem
@@ -87,7 +87,7 @@ const useStylesheet = () => {
           marginTop: 20,
         },
       }),
-    []
+    [],
   );
 };
 

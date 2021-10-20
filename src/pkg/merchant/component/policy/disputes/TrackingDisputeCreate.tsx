@@ -48,8 +48,8 @@ import { CountryType } from "@merchant/component/core/CountrySelect";
 import { AttachmentInfo } from "@ContextLogic/lego";
 import { OnTextChangeEvent } from "@ContextLogic/lego";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import NavigationStore from "@merchant/stores/NavigationStore";
-import DimenStore from "@merchant/stores/DimenStore";
+import NavigationStore from "@stores/NavigationStore";
+import DeviceStore from "@stores/DeviceStore";
 import { StateField } from "@merchant/component/core";
 
 type TrackingDisputeCreateProps = BaseProps & {
@@ -419,7 +419,7 @@ class TrackingDisputeCreate extends Component<TrackingDisputeCreateProps> {
 
   @computed
   get pageX(): string | number {
-    const { pageGuideX } = DimenStore.instance();
+    const { pageGuideX } = DeviceStore.instance();
     return pageGuideX;
   }
 

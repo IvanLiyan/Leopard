@@ -11,7 +11,7 @@ import { palettes } from "@toolkit/lego-legacy/DEPRECATED_colors";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
-import { useLocalizationStore } from "@merchant/stores/LocalizationStore";
+import { useLocalizationStore } from "@stores/LocalizationStore";
 
 type ThirdPartyEthicsHotlineProps = BaseProps;
 

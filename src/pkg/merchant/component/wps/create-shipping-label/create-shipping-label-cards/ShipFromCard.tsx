@@ -37,7 +37,7 @@ import {
   WarehouseAddress,
 } from "@toolkit/wps/create-shipping-label";
 import { useMutation } from "react-apollo";
-import { useToastStore } from "@merchant/stores/ToastStore";
+import { useToastStore } from "@stores/ToastStore";
 
 const CardPadding = 24;
 
@@ -156,7 +156,7 @@ const ShipFromCard: React.FC<Props> = ({ className, style, state }: Props) => {
   };
 
   const handleSubmit = async (
-    warehouse: WarehouseAddress
+    warehouse: WarehouseAddress,
   ): Promise<boolean> => {
     // State is required here but not in AddressSchema.
     // State is required in the Add/Edit flow so this case should not be reached
@@ -165,8 +165,8 @@ const ShipFromCard: React.FC<Props> = ({ className, style, state }: Props) => {
         ci18n(
           "Here 'state' refers to a geographical state of a country. The placeholder is the name of a warehouse.",
           "Please add a state to %1$s or select a different warehouse.",
-          warehouse.warehouseName
-        )
+          warehouse.warehouseName,
+        ),
       );
       return false;
     }
@@ -318,7 +318,7 @@ const useStylesheet = () => {
           marginLeft: 48,
         },
       }),
-    []
+    [],
   );
 };
 

@@ -41,9 +41,9 @@ import {
   UserSchema,
   MerchantSchema,
 } from "@schema/types";
-import { useToastStore } from "@merchant/stores/ToastStore";
-import { useApolloStore } from "@merchant/stores/ApolloStore";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useToastStore } from "@stores/ToastStore";
+import { useApolloStore } from "@stores/ApolloStore";
+import { useTheme } from "@stores/ThemeStore";
 
 const GET_UPC_PRODUCT = gql`
   query GetUPCProduct($upc: String!) {
@@ -182,7 +182,7 @@ const BarcodeAutoFill: React.FC<Props> = (props: Props) => {
       });
       brands = response.data.brand?.trueBrands || [];
       brands = brands.filter(
-        (b) => b.displayName.toLowerCase() === product.brandName?.toLowerCase()
+        (b) => b.displayName.toLowerCase() === product.brandName?.toLowerCase(),
       );
       gtinLogger.info({
         gtin: upc,
@@ -201,7 +201,7 @@ const BarcodeAutoFill: React.FC<Props> = (props: Props) => {
     let mainImage: ImageSchema | undefined;
     for (const upcVariation of product.variations) {
       const upcProductImages = (upcVariation.images || []).filter(
-        Boolean
+        Boolean,
       ) as ReadonlyArray<string>;
       let variationImage: ImageSchema | undefined;
       if (upcProductImages.length > 0) {
@@ -248,8 +248,8 @@ const BarcodeAutoFill: React.FC<Props> = (props: Props) => {
       ci18n(
         "popup indicating to the merchant they have successfully imported a new product (placeholder is singular)",
         'Successfully imported "%1$s"',
-        product.name
-      )
+        product.name,
+      ),
     );
   };
 
@@ -323,6 +323,6 @@ const useStylesheet = () => {
           height: 42, // prevent button from growing when error is displayed
         },
       }),
-    [textDark]
+    [textDark],
   );
 };

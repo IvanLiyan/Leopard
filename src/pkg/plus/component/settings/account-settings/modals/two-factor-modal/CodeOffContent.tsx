@@ -13,8 +13,8 @@ import { useMutation } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 
 /* Merchant Stores */
-import { useApolloStore } from "@merchant/stores/ApolloStore";
-import { useToastStore } from "@merchant/stores/ToastStore";
+import { useApolloStore } from "@stores/ApolloStore";
+import { useToastStore } from "@stores/ToastStore";
 
 /* Relative Imports */
 import CodeContent from "./CodeContent";
@@ -110,7 +110,7 @@ const CodeOffContent: React.FC<Props> = (props: Props) => {
 
         if (isOn) {
           toastStore.negative(
-            error || i`Something went wrong. Please try again later.`
+            error || i`Something went wrong. Please try again later.`,
           );
           return;
         }

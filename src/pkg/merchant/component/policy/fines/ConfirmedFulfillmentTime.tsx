@@ -10,7 +10,7 @@ import * as colors from "@toolkit/lego-legacy/DEPRECATED_colors";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
-import LocalizationStore from "@merchant/stores/LocalizationStore";
+import LocalizationStore from "@stores/LocalizationStore";
 
 export type ConfirmedFulfillmentTimeProps = BaseProps & {
   readonly timeInHours: number | null | undefined;
@@ -18,9 +18,7 @@ export type ConfirmedFulfillmentTimeProps = BaseProps & {
 };
 
 @observer
-class ConfirmedFulfillmentTime extends Component<
-  ConfirmedFulfillmentTimeProps
-> {
+class ConfirmedFulfillmentTime extends Component<ConfirmedFulfillmentTimeProps> {
   static demoProps: ConfirmedFulfillmentTimeProps = {
     timeInHours: 50,
     requiredTimeInHours: 20,

@@ -11,8 +11,8 @@ import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { weightSemibold } from "@toolkit/fonts";
 
 /* Merchant Stores */
-import { useTheme } from "@merchant/stores/ThemeStore";
-import { useNavigationStore } from "@merchant/stores/NavigationStore";
+import { useTheme } from "@stores/ThemeStore";
+import { useNavigationStore } from "@stores/NavigationStore";
 
 export type TaxReportCardProps = BaseProps & {
   readonly isEnabled: boolean;
@@ -83,6 +83,6 @@ const useStylesheet = () => {
           marginTop: 12,
         },
       }),
-    [borderPrimaryDark, textDark, textBlack]
+    [borderPrimaryDark, textDark, textBlack],
   );
 };

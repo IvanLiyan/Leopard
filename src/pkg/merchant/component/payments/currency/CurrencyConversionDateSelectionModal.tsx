@@ -16,8 +16,8 @@ import * as fonts from "@toolkit/fonts";
 import { getCurrencySymbol } from "@ContextLogic/lego/toolkit/currency";
 
 /* Merchant Store */
-import { useTheme } from "@merchant/stores/ThemeStore";
-import { useLocalizationStore } from "@merchant/stores/LocalizationStore";
+import { useTheme } from "@stores/ThemeStore";
+import { useLocalizationStore } from "@stores/LocalizationStore";
 
 /* Relative Imports */
 import CurrencyConversionConfirmationModal from "./CurrencyConversionConfirmationModal";

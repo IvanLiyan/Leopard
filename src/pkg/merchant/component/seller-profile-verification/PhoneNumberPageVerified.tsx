@@ -10,7 +10,7 @@ import { DEPRECATEDIcon as Icon } from "@merchant/component/core";
 import { css } from "@toolkit/styling";
 import AreaCodes from "@toolkit/area-codes";
 import { Flags4x3 } from "@toolkit/countries";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 /* Merchant API */
 //import { setCountryOfDomicile } from "@merchant/api/seller-profile-verification";
 
@@ -130,6 +130,6 @@ const useStylesheet = () => {
           fontSize: 14,
         },
       }),
-    [textBlack, textDark, pageBackground]
+    [textBlack, textDark, pageBackground],
   );
 };

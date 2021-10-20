@@ -13,7 +13,7 @@ import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { Text, ThemedLabel, Markdown, Layout } from "@ContextLogic/lego";
 
 import { zendeskURL } from "@toolkit/url";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import { CountryCode, RevShareQualifier } from "@schema/types";
 
 import { Flag, Illustration, IllustrationName } from "@merchant/component/core";
@@ -97,7 +97,7 @@ const RevShareQualifierLabel: React.FC<Props> = ({
             i`percentage. If multiple product categories are shown here, the category that ` +
             i`receives the lowest revenue share is used for calculation here. Merchants may ` +
             i`dispute product category. [Learn more](${zendeskURL(
-              "4403535077403"
+              "4403535077403",
             )})`
           }
         />
@@ -169,7 +169,7 @@ const RevShareQualifierLabel: React.FC<Props> = ({
       className={css(
         className,
         style,
-        popoverContent != null && styles.cursorPointer
+        popoverContent != null && styles.cursorPointer,
       )}
       theme="LightGrey"
       popoverContent={popoverContent}
@@ -274,6 +274,6 @@ const useStylesheet = () => {
           },
         },
       }),
-    [textDark, textBlack]
+    [textDark, textBlack],
   );
 };

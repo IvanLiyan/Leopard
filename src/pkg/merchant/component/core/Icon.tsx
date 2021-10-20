@@ -12,7 +12,7 @@ import {
   IconProps as IconZProps,
   IconName,
 } from "@ContextLogic/zeus";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import { css } from "@toolkit/styling";
 import { BaseProps } from "@toolkit/api";
 

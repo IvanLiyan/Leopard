@@ -25,10 +25,10 @@ import {
 
 /* Lego Toolkit */
 import { css } from "@toolkit/styling";
-import { useTheme } from "@merchant/stores/ThemeStore";
-import { useToastStore } from "@merchant/stores/ToastStore";
-import { useNavigationStore } from "@merchant/stores/NavigationStore";
-import { useApolloStore } from "@merchant/stores/ApolloStore";
+import { useTheme } from "@stores/ThemeStore";
+import { useToastStore } from "@stores/ToastStore";
+import { useNavigationStore } from "@stores/NavigationStore";
+import { useApolloStore } from "@stores/ApolloStore";
 import {
   InitialData,
   FulfillmentSetting,
@@ -100,13 +100,12 @@ export type EditFulfillmentSettingsModalProps = {
   readonly onClose: () => unknown;
 };
 
-const EditFulfillmentSettingsModalContent: React.FC<EditFulfillmentSettingsModalProps> = observer(
-  ({ initialData, onClose }: EditFulfillmentSettingsModalProps) => {
+const EditFulfillmentSettingsModalContent: React.FC<EditFulfillmentSettingsModalProps> =
+  observer(({ initialData, onClose }: EditFulfillmentSettingsModalProps) => {
     const { currentMerchant } = initialData;
     const currentSetting = getCurrentFulfillmentSetting(currentMerchant);
-    const currentVacationModeEndDate = getCurrentVacationModeEndDate(
-      currentMerchant
-    );
+    const currentVacationModeEndDate =
+      getCurrentVacationModeEndDate(currentMerchant);
     const [selectedSetting, setSelectedSetting] = useState<
       FulfillmentSetting | undefined
     >(currentSetting);
@@ -123,9 +122,9 @@ const EditFulfillmentSettingsModalContent: React.FC<EditFulfillmentSettingsModal
     const styles = useStylesheet();
     const toastStore = useToastStore();
     const navigationStore = useNavigationStore();
-    const settingOptions: ReadonlyArray<SimpleSelectOption<
-      FulfillmentSetting
-    >> = useMemo(() => {
+    const settingOptions: ReadonlyArray<
+      SimpleSelectOption<FulfillmentSetting>
+    > = useMemo(() => {
       return availableSettings.map((setting) => {
         const text = FulfillmentSettingNames[setting];
         return {
@@ -155,7 +154,7 @@ const EditFulfillmentSettingsModalContent: React.FC<EditFulfillmentSettingsModal
     }, [selectedSetting, extensionDays]);
 
     const runSetFulfillmentExtension = async (
-      variables: FulfillmentMutationSetMerchantFulfillmentExtensionArgs
+      variables: FulfillmentMutationSetMerchantFulfillmentExtensionArgs,
     ): Promise<boolean> => {
       const { data } = await setFulfillmentExtension({
         variables,
@@ -172,7 +171,7 @@ const EditFulfillmentSettingsModalContent: React.FC<EditFulfillmentSettingsModal
     };
 
     const runChangeVacationMode = async (
-      variables: MerchantMutationChangeVacationModeArgs
+      variables: MerchantMutationChangeVacationModeArgs,
     ) => {
       const { data } = await changeVacationMode({
         variables,
@@ -197,7 +196,7 @@ const EditFulfillmentSettingsModalContent: React.FC<EditFulfillmentSettingsModal
       if (selectedSetting == "CNY_EXTENSION_OPTION_1") {
         if (extensionDays > MAX_EXTENSION_DAYS) {
           toastStore.error(
-            i`Extension days cannot be more than ${MAX_EXTENSION_DAYS}`
+            i`Extension days cannot be more than ${MAX_EXTENSION_DAYS}`,
           );
           return;
         }
@@ -218,12 +217,12 @@ const EditFulfillmentSettingsModalContent: React.FC<EditFulfillmentSettingsModal
 
       if (
         ["VACATION_MODE", "PRIMARY_WAREHOUSE_ON_VACATION"].includes(
-          selectedSetting
+          selectedSetting,
         )
       ) {
         if (vacationModeEndDate == null) {
           toastStore.error(
-            i`Please select a date to reactivate your warehouse(s)`
+            i`Please select a date to reactivate your warehouse(s)`,
           );
           return;
         }
@@ -286,7 +285,7 @@ const EditFulfillmentSettingsModalContent: React.FC<EditFulfillmentSettingsModal
     const canSelectDates =
       selectedSetting != null &&
       ["VACATION_MODE", "PRIMARY_WAREHOUSE_ON_VACATION"].includes(
-        selectedSetting
+        selectedSetting,
       ) &&
       (availableSettings.includes("VACATION_MODE") ||
         availableSettings.includes("PRIMARY_WAREHOUSE_ON_VACATION"));
@@ -300,7 +299,7 @@ const EditFulfillmentSettingsModalContent: React.FC<EditFulfillmentSettingsModal
         <div className={css(styles.content)}>
           <div className={css(styles.contentUpper)}>
             {["VACATION_MODE", "PRIMARY_WAREHOUSE_ON_VACATION"].includes(
-              currentSetting
+              currentSetting,
             ) && <DefaultSettingTip className={css(styles.tip)} />}
             <Field title={i`Setting type`} className={css(styles.field)}>
               <FormSelect
@@ -322,8 +321,8 @@ const EditFulfillmentSettingsModalContent: React.FC<EditFulfillmentSettingsModal
                     setExtensionDays(
                       Math.min(
                         MAX_EXTENSION_DAYS,
-                        Math.max(1, valueAsNumber || 0)
-                      )
+                        Math.max(1, valueAsNumber || 0),
+                      ),
                     )
                   }
                   incrementStep={1}
@@ -406,8 +405,7 @@ const EditFulfillmentSettingsModalContent: React.FC<EditFulfillmentSettingsModal
         </div>
       </div>
     );
-  }
-);
+  });
 
 const useStylesheet = () => {
   const { borderPrimary, textBlack } = useTheme();
@@ -497,7 +495,7 @@ const useStylesheet = () => {
           margin: "10px 0px",
         },
       }),
-    [borderPrimary, textBlack]
+    [borderPrimary, textBlack],
   );
 };
 export default class EditFulfillmentSettingsModal extends Modal {

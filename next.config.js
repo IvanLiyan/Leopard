@@ -5,6 +5,11 @@
 
 const { withSentryConfig } = require("@sentry/nextjs");
 
+const withTM = require("next-transpile-modules")([
+  "recharts",
+  "@ContextLogic/lego",
+]);
+
 const moduleExports = {
   distDir: "build",
   reactStrictMode: true,
@@ -29,4 +34,4 @@ const SentryWebpackPluginOptions = {
 // ensure that your source maps include changes from all other Webpack plugins
 // TODO [lliepert]: temp disabling sentry until vault is set up
 // module.exports = withSentryConfig(moduleExports, SentryWebpackPluginOptions);
-module.exports = moduleExports;
+module.exports = withTM(moduleExports);

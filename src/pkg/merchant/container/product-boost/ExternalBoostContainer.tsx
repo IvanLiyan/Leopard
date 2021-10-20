@@ -11,7 +11,7 @@ import { observer } from "mobx-react";
 /* Lego Components */
 import { css } from "@toolkit/styling";
 
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 import { Markdown } from "@ContextLogic/lego";
 import { PageGuide, WelcomeHeader } from "@merchant/component/core";
@@ -76,6 +76,6 @@ const useStylesheet = () => {
           marginTop: 24,
         },
       }),
-    [pageBackground]
+    [pageBackground],
   );
 };

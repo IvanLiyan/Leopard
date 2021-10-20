@@ -17,9 +17,9 @@ import PageGuide from "@plus/component/nav/PageGuide";
 import LanguageSettings from "@plus/component/settings/language-settings/LanguageSettings";
 
 /* Merchant Stores */
-import { useToastStore } from "@merchant/stores/ToastStore";
-import { useNavigationStore } from "@merchant/stores/NavigationStore";
-import { useLocalizationStore } from "@merchant/stores/LocalizationStore";
+import { useToastStore } from "@stores/ToastStore";
+import { useNavigationStore } from "@stores/NavigationStore";
+import { useLocalizationStore } from "@stores/LocalizationStore";
 
 import {
   ChangeLocaleMutation,
@@ -76,7 +76,7 @@ const PlusLanguageSettingsContainer: React.FC<Props> = ({
   useEffect(() => {
     if (isFromReload) {
       toastStore.positive(
-        i`Success! You have updated your preferred language settings`
+        i`Success! You have updated your preferred language settings`,
       );
     }
   }, [toastStore, isFromReload]);
@@ -163,7 +163,7 @@ const useStylesheet = () =>
           marginTop: 20,
         },
       }),
-    []
+    [],
   );
 
 export default observer(PlusLanguageSettingsContainer);

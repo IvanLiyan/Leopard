@@ -21,7 +21,7 @@ import ConfirmedDeliveryIcon from "@plus/component/orders/fulfillment/icons/Conf
 import { Markdown } from "@ContextLogic/lego";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 type Props = BaseProps & {};
 
@@ -86,6 +86,6 @@ const useStylesheet = () => {
           marginRight: 10,
         },
       }),
-    [surfaceLightest]
+    [surfaceLightest],
   );
 };

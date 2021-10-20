@@ -14,7 +14,7 @@ import * as fonts from "@toolkit/fonts";
 import ProductEditState, {
   VariationEditState,
 } from "@plus/model/ProductEditState";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 export type VariationImageModalProps = {
   readonly editState: ProductEditState;
@@ -73,7 +73,7 @@ const VariationImageModalContent: React.FC<VariationImageModalProps> = observer(
                 key={image.wishUrl}
                 className={css(
                   styles.image,
-                  isSelected ? styles.selected : styles.notSelected
+                  isSelected ? styles.selected : styles.notSelected,
                 )}
                 src={image.wishUrl}
                 onClick={
@@ -93,7 +93,7 @@ const VariationImageModalContent: React.FC<VariationImageModalProps> = observer(
         </div>
       </div>
     );
-  }
+  },
 );
 
 const useStylesheet = ({
@@ -156,7 +156,7 @@ const useStylesheet = ({
           opacity: selectedVariation ? 1 : 0.5,
         },
       }),
-    [selectedVariation, surfaceLight, primary, borderPrimaryDark]
+    [selectedVariation, surfaceLight, primary, borderPrimaryDark],
   );
 };
 

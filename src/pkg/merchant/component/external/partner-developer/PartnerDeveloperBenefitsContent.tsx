@@ -5,7 +5,7 @@ import { StyleSheet } from "aphrodite";
 import { css } from "@toolkit/styling";
 
 /* Merchant Stores */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import { palettes } from "@toolkit/lego-legacy/DEPRECATED_colors";
 
 /* Merchant Components */
@@ -80,7 +80,7 @@ const useStylesheet = () => {
           minHeight: 190,
         },
       }),
-    [surfaceLight]
+    [surfaceLight],
   );
 };
 

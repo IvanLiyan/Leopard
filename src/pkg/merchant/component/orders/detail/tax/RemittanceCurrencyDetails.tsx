@@ -10,7 +10,7 @@ import { Markdown } from "@ContextLogic/lego";
 import { css } from "@toolkit/styling";
 import * as fonts from "@toolkit/fonts";
 
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import { getCurrencySymbol } from "@ContextLogic/lego/toolkit/currency";
 
 import { CurrencyValue, PaymentCurrencyCode } from "@schema/types";
@@ -27,11 +27,11 @@ type Props = BaseProps & {
 const FieldLabel: { [fieldName in FieldType]: string } = {
   net_tax: ci18n(
     "Label for the amount of tax that is owed to the government after subtracting refunds etc",
-    "Net tax"
+    "Net tax",
   ),
   sales_tax: ci18n(
     "Label for the amount of tax that is owed to the government before subtracting refunds etc",
-    "Sales tax"
+    "Sales tax",
   ),
 };
 const RemittanceCurrencyDetails = (props: Props) => {
@@ -106,6 +106,6 @@ const useStyleSheet = () => {
           color: textBlack,
         },
       }),
-    [textBlack]
+    [textBlack],
   );
 };

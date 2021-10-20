@@ -30,10 +30,10 @@ import ModalHeader from "./ModalHeader";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { ModalHeaderProps } from "./ModalHeader";
-import DeviceStore from "@merchant/stores/DeviceStore";
-import ToastStore from "@merchant/stores/ToastStore";
-import ThemeStore, { ThemeWrapper } from "@merchant/stores/ThemeStore";
-import ApolloStore from "@merchant/stores/ApolloStore";
+import DeviceStore from "@stores/DeviceStore";
+import ToastStore from "@stores/ToastStore";
+import ThemeStore, { ThemeWrapper } from "@stores/ThemeStore";
+import ApolloStore from "@stores/ApolloStore";
 
 export type OnDismissFn = () => unknown;
 export type OnCloseFn = () => unknown;
@@ -228,7 +228,7 @@ class ModalContainer extends Component<ModalContainerProps> {
           <div
             className={css(
               this.styles.modalContent,
-              exiting ? this.styles.contentExit : this.styles.contentEntrance
+              exiting ? this.styles.contentExit : this.styles.contentEntrance,
             )}
             ref={(_) => (this.contentRef = _)}
           >
@@ -391,7 +391,7 @@ export default class Modal {
             </ModalContainer>
           </ApolloProvider>
         ) as any,
-        this.container
+        this.container,
       );
     }
 

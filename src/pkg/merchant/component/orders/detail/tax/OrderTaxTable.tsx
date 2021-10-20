@@ -11,7 +11,7 @@ import { LoadingIndicator } from "@ContextLogic/lego";
 /* Lego Toolkit */
 import { css } from "@toolkit/styling";
 import * as fonts from "@toolkit/fonts";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* Merchant Components */
 import RemitPopover from "./RemitPopover";
@@ -29,7 +29,7 @@ export type OrderTaxTableProps = BaseProps & {
 };
 
 const OrderTaxTable: React.FC<OrderTaxTableProps> = (
-  props: OrderTaxTableProps
+  props: OrderTaxTableProps,
 ) => {
   const {
     style,
@@ -41,7 +41,7 @@ const OrderTaxTable: React.FC<OrderTaxTableProps> = (
   const styles = useStylesheet();
   const { data } = useOrderTaxData(orderId);
   const [authorityDetailVisible, setAuthorityDetailVisible] = useState<boolean>(
-    !!showAuthoritiesOnMount
+    !!showAuthoritiesOnMount,
   );
 
   if (data == null) {
@@ -366,7 +366,7 @@ const useStylesheet = () => {
           flexDirection: "row",
         },
       }),
-    [primary, textBlack, textLight, surfaceLightest]
+    [primary, textBlack, textLight, surfaceLightest],
   );
 };
 export default observer(OrderTaxTable);

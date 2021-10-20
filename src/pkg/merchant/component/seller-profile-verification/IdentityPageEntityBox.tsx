@@ -8,7 +8,7 @@ import { Illustration } from "@merchant/component/core";
 
 /* Lego Toolkit */
 import { css } from "@toolkit/styling";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { IllustrationName } from "@merchant/component/core";
@@ -30,7 +30,7 @@ const IdentityPageEntityBox = (props: IdentityPageEntityBoxProps) => {
         styles.root,
         style,
         className,
-        selected && styles.selected
+        selected && styles.selected,
       )}
       onClick={onClick}
     >
@@ -87,6 +87,6 @@ const useStylesheet = () => {
           padding: "37px 24px",
         },
       }),
-    [textLight, textBlack, borderPrimaryDark, primary]
+    [textLight, textBlack, borderPrimaryDark, primary],
   );
 };

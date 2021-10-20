@@ -30,7 +30,7 @@ import {
 
 /* Merchant Components */
 import { Illustration } from "@merchant/component/core";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import {
   GetWeekStatsInput,
   GET_WEEK_STATS,
@@ -117,7 +117,7 @@ const WarehousePastTable: React.FC<Props> = ({
         weekStart.subtract(index > 0 ? 1 : 0, "weeks");
         const weekData = weekStats.find(
           // + 1 for difference between moment unix and BE unix
-          ({ endDate: { unix } }) => unix == weekEnd.unix() + 1
+          ({ endDate: { unix } }) => unix == weekEnd.unix() + 1,
         );
         if (weekData == null) {
           return {
@@ -407,6 +407,6 @@ const useStylesheet = () => {
           marginBottom: 4,
         },
       }),
-    [textDark, pageBackground, textBlack]
+    [textDark, pageBackground, textBlack],
   );
 };

@@ -31,7 +31,7 @@ import { formatCurrency } from "@ContextLogic/lego/toolkit/currency";
 import CountryFlagsGroup from "@merchant/component/products/product-shipping/CountryFlagsGroup";
 
 /* Merchant Store */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* Type Imports */
 import ProductShippingEditState from "@merchant/model/products/ProductShippingEditState";

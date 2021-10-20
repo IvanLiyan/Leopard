@@ -14,7 +14,7 @@ import { weightSemibold } from "@toolkit/fonts";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
 /* Merchant Store */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* Schema */
 import { PaymentSettingsInitialData } from "@toolkit/payment-settings";
@@ -96,6 +96,6 @@ const useStylesheet = () => {
           maxWidth: 236,
         },
       }),
-    [textBlack]
+    [textBlack],
   );
 };

@@ -29,8 +29,8 @@ import {
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
 /* Merchant Store */
-import { useDimenStore } from "@merchant/stores/DimenStore";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useDeviceStore } from "@stores/DeviceStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* Model */
 import {
@@ -82,7 +82,7 @@ export type Props = BaseProps & {
 
 const ResponsiblePersonModalForm = (props: Props) => {
   const styles = useStylesheet();
-  const { isSmallScreen } = useDimenStore();
+  const { isSmallScreen } = useDeviceStore();
   const { onClose, state, isNew } = props;
   const [actionButtonLoading] = useState(state.isSubmitting);
   const [isValid, setIsValid] = useState(false);
@@ -95,16 +95,16 @@ const ResponsiblePersonModalForm = (props: Props) => {
       variables: {
         responsiblePersonIds,
       },
-    }
+    },
   );
 
   const euCountries = useMemo(
     () =>
       _.sortBy(
         data?.policy.productCompliance.rpValidCountries,
-        (country) => country.name
+        (country) => country.name,
       ),
-    [data]
+    [data],
   );
 
   const phoneNumberValidator = useMemo(
@@ -112,7 +112,7 @@ const ResponsiblePersonModalForm = (props: Props) => {
       new PhoneNumberValidator({
         countryCode: state.countryCode as CountryCode,
       }),
-    [state.countryCode]
+    [state.countryCode],
   );
 
   if (loading) {
@@ -262,7 +262,8 @@ const ResponsiblePersonModalForm = (props: Props) => {
               placeholder={i`Select country/region`}
               selectedValue={state.countryCode}
               onSelected={(value: string) => {
-                state.countryCode = value as EuComplianceResponsiblePersonCountriesAndRegionsCode;
+                state.countryCode =
+                  value as EuComplianceResponsiblePersonCountriesAndRegionsCode;
               }}
             />
           </Field>
@@ -357,6 +358,6 @@ const useStylesheet = () => {
           },
         },
       }),
-    [textBlack, negative]
+    [textBlack, negative],
   );
 };

@@ -27,7 +27,7 @@ import CodeInput from "./code-input/CodeInput";
 
 /* Type Imports */
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import { formatDatetimeLocalized } from "@toolkit/datetime";
 
 type Props = BaseProps & {
@@ -80,35 +80,35 @@ const CodeContent: React.FC<Props> = (props: Props) => {
   const canResend = countDown == 0;
   const countDownFormated = ` ${formatDatetimeLocalized(
     moment.utc(countDown),
-    "mm:ss"
+    "mm:ss",
   )}`;
 
   const resendCodeText = ci18n(
     "referring to a two factor authentication code",
-    "Resend code"
+    "Resend code",
   );
   const standardActionText = ci18n(
     "referring to a two factor authentication code",
-    "**Please enter the 6-digit verification code**"
+    "**Please enter the 6-digit verification code**",
   );
   const backupActionText = ci18n(
     "referring to a two factor authentication backup code previously saved by the merchant",
     "**Please enter one of your %1$d-digit backup codes**",
-    10
+    10,
   );
 
   const didntReceiveText = ci18n(
     "referring to a two factor authentication code sent to the merchant's device",
-    "Didn't receive your code? Use one of your [backup codes](#)"
+    "Didn't receive your code? Use one of your [backup codes](#)",
   );
   const textInsteadText = ci18n(
     "gives the user an option to text themselves a two-factor verification code instead of using a backup code",
-    "Don't have a backup code? [Send verification code to your device](#)"
+    "Don't have a backup code? [Send verification code to your device](#)",
   );
   const invalidCodeText = codeInvalid
     ? ci18n(
         "referring to a two factor authentication code",
-        "Your verification code is incorrect."
+        "Your verification code is incorrect.",
       )
     : "";
 
@@ -119,12 +119,12 @@ const CodeContent: React.FC<Props> = (props: Props) => {
 
     const codeSentTitle = ci18n(
       "referring to a two factor authentication code sent to the merchant's device",
-      "**Verification code has sent!**"
+      "**Verification code has sent!**",
     );
     const codeSentText = ci18n(
       "referring to a two factor authentication code sent to the merchant's device",
       "You may resend the code again in %1$s",
-      countDownFormated
+      countDownFormated,
     );
 
     return (
@@ -146,7 +146,7 @@ const CodeContent: React.FC<Props> = (props: Props) => {
           <CodeInput
             className={css(styles.codeInput)}
             elementClassName={css(
-              codeInvalid && styles.invalidCodeInputElement
+              codeInvalid && styles.invalidCodeInputElement,
             )}
             numCharacters={CODE_LENGTH}
             value={code}
@@ -309,6 +309,6 @@ const useStylesheet = () => {
           color: primary,
         },
       }),
-    [primary, surfaceDark, negative]
+    [primary, surfaceDark, negative],
   );
 };

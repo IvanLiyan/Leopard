@@ -12,7 +12,7 @@ import { developerMerchantsIllustration } from "@assets/illustrations";
 import PartnerDeveloperSection from "@merchant/component/external/partner-developer/PartnerDeveloperSection";
 
 /* Merchant Stores */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 const PartnerDeveloperMerchantsCountContent = () => {
   const styles = useStylesheet();
@@ -41,9 +41,9 @@ const useStylesheet = () => {
           display: "flex",
           flexDirection: "column",
           width: "100%",
-          background: `linear-gradient(to bottom, 
-            ${surfaceLightest} 0, ${surfaceLightest} 18%, 
-            ${greenSurface} 0, ${greenSurface} 88%, 
+          background: `linear-gradient(to bottom,
+            ${surfaceLightest} 0, ${surfaceLightest} 18%,
+            ${greenSurface} 0, ${greenSurface} 88%,
             ${surfaceLight} 0, ${surfaceLight} 100%)`,
           height: 630,
         },
@@ -69,7 +69,7 @@ const useStylesheet = () => {
           },
         },
       }),
-    [textWhite, surfaceLightest, greenSurface, surfaceLight]
+    [textWhite, surfaceLightest, greenSurface, surfaceLight],
   );
 };
 

@@ -16,9 +16,9 @@ import ChangePhoneNumberScreen from "./ChangePhoneNumberScreen";
 import PhoneNumberVerificationScreen from "./PhoneNumberVerificationScreen";
 
 /* Type Imports */
-import { useToastStore } from "@merchant/stores/ToastStore";
-import { useApolloStore } from "@merchant/stores/ApolloStore";
-import DeviceStore from "@merchant/stores/DeviceStore";
+import { useToastStore } from "@stores/ToastStore";
+import { useApolloStore } from "@stores/ApolloStore";
+import DeviceStore from "@stores/DeviceStore";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import {
   ChangePhoneNumberSendCodeMutation,
@@ -62,80 +62,81 @@ type ChangePhoneNumberModalContentProps = ChangePhoneNumberModalProps & {
   readonly closeModal: () => unknown;
 };
 
-const ChangePhoneNumberModalContent: React.FC<ChangePhoneNumberModalContentProps> = ({
-  closeModal,
-  currentPhoneNumber,
-  setPhoneNumber,
-  interselectablePhoneCountryCodes,
-}: ChangePhoneNumberModalContentProps) => {
-  const styles = useStylesheet();
-  const toastStore = useToastStore();
-  const { client } = useApolloStore();
-  const [state, setState] = useState<"CHANGE" | "CODE">("CHANGE");
-  const [newPhoneNumber, setNewPhoneNumber] = useState<string | undefined>();
+const ChangePhoneNumberModalContent: React.FC<ChangePhoneNumberModalContentProps> =
+  ({
+    closeModal,
+    currentPhoneNumber,
+    setPhoneNumber,
+    interselectablePhoneCountryCodes,
+  }: ChangePhoneNumberModalContentProps) => {
+    const styles = useStylesheet();
+    const toastStore = useToastStore();
+    const { client } = useApolloStore();
+    const [state, setState] = useState<"CHANGE" | "CODE">("CHANGE");
+    const [newPhoneNumber, setNewPhoneNumber] = useState<string | undefined>();
 
-  const [sendVerification] = useMutation<
-    SendVerificationCodeResponseType,
-    ChangePhoneNumberMutationSendCodeArgs
-  >(SEND_VERIFICATION_CODE, { client }); // required since modals aren't passed down the client by default
+    const [sendVerification] = useMutation<
+      SendVerificationCodeResponseType,
+      ChangePhoneNumberMutationSendCodeArgs
+    >(SEND_VERIFICATION_CODE, { client }); // required since modals aren't passed down the client by default
 
-  const sendVerificationCode = async () => {
-    if (newPhoneNumber == null || newPhoneNumber?.length == 0) {
-      toastStore.negative(i`Please fill out the form.`);
-      return;
-    }
-    const { data } = await sendVerification({
-      variables: { input: { newPhoneNumber } },
-    });
-    if (data == null) {
-      toastStore.negative(i`Something went wrong. Please try again later.`);
-      return;
-    }
+    const sendVerificationCode = async () => {
+      if (newPhoneNumber == null || newPhoneNumber?.length == 0) {
+        toastStore.negative(i`Please fill out the form.`);
+        return;
+      }
+      const { data } = await sendVerification({
+        variables: { input: { newPhoneNumber } },
+      });
+      if (data == null) {
+        toastStore.negative(i`Something went wrong. Please try again later.`);
+        return;
+      }
 
-    const {
-      currentUser: {
-        changePhoneNumber: {
-          sendCode: { error, sentOk },
+      const {
+        currentUser: {
+          changePhoneNumber: {
+            sendCode: { error, sentOk },
+          },
         },
-      },
-    } = data;
+      } = data;
 
-    if (!sentOk) {
-      const errMessage =
-        error || i`Something went wrong. Please try again later.`;
-      toastStore.negative(errMessage);
-    } else {
-      setState("CODE");
-      toastStore.positive(i`Verification code sent!`);
+      if (!sentOk) {
+        const errMessage =
+          error || i`Something went wrong. Please try again later.`;
+        toastStore.negative(errMessage);
+      } else {
+        setState("CODE");
+        toastStore.positive(i`Verification code sent!`);
+      }
+    };
+
+    if (state == "CHANGE") {
+      return (
+        <ChangePhoneNumberScreen
+          currentPhoneNumber={currentPhoneNumber}
+          className={css(styles.content)}
+          onCancel={closeModal}
+          setNewPhoneNumber={setNewPhoneNumber}
+          sendVerificationCode={sendVerificationCode}
+          interselectablePhoneCountryCodes={interselectablePhoneCountryCodes}
+        />
+      );
     }
-  };
 
-  if (state == "CHANGE") {
     return (
-      <ChangePhoneNumberScreen
-        currentPhoneNumber={currentPhoneNumber}
+      <PhoneNumberVerificationScreen
         className={css(styles.content)}
-        onCancel={closeModal}
-        setNewPhoneNumber={setNewPhoneNumber}
+        newPhoneNumber={newPhoneNumber}
+        setPhoneNumber={setPhoneNumber}
         sendVerificationCode={sendVerificationCode}
-        interselectablePhoneCountryCodes={interselectablePhoneCountryCodes}
+        onCancel={() => {
+          setState("CHANGE");
+        }}
+        onNext={closeModal}
       />
     );
-  }
-
-  return (
-    <PhoneNumberVerificationScreen
-      className={css(styles.content)}
-      newPhoneNumber={newPhoneNumber}
-      setPhoneNumber={setPhoneNumber}
-      sendVerificationCode={sendVerificationCode}
-      onCancel={() => {
-        setState("CHANGE");
-      }}
-      onNext={closeModal}
-    />
-  );
-};
+  };
 
 const useStylesheet = () =>
   useMemo(
@@ -145,7 +146,7 @@ const useStylesheet = () =>
           minHeight: 340,
         },
       }),
-    []
+    [],
   );
 
 export default class ChangePhoneNumberModal extends Modal {

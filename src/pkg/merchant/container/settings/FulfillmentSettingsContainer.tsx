@@ -28,7 +28,7 @@ import {
   getCurrentFulfillmentSetting,
   getAvailableFulfillmentSettings,
 } from "@toolkit/fulfillment-settings";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import EducationCard from "@merchant/component/fulfillment-settings/EducationCard";
 import DefaultSettingTip from "@merchant/component/fulfillment-settings/DefaultSettingTip";
 import ScheduledSettingCard from "@merchant/component/fulfillment-settings/ScheduledSettingCard";
@@ -79,7 +79,7 @@ const FulfillmentSettingsContainer: React.FC<InitialProps> = ({
             <div className={css(styles.settingsContainer)}>
               <H5 className={css(styles.title)}>Vacation Settings</H5>
               {["VACATION_MODE", "PRIMARY_WAREHOUSE_ON_VACATION"].includes(
-                currentSetting
+                currentSetting,
               ) && <DefaultSettingTip className={css(styles.tip)} />}
               <Card contentContainerStyle={css(styles.cardContent)}>
                 <div className={css(styles.cardContentInner)}>
@@ -248,7 +248,7 @@ const useStylesheet = () => {
           margin: "10px 0px",
         },
       }),
-    [textBlack, borderPrimary]
+    [textBlack, borderPrimary],
   );
 };
 

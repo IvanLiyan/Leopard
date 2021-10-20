@@ -12,7 +12,7 @@ import { css } from "@toolkit/styling";
 import * as fonts from "@toolkit/fonts";
 
 /* Merchant Store */
-import { useNavigationStore } from "@merchant/stores/NavigationStore";
+import { useNavigationStore } from "@stores/NavigationStore";
 
 import PlusSideMenuInnerButton from "./PlusSideMenuInnerButton";
 
@@ -20,7 +20,7 @@ import PlusSideMenuInnerButton from "./PlusSideMenuInnerButton";
 import { IconName } from "@merchant/component/core";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { NavigationNode } from "@toolkit/chrome";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 type Props = BaseProps & {
   readonly node: NavigationNode;
@@ -108,7 +108,7 @@ const PlusSideMenuButton: React.FC<Props> = (props: Props) => {
   const iconSet = IconMappings[nodeid];
 
   const visibleChildren = node.children.filter(
-    (child) => child.show_in_side_menu
+    (child) => child.show_in_side_menu,
   );
   const isOpen = expandWhenActive && isActive && visibleChildren.length > 0;
 
@@ -268,6 +268,6 @@ const useStylesheet = ({
           margin: "10px 10px 10px 60px",
         },
       }),
-    [redDotSize, isActive, negative, primary, textLight]
+    [redDotSize, isActive, negative, primary, textLight],
   );
 };

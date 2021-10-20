@@ -10,7 +10,7 @@ import React, { useState, useMemo } from "react";
 import { StyleSheet } from "aphrodite";
 import { observer } from "mobx-react";
 
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 import {
   Field,

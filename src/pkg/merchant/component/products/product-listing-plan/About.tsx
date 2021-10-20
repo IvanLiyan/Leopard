@@ -26,7 +26,7 @@ import {
 } from "@toolkit/products/product-listing-plan";
 
 /* Stores */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 type Props = BaseProps & {
   readonly initialData: PlpInitialData;
@@ -55,19 +55,19 @@ const About: React.FC<Props> = ({ className, style, initialData }: Props) => {
   const { tier1, tier2, tier3 } = rawTiers;
 
   const tier1Desc = i`Your first ${formatProductAmount(
-    tier1.higherBound
+    tier1.higherBound,
   )} active product listings will be free of charge.`;
   const tier2Desc = i`Additional product listings after your first ${formatProductAmount(
-    tier2.lowerBound
+    tier2.lowerBound,
   )} before you reach ${formatProductAmount(tier2.higherBound)} will cost ${
     tier2.price.display
   } per listing per month.`;
   const tier3Desc = i`Any listings beyond ${formatProductAmount(
-    tier3.lowerBound
+    tier3.lowerBound,
   )} will cost ${
     tier3.price.display
   } per listing per month until reaching ${formatProductAmount(
-    tier3.higherBound
+    tier3.higherBound,
   )} (maximum number of listings allowed).`;
 
   return (
@@ -137,6 +137,6 @@ const useStylesheet = () => {
           color: textBlack,
         },
       }),
-    [textBlack]
+    [textBlack],
   );
 };

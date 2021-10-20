@@ -5,7 +5,7 @@ import numeral from "numeral";
 import { H7, H4, Table } from "@ContextLogic/lego";
 
 import Modal from "@merchant/component/core/modal/Modal";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import { ci18n } from "@legacy/core/i18n";
 import { UpdatePriceDropCampaignCsvResponse } from "@merchant/api/price-drop";
 
@@ -16,56 +16,55 @@ export type PriceDropCSVUpdateErrorsModalProps = {
   readonly response: UpdatePriceDropCampaignCsvResponse;
 };
 
-const PriceDropCSVUpdateErrorsModalContent: React.FC<PriceDropCSVUpdateErrorsModalProps> = (
-  props: PriceDropCSVUpdateErrorsModalProps
-) => {
-  const {
-    response: { errors, created_count: createdCount },
-  } = props;
-  const styles = useStylesheet();
+const PriceDropCSVUpdateErrorsModalContent: React.FC<PriceDropCSVUpdateErrorsModalProps> =
+  (props: PriceDropCSVUpdateErrorsModalProps) => {
+    const {
+      response: { errors, created_count: createdCount },
+    } = props;
+    const styles = useStylesheet();
 
-  const data: ReadonlyArray<CSVError> = useMemo(() => {
-    return errors.map((errorStr) => {
-      const [campaignId, autoRenew, errorMessage] = errorStr.split(",");
-      return { campaignId, autoRenew, errorMessage };
-    });
-  }, [errors]);
+    const data: ReadonlyArray<CSVError> = useMemo(() => {
+      return errors.map((errorStr) => {
+        const [campaignId, autoRenew, errorMessage] = errorStr.split(",");
+        return { campaignId, autoRenew, errorMessage };
+      });
+    }, [errors]);
 
-  return (
-    <div className={css(styles.root)}>
-      <div className={css(styles.overviewContainer)}>
-        <div className={css(styles.overview)}>
-          <H7 className={css(styles.overviewTitle)}>
-            {ci18n(
-              "label for the number rows that have been successfully processed",
-              "Rows Successfully Processed"
-            )}
-          </H7>
-          <H4>{numeral(createdCount).format("0,0").toString()}</H4>
+    return (
+      <div className={css(styles.root)}>
+        <div className={css(styles.overviewContainer)}>
+          <div className={css(styles.overview)}>
+            <H7 className={css(styles.overviewTitle)}>
+              {ci18n(
+                "label for the number rows that have been successfully processed",
+                "Rows Successfully Processed",
+              )}
+            </H7>
+            <H4>{numeral(createdCount).format("0,0").toString()}</H4>
+          </div>
+
+          <div className={css(styles.overview)}>
+            <H7 className={css(styles.overviewTitle)}>
+              {ci18n(
+                "label for the number rows that have failed processing",
+                "Rows Failed",
+              )}
+            </H7>
+            <H4>
+              <span className={css(styles.errorText)}>
+                {numeral(errors.length).format("0,0").toString()}
+              </span>
+            </H4>
+          </div>
         </div>
-
-        <div className={css(styles.overview)}>
-          <H7 className={css(styles.overviewTitle)}>
-            {ci18n(
-              "label for the number rows that have failed processing",
-              "Rows Failed"
-            )}
-          </H7>
-          <H4>
-            <span className={css(styles.errorText)}>
-              {numeral(errors.length).format("0,0").toString()}
-            </span>
-          </H4>
-        </div>
+        <Table data={data}>
+          <Table.Column columnKey="campaignId" title={i`Campaign ID`} />
+          <Table.Column columnKey="autoRenew" title={i`Auto Renew`} />
+          <Table.Column columnKey="errorMessage" title={i`Error`} />
+        </Table>
       </div>
-      <Table data={data}>
-        <Table.Column columnKey="campaignId" title={i`Campaign ID`} />
-        <Table.Column columnKey="autoRenew" title={i`Auto Renew`} />
-        <Table.Column columnKey="errorMessage" title={i`Error`} />
-      </Table>
-    </div>
-  );
-};
+    );
+  };
 
 type CSVError = {
   readonly campaignId: string;
@@ -105,7 +104,7 @@ const useStylesheet = () => {
           color: negative,
         },
       }),
-    [borderPrimary, negative]
+    [borderPrimary, negative],
   );
 };
 

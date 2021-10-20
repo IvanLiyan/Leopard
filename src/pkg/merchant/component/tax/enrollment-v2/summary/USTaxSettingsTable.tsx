@@ -21,7 +21,7 @@ import HomeRuleStateSettings from "@merchant/component/tax/HomeRuleStateSettings
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import TaxStore from "@merchant/stores/TaxStore";
 import CommerceMerchantTaxInfo from "@merchant/model/CommerceMerchantTaxInfo";
-import { ThemeContext } from "@merchant/stores/ThemeStore";
+import { ThemeContext } from "@stores/ThemeStore";
 
 export type USTaxSettingsTableProps = BaseProps & {
   readonly taxInfos: ReadonlyArray<CommerceMerchantTaxInfo>;
@@ -72,15 +72,15 @@ class USTaxSettingsTable extends Component<USTaxSettingsTableProps> {
     } = this;
     const rows = this.currentStates.map((stateCode) => {
       const stateTaxInfos = taxInfos.filter(
-        (info) => info.stateCode === stateCode
+        (info) => info.stateCode === stateCode,
       );
 
       const isStateLevel = stateTaxInfos.every(
-        (info) => info.authorityLevel === "STATE"
+        (info) => info.authorityLevel === "STATE",
       );
 
       const stateTaxInfosWithNumber = stateTaxInfos.filter(
-        (info) => info.taxNumber != null
+        (info) => info.taxNumber != null,
       );
       let taxNumber: string | null | undefined = null;
       if (stateTaxInfosWithNumber.length > 0) {
@@ -89,8 +89,8 @@ class USTaxSettingsTable extends Component<USTaxSettingsTableProps> {
 
       const lastUpdated = Math.max(
         ...stateTaxInfos.map((info) =>
-          info.lastUpdated == null ? -1 : info.lastUpdated
-        )
+          info.lastUpdated == null ? -1 : info.lastUpdated,
+        ),
       );
       return {
         stateCode,
@@ -118,7 +118,7 @@ class USTaxSettingsTable extends Component<USTaxSettingsTableProps> {
   get fienInfo(): CommerceMerchantTaxInfo | null | undefined {
     const { taxInfos } = this.props;
     const countryTaxInfos = taxInfos.filter(
-      (info) => info.authorityLevel === "COUNTRY"
+      (info) => info.authorityLevel === "COUNTRY",
     );
 
     if (countryTaxInfos.length === 0) {
@@ -130,12 +130,8 @@ class USTaxSettingsTable extends Component<USTaxSettingsTableProps> {
 
   @computed
   get styles() {
-    const {
-      borderPrimary,
-      surfaceLight,
-      textBlack,
-      surfaceLightest,
-    } = this.context;
+    const { borderPrimary, surfaceLight, textBlack, surfaceLightest } =
+      this.context;
     return StyleSheet.create({
       root: {
         border: `1px solid ${borderPrimary}`,
@@ -191,7 +187,7 @@ class USTaxSettingsTable extends Component<USTaxSettingsTableProps> {
           authorityLevel="COUNTY"
           taxInfos={taxInfos.filter(
             (info) =>
-              info.authorityLevel === "COUNTY" && info.stateCode == stateCode
+              info.authorityLevel === "COUNTY" && info.stateCode == stateCode,
           )}
           className={css(this.styles.authorityGroup)}
         />
@@ -202,7 +198,7 @@ class USTaxSettingsTable extends Component<USTaxSettingsTableProps> {
           authorityLevel="CITY"
           taxInfos={taxInfos.filter(
             (info) =>
-              info.authorityLevel === "CITY" && info.stateCode == stateCode
+              info.authorityLevel === "CITY" && info.stateCode == stateCode,
           )}
           className={css(this.styles.authorityGroup)}
         />
@@ -213,7 +209,7 @@ class USTaxSettingsTable extends Component<USTaxSettingsTableProps> {
           authorityLevel="DISTRICT"
           taxInfos={taxInfos.filter(
             (info) =>
-              info.authorityLevel === "DISTRICT" && info.stateCode == stateCode
+              info.authorityLevel === "DISTRICT" && info.stateCode == stateCode,
           )}
           className={css(this.styles.authorityGroup)}
         />

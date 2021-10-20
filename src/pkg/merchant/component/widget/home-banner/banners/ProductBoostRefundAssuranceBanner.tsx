@@ -5,7 +5,7 @@ import { observer } from "mobx-react";
 import { SimpleBannerItem } from "@ContextLogic/lego";
 
 /* Merchant Stores */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* SVGs */
 import bannerImg from "@assets/img/product-boost/seasonal-banner/may_high_demand_banner.svg";
@@ -22,7 +22,7 @@ export type ProductBoostRefundAssuranceBannerProps = BaseProps & {
 };
 
 const ProductBoostRefundAssuranceBanner = (
-  props: ProductBoostRefundAssuranceBannerProps
+  props: ProductBoostRefundAssuranceBannerProps,
 ) => {
   const { logParams } = props;
   const { textBlack, primary, textWhite } = useTheme();

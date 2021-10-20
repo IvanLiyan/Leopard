@@ -36,10 +36,10 @@ import * as earlyPaymentsApi from "@merchant/api/early-payment";
 import { useLogger } from "@toolkit/logger";
 import * as monitor from "@toolkit/monitor";
 import { useRequest } from "@toolkit/api";
-import { useLocalizationStore } from "@merchant/stores/LocalizationStore";
-import { useDimenStore } from "@merchant/stores/DimenStore";
-import { useUserStore } from "@merchant/stores/UserStore";
-import { useNavigationStore } from "@merchant/stores/NavigationStore";
+import { useLocalizationStore } from "@stores/LocalizationStore";
+import { useDeviceStore } from "@stores/DeviceStore";
+import { useUserStore } from "@stores/UserStore";
+import { useNavigationStore } from "@stores/NavigationStore";
 
 const pageBackground = colors.pageBackground;
 
@@ -48,11 +48,11 @@ const EarlyPaymentContainer = () => {
   const userStore = useUserStore();
   const navigationStore = useNavigationStore();
   const { locale } = useLocalizationStore();
-  const { pageGuideXForPageWithTable: pageX } = useDimenStore();
+  const { pageGuideXForPageWithTable: pageX } = useDeviceStore();
 
   const isZh = locale === "zh";
   const [eligibilityResponse] = useRequest(
-    earlyPaymentsApi.getEligibilityForEarlyPayments()
+    earlyPaymentsApi.getEligibilityForEarlyPayments(),
   );
   const epStatusData = eligibilityResponse?.data;
   const notSuspended = epStatusData?.not_suspended_and_no_holds || false;
@@ -110,7 +110,7 @@ const EarlyPaymentContainer = () => {
         isZh
           ? "由于您有款项被暂扣和/或您的账号已被禁用，您现无资格请求提前放款。"
           : i`You are not eligible to request Early Payment because ` +
-            i`you have payment withheld and/or your account has been disabled.`
+            i`you have payment withheld and/or your account has been disabled.`,
       )
         .setHeader({
           title: isZh
@@ -124,7 +124,7 @@ const EarlyPaymentContainer = () => {
         isZh
           ? "由于您账户的当前余额为负值或零，您目前并无资格请求提前放款。"
           : i`You are not eligible to request Early Payment at this time ` +
-            i`because your account's Current Balance is negative or zero.`
+            i`because your account's Current Balance is negative or zero.`,
       )
         .setHeader({
           title: isZh
@@ -133,7 +133,7 @@ const EarlyPaymentContainer = () => {
         })
         .setCancel(isZh ? "关闭" : i`Close`)
         .setAction(isZh ? "查看账户余额" : i`See Account Balance`, () =>
-          navigationStore.replace("/account-balance")
+          navigationStore.replace("/account-balance"),
         )
         .render();
     } else if (availableAmount <= 0) {
@@ -146,7 +146,7 @@ const EarlyPaymentContainer = () => {
             i`the Total Cost of your recently confirmed fulfilled orders, please ` +
             i`continue to fulfill orders to be eligible for additional Early Payment. ` +
             i`You will be able to request Early Payment for up to a portion of the ` +
-            i`Total Cost of your future confirmed fulfilled orders.`
+            i`Total Cost of your future confirmed fulfilled orders.`,
       )
         .setHeader({
           title: isZh
@@ -162,7 +162,7 @@ const EarlyPaymentContainer = () => {
           ? "您现有资格请求一项基于您近期确认履行订单总成本金额的提前放款。如需请求提前放款，请先关闭您店铺的假期模式。"
           : i`You are eligible to request an Early Payment based on the Total Cost ` +
             i`of your recently confirmed fulfilled orders. ` +
-            i`To request Early Payment, turn off Vacation Mode for your store first.`
+            i`To request Early Payment, turn off Vacation Mode for your store first.`,
       )
         .setHeader({
           title: isZh ? "假期模式" : i`Vacation Mode`,
@@ -179,7 +179,7 @@ const EarlyPaymentContainer = () => {
           : i`You are eligible to request one Early Payment per disbursement cycle ` +
             i`prior to each disbursement day (on the 1st and 15th of each month). ` +
             i`As today is a disbursement day, please ` +
-            i`request an Early Payment on a different date.`
+            i`request an Early Payment on a different date.`,
       )
         .setHeader({
           title: isZh ? "结款日" : i`Disbursement Day`,
@@ -192,7 +192,7 @@ const EarlyPaymentContainer = () => {
           ? "您确认吗？若您在更接近下一个结款日的某时来请求提前放款，您可请求到的提前放款金额可能更大。"
           : i`Are you sure? ` +
             i`You may be able to request a larger amount of Early Payment ` +
-            i`if you make the request closer to the next disbursement date.`
+            i`if you make the request closer to the next disbursement date.`,
       )
         .setHeader({
           title: isZh ? "确认" : i`Confirmation`,
@@ -202,7 +202,7 @@ const EarlyPaymentContainer = () => {
           isZh ? "继续请求提前放款" : i`Continue to Request Early Payment`,
           async () => {
             await renderRequestEarlyPaymentModal();
-          }
+          },
         )
         .render();
     } else {
@@ -229,7 +229,7 @@ const EarlyPaymentContainer = () => {
           "您店铺的资格期间，请继续履行订单以更快速地获得请求提前放款的资格。"
         : i`We will let you know once your store is eligible to request Early Payments. ` +
           i`While we review your store’s eligibility, remember to continue to fulfill ` +
-          i`orders to expedite your eligibility for Early Payment. `
+          i`orders to expedite your eligibility for Early Payment. `,
     )
       .setHeader({
         title: isZh
@@ -362,7 +362,7 @@ const EarlyPaymentContainer = () => {
 };
 
 const useStylesheet = () => {
-  const { pageGuideXForPageWithTable: pageX } = useDimenStore();
+  const { pageGuideXForPageWithTable: pageX } = useDeviceStore();
 
   return StyleSheet.create({
     root: {

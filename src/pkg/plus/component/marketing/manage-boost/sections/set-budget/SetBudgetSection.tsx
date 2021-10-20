@@ -23,7 +23,7 @@ import { formatCurrency } from "@ContextLogic/lego/toolkit/currency";
 import Section from "@plus/component/marketing/manage-boost/Section";
 import SetBudgetTable from "./SetBudgetTable";
 
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 import BoostProductsState from "@plus/model/BoostProductsState";
 
@@ -34,12 +34,8 @@ type Props = BaseProps & {
 const SetBudgetSection: React.FC<Props> = (props: Props) => {
   const { className, style, boostState } = props;
   const styles = useStylesheet();
-  const {
-    totalBudget,
-    currencyCode,
-    hasBudgetError,
-    isBeyondAvailableBudget,
-  } = boostState;
+  const { totalBudget, currencyCode, hasBudgetError, isBeyondAvailableBudget } =
+    boostState;
   const totalDailyBudget = formatCurrency(totalBudget, currencyCode);
 
   return (
@@ -51,7 +47,7 @@ const SetBudgetSection: React.FC<Props> = (props: Props) => {
         <div
           className={css(
             styles.totalBudget,
-            isBeyondAvailableBudget && styles.error
+            isBeyondAvailableBudget && styles.error,
           )}
         >
           Total: {totalDailyBudget} / day
@@ -96,7 +92,7 @@ const useStylesheet = () => {
           color: negative,
         },
       }),
-    [negative]
+    [negative],
   );
 };
 

@@ -18,7 +18,7 @@ import { SheetItem } from "@merchant/component/core";
 import { css } from "@toolkit/styling";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import {
   OrderDetailInitialData,
   PickedAddressType,
@@ -129,7 +129,7 @@ const EuBoundDetails: React.FC<EuBoundDetailsProps> = ({
             ({ authority, status }) =>
               status == "ACTIVE" &&
               authority != null &&
-              authority.country.code === orderDestinationCountryCode
+              authority.country.code === orderDestinationCountryCode,
           )
         : undefined;
 
@@ -153,12 +153,10 @@ const EuBoundDetails: React.FC<EuBoundDetailsProps> = ({
                 initialData.fulfillment.order.shippingDetails.country == null
                   ? null
                   : {
-                      name:
-                        initialData.fulfillment.order.shippingDetails.country
-                          .name,
-                      code:
-                        initialData.fulfillment.order.shippingDetails.country
-                          .code,
+                      name: initialData.fulfillment.order.shippingDetails
+                        .country.name,
+                      code: initialData.fulfillment.order.shippingDetails
+                        .country.code,
                     },
             },
       merchantName: initialData.currentUser.name,
@@ -196,20 +194,14 @@ const EuBoundDetails: React.FC<EuBoundDetailsProps> = ({
       | Omit<PickedAddressType, "name">
       | PickedMerchantAddressType
       | null
-      | undefined
+      | undefined,
   ) => {
     if (address == null) {
       return NoData;
     }
 
-    const {
-      streetAddress1,
-      streetAddress2,
-      city,
-      zipcode,
-      state,
-      country,
-    } = address;
+    const { streetAddress1, streetAddress2, city, zipcode, state, country } =
+      address;
 
     const lastLine = [city, state, country?.code, zipcode]
       .filter((component) => component != null)
@@ -235,20 +227,14 @@ const EuBoundDetails: React.FC<EuBoundDetailsProps> = ({
       | Omit<PickedAddressType, "name">
       | PickedMerchantAddressType
       | null
-      | undefined
+      | undefined,
   ) => {
     if (address == null) {
       return NoData;
     }
 
-    const {
-      streetAddress1,
-      streetAddress2,
-      city,
-      zipcode,
-      state,
-      country,
-    } = address;
+    const { streetAddress1, streetAddress2, city, zipcode, state, country } =
+      address;
 
     const lastLine = [city, state, country?.code, zipcode]
       .filter((component) => component != null)
@@ -569,6 +555,6 @@ const useStylesheet = ({
           padding: 13,
         },
       }),
-    [borderPrimary, textBlack, textDark, legalExpanded]
+    [borderPrimary, textBlack, textDark, legalExpanded],
   );
 };

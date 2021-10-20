@@ -14,7 +14,7 @@ import WishExpressIntroductionModal from "@plus/component/wish-express/introduct
 import { useUIStateBool } from "@toolkit/ui-state";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import { useLogger } from "@toolkit/logger";
 
 type Props = BaseProps & {};
@@ -128,6 +128,6 @@ const useStylesheet = () => {
           },
         },
       }),
-    [textDark]
+    [textDark],
   );
 };

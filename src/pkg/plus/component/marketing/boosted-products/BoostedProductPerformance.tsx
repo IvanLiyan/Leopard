@@ -28,7 +28,7 @@ import {
 
 /* Lego Toolkit */
 import { css } from "@toolkit/styling";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import { weightMedium } from "@toolkit/fonts";
 import { formatCurrency } from "@ContextLogic/lego/toolkit/currency";
 
@@ -130,7 +130,7 @@ const BoostedProductPerformance: React.FC<Props> = (props: Props) => {
     productCreationTime < new Date().getTime() / 1000 - 3.154e7;
   const [startTime, endTime] = useStartAndEndTime(
     timeRange,
-    productCreationTime
+    productCreationTime,
   );
   const { data, loading: isLoading } = useQuery<
     GetProductStatsResponseType,
@@ -199,7 +199,7 @@ const BoostedProductPerformance: React.FC<Props> = (props: Props) => {
             formatter={(
               value: unknown,
               name: unknown,
-              entry: TooltipPayload
+              entry: TooltipPayload,
             ) => {
               if (name === "impressions") {
                 return (
@@ -388,13 +388,13 @@ const useStylesheet = () => {
       borderPrimary,
       textBlack,
       textDark,
-    ]
+    ],
   );
 };
 
 const useStartAndEndTime = (
   range: TimeRange,
-  productCreationTime: number
+  productCreationTime: number,
 ): [number, number] => {
   return useMemo(() => {
     const now = moment();
@@ -416,7 +416,7 @@ const useStartAndEndTime = (
 
 const NUM_DATA_POINTS = 7;
 const useTicks = (
-  stats: ReadonlyArray<PickedDailyStat>
+  stats: ReadonlyArray<PickedDailyStat>,
 ): ReadonlyArray<string> => {
   return useMemo(() => {
     const interval = Math.floor(stats.length / (NUM_DATA_POINTS - 1));

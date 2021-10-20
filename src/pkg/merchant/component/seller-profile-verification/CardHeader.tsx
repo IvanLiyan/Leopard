@@ -9,7 +9,7 @@ import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { DEPRECATEDIcon as Icon } from "@merchant/component/core";
 
 /* Merchant Store */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 type CardHeaderProps = BaseProps & {
   readonly pageNumberDisplay?: string;
@@ -18,13 +18,8 @@ type CardHeaderProps = BaseProps & {
 };
 
 const CardHeader = (props: CardHeaderProps) => {
-  const {
-    className,
-    style,
-    pageNumberDisplay,
-    onClickBack,
-    displayType,
-  } = props;
+  const { className, style, pageNumberDisplay, onClickBack, displayType } =
+    props;
 
   const styles = useStylesheet();
 
@@ -63,6 +58,6 @@ const useStylesheet = () => {
           cursor: "pointer",
         },
       }),
-    [textUltralight]
+    [textUltralight],
   );
 };

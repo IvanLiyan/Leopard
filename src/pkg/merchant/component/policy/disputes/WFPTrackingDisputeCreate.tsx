@@ -53,8 +53,8 @@ import { RadioOption } from "@ContextLogic/lego";
 import { AttachmentInfo } from "@ContextLogic/lego";
 import { OnTextChangeEvent } from "@ContextLogic/lego";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import DimenStore from "@merchant/stores/DimenStore";
-import NavigationStore from "@merchant/stores/NavigationStore";
+import DeviceStore from "@stores/DeviceStore";
+import NavigationStore from "@stores/NavigationStore";
 
 type WFPTrackingDisputeCreateProps = BaseProps & {
   readonly orderId: string;
@@ -81,9 +81,7 @@ type WFPTrackingDisputeCreateProps = BaseProps & {
 };
 
 @observer
-class WFPTrackingDisputeCreate extends Component<
-  WFPTrackingDisputeCreateProps
-> {
+class WFPTrackingDisputeCreate extends Component<WFPTrackingDisputeCreateProps> {
   @observable
   formStatus: "normal" | "we-new" | "none" = "none";
 
@@ -161,7 +159,7 @@ class WFPTrackingDisputeCreate extends Component<
 
   @computed
   get pageX(): string | number {
-    const { pageGuideX } = DimenStore.instance();
+    const { pageGuideX } = DeviceStore.instance();
     return pageGuideX;
   }
 
@@ -252,13 +250,13 @@ class WFPTrackingDisputeCreate extends Component<
       "ES",
     ];
 
-    let remainingCountryCodes: CountryCode[] = (Object.keys(
-      countryNamesPartial
-    ) as CountryCode[]).filter((cc: CountryCode) => !topCountries.includes(cc));
+    let remainingCountryCodes: CountryCode[] = (
+      Object.keys(countryNamesPartial) as CountryCode[]
+    ).filter((cc: CountryCode) => !topCountries.includes(cc));
 
     remainingCountryCodes = _.sortBy(
       remainingCountryCodes,
-      (cc) => CountryNames[cc]
+      (cc) => CountryNames[cc],
     );
 
     const countryCodes: CountryCode[] = [
@@ -296,11 +294,8 @@ class WFPTrackingDisputeCreate extends Component<
 
   @computed
   get deliveredDateValidator() {
-    const {
-      wishDeliveredTime,
-      trackingModifiedDate,
-      wfpRequiredDeliveryDate,
-    } = this.props;
+    const { wishDeliveredTime, trackingModifiedDate, wfpRequiredDeliveryDate } =
+      this.props;
     return new DateSanityValidator({
       fieldName: i`confirmed delivered date`,
       sysDate: wishDeliveredTime || "",
@@ -322,7 +317,7 @@ class WFPTrackingDisputeCreate extends Component<
   async reportedDeliveredDateQualifiedReversedFineCheck() {
     const { deliveredDateValidator, reportedDeliveredDate } = this;
     const msg = await deliveredDateValidator.deadlineMeetsWarning(
-      reportedDeliveredDate
+      reportedDeliveredDate,
     );
     this.reportedDeliveredDateQualifiedReversedFineMessage = msg;
   }
@@ -330,7 +325,7 @@ class WFPTrackingDisputeCreate extends Component<
   async reportedFulfillmentDateQualifiedReversedFineCheck() {
     const { fulfillmentDateValidator, reportedFulfillmentDate } = this;
     const msg = await fulfillmentDateValidator.deadlineMeetsWarning(
-      reportedFulfillmentDate
+      reportedFulfillmentDate,
     );
     this.reportedFulfillmentDateQualifiedReversedFineMessage = msg;
   }
@@ -434,7 +429,7 @@ class WFPTrackingDisputeCreate extends Component<
 
     new ConfirmationModal(
       i`Are you sure you want to submit the ` +
-        i`Warehouse Fulfillment Policy tracking dispute?`
+        i`Warehouse Fulfillment Policy tracking dispute?`,
     )
       .setHeader({
         title: i`Submit tracking dispute`,
@@ -981,7 +976,7 @@ class WFPTrackingDisputeCreate extends Component<
                 accepts=".jpeg,.jpg,.png,.pdf"
                 maxAttachments={1}
                 onAttachmentsChanged={(
-                  attachments: ReadonlyArray<AttachmentInfo>
+                  attachments: ReadonlyArray<AttachmentInfo>,
                 ) => {
                   this.screenshotAttachments = attachments;
                   if (attachments.length > 0) {

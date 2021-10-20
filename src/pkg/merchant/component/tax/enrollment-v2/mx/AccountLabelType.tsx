@@ -12,7 +12,7 @@ import { css } from "@toolkit/styling";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { UserEntityType } from "@schema/types";
 
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 export type AccountTypeLabelProps = BaseProps & {
   readonly entityType: UserEntityType | null | undefined;

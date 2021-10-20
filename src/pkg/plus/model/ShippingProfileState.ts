@@ -12,8 +12,8 @@ import {
   DestinationShippingProfileInput,
   UpsertShippingProfile,
 } from "@schema/types";
-import ToastStore from "@merchant/stores/ToastStore";
-import ApolloStore from "@merchant/stores/ApolloStore";
+import ToastStore from "@stores/ToastStore";
+import ApolloStore from "@stores/ApolloStore";
 
 const UPSERT_SHIPPING_PROFILE = gql`
   mutation ShippingProfileState_UpsertShippingProfile(
@@ -46,9 +46,7 @@ export type PickedShippingProfileSchema = Pick<
   ShippingProfileSchema,
   "id" | "name" | "linkedProductCount"
 > & {
-  readonly shippingDetailsPerDestination?: ReadonlyArray<
-    PickedDestinationShippingProfileSchema
-  > | null;
+  readonly shippingDetailsPerDestination?: ReadonlyArray<PickedDestinationShippingProfileSchema> | null;
 };
 
 export type PickedCountryWeShipTo = Pick<
@@ -142,7 +140,7 @@ export default class ShippingProfileState {
       initialData?.shippingDetailsPerDestination ?? [];
     this.destinations = destinations.map(
       (destination) =>
-        new ShippingProfileDestinationState({ initialData: destination })
+        new ShippingProfileDestinationState({ initialData: destination }),
     );
   }
 
@@ -153,9 +151,9 @@ export default class ShippingProfileState {
     const countriesWeShipTo = _.sortBy(
       this.countriesWeShipTo.filter(
         ({ code }) =>
-          this.getDestinationOptionCount(code) < MAX_OPTIONS_PER_COUNTRY
+          this.getDestinationOptionCount(code) < MAX_OPTIONS_PER_COUNTRY,
       ),
-      ({ gmvRank }) => gmvRank ?? Number.MAX_SAFE_INTEGER
+      ({ gmvRank }) => gmvRank ?? Number.MAX_SAFE_INTEGER,
     );
 
     switch (prefill) {
@@ -173,7 +171,7 @@ export default class ShippingProfileState {
           ...countriesWeShipTo
             .filter(
               ({ isInEurope, gmvRank }) =>
-                isInEurope && gmvRank != null && gmvRank <= 20
+                isInEurope && gmvRank != null && gmvRank <= 20,
             )
             .map((country) => new ShippingProfileDestinationState({ country })),
         ];
@@ -182,7 +180,7 @@ export default class ShippingProfileState {
         newDestinations = [
           ...newDestinations,
           ...countriesWeShipTo.map(
-            (country) => new ShippingProfileDestinationState({ country })
+            (country) => new ShippingProfileDestinationState({ country }),
           ),
         ];
         break;
@@ -200,9 +198,9 @@ export default class ShippingProfileState {
     const { destinations, draftDestinations } = this;
     const countries = [...destinations, ...draftDestinations]
       .map(({ country }) => country)
-      .filter((country) => country != null) as ReadonlyArray<
-      PickedCountryWeShipTo
-    >;
+      .filter(
+        (country) => country != null,
+      ) as ReadonlyArray<PickedCountryWeShipTo>;
 
     const sortedCountries = _.sortBy(countries, ({ gmvRank }) => gmvRank);
     if (sortedCountries.length == 0) {
@@ -248,7 +246,7 @@ export default class ShippingProfileState {
 
     const getCountryOptionName = (
       { name }: PickedCountryWeShipTo,
-      existingOptionCount: number
+      existingOptionCount: number,
     ): string => {
       if (existingOptionCount == 0) {
         return name;
@@ -256,13 +254,11 @@ export default class ShippingProfileState {
       return `${name} (${existingOptionCount + 1})`;
     };
 
-    const countryData: ReadonlyArray<[
-      PickedCountryWeShipTo,
-      number
-    ]> = countriesWeShipTo.map((country) => [
-      country,
-      this.getDestinationOptionCount(country.code),
-    ]);
+    const countryData: ReadonlyArray<[PickedCountryWeShipTo, number]> =
+      countriesWeShipTo.map((country) => [
+        country,
+        this.getDestinationOptionCount(country.code),
+      ]);
 
     return countryData
       .filter(([, optionCount]) => optionCount < MAX_OPTIONS_PER_COUNTRY)
@@ -278,8 +274,8 @@ export default class ShippingProfileState {
 
     const { id, name, primaryCurrency, destinations } = this;
 
-    const shippingDetailsPerDestination: ReadonlyArray<DestinationShippingProfileInput> = destinations.map(
-      ({ country, rate, initialData, isSaved }) => ({
+    const shippingDetailsPerDestination: ReadonlyArray<DestinationShippingProfileInput> =
+      destinations.map(({ country, rate, initialData, isSaved }) => ({
         destination: country?.code,
         rate: {
           amount: rate || 0, // rate should always be defined at this point
@@ -287,8 +283,7 @@ export default class ShippingProfileState {
         },
         maxHoursToDoor: initialData?.maxHoursToDoor,
         enabled: isSaved,
-      })
-    );
+      }));
 
     const mutationInput: ShippingProfileUpsertInput = {
       id,

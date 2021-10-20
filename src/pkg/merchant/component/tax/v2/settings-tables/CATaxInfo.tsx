@@ -21,7 +21,7 @@ import {
 import ValidatedLabel from "@merchant/component/tax/v2/ValidatedLabel";
 
 /* Merchant Stores */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 type Props = BaseProps & {
   readonly gstNumber: string | null | undefined;
@@ -113,6 +113,6 @@ const useStylesheet = () => {
           marginLeft: 4,
         },
       }),
-    [textBlack]
+    [textBlack],
   );
 };

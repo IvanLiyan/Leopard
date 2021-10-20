@@ -31,8 +31,8 @@ import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { useStringQueryParam } from "@toolkit/url";
 
 /* Merchant Stores */
-import { useTheme } from "@merchant/stores/ThemeStore";
-import { useNavigationStore } from "@merchant/stores/NavigationStore";
+import { useTheme } from "@stores/ThemeStore";
+import { useNavigationStore } from "@stores/NavigationStore";
 
 /* Model */
 import { CountryCode } from "@schema/types";
@@ -55,7 +55,7 @@ const EuVatQuestionnaire = ({
   const [state] = useState(new EuVatQuestionnaireState());
   const [queryRedirect] = useStringQueryParam("redirect");
   const [attachments, setAttachments] = useState<ReadonlyArray<AttachmentInfo>>(
-    []
+    [],
   );
 
   useEffect(() => {
@@ -66,7 +66,7 @@ const EuVatQuestionnaire = ({
 
   const euCountries = useMemo(
     () => _.sortBy(euVatCountries, (country) => country.name),
-    [euVatCountries]
+    [euVatCountries],
   );
 
   const upload = async (attachments: ReadonlyArray<AttachmentInfo>) => {
@@ -358,7 +358,8 @@ const EuVatQuestionnaire = ({
                       placeholder={i`Enter country or region`}
                       selectedValue={state.euVatRegistrationCountryCode}
                       onSelected={(value: string) => {
-                        state.euVatRegistrationCountryCode = value as CountryCode;
+                        state.euVatRegistrationCountryCode =
+                          value as CountryCode;
                       }}
                     />
                   </Field>
@@ -423,6 +424,6 @@ const useStylesheet = () => {
           marginLeft: 8,
         },
       }),
-    [textBlack, surfaceLightest, negative]
+    [textBlack, surfaceLightest, negative],
   );
 };

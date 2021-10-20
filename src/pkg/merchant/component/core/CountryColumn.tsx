@@ -15,7 +15,7 @@ import { Table, BasicColumnProps, CellInfo } from "@ContextLogic/lego";
 
 /* Lego Toolkit */
 import { css } from "@toolkit/styling";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import { CountryCode } from "@toolkit/countries";
 
 const CountryColumn = (props: BasicColumnProps) => {
@@ -67,7 +67,7 @@ const useStylesheet = () => {
           height: 20,
         },
       }),
-    [surfaceLight]
+    [surfaceLight],
   );
 };
 

@@ -15,7 +15,7 @@ import { Illustration } from "@merchant/component/core";
 import { SidePadding } from "@plus/component/nav/PageGuide";
 
 /* Merchant Stores*/
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* Type Imports */
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
@@ -112,6 +112,6 @@ const useStylesheet = () => {
           },
         },
       }),
-    [primary, surfaceLightest]
+    [primary, surfaceLightest],
   );
 };

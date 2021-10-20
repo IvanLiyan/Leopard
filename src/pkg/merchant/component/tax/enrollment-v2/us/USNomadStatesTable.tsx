@@ -21,14 +21,14 @@ import { USNomadStates } from "@toolkit/tax/enrollment";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { useTaxStore } from "@merchant/stores/TaxStore";
-import { useDimenStore } from "@merchant/stores/DimenStore";
+import { useDeviceStore } from "@stores/DeviceStore";
 
 export default observer((props: BaseProps) => {
   const { className, style } = props;
 
   const styles = useStylesheet();
   const { availableUSStates } = useTaxStore();
-  const { isSmallScreen } = useDimenStore();
+  const { isSmallScreen } = useDeviceStore();
 
   if (availableUSStates == null) {
     return <LoadingIndicator />;
@@ -40,7 +40,7 @@ export default observer((props: BaseProps) => {
       .map((stateCode) => ({
         state: getStateName("US", stateCode),
       })),
-    (info) => info.state
+    (info) => info.state,
   );
 
   const rows = _.chunk(tableData, isSmallScreen ? 1 : 4);
@@ -84,5 +84,5 @@ const useStylesheet = () =>
           paddingLeft: 15,
         },
       }),
-    []
+    [],
   );

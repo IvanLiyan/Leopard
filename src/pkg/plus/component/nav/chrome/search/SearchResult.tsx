@@ -12,8 +12,8 @@ import * as fonts from "@toolkit/fonts";
 
 /* Type Imports */
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import { NavigationSearchResult } from "@merchant/stores/NavigationStore";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { NavigationSearchResult } from "@stores/NavigationStore";
+import { useTheme } from "@stores/ThemeStore";
 
 type Props = BaseProps & {
   readonly result: NavigationSearchResult;
@@ -124,6 +124,6 @@ const useStylesheet = ({ isSelected }: Props) => {
           fontWeight: fonts.weightNormal,
         },
       }),
-    [isSelected, surfaceLightest, textBlack, textDark]
+    [isSelected, surfaceLightest, textBlack, textDark],
   );
 };

@@ -22,8 +22,8 @@ import {
 /* Lego Toolkit */
 import { css } from "@toolkit/styling";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import { useTheme } from "@merchant/stores/ThemeStore";
-import { useLocalizationStore } from "@merchant/stores/LocalizationStore";
+import { useTheme } from "@stores/ThemeStore";
+import { useLocalizationStore } from "@stores/LocalizationStore";
 
 type CustomRechartsToolTipProps = Omit<RechartsTooltipProps, "payload"> & {
   readonly payload: ReadonlyArray<
@@ -325,6 +325,6 @@ const useStylesheet = () => {
           marginBottom: 16,
         },
       }),
-    [textDark]
+    [textDark],
   );
 };

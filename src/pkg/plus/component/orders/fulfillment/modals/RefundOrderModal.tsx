@@ -36,10 +36,10 @@ import {
 } from "@toolkit/orders/refund";
 
 import { css } from "@toolkit/styling";
-import { useTheme } from "@merchant/stores/ThemeStore";
-import { useToastStore } from "@merchant/stores/ToastStore";
-import { useApolloStore } from "@merchant/stores/ApolloStore";
-import { useNavigationStore } from "@merchant/stores/NavigationStore";
+import { useTheme } from "@stores/ThemeStore";
+import { useToastStore } from "@stores/ToastStore";
+import { useApolloStore } from "@stores/ApolloStore";
+import { useNavigationStore } from "@stores/NavigationStore";
 import { formatCurrency } from "@toolkit/currency";
 
 export type RefundOrderModalProps = {
@@ -74,12 +74,14 @@ const RefundOrderModalContent: React.FC<RefundOrderModalProps> = observer(
     const toastStore = useToastStore();
     const navigationStore = useNavigationStore();
 
-    const refundReasons = orderDetailData?.fulfillment?.order?.validRefundReasons.filter(
-      ({ text }) => text != null
-    );
-    const buyerFraudReasons = orderDetailData?.platformConstants?.buyerFraudReasons?.filter(
-      ({ text }) => text != null
-    );
+    const refundReasons =
+      orderDetailData?.fulfillment?.order?.validRefundReasons.filter(
+        ({ text }) => text != null,
+      );
+    const buyerFraudReasons =
+      orderDetailData?.platformConstants?.buyerFraudReasons?.filter(
+        ({ text }) => text != null,
+      );
 
     if (refundReasons == null) {
       return <LoadingIndicator />;
@@ -116,7 +118,7 @@ const RefundOrderModalContent: React.FC<RefundOrderModalProps> = observer(
       }
       if (!selectedBuyerFraudReasonValid) {
         toastStore.negative(
-          i`A buyer violation type is required when refunding due to buyer fraud.`
+          i`A buyer violation type is required when refunding due to buyer fraud.`,
         );
         return;
       }
@@ -177,7 +179,7 @@ const RefundOrderModalContent: React.FC<RefundOrderModalProps> = observer(
           if (!wpsOk) {
             toastStore.negative(
               wpsErrorMessage ||
-                i`Something went wrong refunding your shipping label`
+                i`Something went wrong refunding your shipping label`,
             );
           }
         }
@@ -219,7 +221,7 @@ const RefundOrderModalContent: React.FC<RefundOrderModalProps> = observer(
         false;
 
       const selectedRefundReasonName = refundOptions.find(
-        ({ value }) => value === selectedRefundReason
+        ({ value }) => value === selectedRefundReason,
       )?.text;
 
       const desc = isConfirmedFulfilled
@@ -347,7 +349,7 @@ const RefundOrderModalContent: React.FC<RefundOrderModalProps> = observer(
         </div>
       </div>
     );
-  }
+  },
 );
 
 const useStylesheet = () => {
@@ -396,7 +398,7 @@ const useStylesheet = () => {
           borderBottom: `1px dashed ${borderPrimary}`,
         },
       }),
-    [borderPrimary]
+    [borderPrimary],
   );
 };
 

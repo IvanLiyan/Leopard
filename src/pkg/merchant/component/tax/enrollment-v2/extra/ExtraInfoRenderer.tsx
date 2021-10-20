@@ -8,8 +8,8 @@ import { Markdown, Tip, Info } from "@ContextLogic/lego";
 import FBWWarehouseTaxInfo from "@merchant/component/tax/enrollment-v2/extra/FBWWarehouseTaxInfo";
 
 import { CountryCode } from "@toolkit/countries";
-import { usePersistenceStore } from "@merchant/stores/PersistenceStore";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { usePersistenceStore } from "@stores/PersistenceStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* Toolkit */
 import { css } from "@toolkit/styling";
@@ -125,6 +125,6 @@ const useStylesheet = () => {
           marginLeft: 6,
         },
       }),
-    []
+    [],
   );
 };

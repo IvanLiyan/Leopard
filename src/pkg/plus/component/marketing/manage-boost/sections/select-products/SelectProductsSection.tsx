@@ -26,11 +26,11 @@ import {
   useStringEnumQueryParam,
 } from "@toolkit/url";
 import { useDebouncer } from "@ContextLogic/lego/toolkit/hooks";
-import { useApolloStore } from "@merchant/stores/ApolloStore";
+import { useApolloStore } from "@stores/ApolloStore";
 
 import { wishExpressTruck } from "@assets/illustrations";
 
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* Lego Toolkit */
 import { css } from "@toolkit/styling";
@@ -53,7 +53,7 @@ import {
   ProductPromotionSearchType,
 } from "@schema/types";
 import BoostProductsState from "@plus/model/BoostProductsState";
-import { useUserStore } from "@merchant/stores/UserStore";
+import { useUserStore } from "@stores/UserStore";
 
 const SEARCH_PROMOTABLE_PRODUCTS = gql`
   query SelectProductsSection_SearchPromotableProducts(
@@ -125,9 +125,8 @@ const SelectProductsSection: React.FC<Props> = (props: Props) => {
   const [query, setQuery] = useStringQueryParam("q");
   const [rawOffset, setOffset] = useIntQueryParam("offset");
   const [wishExpress, setWishExpress] = useBoolQueryParam("wish_express");
-  const [searchType, setSearchType] = useStringEnumQueryParam<
-    ProductPromotionSearchType
-  >("search_type", "NAME");
+  const [searchType, setSearchType] =
+    useStringEnumQueryParam<ProductPromotionSearchType>("search_type", "NAME");
 
   const offset = rawOffset || 0;
 
@@ -223,7 +222,7 @@ const SelectProductsSection: React.FC<Props> = (props: Props) => {
             <ProductSearchBar
               searchType={searchType}
               onSelectSearchType={(
-                selectedSearchType: ProductPromotionSearchType
+                selectedSearchType: ProductPromotionSearchType,
               ) => {
                 setSearchType(selectedSearchType);
               }}
@@ -330,7 +329,7 @@ const useStylesheet = () => {
           height: InputHeight,
         },
       }),
-    [borderPrimary]
+    [borderPrimary],
   );
 };
 

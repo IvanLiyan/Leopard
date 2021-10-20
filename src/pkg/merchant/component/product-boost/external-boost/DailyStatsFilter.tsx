@@ -23,7 +23,7 @@ import {
   DailyStatsNames,
   useDailyStatsTooltips,
 } from "@toolkit/product-boost/external-boost/external-boost";
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 import { ExternalBoostChargingMethod } from "@schema/types";
 import LinePreview from "./LinePreview";
 import { useStringSetQueryParam } from "@toolkit/url";
@@ -39,9 +39,8 @@ const DailyStatsFilter: React.FC<Props> = ({
 }: Props) => {
   const styles = useStylesheet();
 
-  const [excludedMetrics, setExcludedMetrics] = useStringSetQueryParam<
-    DailyStatsLineType
-  >("hidden-metrics");
+  const [excludedMetrics, setExcludedMetrics] =
+    useStringSetQueryParam<DailyStatsLineType>("hidden-metrics");
 
   const metrics = useMemo(() => {
     const includedMetrics = new Set(ChargingMethodDailyStats[chargingMethod]);
@@ -63,21 +62,24 @@ const DailyStatsFilter: React.FC<Props> = ({
 
   const DailyStatsTooltips = useDailyStatsTooltips(chargingMethod);
 
-  const stateOptions: ReadonlyArray<OptionType<
-    DailyStatsLineType
-  >> = useMemo(() => {
-    return availableMetrics.map((metric) => ({
-      value: metric,
-      key: metric,
-      title: () => (
-        <>
-          <LinePreview metric={metric} isDisabled={!metrics.has(metric)} />
-          <Text style={{ margin: "0 6px" }}>{DailyStatsNames[metric]}</Text>
-          <Info sentiment="info" text={DailyStatsTooltips[metric]} size={12} />
-        </>
-      ),
-    }));
-  }, [availableMetrics, metrics, DailyStatsTooltips]);
+  const stateOptions: ReadonlyArray<OptionType<DailyStatsLineType>> =
+    useMemo(() => {
+      return availableMetrics.map((metric) => ({
+        value: metric,
+        key: metric,
+        title: () => (
+          <>
+            <LinePreview metric={metric} isDisabled={!metrics.has(metric)} />
+            <Text style={{ margin: "0 6px" }}>{DailyStatsNames[metric]}</Text>
+            <Info
+              sentiment="info"
+              text={DailyStatsTooltips[metric]}
+              size={12}
+            />
+          </>
+        ),
+      }));
+    }, [availableMetrics, metrics, DailyStatsTooltips]);
 
   return (
     <Layout.FlexColumn className={css(styles.root, className, style)}>
@@ -149,6 +151,6 @@ const useStylesheet = () => {
           alignItems: "center",
         },
       }),
-    [textBlack]
+    [textBlack],
   );
 };

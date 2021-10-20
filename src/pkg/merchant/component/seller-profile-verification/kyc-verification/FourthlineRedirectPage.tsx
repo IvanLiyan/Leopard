@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import { StyleSheet } from "aphrodite";
 
 /* Merchant Store */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* Lego Components */
 import { Markdown, H4, H6 } from "@ContextLogic/lego";
@@ -159,6 +159,6 @@ const useStylesheet = () => {
           display: "inline-block",
         },
       }),
-    [pageBackground]
+    [pageBackground],
   );
 };

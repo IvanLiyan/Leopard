@@ -20,7 +20,7 @@ import { useBoolQueryParam } from "@toolkit/url";
 import { useMountEffect } from "@ContextLogic/lego/toolkit/hooks";
 import locales from "@toolkit/locales";
 
-import { useNavigationStore } from "@merchant/stores/NavigationStore";
+import { useNavigationStore } from "@stores/NavigationStore";
 
 /* Merchant Plus Components */
 import { Flag } from "@merchant/component/core";
@@ -37,8 +37,8 @@ import TwoFactorModal from "./modals/two-factor-modal/TwoFactorModal";
 
 /* Type Imports */
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import { useTheme } from "@merchant/stores/ThemeStore";
-import { useLocalizationStore } from "@merchant/stores/LocalizationStore";
+import { useTheme } from "@stores/ThemeStore";
+import { useLocalizationStore } from "@stores/LocalizationStore";
 import { AccountSettingsInitialData } from "@toolkit/account-settings";
 
 export type SecuritySettingsProps = BaseProps & {
@@ -47,7 +47,7 @@ export type SecuritySettingsProps = BaseProps & {
 };
 
 const SecuritySettings: React.FC<SecuritySettingsProps> = (
-  props: SecuritySettingsProps
+  props: SecuritySettingsProps,
 ) => {
   const { className, style, hasBottomBorder, initialData } = props;
   const styles = useStylesheet(props);
@@ -56,10 +56,10 @@ const SecuritySettings: React.FC<SecuritySettingsProps> = (
   const [openTwoFactorModal] = useBoolQueryParam("open-2fa", undefined);
   const [email] = useState<string>(initialData.currentUser.email);
   const [twoFactorEnabled, setTwoFactorEnabled] = useState(
-    initialData.currentUser.twoFactorEnabled
+    initialData.currentUser.twoFactorEnabled,
   );
   const [tfaTokenSentTime, setTfaTokenSentTime] = useState(
-    initialData.currentUser.tfaTokenSentTime?.iso8061
+    initialData.currentUser.tfaTokenSentTime?.iso8061,
   );
   const { hasTfaBackupCodes } = initialData.currentUser;
   const canAccessTfa = !!initialData.currentUser.phoneNumber;
@@ -163,7 +163,7 @@ const SecuritySettings: React.FC<SecuritySettingsProps> = (
             {ni18n(
               numCurrentDevices,
               "1 device used to login",
-              "%1$d devices used to login"
+              "%1$d devices used to login",
             )}
           </Link>
         </SettingsRow>
@@ -193,6 +193,6 @@ const useStylesheet = (props: SecuritySettingsProps) => {
           alignItems: "center",
         },
       }),
-    [textDark]
+    [textDark],
   );
 };

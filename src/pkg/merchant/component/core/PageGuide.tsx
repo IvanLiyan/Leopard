@@ -13,7 +13,7 @@ import { observer } from "mobx-react";
 import { css } from "@toolkit/styling";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import { useDimenStore } from "@merchant/stores/DimenStore";
+import { useDeviceStore } from "@stores/DeviceStore";
 
 type PageMode = "page-with-table" | "default";
 export type PageGuideProps = BaseProps & {
@@ -29,11 +29,8 @@ const PageGuide: React.FC<PageGuideProps> = (props: PageGuideProps) => {
 export default observer(PageGuide);
 
 const useStylesheet = ({ mode = "default" }: PageGuideProps) => {
-  const {
-    pageGuideXForPageWithTable,
-    pageGuideX,
-    pageGuideBottom,
-  } = useDimenStore();
+  const { pageGuideXForPageWithTable, pageGuideX, pageGuideBottom } =
+    useDeviceStore();
 
   const guideX = mode == "default" ? pageGuideX : pageGuideXForPageWithTable;
   return useMemo(
@@ -46,6 +43,6 @@ const useStylesheet = ({ mode = "default" }: PageGuideProps) => {
           paddingBottom: pageGuideBottom,
         },
       }),
-    [guideX, pageGuideBottom]
+    [guideX, pageGuideBottom],
   );
 };

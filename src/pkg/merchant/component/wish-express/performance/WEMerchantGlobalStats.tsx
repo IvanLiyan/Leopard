@@ -20,9 +20,9 @@ import WEProductStatsTable from "./WEProductStatsTable";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { WEMerchantPerformanceType } from "./WEMerchantStats";
 import { PercentageStatBoxDisplayMode } from "./PercentageStatBox";
-import DimenStore from "@merchant/stores/DimenStore";
-import UserStore from "@merchant/stores/UserStore";
-import NavigationStore from "@merchant/stores/NavigationStore";
+import DeviceStore from "@stores/DeviceStore";
+import UserStore from "@stores/UserStore";
+import NavigationStore from "@stores/NavigationStore";
 
 type SeriesEntry = {
   [metricKey: string]: any;
@@ -47,9 +47,7 @@ export type WEMerchantGlobalStatsProps = BaseProps & {
 };
 
 @observer
-export default class WEMerchantGlobalStats extends Component<
-  WEMerchantGlobalStatsProps
-> {
+export default class WEMerchantGlobalStats extends Component<WEMerchantGlobalStatsProps> {
   @computed
   get styles() {
     return StyleSheet.create({
@@ -83,7 +81,7 @@ export default class WEMerchantGlobalStats extends Component<
 
   @computed
   get statBoxWidth(): number {
-    const { screenInnerWidth } = DimenStore.instance();
+    const { screenInnerWidth } = DeviceStore.instance();
     return 0.135 * screenInnerWidth;
   }
 
@@ -138,7 +136,7 @@ export default class WEMerchantGlobalStats extends Component<
     navigationStore.download(
       `/stats/merchant/weekly/export?target_date=${merchCsvDate}` +
         `&stats_type=wish_express_overview&merchant_id=${this.merchantId}` +
-        `&selected_currency=${merchSelectedCurrency}`
+        `&selected_currency=${merchSelectedCurrency}`,
     );
   };
 
@@ -148,7 +146,7 @@ export default class WEMerchantGlobalStats extends Component<
     navigationStore.download(
       `/stats/product/weekly/export?target_date=${week}` +
         `&stats_type=wish_express_overview&merchant_id=${this.merchantId}` +
-        `&selected_currency=${prodSelectedCurrency}`
+        `&selected_currency=${prodSelectedCurrency}`,
     );
   };
 

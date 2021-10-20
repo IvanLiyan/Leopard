@@ -4,7 +4,7 @@ import React from "react";
 import { Label, LabelProps } from "@ContextLogic/lego";
 
 /* Merchant Store */
-import { useTheme } from "@merchant/stores/ThemeStore";
+import { useTheme } from "@stores/ThemeStore";
 
 /* Type Imports */
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";

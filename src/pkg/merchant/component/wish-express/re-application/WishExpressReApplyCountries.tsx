@@ -29,7 +29,7 @@ import { OptionType } from "@ContextLogic/lego";
 
 /* Merchant Stores */
 import WishExpressStore from "@merchant/stores/WishExpressStore";
-import { ThemeContext } from "@merchant/stores/ThemeStore";
+import { ThemeContext } from "@stores/ThemeStore";
 
 export type WishApplicationProps = BaseProps & {
   readonly closeModal: () => unknown;

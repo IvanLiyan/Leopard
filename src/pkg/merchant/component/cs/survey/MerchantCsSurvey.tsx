@@ -17,8 +17,8 @@ import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { DEPRECATEDIcon as Icon } from "@merchant/component/core";
 
 /* Merchant Store */
-import { useTheme } from "@merchant/stores/ThemeStore";
-import { useToastStore } from "@merchant/stores/ToastStore";
+import { useTheme } from "@stores/ThemeStore";
+import { useToastStore } from "@stores/ToastStore";
 
 import MerchantCsSurveyQuestions from "./MerchantCsSurveyQuestions";
 import MerchantCsSurveyState from "@merchant/model/cs/MerchantCsSurveyState";
@@ -33,7 +33,7 @@ const MerchantCsSurvey = ({ style, onUpdate }: MerchantCsSurveyProps) => {
   const surveyLogger = useLogger("MERCHANT_CS_SURVEY_RESULT");
 
   const [surveyState] = useState<MerchantCsSurveyState>(
-    new MerchantCsSurveyState()
+    new MerchantCsSurveyState(),
   );
   const [submitDisabled, setSubmitDisabled] = useState(false);
 
@@ -204,6 +204,6 @@ const useStylesheet = () => {
           height: 32,
         },
       }),
-    [textBlack, borderPrimary]
+    [textBlack, borderPrimary],
   );
 };

@@ -12,7 +12,7 @@ import { Flag } from "@merchant/component/core";
 /* Lego Toolkit */
 import { css } from "@toolkit/styling";
 import { getCountryName } from "@toolkit/countries";
-import { useDeviceStore } from "@merchant/stores/DeviceStore";
+import { useDeviceStore } from "@stores/DeviceStore";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
 /* Schema */
@@ -115,5 +115,5 @@ const useStylesheet = () =>
           marginLeft: 6,
         },
       }),
-    []
+    [],
   );

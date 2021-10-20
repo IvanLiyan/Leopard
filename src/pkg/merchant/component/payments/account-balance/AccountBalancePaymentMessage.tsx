@@ -12,7 +12,7 @@ import { css } from "@toolkit/styling";
 import PaymentHoldAlert from "@merchant/component/payments/account-balance/payment-hold/PaymentHoldAlert";
 
 import { PaymentHoldType } from "@merchant/component/payments/account-balance/payment-hold/PaymentHoldAlert";
-import { useLocalizationStore } from "@merchant/stores/LocalizationStore";
+import { useLocalizationStore } from "@stores/LocalizationStore";
 
 export type PaymentMessageProps = {
   readonly can_request_for_funds: boolean;
@@ -106,7 +106,7 @@ const useStyleSheet = () => {
           fontSize: 14,
         },
       }),
-    []
+    [],
   );
 };
 

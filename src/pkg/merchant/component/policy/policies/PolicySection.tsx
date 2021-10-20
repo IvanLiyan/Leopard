@@ -13,7 +13,7 @@ import { DEPRECATEDIcon as Icon } from "@merchant/component/core";
 
 /* Lego Toolkit */
 import { css } from "@toolkit/styling";
-import { useNavigationStore } from "@merchant/stores/NavigationStore";
+import { useNavigationStore } from "@stores/NavigationStore";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
@@ -113,7 +113,7 @@ const useStylesheet = () =>
           transition: "margin 0.2s ease",
         },
       }),
-    []
+    [],
   );
 
 export default observer(PolicySection);
