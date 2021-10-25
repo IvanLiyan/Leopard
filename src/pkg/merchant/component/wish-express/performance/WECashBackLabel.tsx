@@ -4,7 +4,7 @@ import { observer } from "mobx-react";
 import { computed } from "mobx";
 
 /* Legacy */
-import { zendeskURL } from "@legacy/core/url";
+import { zendeskURL } from "@toolkit/url";
 
 /* Lego Components */
 import { Link } from "@ContextLogic/lego";

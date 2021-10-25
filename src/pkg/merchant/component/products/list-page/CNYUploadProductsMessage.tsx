@@ -14,7 +14,7 @@ import uploadIcon from "@assets/img/upload_products_ill.svg";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
-export default (props: BaseProps) => {
+const CNYUploadProductsMessage: React.FC<BaseProps> = (props: BaseProps) => {
   const styles = useStylesheet();
 
   return (
@@ -38,6 +38,8 @@ export default (props: BaseProps) => {
     </div>
   );
 };
+
+export default CNYUploadProductsMessage;
 
 const useStylesheet = () =>
   useMemo(
@@ -82,5 +84,5 @@ const useStylesheet = () =>
           fontFamily: fonts.proxima,
         },
       }),
-    []
+    [],
   );

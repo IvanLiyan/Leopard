@@ -17,7 +17,7 @@ import { CountryCode } from "@toolkit/countries";
 /* Merchant API */
 import { MerchantUser } from "@merchant/api/authentication";
 
-type RecentSu = {
+export type RecentSu = {
   readonly id: string;
   readonly display_name: string;
   readonly is_merchant: boolean;

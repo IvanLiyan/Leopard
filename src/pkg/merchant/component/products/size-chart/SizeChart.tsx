@@ -50,11 +50,8 @@ const SizeChart = (props: SizeChartProps) => {
   const [unit, setUnit] = useState(sizeChart?.unit || 0);
   const [isMeasurementsOpen, setIsMeasurementsOpen] = useState(true);
   const [success, setSuccess] = useState(false);
-  // TODO [lliepert]: fix nav store in next ticket
-  const sizes: string[] = [];
-  const productId = undefined;
-  // const [sizes] = useStringArrayQueryParam("sizes");
-  // const [productId] = useStringQueryParam("pid");
+  const [sizes] = useStringArrayQueryParam("sizes");
+  const [productId] = useStringQueryParam("pid");
   const sizeChartMeasurements = sizeChart?.measurements_list;
   const sizeList = Array.from(sizes || []);
   const originalMeasurements = new Measurements([]);

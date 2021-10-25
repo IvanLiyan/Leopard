@@ -12,16 +12,15 @@
 
 /* External Libraries */
 import { useState, useEffect, createContext, useContext } from "react";
+import { useQuery } from "@apollo/react-hooks";
 import Cookies from "js-cookie";
 import gql from "graphql-tag";
 
 /* Relative Imports */
-import ApolloStore, { defaultApolloStoreArgs } from "./ApolloStore";
-import UserStore, { defaultUserStoreArgs } from "./UserStore";
-import NavigationStore from "./NavigationStore";
-import EnvironmentStore, {
-  defaultEnvironmentStoreArgs,
-} from "./EnvironmentStore";
+import { useApolloStore } from "./ApolloStore";
+import { useUserStore } from "./UserStore";
+import { useNavigationStore } from "./NavigationStore";
+import { useEnvironmentStore } from "./EnvironmentStore";
 
 import {
   ExpSchema,
@@ -62,71 +61,85 @@ type GetDeciderKeyResponseType = {
   };
 };
 
-type ExperimentStoreArgs = {
-  readonly apolloStore: ApolloStore;
-  readonly userStore: UserStore;
-  readonly navigationStore: NavigationStore;
-  readonly environmentStore: EnvironmentStore;
-  readonly experiments: {
-    [key: string]: string;
+const EXPERIMENT_STORE_INITIAL_QUERY = gql`
+  query ExperimentStore_InitialQuery {
+    currentMerchant {
+      experiments
+    }
+  }
+`;
+
+type ExperimentStoreInitialQueryResponse = {
+  readonly currentMerchant?: {
+    readonly experiments?: Readonly<Record<string, string>>;
   };
 };
-export default class ExperimentStore {
-  apolloStore: ApolloStore;
-  userStore: UserStore;
-  navigationStore: NavigationStore;
-  environmentStore: EnvironmentStore;
-  experiments: {
-    [key: string]: string;
-  };
 
-  constructor({
-    apolloStore,
-    userStore,
-    navigationStore,
-    environmentStore,
-    experiments,
-  }: ExperimentStoreArgs) {
-    this.apolloStore = apolloStore;
-    this.userStore = userStore;
-    this.navigationStore = navigationStore;
-    this.environmentStore = environmentStore;
-    this.experiments = experiments;
-  }
+type ExperimentState = {
+  experiments: Readonly<Record<string, string>>;
+};
 
-  bucketForUser(experimentName: string): string | null | undefined {
+const ExperimentStateContext = createContext<ExperimentState>({
+  experiments: {},
+});
+
+export const ExperimentProvider: React.FC = ({ children }) => {
+  const { data } = useQuery<ExperimentStoreInitialQueryResponse>(
+    EXPERIMENT_STORE_INITIAL_QUERY,
+  );
+  const experiments = data?.currentMerchant?.experiments || {};
+
+  // TODO [lliepert]: handle GQL errors
+
+  return (
+    <ExperimentStateContext.Provider value={{ experiments }}>
+      {children}
+    </ExperimentStateContext.Provider>
+  );
+};
+
+// TODO [lliepert]: is this still used? can we deprecate?
+type ExperimentStore = {
+  readonly bucketForUser: (experimentName: string) => string | null | undefined;
+  readonly overrideLocally: (experimentName: string, bucket: string) => void;
+  readonly clearLocalOverride: (experimentName: string) => void;
+  readonly getBucketForMerchant: (name: string) => Promise<string>;
+  readonly getDeciderKeyDecision: (name: string) => Promise<boolean>;
+};
+
+export const useExperimentStore = (): ExperimentStore => {
+  const { experiments } = useContext(ExperimentStateContext);
+  const { isProd } = useEnvironmentStore();
+  const { isSu } = useUserStore();
+  const { client } = useApolloStore();
+  const navigationStore = useNavigationStore();
+
+  const bucketForUser = (experimentName: string): string | null | undefined => {
     const cookieOverride = Cookies.get(`expoverride_${experimentName}`);
     if (cookieOverride != null) {
       return cookieOverride;
     }
 
-    return this.experiments[experimentName];
-  }
+    return experiments == null ? null : experiments[experimentName];
+  };
 
-  overrideLocally(experimentName: string, bucket: string): void {
-    const navigationStore = NavigationStore.instance();
-    const { isProd } = EnvironmentStore.instance();
-    const { isSu } = UserStore.instance();
+  const overrideLocally = (experimentName: string, bucket: string): void => {
     if (isProd && !isSu) {
       return;
     }
     Cookies.set(`expoverride_${experimentName}`, bucket);
     void navigationStore.reload({ fullReload: true });
-  }
+  };
 
-  clearLocalOverride(experimentName: string): void {
-    const navigationStore = NavigationStore.instance();
-    const { isSu } = UserStore.instance();
-
+  const clearLocalOverride = (experimentName: string): void => {
     if (!isSu) {
       return;
     }
     Cookies.remove(`expoverride_${experimentName}`);
     void navigationStore.reload({ fullReload: true });
-  }
+  };
 
-  async getBucketForMerchant(name: string): Promise<string> {
-    const { client } = ApolloStore.instance();
+  const getBucketForMerchant = async (name: string): Promise<string> => {
     const { data } = await client.query<
       GetExpBucketForMerchantResponseType,
       ExpSchemaBucketArgs
@@ -136,10 +149,9 @@ export default class ExperimentStore {
       fetchPolicy: "no-cache",
     });
     return data.currentMerchant.exp.bucket;
-  }
+  };
 
-  async getDeciderKeyDecision(name: string): Promise<boolean> {
-    const { client } = ApolloStore.instance();
+  const getDeciderKeyDecision = async (name: string): Promise<boolean> => {
     const { data } = await client.query<
       GetDeciderKeyResponseType,
       DeciderKeySchemaDecideForNameArgs
@@ -148,15 +160,15 @@ export default class ExperimentStore {
       variables: { name },
     });
     return data.platformConstants.deciderKey.decideForName;
-  }
+  };
 
-  static instance(): ExperimentStore {
-    throw "ExperimentStore Not Implemented";
-  }
-}
-
-export const useExperimentStore = (): ExperimentStore => {
-  return useContext(ExperimentStoreContext);
+  return {
+    bucketForUser,
+    overrideLocally,
+    clearLocalOverride,
+    getBucketForMerchant,
+    getDeciderKeyDecision,
+  };
 };
 
 export const useExperiment = (
@@ -202,29 +214,3 @@ export const useDeciderKey = (
 
   return { decision, isLoading };
 };
-
-export const EXPERIMENT_STORE_INITIAL_QUERY = gql`
-  query ExperimentStore_InitialQuery {
-    currentMerchant {
-      experiments
-    }
-  }
-`;
-
-// TODO [lliepert]: bad typing, redo once query is real
-export type ExperimentStoreInitialQueryResponse = Pick<
-  ExperimentStoreArgs,
-  "experiments"
->;
-
-export const defaultExperimentStoreArgs = {
-  apolloStore: new ApolloStore(defaultApolloStoreArgs),
-  userStore: new UserStore(defaultUserStoreArgs),
-  navigationStore: new NavigationStore(),
-  environmentStore: new EnvironmentStore(defaultEnvironmentStoreArgs),
-  experiments: {},
-};
-
-export const ExperimentStoreContext = createContext(
-  new ExperimentStore(defaultExperimentStoreArgs),
-);

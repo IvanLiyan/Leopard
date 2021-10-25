@@ -2,7 +2,7 @@ import "../styles/global.css";
 
 import NoSSR from "react-no-ssr";
 import { AppProps } from "next/app";
-import { ApolloProvider, useQuery } from "@apollo/react-hooks";
+import { ApolloProvider } from "@apollo/react-hooks";
 import EnvironmentStore, {
   EnvironmentStoreContext,
 } from "@stores/EnvironmentStore";
@@ -12,9 +12,7 @@ import UserStore, {
   UserStoreInitialQueryResponse,
   defaultUserStoreArgs,
 } from "@stores/UserStore";
-import NavigationStore, {
-  NavigationStoreContext,
-} from "@stores/NavigationStore";
+import { NavigationProvider } from "@stores/NavigationStore";
 import PersistenceStore, {
   PersistenceStoreContext,
 } from "@stores/PersistenceStore";
@@ -32,12 +30,7 @@ import LocalizationStore, {
   defaultLocalizationStoreArgs,
 } from "@stores/LocalizationStore";
 import ApolloStore, { ApolloStoreContext } from "@stores/ApolloStore";
-import ExperimentStore, {
-  ExperimentStoreContext,
-  EXPERIMENT_STORE_INITIAL_QUERY,
-  ExperimentStoreInitialQueryResponse,
-  defaultExperimentStoreArgs,
-} from "@stores/ExperimentStore";
+import { ExperimentProvider } from "@stores/ExperimentStore";
 import ThemeStore, {
   ThemeStoreContext,
   ThemeWrapper,
@@ -53,16 +46,11 @@ function MerchantDashboard({ Component, pageProps }: AppProps): JSX.Element {
   //   useQuery<LocalizationStoreInitialQueryResponse>(
   //     LOCALIZATION_STORE_INITIAL_QUERY,
   //   );
-  // const { data: experimentStoreInitialData } =
-  //   useQuery<ExperimentStoreInitialQueryResponse>(
-  //     EXPERIMENT_STORE_INITIAL_QUERY,
-  //   );
 
   // if (
   //   userStoreInitialData == null ||
   //   toastStoreInitialData == null ||
   //   localizationStoreInitialData == null ||
-  //   experimentStoreInitialData == null
   // ) {
   //   return <div>error</div>;
   // }
@@ -70,12 +58,10 @@ function MerchantDashboard({ Component, pageProps }: AppProps): JSX.Element {
   const userStoreInitialData = defaultUserStoreArgs;
   const toastStoreInitialData = defaultToastStoreArgs;
   const localizationStoreInitialData = defaultLocalizationStoreArgs;
-  const experimentStoreInitialData = defaultExperimentStoreArgs;
 
   if (typeof window !== "undefined") {
     const environmentStore = new EnvironmentStore({ env: "stage" });
     const userStore = new UserStore(userStoreInitialData);
-    const navigationStore = new NavigationStore();
     const persistenceStore = new PersistenceStore({ userStore });
     const toastStore = new ToastStore({
       // persistenceStore,
@@ -86,20 +72,34 @@ function MerchantDashboard({ Component, pageProps }: AppProps): JSX.Element {
       localizationStoreInitialData,
     );
     const apolloStore = new ApolloStore({ toastStore, environmentStore });
-    const experimentStore = new ExperimentStore({
-      // apolloStore,
-      // userStore,
-      // navigationStore,
-      // environmentStore,
-      ...experimentStoreInitialData,
-    });
     const themeStore = new ThemeStore({ userStore, environmentStore });
 
     return (
+      // TODO [lliepert]: this is used to set the title. move to <Head /> in _app.tsx
+      // reaction(
+      //   () => this.pageSearchResult,
+      //   (pageSearchResult) => {
+      //     const { isPlusUser, loggedInMerchantUser, isStoreUser } =
+      //       UserStore.instance();
+      //     const productName = isStoreUser ? i`Wish Local` : i`Wish for Merchants`;
+      //     const appName = isPlusUser
+      //       ? loggedInMerchantUser.display_name
+      //       : productName;
+      //     if (pageSearchResult == null) {
+      //       document.title = appName;
+      //       return;
+      //     }
+
+      //     const { title } = pageSearchResult;
+      //     document.title = `${title} | ${appName}`;
+      //   },
+      //   { fireImmediately: true },
+      // );
+
       <NoSSR onSSR={<div>loading...</div>}>
         <EnvironmentStoreContext.Provider value={environmentStore}>
           <UserStoreContext.Provider value={userStore}>
-            <NavigationStoreContext.Provider value={navigationStore}>
+            <NavigationProvider>
               <PersistenceStoreContext.Provider value={persistenceStore}>
                 <ToastStoreContext.Provider value={toastStore}>
                   <DeviceStoreContext.Provider value={deviceStore}>
@@ -108,22 +108,20 @@ function MerchantDashboard({ Component, pageProps }: AppProps): JSX.Element {
                     >
                       <ApolloStoreContext.Provider value={apolloStore}>
                         <ApolloProvider client={apolloStore.client}>
-                          <ExperimentStoreContext.Provider
-                            value={experimentStore}
-                          >
+                          <ExperimentProvider>
                             <ThemeStoreContext.Provider value={themeStore}>
                               <ThemeWrapper>
                                 <Component {...pageProps} />
                               </ThemeWrapper>
                             </ThemeStoreContext.Provider>
-                          </ExperimentStoreContext.Provider>
+                          </ExperimentProvider>
                         </ApolloProvider>
                       </ApolloStoreContext.Provider>
                     </LocalizationStoreContext.Provider>
                   </DeviceStoreContext.Provider>
                 </ToastStoreContext.Provider>
               </PersistenceStoreContext.Provider>
-            </NavigationStoreContext.Provider>
+            </NavigationProvider>
           </UserStoreContext.Provider>
         </EnvironmentStoreContext.Provider>
       </NoSSR>

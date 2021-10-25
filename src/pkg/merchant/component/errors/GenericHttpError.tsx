@@ -17,7 +17,7 @@ type Props = BaseProps & {
   readonly illustration: IllustrationName;
 };
 
-export default (props: Props) => {
+const GenericHttpError: React.FC<Props> = (props: Props) => {
   const { illustration, title, description } = props;
   const styles = useStylesheet();
   return (
@@ -43,6 +43,8 @@ export default (props: Props) => {
     </StaggeredFadeIn>
   );
 };
+
+export default GenericHttpError;
 
 const useStylesheet = () => {
   return useMemo(

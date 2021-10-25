@@ -1,14 +1,5 @@
-/* Legacy */
-/* eslint-disable no-underscore-dangle */
-import {
-  zendeskURL as _zendeskURL,
-  zendeskCategoryURL as _zendeskCategoryURL,
-  zendeskSectionURL as _zendeskSectionURL,
-  contestImageURL as _contestImageURL,
-  wishURL as _wishURL,
-} from "@legacy/core/url";
-import { computed, decorate } from "mobx";
-import NavigationStore, { useNavigationStore } from "@stores/NavigationStore";
+import { useNavigationStore } from "@stores/NavigationStore";
+import { useEnvironmentStore } from "@stores/EnvironmentStore";
 
 /* eslint-disable no-underscore-dangle */
 import { useCallback, useMemo } from "react";
@@ -34,74 +25,175 @@ type ContestImageUrlParam = {
   readonly cacheBuster?: string;
 };
 
-export const StringOptions = {
+/************************** WRAP LEGACY URL FUNCTIONS *************************/
+
+const absExtURL = (url: string) => {
+  if (url.indexOf("https://") === 0) {
+    return "https://" + url.replace("https://", "");
+  }
+  return "http://" + url.replace("http://", "");
+};
+
+const getZendeskLocale = (locale?: string) => {
+  // TODO [lliepert]: handle properly
+  // const zendeskLocale = locale || window.locale_info.locale || "en";
+  const zendeskLocale = locale || "en";
+  if (zendeskLocale === "en") {
+    return "en-us";
+  }
+  if (zendeskLocale === "zh") {
+    return "zh-cn";
+  }
+  return zendeskLocale;
+};
+
+export const zendeskURL = (articleId: string, locale?: string): string => {
+  const zendeskLocale = getZendeskLocale(locale);
+  const zendeskUrl =
+    "https://merchantfaq.wish.com/hc/" +
+    zendeskLocale +
+    "/articles/" +
+    articleId;
+  return absExtURL(zendeskUrl);
+};
+
+export const zendeskCategoryURL = (
+  categoryId: string,
+  locale?: string,
+): string => {
+  const zendeskLocale = getZendeskLocale(locale);
+  const zendeskCategoryUrl =
+    "https://merchantfaq.wish.com/hc/" +
+    zendeskLocale +
+    "/categories/" +
+    categoryId;
+  return absExtURL(zendeskCategoryUrl);
+};
+
+export const zendeskSectionURL = (
+  sectionId: string,
+  locale?: string,
+): string => {
+  const zendeskLocale = getZendeskLocale(locale);
+  const zendeskUrl =
+    "https://merchantfaq.wish.com/hc/" +
+    zendeskLocale +
+    "/sections/" +
+    sectionId;
+  return absExtURL(zendeskUrl);
+};
+
+export const contestImageURL = ({
+  contestId,
+  size,
+  sequenceId,
+  cacheBuster,
+}: ContestImageUrlParam): string => {
+  const lemmingsUrl = ""; // TODO [lliepert]: handle this
+  if (!size) {
+    size = "medium";
+  }
+  let sequenceIdString = "";
+  if (sequenceId) {
+    sequenceIdString = sequenceId + "-";
+  }
+  let cacheBusterString = "";
+  if (cacheBuster) {
+    cacheBusterString = "?cache_buster=" + cacheBuster;
+  }
+  return `${lemmingsUrl}/${contestId}-${sequenceIdString}${size}.jpg${cacheBusterString}`;
+};
+
+export const useWishURL = (path: string): string => {
+  const { isStaging, isTesting, isSandbox } = useEnvironmentStore();
+
+  const domain = (() => {
+    if (isStaging) {
+      return "staging.wish.com";
+    } else if (isTesting) {
+      return "testing.wish.com";
+    } else if (isSandbox) {
+      return "sandbox.wish.com";
+    } else {
+      return "wish.com";
+    }
+  })();
+
+  return `${location.protocol}//${domain}${path}`;
+};
+
+export const externalURL = (path: string): string =>
+  path.startsWith("http://") || path.startsWith("https://")
+    ? path
+    : `http://${path}`;
+
+/***************************** QUERY PARAMS HOOKS *****************************/
+
+const StringOptions: QueryParamsOptions<string> = {
   default: "",
   mapper: {
-    deserialize: (value: string | null | undefined) => value,
-    serialize: (str: string | null | undefined) => str || "",
+    deserialize: (value) => value,
+    serialize: (str: string | null | undefined): string => str || "",
   },
 };
 
-export const IntOptions = {
+const IntOptions: QueryParamsOptions<number> = {
   default: "",
   mapper: {
-    deserialize: (str: string | null | undefined) => parseInt(str || "") || 0,
-    serialize: (value: number | null | undefined) =>
-      value != null ? value.toString() : "",
+    deserialize: (str) => parseInt(str || "") || 0,
+    serialize: (value) => (value != null ? value.toString() : ""),
   },
 };
 
-export const BoolOptions = {
+const BoolOptions: QueryParamsOptions<boolean> = {
   default: null,
   mapper: {
-    deserialize: (str: string | null | undefined) =>
-      str == null ? str : str === "true",
-    serialize: (value: boolean | null | undefined) =>
-      value ? value.toString() : "",
+    deserialize: (str) => (str == null ? str : str === "true"),
+    serialize: (value) => (value ? value.toString() : ""),
   },
 };
 
-export const StringArrayOptions = {
+const StringArrayOptions: QueryParamsOptions<ReadonlyArray<string>> = {
   default: "",
   mapper: {
-    deserialize: (str: string | null | undefined) =>
-      (str || "").split(",").filter((_) => _.length > 0),
-    serialize: (list: ReadonlyArray<string>) => list.join(","),
+    deserialize: (str) => (str || "").split(",").filter((_) => _.length > 0),
+    serialize: (list) => list.join(","),
   },
 };
 
-export const SetOptions = {
+const SetOptions: QueryParamsOptions<ReadonlySet<unknown>> = {
   default: "",
   mapper: {
-    deserialize: (str: string | null | undefined): ReadonlySet<any> =>
+    deserialize: (str) =>
       new Set((str || "").split(",").filter((_) => _.length > 0)),
-    serialize: (set: ReadonlySet<any>) => Array.from(set).join(","),
+    serialize: (set) => Array.from(set).join(","),
   },
 };
 
-export const IntArrayOptions = {
+const IntArrayOptions: QueryParamsOptions<ReadonlyArray<number>> = {
   default: "",
   mapper: {
-    deserialize: (str: string | null | undefined) =>
+    deserialize: (str) =>
       (str || "")
         .split(",")
         .map((_) => parseInt(_))
         .filter((_) => !isNaN(_)),
-    // if you find this please fix the any types (legacy)
-    serialize: (list: any) => list.join(","),
+    serialize: (list) => list.join(","),
   },
 };
 
-export const dateOptions = (args: { format: string }) => ({
+const useDateOptions = (args: {
+  format: string;
+}): QueryParamsOptions<Date> => ({
   default: "",
   mapper: {
-    deserialize: (str: string | null | undefined) => {
+    deserialize: (str) => {
       if (!str) {
         return null;
       }
       return moment(str, args.format).toDate();
     },
-    serialize: (date: Date | null | undefined) => {
+    serialize: (date) => {
       if (!date) {
         return "";
       }
@@ -110,223 +202,17 @@ export const dateOptions = (args: { format: string }) => ({
   },
 });
 
-export const zendeskURL = (articleId: string): string => _zendeskURL(articleId);
-
-export const zendeskCategoryURL = (
-  articleId: string,
-  locale?: string,
-): string => {
-  return _zendeskCategoryURL(articleId, locale);
-};
-
-export const zendeskSectionURL = (
-  articleId: string,
-  locale?: string,
-): string => {
-  return _zendeskSectionURL(articleId, locale);
-};
-
-export const contestImageURL = ({
-  contestId,
-  size,
-  sequenceId,
-  cacheBuster,
-}: ContestImageUrlParam): string =>
-  _contestImageURL(contestId, size, sequenceId, cacheBuster);
-
-export const wishURL = (path: string): string => _wishURL(path);
-
-export const externalURL = (path: string): string =>
-  path.startsWith("http://") || path.startsWith("https://")
-    ? path
-    : `http://${path}`;
-
-/* eslint-disable @typescript-eslint/naming-convention */
-const queryParamDecorator = (
-  queryFieldName: string,
-  options: {
-    default?: any;
-    mapper?: {
-      deserialize?: (rawValue: string) => any;
-      serialize?: (domain: any) => string;
-    };
-  } = { default: null },
-) => {
-  const navigationStore = NavigationStore.instance();
-  // eslint-disable-next-line local-rules/no-large-method-params
-  return function (target: any, name: string, descriptor: any) {
-    const computedFieldName = `compute_${name}`;
-
-    if (!target.constructor.__filterFieldNames) {
-      target.constructor.__filterFieldNames = [];
-    }
-
-    target.constructor.__filterFieldNames.push(queryFieldName);
-
-    Object.defineProperty(target, computedFieldName, {
-      enumerable: true,
-      configurable: true,
-
-      get() {
-        const { queryParams } = navigationStore;
-        let retValue = queryParams[queryFieldName];
-        if (options.mapper && options.mapper.deserialize) {
-          retValue = options.mapper.deserialize(retValue);
-        }
-        return retValue;
-      },
-
-      set(val) {
-        const { queryParams, currentPath } = navigationStore;
-        const _queryParams = { ...queryParams };
-
-        if (options.mapper && options.mapper.serialize) {
-          val = options.mapper.serialize(val);
-        }
-
-        if (!val || !options || options.default == val) {
-          delete _queryParams[queryFieldName];
-        } else {
-          _queryParams[queryFieldName] = val;
-        }
-
-        if (currentPath != null) {
-          navigationStore.pushPath(currentPath, _queryParams);
-        }
-      },
-    });
-
-    // make `computedFieldName` @computed.
-    decorate(target, {
-      [computedFieldName]: computed,
-    });
-
-    descriptor = { ...descriptor };
-
-    delete descriptor.writable;
-    delete descriptor.initializer;
-
-    descriptor = {
-      ...descriptor,
-      get() {
-        return this[computedFieldName];
-      },
-      // if you find this please fix the any types (legacy)
-      set(val: any) {
-        return (this[computedFieldName] = val);
-      },
-    };
-
-    return descriptor;
+type QueryParamsOptions<T> = {
+  default?: "" | null;
+  mapper?: {
+    deserialize?: (rawValue: string) => T | null | undefined;
+    serialize?: (domain: T) => string;
   };
-};
-
-export const params_DEPRECATED = {
-  int(queryFieldName: string) {
-    return queryParamDecorator(queryFieldName, IntOptions);
-  },
-  string(queryFieldName: string) {
-    return queryParamDecorator(queryFieldName, StringOptions);
-  },
-  bool(queryFieldName: string) {
-    return queryParamDecorator(queryFieldName, BoolOptions);
-  },
-  array(queryFieldName: string) {
-    return queryParamDecorator(queryFieldName, StringArrayOptions);
-  },
-  intArray(queryFieldName: string) {
-    return queryParamDecorator(queryFieldName, IntArrayOptions);
-  },
-  date(
-    queryFieldName: string,
-    args: { format: string } = { format: "YYYY-MM-DD" },
-  ) {
-    return queryParamDecorator(queryFieldName, dateOptions(args));
-  },
-} as any;
-// `as any` here is to halt typescript from throwing
-// errors about `Unable to resolve signature of property decorator when called as an expression.ts(1240)`
-// It can't track decorators with call signatures. This is legacu code for class components
-// so it should not be used going forward.
-
-/* Need a name that won't clash with other fields on the component
- * or class. Chose `__filterFieldNames`.
- */
-/* eslint-disable @typescript-eslint/naming-convention, local-rules/camel-case */
-export class DEPRECATED_QueryParamState {
-  static __filterFieldNames = [];
-
-  ["constructor"]: typeof DEPRECATED_QueryParamState;
-
-  @computed
-  get hasActiveFilters(): boolean {
-    const { queryParams } = NavigationStore.instance();
-    const { __filterFieldNames } = this.constructor;
-    const activeFilters = Object.keys(queryParams);
-    return __filterFieldNames.some((filterName) =>
-      activeFilters.includes(filterName),
-    );
-  }
-}
-
-export const usePathParams = (
-  pattern: string,
-): {
-  [key: string]: any;
-} => {
-  const navigationStore = NavigationStore.instance();
-  return navigationStore.pathParams(pattern);
-};
-
-export const mdLink = (text: string, url: string) => {
-  return `[${text}](${url})`;
-};
-
-export const mdList = (text: string) => {
-  return `- ${text}`;
-};
-
-export const learnMoreLink = (
-  learnMoreURL?: string,
-  addFinalPeriod?: boolean,
-) => {
-  if (!learnMoreURL) {
-    return "";
-  }
-  const learnMoreText = addFinalPeriod ? i`Learn more.` : i`Learn more`;
-  const learnMoreLink = mdLink(learnMoreText, learnMoreURL);
-  return learnMoreLink;
-};
-
-export const learnMoreZendesk = (
-  zendeskNumber: string,
-  addFinalPeriod?: boolean,
-) => {
-  if (!zendeskNumber) {
-    return "";
-  }
-  return learnMoreLink(zendeskURL(zendeskNumber), addFinalPeriod);
-};
-
-export const learnMoreZendeskCategory = (
-  zendeskNumber: string,
-  addFinalPeriod?: boolean,
-) => {
-  if (!zendeskNumber) {
-    return "";
-  }
-  return learnMoreLink(zendeskCategoryURL(zendeskNumber), addFinalPeriod);
 };
 
 const useQueryParam = <T>(
   key: string,
-  options: {
-    default?: any;
-    mapper?: {
-      deserialize?: (rawValue: string) => T | null | undefined;
-      serialize?: (domain: T) => string;
-    };
-  } = { default: null },
+  options: QueryParamsOptions<T> = { default: null },
 ): [T | null | undefined, (value: T | null | undefined) => void] => {
   const navigationStore = useNavigationStore();
   const { queryParams, currentPath } = navigationStore;
@@ -338,14 +224,12 @@ const useQueryParam = <T>(
     }
 
     return currentValue;
-    // Eslint bug: it thinks `T` is dependency, but its a type.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [key, options.mapper, queryParams]);
 
   const setter = useCallback(
     (value: T | null | undefined) => {
-      const { queryParams } = navigationStore;
-      const newQueryParams = { ...queryParams };
+      const { queryParams: previousQueryParams } = navigationStore;
+      const queryParams = { ...previousQueryParams };
 
       let valRaw: string | null | undefined = null;
       if (value != null && options.mapper && options.mapper.serialize) {
@@ -353,22 +237,20 @@ const useQueryParam = <T>(
       }
 
       if (valRaw == null || options?.default == valRaw) {
-        delete newQueryParams[key];
+        delete queryParams[key];
       } else {
-        newQueryParams[key] = valRaw;
+        queryParams[key] = valRaw;
       }
 
       if (currentPath != null) {
-        if (valRaw != null || Object.keys(newQueryParams).length) {
-          navigationStore.pushPath(currentPath, newQueryParams);
+        if (valRaw != null || Object.keys(queryParams).length) {
+          navigationStore.pushPath(currentPath, { queryParams });
         } else {
           navigationStore.pushPath(currentPath);
         }
       }
     },
-    // Eslint bug: it thinks `T` is dependency, but its a type.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [key, options, navigationStore, currentPath],
+    [key, options, currentPath, navigationStore],
   );
 
   return [value, setter];
@@ -418,7 +300,7 @@ export const useStringEnumArrayQueryParam = <T>(
   );
   return [
     (v || defaultValue || []) as ReadonlyArray<T>,
-    setter as any as (value: ReadonlyArray<T>) => void,
+    setter as unknown as (value: ReadonlyArray<T>) => void,
   ];
 };
 
@@ -448,7 +330,7 @@ export const useStringArrayQueryParam = (
     [v, defaultValue],
   );
   return [
-    value as ReadonlyArray<string>,
+    value,
     setter as (value: null | undefined | ReadonlyArray<string>) => void,
   ];
 };
@@ -459,7 +341,7 @@ export const useStringSetQueryParam = <T>(
 ): [ReadonlySet<T>, (value: ReadonlySet<T>) => void] => {
   const [v, setter] = useQueryParam(key, SetOptions);
   const value = useMemo(() => v || defaultValue, [v, defaultValue]);
-  return [value as any as ReadonlySet<T>, setter];
+  return [value as unknown as ReadonlySet<T>, setter];
 };
 
 export const useDateQueryParam = (
@@ -468,7 +350,7 @@ export const useDateQueryParam = (
     format: "YYYY-MM-DD",
   },
 ): [Date | null | undefined, (value: Date | null | undefined) => void] => {
-  const [v, setter] = useQueryParam(key, dateOptions(args));
+  const [v, setter] = useQueryParam(key, useDateOptions(args));
   const value = useMemo(() => v || args.defaultValue, [v, args.defaultValue]);
   return [value, setter];
 };
@@ -479,4 +361,55 @@ export const useBoolQueryParam = (
 ): [boolean, (value: boolean | null | undefined) => void] => {
   const [val, setter] = useQueryParam(key, BoolOptions);
   return [val != null ? val : defaultValue, setter];
+};
+
+export const usePathParams = (
+  pattern: string,
+): {
+  [key: string]: string;
+} => {
+  const navigationStore = useNavigationStore();
+  return navigationStore.pathParams(pattern);
+};
+
+/* MISCELLANEOUS */
+
+export const mdLink = (text: string, url: string): string => {
+  return `[${text}](${url})`;
+};
+
+export const mdList = (text: string): string => {
+  return `- ${text}`;
+};
+
+export const learnMoreLink = (
+  learnMoreURL?: string,
+  addFinalPeriod?: boolean,
+): string => {
+  if (!learnMoreURL) {
+    return "";
+  }
+  const learnMoreText = addFinalPeriod ? i`Learn more.` : i`Learn more`;
+  const learnMoreLink = mdLink(learnMoreText, learnMoreURL);
+  return learnMoreLink;
+};
+
+export const learnMoreZendesk = (
+  zendeskNumber: string,
+  addFinalPeriod?: boolean,
+): string => {
+  if (!zendeskNumber) {
+    return "";
+  }
+  return learnMoreLink(zendeskURL(zendeskNumber), addFinalPeriod);
+};
+
+export const learnMoreZendeskCategory = (
+  zendeskNumber: string,
+  addFinalPeriod?: boolean,
+): string => {
+  if (!zendeskNumber) {
+    return "";
+  }
+  return learnMoreLink(zendeskCategoryURL(zendeskNumber), addFinalPeriod);
 };

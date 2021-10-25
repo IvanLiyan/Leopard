@@ -43,10 +43,10 @@ export type HomeBannerItem = BannerItem & {
 };
 
 type BannerStoreArgs = {
-  apolloStore: ApolloStore;
-  userStore: UserStore;
-  themeStore: ThemeStore;
-  experimentStore: ExperimentStore;
+  readonly apolloStore: ApolloStore;
+  readonly userStore: UserStore;
+  readonly themeStore: ThemeStore;
+  readonly experimentStore: ExperimentStore;
 };
 
 export default class BannerStore {

@@ -17,7 +17,7 @@ import { useApolloStore } from "@stores/ApolloStore";
 import { useToastStore } from "@stores/ToastStore";
 
 /* Legacy */
-import { zendeskURL } from "@legacy/core/url";
+import { zendeskURL } from "@toolkit/url";
 
 /* Relative Imports */
 import CodeContent from "./CodeContent";

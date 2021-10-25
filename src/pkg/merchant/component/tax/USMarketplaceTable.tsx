@@ -20,18 +20,12 @@ import { UsTaxConstants } from "@schema/types";
 
 type Props = BaseProps & {
   readonly marketplaceStates: UsTaxConstants["marketplaceStates"];
-  readonly marketplaceMunicipalities: ReadonlyArray<
-    PickedUSMarketplaceMunicipalities
-  >;
+  readonly marketplaceMunicipalities: ReadonlyArray<PickedUSMarketplaceMunicipalities>;
 };
 
-export default (props: Props) => {
-  const {
-    className,
-    style,
-    marketplaceStates,
-    marketplaceMunicipalities,
-  } = props;
+const USMarketplaceTable: React.FC<Props> = (props: Props) => {
+  const { className, style, marketplaceStates, marketplaceMunicipalities } =
+    props;
   const styles = useStylesheet();
 
   return (
@@ -53,6 +47,8 @@ export default (props: Props) => {
   );
 };
 
+export default USMarketplaceTable;
+
 const useStylesheet = () => {
   return useMemo(
     () =>
@@ -73,6 +69,6 @@ const useStylesheet = () => {
           paddingBottom: "24px",
         },
       }),
-    []
+    [],
   );
 };

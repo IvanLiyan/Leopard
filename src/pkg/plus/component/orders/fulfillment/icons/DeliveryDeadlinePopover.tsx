@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import { StyleSheet } from "aphrodite";
 
 import { css } from "@toolkit/styling";
-import { zendeskURL } from "@legacy/core/url";
+import { zendeskURL } from "@toolkit/url";
 
 import { Link } from "@ContextLogic/lego";
 

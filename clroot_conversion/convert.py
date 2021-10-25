@@ -246,7 +246,7 @@ if __name__ == "__main__":
         print("REMOVING EXTRA")
         extras()
     elif option == "D":
-        print("REMOVING EXTRAS WITHOUT FILE")
+        print("REMOVING ALREADY DELTED EXTRA")
         extras(withFile=False)
     else:
         print("ERROR: UNRECOGNIZED OPTION")

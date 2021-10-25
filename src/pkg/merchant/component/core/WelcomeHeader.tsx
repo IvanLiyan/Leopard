@@ -1,7 +1,6 @@
-import React, { Component, ReactNode } from "react";
+import React, { useMemo, ReactNode } from "react";
 import { StyleSheet } from "aphrodite";
 import { observer } from "mobx-react";
-import { computed } from "mobx";
 
 /* External Libraries */
 import Color from "color";
@@ -20,8 +19,8 @@ import IllustrationOrRender from "./IllustrationOrRender";
 
 import { css } from "@ContextLogic/lego/toolkit/styling";
 
-import DeviceStore from "@stores/DeviceStore";
-import { ThemeContext } from "@stores/ThemeStore";
+import { useDeviceStore } from "@stores/DeviceStore";
+import { useTheme } from "@stores/ThemeStore";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
 export type WelcomeHeaderProps = BaseProps & {
@@ -42,25 +41,96 @@ export type WelcomeHeaderProps = BaseProps & {
   readonly openLinksInNewTabForMarkdown?: boolean;
 };
 
-@observer
-class WelcomeHeader extends Component<WelcomeHeaderProps> {
-  static contextType = ThemeContext;
-  context!: React.ContextType<typeof ThemeContext>;
+const WelcomeHeader: React.FC<WelcomeHeaderProps> = (props) => {
+  const styles = useStylesheet(props);
+  const {
+    actions: actionsProp,
+    body: bodyProp,
+    openLinksInNewTabForMarkdown,
+    title,
+    illustration,
+    children,
+    className,
+    style,
+    animate = true,
+    breadcrumbs,
+  } = props;
+  const { isSmallScreen } = useDeviceStore();
 
-  @computed
-  get styles() {
-    const DeviceStore = DeviceStore.instance();
-    const {
-      hideBorder,
-      maxIllustrationWidth,
-      maxIllustrationHeight,
-      paddingX = DeviceStore.pageGuideX,
-      paddingY = "20px",
-    } = this.props;
+  const actions = actionsProp && (
+    <div className={css(styles.actionsContainer)}>{actionsProp}</div>
+  );
 
-    const { surfaceLightest, textBlack, pageBackground } = this.context;
+  let body = null;
+  if (bodyProp) {
+    body =
+      typeof bodyProp === "function" ? (
+        bodyProp()
+      ) : (
+        <Markdown
+          className={css(styles.textBody)}
+          text={bodyProp}
+          openLinksInNewTab={openLinksInNewTabForMarkdown}
+        />
+      );
+  }
 
-    const borderColor = new Color(pageBackground).darken(0.05);
+  return (
+    <StaggeredFadeIn
+      className={css(styles.root, className, style)}
+      deltaY={10}
+      disabled={!animate}
+    >
+      <div className={css(styles.content)}>
+        {breadcrumbs && (
+          <Breadcrumbs
+            className={css(styles.breadcrumbs)}
+            items={breadcrumbs}
+          />
+        )}
+        <div className={css(styles.row)}>
+          {title && (
+            <div className={css(styles.textContainer)}>
+              {typeof title === "function" ? (
+                title()
+              ) : (
+                <H4Markdown text={title} />
+              )}
+              {body}
+            </div>
+          )}
+          {actions}
+        </div>
+        {children}
+      </div>
+      {!isSmallScreen && illustration != null && (
+        <IllustrationOrRender
+          className={css(styles.image)}
+          value={illustration}
+          alt="image of page header"
+          animate={false}
+        />
+      )}
+    </StaggeredFadeIn>
+  );
+};
+
+export default observer(WelcomeHeader);
+
+const useStylesheet = ({
+  hideBorder,
+  maxIllustrationWidth,
+  maxIllustrationHeight,
+  paddingX: paddingXProp,
+  paddingY = "20px",
+}: WelcomeHeaderProps) => {
+  const { pageGuideX } = useDeviceStore();
+  const { surfaceLightest, textBlack, pageBackground } = useTheme();
+  const paddingX =
+    typeof paddingXProp === "undefined" ? pageGuideX : paddingXProp;
+  const borderColor = new Color(pageBackground).darken(0.05);
+
+  return useMemo(() => {
     return StyleSheet.create({
       root: {
         fontFamily: fonts.proxima,
@@ -132,85 +202,14 @@ class WelcomeHeader extends Component<WelcomeHeaderProps> {
         margin: "10px 0px",
       },
     });
-  }
-
-  renderActions() {
-    const { actions } = this.props;
-    return (
-      actions && (
-        <div className={css(this.styles.actionsContainer)}>{actions}</div>
-      )
-    );
-  }
-
-  renderBody() {
-    const { body, openLinksInNewTabForMarkdown } = this.props;
-    if (!body) {
-      return null;
-    }
-
-    return typeof body === "function" ? (
-      body()
-    ) : (
-      <Markdown
-        className={css(this.styles.textBody)}
-        text={body}
-        openLinksInNewTab={openLinksInNewTabForMarkdown}
-      />
-    );
-  }
-
-  render() {
-    const {
-      title,
-      illustration,
-      children,
-      className,
-      style,
-      animate = true,
-      breadcrumbs,
-    } = this.props;
-
-    const DeviceStore = DeviceStore.instance();
-    return (
-      <StaggeredFadeIn
-        className={css(this.styles.root, className, style)}
-        deltaY={10}
-        disabled={!animate}
-      >
-        <div className={css(this.styles.content)}>
-          {breadcrumbs && (
-            <Breadcrumbs
-              className={css(this.styles.breadcrumbs)}
-              items={breadcrumbs}
-            />
-          )}
-          <div className={css(this.styles.row)}>
-            {title && (
-              <div className={css(this.styles.textContainer)}>
-                {typeof title === "function" ? (
-                  title()
-                ) : (
-                  <H4Markdown text={title} />
-                )}
-                {this.renderBody()}
-              </div>
-            )}
-            {this.renderActions()}
-          </div>
-          {children}
-        </div>
-        {!DeviceStore.isSmallScreen && illustration != null && (
-          <IllustrationOrRender
-            className={css(this.styles.image)}
-            value={illustration}
-            alt="image of page header"
-            animate={false}
-          />
-        )}
-      </StaggeredFadeIn>
-    );
-  }
-}
-
-export default WelcomeHeader;
+  }, [
+    hideBorder,
+    maxIllustrationWidth,
+    maxIllustrationHeight,
+    paddingX,
+    paddingY,
+    surfaceLightest,
+    textBlack,
+    borderColor,
+  ]);
+};

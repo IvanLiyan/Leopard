@@ -17,7 +17,12 @@ This directory contains the code required to convert clroot's React pages to Nex
 - Confirm no changes to pkg/legacy/core (was re-written)
 - NavigationStore, toolkit/api, localization pipeline
 - remove module from countries.ts
-- various `(typeof window !== "undefined" &&`s in stores
+- rewrote stores
+- created toolkit/navigation.ts
+- rewrote toolkit/url.ts
+- renamed wishURL to useWishURL
+- legacy/core/url -> toolkit/url
+- name-default-component codemod
 
 ## Conversion Steps
 

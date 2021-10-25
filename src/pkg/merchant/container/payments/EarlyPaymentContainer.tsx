@@ -4,7 +4,7 @@ import { StyleSheet } from "aphrodite";
 import { observer } from "mobx-react";
 
 /* Legacy */
-import { zendeskURL } from "@legacy/core/url";
+import { zendeskURL } from "@toolkit/url";
 
 /* Lego Components */
 import { H3 } from "@ContextLogic/lego";

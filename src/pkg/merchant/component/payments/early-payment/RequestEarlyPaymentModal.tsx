@@ -5,7 +5,7 @@ import { StyleSheet } from "aphrodite";
 import moment from "moment-timezone";
 
 /* Legacy */
-import { zendeskURL } from "@legacy/core/url";
+import { zendeskURL } from "@toolkit/url";
 
 /* Lego Components */
 import Modal from "@merchant/component/core/modal/Modal";

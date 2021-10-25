@@ -587,8 +587,8 @@ const LEGO_THEMES: { [k in ThemeName]: LegoTheme } = {
 };
 
 type ThemeStoreArgs = {
-  userStore: UserStore;
-  environmentStore: EnvironmentStore;
+  readonly userStore: UserStore;
+  readonly environmentStore: EnvironmentStore;
 };
 
 export default class ThemeStore {

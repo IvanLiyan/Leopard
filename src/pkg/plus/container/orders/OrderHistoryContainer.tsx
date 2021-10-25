@@ -11,7 +11,13 @@ import { StyleSheet } from "aphrodite";
 import { observer } from "mobx-react";
 
 /* Lego Components */
-import { SimpleSelectOption as Option } from "@ContextLogic/lego";
+import {
+  Button,
+  H4,
+  Layout,
+  SimpleSelectOption as Option,
+  TextInput,
+} from "@ContextLogic/lego";
 import PageRoot from "@plus/component/nav/PageRoot";
 import PageGuide from "@plus/component/nav/PageGuide";
 import PlusWelcomeHeader from "@plus/component/nav/PlusWelcomeHeader";
@@ -57,6 +63,7 @@ import {
   FulfillmentSchemaOrdersArgs,
   FulfillmentSchemaOrdersCountArgs,
 } from "@schema/types";
+import { useNavigationStore } from "@stores/NavigationStore";
 
 const GET_ORDER_HISTORY = gql`
   query OrderHistoryContainer_GetOrderHistory(
@@ -163,9 +170,9 @@ const Placeholders: { [searchType in OrderHistorySearchType]: string } = {
 const InputHeight = 30;
 const FilterWidth = 300;
 
-type Props = {};
+type Props = Record<string, never>;
 
-const OrderHistoryContainer: React.FC<Props> = (props: Props) => {
+const OrderHistoryContainer: React.FC<Props> = () => {
   const [query, setQuery] = useStringQueryParam("q");
   const [rawLimit, setLimit] = useIntQueryParam("limit");
   const [rawOffset, setOffset] = useIntQueryParam("offset");
@@ -177,7 +184,7 @@ const OrderHistoryContainer: React.FC<Props> = (props: Props) => {
   );
   const [searchType, setSearchType] =
     useStringEnumQueryParam<OrderHistorySearchType>("search_type", "ORDER_ID");
-  const [selectedRowIndeces, setSelectedRowIndeces] = useState<Set<number>>(
+  const [selectedRowIndices, setSelectedRowIndices] = useState<Set<number>>(
     new Set(),
   );
 
@@ -241,7 +248,7 @@ const OrderHistoryContainer: React.FC<Props> = (props: Props) => {
   const onPageChange = (_nextPage: number) => {
     const nextPage = Math.max(0, _nextPage);
     setOffset(nextPage * limit);
-    setSelectedRowIndeces(new Set());
+    setSelectedRowIndices(new Set());
   };
 
   const onRowSelectionToggled = ({
@@ -249,11 +256,11 @@ const OrderHistoryContainer: React.FC<Props> = (props: Props) => {
     selected,
   }: RowSelectionArgs<OrderType>) => {
     if (selected) {
-      selectedRowIndeces.add(index);
+      selectedRowIndices.add(index);
     } else {
-      selectedRowIndeces.delete(index);
+      selectedRowIndices.delete(index);
     }
-    setSelectedRowIndeces(new Set(selectedRowIndeces));
+    setSelectedRowIndices(new Set(selectedRowIndices));
   };
 
   const orders = ordersData?.fulfillment.orders || [];
@@ -284,10 +291,44 @@ const OrderHistoryContainer: React.FC<Props> = (props: Props) => {
     DISPUTE_ID: undefined,
   };
 
+  const NextJSNavigationTestSection: React.FC = () => {
+    const [sQuery, setSQuery] = useStringQueryParam("sq");
+    const navStore = useNavigationStore();
+
+    // TODO [lliepert]: debug why this page's queries aren't working
+
+    return (
+      <Layout.FlexColumn
+        className={css({
+          borderStyle: "solid",
+          padding: 10,
+          margin: 10,
+        })}
+      >
+        <H4 style={{ marginBottom: 10 }}>Testing Section</H4>
+        <TextInput
+          placeholder="query here"
+          value={sQuery}
+          onChange={({ text }) => {
+            setSQuery(text);
+          }}
+        />
+        {sQuery}
+        <Button
+          onClick={() => navStore.navigate("/demo/create-size-chart-container")}
+        >
+          Navigate to Size Chart
+        </Button>
+        <TextInput />
+      </Layout.FlexColumn>
+    );
+  };
+
   const body = showEmptyState ? (
     <EmptyState />
   ) : (
     <>
+      <NextJSNavigationTestSection />
       <div className={css(styles.buttonsRow)}>
         <TextInputWithSelect
           className={css(styles.input)}
@@ -313,7 +354,7 @@ const OrderHistoryContainer: React.FC<Props> = (props: Props) => {
               } else {
                 setSearchType(null);
               }
-              setSelectedRowIndeces(new Set());
+              setSelectedRowIndices(new Set());
             },
             style: { ...styles.selectTextInput },
             debugValue: searchDebugValues[searchType],
@@ -347,7 +388,7 @@ const OrderHistoryContainer: React.FC<Props> = (props: Props) => {
             }))}
             onSelected={(value: string) => {
               setLimit(parseInt(value));
-              setSelectedRowIndeces(new Set());
+              setSelectedRowIndices(new Set());
             }}
             className={css(styles.limitSelect)}
             selectedValue={limit.toString()}
@@ -381,9 +422,9 @@ const OrderHistoryContainer: React.FC<Props> = (props: Props) => {
           onDateSortToggled={(newSort) => {
             setDateSortOrder(newSort);
             setOffset(0);
-            setSelectedRowIndeces(new Set());
+            setSelectedRowIndices(new Set());
           }}
-          selectedRowIndeces={Array.from(selectedRowIndeces)}
+          selectedRowIndeces={Array.from(selectedRowIndices)}
           onRowSelectionToggled={onRowSelectionToggled}
         />
       )}
