@@ -7,7 +7,7 @@ import { css } from "@toolkit/styling";
 /* External Libraries */
 import _ from "lodash";
 import gql from "graphql-tag";
-import { useQuery } from "@apollo/react-hooks";
+import { useQuery } from "@apollo/client";
 
 /* Merchant Store */
 import { useTheme } from "@stores/ThemeStore";

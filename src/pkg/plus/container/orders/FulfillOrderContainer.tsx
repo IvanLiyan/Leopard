@@ -12,7 +12,7 @@ import { StyleSheet } from "aphrodite";
 import { observer } from "mobx-react";
 import _ from "lodash";
 
-import { useMutation } from "@apollo/react-hooks";
+import { useMutation } from "@apollo/client";
 
 /* Legacy */
 import { cni18n } from "@legacy/core/i18n";

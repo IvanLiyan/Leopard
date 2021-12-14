@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import { StyleSheet } from "aphrodite";
 import { observer } from "mobx-react";
-import { useMutation } from "@apollo/react-hooks";
+import { useMutation } from "@apollo/client";
 
 /* Type Imports */
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";

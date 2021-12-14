@@ -9,71 +9,36 @@
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import { GetStaticProps, InferGetStaticPropsType, NextPage } from "next";
+import { NextPage } from "next";
 import Head from "next/head";
-import axios from "axios";
-import { createClient } from "@next-toolkit/apollo-client";
-import { gql } from "@apollo/client";
-
+import { gql, useQuery } from "@apollo/client";
+import { LoadingIndicator } from "@ContextLogic/lego";
+import { isProd } from "@stores/EnvironmentStore";
 import { AllProductsContainer } from "@plus/container";
 
-type Props = {
-  readonly initialData: any;
-};
-
-export const getStaticProps: GetStaticProps<Props> = async () => {
-  const MD_URL: string = process.env.NEXT_PUBLIC_MD_URL || "";
-
-  // the following is used to set the _xsrf token
-  // if further gql queries are required, a better method will be required
-  const req = await axios({
-    method: "GET",
-    url: MD_URL,
-    headers: { Authorization: process.env.STAGING_AUTH_HEADER },
-    xsrfCookieName: "_xsrf",
-    xsrfHeaderName: "X-XSRFToken",
-    withCredentials: true,
-  });
-
-  // AxiosResponse types header as any
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
-  const xsrfToken = req?.headers["set-cookie"]
-    ?.find((cookie: string) => cookie.substr(0, 5) == "_xsrf")
-    .split(";")[0]
-    .split("=")[1];
-
-  const client = createClient(xsrfToken);
-
+const Page: NextPage<Record<string, never>> = () => {
   const query = gql`
-query AllProductsContainer {
-  currentMerchant {
-    canManageShipping
+    query AllProductsContainer {
+      currentMerchant {
+        canManageShipping
+      }
+    }
+  `;
+
+  const { loading, error, data } = useQuery(query);
+
+  // TODO [lliepert]: properly handle error
+  if (error) {
+    if (!isProd) {
+      // eslint-disable-next-line no-console
+      console.log(`useQuery failed with error: ${error}`);
+    }
+    throw error;
   }
-    }`;
 
-  const {
-    data: { initialData },
-    error,
-    errors,
-  } = await client.query({
-    query,
-    errorPolicy: "all",
-  });
-
-  if (error || errors) {
-    return { notFound: true };
-  }
-
-  return {
-    props: { initialData },
-    revalidate: 60, // regenerate the page every 60 seconds using ISR (see: https://vercel.com/docs/next.js/incremental-static-regeneration)
-  };
-};
-
-const Page: NextPage<Props> = (
-  props: InferGetStaticPropsType<typeof getStaticProps>,
-) => {
-  const { initialData } = props;
+  // [lliepert] temp debugging to confirm GQL proxy
+  // eslint-disable-next-line no-console
+  console.log("data", data);
 
   return (
     <>
@@ -81,7 +46,12 @@ const Page: NextPage<Props> = (
         <title>{"Wish For Merchants"}</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
-      <AllProductsContainer initialData={initialData} />
+      {loading ? (
+        <LoadingIndicator />
+      ) : (
+        // <AllProductsContainer initialData={data} />
+        <div>finished loading</div>
+      )}
     </>
   );
 };

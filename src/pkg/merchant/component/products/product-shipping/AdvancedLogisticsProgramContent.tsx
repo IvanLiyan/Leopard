@@ -8,7 +8,7 @@
 /* External Libraries */
 import React, { useMemo } from "react";
 import { StyleSheet } from "aphrodite";
-import { ApolloProvider } from "@apollo/react-hooks";
+import { ApolloProvider } from "@apollo/client";
 
 /* Lego Toolkit */
 import * as fonts from "@toolkit/fonts";

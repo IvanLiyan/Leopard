@@ -25,10 +25,7 @@ import {
 } from "@ContextLogic/lego/toolkit/providers";
 import UserStore, { defaultUserStoreArgs } from "@stores/UserStore";
 import { useNavigationStore } from "@stores/NavigationStore";
-import EnvironmentStore, {
-  defaultEnvironmentStoreArgs,
-  useEnvironmentStore,
-} from "./EnvironmentStore";
+import { env } from "./EnvironmentStore";
 import { useLocalizationStore } from "@stores/LocalizationStore";
 import { useToastStore } from "@stores/ToastStore";
 
@@ -588,16 +585,13 @@ const LEGO_THEMES: { [k in ThemeName]: LegoTheme } = {
 
 type ThemeStoreArgs = {
   readonly userStore: UserStore;
-  readonly environmentStore: EnvironmentStore;
 };
 
 export default class ThemeStore {
   userStore: UserStore;
-  environmentStore: EnvironmentStore;
 
-  constructor({ userStore, environmentStore }: ThemeStoreArgs) {
+  constructor({ userStore }: ThemeStoreArgs) {
     this.userStore = userStore;
-    this.environmentStore = environmentStore;
   }
 
   @observable prefersDark = false; //window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -683,7 +677,6 @@ export default class ThemeStore {
   @computed get topbarBackground(): string {
     const {
       userStore: { isDisabledMerchant },
-      environmentStore: { env },
     } = this;
 
     if (isDisabledMerchant) {
@@ -706,7 +699,6 @@ export default class ThemeStore {
     const {
       topbarBackground,
       userStore: { isDisabledMerchant },
-      environmentStore: { env },
     } = this;
 
     if (isDisabledMerchant) {
@@ -723,10 +715,6 @@ export default class ThemeStore {
       default:
         return PALETTES_V2.GREY["200"];
     }
-  }
-
-  static instance(): ThemeStore {
-    throw "ThemeStore Not Implemented";
   }
 }
 
@@ -878,7 +866,6 @@ export const ThemeWrapper: React.FC<{
   overrideThemeAs?: ThemeName;
 }> = ({ children, overrideThemeAs }) => {
   const { currentLegoTheme, currentAppTheme } = useThemeStore();
-  const { env: appEnv } = useEnvironmentStore();
   const { locale } = useLocalizationStore();
   const toastStore = useToastStore();
   const navigationStore = useNavigationStore();
@@ -926,7 +913,7 @@ export const ThemeWrapper: React.FC<{
   return (
     <LegoProvider
       env={
-        ["fe_qa_staging", "stage", "sandbox"].includes(appEnv)
+        ["fe_qa_staging", "stage", "sandbox"].includes(env)
           ? "development"
           : "production"
       }
@@ -944,7 +931,6 @@ export const ThemeWrapper: React.FC<{
 
 export const defaultThemeStoreArgs = {
   userStore: new UserStore(defaultUserStoreArgs),
-  environmentStore: new EnvironmentStore(defaultEnvironmentStoreArgs),
 };
 
 export const ThemeStoreContext = createContext(

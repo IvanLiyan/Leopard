@@ -4,7 +4,7 @@ import { observer } from "mobx-react";
 
 import _ from "lodash";
 import gql from "graphql-tag";
-import { useMutation } from "@apollo/react-hooks";
+import { useMutation } from "@apollo/client";
 
 /* Lego Toolkit */
 import { css } from "@toolkit/styling";

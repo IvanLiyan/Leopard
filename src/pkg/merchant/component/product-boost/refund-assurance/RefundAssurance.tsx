@@ -7,7 +7,7 @@
 import React, { useMemo, useState } from "react";
 import { StyleSheet } from "aphrodite";
 import { observer } from "mobx-react";
-import { useQuery } from "react-apollo";
+import { useQuery } from "@apollo/client";
 import _ from "lodash";
 
 /* Lego Components */

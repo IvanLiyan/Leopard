@@ -133,10 +133,6 @@ export default class DeviceStore {
     // Windows Phone must come first because its UA also contains "Android"
     return !/windows phone/i.test(ua) && /android/i.test(ua);
   }
-
-  static instance(): DeviceStore {
-    throw "DeviceStore Not Implemented";
-  }
 }
 
 export const useDeviceStore = (): DeviceStore => {

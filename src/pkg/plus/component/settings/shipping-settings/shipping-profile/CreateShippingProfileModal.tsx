@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { observer } from "mobx-react";
-import { useQuery } from "@apollo/react-hooks";
+import { useQuery } from "@apollo/client";
 import gql from "graphql-tag";
 
 /* Lego Components */
@@ -71,8 +71,8 @@ export type CreateShippingProfileModalProps = {
   readonly onClose: () => unknown;
 };
 
-const CreateShippingProfileModalContent: React.FC<CreateShippingProfileModalProps> = observer(
-  ({ sourceProfileId, onClose }: CreateShippingProfileModalProps) => {
+const CreateShippingProfileModalContent: React.FC<CreateShippingProfileModalProps> =
+  observer(({ sourceProfileId, onClose }: CreateShippingProfileModalProps) => {
     const { data } = useQuery<
       GetShippingProfileResponseType,
       ShippingProfileCollectionSchemaShippingProfilesArgs
@@ -111,8 +111,7 @@ const CreateShippingProfileModalContent: React.FC<CreateShippingProfileModalProp
     }
 
     return <EditShippingProfile profileState={profileState} />;
-  }
-);
+  });
 
 export default class CreateShippingProfileModal extends Modal {
   constructor(props: Omit<CreateShippingProfileModalProps, "onClose">) {

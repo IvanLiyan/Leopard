@@ -2,7 +2,7 @@ import React, { useMemo, useEffect, useState, useRef } from "react";
 import { StyleSheet } from "aphrodite";
 import { observer } from "mobx-react";
 import gql from "graphql-tag";
-import { useMutation } from "@apollo/react-hooks";
+import { useMutation } from "@apollo/client";
 
 import {
   Maybe,

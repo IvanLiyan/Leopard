@@ -15,7 +15,7 @@ import { computed, observable, runInAction, action } from "mobx";
 /* External Libraries */
 import ReactDOM from "react-dom";
 import { EventEmitter } from "fbemitter";
-import { ApolloProvider } from "@apollo/react-hooks";
+import { ApolloProvider } from "@apollo/client";
 
 /* Lego Components */
 import Toast from "@merchant/component/core/Toast";

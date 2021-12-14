@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import { StyleSheet } from "aphrodite";
 import gql from "graphql-tag";
-import { useQuery, ApolloProvider } from "@apollo/react-hooks";
+import { useQuery, ApolloProvider } from "@apollo/client";
 
 /* Lego Components */
 import { Tip, Markdown, Text, Layout, Button } from "@ContextLogic/lego";

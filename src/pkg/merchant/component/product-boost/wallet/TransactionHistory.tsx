@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import gql from "graphql-tag";
 import { StyleSheet } from "aphrodite";
 import { observer } from "mobx-react";
-import { useQuery } from "@apollo/react-hooks";
+import { useQuery } from "@apollo/client";
 
 /* Lego Components */
 import {

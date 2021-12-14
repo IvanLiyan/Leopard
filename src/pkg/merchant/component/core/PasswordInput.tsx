@@ -15,7 +15,7 @@ import { observer } from "mobx-react";
 /* External Libraries */
 import _ from "lodash";
 import gql from "graphql-tag";
-import { useQuery } from "@apollo/react-hooks";
+import { useQuery } from "@apollo/client";
 
 /* Lego Components */
 import { TextInput, TextInputProps } from "@ContextLogic/lego";

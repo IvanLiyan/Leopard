@@ -12,7 +12,7 @@ import { observer } from "mobx-react";
 
 /* External Libraries */
 import gql from "graphql-tag";
-import { useQuery } from "@apollo/react-hooks";
+import { useQuery } from "@apollo/client";
 
 import PageRoot from "@plus/component/nav/PageRoot";
 import PageGuide from "@plus/component/nav/PageGuide";
@@ -138,9 +138,8 @@ const InventoryContainer: React.FC<InitialProps> = ({
     SortOrder | undefined
   >("sort_order", undefined);
 
-  const [searchType, setSearchType] = useStringEnumQueryParam<
-    VariationSearchType
-  >("search_type", "PRODUCT_ID");
+  const [searchType, setSearchType] =
+    useStringEnumQueryParam<VariationSearchType>("search_type", "PRODUCT_ID");
   const [pageLimit, setPageLimit] = useIntQueryParam("page_limit");
 
   const debouncedQuery = useDebouncer(query, 800);
@@ -359,7 +358,7 @@ const useStylesheet = ({
           flex: 0,
         },
       }),
-    [variationsLoading]
+    [variationsLoading],
   );
 
 export default observer(InventoryContainer);

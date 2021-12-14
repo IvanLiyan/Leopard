@@ -4,7 +4,7 @@ import { StyleSheet } from "aphrodite";
 /* External Libraries */
 import gql from "graphql-tag";
 import numeral from "numeral";
-import { useQuery } from "@apollo/react-hooks";
+import { useQuery } from "@apollo/client";
 
 /* Lego Toolkit */
 import { css } from "@toolkit/styling";

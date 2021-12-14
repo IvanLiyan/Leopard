@@ -10,7 +10,7 @@ import React, { useState, useMemo } from "react";
 import { StyleSheet } from "aphrodite";
 
 /* External Libraries */
-import { useMutation } from "@apollo/react-hooks";
+import { useMutation } from "@apollo/client";
 import gql from "graphql-tag";
 
 /* Lego Toolkit */

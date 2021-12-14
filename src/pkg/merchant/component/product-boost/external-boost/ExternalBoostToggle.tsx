@@ -23,7 +23,7 @@ import {
   Switch,
   Text,
 } from "@ContextLogic/lego";
-import { useMutation, useQuery } from "react-apollo";
+import { useMutation, useQuery } from "@apollo/client";
 import {
   GetExternalBoostDailyBudgetResponseType,
   GET_EXTERNAL_BOOST_DAILY_BUDGET,

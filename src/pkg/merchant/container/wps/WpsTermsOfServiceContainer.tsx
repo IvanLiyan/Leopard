@@ -7,7 +7,7 @@
 import React, { useMemo } from "react";
 import { StyleSheet } from "aphrodite";
 import { observer } from "mobx-react";
-import { useLazyQuery, useMutation } from "react-apollo";
+import { useLazyQuery, useMutation } from "@apollo/client";
 
 /* External Libraries */
 import ScrollableAnchor, { configureAnchors } from "react-scrollable-anchor";

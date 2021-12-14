@@ -50,7 +50,7 @@ import { css } from "@toolkit/styling";
 /* SVGs */
 import searchImg from "@assets/img/search.svg";
 
-import { useQuery } from "@apollo/react-hooks";
+import { useQuery } from "@apollo/client";
 import gql from "graphql-tag";
 import { RowSelectionArgs } from "@ContextLogic/lego";
 import OrderHistoryFilter from "@plus/component/orders/order-history/OrderHistoryFilter";

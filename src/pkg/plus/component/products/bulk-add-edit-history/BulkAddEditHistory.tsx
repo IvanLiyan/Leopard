@@ -8,7 +8,7 @@
  */
 import React, { useMemo, useState } from "react";
 import { StyleSheet } from "aphrodite";
-import { useQuery } from "react-apollo";
+import { useQuery } from "@apollo/client";
 import gql from "graphql-tag";
 
 /* Lego Components */

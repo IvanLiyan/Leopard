@@ -2,7 +2,7 @@
 import React, { useMemo, Fragment } from "react";
 import { StyleSheet } from "aphrodite";
 import { observer } from "mobx-react";
-import { useQuery } from "@apollo/react-hooks";
+import { useQuery } from "@apollo/client";
 
 /* Lego Components */
 import { Card } from "@ContextLogic/lego";

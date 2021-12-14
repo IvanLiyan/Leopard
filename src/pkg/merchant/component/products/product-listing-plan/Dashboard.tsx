@@ -55,7 +55,7 @@ import ProductCountCard from "./ProductCountCard";
 
 /* Stores */
 import { useTheme } from "@stores/ThemeStore";
-import { useQuery } from "react-apollo";
+import { useQuery } from "@apollo/client";
 
 type Props = BaseProps & {
   readonly initialData: PlpInitialData;

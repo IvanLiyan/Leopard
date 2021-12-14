@@ -12,7 +12,7 @@
 
 /* External Libraries */
 import { useState, useEffect, createContext, useContext } from "react";
-import { useQuery } from "@apollo/react-hooks";
+import { useQuery } from "@apollo/client";
 import Cookies from "js-cookie";
 import gql from "graphql-tag";
 
@@ -84,15 +84,14 @@ const ExperimentStateContext = createContext<ExperimentState>({
 });
 
 export const ExperimentProvider: React.FC = ({ children }) => {
-  const { data } = useQuery<ExperimentStoreInitialQueryResponse>(
-    EXPERIMENT_STORE_INITIAL_QUERY,
-  );
-  const experiments = data?.currentMerchant?.experiments || {};
-
   // TODO [lliepert]: handle GQL errors
+  // const { data } = useQuery<ExperimentStoreInitialQueryResponse>(
+  //   EXPERIMENT_STORE_INITIAL_QUERY,
+  // );
+  // const experiments = data?.currentMerchant?.experiments || {};
 
   return (
-    <ExperimentStateContext.Provider value={{ experiments }}>
+    <ExperimentStateContext.Provider value={{ experiments: {} }}>
       {children}
     </ExperimentStateContext.Provider>
   );

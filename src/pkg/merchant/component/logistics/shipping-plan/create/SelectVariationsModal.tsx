@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from "react";
 import { StyleSheet } from "aphrodite";
-import { useQuery } from "@apollo/react-hooks";
+import { useQuery } from "@apollo/client";
 import { observer } from "mobx-react";
 
 import { css } from "@toolkit/styling";

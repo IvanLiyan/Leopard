@@ -10,7 +10,7 @@ import React, { useMemo } from "react";
 import { observer } from "mobx-react";
 
 import gql from "graphql-tag";
-import { useQuery } from "@apollo/react-hooks";
+import { useQuery } from "@apollo/client";
 
 import { Option } from "@ContextLogic/lego";
 import { LoadingIndicator } from "@ContextLogic/lego";

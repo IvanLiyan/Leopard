@@ -3,7 +3,7 @@ import { useState, useCallback } from "react";
 
 /* External Libraries */
 import gql from "graphql-tag";
-import { useQuery, useMutation } from "@apollo/react-hooks";
+import { useQuery, useMutation } from "@apollo/client";
 import ApolloClient from "apollo-client";
 
 import {
@@ -108,14 +108,15 @@ type ReturnValue<T> = {
 };
 
 export const useUIStateString = (state: UserUIState): ReturnValue<string> => {
-  const { data, loading: isLoading, refetch: refresh } = useQuery<
-    ResponseType,
-    RequestType
-  >(GET_UI_STATE_STRING_VALUE, {
+  const {
+    data,
+    loading: isLoading,
+    refetch: refresh,
+  } = useQuery<ResponseType, RequestType>(GET_UI_STATE_STRING_VALUE, {
     variables: { state },
   });
   const [optimisticValue, setOptimisticValue] = useState<string | undefined>(
-    undefined
+    undefined,
   );
   const [updateState, { loading: isSaving }] = useMutation<
     void,
@@ -139,7 +140,7 @@ export const useUIStateString = (state: UserUIState): ReturnValue<string> => {
         setOptimisticValue(undefined);
       }
     },
-    [updateState, state, refresh]
+    [updateState, state, refresh],
   );
 
   return {
@@ -154,17 +155,18 @@ export const useUIStateBool = (
   state: UserUIState,
   options?: {
     readonly client?: ApolloClient<any>;
-  }
+  },
 ): ReturnValue<boolean> => {
-  const { data, loading: isLoading, refetch: refresh } = useQuery<
-    ResponseType,
-    RequestType
-  >(GET_UI_STATE_BOOL_VALUE, {
+  const {
+    data,
+    loading: isLoading,
+    refetch: refresh,
+  } = useQuery<ResponseType, RequestType>(GET_UI_STATE_BOOL_VALUE, {
     variables: { state },
     client: options?.client || undefined,
   });
   const [optimisticValue, setOptimisticValue] = useState<boolean | undefined>(
-    undefined
+    undefined,
   );
   const [updateState, { loading: isSaving }] = useMutation<
     void,
@@ -188,7 +190,7 @@ export const useUIStateBool = (
         setOptimisticValue(undefined);
       }
     },
-    [updateState, state, refresh]
+    [updateState, state, refresh],
   );
 
   return {
@@ -200,14 +202,15 @@ export const useUIStateBool = (
 };
 
 export const useUIStateInt = (state: UserUIState): ReturnValue<number> => {
-  const { data, loading: isLoading, refetch: refresh } = useQuery<
-    ResponseType,
-    RequestType
-  >(GET_UI_STATE_INT_VALUE, {
+  const {
+    data,
+    loading: isLoading,
+    refetch: refresh,
+  } = useQuery<ResponseType, RequestType>(GET_UI_STATE_INT_VALUE, {
     variables: { state },
   });
   const [optimisticValue, setOptimisticValue] = useState<number | undefined>(
-    undefined
+    undefined,
   );
   const [updateState, { loading: isSaving }] = useMutation<
     void,
@@ -229,7 +232,7 @@ export const useUIStateInt = (state: UserUIState): ReturnValue<number> => {
         setOptimisticValue(undefined);
       }
     },
-    [updateState, state, refresh]
+    [updateState, state, refresh],
   );
 
   return {
@@ -241,12 +244,13 @@ export const useUIStateInt = (state: UserUIState): ReturnValue<number> => {
 };
 
 export const useUIStateStringArray = (
-  state: UserUIState
+  state: UserUIState,
 ): ReturnValue<ReadonlyArray<string>> => {
-  const { data, loading: isLoading, refetch: refresh } = useQuery<
-    ResponseType,
-    RequestType
-  >(GET_UI_STATE_STRING_ARRAY_VALUE, {
+  const {
+    data,
+    loading: isLoading,
+    refetch: refresh,
+  } = useQuery<ResponseType, RequestType>(GET_UI_STATE_STRING_ARRAY_VALUE, {
     variables: { state },
   });
   const [optimisticValue, setOptimisticValue] = useState<
@@ -260,7 +264,7 @@ export const useUIStateStringArray = (
   const update = useCallback(
     async (
       value: ReadonlyArray<string>,
-      options: SetterOptions = DefaultSetterOptions
+      options: SetterOptions = DefaultSetterOptions,
     ) => {
       const {
         refresh: shouldRefresh = DEFAULT_SHOULD_REFRESH,
@@ -277,7 +281,7 @@ export const useUIStateStringArray = (
         setOptimisticValue(undefined);
       }
     },
-    [updateState, state, refresh]
+    [updateState, state, refresh],
   );
 
   return {
@@ -289,12 +293,13 @@ export const useUIStateStringArray = (
 };
 
 export const useUIStateIntArray = (
-  state: UserUIState
+  state: UserUIState,
 ): ReturnValue<ReadonlyArray<number>> => {
-  const { data, loading: isLoading, refetch: refresh } = useQuery<
-    ResponseType,
-    RequestType
-  >(GET_UI_STATE_INT_ARRAY_VALUE, {
+  const {
+    data,
+    loading: isLoading,
+    refetch: refresh,
+  } = useQuery<ResponseType, RequestType>(GET_UI_STATE_INT_ARRAY_VALUE, {
     variables: { state },
   });
   const [optimisticValue, setOptimisticValue] = useState<
@@ -308,7 +313,7 @@ export const useUIStateIntArray = (
   const update = useCallback(
     async (
       value: ReadonlyArray<number>,
-      options: SetterOptions = DefaultSetterOptions
+      options: SetterOptions = DefaultSetterOptions,
     ) => {
       const {
         refresh: shouldRefresh = DEFAULT_SHOULD_REFRESH,
@@ -325,7 +330,7 @@ export const useUIStateIntArray = (
         setOptimisticValue(undefined);
       }
     },
-    [updateState, state, refresh]
+    [updateState, state, refresh],
   );
 
   return {
@@ -337,10 +342,10 @@ export const useUIStateIntArray = (
 };
 
 export const useUpdateUIStateString = (
-  state: UserUIState
+  state: UserUIState,
 ): ((value: string) => void) => {
   const [updateState] = useMutation<void, UiStateMutationsUpdateArgs>(
-    UPDATE_UI_STATE
+    UPDATE_UI_STATE,
   );
 
   return useCallback(
@@ -349,45 +354,45 @@ export const useUpdateUIStateString = (
         variables: { input: { stringValue: value, state } },
       });
     },
-    [updateState, state]
+    [updateState, state],
   );
 };
 
 export const useUpdateUIStateBool = (
-  state: UserUIState
+  state: UserUIState,
 ): ((value: boolean) => void) => {
   const [updateState] = useMutation<void, UiStateMutationsUpdateArgs>(
-    UPDATE_UI_STATE
+    UPDATE_UI_STATE,
   );
 
   return useCallback(
     async (value: boolean) => {
       await updateState({ variables: { input: { boolValue: value, state } } });
     },
-    [updateState, state]
+    [updateState, state],
   );
 };
 
 export const useUpdateUIStateInt = (
-  state: UserUIState
+  state: UserUIState,
 ): ((value: number) => void) => {
   const [updateState] = useMutation<void, UiStateMutationsUpdateArgs>(
-    UPDATE_UI_STATE
+    UPDATE_UI_STATE,
   );
 
   return useCallback(
     async (value: number) => {
       await updateState({ variables: { input: { intValue: value, state } } });
     },
-    [updateState, state]
+    [updateState, state],
   );
 };
 
 export const useUpdateUIStateStringArray = (
-  state: UserUIState
+  state: UserUIState,
 ): ((value: ReadonlyArray<string>) => void) => {
   const [updateState] = useMutation<void, UiStateMutationsUpdateArgs>(
-    UPDATE_UI_STATE
+    UPDATE_UI_STATE,
   );
 
   return useCallback(
@@ -396,15 +401,15 @@ export const useUpdateUIStateStringArray = (
         variables: { input: { stringArrayValue: value, state } },
       });
     },
-    [updateState, state]
+    [updateState, state],
   );
 };
 
 export const useUpdateUIStateIntArray = (
-  state: UserUIState
+  state: UserUIState,
 ): ((value: ReadonlyArray<number>) => void) => {
   const [updateState] = useMutation<void, UiStateMutationsUpdateArgs>(
-    UPDATE_UI_STATE
+    UPDATE_UI_STATE,
   );
 
   return useCallback(
@@ -413,6 +418,6 @@ export const useUpdateUIStateIntArray = (
         variables: { input: { intArrayValue: value, state } },
       });
     },
-    [updateState, state]
+    [updateState, state],
   );
 };

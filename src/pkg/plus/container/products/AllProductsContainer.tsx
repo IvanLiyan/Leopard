@@ -12,7 +12,7 @@ import { observer } from "mobx-react";
 
 /* External Libraries */
 import gql from "graphql-tag";
-import { useMutation, useQuery } from "@apollo/react-hooks";
+import { useMutation, useQuery } from "@apollo/client";
 
 /* Lego Toolkit */
 import { useLogger } from "@toolkit/logger";

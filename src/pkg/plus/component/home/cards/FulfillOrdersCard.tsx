@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 
 /* External Libraries */
 import gql from "graphql-tag";
-import { useQuery } from "@apollo/react-hooks";
+import { useQuery } from "@apollo/client";
 
 import { cni18n } from "@legacy/core/i18n";
 import { PrimaryButton } from "@ContextLogic/lego";
@@ -62,7 +62,7 @@ const FulfillOrdersCard: React.FC<Props> = ({
     actionRequiredOrderCount,
     "An order needs to be fulfilled",
     "**%1$s orders** need to be fulfilled",
-    actionRequiredOrderCount
+    actionRequiredOrderCount,
   );
   return (
     <HomePageCard

@@ -8,7 +8,7 @@
  */
 import React, { useMemo, useState } from "react";
 import { StyleSheet } from "aphrodite";
-import { useQuery } from "react-apollo";
+import { useQuery } from "@apollo/client";
 import gql from "graphql-tag";
 
 /* Lego Components */
@@ -152,7 +152,7 @@ const useStylesheet = () => {
           textAlignLast: "center", // `last` required for <select>, see https://stackoverflow.com/questions/45215504/text-align-not-working-on-select-control-on-chrome/45215594
         },
       }),
-    []
+    [],
   );
 };
 

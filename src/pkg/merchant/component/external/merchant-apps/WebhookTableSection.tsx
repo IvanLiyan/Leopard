@@ -20,7 +20,7 @@ import {
 
 /* External Libraries */
 import gql from "graphql-tag";
-import { useQuery } from "@apollo/react-hooks";
+import { useQuery } from "@apollo/client";
 import _ from "lodash";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";

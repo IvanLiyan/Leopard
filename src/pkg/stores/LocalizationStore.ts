@@ -52,10 +52,6 @@ export default class LocalizationStore {
     const { locale } = this;
     return Locales[locale];
   }
-
-  static instance(): LocalizationStore {
-    throw "LocalizationStore Not Implemented";
-  }
 }
 
 export const useLocalizationStore = (): LocalizationStore => {

@@ -10,11 +10,27 @@ const withTM = require("next-transpile-modules")([
   "@ContextLogic/lego",
 ]);
 
+// ESM modules are only supported in next@12.
+// (https://stackoverflow.com/a/69781269/7992823)
+// TODO [lliepert]: upgrade next version. for now, re-implement isDev check here
+const env = process.env.ENV || process.env.NEXT_PUBLIC_ENV;
+const isDev = ["stage", "dev"].includes(env);
+
 const moduleExports = {
   distDir: "build",
   reactStrictMode: true,
   images: {
     domains: ["canary.contestimg.wish.com"],
+  },
+  async rewrites() {
+    return isDev
+      ? [
+          {
+            source: "/api/:path*",
+            destination: "/api/proxy",
+          },
+        ]
+      : [];
   },
 };
 

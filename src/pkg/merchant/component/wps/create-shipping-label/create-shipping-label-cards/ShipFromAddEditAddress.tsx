@@ -45,7 +45,7 @@ import {
   USZipcodeOnlyValidator,
 } from "@toolkit/validators";
 import { CountryCode } from "@schema/types";
-import { useMutation } from "react-apollo";
+import { useMutation } from "@apollo/client";
 import {
   AddEditWarehouseInputType,
   AddEditWarehouseResponseType,

@@ -102,10 +102,6 @@ export default class UserStore {
   get isDisabledMerchant(): boolean {
     return this.loggedInMerchantUser?.merchant_state_name == "DISABLED";
   }
-
-  static instance(): UserStore {
-    throw "UserStore Not Implemented";
-  }
 }
 
 export const useUserStore = (): UserStore => {

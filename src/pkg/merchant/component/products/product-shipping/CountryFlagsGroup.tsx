@@ -11,7 +11,7 @@ import { StyleSheet } from "aphrodite";
 import { observer } from "mobx-react";
 import gql from "graphql-tag";
 import { css } from "@toolkit/styling";
-import { useQuery } from "@apollo/react-hooks";
+import { useQuery } from "@apollo/client";
 
 /* Lego Components */
 import { Flag, Popover } from "@merchant/component/core";

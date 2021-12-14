@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import { StyleSheet } from "aphrodite";
 import { observer } from "mobx-react";
-import { useQuery } from "react-apollo";
+import { useQuery } from "@apollo/client";
 
 /* Lego Components */
 import { css } from "@toolkit/styling";

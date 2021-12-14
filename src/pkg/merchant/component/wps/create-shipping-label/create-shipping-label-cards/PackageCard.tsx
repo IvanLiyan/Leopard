@@ -7,7 +7,7 @@
 import React, { useMemo } from "react";
 import { StyleSheet } from "aphrodite";
 import { observer } from "mobx-react";
-import { useLazyQuery } from "react-apollo";
+import { useLazyQuery } from "@apollo/client";
 
 /* Lego Toolkit */
 import { css } from "@toolkit/styling";
@@ -141,7 +141,7 @@ const useStylesheet = () => {
           marginLeft: 48,
         },
       }),
-    []
+    [],
   );
 };
 

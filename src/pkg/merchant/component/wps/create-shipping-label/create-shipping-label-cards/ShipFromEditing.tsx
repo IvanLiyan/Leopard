@@ -7,7 +7,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { StyleSheet } from "aphrodite";
 import { observer } from "mobx-react";
-import { useMutation, useQuery } from "react-apollo";
+import { useMutation, useQuery } from "@apollo/client";
 import _ from "lodash";
 
 /* Lego Toolkit */

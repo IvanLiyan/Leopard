@@ -4,7 +4,7 @@ import React, { ReactNode, useMemo } from "react";
 import { StyleSheet } from "aphrodite";
 import { observer } from "mobx-react";
 import gql from "graphql-tag";
-import { useQuery } from "@apollo/react-hooks";
+import { useQuery } from "@apollo/client";
 import { useApolloStore } from "@stores/ApolloStore";
 
 /* Lego Components */

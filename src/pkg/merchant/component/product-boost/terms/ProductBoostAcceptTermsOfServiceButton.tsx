@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from "react";
 import { StyleSheet } from "aphrodite";
 import gql from "graphql-tag";
-import { useMutation } from "@apollo/react-hooks";
+import { useMutation } from "@apollo/client";
 
 import {
   MarketingServiceMutationsAcceptTosArgs,

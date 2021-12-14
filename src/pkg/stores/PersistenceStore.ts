@@ -108,10 +108,6 @@ export default class PersistenceStore {
       window.localStorage.clear();
     }
   }
-
-  static instance(): PersistenceStore {
-    throw "PersistenceStore Not Implemented";
-  }
 }
 
 export const usePersistenceStore = (): PersistenceStore => {

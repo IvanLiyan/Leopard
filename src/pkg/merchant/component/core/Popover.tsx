@@ -4,7 +4,7 @@ import {
   Popover as LegoPopover,
   PopoverProps as LegoPopoverProps,
 } from "@ContextLogic/lego";
-import { ApolloProvider } from "@apollo/react-hooks";
+import { ApolloProvider } from "@apollo/client";
 import { useApolloStore } from "@stores/ApolloStore";
 import { ThemeWrapper as MerchantThemeWrapper } from "@stores/ThemeStore";
 

@@ -10,7 +10,7 @@ import React, { useState, useMemo, useCallback } from "react";
 import { StyleSheet } from "aphrodite";
 import { observer } from "mobx-react";
 import gql from "graphql-tag";
-import { useQuery } from "@apollo/react-hooks";
+import { useQuery } from "@apollo/client";
 
 /* Lego Toolkit */
 import { css, IS_SMALL_SCREEN, IS_LARGE_SCREEN } from "@toolkit/styling";

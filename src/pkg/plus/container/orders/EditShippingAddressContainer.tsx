@@ -12,7 +12,7 @@ import { StyleSheet } from "aphrodite";
 import { observer } from "mobx-react";
 
 import gql from "graphql-tag";
-import { useMutation } from "@apollo/react-hooks";
+import { useMutation } from "@apollo/client";
 
 /* Legacy */
 import { ni18n } from "@legacy/core/i18n";

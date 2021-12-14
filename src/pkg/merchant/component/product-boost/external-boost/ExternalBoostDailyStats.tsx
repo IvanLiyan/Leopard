@@ -20,7 +20,7 @@ import {
   DayRangePickerInput,
 } from "@ContextLogic/lego";
 
-import { useQuery } from "react-apollo";
+import { useQuery } from "@apollo/client";
 import {
   ChargingMethodDailyStats,
   DailyStatsLineType,

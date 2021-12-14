@@ -50,3 +50,8 @@ $ python3 convert.py C <path_to_problematic_file>
 - Handle case where no initial data query is provided but initialProps still requested (currently deleting)
   https://github.com/microsoft/TypeScript/wiki/Using-the-Compiler-API#traversing-the-ast-with-a-little-linter
 - Fix illustrations file (currently @ts-nocheck'ing it)
+- Convert gqltag, apollo/react-hooks, and react-apollo to apollo/client
+
+## Main Debugging Pages:
+
+- `http://localhost:8080/demo/all-products-container`

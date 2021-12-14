@@ -7,7 +7,7 @@
 import React, { useCallback, useEffect, useMemo } from "react";
 import { StyleSheet } from "aphrodite";
 import { observer } from "mobx-react";
-import { useLazyQuery, useMutation } from "react-apollo";
+import { useLazyQuery, useMutation } from "@apollo/client";
 
 /* Lego Toolkit */
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";

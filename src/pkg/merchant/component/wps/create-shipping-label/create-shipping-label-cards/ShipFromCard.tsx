@@ -36,7 +36,7 @@ import {
   SUBMIT_SHIPPING_ADDRESS,
   WarehouseAddress,
 } from "@toolkit/wps/create-shipping-label";
-import { useMutation } from "react-apollo";
+import { useMutation } from "@apollo/client";
 import { useToastStore } from "@stores/ToastStore";
 
 const CardPadding = 24;

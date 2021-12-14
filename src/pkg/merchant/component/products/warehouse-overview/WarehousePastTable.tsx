@@ -37,7 +37,7 @@ import {
   PickedWarehouseType,
   WarehouseOverviewInitialData,
 } from "@toolkit/products/warehouse-overview";
-import { useQuery } from "react-apollo";
+import { useQuery } from "@apollo/client";
 
 type Props = BaseProps & {
   readonly warehouse: PickedWarehouseType;

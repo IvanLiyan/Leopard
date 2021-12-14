@@ -11,7 +11,7 @@ import { StyleSheet } from "aphrodite";
 import { observer } from "mobx-react";
 import moment from "moment/moment";
 import gql from "graphql-tag";
-import { useQuery } from "@apollo/react-hooks";
+import { useQuery } from "@apollo/client";
 import numeral from "numeral";
 import { TooltipPayload } from "recharts";
 

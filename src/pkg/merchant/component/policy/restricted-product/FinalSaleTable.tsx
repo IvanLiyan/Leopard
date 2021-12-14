@@ -4,7 +4,7 @@ import { observer } from "mobx-react";
 
 /* External Libraries */
 import gql from "graphql-tag";
-import { useQuery, useMutation } from "@apollo/react-hooks";
+import { useQuery, useMutation } from "@apollo/client";
 
 /* Lego Components */
 import {

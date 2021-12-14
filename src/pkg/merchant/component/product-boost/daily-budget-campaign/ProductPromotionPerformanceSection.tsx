@@ -2,7 +2,7 @@ import React, { useState, useMemo } from "react";
 import { StyleSheet } from "aphrodite";
 import { observer } from "mobx-react";
 import gql from "graphql-tag";
-import { useQuery } from "@apollo/react-hooks";
+import { useQuery } from "@apollo/client";
 
 /* External Libraries */
 import moment from "moment/moment";
@@ -112,7 +112,7 @@ type ProductPromotionPerformanceSectionProps = BaseProps & {
 };
 
 const ProductPromotionPerformanceSection = (
-  props: ProductPromotionPerformanceSectionProps
+  props: ProductPromotionPerformanceSectionProps,
 ) => {
   const styles = useStylesheet();
   const { productId, currencyCode, className, style } = props;
@@ -235,6 +235,6 @@ const useStylesheet = () => {
           alignItems: "center",
         },
       }),
-    []
+    [],
   );
 };
