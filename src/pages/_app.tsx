@@ -21,7 +21,6 @@ import LocalizationStore, {
   defaultLocalizationStoreArgs,
 } from "@stores/LocalizationStore";
 import { ApolloProvider } from "@stores/ApolloStore";
-import { ExperimentProvider } from "@stores/ExperimentStore";
 import ThemeStore, {
   ThemeStoreContext,
   ThemeWrapper,
@@ -85,13 +84,11 @@ function MerchantDashboard({ Component, pageProps }: AppProps): JSX.Element {
                 <DeviceStoreContext.Provider value={deviceStore}>
                   <LocalizationStoreContext.Provider value={localizationStore}>
                     <ApolloProvider>
-                      <ExperimentProvider>
-                        <ThemeStoreContext.Provider value={themeStore}>
-                          <ThemeWrapper>
-                            <Component {...pageProps} />
-                          </ThemeWrapper>
-                        </ThemeStoreContext.Provider>
-                      </ExperimentProvider>
+                      <ThemeStoreContext.Provider value={themeStore}>
+                        <ThemeWrapper>
+                          <Component {...pageProps} />
+                        </ThemeWrapper>
+                      </ThemeStoreContext.Provider>
                     </ApolloProvider>
                   </LocalizationStoreContext.Provider>
                 </DeviceStoreContext.Provider>

@@ -8,19 +8,12 @@
 //  Copyright © 2019-present ContextLogic Inc. All rights reserved.
 //
 
-/* eslint-disable local-rules/no-pageParams */
-
 /* External Libraries */
-import { useState, useEffect, createContext, useContext } from "react";
-import { useQuery } from "@apollo/client";
-import Cookies from "js-cookie";
+import { useState, useEffect } from "react";
 import gql from "graphql-tag";
 
 /* Relative Imports */
 import { useApolloStore } from "./ApolloStore";
-import { useUserStore } from "./UserStore";
-import { useNavigationStore } from "./NavigationStore";
-import { useEnvironmentStore } from "./EnvironmentStore";
 
 import {
   ExpSchema,
@@ -61,82 +54,13 @@ type GetDeciderKeyResponseType = {
   };
 };
 
-const EXPERIMENT_STORE_INITIAL_QUERY = gql`
-  query ExperimentStore_InitialQuery {
-    currentMerchant {
-      experiments
-    }
-  }
-`;
-
-type ExperimentStoreInitialQueryResponse = {
-  readonly currentMerchant?: {
-    readonly experiments?: Readonly<Record<string, string>>;
-  };
-};
-
-type ExperimentState = {
-  experiments: Readonly<Record<string, string>>;
-};
-
-const ExperimentStateContext = createContext<ExperimentState>({
-  experiments: {},
-});
-
-export const ExperimentProvider: React.FC = ({ children }) => {
-  // TODO [lliepert]: handle GQL errors
-  // const { data } = useQuery<ExperimentStoreInitialQueryResponse>(
-  //   EXPERIMENT_STORE_INITIAL_QUERY,
-  // );
-  // const experiments = data?.currentMerchant?.experiments || {};
-
-  return (
-    <ExperimentStateContext.Provider value={{ experiments: {} }}>
-      {children}
-    </ExperimentStateContext.Provider>
-  );
-};
-
-// TODO [lliepert]: is this still used? can we deprecate?
 type ExperimentStore = {
-  readonly bucketForUser: (experimentName: string) => string | null | undefined;
-  readonly overrideLocally: (experimentName: string, bucket: string) => void;
-  readonly clearLocalOverride: (experimentName: string) => void;
   readonly getBucketForMerchant: (name: string) => Promise<string>;
   readonly getDeciderKeyDecision: (name: string) => Promise<boolean>;
 };
 
 export const useExperimentStore = (): ExperimentStore => {
-  const { experiments } = useContext(ExperimentStateContext);
-  const { isProd } = useEnvironmentStore();
-  const { isSu } = useUserStore();
   const { client } = useApolloStore();
-  const navigationStore = useNavigationStore();
-
-  const bucketForUser = (experimentName: string): string | null | undefined => {
-    const cookieOverride = Cookies.get(`expoverride_${experimentName}`);
-    if (cookieOverride != null) {
-      return cookieOverride;
-    }
-
-    return experiments == null ? null : experiments[experimentName];
-  };
-
-  const overrideLocally = (experimentName: string, bucket: string): void => {
-    if (isProd && !isSu) {
-      return;
-    }
-    Cookies.set(`expoverride_${experimentName}`, bucket);
-    void navigationStore.reload({ fullReload: true });
-  };
-
-  const clearLocalOverride = (experimentName: string): void => {
-    if (!isSu) {
-      return;
-    }
-    Cookies.remove(`expoverride_${experimentName}`);
-    void navigationStore.reload({ fullReload: true });
-  };
 
   const getBucketForMerchant = async (name: string): Promise<string> => {
     const { data } = await client.query<
@@ -162,9 +86,6 @@ export const useExperimentStore = (): ExperimentStore => {
   };
 
   return {
-    bucketForUser,
-    overrideLocally,
-    clearLocalOverride,
     getBucketForMerchant,
     getDeciderKeyDecision,
   };
