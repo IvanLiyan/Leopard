@@ -6,6 +6,11 @@ Before running leopard, add the root file `.env.local` populated with the follow
 
 ```
 NEXT_PUBLIC_MD_URL=<url to your instance of merch-fe, ex: https://yourid-ec2-merch.vpn.contextlogic.com>
+NEXT_PUBLIC_ENV=dev
+
+XSRFTOKEN=<get value from request to /data (search for `batch`)>
+SECURE_SESSION=<get value from request to /data (search for `batch`)>
+SESSION=<get value from request to /data (search for `batch`)>
 ```
 
 ## MIDs for Testing

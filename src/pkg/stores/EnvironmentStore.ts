@@ -25,7 +25,7 @@ export const isSandbox = ["sandbox"].includes(env);
 export const isStaging = ["fe_qa_staging", "stage"].includes(env);
 export const isProd = ["testing", "fe_prod"].includes(env);
 
-export type EnvironmentStore = {
+type EnvironmentStore = {
   env: MerchantEnv;
   isDev: boolean;
   isTesting: boolean;
@@ -44,3 +44,18 @@ export const useEnvironmentStore = (): EnvironmentStore => {
     isProd,
   };
 };
+
+const LegacyEnvironmentStoreMock = {
+  instance: (): EnvironmentStore => {
+    return {
+      env,
+      isDev,
+      isTesting,
+      isSandbox,
+      isStaging,
+      isProd,
+    };
+  },
+};
+
+export default LegacyEnvironmentStoreMock;

@@ -2426,13 +2426,6 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react-no-ssr@^1.1.3":
-  version "1.1.3"
-  resolved "https://registry.yarnpkg.com/@types/react-no-ssr/-/react-no-ssr-1.1.3.tgz#895baced8f49e270289c8ad11be1a4a50328d243"
-  integrity sha512-uMR17qGISe0qTTiVFuRfatP+9plEe/Q0beQ47xy0OXatwb3Z2bEj3OW7FC+9PVqCYEsfR4b01LU9tXw2urzBzw==
-  dependencies:
-    "@types/react" "*"
-
 "@types/react-resize-detector@^5.0.0":
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/@types/react-resize-detector/-/react-resize-detector-5.0.0.tgz#18ac4e6d518581bec6345845b7f08232f4cca8a5"
@@ -3943,7 +3936,7 @@ babel-register@^6.26.0:
     mkdirp "^0.5.1"
     source-map-support "^0.4.15"
 
-babel-runtime@6.x.x, babel-runtime@^6.18.0, babel-runtime@^6.22.0, babel-runtime@^6.26.0:
+babel-runtime@^6.18.0, babel-runtime@^6.22.0, babel-runtime@^6.26.0:
   version "6.26.0"
   resolved "https://registry.yarnpkg.com/babel-runtime/-/babel-runtime-6.26.0.tgz#965c7058668e82b55d7bfe04ff2337bc8b5647fe"
   integrity sha1-llxwWGaOgrVde/4E/yM3vItWR/4=
@@ -12908,13 +12901,6 @@ react-markdown@^3.4.1:
     unified "^6.1.5"
     unist-util-visit "^1.3.0"
     xtend "^4.0.1"
-
-react-no-ssr@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/react-no-ssr/-/react-no-ssr-1.1.0.tgz#313b48d2e26020f969ed98e472f10481604e3cc8"
-  integrity sha1-MTtI0uJgIPlp7ZjkcvEEgWBOPMg=
-  dependencies:
-    babel-runtime "6.x.x"
 
 react-pose@^4.0.8:
   version "4.0.10"

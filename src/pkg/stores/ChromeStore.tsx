@@ -23,7 +23,7 @@ import * as zendeskApi from "@merchant/api/zendesk";
 
 /* Stores */
 import NavigationStore from "@stores/NavigationStore";
-import UserStore, { RecentSu } from "@stores/UserStore";
+import { UserStore, RecentUser } from "@stores/UserStore";
 import LocalizationStore from "@stores/LocalizationStore";
 import EnvironmentStore from "@stores/EnvironmentStore";
 
@@ -578,9 +578,9 @@ export default class ChromeStore {
   }
 
   @computed get resultLoginResults(): ReadonlyArray<NavigationSearchResult> {
-    const { recentSu, isMerchant } = this.userStore;
+    const { recentUsers: recentSu, isMerchant } = this.userStore;
     const { currentPath } = this.navigationStore;
-    return recentSu.map((su: RecentSu) => {
+    return recentSu.map((su: RecentUser) => {
       const redirectPath = isMerchant && su.is_merchant ? currentPath : "/";
       return {
         url: `/go/${su.id}?next=${encodeURIComponent(redirectPath || "/")}`,

@@ -8,7 +8,13 @@
  *  Created by Lucas Liepert on 06-26-20.
  *  Copyright © 2020-present ContextLogic Inc. All rights reserved.
  */
-import React, { useMemo, createContext, useContext } from "react";
+import React, {
+  useMemo,
+  createContext,
+  useContext,
+  createRef,
+  useImperativeHandle,
+} from "react";
 import { computed, observable } from "mobx";
 
 import Color from "color";
@@ -23,9 +29,9 @@ import {
   ToastContext,
   NavigationContext,
 } from "@ContextLogic/lego/toolkit/providers";
-import UserStore, { defaultUserStoreArgs } from "@stores/UserStore";
+// import UserStore from "@stores/UserStore"; // TODO [lliepert]: commenting out userstore usage, will bring back in further ticket
 import { useNavigationStore } from "@stores/NavigationStore";
-import { env } from "./EnvironmentStore";
+import EnvironmentStore, { useEnvironmentStore } from "./EnvironmentStore";
 import { useLocalizationStore } from "@stores/LocalizationStore";
 import { useToastStore } from "@stores/ToastStore";
 
@@ -345,6 +351,7 @@ const COMMON_THEME = {
   tertiaryDarker: PALETTES_V2.PURPLE["600"],
   tertiaryDarkest: PALETTES_V2.PURPLE["700"],
 
+  quaternaryLightest: PALETTES_V2.ORANGE["100"],
   quaternaryLighter: PALETTES_V2.ORANGE["200"],
   quaternaryLight: PALETTES_V2.ORANGE["300"],
   quaternary: PALETTES_V2.ORANGE["400"],
@@ -464,6 +471,7 @@ const DARK_COMMON_THEME = {
   tertiaryDarker: PALETTES_V2.PURPLE["200"],
   tertiaryDarkest: PALETTES_V2.PURPLE["100"],
 
+  quaternaryLightest: PALETTES_V2.ORANGE["900"],
   quaternaryLighter: PALETTES_V2.ORANGE["800"],
   quaternaryLight: PALETTES_V2.ORANGE["600"],
   quaternary: PALETTES_V2.ORANGE["400"],
@@ -583,26 +591,14 @@ const LEGO_THEMES: { [k in ThemeName]: LegoTheme } = {
   STORE_DARK: STORE_DARK_THEME,
 };
 
-type ThemeStoreArgs = {
-  readonly userStore: UserStore;
-};
-
-export default class ThemeStore {
-  userStore: UserStore;
-
-  constructor({ userStore }: ThemeStoreArgs) {
-    this.userStore = userStore;
-  }
-
+class ThemeStore {
   @observable prefersDark = false; //window.matchMedia('(prefers-color-scheme: dark)').matches;
 
   currentAppTheme = (override?: ThemeName): AppTheme => {
-    const { prefersDark, userStore } = this;
+    const { prefersDark } = this;
+    // const userStore = UserStore.instance(); // TODO [lliepert]: commenting out userstore usage, will bring back in further ticket
 
     const appThemes = APP_THEMES;
-    if (override) {
-      return appThemes[override];
-    }
 
     const merchantTheme = appThemes.MERCHANT;
     const merchantDarkTheme = appThemes.MERCHANT_DARK;
@@ -616,27 +612,30 @@ export default class ThemeStore {
     const internalTheme = appThemes.INTERNAL;
     const internalDarkTheme = appThemes.INTERNAL_DARK;
 
-    if (!userStore.isLoggedIn) {
-      return prefersDark ? merchantDarkTheme : merchantTheme;
-    }
+    // TODO [lliepert]: commenting out userstore usage, will bring back in further ticket
+    // if (!userStore.isLoggedIn) {
+    //   return prefersDark ? merchantDarkTheme : merchantTheme;
+    // }
 
-    if (userStore.isStoreUser) {
-      return prefersDark ? storeDarkTheme : storeTheme;
-    }
+    // if (userStore.isStoreUser) {
+    //   return prefersDark ? storeDarkTheme : storeTheme;
+    // }
 
-    if (userStore.isPlusUser) {
-      return prefersDark ? plusDarkTheme : plusTheme;
-    }
+    // if (userStore.isPlusUser) {
+    //   return prefersDark ? plusDarkTheme : plusTheme;
+    // }
 
-    if (userStore.isMerchant) {
-      return prefersDark ? merchantDarkTheme : merchantTheme;
-    }
+    // if (userStore.isMerchant) {
+    //   return prefersDark ? merchantDarkTheme : merchantTheme;
+    // }
 
     return prefersDark ? internalDarkTheme : internalTheme;
   };
 
   currentLegoTheme = (override?: ThemeName): LegoTheme => {
-    const { prefersDark, userStore } = this;
+    const { prefersDark } = this;
+    // TODO [lliepert]: commenting out userstore usage, will bring back in further ticket
+    // const userStore = UserStore.instance();
 
     const legoThemes = LEGO_THEMES;
     if (override) {
@@ -655,34 +654,28 @@ export default class ThemeStore {
     const internalTheme = legoThemes.INTERNAL;
     const internalDarkTheme = legoThemes.INTERNAL_DARK;
 
-    if (!userStore.isLoggedIn) {
-      return prefersDark ? merchantDarkTheme : merchantTheme;
-    }
+    // TODO [lliepert]: commenting out userstore usage, will bring back in further ticket
+    // if (!userStore.isLoggedIn) {
+    //   return prefersDark ? merchantDarkTheme : merchantTheme;
+    // }
 
-    if (userStore.isStoreUser) {
-      return prefersDark ? storeDarkTheme : storeTheme;
-    }
+    // if (userStore.isStoreUser) {
+    //   return prefersDark ? storeDarkTheme : storeTheme;
+    // }
 
-    if (userStore.isPlusUser) {
-      return prefersDark ? plusDarkTheme : plusTheme;
-    }
+    // if (userStore.isPlusUser) {
+    //   return prefersDark ? plusDarkTheme : plusTheme;
+    // }
 
-    if (userStore.isMerchant) {
-      return prefersDark ? merchantDarkTheme : merchantTheme;
-    }
+    // if (userStore.isMerchant) {
+    //   return prefersDark ? merchantDarkTheme : merchantTheme;
+    // }
 
     return prefersDark ? internalDarkTheme : internalTheme;
   };
 
   @computed get topbarBackground(): string {
-    const {
-      userStore: { isDisabledMerchant },
-    } = this;
-
-    if (isDisabledMerchant) {
-      return PALETTES_DEPRECATED.reds.DarkerRed;
-    }
-
+    const { env } = EnvironmentStore.instance();
     switch (env) {
       case "fe_qa_staging":
         return PALETTES_DEPRECATED.cyans.DarkestCyan;
@@ -696,15 +689,8 @@ export default class ThemeStore {
   }
 
   @computed get lightenedTopbarBackground(): string {
-    const {
-      topbarBackground,
-      userStore: { isDisabledMerchant },
-    } = this;
-
-    if (isDisabledMerchant) {
-      return new Color(topbarBackground).lighten(0.3).toString();
-    }
-
+    const { env } = EnvironmentStore.instance();
+    const { topbarBackground } = this;
     switch (env) {
       case "fe_qa_staging":
         return "#407B71";
@@ -812,6 +798,7 @@ export interface AppTheme {
   readonly tertiaryDarker: string;
   readonly tertiaryDarkest: string;
 
+  readonly quaternaryLightest: string;
   readonly quaternaryLighter: string;
   readonly quaternaryLight: string;
   readonly quaternary: string;
@@ -846,10 +833,10 @@ export interface AppTheme {
 // exported solely for adding theming to legacy CC components
 export const ThemeContext = React.createContext<AppTheme>(APP_THEMES.MERCHANT);
 
-export const ThemeProvider: React.FC<{
-  readonly theme: AppTheme;
-  readonly children: React.ReactNode;
-}> = ({ theme, children }) => {
+export const ThemeProvider: React.FC<{ readonly theme: AppTheme }> = ({
+  theme,
+  children,
+}) => {
   return (
     <ThemeContext.Provider value={theme}>{children}</ThemeContext.Provider>
   );
@@ -861,11 +848,12 @@ export const useTheme = (): AppTheme => {
 };
 
 // wrap a component in all the various theme providers we use in one go
-export const ThemeWrapper: React.FC<{
-  children: React.ReactNode;
-  overrideThemeAs?: ThemeName;
-}> = ({ children, overrideThemeAs }) => {
+export const ThemeWrapper: React.FC<{ overrideThemeAs?: ThemeName }> = ({
+  children,
+  overrideThemeAs,
+}) => {
   const { currentLegoTheme, currentAppTheme } = useThemeStore();
+  const { env: appEnv } = useEnvironmentStore();
   const { locale } = useLocalizationStore();
   const toastStore = useToastStore();
   const navigationStore = useNavigationStore();
@@ -873,9 +861,13 @@ export const ThemeWrapper: React.FC<{
     return {
       navigate(url: string, options?: NavigateOptions) {
         const openInNewTab = options?.openInNewTab == true;
-        return navigationStore.navigate(url, {
-          openInNewTab,
-        });
+        // convert synch navigate function (next.js) to promise navigate
+        // function (lego)
+        return Promise.resolve(
+          navigationStore.navigate(url, {
+            openInNewTab,
+          }),
+        );
       },
       pushPath(path: string, queryParams?: any | null | undefined) {
         navigationStore.pushPath(path, queryParams);
@@ -913,7 +905,7 @@ export const ThemeWrapper: React.FC<{
   return (
     <LegoProvider
       env={
-        ["fe_qa_staging", "stage", "sandbox"].includes(env)
+        ["fe_qa_staging", "stage", "sandbox"].includes(appEnv)
           ? "development"
           : "production"
       }
@@ -929,10 +921,32 @@ export const ThemeWrapper: React.FC<{
   );
 };
 
-export const defaultThemeStoreArgs = {
-  userStore: new UserStore(defaultUserStoreArgs),
+const ThemeStoreContext = createContext(new ThemeStore());
+
+// combined with the later useImperativeHandle, this allows us to access the
+// ThemeStore outside of React
+const ThemeStoreRef = createRef<ThemeStore>();
+
+export const ThemeStoreProvider: React.FC = ({ children }) => {
+  const themeStore = new ThemeStore();
+  useImperativeHandle(ThemeStoreRef, () => themeStore);
+
+  return (
+    <ThemeStoreContext.Provider value={themeStore}>
+      <ThemeWrapper>{children}</ThemeWrapper>
+    </ThemeStoreContext.Provider>
+  );
 };
 
-export const ThemeStoreContext = createContext(
-  new ThemeStore(defaultThemeStoreArgs),
-);
+// below we mock out ThemeStore.instance() for compatibility with legacy code
+const LegacyThemeStoreMock = {
+  instance: (): ThemeStore => {
+    const ref = ThemeStoreRef.current;
+    if (ref == null) {
+      throw "Attempting to access reference to un-instantiated ThemeStore";
+    }
+    return ref;
+  },
+};
+
+export default LegacyThemeStoreMock;

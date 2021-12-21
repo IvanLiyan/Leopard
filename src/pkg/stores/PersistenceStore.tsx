@@ -5,30 +5,28 @@
 //  Created by Sola Ogunsakin on 2/20/19.
 //  Copyright © 2019-present ContextLogic Inc. All rights reserved.
 //
-import { createContext, useContext } from "react";
+import {
+  createContext,
+  useContext,
+  createRef,
+  useImperativeHandle,
+} from "react";
 import { observable, toJS } from "mobx";
-
-/* Relative Imports */
-import UserStore, { defaultUserStoreArgs } from "./UserStore";
 
 const HasLocalStorage = typeof window !== "undefined" && !!window.localStorage;
 
-type PersistenceStoreArgs = {
-  readonly userStore: UserStore;
-};
-
-export default class PersistenceStore {
+class PersistenceStore {
   @observable
   storage: Map<string, unknown> = new Map();
 
-  userStore: UserStore;
+  userId: string;
 
-  constructor({ userStore }: PersistenceStoreArgs) {
-    this.userStore = userStore;
+  constructor({ userId }: { userId: string }) {
+    this.userId = userId;
   }
 
   userKey(key: string): string {
-    const userId = this.userStore.loggedInMerchantUser?.id || "none";
+    const userId = this.userId || "none";
     return `${userId}_${key}`;
   }
 
@@ -114,10 +112,37 @@ export const usePersistenceStore = (): PersistenceStore => {
   return useContext(PersistenceStoreContext);
 };
 
-export const defaultPersistenceStoreArgs = {
-  userStore: new UserStore(defaultUserStoreArgs),
+const PersistenceStoreContext = createContext(
+  new PersistenceStore({ userId: "" }),
+);
+
+// combined with the later useImperativeHandle, this allows us to access the
+// PersistenceStore outside of React
+const PersistenceStoreRef = createRef<PersistenceStore>();
+
+export const PersistenceStoreProvider: React.FC<{ userId: string }> = ({
+  userId,
+  children,
+}) => {
+  const persistanceStore = new PersistenceStore({ userId });
+  useImperativeHandle(PersistenceStoreRef, () => persistanceStore);
+
+  return (
+    <PersistenceStoreContext.Provider value={persistanceStore}>
+      {children}
+    </PersistenceStoreContext.Provider>
+  );
 };
 
-export const PersistenceStoreContext = createContext(
-  new PersistenceStore(defaultPersistenceStoreArgs),
-);
+// below we mock out PersistenceStore.instance() for compatibility with legacy code
+const LegacyPersistenceStoreMock = {
+  instance: (): PersistenceStore => {
+    const ref = PersistenceStoreRef.current;
+    if (ref == null) {
+      throw "Attempting to access reference to un-instantiated PersistenceStore";
+    }
+    return ref;
+  },
+};
+
+export default LegacyPersistenceStoreMock;

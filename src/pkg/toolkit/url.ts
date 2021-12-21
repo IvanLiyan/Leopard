@@ -1,5 +1,5 @@
 import { useNavigationStore } from "@stores/NavigationStore";
-import { useEnvironmentStore } from "@stores/EnvironmentStore";
+import { isStaging, isTesting, isSandbox } from "@stores/EnvironmentStore";
 
 /* eslint-disable no-underscore-dangle */
 import { useCallback, useMemo } from "react";
@@ -104,9 +104,7 @@ export const contestImageURL = ({
   return `${lemmingsUrl}/${contestId}-${sequenceIdString}${size}.jpg${cacheBusterString}`;
 };
 
-export const useWishURL = (path: string): string => {
-  const { isStaging, isTesting, isSandbox } = useEnvironmentStore();
-
+export const wishURL = (path: string): string => {
   const domain = (() => {
     if (isStaging) {
       return "staging.wish.com";

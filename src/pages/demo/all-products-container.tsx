@@ -16,6 +16,8 @@ import { LoadingIndicator } from "@ContextLogic/lego";
 import { isProd } from "@stores/EnvironmentStore";
 import { AllProductsContainer } from "@plus/container";
 
+// TODO [lliepert]: we need to wrap these in observers
+
 const Page: NextPage<Record<string, never>> = () => {
   const query = gql`
     query AllProductsContainer {
@@ -36,10 +38,6 @@ const Page: NextPage<Record<string, never>> = () => {
     throw error;
   }
 
-  // [lliepert] temp debugging to confirm GQL proxy
-  // eslint-disable-next-line no-console
-  console.log("data", data);
-
   return (
     <>
       <Head>
@@ -49,8 +47,7 @@ const Page: NextPage<Record<string, never>> = () => {
       {loading ? (
         <LoadingIndicator />
       ) : (
-        // <AllProductsContainer initialData={data} />
-        <div>finished loading</div>
+        <AllProductsContainer initialData={data} />
       )}
     </>
   );

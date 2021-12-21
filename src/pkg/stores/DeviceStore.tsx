@@ -1,5 +1,10 @@
 /* External Libraries */
-import { createContext, useContext } from "react";
+import {
+  createContext,
+  useContext,
+  createRef,
+  useImperativeHandle,
+} from "react";
 import { computed, observable, runInAction } from "mobx";
 
 // TODO [lliepert]: force store to run only on client side, eventually deprecate
@@ -11,7 +16,7 @@ export const BREAKPOINTS = {
   veryLargeScreen: 1200,
 };
 
-export default class DeviceStore {
+class DeviceStore {
   @observable
   screenInnerWidth: number = window.innerWidth;
 
@@ -149,4 +154,32 @@ export const useIsVerySmallScreen = (): boolean => {
   return isVerySmallScreen;
 };
 
-export const DeviceStoreContext = createContext(new DeviceStore());
+const DeviceStoreContext = createContext(new DeviceStore());
+
+// combined with the later useImperativeHandle, this allows us to access the
+// DeviceStore outside of React
+const DeviceStoreRef = createRef<DeviceStore>();
+
+export const DeviceStoreProvider: React.FC = ({ children }) => {
+  const deviceStore = new DeviceStore();
+  useImperativeHandle(DeviceStoreRef, () => deviceStore);
+
+  return (
+    <DeviceStoreContext.Provider value={deviceStore}>
+      {children}
+    </DeviceStoreContext.Provider>
+  );
+};
+
+// below we mock out DeviceStore.instance() for compatibility with legacy code
+const LegacyDeviceStoreMock = {
+  instance: (): DeviceStore => {
+    const ref = DeviceStoreRef.current;
+    if (ref == null) {
+      throw "Attempting to access reference to un-instantiated DeviceStore";
+    }
+    return ref;
+  },
+};
+
+export default LegacyDeviceStoreMock;
