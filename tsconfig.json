@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -18,16 +22,41 @@
     "baseUrl": "./",
     "downlevelIteration": true,
     "paths": {
-      "@assets/*": ["src/pkg/assets/index", "src/pkg/assets/*"],
-      "@legacy/*": ["src/legacy/index", "src/legacy/*"],
-      "@merchant/*": ["src/pkg/merchant/index", "src/pkg/merchant/*"],
-      "@plus/*": ["src/pkg/plus/index", "src/pkg/plus/*"],
-      "@schema/*": ["src/pkg/schema/index", "src/pkg/schema/*"],
-      "@stores/*": ["src/pkg/stores/index", "src/pkg/stores/*"],
-      "@toolkit/*": ["src/pkg/toolkit/index", "src/pkg/toolkit/*"],
-      "@next-toolkit/*": ["src/toolkit/index", "src/toolkit/*"]
+      "@assets/*": [
+        "src/pkg/assets/index",
+        "src/pkg/assets/*"
+      ],
+      "@legacy/*": [
+        "src/legacy/index",
+        "src/legacy/*"
+      ],
+      "@merchant/*": [
+        "src/pkg/merchant/index",
+        "src/pkg/merchant/*"
+      ],
+      "@plus/*": [
+        "src/pkg/plus/index",
+        "src/pkg/plus/*"
+      ],
+      "@schema/*": [
+        "src/pkg/schema/index",
+        "src/pkg/schema/*"
+      ],
+      "@stores/*": [
+        "src/pkg/stores/index",
+        "src/pkg/stores/*"
+      ],
+      "@toolkit/*": [
+        "src/pkg/toolkit/index",
+        "src/pkg/toolkit/*"
+      ],
+      "@next-toolkit/*": [
+        "src/toolkit/index",
+        "src/toolkit/*"
+      ]
     },
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "incremental": true
   },
   "include": [
     "next-env.d.ts",
@@ -36,5 +65,7 @@
     "sentry.client.config.js",
     "sentry.server.config.js"
   ],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules"
+  ]
 }
