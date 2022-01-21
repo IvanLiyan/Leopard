@@ -10,6 +10,8 @@ const withTM = require("next-transpile-modules")([
   "@ContextLogic/lego",
 ]);
 
+const MD_URL = process.env.NEXT_PUBLIC_MD_URL || "";
+
 // ESM modules are only supported in next@12.
 // (https://stackoverflow.com/a/69781269/7992823)
 // TODO [lliepert]: upgrade next version. for now, re-implement isDev check here
@@ -27,7 +29,7 @@ const moduleExports = {
       ? [
           {
             source: "/api/:path*",
-            destination: "/api/proxy",
+            destination: `${MD_URL}/api/:path*`,
           },
         ]
       : [];

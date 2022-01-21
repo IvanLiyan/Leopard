@@ -39,6 +39,7 @@ module.exports = {
     ".eslintrc.js",
     "eslint-local-rules.js",
     "next.config.js",
+    "jest.config.js",
     "node_modules",
     "build",
   ],
