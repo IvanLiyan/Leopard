@@ -129,6 +129,7 @@ class DeviceStore {
   @computed
   get isiOS(): boolean {
     const ua = window.navigator.userAgent;
+    // @ts-ignore: legacy check likely based on https://stackoverflow.com/questions/9038625/detect-if-device-is-ios
     return /iPad|iPhone|iPod/.test(ua) && !window.MSStream;
   }
 

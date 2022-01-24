@@ -1,7 +1,0 @@
-{
-  "rules": {
-    "local-rules/forgot-tag-observer": "error",
-    "filenames/match-exported": "warn",
-    "filenames/match-regex": ["warn", "^[A-Za-z]+[A-Za-z\\d]+$", true]
-  }
-}

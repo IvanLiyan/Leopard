@@ -23,9 +23,6 @@
     "@fortawesome/react-fontawesome": "^0.0.18",
     "@loadable/component": "^5.13.1",
     "@sentry/nextjs": "^6.11.0",
-    "@shopify/app-bridge-react": "^1.21.4",
-    "@shopify/polaris": "^4.22.0",
-    "@shopify/polaris-icons": "^3.10.0",
     "@types/lodash": "^4.14.168",
     "aphrodite": "2.2.3",
     "apollo-upload-client": "^16.0.0",
@@ -195,7 +192,6 @@
     "loader-utils": "^1.1.0",
     "mini-css-extract-plugin": "^0.5.0",
     "next": "12",
-    "node-sass": "4.12.0",
     "react-codemod": "^5.2.0",
     "react-live": "^1.12.0",
     "recast": "^0.17.5",
@@ -211,16 +207,8 @@
     "worker-loader": "^3.0.5",
     "yarn": "1.7.0"
   },
-  "resolutions": {
-    "@types/webpack": "4.41.12",
-    "graphql": "14.3.1",
-    "import-from": "3.0.0",
-    "moment": "2.24.0",
-    "styled-components": "4.3.2",
-    "subscriptions-transport-ws": "0.9.14"
-  },
   "engines": {
     "npm": "please-use-yarn",
-    "node": ">= 14.18.3"
+    "node": "== 16"
   }
 }

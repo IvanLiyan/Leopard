@@ -15,15 +15,13 @@ import {
 import { computed } from "mobx";
 import { gql } from "@apollo/client";
 
-/* Lego Toolkit */
-import { CurrencyCode } from "@toolkit/currency";
-import { CountryCode } from "@toolkit/countries";
-
 import {
-  Country,
-  AddressSchema,
-  MerchantSchema,
   UserSchema,
+  MerchantSchema,
+  AddressSchema,
+  CountryCode,
+  Country,
+  PaymentCurrencyCode as CurrencyCode,
 } from "@schema/types";
 
 export const USER_STORE_INITIAL_QUERY = gql`
