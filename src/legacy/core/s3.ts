@@ -1,12 +1,15 @@
+// these functions are placeholders and will be replaced in a future ticket
+// variable names are preserved for documentation purposes
+/* eslint-disable @typescript-eslint/no-unused-vars */
 export const uploadToS3 = (
-  form: any,
-  success: any,
-  failure: any,
-  ext: any,
-  allowDocs: any,
-  overrideFile: any,
-  maxFileSize: any,
-  bucket: any,
+  form: unknown,
+  success: unknown,
+  failure: unknown,
+  ext: unknown,
+  allowDocs: unknown,
+  overrideFile: unknown,
+  maxFileSize: unknown,
+  bucket: unknown,
 ): null => null;
 
 // define(["core/api", "core/i18n", "lib/jquery.form"], function (

@@ -1,4 +1,6 @@
-/* eslint-disable */
+// special module for babel
+/* eslint-disable no-console */
+/* eslint-disable @typescript-eslint/no-var-requires */
 const t = require("@babel/types");
 const parser = require("@babel/parser");
 const generate = require("@babel/generator").default;
@@ -137,39 +139,6 @@ const isStringInterpolationJSXElement = (expr) => {
   }
 
   return hasStringChild;
-};
-
-const isString = (e) => e && t.isStringLiteral(e);
-
-const isStringArg = (argument) => {
-  if (isString(argument)) {
-    return true;
-  }
-
-  if (t.isBinaryExpression(argument) && argument.operator === "+") {
-    return isString(argument.left) || isString(argument.right);
-  }
-
-  return false;
-};
-
-const getStringArgs = (expr) => {
-  if (!t.isCallExpression(expr)) {
-    return [];
-  }
-
-  return expr.arguments
-    .filter((a) => isStringArg(a))
-    .map((a) => {
-      if (isString(a)) {
-        return a.value;
-      }
-
-      return reduceBinaryExpression(a).reduce(
-        (accum, e) => accum + e.value,
-        "",
-      );
-    });
 };
 
 const camelToSentenceCase = (str) => {
@@ -578,24 +547,6 @@ const inferFromStringLiteral = (expr) => {
   }
 
   return [];
-};
-
-const transformStringLiteral = ({ expr }) => {
-  /*
-   * Case:
-   *  "Hello"
-   * Returns:
-   *  i18n("Hello")
-   */
-  if (t.isStringLiteral(expr)) {
-    const value = expr.value || "";
-    if (value.trim() !== "") {
-      // $FlowFixMe
-      return t.callExpression(t.identifier(""), [t.stringLiteral(value)]);
-    }
-  }
-
-  return expr;
 };
 
 const inferFromConditionalExpression = (expr) => {

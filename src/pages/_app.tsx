@@ -10,7 +10,8 @@ function MerchantDashboard({
 }: AppProps): JSX.Element {
   // /dev-login is a edge case that initializes cookies required for _app
   // skip _app in that case
-  if (router.pathname === "/dev-login") {
+  const independentPages = ["/dev-login", "/hello-world"];
+  if (independentPages.includes(router.pathname)) {
     return <Component {...pageProps} />;
   }
 

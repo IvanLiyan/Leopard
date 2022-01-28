@@ -594,20 +594,21 @@ const LEGO_THEMES: { [k in ThemeName]: LegoTheme } = {
 class ThemeStore {
   @observable prefersDark = false; //window.matchMedia('(prefers-color-scheme: dark)').matches;
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   currentAppTheme = (override?: ThemeName): AppTheme => {
     const { prefersDark } = this;
     // const userStore = UserStore.instance(); // TODO [lliepert]: commenting out userstore usage, will bring back in further ticket
 
     const appThemes = APP_THEMES;
 
-    const merchantTheme = appThemes.MERCHANT;
-    const merchantDarkTheme = appThemes.MERCHANT_DARK;
+    // const merchantTheme = appThemes.MERCHANT;
+    // const merchantDarkTheme = appThemes.MERCHANT_DARK;
 
-    const storeTheme = appThemes.STORE;
-    const storeDarkTheme = appThemes.STORE_DARK;
+    // const storeTheme = appThemes.STORE;
+    // const storeDarkTheme = appThemes.STORE_DARK;
 
-    const plusTheme = appThemes.PLUS;
-    const plusDarkTheme = appThemes.PLUS_DARK;
+    // const plusTheme = appThemes.PLUS;
+    // const plusDarkTheme = appThemes.PLUS_DARK;
 
     const internalTheme = appThemes.INTERNAL;
     const internalDarkTheme = appThemes.INTERNAL_DARK;
@@ -642,14 +643,14 @@ class ThemeStore {
       return legoThemes[override];
     }
 
-    const merchantTheme = legoThemes.MERCHANT;
-    const merchantDarkTheme = legoThemes.MERCHANT_DARK;
+    // const merchantTheme = legoThemes.MERCHANT;
+    // const merchantDarkTheme = legoThemes.MERCHANT_DARK;
 
-    const storeTheme = legoThemes.STORE;
-    const storeDarkTheme = legoThemes.STORE_DARK;
+    // const storeTheme = legoThemes.STORE;
+    // const storeDarkTheme = legoThemes.STORE_DARK;
 
-    const plusTheme = legoThemes.PLUS;
-    const plusDarkTheme = legoThemes.PLUS_DARK;
+    // const plusTheme = legoThemes.PLUS;
+    // const plusDarkTheme = legoThemes.PLUS_DARK;
 
     const internalTheme = legoThemes.INTERNAL;
     const internalDarkTheme = legoThemes.INTERNAL_DARK;
@@ -869,6 +870,8 @@ export const ThemeWrapper: React.FC<{ overrideThemeAs?: ThemeName }> = ({
           }),
         );
       },
+      // TODO [lliepert]: fix this any type
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       pushPath(path: string, queryParams?: any | null | undefined) {
         navigationStore.pushPath(path, queryParams);
       },

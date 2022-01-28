@@ -1,5 +1,7 @@
-# CLROOT -> Next.JS Conversion Code
+# CLROOT -> Next.JS Conversion Process
 
+<details>
+<summary>V1</summary>
 This directory contains the code required to convert clroot's React pages to Next.JS pages.
 
 ## Usage
@@ -56,3 +58,30 @@ $ python3 convert.py C <path_to_problematic_file>
 
 - `http://localhost:8080/demo/all-products-container`
 - `http://localhost:8080/demo/order-history-container`
+</details>
+
+---
+
+## Summary
+
+_TODO_
+
+## Setup
+
+1. Clone clroot to `~/ContextLogic/clroot`.
+2. Clone Leopard to `~/ContextLogic/leopard`.
+3. **🔥🔥🔥 IMPORTANT 🔥🔥🔥** Confirm that you have no uncommitted changed in clroot.
+
+   The script runs git commands in the clroot directory, so if this is not done you may lose work!
+
+4. Confirm `$CL_HOME` is setup properly. It should look something like `/Users/<username>/ContextLogic/clroot`
+
+## Usage
+
+```
+$ ./convert.py
+```
+
+## Technical Summary
+
+- The script first goes to `$CL_HOME`, switches to the master branch, and pulls the latest version.

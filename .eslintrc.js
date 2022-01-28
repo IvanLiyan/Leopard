@@ -42,5 +42,6 @@ module.exports = {
     "jest.config.js",
     "node_modules",
     "build",
+    "eslint-local-rules-OLD.js",
   ],
 };

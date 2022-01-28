@@ -1,7 +1,11 @@
-export const i18n = (s: string) => s;
-export const ni18n = (n: number, s1: string, s2: string) => s1;
-export const ci18n = (s1: string, s2: string) => s1;
-export const cni18n = (s1: string, n: number, s2: string, s3: string) => s1;
+// these functions are placeholders and will be replaced in a future ticket
+// variable names are preserved for documentation purposes
+/* eslint-disable @typescript-eslint/no-unused-vars */
+export const i18n = (s: string): string => s;
+export const ni18n = (n: number, s1: string, s2: string): string => s1;
+export const ci18n = (s1: string, s2: string): string => s1;
+export const cni18n = (s1: string, n: number, s2: string, s3: string): string =>
+  s1;
 
 // define(["jed"], function (jed) {
 //   var Jed = jed.Jed;

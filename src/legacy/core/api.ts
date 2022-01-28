@@ -1,8 +1,26 @@
+// these functions are placeholders and will be replaced in a future ticket
+// variable names are preserved for documentation purposes
+/* eslint-disable @typescript-eslint/no-unused-vars */
 const api = {
-  call: (url: any, body: any, resolve: any, callBack: any): null => null,
-  get: (url: any, resolve: any, callBack: any): null => null,
-  push: (url: any, body: any, resolve: any, callBack: any): null => null,
-  patch: (url: any, body: any, resolve: any, callBack: any): null => null,
+  call: (
+    url: unknown,
+    body: unknown,
+    resolve: unknown,
+    callBack: unknown,
+  ): null => null,
+  get: (url: unknown, resolve: unknown, callBack: unknown): null => null,
+  push: (
+    url: unknown,
+    body: unknown,
+    resolve: unknown,
+    callBack: unknown,
+  ): null => null,
+  patch: (
+    url: unknown,
+    body: unknown,
+    resolve: unknown,
+    callBack: unknown,
+  ): null => null,
 };
 
 export default api;

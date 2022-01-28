@@ -37,7 +37,9 @@
     "sentry.client.config.js",
     "sentry.server.config.js",
     "jest.config.js",
-    "jest.setup.js"
+    "jest.setup.js",
+    "build-tools/ast-util.js",
+    "build-tools/localization-plugin.js"
   ],
   "exclude": ["node_modules"]
 }

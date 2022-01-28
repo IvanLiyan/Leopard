@@ -1,4 +1,4 @@
-declare function i(...p: any[]): string;
+declare function i(...p: unknown[]): string;
 
 type Writeable<T> = { -readonly [P in keyof T]: T[P] };
 type AllOrNone<T> = T | { [K in keyof T]?: never };
