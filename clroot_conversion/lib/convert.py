@@ -6,7 +6,6 @@ import ast
 import json
 import os
 import re
-import sys
 import time
 from string import Template
 
@@ -31,7 +30,7 @@ class ParsingError(Exception):
         super().__init__(self.message)
 
 
-def findContainerNames(containerEntryPath):
+def find_container_names(containerEntryPath):
     """
     Given the path to a index.ts file containing a list of containers,
     this function generates an array containing all the contained container
@@ -51,7 +50,7 @@ def findContainerNames(containerEntryPath):
     return containerNames
 
 
-def findHandlerPath(containerName, handlersRoot):
+def find_handler_path(containerName, handlersRoot):
     """
     Given a container name and the path to the root of the clroot handlers
     directory, this function finds the path of the file contianing the handler
@@ -73,7 +72,7 @@ def findHandlerPath(containerName, handlersRoot):
     return resp[0]
 
 
-def parseHandlerPath(
+def parse_handler_path(
     containerName: str, handlerPath: str
 ) -> annotations.Tuple[str, str]:
     """
@@ -130,19 +129,42 @@ def parseHandlerPath(
             ast.NodeVisitor.generic_visit(self, node)
 
     with open(handlerPath, "r") as source:
-        tree = ast.parse(source.read())
+        try:
+            tree = ast.parse(source.read())
+        except Exception as e:
+            # TODO [lliepert]: this will skip files with handlers written in
+            # python 2 syntax that doesn't parse in python 3
+            raise ParsingError(
+                containerName=containerName, handlerPath=handlerPath, message=e
+            )
 
     visitor = Visitor()
     visitor.visit(tree)
     return _parseHandlerPath_packageName, _parseHandlerPath_initialQuery
 
 
-def generateContainerFile(packageName, containerName, initialQuery):
+def generate_container_file(packageName, containerName, initialQuery):
+    """
+    given a package name, container name, and initial query, this function
+    generates the appropriate next.js page file, (from page-with-data.tsx.tmpl
+    and page-with-data.tsx.tmpl located in the same lib directory as this
+    file) and saves it to the leopard pages directory, using a sanitized
+    version of the container name as the path
+
+    TODO: we'll need to track the original URL when parsing the handlers file
+    and use that here once we're ready for production, but at this time this
+    method allows us to easily re-generate the page code while testing
+    """
+    logging.warning(
+        "generating code for {containerName}".format(containerName=containerName)
+    )
+    fileDir = os.path.dirname(os.path.abspath(__file__))
+
     if initialQuery is None:
-        with open("page-without-data.tsx.tmpl", "r") as file:
+        with open("{dir}/page-without-data.tsx.tmpl".format(dir=fileDir), "r") as file:
             tsxTemplate = Template(file.read())
     else:
-        with open("page-with-data.tsx.tmpl", "r") as file:
+        with open("{dir}/page-with-data.tsx.tmpl".format(dir=fileDir), "r") as file:
             tsxTemplate = Template(file.read())
 
     renderedTsx = tsxTemplate.substitute(
@@ -158,7 +180,7 @@ def generateContainerFile(packageName, containerName, initialQuery):
         file.write(renderedTsx)
 
 
-def buildNextStructure():
+def build_next_structure():
     """
     Builds the next.js pages structure from the previous clroot structure.
     We search for containers from imported clroot code in Leopard, but go to
@@ -170,20 +192,20 @@ def buildNextStructure():
     DATA = {}
     pagesGenerated = 0
 
-    containerNames = findContainerNames(
+    containerNames = find_container_names(
         "{dir}/merchant/container/index.ts".format(dir=LEOPARD_PKG_DIR)
     )
 
     for containerName in containerNames:
         try:
-            handlerPath = findHandlerPath(
+            handlerPath = find_handler_path(
                 containerName=containerName,
                 handlersRoot=CLROOT_HANDLERS_DIR,
             )
-            packageName, initialQuery = parseHandlerPath(
+            packageName, initialQuery = parse_handler_path(
                 containerName=containerName, handlerPath=handlerPath
             )
-            generateContainerFile(
+            generate_container_file(
                 packageName=packageName,
                 containerName=containerName,
                 initialQuery=initialQuery,
@@ -199,7 +221,10 @@ def buildNextStructure():
         except ParsingError as e:
             logging.warning(f"{e.containerName} ({e.handlerPath}): {e.message}")
 
-    with open(f"log_{round(time.time())}.json", "w") as f:
+    log_filename = "{dir}/logs/log_{uid}.json".format(
+        dir=os.path.dirname(os.path.abspath(__file__)), uid=round(time.time())
+    )
+    with open(log_filename, "w") as f:
         f.write(json.dumps(DATA))
 
     logging.warning(f"\nTOTAL PAGES GENERATED: {pagesGenerated}/{len(containerNames)}")

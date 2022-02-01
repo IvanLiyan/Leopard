@@ -4696,7 +4696,7 @@ export type MerchantLeadSubmissionInput = {
   readonly country: CountryCode;
   readonly utmSource?: Maybe<Scalars["String"]>;
   readonly howLongSelling: MerchantLeadSellingYearsRange;
-  readonly annualRevenue?: Maybe<MerchantLeadYearlyRevenue>;
+  readonly annualRevenue: MerchantLeadYearlyRevenue;
   readonly skuQuantity: MerchantLeadNumberOfSkUs;
   readonly productCategory: MerchantLeadProductCategory;
   readonly merchantPartnerName?: Maybe<Scalars["String"]>;
@@ -5167,7 +5167,6 @@ export type MerchantSchema = {
   readonly daysToFulfill: Scalars["Int"];
   readonly preorder: MerchantPreorder;
   readonly branding: BrandingSchema;
-  readonly isMerchantPlus: Scalars["Boolean"];
   readonly priceDropEnabled: Scalars["Boolean"];
   readonly marketing: MarketingMerchantPropertySchema;
   readonly shippingOrigins: ReadonlyArray<ShippingOriginSettings>;
@@ -5268,7 +5267,6 @@ export type MerchantServiceSchemaMerchantsArgs = {
   name?: Maybe<Scalars["String"]>;
   id?: Maybe<Scalars["ObjectIdType"]>;
   bdRep?: Maybe<Scalars["ObjectIdType"]>;
-  isMerchantPlus?: Maybe<Scalars["Boolean"]>;
   query?: Maybe<Scalars["String"]>;
 };
 

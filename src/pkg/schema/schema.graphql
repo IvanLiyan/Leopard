@@ -4407,7 +4407,7 @@ input MerchantLeadSubmissionInput {
   country: CountryCode!
   utmSource: String
   howLongSelling: MerchantLeadSellingYearsRange!
-  annualRevenue: MerchantLeadYearlyRevenue
+  annualRevenue: MerchantLeadYearlyRevenue!
   skuQuantity: MerchantLeadNumberOfSKUs!
   productCategory: MerchantLeadProductCategory!
   merchantPartnerName: String
@@ -4801,7 +4801,6 @@ type MerchantSchema {
   daysToFulfill: Int!
   preorder: MerchantPreorder!
   branding: BrandingSchema!
-  isMerchantPlus: Boolean!
   priceDropEnabled: Boolean!
   marketing: MarketingMerchantPropertySchema!
   shippingOrigins: [ShippingOriginSettings!]!
@@ -4869,7 +4868,6 @@ type MerchantServiceSchema {
     name: String
     id: ObjectIdType
     bdRep: ObjectIdType
-    isMerchantPlus: Boolean
     query: String
   ): [MerchantSchema!]
 }

@@ -6,7 +6,8 @@ import os
 import shutil
 import subprocess
 
-from lib.paths import CLROOT_DIR, CLROOT_PKG_DIR, LEOPARD_PKG_DIR
+from lib.paths import CLROOT_DIR, CLROOT_PKG_DIR, LEOPARD_PAGES_DIR, LEOPARD_PKG_DIR
+from lib.utils import removeIfExists
 
 PACKAGES = ["assets", "merchant", "toolkit", "schema"]
 
@@ -47,20 +48,33 @@ def clean_leopard(dryrun=True) -> None:
     """
     Deletes existing packages from leopard in preperation for a clean copy.
     Currently we are copying in @assets, @merchant, @toolkit, and @schema.
+
+    Also deletes the pages/demo directory to prepare for re-generating the
+    next.js pages.
     """
     logging.warning("beginning clean (dryrun = {dryrun})".format(dryrun=dryrun))
-    for pkg in PACKAGES:
-        dir = "{dir}/{pkg}".format(dir=LEOPARD_PKG_DIR, pkg=pkg)
-        if not os.path.exists(dir):
-            logging.warning("skipping {dir}, does not exist".format(dir=dir))
-            continue
-
-        logging.warning("removing {dir}".format(dir=dir))
-        if not dryrun:
-            shutil.rmtree(dir)
+    for dir in [
+        "{dir}/{pkg}".format(dir=LEOPARD_PKG_DIR, pkg=pkg) for pkg in PACKAGES
+    ] + [LEOPARD_PAGES_DIR]:
+        removeIfExists(dir, dryrun=dryrun)
 
 
-def copy2WithLogging(src, dst) -> None:
+def prep_leopard(dryrun=True) -> None:
+    """
+    Deletes existing packages from leopard in preperation for a clean copy.
+    Currently we are copying in @assets, @merchant, @toolkit, and @schema.
+
+    Also deletes the pages/demo directory to prepare for re-generating the
+    next.js pages and re-makes a blank /demo folder.
+    """
+    clean_leopard(dryrun=dryrun)
+
+    logging.warning("creating {dir}".format(dir=LEOPARD_PAGES_DIR))
+    if not dryrun:
+        os.mkdir(LEOPARD_PAGES_DIR)
+
+
+def copy2_with_logging(src, dst) -> None:
     """
     runs copy2, but first logs out what is being copied
     """
@@ -68,13 +82,13 @@ def copy2WithLogging(src, dst) -> None:
     shutil.copy2(src, dst)
 
 
-def copy_packages(dryrun=True) -> None:
+def copy_packages(dryrun=True, schema_only=False) -> None:
     """
     Copies the required packages from clroot into leopard.
     Currently we are copying in @assets, @merchant, @toolkit, and @schema.
     """
     logging.warning("beginning copy (dryrun = {dryrun})".format(dryrun=dryrun))
-    for pkg in PACKAGES:
+    for pkg in ["schema"] if schema_only else PACKAGES:
         clroot_dir = "{dir}/{pkg}".format(dir=CLROOT_PKG_DIR, pkg=pkg)
         leopard_dir = "{dir}/{pkg}".format(dir=LEOPARD_PKG_DIR, pkg=pkg)
         logging.warning(
@@ -89,5 +103,5 @@ def copy_packages(dryrun=True) -> None:
                 "copying {src} to {dst}".format(src=src, dst=dst)
             )
             if dryrun
-            else copy2WithLogging(src, dst),
+            else copy2_with_logging(src, dst),
         )

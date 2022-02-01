@@ -15,9 +15,9 @@
     "test": "jest --watch"
   },
   "dependencies": {
-    "@ContextLogic/lego": "0.0.1-1630397218",
-    "@ContextLogic/merchantstrings": "0.0.1632430648",
-    "@ContextLogic/zeus": "0.0.1-1625066441",
+    "@ContextLogic/lego": "0.0.1-1643065971",
+    "@ContextLogic/merchantstrings": "0.0.1643261763",
+    "@ContextLogic/zeus": "0.0.1-1643061651",
     "@apollo/client": "^3.4.16",
     "@fortawesome/fontawesome": "^1.1.5",
     "@fortawesome/react-fontawesome": "^0.0.18",
@@ -95,8 +95,10 @@
     "validator": "^10.9.0"
   },
   "devDependencies": {
-    "@babel/plugin-proposal-class-properties": "^7.14.5",
-    "@babel/plugin-proposal-decorators": "^7.15.4",
+    "@babel/plugin-proposal-class-properties": "^7.16.7",
+    "@babel/plugin-proposal-decorators": "^7.16.7",
+    "@babel/plugin-proposal-private-methods": "^7.16.11",
+    "@babel/plugin-proposal-private-property-in-object": "^7.16.7",
     "@graphql-codegen/cli": "^1.15.4",
     "@graphql-codegen/typescript": "^1.15.4",
     "@sentry/types": "^6.12.0",
@@ -119,6 +121,7 @@
     "@types/jest": "^25.2.1",
     "@types/jquery": "^3.3.37",
     "@types/js-cookie": "^2.2.6",
+    "@types/jscodeshift": "^0.11.3",
     "@types/loadable__component": "^5.13.0",
     "@types/mini-css-extract-plugin": "^0.9.1",
     "@types/node": "^14.0.13",
@@ -188,7 +191,7 @@
     "ignore-loader": "^0.1.2",
     "imports-loader": "^0.7.1",
     "jest": "^27.4.7",
-    "jscodeshift": "^0.6.3",
+    "jscodeshift": "^0.13.1",
     "loader-utils": "^1.1.0",
     "mini-css-extract-plugin": "^0.5.0",
     "next": "^12.0.9",

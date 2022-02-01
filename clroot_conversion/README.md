@@ -85,3 +85,8 @@ $ ./convert.py
 ## Technical Summary
 
 - The script first goes to `$CL_HOME`, switches to the master branch, and pulls the latest version.
+
+## TODO
+
+auto update lego, merchantstrings, zeus
+can't run codemods from script?

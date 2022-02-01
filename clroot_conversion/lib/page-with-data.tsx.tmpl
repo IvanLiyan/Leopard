@@ -1,0 +1,42 @@
+import { NextPage } from "next";
+import Head from "next/head";
+import { gql, useQuery } from "@apollo/client";
+import { LoadingIndicator } from "@ContextLogic/lego";
+import { isProd } from "@stores/EnvironmentStore";
+import { $containerName } from "@$packageName/container";
+
+// TODO [lliepert]: do we need to wrap these in observers?
+// TODO [lliepert]: test out SSR once we have everything else working
+
+const Page: NextPage<Record<string, never>> = () => {
+  const query = gql`
+query ${containerName}_initialDataQuery {$initialQuery}
+  `;
+
+  const { loading, error, data } = useQuery(query);
+
+  // TODO [lliepert]: properly handle error
+  if (error) {
+    if (!isProd) {
+      // eslint-disable-next-line no-console
+      console.log(`useQuery failed with error: $${error}`);
+    }
+    throw error;
+  }
+
+  return (
+    <>
+      <Head>
+        <title>{"Wish For Merchants"}</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      </Head>
+      {loading ? (
+        <LoadingIndicator />
+      ) : (
+        <$containerName initialData={data} />
+      )}
+    </>
+  );
+};
+
+export default Page;
