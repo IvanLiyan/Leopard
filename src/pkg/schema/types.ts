@@ -3037,6 +3037,14 @@ export type FlexibleBudgetSchema = {
   readonly type: MarketingFlexibleBudgetType;
 };
 
+export type FloorBidsSchema = {
+  readonly __typename?: "FloorBidsSchema";
+  readonly trueTagId: Scalars["ObjectIdType"];
+  readonly bidPrice: CurrencyValue;
+  readonly date: Datetime;
+  readonly trueTag: TrueTagSchema;
+};
+
 export type FranceComplianceMutations = {
   readonly __typename?: "FranceComplianceMutations";
   readonly upsertLink?: Maybe<UpsertFranceLinkProductCompliance>;
@@ -3611,6 +3619,12 @@ export type LedgerAccountBalanceType = "CONFIRMED" | "PENDING";
 export type LedgerItem = {
   readonly __typename?: "LedgerItem";
   readonly id?: Maybe<Scalars["String"]>;
+  readonly merchantPayableId: Scalars["String"];
+  readonly payableType: LedgerPayableType;
+  readonly merchantId: Scalars["String"];
+  readonly documentId: Scalars["String"];
+  readonly state: LedgerPayableState;
+  readonly paymentType: PaymentType;
   readonly createdTime: Datetime;
   readonly paymentEligibleTime?: Maybe<Datetime>;
   readonly description: LedgerItemDescriptionDetails;
@@ -3655,6 +3669,20 @@ export type LedgerLineItemType =
   | "ONEOFF_PAYMENT_CANCELLATION"
   | "PAYMENT"
   | "CONSOLIDATION";
+
+export type LedgerPayableInfo = {
+  readonly __typename?: "LedgerPayableInfo";
+  readonly ledgerItems?: Maybe<ReadonlyArray<LedgerItem>>;
+};
+
+export type LedgerPayableState = "LIMBO" | "NEW" | "SETTLED" | "PAID_IN_CLROOT";
+
+export type LedgerPayableType =
+  | "PAYOUT"
+  | "SETTLEMENT"
+  | "FINE"
+  | "ONEOFF"
+  | "ORDER";
 
 export type LegacyRefundSource =
   | "MERCHANT"
@@ -4020,9 +4048,6 @@ export type LogisticsSchema = {
   readonly shippingProvidersCount?: Maybe<Scalars["Int"]>;
   readonly nextProviderId?: Maybe<Scalars["Int"]>;
   readonly fbw: FulfilledByWishSchema;
-  readonly shippingProviderPolicies?: Maybe<
-    ReadonlyArray<ShippingProviderPolicySchema>
-  >;
 };
 
 export type LogisticsSchemaShippingProvidersArgs = {
@@ -4038,10 +4063,6 @@ export type LogisticsSchemaShippingProvidersCountArgs = {
   query?: Maybe<Scalars["String"]>;
   searchType?: Maybe<ShippingProviderSearchType>;
   states?: Maybe<ReadonlyArray<ShippingProviderState>>;
-};
-
-export type LogisticsSchemaShippingProviderPoliciesArgs = {
-  destCountryCode?: Maybe<CountryCode>;
 };
 
 export type LogoutMutation = {
@@ -4228,6 +4249,7 @@ export type MarketingServiceMutationsCreateLqdCampaignArgs = {
 
 export type MarketingServiceSchema = {
   readonly __typename?: "MarketingServiceSchema";
+  readonly floorbids: ReadonlyArray<FloorBidsSchema>;
   readonly campaign?: Maybe<CampaignSchema>;
   readonly merchantProperty?: Maybe<MarketingMerchantPropertySchema>;
   readonly currentMerchant?: Maybe<MarketingMerchantPropertySchema>;
@@ -5052,10 +5074,16 @@ export type MerchantPaymentsService = {
   readonly __typename?: "MerchantPaymentsService";
   readonly paymentInfo?: Maybe<MerchantPaymentDetail>;
   readonly currentMerchant?: Maybe<MerchantPaymentDetail>;
+  readonly ledgerPayableInfo?: Maybe<LedgerPayableInfo>;
 };
 
 export type MerchantPaymentsServicePaymentInfoArgs = {
   merchantId?: Maybe<Scalars["ObjectIdType"]>;
+};
+
+export type MerchantPaymentsServiceLedgerPayableInfoArgs = {
+  payableId: Scalars["String"];
+  payableType: Scalars["String"];
 };
 
 export type MerchantPaymentWarningMessage = {
@@ -5514,6 +5542,7 @@ export type MerchantTodoItemType =
   | "REVIEW_CURRENCY"
   | "EU_PRODUCT_COMPLIANCE"
   | "ENABLE_2FA"
+  | "VALIDATE_TAX_IDENTITY"
   | "RESELLER_AGREEMENT"
   | "PRICE_DROP_NEW_OFFERS"
   | "REAUTHENTICATION_ATO"
@@ -6916,6 +6945,8 @@ export type PaymentProviderContactInfo = {
   readonly wechatUsername?: Maybe<Scalars["String"]>;
   readonly qqUserId?: Maybe<Scalars["String"]>;
 };
+
+export type PaymentType = "CREDIT" | "DEBIT";
 
 export type PayoneerSignupMutation = {
   readonly __typename?: "PayoneerSignupMutation";
@@ -9027,6 +9058,17 @@ export type PromotableProduct = {
   readonly isInTrendingCategory: Scalars["Boolean"];
 };
 
+export type PublicShippingProviderDocs = {
+  readonly __typename?: "PublicShippingProviderDocs";
+  readonly shippingProviderPolicies?: Maybe<
+    ReadonlyArray<ShippingProviderPolicySchema>
+  >;
+};
+
+export type PublicShippingProviderDocsShippingProviderPoliciesArgs = {
+  destCountryCode?: Maybe<CountryCode>;
+};
+
 export type PublishAnnouncement = {
   readonly __typename?: "PublishAnnouncement";
   readonly ok: Scalars["Boolean"];
@@ -9852,6 +9894,7 @@ export type RootQuery = {
   readonly recentUsers?: Maybe<ReadonlyArray<UserSchema>>;
   readonly mfp?: Maybe<MfpServiceSchema>;
   readonly taxDashboardInfo?: Maybe<TaxDashboardSchema>;
+  readonly publicShippingProviderDocs?: Maybe<PublicShippingProviderDocs>;
 };
 
 export type SalesforceLeadInfo = {
@@ -10345,6 +10388,9 @@ export type ShippingProviderSchema = {
   >;
   readonly restrictionCountries?: Maybe<
     ReadonlyArray<ShippingProviderCountrySchema>
+  >;
+  readonly ddpSupportedOriginCountries?: Maybe<
+    ReadonlyArray<Scalars["String"]>
   >;
   readonly status: Scalars["Boolean"];
   readonly lastUpdate?: Maybe<Datetime>;
@@ -12260,7 +12306,7 @@ export type VariationDiscountDataInput = {
   readonly productId: Scalars["ObjectIdType"];
   readonly variationId: Scalars["ObjectIdType"];
   readonly discountPercentage: Scalars["Float"];
-  readonly maxQuantity: Scalars["Int"];
+  readonly maxQuantity?: Maybe<Scalars["Int"]>;
 };
 
 export type VariationInput = {

@@ -1,6 +1,7 @@
 import { NextPage } from "next";
 import Head from "next/head";
 import { gql, useQuery } from "@apollo/client";
+import { observer } from "mobx-react";
 import { LoadingIndicator } from "@ContextLogic/lego";
 import { isProd } from "@stores/EnvironmentStore";
 import { $containerName } from "@$packageName/container";
@@ -8,7 +9,7 @@ import { $containerName } from "@$packageName/container";
 // TODO [lliepert]: do we need to wrap these in observers?
 // TODO [lliepert]: test out SSR once we have everything else working
 
-const Page: NextPage<Record<string, never>> = () => {
+const ${containerName}_Page: NextPage<Record<string, never>> = () => {
   const query = gql`
 query ${containerName}_initialDataQuery {$initialQuery}
   `;
@@ -39,4 +40,4 @@ query ${containerName}_initialDataQuery {$initialQuery}
   );
 };
 
-export default Page;
+export default observer(${containerName}_Page);

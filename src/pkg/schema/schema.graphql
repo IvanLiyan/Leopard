@@ -2789,6 +2789,13 @@ type FlexibleBudgetSchema {
   type: MarketingFlexibleBudgetType!
 }
 
+type FloorBidsSchema {
+  trueTagId: ObjectIdType!
+  bidPrice: CurrencyValue!
+  date: Datetime!
+  trueTag: TrueTagSchema!
+}
+
 type FranceComplianceMutations {
   upsertLink(
     input: LinkProductComplianceUpsertInput
@@ -3297,6 +3304,12 @@ enum LedgerAccountBalanceType {
 
 type LedgerItem {
   id: String
+  merchantPayableId: String!
+  payableType: LedgerPayableType!
+  merchantId: String!
+  documentId: String!
+  state: LedgerPayableState!
+  paymentType: PaymentType!
   createdTime: Datetime!
   paymentEligibleTime: Datetime
   description: LedgerItemDescriptionDetails!
@@ -3339,6 +3352,25 @@ enum LedgerLineItemType {
   ONEOFF_PAYMENT_CANCELLATION
   PAYMENT
   CONSOLIDATION
+}
+
+type LedgerPayableInfo {
+  ledgerItems: [LedgerItem!]
+}
+
+enum LedgerPayableState {
+  LIMBO
+  NEW
+  SETTLED
+  PAID_IN_CLROOT
+}
+
+enum LedgerPayableType {
+  PAYOUT
+  SETTLEMENT
+  FINE
+  ONEOFF
+  ORDER
 }
 
 enum LegacyRefundSource {
@@ -3716,9 +3748,6 @@ type LogisticsSchema {
   ): Int
   nextProviderId: Int
   fbw: FulfilledByWishSchema!
-  shippingProviderPolicies(
-    destCountryCode: CountryCode
-  ): [ShippingProviderPolicySchema!]
 }
 
 type LogoutMutation {
@@ -3993,6 +4022,7 @@ type MarketingServiceMutations {
 }
 
 type MarketingServiceSchema {
+  floorbids: [FloorBidsSchema!]!
   campaign(id: ObjectIdType!, duplicateId: ObjectIdType): CampaignSchema
   merchantProperty(merchantId: ObjectIdType!): MarketingMerchantPropertySchema
   currentMerchant: MarketingMerchantPropertySchema
@@ -4709,6 +4739,7 @@ type MerchantPaymentsMutation {
 type MerchantPaymentsService {
   paymentInfo(merchantId: ObjectIdType): MerchantPaymentDetail
   currentMerchant: MerchantPaymentDetail
+  ledgerPayableInfo(payableId: String!, payableType: String!): LedgerPayableInfo
 }
 
 type MerchantPayoutHistory {
@@ -5120,6 +5151,7 @@ enum MerchantTodoItemType {
   REVIEW_CURRENCY
   EU_PRODUCT_COMPLIANCE
   ENABLE_2FA
+  VALIDATE_TAX_IDENTITY
   RESELLER_AGREEMENT
   PRICE_DROP_NEW_OFFERS
   REAUTHENTICATION_ATO
@@ -6186,6 +6218,11 @@ type PaymentProviderContactInfo {
   website: String
   wechatUsername: String
   qqUserId: String
+}
+
+enum PaymentType {
+  CREDIT
+  DEBIT
 }
 
 type PayoneerSignupMutation {
@@ -8108,6 +8145,12 @@ type PromotableProduct {
   isInTrendingCategory: Boolean!
 }
 
+type PublicShippingProviderDocs {
+  shippingProviderPolicies(
+    destCountryCode: CountryCode
+  ): [ShippingProviderPolicySchema!]
+}
+
 type PublishAnnouncement {
   ok: Boolean!
   message: String
@@ -8893,6 +8936,7 @@ type RootQuery {
   recentUsers: [UserSchema!]
   mfp: MFPServiceSchema
   taxDashboardInfo: TaxDashboardSchema
+  publicShippingProviderDocs: PublicShippingProviderDocs
 }
 
 type SalesforceLeadInfo {
@@ -9347,6 +9391,7 @@ type ShippingProviderSchema {
   trackers: [ShippingProviderTrackerSchema!]
   timelineOperations: [ShippingProviderOperationSchema!]
   restrictionCountries: [ShippingProviderCountrySchema!]
+  ddpSupportedOriginCountries: [String!]
   status: Boolean!
   lastUpdate: Datetime
   postalCodeRequired: Boolean
@@ -11062,7 +11107,7 @@ input VariationDiscountDataInput {
   productId: ObjectIdType!
   variationId: ObjectIdType!
   discountPercentage: Float!
-  maxQuantity: Int!
+  maxQuantity: Int
 }
 
 input VariationInput {

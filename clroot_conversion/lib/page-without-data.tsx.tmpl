@@ -9,10 +9,11 @@
 
 import { NextPage } from "next";
 import Head from "next/head";
+import { observer } from "mobx-react";
 
 import { $containerName } from "@$packageName/container";
 
-const Page: NextPage<Record<string, never>> = () => {
+const ${containerName}_Page: NextPage<Record<string, never>> = () => {
   return (
     <>
       <Head>
@@ -24,4 +25,4 @@ const Page: NextPage<Record<string, never>> = () => {
   );
 };
 
-export default Page;
+export default observer(${containerName}_Page);

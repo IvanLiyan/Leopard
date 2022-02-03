@@ -6,13 +6,23 @@ import os
 import shutil
 import subprocess
 
-from lib.paths import CLROOT_DIR, CLROOT_PKG_DIR, LEOPARD_PAGES_DIR, LEOPARD_PKG_DIR
+from lib.paths import (
+    CLROOT_DIR,
+    CLROOT_PKG_DIR,
+    LEOPARD_DIR,
+    LEOPARD_PAGES_DIR,
+    LEOPARD_PKG_DIR,
+)
 from lib.utils import removeIfExists
 
 PACKAGES = ["assets", "merchant", "toolkit", "schema"]
 
 
 class GitException(Exception):
+    pass
+
+
+class NPMException(Exception):
     pass
 
 
@@ -105,3 +115,29 @@ def copy_packages(dryrun=True, schema_only=False) -> None:
             if dryrun
             else copy2_with_logging(src, dst),
         )
+
+
+def update_npm_packages() -> None:
+    """
+    Runs the yarn commands required to update regularly updated @ContextLogic
+    packages.
+    """
+    prev_cwd = os.getcwd()
+
+    try:
+        logging.warning("changing directory to {dir}".format(dir=LEOPARD_DIR))
+        os.chdir(LEOPARD_DIR)
+        logging.warning("now in {dir}".format(dir=os.getcwd()))
+
+        for pkg in [
+            "@ContextLogic/lego",
+            "@ContextLogic/zeus",
+            "@ContextLogic/merchantstrings",
+        ]:
+            logging.warning(f"updating {pkg}")
+            try:
+                subprocess.check_call(["yarn", "add", f"{pkg}@latest", "--exact"])
+            except subprocess.CalledProcessError as e:
+                raise NPMException(f"npm add {pkg}@latest failed with error {e}")
+    finally:
+        os.chdir(prev_cwd)

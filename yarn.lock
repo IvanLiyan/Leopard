@@ -2,12 +2,12 @@
 # yarn lockfile v1
 
 
-"@ContextLogic/lego@0.0.1-1643065971":
-  version "0.0.1-1643065971"
-  resolved "https://npm.infra.wish.com/@ContextLogic%2flego/-/lego-0.0.1-1643065971.tgz#50c99471a8d0b6a223915b4db5688c26091ee329"
-  integrity sha512-UCgr78WKMEAUDPDu1KDTr6Sq6OZ47p790lfjRfIO7elLj8KiVjv3APr/CjKKxMtS5GzYNJzKvm/aCqM2/0BHUA==
+"@ContextLogic/lego@0.0.1-1643890193":
+  version "0.0.1-1643890193"
+  resolved "https://npm.infra.wish.com/@ContextLogic%2flego/-/lego-0.0.1-1643890193.tgz#b2a4403bfd284044fa02e5e9edf816d188109bd3"
+  integrity sha512-K9NlMUe75+DAwrsKnka4nn2h2edMNgAJiS2k3rqIm4BEijRXr/3tQawvmSMoC4Hbzi8AgfLxdVHIbxtP8wctPQ==
   dependencies:
-    "@ContextLogic/legostrings" "0.0.1643025971"
+    "@ContextLogic/legostrings" "0.0.1643889980"
     "@ContextLogic/zeus" "0.0.1-1643059293"
     "@babel/runtime" "^7.12.5"
     aphrodite "2.2.3"
@@ -38,15 +38,15 @@
     recharts "^1.6.2"
     validator "^10.9.0"
 
-"@ContextLogic/legostrings@0.0.1643025971":
-  version "0.0.1643025971"
-  resolved "https://npm.infra.wish.com/@ContextLogic%2flegostrings/-/legostrings-0.0.1643025971.tgz#46811eaa77cb62f29376734d0e731d011ff5705b"
-  integrity sha512-iPJSyii56OgNKRBKXFMTKrfwRTxLA5VkC+JrbhWr/BZMWPMSa57V9dfr+P/0jSjN0To4f/XDJLMZ8iuzRvL10Q==
+"@ContextLogic/legostrings@0.0.1643889980":
+  version "0.0.1643889980"
+  resolved "https://npm.infra.wish.com/@ContextLogic%2flegostrings/-/legostrings-0.0.1643889980.tgz#9e0b7e88d18bb840670d471d7faedd6170972d50"
+  integrity sha512-YUCdDJVPdW5vdh4DBb6+VF1rnlu5O4wNUVZDNkK2wBgAb0UN21r8WyLTIYT3nf27MJPn2fEhs1apzOdN3YGa0g==
 
-"@ContextLogic/merchantstrings@0.0.1643261763":
-  version "0.0.1643261763"
-  resolved "https://npm.infra.wish.com/@ContextLogic%2fmerchantstrings/-/merchantstrings-0.0.1643261763.tgz#d1b075c9e556c9d10f0731a494593f42c3feda73"
-  integrity sha512-nYX0enkdk2XY0OcuuiqZ/0y2LqG+ysxYEwb2lDDcxZPgRnijkCjeT+pg0u+4SAR4J1kDL1+mSznZemE882viyA==
+"@ContextLogic/merchantstrings@0.0.1643866561":
+  version "0.0.1643866561"
+  resolved "https://npm.infra.wish.com/@ContextLogic%2fmerchantstrings/-/merchantstrings-0.0.1643866561.tgz#c27a0791340d16e4e2c720f6213ca7286902989f"
+  integrity sha512-k5k+/sdQDILEcI0PTG9iyaJVp9+V18XSdOaQPmrOGcff6RyzzGZl0hSiXGLcM7bS9sxefvADBdSRx7RrYZWvhQ==
 
 "@ContextLogic/zeus@0.0.1-1643059293":
   version "0.0.1-1643059293"

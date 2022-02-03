@@ -3,13 +3,25 @@ from __future__ import annotations
 
 import argparse
 
-from lib.setup import clean_leopard, prep_leopard, refresh_clroot, copy_packages
+from lib.setup import (
+    clean_leopard,
+    prep_leopard,
+    refresh_clroot,
+    copy_packages,
+    update_npm_packages,
+)
 from lib.convert import build_next_structure
 from lib.codemods import run_codemods
 
 
 def main(
-    skip_refresh, prep_dryrun, copy_dryrun, clean_only, codemods_only, schema_only
+    skip_refresh,
+    prep_dryrun,
+    copy_dryrun,
+    clean_only,
+    codemods_only,
+    schema_only,
+    skip_npm_refresh,
 ) -> int:
     if clean_only:
         clean_leopard(dryrun=False)
@@ -35,6 +47,9 @@ def main(
     copy_packages(dryrun=copy_dryrun)
     if copy_dryrun:
         return 0
+
+    if not skip_npm_refresh:
+        update_npm_packages()
 
     build_next_structure()
 
@@ -78,6 +93,12 @@ if __name__ == "__main__":
         "-s",
         "--schema-only",
         help="only copy in the schema. useful when creating a PR that needs to pass CI, since files in @stores reference @schema. (can be run alongside --clean-only)",
+        action="store_true",
+    )
+    parser.add_argument(
+        "-n",
+        "--skip-npm-refresh",
+        help="skip refreshing @ContextLogic npm packages. This process takes a bit of time and only needs to be run daily, so skipping it is useful when repeatedly running the script for development purposes",
         action="store_true",
     )
     args = parser.parse_args()
