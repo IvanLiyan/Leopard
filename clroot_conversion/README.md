@@ -122,4 +122,6 @@ You can also run `./makeLeopard.py -h` to view the script's options and document
 
 ### Helpful Shortcuts
 
-`./makeLeopard -ds`: cleans out the imported files and copies in only the `@schema` package. This is useful when making a PR while there are still linting errors in the converted co d d
+`./makeLeopard -ds`: cleans out the imported files and copies in only the `@schema` package. This is useful when making a PR while there are still linting errors in the converted code
+
+`./makeLeopard -n`: skips the (somewhat lengthy) npm refresh. This is useful when running the script multiple times in a day, since we don't need to refresh the npm packages often.
