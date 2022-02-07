@@ -29,6 +29,23 @@ stages:
   - tag
   - release
 
+lighthouse:
+  stage: test
+  image: registry-gitlab.i.wish.com/contextlogic/leopard/cypress/browsers:node16.13.0-chrome95-ff94
+  services:
+    - name: ${CI_REGISTRY_IMAGE}/${CI_COMMIT_REF_SLUG}:${CI_COMMIT_SHORT_SHA}
+      alias: leopard
+  script:
+    - export
+    - npm install -g @lhci/cli@0.8.x octokit
+    - lhci autorun || echo "LHCI failed!"
+    - cd test/lhci && npm install
+    - node lhci.mjs
+  artifacts:
+    when: always
+    paths:
+      - lhcireport
+
 include:
   - project: "contextlogic/includes"
     ref: master
