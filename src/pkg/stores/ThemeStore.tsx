@@ -941,8 +941,7 @@ export const ThemeStoreProvider: React.FC = ({ children }) => {
   );
 };
 
-// below we mock out ThemeStore.instance() for compatibility with legacy code
-const LegacyThemeStoreMock = {
+const LegacyThemeStoreAdapter = {
   instance: (): ThemeStore => {
     const ref = ThemeStoreRef.current;
     if (ref == null) {
@@ -952,4 +951,4 @@ const LegacyThemeStoreMock = {
   },
 };
 
-export default LegacyThemeStoreMock;
+export default LegacyThemeStoreAdapter;

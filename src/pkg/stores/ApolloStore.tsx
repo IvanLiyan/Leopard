@@ -5,7 +5,13 @@
 //  Created by Sola Ogunsakin on 5/7/20.
 //  Copyright © 2020-present ContextLogic Inc. All rights reserved.
 //
-import React, { useState, createContext, useContext } from "react";
+import React, {
+  useState,
+  createContext,
+  useContext,
+  createRef,
+  useImperativeHandle,
+} from "react";
 import Cookies from "js-cookie";
 import moment from "moment/moment";
 import {
@@ -128,17 +134,31 @@ export const fileUploadClient = apolloClientFactory(
   }),
 );
 
-type ApolloState = {
-  readonly adminUpdatesAllowed: boolean;
-  readonly setAdminUpdatesAllowed: (arg0: boolean) => void;
+type ApolloStore = {
+  client: ApolloClient<Record<string, unknown>>;
+  nonBatchingClient: ApolloClient<Record<string, unknown>>;
+  fileUploadClient: ApolloClient<Record<string, unknown>>;
+  adminUpdatesAllowed: boolean;
+  allowAdminUpdates: () => void;
+  blockAdminUpdates: () => void;
 };
 
-const ApolloStateContext = createContext<ApolloState>({
+const ApolloContext = createContext<ApolloStore>({
+  client,
+  nonBatchingClient,
+  fileUploadClient,
   adminUpdatesAllowed: false,
-  setAdminUpdatesAllowed: () => {
-    throw "Hit Default ApolloStateContext";
+  allowAdminUpdates: () => {
+    throw "Hit Default ApolloStore";
+  },
+  blockAdminUpdates: () => {
+    throw "Hit Default ApolloStore";
   },
 });
+
+// combined with the later useImperativeHandle, this allows us to access the
+// ApolloStore outside of React
+const ApolloStoreRef = createRef<ApolloStore>();
 
 export const ApolloProvider: React.FC = ({ children }) => {
   const [adminUpdatesAllowed, setAdminUpdatesAllowed] = useState(false);
@@ -151,28 +171,6 @@ export const ApolloProvider: React.FC = ({ children }) => {
       parseInt(expirationTime) > new Date().getTime() / 1000,
     );
   }
-
-  return (
-    <ApolloStateContext.Provider
-      value={{ adminUpdatesAllowed, setAdminUpdatesAllowed }}
-    >
-      <_ApolloProvider client={client}>{children}</_ApolloProvider>
-    </ApolloStateContext.Provider>
-  );
-};
-
-type ApolloStore = {
-  client: ApolloClient<Record<string, unknown>>;
-  nonBatchingClient: ApolloClient<Record<string, unknown>>;
-  fileUploadClient: ApolloClient<Record<string, unknown>>;
-  adminUpdatesAllowed: boolean;
-  allowAdminUpdates: () => void;
-  blockAdminUpdates: () => void;
-};
-
-export const useApolloStore = (): ApolloStore => {
-  const { adminUpdatesAllowed, setAdminUpdatesAllowed } =
-    useContext(ApolloStateContext);
 
   const allowAdminUpdates = (): void => {
     const leaseMinutes = 10;
@@ -201,7 +199,7 @@ export const useApolloStore = (): ApolloStore => {
     setAdminUpdatesAllowed(false);
   };
 
-  return {
+  const apolloStore = {
     client,
     nonBatchingClient,
     fileUploadClient,
@@ -209,4 +207,28 @@ export const useApolloStore = (): ApolloStore => {
     allowAdminUpdates,
     blockAdminUpdates,
   };
+  useImperativeHandle(ApolloStoreRef, () => apolloStore);
+
+  return (
+    <ApolloContext.Provider value={apolloStore}>
+      <_ApolloProvider client={client}>{children}</_ApolloProvider>
+    </ApolloContext.Provider>
+  );
 };
+
+export const useApolloStore = (): ApolloStore => {
+  const apolloStore = useContext(ApolloContext);
+  return apolloStore;
+};
+
+const LegacyApolloStoreAdapter = {
+  instance: (): ApolloStore => {
+    const ref = ApolloStoreRef.current;
+    if (ref == null) {
+      throw "Attempting to access reference to un-instantiated ApolloStore";
+    }
+    return ref;
+  },
+};
+
+export default LegacyApolloStoreAdapter;

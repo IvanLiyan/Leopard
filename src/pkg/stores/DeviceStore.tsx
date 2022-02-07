@@ -172,8 +172,7 @@ export const DeviceStoreProvider: React.FC = ({ children }) => {
   );
 };
 
-// below we mock out DeviceStore.instance() for compatibility with legacy code
-const LegacyDeviceStoreMock = {
+const LegacyDeviceStoreAdapter = {
   instance: (): DeviceStore => {
     const ref = DeviceStoreRef.current;
     if (ref == null) {
@@ -183,4 +182,4 @@ const LegacyDeviceStoreMock = {
   },
 };
 
-export default LegacyDeviceStoreMock;
+export default LegacyDeviceStoreAdapter;

@@ -45,7 +45,7 @@ export const useEnvironmentStore = (): EnvironmentStore => {
   };
 };
 
-const LegacyEnvironmentStoreMock = {
+const LegacyEnvironmentStoreAdapter = {
   instance: (): EnvironmentStore => {
     return {
       env,
@@ -58,4 +58,4 @@ const LegacyEnvironmentStoreMock = {
   },
 };
 
-export default LegacyEnvironmentStoreMock;
+export default LegacyEnvironmentStoreAdapter;

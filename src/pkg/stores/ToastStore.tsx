@@ -209,3 +209,15 @@ export const ToastProvider: React.FC = ({ children }) => {
     <ToastContext.Provider value={toastStore}>{children}</ToastContext.Provider>
   );
 };
+
+const LegacyToastStoreAdapter = {
+  instance: (): ToastStore => {
+    const ref = ToastStoreRef.current;
+    if (ref == null) {
+      throw "Attempting to access reference to un-instantiated ToastStore";
+    }
+    return ref;
+  },
+};
+
+export default LegacyToastStoreAdapter;

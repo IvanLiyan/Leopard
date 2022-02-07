@@ -210,8 +210,7 @@ export const LocalizationStoreProvider: React.FC<{
   );
 };
 
-// below we mock out LocalizationStore.instance() for compatibility with legacy code
-const LegacyLocalizationStoreMock = {
+const LegacyLocalizationStoreAdapter = {
   instance: (): LocalizationStore => {
     const ref = LocalizationStoreRef.current;
     if (ref == null) {
@@ -221,4 +220,4 @@ const LegacyLocalizationStoreMock = {
   },
 };
 
-export default LegacyLocalizationStoreMock;
+export default LegacyLocalizationStoreAdapter;

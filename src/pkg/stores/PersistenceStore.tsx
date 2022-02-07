@@ -124,18 +124,17 @@ export const PersistenceStoreProvider: React.FC<{ userId: string }> = ({
   userId,
   children,
 }) => {
-  const persistanceStore = new PersistenceStore({ userId });
-  useImperativeHandle(PersistenceStoreRef, () => persistanceStore);
+  const persistenceStore = new PersistenceStore({ userId });
+  useImperativeHandle(PersistenceStoreRef, () => persistenceStore);
 
   return (
-    <PersistenceStoreContext.Provider value={persistanceStore}>
+    <PersistenceStoreContext.Provider value={persistenceStore}>
       {children}
     </PersistenceStoreContext.Provider>
   );
 };
 
-// below we mock out PersistenceStore.instance() for compatibility with legacy code
-const LegacyPersistenceStoreMock = {
+const LegacyPersistenceStoreAdapter = {
   instance: (): PersistenceStore => {
     const ref = PersistenceStoreRef.current;
     if (ref == null) {
@@ -145,4 +144,4 @@ const LegacyPersistenceStoreMock = {
   },
 };
 
-export default LegacyPersistenceStoreMock;
+export default LegacyPersistenceStoreAdapter;

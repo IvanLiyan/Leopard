@@ -6,7 +6,13 @@
 //  Copyright © 2018-present ContextLogic Inc. All rights reserved.
 //
 
-import React, { useState, createContext, useContext } from "react";
+import React, {
+  useState,
+  createContext,
+  useContext,
+  createRef,
+  useImperativeHandle,
+} from "react";
 import { useRouter } from "next/router";
 
 /* External Libraries */
@@ -69,35 +75,48 @@ type NavigationStore = {
   readonly navigate: (path: string, options?: NavigateOptions) => void;
 };
 
-type NavigationState = {
-  navigationLock: NavigationLock;
-  setNavigationLock: (arg0: NavigationLock) => void;
-};
-
-const NavigationStateContext = createContext<NavigationState>({
-  navigationLock: undefined,
-  setNavigationLock: () => {
-    throw "Hit Default NavigationStateContext";
+const NavigationContext = createContext<NavigationStore>({
+  currentPath: "",
+  currentSearch: "",
+  currentHash: "",
+  pathParams: () => {
+    throw "Hit Default NavigationContext";
+  },
+  queryParams: {},
+  pushPath: () => {
+    throw "Hit Default NavigationContext";
+  },
+  replace: () => {
+    throw "Hit Default NavigationContext";
+  },
+  placeNavigationLock: () => {
+    throw "Hit Default NavigationContext";
+  },
+  releaseNavigationLock: () => {
+    throw "Hit Default NavigationContext";
+  },
+  reload: () => {
+    throw "Hit Default NavigationContext";
+  },
+  back: () => {
+    throw "Hit Default NavigationContext";
+  },
+  download: () => {
+    throw "Hit Default NavigationContext";
+  },
+  navigate: () => {
+    throw "Hit Default NavigationContext";
   },
 });
+
+// combined with the later useImperativeHandle, this allows us to access the
+// NavigationStore outside of React
+const NavigationStoreRef = createRef<NavigationStore>();
 
 export const NavigationProvider: React.FC = ({ children }) => {
   const [navigationLock, setNavigationLock] =
     useState<NavigationLock>(undefined);
 
-  return (
-    <NavigationStateContext.Provider
-      value={{ navigationLock, setNavigationLock }}
-    >
-      {children}
-    </NavigationStateContext.Provider>
-  );
-};
-
-export const useNavigationStore = (): NavigationStore => {
-  const { navigationLock, setNavigationLock } = useContext(
-    NavigationStateContext,
-  );
   const router = useRouter();
 
   const currentPath = router.pathname;
@@ -196,7 +215,8 @@ export const useNavigationStore = (): NavigationStore => {
     // TODO [lliepert]: handle next.js vs non-next.js pages
     // window.location.href = _path;
   };
-  return {
+
+  const navigationStore = {
     currentPath,
     currentSearch,
     currentHash,
@@ -211,4 +231,29 @@ export const useNavigationStore = (): NavigationStore => {
     download,
     navigate,
   };
+
+  useImperativeHandle(NavigationStoreRef, () => navigationStore);
+
+  return (
+    <NavigationContext.Provider value={navigationStore}>
+      {children}
+    </NavigationContext.Provider>
+  );
 };
+
+export const useNavigationStore = (): NavigationStore => {
+  const navigationProvider = useContext(NavigationContext);
+  return navigationProvider;
+};
+
+const LegacyNavigationStoreAdapter = {
+  instance: (): NavigationStore => {
+    const ref = NavigationStoreRef.current;
+    if (ref == null) {
+      throw "Attempting to access reference to un-instantiated NavigationStore";
+    }
+    return ref;
+  },
+};
+
+export default LegacyNavigationStoreAdapter;

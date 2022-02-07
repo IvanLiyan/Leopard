@@ -245,8 +245,7 @@ export const UserStoreProvider: React.FC<{
   );
 };
 
-// below we mock out UserStore.instance() for compatibility with legacy code
-const LegacyUserStoreMock = {
+const LegacyUserStoreAdapter = {
   instance: (): UserStore => {
     const ref = UserStoreRef.current;
     if (ref == null) {
@@ -256,4 +255,4 @@ const LegacyUserStoreMock = {
   },
 };
 
-export default LegacyUserStoreMock;
+export default LegacyUserStoreAdapter;
