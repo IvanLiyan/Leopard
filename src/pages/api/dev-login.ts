@@ -70,7 +70,7 @@ export const parseSetCookieHeader = (
 };
 
 const devLogin = async (
-  { query }: NextApiRequest,
+  _: NextApiRequest,
   res: NextApiResponse,
 ): Promise<void> => {
   if (!isDev) {
@@ -131,17 +131,6 @@ const devLogin = async (
     resp.headers.get("set-cookie") || "",
   );
   res.setHeader("Set-Cookie", setCookieStrings);
-
-  const mid = query.as;
-  if (mid) {
-    // TODO [lliepert]: call MD_URL/go/<mid> to log in session as specified
-    // merchant (https://jira.wish.site/browse/MKL-53732)
-    if (typeof mid !== "string") {
-      res.status(500).end("param 'as' must be of type 'string'");
-      return;
-    }
-  }
-
   res.status(200).end();
 };
 

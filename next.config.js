@@ -30,7 +30,11 @@ const moduleExports = {
           {
             source: "/api/:path*",
             destination: `${MD_URL}/api/:path*`,
-          },
+          }, 
+          {
+            source: "/go/:mid",
+            destination: `${MD_URL}/go/:mid`
+          }
         ]
       : [];
   },
