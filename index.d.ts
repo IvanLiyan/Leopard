@@ -16,21 +16,6 @@ declare module "*.pdf";
 declare module "*.gif";
 
 // legacy imports
-declare module "@legacy/core/i18n";
-declare module "@legacy/core/api";
-declare module "@legacy/base_page";
-declare module "@legacy/core/i18n";
-declare module "@legacy/core/api";
-declare module "@legacy/core/s3";
-declare module "@legacy/core/string_utils";
-declare module "@legacy/view/modal/MiniProductDetail";
-declare module "@legacy/base_page";
-declare module "@legacy/core/url";
-declare module "@legacy/view/modal/ProductBoostBuyCredits";
-declare module "@legacy/view/modal/MerchantPaymentDetail";
-declare module "@legacy/view/modal/ProductBoostFreePromotionCampaignModal";
-declare module "@legacy/view/modal/ProductBoostFreeCreditModal";
-declare module "@legacy/view/modal/ProductBoostPromotionModal";
 declare module "moment-timezone";
 declare module "moment-timezone/moment-timezone";
 
