@@ -42,7 +42,11 @@ def run_codemods() -> None:
         "ToastStore",
         "UserStore",
     ]:
+        # note stores in clroot can have either the .ts or .tsx extension; we
+        # attempt to remove both to be safe
         path = f"{LEOPARD_PKG_DIR}/merchant/stores/{store}.ts"
+        removeIfExists(path, fn=os.remove)
+        path = f"{LEOPARD_PKG_DIR}/merchant/stores/{store}.tsx"
         removeIfExists(path, fn=os.remove)
 
     # currently running codemods from python is not finding any files, will

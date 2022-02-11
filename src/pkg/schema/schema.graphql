@@ -2995,6 +2995,12 @@ type FulfillmentSchema {
   wpsShippingOptions(orderId: String!): WPSGetShippingOptionsSchema
 }
 
+enum GBVatEntityType {
+  NOT_APPLICABLE
+  NO_OBLIGATION
+  HAVE_OBLIGATION
+}
+
 input GenWechatQrInput {
   scene: String
 }
@@ -3287,8 +3293,8 @@ type LQDPromotionStats {
 }
 
 type LateDeliverySchema {
-  lateDeliveryRate: Float
-  lateDeliveryThreshhold: Float
+  rate: Float
+  threshhold: Float
 }
 
 type LedgerAccountBalance {
@@ -3906,6 +3912,8 @@ type MFPVariationDiscountData {
   variation: VariationSchema!
   maxQuantity: Int
   discountPercentage: Float!
+  scheduledStartTime: Datetime
+  scheduledEndTime: Datetime
 }
 
 enum MFPVariationUnqualifiedReason {
@@ -4259,12 +4267,20 @@ enum MerchantFineExemptionInfoLinkType {
 
 type MerchantFineSchema {
   id: ObjectIdType!
+  merchantId: ObjectIdType!
+  merchantPaymentId: ObjectIdType
+  merchantPaymentTime: Datetime
+  localizedAmount: CurrencyValue
+  delayedDeductionDate: Datetime
+  status: Status!
+  fineType: FineReason!
   isExempt: Boolean!
   exemptInfoLink: String
   exemptLinkType: MerchantFineExemptionInfoLinkType
   policyLink: String
   amount: Float
   timestamp: Datetime
+  reversals: [Reversal!]
 }
 
 type MerchantFulfillmentExtensionSchema {
@@ -4513,9 +4529,11 @@ type MerchantOneoffPaymentSchema {
   creationTime: Datetime!
   merchantId: ObjectIdType!
   amount(localized: Boolean): CurrencyValue!
+  localizedAmount: CurrencyValue
   eligibleTime: Datetime!
   paymentId: ObjectIdType
   type: OneoffPaymentType!
+  merchantPaymentTime: Datetime
   status: OneoffPaymentStatus!
   orderId: ObjectIdType
   disputeId: ObjectIdType
@@ -4707,6 +4725,14 @@ type MerchantPaymentLinkInfo {
   url: String
 }
 
+enum MerchantPaymentStatus {
+  PAID_BT
+  REFUNDED
+  DEDUCTED_WITHOUT_REFUND
+  PAID
+  UNPAID
+}
+
 type MerchantPaymentWarningMessage {
   title: String
   text: String
@@ -4869,6 +4895,7 @@ type MerchantSchema {
   taxIdentification: MerchantTaxIdentificationSchema
   email: String!
   isIdentifiedUsTax: Boolean
+  eligibleForExpeditedPaymentPolicy: Boolean
 }
 
 type MerchantSenderAddressMutations {
@@ -5763,6 +5790,7 @@ type OrderRebateSchema {
   paymentId: ObjectIdType
   refundPaymentId: ObjectIdType
   amount(localized: Boolean): CurrencyValue!
+  localizedRebateAmount: CurrencyValue!
   cancelState: OrderRebateCancelType
 }
 
@@ -5795,6 +5823,7 @@ type OrderRefundItemSchema {
   id: ObjectIdType!
   refundTime: Datetime!
   quantity: Int!
+  localizedMerchantResponsibleAmount: CurrencyValue
   merchantResponsibleAmount(
     localized: Boolean
     includeWishpostFee: Boolean
@@ -5872,6 +5901,10 @@ type OrderSchema {
   id: ObjectIdType!
   transactionId: ObjectIdType
   merchantId: ObjectIdType!
+  merchantPaymentStatus: MerchantPaymentStatus!
+  merchantPaymentId: ObjectIdType
+  merchantPaymentTime: Datetime
+  paidAmount: CurrencyValue!
   orderTime: Datetime
   releasedTime: Datetime
   state: CommerceTransactionState!
@@ -6480,6 +6513,7 @@ enum PermissionType {
   CAN_LOGIN_AS_BD
   EDIT_ACCOUNT_NAME
   CAN_GET_EARLY_PAYMENT_AMOUNT_AVAILABLE
+  CAN_CREATE_ONEOFF_PAYMENT
   DOWNLOAD_EXPORT
   SEND_SYSTEM_UPDATE_TO_TAGGERS
   MGC_IP_TAG
@@ -6756,6 +6790,7 @@ type PlatformConstants {
   brandProtection: BrandProtectionConstants
   fulfillment: FulfillmentConstants!
   mfp: MFPConstantsSchema
+  expeditedProcessDaysToPayment: Timedelta!
 }
 
 type PlatformSweepMutations {
@@ -8774,6 +8809,11 @@ enum RevShareRegion {
   OTHER
 }
 
+type Reversal {
+  id: ObjectIdType!
+  amount: CurrencyValue!
+}
+
 input ReviewMerchantTaxIdentificationInput {
   merchantTaxIdentificationId: ObjectIdType!
   reviewAction: MerchantTaxIdentificationReviewAction!
@@ -8999,10 +9039,6 @@ enum SellerProfileVerificationStatus {
 type SellerVerificationFeedback {
   businessAddressIssue: String
   proofOfIdentificationIssue: String
-  frontOfProofOfIdentificationIssue: String
-  backOfProofOfIdentificationIssue: String
-  proofOfIdentificationSelfieIssue: String
-  proofOfBusinessIdentificationIssue: String
   entityTypeIssue: String
   firstNameIssue: String
   middleNameIssue: String
@@ -9011,8 +9047,6 @@ type SellerVerificationFeedback {
   dateOfBirthIssue: String
   countryOfDomicileIssue: String
   companyNameIssue: String
-  regBusinessLicenseNumIssue: String
-  isBeneficialOwnerOfRegBusIssue: String
   proofOfIdDocTypeIssue: String
 }
 
@@ -9041,8 +9075,6 @@ type SellerVerificationSchema {
   dateOfBirth: Datetime
   entityType: UserEntityType
   companyName: String
-  regBusinessLicenseNum: String
-  isBeneficialOwnerOfRegBus: Boolean
   proofOfIdFiles: [MerchantFileSchema!]
   proofOfIdDocType: SellerProfileVerificationDocType
 }
@@ -9491,6 +9523,13 @@ type SpecialOrderProgramSchema {
 
 type StaticFines {
   cancellationFine: CurrencyValue!
+}
+
+enum Status {
+  CANCELLED
+  DEDUCTED
+  DELAYING
+  PENDING
 }
 
 type StoreReviewSummarySchema {
@@ -9995,6 +10034,7 @@ type TaxSetting {
     whenShippingFromDomicileCountry: Boolean = true
   ): [TaxLiabilitySchema!]
   euDetails: TaxSettingEUDetails
+  ukDetails: TaxSettingUKDetails
 }
 
 type TaxSettingAuthority {
@@ -10033,6 +10073,10 @@ enum TaxSettingTaxNumberType {
   TAX_IDENTIFICATION_NUMBER
 }
 
+type TaxSettingUKDetails {
+  gbVatEntity: GBVatEntityType
+}
+
 input TaxSettingsInput {
   taxNumber: String
   countryCode: CountryCode!
@@ -10044,6 +10088,7 @@ input TaxSettingsInput {
   certificateFileUrl: String
   mxDefaultShipFromIsMx: Boolean
   ustSt1T1Number: String
+  gbVatEntity: GBVatEntityType
 }
 
 type TaxSettingsMutations {
@@ -10683,9 +10728,9 @@ type UpsertConfirmedDeliveryCarrier {
 
 input UpsertDiscountCampaignInput {
   id: ObjectIdType
-  name: String!
-  startTime: DatetimeInput!
-  endTime: DatetimeInput!
+  name: String
+  startTime: DatetimeInput
+  endTime: DatetimeInput
   countries: [CountryCode!]
   discountData: [VariationDiscountDataInput!]
 }
@@ -10698,9 +10743,9 @@ type UpsertDiscountCampaignMutation {
 
 input UpsertFlashSaleCampaignInput {
   id: ObjectIdType
-  name: String!
-  startTime: DatetimeInput!
-  endTime: DatetimeInput!
+  name: String
+  startTime: DatetimeInput
+  endTime: DatetimeInput
   countries: [CountryCode!]
   discountData: [VariationDiscountDataInput!]
 }
@@ -11611,6 +11656,9 @@ type WishSellerStandardStats {
   productQualityRefundRate: Float!
   productLogisticsRefundRate: Float!
   fulfillmentSpeed: Timedelta!
+  orderCancellationCount: Int!
+  unfulfilledOrderCount: Int!
+  lateConfirmedFulfillmentCount: Int!
   misleadingTrackingCount: Int!
   prohibitedProductCount: Int!
   misleadingListingCount: Int!
@@ -11629,6 +11677,7 @@ type WishUserSchema {
 }
 
 enum WishUserSignupMethod {
+  PHONE_NUMBER
   GOOGLE_PLUS
   FACEBOOK
   APPLE

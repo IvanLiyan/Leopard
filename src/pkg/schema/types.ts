@@ -3329,6 +3329,11 @@ export type FulfillOrders = {
   readonly errorMessages?: Maybe<ReadonlyArray<FulfillmentError>>;
 };
 
+export type GbVatEntityType =
+  | "NOT_APPLICABLE"
+  | "NO_OBLIGATION"
+  | "HAVE_OBLIGATION";
+
 export type Gender = "UNKNOWN" | "MALE" | "FEMALE" | "NEUTRAL";
 
 export type GeneralTaggingManagement = {
@@ -3603,8 +3608,8 @@ export type KycVerificationSchema = {
 
 export type LateDeliverySchema = {
   readonly __typename?: "LateDeliverySchema";
-  readonly lateDeliveryRate?: Maybe<Scalars["Float"]>;
-  readonly lateDeliveryThreshhold?: Maybe<Scalars["Float"]>;
+  readonly rate?: Maybe<Scalars["Float"]>;
+  readonly threshhold?: Maybe<Scalars["Float"]>;
 };
 
 export type LedgerAccountBalance = {
@@ -4529,12 +4534,20 @@ export type MerchantFineExemptionInfoLinkType =
 export type MerchantFineSchema = {
   readonly __typename?: "MerchantFineSchema";
   readonly id: Scalars["ObjectIdType"];
+  readonly merchantId: Scalars["ObjectIdType"];
+  readonly merchantPaymentId?: Maybe<Scalars["ObjectIdType"]>;
+  readonly merchantPaymentTime?: Maybe<Datetime>;
+  readonly localizedAmount?: Maybe<CurrencyValue>;
+  readonly delayedDeductionDate?: Maybe<Datetime>;
+  readonly status: Status;
+  readonly fineType: FineReason;
   readonly isExempt: Scalars["Boolean"];
   readonly exemptInfoLink?: Maybe<Scalars["String"]>;
   readonly exemptLinkType?: Maybe<MerchantFineExemptionInfoLinkType>;
   readonly policyLink?: Maybe<Scalars["String"]>;
   readonly amount?: Maybe<Scalars["Float"]>;
   readonly timestamp?: Maybe<Datetime>;
+  readonly reversals?: Maybe<ReadonlyArray<Reversal>>;
 };
 
 export type MerchantFulfillmentExtensionSchema = {
@@ -4811,9 +4824,11 @@ export type MerchantOneoffPaymentSchema = {
   readonly creationTime: Datetime;
   readonly merchantId: Scalars["ObjectIdType"];
   readonly amount: CurrencyValue;
+  readonly localizedAmount?: Maybe<CurrencyValue>;
   readonly eligibleTime: Datetime;
   readonly paymentId?: Maybe<Scalars["ObjectIdType"]>;
   readonly type: OneoffPaymentType;
+  readonly merchantPaymentTime?: Maybe<Datetime>;
   readonly status: OneoffPaymentStatus;
   readonly orderId?: Maybe<Scalars["ObjectIdType"]>;
   readonly disputeId?: Maybe<Scalars["ObjectIdType"]>;
@@ -5086,6 +5101,13 @@ export type MerchantPaymentsServiceLedgerPayableInfoArgs = {
   payableType: Scalars["String"];
 };
 
+export type MerchantPaymentStatus =
+  | "PAID_BT"
+  | "REFUNDED"
+  | "DEDUCTED_WITHOUT_REFUND"
+  | "PAID"
+  | "UNPAID";
+
 export type MerchantPaymentWarningMessage = {
   readonly __typename?: "MerchantPaymentWarningMessage";
   readonly title?: Maybe<Scalars["String"]>;
@@ -5234,6 +5256,7 @@ export type MerchantSchema = {
   readonly taxIdentification?: Maybe<MerchantTaxIdentificationSchema>;
   readonly email: Scalars["String"];
   readonly isIdentifiedUsTax?: Maybe<Scalars["Boolean"]>;
+  readonly eligibleForExpeditedPaymentPolicy?: Maybe<Scalars["Boolean"]>;
 };
 
 export type MerchantSchemaShippingSettingsArgs = {
@@ -6115,6 +6138,8 @@ export type MfpVariationDiscountData = {
   readonly variation: VariationSchema;
   readonly maxQuantity?: Maybe<Scalars["Int"]>;
   readonly discountPercentage: Scalars["Float"];
+  readonly scheduledStartTime?: Maybe<Datetime>;
+  readonly scheduledEndTime?: Maybe<Datetime>;
 };
 
 export type MfpVariationUnqualifiedReason =
@@ -6403,6 +6428,7 @@ export type OrderRebateSchema = {
   readonly paymentId?: Maybe<Scalars["ObjectIdType"]>;
   readonly refundPaymentId?: Maybe<Scalars["ObjectIdType"]>;
   readonly amount: CurrencyValue;
+  readonly localizedRebateAmount: CurrencyValue;
   readonly cancelState?: Maybe<OrderRebateCancelType>;
 };
 
@@ -6440,6 +6466,7 @@ export type OrderRefundItemSchema = {
   readonly id: Scalars["ObjectIdType"];
   readonly refundTime: Datetime;
   readonly quantity: Scalars["Int"];
+  readonly localizedMerchantResponsibleAmount?: Maybe<CurrencyValue>;
   readonly merchantResponsibleAmount?: Maybe<CurrencyValue>;
   readonly merchantResponsibilityRatio: Scalars["Float"];
   readonly reasonInfo: OrderRefundReasonSchema;
@@ -6545,6 +6572,10 @@ export type OrderSchema = {
   readonly id: Scalars["ObjectIdType"];
   readonly transactionId?: Maybe<Scalars["ObjectIdType"]>;
   readonly merchantId: Scalars["ObjectIdType"];
+  readonly merchantPaymentStatus: MerchantPaymentStatus;
+  readonly merchantPaymentId?: Maybe<Scalars["ObjectIdType"]>;
+  readonly merchantPaymentTime?: Maybe<Datetime>;
+  readonly paidAmount: CurrencyValue;
   readonly orderTime?: Maybe<Datetime>;
   readonly releasedTime?: Maybe<Datetime>;
   readonly state: CommerceTransactionState;
@@ -7201,6 +7232,7 @@ export type PermissionType =
   | "CAN_LOGIN_AS_BD"
   | "EDIT_ACCOUNT_NAME"
   | "CAN_GET_EARLY_PAYMENT_AMOUNT_AVAILABLE"
+  | "CAN_CREATE_ONEOFF_PAYMENT"
   | "DOWNLOAD_EXPORT"
   | "SEND_SYSTEM_UPDATE_TO_TAGGERS"
   | "MGC_IP_TAG"
@@ -7477,6 +7509,7 @@ export type PlatformConstants = {
   readonly brandProtection?: Maybe<BrandProtectionConstants>;
   readonly fulfillment: FulfillmentConstants;
   readonly mfp?: Maybe<MfpConstantsSchema>;
+  readonly expeditedProcessDaysToPayment: Timedelta;
 };
 
 export type PlatformConstantsRegionsArgs = {
@@ -9699,6 +9732,12 @@ export type RestrictedProductSchemaRestrictedProductCategoriesArgs = {
   region: RestrictedProductRegionCode;
 };
 
+export type Reversal = {
+  readonly __typename?: "Reversal";
+  readonly id: Scalars["ObjectIdType"];
+  readonly amount: CurrencyValue;
+};
+
 export type ReviewMerchantTaxIdentificationInput = {
   readonly merchantTaxIdentificationId: Scalars["ObjectIdType"];
   readonly reviewAction: MerchantTaxIdentificationReviewAction;
@@ -9961,10 +10000,6 @@ export type SellerVerificationFeedback = {
   readonly __typename?: "SellerVerificationFeedback";
   readonly businessAddressIssue?: Maybe<Scalars["String"]>;
   readonly proofOfIdentificationIssue?: Maybe<Scalars["String"]>;
-  readonly frontOfProofOfIdentificationIssue?: Maybe<Scalars["String"]>;
-  readonly backOfProofOfIdentificationIssue?: Maybe<Scalars["String"]>;
-  readonly proofOfIdentificationSelfieIssue?: Maybe<Scalars["String"]>;
-  readonly proofOfBusinessIdentificationIssue?: Maybe<Scalars["String"]>;
   readonly entityTypeIssue?: Maybe<Scalars["String"]>;
   readonly firstNameIssue?: Maybe<Scalars["String"]>;
   readonly middleNameIssue?: Maybe<Scalars["String"]>;
@@ -9973,8 +10008,6 @@ export type SellerVerificationFeedback = {
   readonly dateOfBirthIssue?: Maybe<Scalars["String"]>;
   readonly countryOfDomicileIssue?: Maybe<Scalars["String"]>;
   readonly companyNameIssue?: Maybe<Scalars["String"]>;
-  readonly regBusinessLicenseNumIssue?: Maybe<Scalars["String"]>;
-  readonly isBeneficialOwnerOfRegBusIssue?: Maybe<Scalars["String"]>;
   readonly proofOfIdDocTypeIssue?: Maybe<Scalars["String"]>;
 };
 
@@ -10004,8 +10037,6 @@ export type SellerVerificationSchema = {
   readonly dateOfBirth?: Maybe<Datetime>;
   readonly entityType?: Maybe<UserEntityType>;
   readonly companyName?: Maybe<Scalars["String"]>;
-  readonly regBusinessLicenseNum?: Maybe<Scalars["String"]>;
-  readonly isBeneficialOwnerOfRegBus?: Maybe<Scalars["Boolean"]>;
   readonly proofOfIdFiles?: Maybe<ReadonlyArray<MerchantFileSchema>>;
   readonly proofOfIdDocType?: Maybe<SellerProfileVerificationDocType>;
 };
@@ -10502,6 +10533,8 @@ export type StaticFines = {
   readonly __typename?: "StaticFines";
   readonly cancellationFine: CurrencyValue;
 };
+
+export type Status = "CANCELLED" | "DEDUCTED" | "DELAYING" | "PENDING";
 
 export type StorefrontCustomizationSchema = {
   readonly __typename?: "StorefrontCustomizationSchema";
@@ -11039,6 +11072,7 @@ export type TaxSetting = {
   readonly mexicoDetails?: Maybe<TaxSettingMexicoDetails>;
   readonly taxLiability?: Maybe<ReadonlyArray<TaxLiabilitySchema>>;
   readonly euDetails?: Maybe<TaxSettingEuDetails>;
+  readonly ukDetails?: Maybe<TaxSettingUkDetails>;
 };
 
 export type TaxSettingTaxLiabilityArgs = {
@@ -11086,6 +11120,7 @@ export type TaxSettingsInput = {
   readonly certificateFileUrl?: Maybe<Scalars["String"]>;
   readonly mxDefaultShipFromIsMx?: Maybe<Scalars["Boolean"]>;
   readonly ustSt1T1Number?: Maybe<Scalars["String"]>;
+  readonly gbVatEntity?: Maybe<GbVatEntityType>;
 };
 
 export type TaxSettingsMutations = {
@@ -11104,6 +11139,11 @@ export type TaxSettingTaxNumberType =
   | "OTHER"
   | "COMPANY_REGISTRITION_NUMBER"
   | "TAX_IDENTIFICATION_NUMBER";
+
+export type TaxSettingUkDetails = {
+  readonly __typename?: "TaxSettingUKDetails";
+  readonly gbVatEntity?: Maybe<GbVatEntityType>;
+};
 
 export type TaxTargetCurrency = "CUSTOMER" | "MERCHANT" | "AUTHORITY";
 
@@ -11801,9 +11841,9 @@ export type UpsertConfirmedDeliveryCarrier = {
 
 export type UpsertDiscountCampaignInput = {
   readonly id?: Maybe<Scalars["ObjectIdType"]>;
-  readonly name: Scalars["String"];
-  readonly startTime: DatetimeInput;
-  readonly endTime: DatetimeInput;
+  readonly name?: Maybe<Scalars["String"]>;
+  readonly startTime?: Maybe<DatetimeInput>;
+  readonly endTime?: Maybe<DatetimeInput>;
   readonly countries?: Maybe<ReadonlyArray<CountryCode>>;
   readonly discountData?: Maybe<ReadonlyArray<VariationDiscountDataInput>>;
 };
@@ -11817,9 +11857,9 @@ export type UpsertDiscountCampaignMutation = {
 
 export type UpsertFlashSaleCampaignInput = {
   readonly id?: Maybe<Scalars["ObjectIdType"]>;
-  readonly name: Scalars["String"];
-  readonly startTime: DatetimeInput;
-  readonly endTime: DatetimeInput;
+  readonly name?: Maybe<Scalars["String"]>;
+  readonly startTime?: Maybe<DatetimeInput>;
+  readonly endTime?: Maybe<DatetimeInput>;
   readonly countries?: Maybe<ReadonlyArray<CountryCode>>;
   readonly discountData?: Maybe<ReadonlyArray<VariationDiscountDataInput>>;
 };
@@ -12731,6 +12771,9 @@ export type WishSellerStandardStats = {
   readonly productQualityRefundRate: Scalars["Float"];
   readonly productLogisticsRefundRate: Scalars["Float"];
   readonly fulfillmentSpeed: Timedelta;
+  readonly orderCancellationCount: Scalars["Int"];
+  readonly unfulfilledOrderCount: Scalars["Int"];
+  readonly lateConfirmedFulfillmentCount: Scalars["Int"];
   readonly misleadingTrackingCount: Scalars["Int"];
   readonly prohibitedProductCount: Scalars["Int"];
   readonly misleadingListingCount: Scalars["Int"];
@@ -12750,6 +12793,7 @@ export type WishUserSchema = {
 };
 
 export type WishUserSignupMethod =
+  | "PHONE_NUMBER"
   | "GOOGLE_PLUS"
   | "FACEBOOK"
   | "APPLE"
