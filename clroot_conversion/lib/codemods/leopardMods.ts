@@ -8,10 +8,34 @@ import {
   JSCodeshift,
 } from "jscodeshift";
 
-const updateStore = (store: string, j: JSCodeshift, root: Collection) => {
+const updateModuleStore = (store: string, j: JSCodeshift, root: Collection) => {
   root
     .find(j.ImportDeclaration, {
       source: { value: `@merchant/stores/${store}` },
+    })
+    .replaceWith(({ node }) => {
+      node.source.value = `@stores/${store}`;
+      return node;
+    });
+};
+
+const updateRelativeStore = (
+  store: string,
+  j: JSCodeshift,
+  root: Collection,
+  path: string,
+) => {
+  if (
+    !(
+      path.includes(`${process.env.LEOPARD_HOME}/src/pkg/stores`) ||
+      path.includes(`${process.env.LEOPARD_HOME}/src/pkg/merchant/stores`)
+    )
+  )
+    return;
+
+  root
+    .find(j.ImportDeclaration, {
+      source: { value: `./${store}` },
     })
     .replaceWith(({ node }) => {
       node.source.value = `@stores/${store}`;
@@ -95,7 +119,8 @@ const leopardMods = (fileInfo: FileInfo, api: API) => {
     "ToastStore",
     "UserStore",
   ].forEach((store) => {
-    updateStore(store, j, root);
+    updateModuleStore(store, j, root);
+    updateRelativeStore(store, j, root, fileInfo.path);
   });
 
   return root.toSource();
