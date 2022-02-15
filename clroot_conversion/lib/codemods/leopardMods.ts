@@ -8,6 +8,11 @@ import {
   JSCodeshift,
 } from "jscodeshift";
 
+/*
+  import EnvironmentStore, { useEnvironmentStore } from "@merchant/stores/EnvironmentStore";
+  to
+  import EnvironmentStore, { useEnvironmentStore } from "@stores/EnvironmentStore";
+  */
 const updateModuleStore = (store: string, j: JSCodeshift, root: Collection) => {
   root
     .find(j.ImportDeclaration, {
@@ -19,6 +24,11 @@ const updateModuleStore = (store: string, j: JSCodeshift, root: Collection) => {
     });
 };
 
+/*
+  import EnvironmentStore, { useEnvironmentStore } from "./EnvironmentStore";
+  to
+  import EnvironmentStore, { useEnvironmentStore } from "@stores/EnvironmentStore";
+  */
 const updateRelativeStore = (
   store: string,
   j: JSCodeshift,
@@ -106,6 +116,37 @@ const leopardMods = (fileInfo: FileInfo, api: API) => {
     node.source.value = "@apollo/client";
     return node;
   });
+
+  /**
+   * <img alt="png image" src={illustrations.paypal} />
+   * to
+   * <Image alt="png image" src={illustrations.paypal} />
+   */
+
+  const imageTags = root.findJSXElements("img");
+
+  imageTags.replaceWith(({ node }) => {
+    node.openingElement.name = {
+      type: "JSXIdentifier",
+      name: "Image",
+    };
+
+    return node;
+  });
+
+  // import Image component
+  if (imageTags.length != 0) {
+    const imageImportStatement = root.find(j.ImportDeclaration, {
+      source: { value: `next/image` },
+    });
+    if (imageImportStatement.length == 0) {
+      // insert import after other imports
+      const imports = root.find(j.ImportDeclaration);
+      j(imports.at(imports.length - 1).get()).insertAfter(
+        `import Image from "next/image";`,
+      );
+    }
+  }
 
   // fix stores
   [
