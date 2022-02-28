@@ -31,7 +31,7 @@ import {
 } from "@ContextLogic/lego/toolkit/providers";
 // import UserStore from "@stores/UserStore"; // TODO [lliepert]: commenting out userstore usage, will bring back in further ticket
 import { useNavigationStore } from "@stores/NavigationStore";
-import EnvironmentStore, { useEnvironmentStore } from "./EnvironmentStore";
+import EnvironmentStore, { useEnvironmentStore } from "@stores/EnvironmentStore";
 import { useLocalizationStore } from "@stores/LocalizationStore";
 import { useToastStore } from "@stores/ToastStore";
 

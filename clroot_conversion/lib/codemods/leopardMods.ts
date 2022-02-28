@@ -1,4 +1,3 @@
-/* eslint-disable */
 /* npx jscodeshift -t leopardMods.ts testFile.input.ts --parser=tsx */
 import {
   API,
@@ -7,6 +6,9 @@ import {
   Collection,
   JSCodeshift,
 } from "jscodeshift";
+
+import * as fsPromises from "fs/promises";
+import { deleteFile } from "./runMods";
 
 /*
   import EnvironmentStore, { useEnvironmentStore } from "@merchant/stores/EnvironmentStore";
@@ -53,9 +55,45 @@ const updateRelativeStore = (
     });
 };
 
-const leopardMods = (fileInfo: FileInfo, api: API) => {
+/*
+  finds all files related to file that imports @toolkit/api
+  adds these filenames to filenames.txt
+  deletes this file if imports @toolkit/api
+*/
+const findToolkitAPIFiles = async (
+  j: JSCodeshift,
+  root: Collection,
+  curPath: string,
+) => {
+  const toolkitApiImports = root.find(j.ImportDeclaration, {
+    source: { value: "@toolkit/api" },
+  });
+
+  if (toolkitApiImports.size() != 0) {
+    const formattedImport =
+      "@" +
+      curPath.substring(
+        curPath.indexOf("pkg/") + "pkg/".length,
+        curPath.indexOf("."),
+      );
+
+    await deleteFile(curPath);
+
+    await fsPromises.appendFile(
+      `${process.env.LEOPARD_HOME}/clroot_conversion/lib/codemods/filenames.txt`,
+      formattedImport + "\n",
+    );
+  }
+
+  return;
+};
+
+const leopardMods = (fileInfo: FileInfo, api: API): string => {
   const j = api.jscodeshift;
   const root = j(fileInfo.source);
+  const imports = root.find(j.ImportDeclaration);
+
+  void findToolkitAPIFiles(j, root, fileInfo.path);
 
   /*
     import { useQuery, useMutation } from "@apollo/react-hooks";
@@ -95,6 +133,7 @@ const leopardMods = (fileInfo: FileInfo, api: API) => {
   });
 
   apolloClientExpressions.replaceWith(({ node }) => {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const importedAs = (node.specifiers![0] as ImportDefaultSpecifier).local!
       .name;
     node.specifiers = [
@@ -117,10 +156,10 @@ const leopardMods = (fileInfo: FileInfo, api: API) => {
     return node;
   });
 
-  /**
-   * <img alt="png image" src={illustrations.paypal} />
-   * to
-   * <Image alt="png image" src={illustrations.paypal} />
+  /*
+    <img alt="png image" src={illustrations.paypal} />
+    to
+    <Image alt="png image" src={illustrations.paypal} />
    */
 
   const imageTags = root.findJSXElements("img");
@@ -137,11 +176,10 @@ const leopardMods = (fileInfo: FileInfo, api: API) => {
   // import Image component
   if (imageTags.length != 0) {
     const imageImportStatement = root.find(j.ImportDeclaration, {
-      source: { value: `next/image` },
+      source: { value: "next/image" },
     });
     if (imageImportStatement.length == 0) {
       // insert import after other imports
-      const imports = root.find(j.ImportDeclaration);
       j(imports.at(imports.length - 1).get()).insertAfter(
         `import Image from "next/image";`,
       );

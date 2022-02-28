@@ -13,7 +13,7 @@ import { useState, useEffect } from "react";
 import gql from "graphql-tag";
 
 /* Relative Imports */
-import { useApolloStore } from "./ApolloStore";
+import { useApolloStore } from "@stores/ApolloStore";
 
 import {
   ExpSchema,
