@@ -15,8 +15,8 @@
     "test": "jest --watch"
   },
   "dependencies": {
-    "@ContextLogic/lego": "0.0.1-1644494992",
-    "@ContextLogic/merchantstrings": "0.0.1644471375",
+    "@ContextLogic/lego": "0.0.1-1646136593",
+    "@ContextLogic/merchantstrings": "0.0.1646112975",
     "@ContextLogic/zeus": "0.0.1-1643061651",
     "@apollo/client": "^3.4.16",
     "@fortawesome/fontawesome": "^1.1.5",

@@ -13,6 +13,7 @@ from lib.paths import CLROOT_HANDLERS_DIR, LEOPARD_PAGES_DIR, LEOPARD_PKG_DIR
 
 _parseHandlerPath_packageName = None
 _parseHandlerPath_initialQuery = None
+_parseHandlerPath_handlerName = None
 
 
 class HandlerPathError(Exception):
@@ -74,7 +75,7 @@ def find_handler_path(containerName, handlersRoot):
 
 def parse_handler_path(
     containerName: str, handlerPath: str
-) -> annotations.Tuple[str, str]:
+) -> annotations.Tuple[str, str, str]:
     """
     Given a container name and the path to that containers handler file, this
     function parses the python file and returns the container's package name and
@@ -85,47 +86,60 @@ def parse_handler_path(
         def generic_visit(self, node):
             ast.NodeVisitor.generic_visit(self, node)
 
-        def visit_Call(self, node):
-            isHandler = False
-            # TODO [lliepert]: some handlers don't have package defined; parse from TS instead
-            packageName = None
-            packageNameError = False
-            initialQuery = None
-            initialQueryError = False
-            for k in node.keywords:
-                if k.arg == "container" and k.value.value == containerName:
-                    isHandler = True
+        def visit_Assign(self, node):
+            if isinstance(node.value, ast.Call):
+                isHandler = False
+                # TODO [lliepert]: some handlers don't have package defined; parse from TS instead
+                handlerName = None
+                packageName = None
+                packageNameError = False
+                initialQuery = None
+                initialQueryError = False
+                for k in node.value.keywords:
+                    if k.arg == "container" and k.value.value == containerName:
+                        isHandler = True
 
-                elif k.arg == "package":
-                    if isinstance(k.value, ast.Constant):
-                        packageName = k.value.value
+                    elif k.arg == "package":
+                        if isinstance(k.value, ast.Constant):
+                            packageName = k.value.value
+                        else:
+                            packageNameError = True
+
+                    if k.arg == "initial_query":
+                        if isinstance(k.value, ast.Constant):
+                            initialQuery = k.value.value
+                        else:
+                            initialQueryError = True
+
+                if isHandler:
+                    if len(node.targets) == 1 and isinstance(node.targets[0], ast.Name):
+                        handlerName = node.targets[0].id
                     else:
-                        packageNameError = True
+                        raise ParsingError(
+                            containerName=containerName,
+                            handlerPath=handlerPath,
+                            message="HANDLER NAME IMPROPERLY FORMATTED",
+                        )
 
-                if k.arg == "initial_query":
-                    if isinstance(k.value, ast.Constant):
-                        initialQuery = k.value.value
-                    else:
-                        initialQueryError = True
+                    if packageNameError:
+                        raise ParsingError(
+                            containerName=containerName,
+                            handlerPath=handlerPath,
+                            message="PACKAGE NAME IMPROPERLY FORMATTED",
+                        )
+                    if initialQueryError:
+                        raise ParsingError(
+                            containerName=containerName,
+                            handlerPath=handlerPath,
+                            message="INITIAL QUERY IMPROPERLY FORMATTED",
+                        )
 
-            if isHandler:
-                if packageNameError:
-                    raise ParsingError(
-                        containerName=containerName,
-                        handlerPath=handlerPath,
-                        message="PACKAGE NAME IMPROPERLY FORMATTED",
-                    )
-                if initialQueryError:
-                    raise ParsingError(
-                        containerName=containerName,
-                        handlerPath=handlerPath,
-                        message="INITIAL QUERY IMPROPERLY FORMATTED",
-                    )
-
-                global _parseHandlerPath_packageName
-                global _parseHandlerPath_initialQuery
-                _parseHandlerPath_packageName = packageName
-                _parseHandlerPath_initialQuery = initialQuery
+                    global _parseHandlerPath_packageName
+                    global _parseHandlerPath_initialQuery
+                    global _parseHandlerPath_handlerName
+                    _parseHandlerPath_packageName = packageName
+                    _parseHandlerPath_initialQuery = initialQuery
+                    _parseHandlerPath_handlerName = handlerName
             ast.NodeVisitor.generic_visit(self, node)
 
     with open(handlerPath, "r") as source:
@@ -140,7 +154,11 @@ def parse_handler_path(
 
     visitor = Visitor()
     visitor.visit(tree)
-    return _parseHandlerPath_packageName, _parseHandlerPath_initialQuery
+    return (
+        _parseHandlerPath_packageName,
+        _parseHandlerPath_initialQuery,
+        _parseHandlerPath_handlerName,
+    )
 
 
 def generate_container_file(packageName, containerName, initialQuery):
@@ -202,7 +220,7 @@ def build_next_structure():
                 containerName=containerName,
                 handlersRoot=CLROOT_HANDLERS_DIR,
             )
-            packageName, initialQuery = parse_handler_path(
+            packageName, initialQuery, handlerName = parse_handler_path(
                 containerName=containerName, handlerPath=handlerPath
             )
             generate_container_file(

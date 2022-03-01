@@ -52,5 +52,5 @@ def run_codemods() -> None:
     # currently running codemods from python is not finding any files, will
     # investigate and debug later
     print(
-        f"\n\nplease run\nnode --loader ts-node/esm {LEOPARD_DIR}/clroot_conversion/lib/codemods/runMods.ts\n\n"
+        f"\n\nplease run\ncd {LEOPARD_DIR}/clroot_conversion && node --loader ts-node/esm {LEOPARD_DIR}/clroot_conversion/lib/codemods/runMods.ts\n\n"
     )
