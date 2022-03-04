@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-/* node --loader ts-node/esm $LEOPARD_HOME/clroot_conversion/lib/codemods/runMods.ts */
+/* npx jscodeshift -t $LEOPARD_HOME/clroot_conversion/lib/codemods/runMods.ts $LEOPARD_HOME/clroot_conversion/lib/codemods/placeholder.tsx --parser=tsx*/
 
 import * as fsPromises from "fs/promises";
 import { exec } from "child_process";
@@ -40,7 +40,7 @@ const executeSubdirCodemods = async (base: string) => {
   return;
 };
 
-const runMods = async () => {
+const runMods = async (): Promise<void> => {
   const baseLeopard =
     "npx jscodeshift -t $LEOPARD_HOME/clroot_conversion/lib/codemods/leopardMods.ts $LEOPARD_HOME/src/pkg/";
   const baseRecursive =
@@ -70,4 +70,4 @@ const runMods = async () => {
   return;
 };
 
-void runMods();
+export default runMods;

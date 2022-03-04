@@ -56,6 +56,26 @@ const updateRelativeStore = (
 };
 
 /*
+    delete files that use bucketForUser function
+  */
+
+const deleteBucketForUserCalls = async (
+  j: JSCodeshift,
+  root: Collection,
+  curPath: string,
+) => {
+  const bucketForUserCalls = root.find(j.Identifier, {
+    name: "bucketForUser",
+  });
+
+  if (bucketForUserCalls.length != 0) {
+    await deleteFile(curPath);
+  }
+
+  return;
+};
+
+/*
   finds all files related to file that imports @toolkit/api
   adds these filenames to filenames.txt
   deletes this file if imports @toolkit/api
@@ -94,6 +114,7 @@ const leopardMods = (fileInfo: FileInfo, api: API): string => {
   const imports = root.find(j.ImportDeclaration);
 
   void findToolkitAPIFiles(j, root, fileInfo.path);
+  void deleteBucketForUserCalls(j, root, fileInfo.path);
 
   /*
     import { useQuery, useMutation } from "@apollo/react-hooks";
