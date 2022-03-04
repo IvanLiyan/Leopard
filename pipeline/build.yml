@@ -1,0 +1,20 @@
+export:staging:
+  stage: build
+  script:
+    - yarn build
+    - yarn export -o export/staging
+  artifacts:
+    when: always
+    paths:
+      - export
+
+# export:production:
+#   stage: build
+#   script:
+#     - yarn build
+#     - yarn export -o export/production
+#   artifacts:
+#     when: always
+#     paths:
+#       - export
+

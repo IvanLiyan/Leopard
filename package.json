@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev -p 8080",
     "build": "next build",
+    "export": "next export",
     "start": "next start -p ${PORT:=8080}",
     "build-docker": "docker build -t leopard .",
     "run-docker": "docker run -p 8080:8080 leopard",

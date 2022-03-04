@@ -1,21 +1,4 @@
-# Note for customized jobs, please use the Gitlab rules syntax instead of only/except.
-# Gitlab rules - https://docs.gitlab.com/ee/ci/yaml/#rules
-
-# Below is an example of integration test
-# Please note this is only for reference, you should always write your own integration tests.
-
-# integration-test:
-#   stage: test
-#   services: # For knowledge on services - https://docs.gitlab.com/ee/ci/docker/using_docker_images.html#what-is-a-service
-#     - name: $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_SLUG:$CI_COMMIT_SHORT_SHA
-#       alias: default-service-ci
-#       command:
-#         - python3
-#         - app/server.py
-#   image: registry-gitlab.i.wish.com/contextlogic/tooling-image/python/master
-#   script:
-#     # These scripts should be replaced with actual tests that validate the expected logic
-#     - curl -X GET http://default-service-ci:8080/
+image: registry-gitlab.i.wish.com/contextlogic/tooling-image/node:16-alpine3.11
 
 variables:
   ITA_TEMPLATE: default-service # DO NOT change this
@@ -27,56 +10,24 @@ stages:
   - build
   - test
   - tag
-  - release
+  - deploy_staging
+  - deploy_production
 
-lighthouse:
-  stage: test
-  image: registry-gitlab.i.wish.com/contextlogic/leopard/cypress/browsers:node16.13.0-chrome95-ff94
-  services:
-    - name: ${CI_REGISTRY_IMAGE}/${CI_COMMIT_REF_SLUG}:${CI_COMMIT_SHORT_SHA}
-      alias: leopard
+install_dependencies:
+  stage: pre-test
   script:
-    - export
-    - npm install -g @lhci/cli@0.8.x octokit
-    - lhci autorun || echo "LHCI failed!"
-    - cd test/lhci && npm install
-    - node lhci.mjs
+    - yarn install --frozen-lockfile
   artifacts:
-    when: always
     paths:
-      - lhcireport
+      - node_modules/
+  except:
+    - schedules
 
 include:
   - project: "contextlogic/includes"
     ref: master
-    file: "/templates/job-build-tag-and-deploy/default.yml"
-
-schedule:leopard_string_extraction:
-  stage: schedule
-  image: $CI_REGISTRY/contextlogic/strings:79bee9cf19c07bee8f248caf61c1ccd8e4d66a23
-  script:
-    - export LEOPARD_HOME=$(pwd)
-    - START_TIME=$SECONDS
-    - /go/bin/strings extract $LEOPARD_HOME --smartling-api-secrets="${SMARTLING_API_SECRETS}"
-    - echo 'leopard_string_extraction_runtime_seconds' $((SECONDS-START_TIME)) | curl --data-binary @- http://pushgateway.infra.wish.com:9091/metrics/job/gitlab
-    - echo 'leopard_string_extraction_last_success_timestamp' $(date -u +%s) | curl --data-binary @- http://pushgateway.infra.wish.com:9091/metrics/job/gitlab
-  rules:
-    - if: '$SCHEDULE == "leopard_string_extraction" && $CI_PIPELINE_SOURCE == "schedule"'
-      when: on_success
-
-schedule:leopard_string_build:
-  stage: schedule
-  image: $CI_REGISTRY/contextlogic/strings:79bee9cf19c07bee8f248caf61c1ccd8e4d66a23
-  script:
-    - export LEOPARD_HOME=$(pwd)
-    - mkdir /root/.ssh/ && touch /root/.ssh/id_rsa
-    - echo $GITHUB_DEPLOY_KEY | base64 -di > /root/.ssh/id_rsa
-    - git config --global user.email "gitlab@wish.com"
-    - git config --global user.name "Gitlab Bot"
-    - git remote set-url origin git@github.com:ContextLogic/leopard.git
-    - chmod 600 /root/.ssh/id_rsa
-    - ssh-keyscan -t rsa github.com >> /root/.ssh/known_hosts
-    - sh $LEOPARD_HOME/localization_sync.sh # includes pushing prometheus metrics
-  rules:
-    - if: '$SCHEDULE == "leopard_string_build" && $CI_PIPELINE_SOURCE == "schedule"'
-      when: on_success
+    file: "/templates/job-build-and-tag/ecr-commit.yml"
+  - local: 'pipeline/schedule.yml'
+  - local: 'pipeline/test.yml'
+  - local: 'pipeline/build.yml'
+  - local: 'pipeline/deploy.yml'
