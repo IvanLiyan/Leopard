@@ -2,12 +2,12 @@
 # yarn lockfile v1
 
 
-"@ContextLogic/lego@0.0.1-1646136593":
-  version "0.0.1-1646136593"
-  resolved "https://npm.infra.wish.com/@ContextLogic%2flego/-/lego-0.0.1-1646136593.tgz#900346bb252a9bb5f71a7051fe8ff2881604c640"
-  integrity sha512-mCMl2AUZEtTEQFYwmy888f8YN7hTa0mLtqHmvj1Un21VjpMPvnvm5H7G0yKTLtuuPIOys92+IshX9TgsUa9tlw==
+"@ContextLogic/lego@0.0.1-1647021648":
+  version "0.0.1-1647021648"
+  resolved "https://npm.infra.wish.com/@ContextLogic%2flego/-/lego-0.0.1-1647021648.tgz#99c6c05fe3d601a343f5810a607134e32aa309a2"
+  integrity sha512-zrAbG8eAvo3JVz+q+B3yG22zJLLDH/G5POXCUyFpFAI3HQzDgwSUiNIN4QZfpVrpEHFqjAZa5cIJutYEAnK0iw==
   dependencies:
-    "@ContextLogic/legostrings" "0.0.1646136377"
+    "@ContextLogic/legostrings" "0.0.1646971592"
     "@ContextLogic/zeus" "0.0.1-1643059293"
     "@babel/runtime" "^7.12.5"
     aphrodite "2.2.3"
@@ -38,10 +38,10 @@
     recharts "^1.6.2"
     validator "^10.9.0"
 
-"@ContextLogic/legostrings@0.0.1646136377":
-  version "0.0.1646136377"
-  resolved "https://npm.infra.wish.com/@ContextLogic%2flegostrings/-/legostrings-0.0.1646136377.tgz#5a1c19ff123f2f5bce8f138d9901139e35eb5acf"
-  integrity sha512-Jpum/PPuzWKBITGXSff0dWsHKBYwCnqRkiuo4kS5AjRpawlzPZumke1MxHDz+gikdXmoNt39oSo9uuI5dUgR4A==
+"@ContextLogic/legostrings@0.0.1646971592":
+  version "0.0.1646971592"
+  resolved "https://npm.infra.wish.com/@ContextLogic%2flegostrings/-/legostrings-0.0.1646971592.tgz#8a2b897195b4768ea6464ce4b8395c10944dcfd7"
+  integrity sha512-iPwzrrecwBSk3Aq0f2rp1zzW9t64c4jKlMma5U5c2XIFGFgDOQZgTP8wpva6mvlbQRkBnVDeQw/Du+BNB8OeGg==
 
 "@ContextLogic/merchantstrings@0.0.1646112975":
   version "0.0.1646112975"

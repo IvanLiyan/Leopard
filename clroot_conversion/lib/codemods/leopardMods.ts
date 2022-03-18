@@ -56,7 +56,7 @@ const updateRelativeStore = (
 };
 
 /*
-    delete files that use bucketForUser function
+  delete files that use bucketForUser function
   */
 
 const deleteBucketForUserCalls = async (
@@ -206,6 +206,44 @@ const leopardMods = (fileInfo: FileInfo, api: API): string => {
       );
     }
   }
+
+  /*
+    replaces import statement of Link from Lego with new import statement
+    for the new Next Link in @next-toolkit/Link
+   */
+  imports.forEach((importDeclaration) => {
+    const importSpecifiers = importDeclaration.node.specifiers;
+    if (
+      importSpecifiers == undefined ||
+      importSpecifiers.length == undefined ||
+      importSpecifiers.length == 0
+    )
+      return;
+
+    // checks each of the specifiers in the import declaration
+    // if there is only one import specifier (i.e. import { Link }), remove entire import
+    // otherwise, (i.e. import { Link, Text }) just remove the specifier
+    if (importSpecifiers.length == 1) {
+      if (importSpecifiers[0].local?.name == "Link") {
+        j(importDeclaration).remove();
+        j(imports.at(imports.length - 1).get()).insertAfter(
+          `import Link from "@next-toolkit/Link";`,
+        );
+        return;
+      }
+    } else {
+      const multipleSpecifiers = root.find(j.ImportSpecifier);
+      multipleSpecifiers.forEach((specifier) => {
+        if (specifier.node.local?.name == "Link") {
+          j(specifier).remove();
+          j(imports.at(imports.length - 1).get()).insertAfter(
+            `import Link from "@next-toolkit/Link";`,
+          );
+          return;
+        }
+      });
+    }
+  });
 
   // fix stores
   [
