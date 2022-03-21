@@ -188,7 +188,7 @@ const leopardMods = (fileInfo: FileInfo, api: API): string => {
   imageTags.replaceWith(({ node }) => {
     node.openingElement.name = {
       type: "JSXIdentifier",
-      name: "Image",
+      name: "NextImage",
     };
 
     return node;
@@ -202,7 +202,7 @@ const leopardMods = (fileInfo: FileInfo, api: API): string => {
     if (imageImportStatement.length == 0) {
       // insert import after other imports
       j(imports.at(imports.length - 1).get()).insertAfter(
-        `import Image from "next/image";`,
+        `import NextImage from "next/image";`,
       );
     }
   }
