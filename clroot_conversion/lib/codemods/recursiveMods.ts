@@ -15,6 +15,15 @@ const recursiveMods = async (fileInfo: FileInfo, api: API) => {
   const allFileContents = fs.readFileSync(filenames, "utf-8");
   root.find(j.ImportDeclaration).forEach(async (importDeclaration) => {
     let s = importDeclaration.value.source.value;
+
+    if (typeof s == "string" && s.includes("./")) {
+      s =
+        curPath.substring(
+          curPath.indexOf("pkg/") + "pkg/".length,
+          curPath.lastIndexOf("/"),
+        ) + s.substring(1);
+    }
+
     if (typeof s == "string" && s !== "" && allFileContents.includes(s)) {
       const formattedImport =
         "@" +
