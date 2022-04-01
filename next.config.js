@@ -30,13 +30,21 @@ const moduleExports = {
           {
             source: "/api/:path*",
             destination: `${MD_URL}/api/:path*`,
-          }, 
+          },
           {
             source: "/go/:mid",
-            destination: `${MD_URL}/go/:mid`
-          }
+            destination: `${MD_URL}/go/:mid`,
+          },
         ]
       : [];
+  },
+  webpack: (config, { buildId, webpack }) => {
+    config.plugins.push(
+      new webpack.DefinePlugin({
+        "process.env.BUILD_ID": JSON.stringify(buildId),
+      }),
+    );
+    return config;
   },
 };
 

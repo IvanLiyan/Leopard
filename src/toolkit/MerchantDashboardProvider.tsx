@@ -15,6 +15,20 @@ import {
 } from "@stores/LocalizationStore";
 import { ApolloProvider, client } from "@stores/ApolloStore";
 import { ThemeStoreProvider } from "@stores/ThemeStore";
+import { datadogRum } from "@datadog/browser-rum";
+import { env } from "@stores/EnvironmentStore";
+
+datadogRum.init({
+  applicationId: "901bc1fd-28d9-4542-88ca-f109e88b2a43",
+  clientToken: "pube9541dcd2f9d452ec72945ca9d34a0f5",
+  site: "datadoghq.com",
+  service: "merchant-web-leopard",
+  // Specify a version number to identify the deployed version of your application in Datadog
+  version: process.env.BUILD_ID || "local",
+  env: env,
+  sampleRate: 100,
+  replaySampleRate: 25,
+});
 
 const MerchantDashboardProvider: React.FC = ({ children }) => {
   // blocking SSR until we can properly test that path (mostly GQL queries and
