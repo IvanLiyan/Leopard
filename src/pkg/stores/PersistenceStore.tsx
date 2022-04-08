@@ -138,7 +138,7 @@ const LegacyPersistenceStoreAdapter = {
   instance: (): PersistenceStore => {
     const ref = PersistenceStoreRef.current;
     if (ref == null) {
-      throw "Attempting to access reference to un-instantiated PersistenceStore";
+      throw "Attempting to access reference to un-instantiated PersistenceStore.\n\nIf this error occurred during a Next.JS Fast Refresh, try performing a full refresh.";
     }
     return ref;
   },

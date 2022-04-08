@@ -1,0 +1,277 @@
+/*
+    stores/ChromeStore.ts
+
+    Created by Lucas Liepert on 2/28/2022.
+    Copyright © 2022-present ContextLogic Inc. All rights reserved.
+*/
+
+import React, {
+  useState,
+  useEffect,
+  useMemo,
+  createContext,
+  useContext,
+} from "react";
+import { gql, useQuery } from "@apollo/client";
+import { StyleSheet } from "aphrodite";
+
+import { css } from "@toolkit/styling";
+
+import { Layout, LoadingIndicator } from "@ContextLogic/lego";
+import Toast from "@merchant/component/core/Toast";
+import Chrome from "@merchant/component/nav/chrome/Chrome";
+import ChromeSideMenuButton from "@merchant/component/nav/chrome/side-menu/ChromeSideMenuButton";
+import MerchantAppTopbar from "@merchant/component/nav/chrome/MerchantAppTopbar";
+import { TopBarHeight } from "@merchant/component/nav/chrome/ChromeTopBar";
+import {
+  GetAlertsRequestType,
+  NavigationNode,
+  GET_ALERTS_QUERY,
+  SIDE_MENU_COUNTS_QUERY,
+  SideMenuCounts,
+  getNodeCount,
+} from "@toolkit/chrome";
+
+import { useTheme } from "@stores/ThemeStore";
+import { useUserStore } from "@stores/UserStore";
+import { useLocalizationStore } from "@stores/LocalizationStore";
+
+type ChromeContext = {
+  isDrawerOpen: boolean;
+  setIsDrawerOpen: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+const ChromeContext = createContext<ChromeContext>({
+  isDrawerOpen: false,
+  setIsDrawerOpen: () => {
+    throw "Attempting to use un-instantiated ChromeStore";
+  },
+});
+
+const BOTTOM_NODES: ReadonlySet<string> = new Set([
+  "account",
+  "settings",
+  "more",
+  "help",
+]);
+
+// TODO [lliepert]: remove reference to legacy store nomenclature (https://jira.wish.site/browse/MKL-55300)
+// TODO [lliepert]: update with actual query once we have the gql finished
+// TODO [lliepert]: bring back loading between pages
+export const CHROME_STORE_INITIAL_QUERY = gql`
+  fragment NodeElements on ChromeNodeSchema {
+    url
+    path
+    label
+    overviewLabel
+    badge {
+      badgeType
+      expiryDate {
+        datetime
+      }
+    }
+    nodeid
+    keywords
+    description
+    searchPhrase
+    showInSideMenu
+    openInNewTab
+    totalHits
+    mostRecentHit {
+      unix
+      mmddyyyy
+    }
+    countSelectors
+  }
+
+  query ChromeStore_InitialQuery {
+    chrome {
+      merchantGraph {
+        ...NodeElements
+        children {
+          ...NodeElements
+          children {
+            ...NodeElements
+            children {
+              ...NodeElements
+              children {
+                ...NodeElements
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+export type ChromeStoreInitialQueryResponse = {
+  // will update once gql is finished
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  readonly chrome: {
+    readonly merchantGraph: NavigationNode;
+  };
+};
+
+export const ChromeProvider: React.FC<{
+  initialData: ChromeStoreInitialQueryResponse;
+}> = ({ children, initialData }) => {
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const styles = useStylesheet();
+  const { surfaceLightest } = useTheme();
+  const { loggedInMerchantUser } = useUserStore();
+  const { isRTL } = useLocalizationStore();
+
+  const {
+    data: alerts,
+    loading: isLoadingIssues,
+    refetch: refetchAlerts,
+  } = useQuery<GetAlertsRequestType, void>(GET_ALERTS_QUERY, {
+    skip: loggedInMerchantUser == null,
+  });
+
+  const { data: counts, refetch: refetchCounts } = useQuery<
+    SideMenuCounts,
+    void
+  >(SIDE_MENU_COUNTS_QUERY, { skip: loggedInMerchantUser == null });
+
+  useEffect(() => {
+    if (loggedInMerchantUser != null) {
+      void (async () => await refetchAlerts())();
+      void (async () => await refetchCounts())();
+    }
+  }, [loggedInMerchantUser, refetchAlerts, refetchCounts]);
+
+  const tree = initialData?.chrome?.merchantGraph;
+
+  const bottomNodes: ReadonlyArray<NavigationNode> | null = useMemo(() => {
+    if (tree == null) {
+      return null;
+    }
+    return tree.children.filter(
+      (node) => node.nodeid != null && BOTTOM_NODES.has(node.nodeid),
+    );
+  }, [tree]);
+
+  const filteredTree: NavigationNode | null | undefined = useMemo(() => {
+    if (tree == null) {
+      return null;
+    }
+    return {
+      ...tree,
+      children: tree.children.filter(
+        (node) => node.nodeid != null && !BOTTOM_NODES.has(node.nodeid),
+      ),
+    };
+  }, [tree]);
+
+  const disableMenu = !loggedInMerchantUser?.merchantId; // ||
+  // !loggedInMerchantUser?.can_access_home;
+
+  const hasNotifications =
+    filteredTree && counts && getNodeCount(filteredTree, counts) > 0;
+
+  console.log("filteredTree", filteredTree);
+
+  return (
+    <ChromeContext.Provider value={{ isDrawerOpen, setIsDrawerOpen }}>
+      <Chrome>
+        <Chrome.Content
+          sideMenuWidth={0}
+          isRightToLeft={isRTL}
+          alerts={alerts?.currentUser.alerts}
+        >
+          <Layout.FlexColumn style={styles.content} alignItems="stretch">
+            {children}
+            <div className={css(styles.toastContainer)}>
+              <Toast contentAlignment="left" />
+            </div>
+            {/* progressiveLoadingStatus == "IN_PROGRESS" ||  */}
+            {isLoadingIssues && (
+              <div className={css(styles.loadingScreen)}>
+                <LoadingIndicator type="spinner" size={40} />
+              </div>
+            )}
+          </Layout.FlexColumn>
+        </Chrome.Content>
+        <Chrome.SideMenu
+          enableDrawer
+          tree={filteredTree}
+          counts={counts}
+          backgroundColor={surfaceLightest}
+          sideMenuWidth={210}
+          renderIcon={({ node }) => (
+            <ChromeSideMenuButton node={node} counts={counts} />
+          )}
+          isRightToLeft={isRTL}
+          renderBottomAnchor={(onNodeClicked) => {
+            if (bottomNodes == null || bottomNodes.length == 0) {
+              return null;
+            }
+            return (
+              <Layout.FlexColumn>
+                {bottomNodes.map((node) => {
+                  return (
+                    <div key={node.label} onClick={() => onNodeClicked(node)}>
+                      <ChromeSideMenuButton
+                        node={node}
+                        key={node.label}
+                        counts={counts}
+                      />
+                    </div>
+                  );
+                })}
+              </Layout.FlexColumn>
+            );
+          }}
+        />
+        <MerchantAppTopbar
+          disableMenu={disableMenu}
+          showMenuDot={hasNotifications || false}
+        />
+      </Chrome>
+    </ChromeContext.Provider>
+  );
+};
+
+const useStylesheet = () => {
+  const { pageBackground } = useTheme();
+
+  return useMemo(
+    () =>
+      StyleSheet.create({
+        content: {
+          position: "relative",
+        },
+        loadingScreen: {
+          opacity: 0,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          flex: 1,
+          backgroundColor: pageBackground,
+          position: "fixed",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+        },
+        toastContainer: {
+          position: "fixed",
+          top: TopBarHeight,
+          right: 0,
+          left: 0,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "stretch",
+          zIndex: 999999,
+        },
+      }),
+    [pageBackground],
+  );
+};
+
+export const useChromeContext = (): ChromeContext => {
+  const chromeContext = useContext(ChromeContext);
+  return chromeContext;
+};

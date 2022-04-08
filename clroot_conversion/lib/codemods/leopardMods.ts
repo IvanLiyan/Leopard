@@ -68,9 +68,9 @@ const deleteBucketForUserCalls = async (
     name: "bucketForUser",
   });
 
-  if (bucketForUserCalls.length != 0) {
-    await deleteFile(curPath);
-  }
+  // if (bucketForUserCalls.length != 0) {
+  //   await deleteFile(curPath);
+  // }
 
   return;
 };
@@ -97,12 +97,12 @@ const findToolkitAPIFiles = async (
         curPath.indexOf("."),
       );
 
-    await deleteFile(curPath);
+    // await deleteFile(curPath);
 
-    await fsPromises.appendFile(
-      `${process.env.LEOPARD_HOME}/clroot_conversion/lib/codemods/filenames.txt`,
-      formattedImport + "\n",
-    );
+    // await fsPromises.appendFile(
+    //   `${process.env.LEOPARD_HOME}/clroot_conversion/lib/codemods/filenames.txt`,
+    //   formattedImport + "\n",
+    // );
   }
 
   return;

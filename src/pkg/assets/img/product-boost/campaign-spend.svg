@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 80 80">
+    <defs>
+        <linearGradient id="a" x1="50%" x2="50%" y1="0%" y2="100%">
+            <stop offset="0%" stop-color="#D8E5EA"/>
+            <stop offset="100%" stop-color="#AFC7D1"/>
+        </linearGradient>
+        <linearGradient id="b" x1="50%" x2="50%" y1="0%" y2="100%">
+            <stop offset="0%" stop-color="#5CBDF7"/>
+            <stop offset="100%" stop-color="#2F88EC"/>
+        </linearGradient>
+        <linearGradient id="c" x1="50%" x2="50%" y1="0%" y2="100%">
+            <stop offset="0%" stop-color="#77CBFF"/>
+            <stop offset="100%" stop-color="#429BFF"/>
+        </linearGradient>
+        <linearGradient id="d" x1="50%" x2="50%" y1="0%" y2="100%">
+            <stop offset="0%" stop-color="#D8E5EA"/>
+            <stop offset="100%" stop-color="#AFC7D1"/>
+        </linearGradient>
+        <linearGradient id="e" x1="50%" x2="50%" y1="0%" y2="100%">
+            <stop offset="0%" stop-color="#5CBDF7"/>
+            <stop offset="100%" stop-color="#2F88EC"/>
+        </linearGradient>
+        <linearGradient id="f" x1="50%" x2="50%" y1="0%" y2="100%">
+            <stop offset="0%" stop-color="#77CBFF"/>
+            <stop offset="100%" stop-color="#429BFF"/>
+        </linearGradient>
+        <linearGradient id="g" x1="50%" x2="50%" y1="0%" y2="100%">
+            <stop offset="0%" stop-color="#D8E5EA"/>
+            <stop offset="100%" stop-color="#AFC7D1"/>
+        </linearGradient>
+        <linearGradient id="h" x1="50%" x2="50%" y1="0%" y2="100%">
+            <stop offset="0%" stop-color="#5CBDF7"/>
+            <stop offset="100%" stop-color="#2F88EC"/>
+        </linearGradient>
+        <linearGradient id="i" x1="50%" x2="50%" y1="0%" y2="100%">
+            <stop offset="0%" stop-color="#77CBFF"/>
+            <stop offset="100%" stop-color="#429BFF"/>
+        </linearGradient>
+    </defs>
+    <g fill="none" fill-rule="evenodd">
+        <circle cx="40" cy="40" r="40" fill="#FFD560" fill-opacity=".795" fill-rule="nonzero"/>
+        <path stroke="url(#a)" stroke-linecap="round" stroke-width="3" d="M16.634 22L8.59 33.943" transform="rotate(-30 41.52 -10.741)"/>
+        <g fill-rule="nonzero" transform="rotate(22 -11.726 82.005)">
+            <ellipse cx="10.964" cy="11.269" fill="url(#b)" rx="10.825" ry="10.636"/>
+            <path fill="url(#c)" d="M10.964 21.905V.632C4.985.632.138 5.394.138 11.27c0 5.874 4.847 10.636 10.826 10.636z"/>
+            <path fill="#FFF" d="M12.918 13.936l.353.834-.841.393-.345-.811c-.806.317-1.69.33-2.49.035l.255-1.261c.549.22 1.155.252 1.732.096l-.563-1.483c-1.014.198-2.163.29-2.674-.916A2.202 2.202 0 0 1 9.48 8.1l-.377-.768.84-.393.363.854c.7-.258 1.458-.27 2.154-.036l-.313 1.275a2.445 2.445 0 0 0-1.343-.093l.537 1.271c1.03-.191 2.207-.31 2.727.919.217.518.216 1.11 0 1.64-.217.53-.631.951-1.149 1.168zm-2.415-3.57l-.498-1.147c-.435.256-.57.608-.369.96.201.353.41.269.867.187zm2.326 1.499c-.14-.33-.506-.342-.993-.272l.538 1.271c.474-.312.585-.693.455-1z"/>
+        </g>
+        <path stroke="url(#d)" stroke-linecap="round" stroke-width="2.5" d="M16.484 12.015l-8.06 12.11" transform="rotate(-53 50.755 23.351)"/>
+        <g fill-rule="nonzero" transform="rotate(16 -115.355 73.827)">
+            <ellipse cx="7.561" cy="8.002" fill="url(#e)" rx="7.441" ry="7.397"/>
+            <path fill="url(#f)" d="M7.56 15.398c-.022-14.872 0 0 0-14.793C3.45.605.12 3.917.12 8.002c0 4.085 3.33 7.396 7.44 7.396z"/>
+            <path fill="#FFF" d="M9.04 9.568l.355.464-.493.34-.346-.45c-.483.29-1.06.403-1.63.32l-.019-.797c.393.067.796.014 1.15-.15L7.47 8.46c-.636.243-1.377.437-1.89-.234a1.28 1.28 0 0 1 .34-1.794l-.362-.422.494-.34.364.476a2.29 2.29 0 0 1 1.408-.282l-.016.814a1.754 1.754 0 0 0-.895.105l.54.708c.648-.24 1.403-.454 1.926.23.219.29.307.65.243.998a1.278 1.278 0 0 1-.58.85zm-2.114-1.88L6.43 7.05c-.247.208-.284.438-.1.629.184.19.309.113.596.008zm1.749.63c-.14-.183-.383-.146-.692-.044l.542.708c.264-.248.28-.493.15-.663z"/>
+        </g>
+        <g>
+            <path stroke="url(#g)" stroke-linecap="round" stroke-width="3" d="M16.264 30.32l-8 12" transform="rotate(-6 217.63 -314.085)"/>
+            <g fill-rule="nonzero" transform="rotate(30 -9.862 103.686)">
+                <circle cx="16.362" cy="16.757" r="12.667" fill="url(#h)"/>
+                <path fill="url(#i)" d="M16.715 27.362c0-25.333-.098-9.334 0-25.333C9.72 2.029 4.048 7.7 4.048 14.696c0 6.995 5.672 12.666 12.667 12.666z" transform="rotate(19 10.382 14.696)"/>
+                <path fill="#FFF" d="M17.497 20.903l.07 1.078-1.138.005-.07-1.076a4.648 4.648 0 0 1-2.921-1.22l.835-1.3a3.868 3.868 0 0 0 1.975.993l-.122-1.892c-1.272-.284-2.629-.755-2.747-2.37-.004-1.367 1.069-2.435 2.44-2.43l-.07-1.106 1.136-.007.074 1.134a4.39 4.39 0 0 1 2.502 1.048l-.87 1.243a3.691 3.691 0 0 0-1.55-.763l.122 1.673c1.26.327 2.677.8 2.781 2.43a2.41 2.41 0 0 1-.652 1.824 2.417 2.417 0 0 1-1.795.737zm-1.37-5.217l-.096-1.513c-.61.062-.924.37-.897.806.029.436.446.58.994.707zm2.11 2.87c-.028-.437-.466-.653-1.044-.809l.093 1.673c.632-.149.946-.485.95-.864z"/>
+            </g>
+        </g>
+    </g>
+</svg>

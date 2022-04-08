@@ -9,7 +9,12 @@ import re
 import time
 from string import Template
 
-from lib.paths import CLROOT_DIR, CLROOT_HANDLERS_DIR, LEOPARD_PAGES_DIR, LEOPARD_PKG_DIR
+from lib.paths import (
+    CLROOT_DIR,
+    CLROOT_HANDLERS_DIR,
+    LEOPARD_PAGES_DIR,
+    LEOPARD_PKG_DIR,
+)
 
 _parseHandlerPath_packageName = None
 _parseHandlerPath_initialQuery = None
@@ -60,8 +65,7 @@ def find_handler_path(containerName, handlersRoot):
 
     It throws an error if a unique path cannot be determined.
     """
-    resp = os.popen(
-        f"grep -rl '\"{containerName}\"' {handlersRoot}").readlines()
+    resp = os.popen(f"grep -rl '\"{containerName}\"' {handlersRoot}").readlines()
     resp = [line.strip("\n") for line in resp]
     if len(resp) > 1:
         raise HandlerPathError(
@@ -98,20 +102,26 @@ def parse_handler_path(
                 initialQuery = None
                 initialQueryError = False
                 for k in node.value.keywords:
-                    if k.arg == "container" and k.value.value == containerName:
-                        isHandler = True
+                    print("k", ast.dump(k))
+                    try:
+                        if k.arg == "container" and k.value.value == containerName:
+                            isHandler = True
 
-                    elif k.arg == "package":
-                        if isinstance(k.value, ast.Constant):
-                            packageName = k.value.value
-                        else:
-                            packageNameError = True
+                        elif k.arg == "package":
+                            if isinstance(k.value, ast.Constant):
+                                packageName = k.value.value
+                            else:
+                                packageNameError = True
 
-                    if k.arg == "initial_query":
-                        if isinstance(k.value, ast.Constant):
-                            initialQuery = k.value.value
-                        else:
-                            initialQueryError = True
+                        if k.arg == "initial_query":
+                            if isinstance(k.value, ast.Constant):
+                                initialQuery = k.value.value
+                            else:
+                                initialQueryError = True
+                    except Exception as e:
+                        raise ParsingError(
+                            containerName=containerName, handlerPath=handlerPath, message=e
+                        )
 
                 if isHandler:
                     if len(node.targets) == 1 and isinstance(node.targets[0], ast.Name):
@@ -168,18 +178,18 @@ def create_route_subdirs(routeName):
     Given a route name, this creates the required subdirectories needed to generate
     the container tsx file.
     """
-    if len(routeName[1:].split('/')) != 1:
-        subdir = os.path.join(LEOPARD_PAGES_DIR,
-                              routeName[1:routeName.rfind('/')])
+    if len(routeName[1:].split("/")) != 1:
+        subdir = os.path.join(LEOPARD_PAGES_DIR, routeName[1 : routeName.rfind("/")])
         if not os.path.isdir(subdir):
             os.makedirs(subdir)
 
 
 def parseRoutesFile(routesPath):
     """
-    Given a file of handlers and routes, finds the URLSpec calls and maps handler 
+    Given a file of handlers and routes, finds the URLSpec calls and maps handler
     names and routes in the handlerToRouteMapping map.
     """
+
     class Visitor(ast.NodeVisitor):
         def visit_Call(self, node):
             global handlerToRouteMapping
@@ -189,21 +199,18 @@ def parseRoutesFile(routesPath):
 
                 # multi arg path case (ex. r"/reauthentication-list/" + r"(new|awaitingMerchant|awaitingAdmin|approved|rejected)")
                 if isinstance(node.args[0], ast.BinOp):
-                    logging.warning(
-                        f"Multi-arg path: SKIPPED")
+                    logging.warning(f"Multi-arg path: SKIPPED")
 
                 # redirect case (ex. redirect_to("/plus/orders/bulk-fulfill"))
                 elif (
                     isinstance(handlerObject, ast.Call)
                     and handlerObject.func.id == "redirect_to"
                 ):
-                    logging.warning(
-                        f"Redirect path: SKIPPED")
+                    logging.warning(f"Redirect path: SKIPPED")
 
                 # is an unknown function, (only ex. get_mock_s3_handler)
                 elif isinstance(handlerObject, ast.Call):
-                    logging.warning(
-                        f"Unknown function: SKIPPED")
+                    logging.warning(f"Unknown function: SKIPPED")
 
                 # attribute case (ex. app_oauth.RemoveAuthHandler)
                 elif isinstance(handlerObject, ast.Attribute):
@@ -231,10 +238,10 @@ def parseRoutesFile(routesPath):
 
 def generate_container_file(packageName, containerName, initialQuery, routeName):
     """
-    given a package name, container name, initial query, and route name this 
-    function generates the appropriate next.js page file, 
-    (from page-with-data.tsx.tmpl and page-with-data.tsx.tmpl located in the 
-    same lib directory as this file) and saves it to the leopard pages directory, 
+    given a package name, container name, initial query, and route name this
+    function generates the appropriate next.js page file,
+    (from page-with-data.tsx.tmpl and page-with-data.tsx.tmpl located in the
+    same lib directory as this file) and saves it to the leopard pages directory,
     using a sanitized version of the container name as the path
 
     TODO: we'll need to track the original URL when parsing the handlers file
@@ -242,8 +249,7 @@ def generate_container_file(packageName, containerName, initialQuery, routeName)
     method allows us to easily re-generate the page code while testing
     """
     logging.warning(
-        "generating code for {containerName}".format(
-            containerName=containerName)
+        "generating code for {containerName}".format(containerName=containerName)
     )
     fileDir = os.path.dirname(os.path.abspath(__file__))
 
@@ -263,7 +269,7 @@ def generate_container_file(packageName, containerName, initialQuery, routeName)
     )
 
     # NOTE: files that have (.*) or id extensions are skipped for now
-    if not ('.*' in routeName):
+    if not (".*" in routeName):
         create_route_subdirs(routeName)
         with open(f"{LEOPARD_PAGES_DIR}{routeName}.tsx", "w") as file:
             file.write(renderedTsx)
@@ -294,8 +300,7 @@ def build_next_structure():
     ]
 
     for file in handler_files:
-        parseRoutesFile(("{dir}/" + file).format(
-            dir=CLROOT_DIR))
+        parseRoutesFile(("{dir}/" + file).format(dir=CLROOT_DIR))
 
     for containerName in containerNames:
         try:
@@ -310,13 +315,14 @@ def build_next_structure():
                 routeName = handlerToRouteMapping[handlerName]
             except KeyError as e:
                 logging.warning(
-                    f"{handlerName}: KEY ERROR, handler not mapped to a route name")
+                    f"{handlerName}: KEY ERROR, handler not mapped to a route name"
+                )
 
             generate_container_file(
                 packageName=packageName,
                 containerName=containerName,
                 initialQuery=initialQuery,
-                routeName=routeName
+                routeName=routeName,
             )
 
             DATA[containerName] = {
@@ -329,8 +335,7 @@ def build_next_structure():
         except HandlerPathError as e:
             logging.warning(f"{e.containerName}: {e.message}")
         except ParsingError as e:
-            logging.warning(
-                f"{e.containerName} ({e.handlerPath}): {e.message}")
+            logging.warning(f"{e.containerName} ({e.handlerPath}): {e.message}")
 
     log_filename = "{dir}/logs/log_{uid}.json".format(
         dir=os.path.dirname(os.path.abspath(__file__)), uid=round(time.time())
@@ -338,5 +343,4 @@ def build_next_structure():
     with open(log_filename, "w") as f:
         f.write(json.dumps(DATA))
 
-    logging.warning(
-        f"\nTOTAL PAGES GENERATED: {pagesGenerated}/{len(containerNames)}")
+    logging.warning(f"\nTOTAL PAGES GENERATED: {pagesGenerated}/{len(containerNames)}")

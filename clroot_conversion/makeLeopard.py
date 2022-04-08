@@ -22,6 +22,7 @@ def main(
     codemods_only,
     schema_only,
     skip_npm_refresh,
+    no_master_check,
 ) -> int:
     if clean_only:
         clean_leopard(dryrun=False)
@@ -38,7 +39,7 @@ def main(
         return 0
 
     if not skip_refresh:
-        refresh_clroot()
+        refresh_clroot(no_master_check=no_master_check)
 
     prep_leopard(dryrun=prep_dryrun)
     if prep_dryrun:
@@ -99,6 +100,12 @@ if __name__ == "__main__":
         "-n",
         "--skip-npm-refresh",
         help="skip refreshing @ContextLogic npm packages. This process takes a bit of time and only needs to be run daily, so skipping it is useful when repeatedly running the script for development purposes",
+        action="store_true",
+    )
+    parser.add_argument(
+        "-g",
+        "--no-master-check",
+        help="skip the check that clroot is on the master branch",
         action="store_true",
     )
     args = parser.parse_args()

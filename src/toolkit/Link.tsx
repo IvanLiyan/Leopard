@@ -8,7 +8,7 @@ import SimpleLink, {
   SimpleLinkProps,
 } from "@ContextLogic/lego/component/button/SimpleLink";
 
-export type LinkProps = SimpleLinkProps & {
+export type LinkProps = Omit<SimpleLinkProps, "href"> & {
   readonly href?: string | null | undefined;
   readonly download?: boolean | null | undefined;
   readonly DEPRECATED_isRouterLink?: boolean | null | undefined;
@@ -20,7 +20,7 @@ export type LinkProps = SimpleLinkProps & {
 
 const Link = (props: LinkProps) => {
   const {
-    href,
+    href: hrefProp,
     style,
     className,
     DEPRECATED_isRouterLink,
@@ -43,6 +43,9 @@ const Link = (props: LinkProps) => {
   // has to be an issue with NextJS
   // similar to issues identified with emotion: https://github.com/emotion-js/emotion/issues/2111
   // emotion has gotten into the prop types, which is adding a css variable that does not normally exist in this type in Lego
+
+  // required since legacy lego link allows href to be null, but anchor doesn't
+  const href = hrefProp === null ? undefined : hrefProp;
 
   return (
     <NextLink href={{ pathname: href }} passHref>

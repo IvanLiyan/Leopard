@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.3 (57544) - http://www.bohemiancoding.com/sketch -->
+    <title>Notification_vertical_24x24</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Notification_vertical_24x24" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group" transform="translate(3.000000, 1.000000)" fill="#000000" fill-rule="nonzero">
+            <path d="M7,2 C7,0.8954305 7.8954305,0 9,0 C10.1045695,0 11,0.8954305 11,2 L7,2 Z" id="Combined-Shape"></path>
+            <path d="M6,20 L12,20 C12,21.1045695 10.6568543,22 9,22 C7.34314575,22 6,21.1045695 6,20 Z" id="Combined-Shape"></path>
+            <path d="M14.6718413,17 C14.2390105,16.4213548 14,15.7582017 14,15 L14,8 C14,5.23857625 11.7614237,3 9,3 C6.23857625,3 4,5.23857625 4,8 L4,15 C4,15.7582016 3.76098942,16.4213548 3.32815851,17 L14.6718413,17 Z M2,8 C2,4.13400675 5.13400675,1 9,1 C12.8659932,1 16,4.13400675 16,8 L16,15 C16,15.632231 16.4914244,16.213074 17.4742733,16.742529 C17.798083,16.9169801 18,17.2551022 18,17.6229146 L18,18 C18,18.5522847 17.5522847,19 17,19 L1,19 C0.44771525,19 -1.7763565e-14,18.5522847 -1.7763565e-14,18 L-8.80559793e-06,17.6229167 C-8.80559793e-06,17.2550962 0.201912311,16.9169666 0.52573585,16.7425241 C1.50857862,16.2130704 2,15.632229 2,15 L2,8 Z" id="Combined-Shape"></path>
+        </g>
+    </g>
+</svg>

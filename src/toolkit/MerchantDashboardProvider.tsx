@@ -15,8 +15,13 @@ import {
 } from "@stores/LocalizationStore";
 import { ApolloProvider, client } from "@stores/ApolloStore";
 import { ThemeStoreProvider } from "@stores/ThemeStore";
-import { datadogRum } from "@datadog/browser-rum";
+import {
+  ChromeProvider,
+  CHROME_STORE_INITIAL_QUERY,
+  ChromeStoreInitialQueryResponse,
+} from "@stores/ChromeStore";
 import { env } from "@stores/EnvironmentStore";
+import { datadogRum } from "@datadog/browser-rum";
 
 datadogRum.init({
   applicationId: "901bc1fd-28d9-4542-88ca-f109e88b2a43",
@@ -57,16 +62,17 @@ const MerchantDashboardProvider: React.FC = ({ children }) => {
     LOCALIZATION_STORE_INITIAL_QUERY,
     { client },
   );
+  const {
+    data: chromeStoreInitialData,
+    loading: chromeStoreLoading,
+    error: chromeStoreError,
+  } = useQuery<ChromeStoreInitialQueryResponse>(CHROME_STORE_INITIAL_QUERY, {
+    client,
+  });
 
   // simplify, currently for testing purposes
-  if (userStoreLoading && localizationStoreLoading) {
+  if (userStoreLoading || localizationStoreLoading || chromeStoreLoading) {
     return <div>loading...</div>;
-  }
-  if (userStoreLoading && !localizationStoreLoading) {
-    return <div>userStore loading...</div>;
-  }
-  if (!userStoreLoading && localizationStoreLoading) {
-    return <div>localizationStore loading...</div>;
   }
 
   if (userStoreInitialData == null || userStoreError) {
@@ -83,6 +89,14 @@ const MerchantDashboardProvider: React.FC = ({ children }) => {
     console.log("localizationStoreError", localizationStoreError);
     /* eslint-enable no-console */
     return <div>error loading localizationStore (see console for details)</div>;
+  }
+
+  if (chromeStoreInitialData == null || chromeStoreError) {
+    /* eslint-disable no-console */
+    console.log("chromeStoreInitialData", chromeStoreInitialData);
+    console.log("chromeStoreError", chromeStoreError);
+    /* eslint-enable no-console */
+    return <div>error loading chromeStore (see console for details)</div>;
   }
 
   // TODO [lliepert]: clean up userStore file now that we aren't using it here
@@ -109,10 +123,10 @@ const MerchantDashboardProvider: React.FC = ({ children }) => {
     //   { fireImmediately: true },
     // );
 
-    <UserStoreProvider initialData={userStoreInitialData}>
-      <ApolloProvider>
-        <ToastProvider>
-          <NavigationProvider>
+    <NavigationProvider>
+      <UserStoreProvider initialData={userStoreInitialData}>
+        <ApolloProvider>
+          <ToastProvider>
             <PersistenceStoreProvider
               userId={userStoreInitialData.currentUser?.id || "none"}
             >
@@ -120,14 +134,18 @@ const MerchantDashboardProvider: React.FC = ({ children }) => {
                 <LocalizationStoreProvider
                   initialData={localizationStoreInitialData}
                 >
-                  <ThemeStoreProvider>{children}</ThemeStoreProvider>
+                  <ThemeStoreProvider>
+                    <ChromeProvider initialData={chromeStoreInitialData}>
+                      {children}
+                    </ChromeProvider>
+                  </ThemeStoreProvider>
                 </LocalizationStoreProvider>
               </DeviceStoreProvider>
             </PersistenceStoreProvider>
-          </NavigationProvider>
-        </ToastProvider>
-      </ApolloProvider>
-    </UserStoreProvider>
+          </ToastProvider>
+        </ApolloProvider>
+      </UserStoreProvider>
+    </NavigationProvider>
   );
 };
 

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 55.2 (78181) - https://sketchapp.com -->
+    <title>Bag / 24x24@1x</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <rect id="path-1" x="0" y="0" width="24" height="24"></rect>
+    </defs>
+    <g id="Bag-/-24x24" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group">
+            <mask id="mask-2" fill="white">
+                <use xlink:href="#path-1"></use>
+            </mask>
+            <use id="Mask-Copy" fill-opacity="0" fill="#FF3838" xlink:href="#path-1"></use>
+            <rect id="Rectangle" fill="#2FB7EC" mask="url(#mask-2)" x="2" y="9" width="20" height="13" rx="1"></rect>
+            <path d="M15,7 C15,5.34314575 13.6568542,4 12,4 C10.3431458,4 9,5.34314575 9,7 L7,7 C7,4.23857625 9.23857625,2 12,2 C14.7614237,2 17,4.23857625 17,7 L15,7 Z" id="Combined-Shape" fill="#2FB7EC" mask="url(#mask-2)"></path>
+            <rect id="Rectangle" fill="#2FB7EC" mask="url(#mask-2)" x="7" y="7" width="2" height="2"></rect>
+            <rect id="Rectangle" fill="#2FB7EC" mask="url(#mask-2)" x="15" y="7" width="2" height="2"></rect>
+        </g>
+    </g>
+</svg>

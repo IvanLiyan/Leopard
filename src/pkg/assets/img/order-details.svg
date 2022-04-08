@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
+    <defs>
+        <path id="a" d="M0 0h24v24H0z"/>
+        <path id="c" d="M1 2h16v16H1z"/>
+        <path id="d" d="M0 0h16v16H0z"/>
+    </defs>
+    <g fill="none" fill-rule="evenodd">
+        <mask id="b" fill="#fff">
+            <use xlink:href="#a"/>
+        </mask>
+        <use fill="#F65A5A" fill-opacity="0" xlink:href="#a"/>
+        <g mask="url(#b)">
+            <g transform="translate(3 2)">
+                <use fill="#C44747" fill-opacity="0" xlink:href="#c"/>
+                <rect width="16" height="16" x="1" y="3" fill="#FFF" stroke="#326BEE" stroke-width="2" rx="2"/>
+                <path fill="#FFF" fill-rule="nonzero" d="M16 5h2v11h-2z"/>
+                <path fill="#326BEE" fill-rule="nonzero" d="M16 5h2v1a1 1 0 0 1-2 0V5z"/>
+                <path fill="#FFF" fill-rule="nonzero" d="M2 18h16v2H2z"/>
+                <path fill="#326BEE" fill-rule="nonzero" d="M2 18h7a1 1 0 0 1 0 2H2v-2z"/>
+                <g transform="translate(5 6)">
+                    <mask id="e" fill="#fff">
+                        <use xlink:href="#d"/>
+                    </mask>
+                    <use fill="#D8D8D8" fill-opacity="0" xlink:href="#d"/>
+                    <g mask="url(#e)">
+                        <g transform="translate(0 2)">
+                            <path stroke="#2FB7EC" stroke-width="2" d="M1 9h10V1H1v8z"/>
+                            <path fill="#2FB7EC" d="M12 8V2l4 2v6H0V8h12z"/>
+                            <circle cx="12" cy="10" r="2" fill="#FFF" stroke="#2FB7EC" stroke-width="2"/>
+                            <circle cx="4" cy="10" r="2" fill="#FFF" stroke="#2FB7EC" stroke-width="2"/>
+                        </g>
+                    </g>
+                </g>
+                <rect width="2" height="6" x="4" fill="#326BEE" rx="1"/>
+                <rect width="2" height="6" x="8" fill="#326BEE" rx="1"/>
+                <rect width="2" height="6" x="12" fill="#326BEE" rx="1"/>
+            </g>
+        </g>
+    </g>
+</svg>

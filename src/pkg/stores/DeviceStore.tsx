@@ -6,6 +6,7 @@ import {
   useImperativeHandle,
 } from "react";
 import { computed, observable, runInAction } from "mobx";
+import Cookies from "js-cookie";
 
 // TODO [lliepert]: force store to run only on client side, eventually deprecate
 
@@ -139,6 +140,12 @@ class DeviceStore {
     // Windows Phone must come first because its UA also contains "Android"
     return !/windows phone/i.test(ua) && /android/i.test(ua);
   }
+
+  @computed
+  get isWebview(): boolean {
+    const isWebview = (Cookies.get("_webview") || "").trim();
+    return isWebview == "1" || isWebview == "true";
+  }
 }
 
 export const useDeviceStore = (): DeviceStore => {
@@ -176,7 +183,7 @@ const LegacyDeviceStoreAdapter = {
   instance: (): DeviceStore => {
     const ref = DeviceStoreRef.current;
     if (ref == null) {
-      throw "Attempting to access reference to un-instantiated DeviceStore";
+      throw "Attempting to access reference to un-instantiated DeviceStore.\n\nIf this error occurred during a Next.JS Fast Refresh, try performing a full refresh.";
     }
     return ref;
   },

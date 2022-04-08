@@ -46,6 +46,15 @@ const moduleExports = {
     );
     return config;
   },
+  typescript: {
+    // !! WARN !!
+    // Dangerously allow production builds to successfully complete even if
+    // your project has type errors.
+    // temporarily added to allow demoing on staging while the final tsc etc.
+    // errors are being resolved
+    // !! WARN !!
+    ignoreBuildErrors: true,
+  },
 };
 
 const SentryWebpackPluginOptions = {

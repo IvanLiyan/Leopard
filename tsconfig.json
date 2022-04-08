@@ -25,7 +25,8 @@
       "@schema/*": ["src/pkg/schema/index", "src/pkg/schema/*"],
       "@stores/*": ["src/pkg/stores/index", "src/pkg/stores/*"],
       "@toolkit/*": ["src/pkg/toolkit/index", "src/pkg/toolkit/*"],
-      "@next-toolkit/*": ["src/toolkit/index", "src/toolkit/*"]
+      "@next-toolkit/*": ["src/toolkit/index", "src/toolkit/*"],
+      "@public/*": ["public/index", "public/*"]
     },
     "experimentalDecorators": true,
     "incremental": true

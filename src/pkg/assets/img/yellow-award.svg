@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="40px" height="40px" viewBox="0 0 40 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.4 (67378) - http://www.bohemiancoding.com/sketch -->
+    <title>Oval 2</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <circle id="path-1" cx="20" cy="20" r="20"></circle>
+    </defs>
+    <g id="icon-exploration" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Artboard" transform="translate(-32.000000, -25.000000)">
+            <g id="Group-3" transform="translate(32.000000, 25.000000)">
+                <g id="Oval-2">
+                    <use fill="#FFFFFF" xlink:href="#path-1"></use>
+                    <use fill-opacity="0.3" fill="#FFE380" xlink:href="#path-1"></use>
+                </g>
+                <g id="Group-5" transform="translate(10.800000, 9.600000)">
+                    <g id="Group-4">
+                        <g id="Group-6" transform="translate(0.000000, 11.000000)" fill="#FFE380" stroke="#F0B616" stroke-linejoin="round" stroke-width="2">
+                            <polygon id="Path-2" points="4.33212341 0.626984127 2.30926389e-14 7.17177579 3.71324864 6.86011905 5.26043557 10.6 8.97368421 3.43189484"></polygon>
+                            <polygon id="Path-2-Copy" transform="translate(14.113158, 5.613492) scale(-1, 1) translate(-14.113158, -5.613492) " points="13.9584392 0.626984127 9.62631579 7.17177579 13.3395644 6.86011905 14.8867514 10.6 18.6 3.43189484"></polygon>
+                        </g>
+                        <g id="Group-2" transform="translate(2.773684, 0.000000)">
+                            <path d="M6.60502138,13.1465477 L4.49113472,14.2047245 L4.00216832,13.4650982 L3.20171381,12.2543036 L0.818397241,12.1376649 L0.771721777,11.2346794 L0.698083352,9.80999793 L-1.31352098,8.53870575 L-0.885913817,7.72201243 L-0.222915689,6.45574827 L-1.31357801,4.37370101 L-0.534434059,3.88104122 L0.698094551,3.10170231 L0.818376732,0.773697968 L1.72150735,0.729499055 L3.20195841,0.657048864 L4.49161272,-1.29067267 L5.28381074,-0.894306536 L6.60712312,-0.232202018 L8.72321276,-1.29096037 L9.21208215,-0.551480779 L10.0125286,0.659301683 L12.3974107,0.775914715 L12.4440689,1.67896056 L12.5176913,3.10395548 L14.5296765,4.37615202 L14.101426,5.19288617 L13.4380682,6.45799927 L14.5296195,8.54076604 L13.7500243,9.03345399 L12.5177098,9.81225093 L12.3973902,12.1399593 L11.4942394,12.1841205 L10.0125311,12.2565689 L8.72330968,14.2066868 L7.93061576,13.8102676 L6.60502138,13.1465477 Z" id="Path" stroke="#F0B616" stroke-width="2" fill="#FFE380" stroke-linejoin="round"></path>
+                            <g id="Group" transform="translate(2.447368, 2.452381)">
+                                <ellipse id="Oval" stroke="#F0B616" stroke-width="2" fill="#F0B616" cx="4.09212617" cy="4.03154748" rx="4.09212617" ry="4.03154748"></ellipse>
+                                <polygon id="Star-2" fill="#FFFFFF" points="4 5.97507764 2.14589803 7 2.5 4.82917961 1 3.29179607 3.07294902 2.97507764 4 1 4.92705098 2.97507764 7 3.29179607 5.5 4.82917961 5.85410197 7"></polygon>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

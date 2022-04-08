@@ -214,7 +214,7 @@ const LegacyLocalizationStoreAdapter = {
   instance: (): LocalizationStore => {
     const ref = LocalizationStoreRef.current;
     if (ref == null) {
-      throw "Attempting to access reference to un-instantiated LocalizationStore";
+      throw "Attempting to access reference to un-instantiated LocalizationStore.\n\nIf this error occurred during a Next.JS Fast Refresh, try performing a full refresh.";
     }
     return ref;
   },

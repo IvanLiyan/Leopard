@@ -225,7 +225,7 @@ const LegacyApolloStoreAdapter = {
   instance: (): ApolloStore => {
     const ref = ApolloStoreRef.current;
     if (ref == null) {
-      throw "Attempting to access reference to un-instantiated ApolloStore";
+      throw "Attempting to access reference to un-instantiated ApolloStore.\n\nIf this error occurred during a Next.JS Fast Refresh, try performing a full refresh.";
     }
     return ref;
   },

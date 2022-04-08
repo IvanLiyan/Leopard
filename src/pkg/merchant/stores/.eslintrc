@@ -1,0 +1,13 @@
+{
+  "rules": {
+    "filenames/match-exported": "warn",
+    "no-restricted-globals": ["off"],
+
+    "filenames/match-regex": [
+      "warn",
+      "^([A-Z][a-z]+(?:[A-Z][a-z]+)*Store|index|(.*)test(.*))$",
+      true
+    ],
+    "local-rules/no-pageParams": "off"
+  }
+}

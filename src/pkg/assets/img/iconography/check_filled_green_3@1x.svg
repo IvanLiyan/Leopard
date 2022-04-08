@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 55.2 (78181) - https://sketchapp.com -->
+    <title>Check / 24x24 / filled green 3@1x</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Check-/-24x24-/-filled-green-3" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="cyan-checkmark" fill="#2EE3AA" fill-rule="nonzero">
+            <circle id="Oval-2" fill-opacity="0" opacity="0" cx="12" cy="12" r="12"></circle>
+            <g id="Checkmark_16x16-Copy-3" transform="translate(5.000000, 7.000000)">
+                <path d="M5.5128869,7.3385564 L12.2048957,0.32288724 C12.6155506,-0.10762906 13.2813539,-0.1076291 13.6920088,0.32288724 C14.1026637,0.75340358 14.1026637,1.45140852 13.6920088,1.88192483 L6.2564435,9.6771127 C5.8457885,10.1076291 5.1799853,10.1076291 4.7693304,9.6771127 L0.3079912,5 C-0.10266373,4.5694837 -0.10266373,3.8714787 0.3079912,3.4409624 C0.71864614,3.0104461 1.38444933,3.0104461 1.79510427,3.4409624 L5.5128869,7.3385564 Z" id="path-1"></path>
+            </g>
+        </g>
+    </g>
+</svg>

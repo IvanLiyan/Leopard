@@ -7,6 +7,8 @@ import {
   SetStateAction,
   useMemo,
 } from "react";
+import Image from "next/image";
+import { Flags4x3 } from "@toolkit/countries";
 
 type CounterContextType = {
   counter: number;
@@ -63,6 +65,7 @@ const Parent: React.FC = () => {
       <CounterProvider>
         <CounterConsumer />
         <OtherChild />
+        <Image height="40" width="30" alt="demo flag image" src={Flags4x3.ca} />
       </CounterProvider>
     </div>
   );

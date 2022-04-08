@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="40px" height="40px" viewBox="0 0 40 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 55.2 (78181) - https://sketchapp.com -->
+    <title>social media/youtube/40x40@3x</title>
+    <desc>Created with Sketch.</desc>
+    <g id="social-media/youtube/40x40" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g>
+            <rect id="Rectangle" x="0" y="0" width="40" height="40"></rect>
+            <g id="001-youtube" transform="translate(0.000000, 5.000000)" fill="#D9252A" fill-rule="nonzero">
+                <path d="M31.6925126,0 L8.3074874,0 C3.71938456,0 0,3.71776414 0,8.30386809 L0,19.9888148 C0,24.5749188 3.71938456,28.2926829 8.3074874,28.2926829 L31.6925126,28.2926829 C36.2806154,28.2926829 40,24.5749188 40,19.9888148 L40,8.30386809 C40,3.71776414 36.2806154,0 31.6925126,0 Z M26.0742168,14.714856 L15.1362795,19.9293181 C14.8448268,20.0682594 14.5081681,19.8558579 14.5081681,19.5331359 L14.5081681,8.77828068 C14.5081681,8.45096201 14.8536771,8.23882066 15.1457372,8.38678188 L26.0836744,13.927175 C26.4088798,14.0918751 26.4032399,14.5580483 26.0742168,14.714856 Z" id="Shape"></path>
+            </g>
+        </g>
+    </g>
+</svg>

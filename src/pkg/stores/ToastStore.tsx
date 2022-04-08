@@ -214,7 +214,7 @@ const LegacyToastStoreAdapter = {
   instance: (): ToastStore => {
     const ref = ToastStoreRef.current;
     if (ref == null) {
-      throw "Attempting to access reference to un-instantiated ToastStore";
+      throw "Attempting to access reference to un-instantiated ToastStore.\n\nIf this error occurred during a Next.JS Fast Refresh, try performing a full refresh.";
     }
     return ref;
   },

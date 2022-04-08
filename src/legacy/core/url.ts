@@ -156,7 +156,8 @@ export const zendeskSectionURL = (
 
 export const getZendeskLocale = (locale?: string): string => {
   // @ts-expect-error: need to add locale_info to GQL (https://jira.wish.site/browse/MKL-54838)
-  const zendeskLocale = locale || window.locale_info.locale || "en";
+  // TODO [lliepert, yzhang]: check to make sure this still works for Chinese merchants
+  const zendeskLocale = locale || window?.locale_info?.locale || "en";
 
   if (zendeskLocale === "en") {
     return "en-us";

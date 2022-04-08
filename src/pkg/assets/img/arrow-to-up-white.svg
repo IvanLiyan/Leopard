@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="22px" height="20px" viewBox="0 0 22 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.5 (67469) - http://www.bohemiancoding.com/sketch -->
+    <title>Arrow_to_right_24x24</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M77,182 L77,166 C77,165.447715 77.4477153,165 78,165 C78.5522847,165 79,165.447715 79,166 L79,182 C79,182.552285 78.5522847,183 78,183 C77.4477153,183 77,182.552285 77,182 Z M78.7136271,163.295367 L88.704406,173.278475 C89.0985313,173.672297 89.0985313,174.31081 88.704406,174.704633 C88.3102806,175.098456 87.6712772,175.098456 87.2771519,174.704633 L78,165.434604 L68.7228481,174.704633 C68.3287228,175.098456 67.6897194,175.098456 67.295594,174.704633 C66.9014687,174.31081 66.9014687,173.672297 67.295594,173.278475 L77.2863729,163.295367 C77.6804983,162.901544 78.3195017,162.901544 78.7136271,163.295367 Z" id="path-1"></path>
+    </defs>
+    <g id="V5" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Back-to-top/bottom-buttons" transform="translate(-67.000000, -163.000000)">
+            <mask id="mask-2" fill="white">
+                <use xlink:href="#path-1"></use>
+            </mask>
+            <use id="Arrow_to_right_24x24" fill="#FFFFFF" fill-rule="nonzero" xlink:href="#path-1"></use>
+        </g>
+    </g>
+</svg>

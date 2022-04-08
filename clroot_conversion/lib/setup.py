@@ -26,7 +26,7 @@ class NPMException(Exception):
     pass
 
 
-def refresh_clroot() -> None:
+def refresh_clroot(no_master_check) -> None:
     """
     Confirms clroot is on the master branch and pulls the latest version.
     """
@@ -37,15 +37,19 @@ def refresh_clroot() -> None:
         os.chdir(CLROOT_DIR)
         logging.warning("now in {dir}".format(dir=os.getcwd()))
 
-        logging.warning("checking git is on master branch")
-        try:
-            output = subprocess.check_output(["git", "branch", "--show-current"])
-            if not output == b"master\n":
+        if not no_master_check:
+            logging.warning("checking git is on master branch")
+            try:
+                output = subprocess.check_output(["git", "branch", "--show-current"])
+                if not output == b"master\n":
+                    raise GitException(
+                        "clroot git is not on master branch. please visit clroot directory, stash or commit any changes, and change to the master branch."
+                    )
+            except subprocess.CalledProcessError as e:
                 raise GitException(
-                    "clroot git is not on master branch. please visit clroot directory, stash or commit any changes, and change to the master branch."
+                    "git checkout master failed with error {e}".format(e=e)
                 )
-        except subprocess.CalledProcessError as e:
-            raise GitException("git checkout master failed with error {e}".format(e=e))
+
         try:
             subprocess.check_call(["git", "pull"])
         except subprocess.CalledProcessError as e:

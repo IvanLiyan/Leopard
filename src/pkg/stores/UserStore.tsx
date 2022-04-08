@@ -7,6 +7,9 @@
 //
 
 import {
+  useState,
+  useMemo,
+  useEffect,
   createContext,
   useContext,
   createRef,
@@ -38,6 +41,7 @@ export const USER_STORE_INITIAL_QUERY = gql`
     }
     currentUser {
       id
+      merchantId
       firstName
       lastName
       email
@@ -87,6 +91,7 @@ type PickedCurrentUser = {
 } & Pick<
   UserSchema,
   | "id"
+  | "merchantId"
   | "firstName"
   | "lastName"
   | "email"
@@ -94,7 +99,11 @@ type PickedCurrentUser = {
   | "companyName"
   | "entityType"
   | "isStoreOrMerchantUser"
->;
+> & {
+    // TODO [lliepert]: add these to GQL
+    displayName?: string;
+    isApiUser: boolean;
+  };
 
 type PickedSU = Pick<UserSchema, "id" | "isAdmin">;
 
@@ -125,7 +134,7 @@ class UserStore {
   isSu: boolean;
   loggedInMerchantUser: Readonly<PickedCurrentUser> | null | undefined;
   merchantSourceCurrency: CurrencyCode | null | undefined;
-  recentUsers: ReadonlyArray<RecentUser>;
+  recentUsers: ReadonlyArray<RecentUser>; // TODO [lliepert]: confirm this is equivalent to recent_su
   su: Readonly<PickedSU> | null | undefined;
   merchant: Readonly<PickedCurrentMerchant> | null | undefined;
 
@@ -235,8 +244,23 @@ const UserStoreRef = createRef<UserStore>();
 export const UserStoreProvider: React.FC<{
   initialData: UserStoreInitialQueryResponse;
 }> = ({ initialData, children }) => {
-  const userStore = new UserStore(initialData);
+  const [showChildren, setShowChildren] = useState<boolean>(false);
+
+  const userStore = useMemo(() => {
+    return new UserStore(initialData);
+  }, [initialData]);
+
+  useEffect(() => {
+    setShowChildren(UserStoreRef.current != null);
+  }, []);
+
   useImperativeHandle(UserStoreRef, () => userStore);
+
+  // to prevent children from attempting to access an un-instantiated store,
+  // we don't render them until the ref for the legacy adapter is populated
+  if (!showChildren) {
+    return null;
+  }
 
   return (
     <UserStoreContext.Provider value={userStore}>
@@ -249,7 +273,7 @@ const LegacyUserStoreAdapter = {
   instance: (): UserStore => {
     const ref = UserStoreRef.current;
     if (ref == null) {
-      throw "Attempting to access reference to un-instantiated UserStore";
+      throw "Attempting to access reference to un-instantiated UserStore.\n\nIf this error occurred during a Next.JS Fast Refresh, try performing a full refresh.";
     }
     return ref;
   },

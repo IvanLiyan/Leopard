@@ -1,0 +1,13 @@
+{
+  "extends": ["plugin:react-hooks/recommended"],
+  "rules": {
+    "filenames/match-exported": "warn",
+    "no-restricted-globals": ["off"],
+
+    "filenames/match-regex": [
+      "warn",
+      "^([A-Z][a-z]+(?:[A-Z][a-z]+)|index|(.*)test(.*))$",
+      true
+    ]
+  }
+}

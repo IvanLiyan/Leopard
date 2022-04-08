@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="56px" height="56px" viewBox="0 0 56 56" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 55.2 (78181) - https://sketchapp.com -->
+    <title>Inventory / 56x56@1x</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <circle id="path-1" cx="28" cy="28" r="28"></circle>
+        <linearGradient x1="0%" y1="99.9990069%" x2="100%" y2="0.000993055556%" id="linearGradient-3">
+            <stop stop-color="#FFFFFF" offset="0%"></stop>
+            <stop stop-color="#EEF2F5" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="100%" y1="53.3298647%" x2="0%" y2="46.6701353%" id="linearGradient-4">
+            <stop stop-color="#2FB7EC" offset="0%"></stop>
+            <stop stop-color="#2F88EC" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="100%" y1="100%" x2="0%" y2="100%" id="linearGradient-5">
+            <stop stop-color="#8BDCFB" offset="0%"></stop>
+            <stop stop-color="#2FB7EC" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Inventory-/-56x56" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Path-+-Path-+-Path-+-Path-+-Path-+-Path-+-Path-+-Path-+-Path-+-Path-+-Path-Mask">
+            <mask id="mask-2" fill="white">
+                <use xlink:href="#path-1"></use>
+            </mask>
+            <use id="Mask" fill="#CEF2FD" fill-rule="nonzero" xlink:href="#path-1"></use>
+            <polygon id="Path" fill="#FFFFFF" fill-rule="nonzero" mask="url(#mask-2)" points="27 24 49 24 49 40 27 40"></polygon>
+            <polygon id="Path" fill="#EEF2F5" fill-rule="nonzero" mask="url(#mask-2)" points="7 24 27 24 27 40 7 40"></polygon>
+            <polygon id="Path" fill="url(#linearGradient-3)" fill-rule="nonzero" mask="url(#mask-2)" points="11 24 27 24 27 40 17 40"></polygon>
+            <polygon id="Path" fill="#2F88EC" fill-rule="nonzero" mask="url(#mask-2)" points="10 28 13 28 13 34 10 34"></polygon>
+            <polygon id="Path" fill="#2F88EC" fill-rule="nonzero" mask="url(#mask-2)" points="15 28 18 28 18 34 15 34"></polygon>
+            <polygon id="Path" fill="#2F88EC" fill-rule="nonzero" mask="url(#mask-2)" points="20 28 23 28 23 34 20 34"></polygon>
+            <polygon id="Path" fill="#FFFFFF" fill-rule="nonzero" mask="url(#mask-2)" points="38 16 49 24 27 24"></polygon>
+            <path d="M38,27 C36.3431458,27 35,25.6568542 35,24 C35,22.3431458 36.3431458,21 38,21 C39.6568542,21 41,22.3431458 41,24 C41,25.6568542 39.6568542,27 38,27 Z" id="Path" fill-opacity="0.5" fill="#AFC7D1" fill-rule="nonzero" mask="url(#mask-2)"></path>
+            <polygon id="Path" fill="url(#linearGradient-4)" fill-rule="nonzero" mask="url(#mask-2)" points="18 16 38 16 27 24 7 24"></polygon>
+            <polygon id="Path" fill="#2F88EC" fill-rule="nonzero" mask="url(#mask-2)" points="31 35 45 35 45 40 31 40"></polygon>
+            <polygon id="Path" fill="url(#linearGradient-5)" mask="url(#mask-2)" points="34 35 45 35 45 40 34 40"></polygon>
+        </g>
+    </g>
+</svg>

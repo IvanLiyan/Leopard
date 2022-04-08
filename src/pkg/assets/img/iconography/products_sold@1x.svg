@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="56px" height="56px" viewBox="0 0 56 56" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 55.2 (78181) - https://sketchapp.com -->
+    <title>Products sold / 56x56@1x</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <circle id="path-1" cx="28" cy="28" r="28"></circle>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-3">
+            <stop stop-color="#A5E15D" offset="0%"></stop>
+            <stop stop-color="#88C43F" stop-opacity="0" offset="100%"></stop>
+        </linearGradient>
+        <circle id="path-4" cx="28" cy="33" r="10"></circle>
+        <circle id="path-6" cx="28" cy="33" r="10"></circle>
+        <path d="M24,34 L32,34 C32,36.209139 30.209139,38 28,38 C25.790861,38 24,36.209139 24,34 Z" id="path-8"></path>
+        <path d="M26,37 C26,36.4453801 26.9957732,35.9976549 28,36 C28.9957372,36.0023437 30,36.4500689 30,37 C30,37 29,37.5 28,37.5 C27,37.5 26,37 26,37 Z" id="path-9"></path>
+    </defs>
+    <g id="Products-sold-/-56x56" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <mask id="mask-2" fill="white">
+            <use xlink:href="#path-1"></use>
+        </mask>
+        <use id="Mask" fill-opacity="0.5" fill="#C2EF8A" xlink:href="#path-1"></use>
+        <path d="M28,49 C39.7223268,49 45.5834902,39.5979797 43.6297691,28 C41.676048,16.4020203 33.8611634,7 28,7 C22.1388366,7 14.323952,16.4020203 12.3702309,28 C10.4165098,39.5979797 16.2776732,49 28,49 Z M28,47 C17.9968765,47 12.5062238,39.2326808 14.3424443,28.3322264 C16.074564,18.0497509 23.0533199,9 28,9 C32.9466801,9 39.925436,18.0497509 41.6575557,28.3322264 C43.4937762,39.2326808 38.0031235,47 28,47 Z" id="Oval" fill="url(#linearGradient-3)" fill-rule="nonzero"></path>
+        <path d="M28,49 C39.7223268,49 45.5834902,39.5979797 43.6297691,28 C41.676048,16.4020203 33.8611634,7 28,7 C22.1388366,7 14.323952,16.4020203 12.3702309,28 C10.4165098,39.5979797 16.2776732,49 28,49 Z" id="Oval" fill-opacity="0.8" fill="#A5E15D"></path>
+        <mask id="mask-5" fill="white">
+            <use xlink:href="#path-4"></use>
+        </mask>
+        <use id="Mask" fill="#FFFFFF" xlink:href="#path-4"></use>
+        <mask id="mask-7" fill="white">
+            <use xlink:href="#path-6"></use>
+        </mask>
+        <use id="Mask" fill-opacity="0.5" fill="#8B572A" xlink:href="#path-6"></use>
+        <circle id="Oval" fill="#8B572A" cx="24.5" cy="31.5" r="1.5"></circle>
+        <circle id="Oval" fill="#8B572A" cx="31.5" cy="31.5" r="1.5"></circle>
+        <g id="Path">
+            <use fill="#FFFFFF" xlink:href="#path-8"></use>
+            <use fill="#8B572A" xlink:href="#path-8"></use>
+        </g>
+        <g id="Path" transform="translate(28.000000, 36.750005) scale(1, -1) translate(-28.000000, -36.750005) ">
+            <use fill="#FFFFFF" xlink:href="#path-9"></use>
+            <use fill="#FFA39E" xlink:href="#path-9"></use>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.4 (67378) - http://www.bohemiancoding.com/sketch -->
+    <title>Oval 13</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M13.5380579,11.9731531 L16.6678676,14.9955752 C17.1000041,15.4128845 17.1120239,16.1014966 16.6947145,16.5336331 C16.2774051,16.9657697 15.5887931,16.9777894 15.1566566,16.56048 L12.0268469,13.5380579 L9.00442483,16.6678676 C8.58711546,17.1000041 7.89850343,17.1120239 7.46636689,16.6947145 C7.03423035,16.2774051 7.02221062,15.5887931 7.43951999,15.1566566 L10.4619421,12.0268469 L7.33213239,9.00442483 C6.89999585,8.58711543 6.88797608,7.89850343 7.30528549,7.46636689 C7.72259489,7.03423035 8.41120689,7.02221059 8.84334343,7.43951999 L11.9731531,10.4619421 L14.9955752,7.33213239 C15.4128846,6.89999585 16.1014966,6.88797608 16.5336331,7.30528549 C16.9657697,7.72259489 16.9777894,8.41120689 16.56048,8.84334343 L13.5380579,11.9731531 Z" id="path-1"></path>
+    </defs>
+    <g id="Component-Library-Page" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Platform-Design-System_full-width-banners" transform="translate(-312.000000, -3916.000000)">
+            <g id="Group-24" transform="translate(312.000000, 3916.000000)">
+                <g id="Red-checkmark">
+                    <circle id="Oval-13" fill="#E14D4C" fill-rule="nonzero" cx="12" cy="12" r="12"></circle>
+                    <mask id="mask-2" fill="white">
+                        <use xlink:href="#path-1"></use>
+                    </mask>
+                    <use id="Close_16x16-Copy-3" fill="#FFFFFF" fill-rule="nonzero" xlink:href="#path-1"></use>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

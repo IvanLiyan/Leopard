@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.3 (57544) - http://www.bohemiancoding.com/sketch -->
+    <title>Chart_24x24</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Chart_24x24" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path d="M20,4 L20,18 L16,18 L16,4 C16,3.44771525 16.4477153,3 17,3 L19,3 C19.5522847,3 20,3.44771525 20,4 Z M13.995,9 L13.995,18 L9.995,18 L9.995,9 C9.995,8.44771525 10.4427153,8 10.995,8 L12.995,8 C13.5472847,8 13.995,8.44771525 13.995,9 Z M1.995,20 L21.995,20 L21.995,22 L1.995,22 L1.995,20 Z M7.995,13 L7.995,18 L3.995,18 L3.995,13 C3.995,12.4477153 4.44271525,12 4.995,12 L6.995,12 C7.54728475,12 7.995,12.4477153 7.995,13 Z" id="Combined-Shape" fill="#000000" fill-rule="nonzero"></path>
+    </g>
+</svg>

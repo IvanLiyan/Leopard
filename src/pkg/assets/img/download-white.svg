@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 55.2 (78181) - https://sketchapp.com -->
+    <title>Artboard@1x</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M9.00125,9.48274706 L13.205259,5.30580757 C13.6156449,4.89806414 14.2810119,4.89806414 14.6913978,5.30580757 C15.1027125,5.71447384 15.1027125,6.37555655 14.6923266,6.78329997 L8.74312738,12.6941924 C8.3327415,13.1019359 7.66737451,13.1019359 7.25698862,12.6941924 L1.30778941,6.78329997 C0.897403529,6.37555655 0.897403529,5.71447384 1.30778941,5.30673042 C1.71910414,4.89806414 2.38447112,4.89806414 2.79485701,5.30580757 L7,9.48387375 L7,1 C7,0.44771525 7.44771525,0 8,0 L8.00125,0 C8.55353475,0 9.00125,0.44771525 9.00125,1 L9.00125,9.48274706 Z M14,14.00875 L14,13.008125 C14,12.4554951 14.4473701,12 15,12 C15.5526299,12 16,12.4554951 16,13.008125 L16,16 L0,16 L0,13.008125 C0,12.4554951 0.447995072,12 1.000625,12 C1.55325493,12 2.00125,12.4554951 2.00125,13.008125 L2.00125,14.00875 L14,14.00875 Z" id="path-1"></path>
+    </defs>
+    <g id="Artboard" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Download-/-16x16-/-white">
+            <mask id="mask-2" fill="white">
+                <use xlink:href="#path-1"></use>
+            </mask>
+            <g id="Download_16x16-Copy-3" fill-rule="nonzero"></g>
+            <g id="Primary-colors-/-White" mask="url(#mask-2)" fill="#FFFFFF">
+                <rect x="0" y="0" width="16" height="16"></rect>
+            </g>
+        </g>
+    </g>
+</svg>
