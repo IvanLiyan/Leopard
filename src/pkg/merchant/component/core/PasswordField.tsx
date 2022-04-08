@@ -29,7 +29,7 @@ import eyeClosed from "@assets/img/eye-closed.svg";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
-import NextImage from "next/image";
+import NextImage from "@next-toolkit/Image";
 
 export type PasswordFieldType = "CURRENT" | "NEW" | "CONFIRM";
 

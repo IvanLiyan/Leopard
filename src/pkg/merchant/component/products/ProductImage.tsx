@@ -9,7 +9,7 @@ import { contestImageURL } from "@toolkit/url";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
-import NextImage from "next/image";
+import NextImage from "@next-toolkit/Image";
 
 export type ImageSize = "small" | "large";
 

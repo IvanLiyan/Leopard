@@ -22,7 +22,7 @@ import { greenCheckmarkSolid } from "@assets/icons";
 /* Merchant Stores */
 import { useTheme } from "@stores/ThemeStore";
 
-import NextImage from "next/image";
+import NextImage from "@next-toolkit/Image";
 
 const SubmissionSuccess: React.FC<BaseProps> = ({
   className,
@@ -95,6 +95,6 @@ const useStylesheet = () => {
           textAlign: "center",
         },
       }),
-    [borderPrimary, inputBackground]
+    [borderPrimary, inputBackground],
   );
 };

@@ -20,7 +20,7 @@ import yellowAward from "@assets/img/yellow-award.svg";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
 import Link from "@next-toolkit/Link";
-import NextImage from "next/image";
+import NextImage from "@next-toolkit/Image";
 
 export type PolicyCardProps = BaseProps;
 
@@ -174,7 +174,10 @@ export default class FulfillmentPolicyCard extends Component<PolicyCardProps> {
           <Link href="/policy/listing" openInNewTab>
             <div className={css(this.styles.container)}>
               <div className={css(this.styles.subContainer)}>
-                <NextImage src={yellowAward} className={css(this.styles.icon)} />
+                <NextImage
+                  src={yellowAward}
+                  className={css(this.styles.icon)}
+                />
                 <div className={css(this.styles.textContainer)}>
                   <div className={css(this.styles.title)}>
                     Upload top quality products

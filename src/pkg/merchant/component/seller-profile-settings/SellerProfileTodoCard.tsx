@@ -12,7 +12,7 @@ import * as fonts from "@toolkit/fonts";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
-import NextImage from "next/image";
+import NextImage from "@next-toolkit/Image";
 
 export type SellerProfileTodoCardProps = BaseProps & {
   readonly title: string;
@@ -102,6 +102,6 @@ const useStylesheet = () => {
           alignSelf: "flex-start",
         },
       }),
-    []
+    [],
   );
 };

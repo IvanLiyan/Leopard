@@ -31,7 +31,7 @@ import { ThemeWrapper } from "@stores/ThemeStore";
 import { ThemeContext } from "@stores/ThemeStore";
 import EnvironmentStore from "@stores/EnvironmentStore";
 
-import NextImage from "next/image";
+import NextImage from "@next-toolkit/Image";
 
 export type AppLocaleSelectorProps = BaseProps & {
   readonly compressOnSmallScreen?: boolean;

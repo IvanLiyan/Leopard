@@ -22,7 +22,7 @@ import { NavigationSearchResult } from "@stores/NavigationStore";
 import { useTheme } from "@stores/ThemeStore";
 
 import Link from "@next-toolkit/Link";
-import NextImage from "next/image";
+import NextImage from "@next-toolkit/Image";
 
 type Props = BaseProps & {
   readonly result: NavigationSearchResult;
@@ -133,6 +133,6 @@ const useStylesheet = ({ isSelected }: Props) => {
           fontWeight: fonts.weightNormal,
         },
       }),
-    [isSelected, surfaceLightest, textBlack, textDark]
+    [isSelected, surfaceLightest, textBlack, textDark],
   );
 };

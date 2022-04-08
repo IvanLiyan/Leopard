@@ -16,7 +16,7 @@ import { LinkedStoreListData } from "@toolkit/manual-linking/list-links";
 /* Component */
 import DeleteLinkModal from "@merchant/component/manual-linking/DeleteLinkModal";
 
-import NextImage from "next/image";
+import NextImage from "@next-toolkit/Image";
 
 type InitialProps = BaseProps & {
   readonly linkedStoreList: ReadonlyArray<LinkedStoreListData>;
@@ -113,7 +113,7 @@ const useStylesheet = () => {
           gap: 8,
         },
       }),
-    [textBlack, textDark, secondaryDark]
+    [textBlack, textDark, secondaryDark],
   );
 };
 

@@ -21,7 +21,7 @@ import { contestImageURL } from "@toolkit/url";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
-import NextImage from "next/image";
+import NextImage from "@next-toolkit/Image";
 
 type ProductDetailModalContentProps = BaseProps & {
   readonly productId: string;
@@ -81,7 +81,7 @@ const ProductDetailModalContent = observer(
         </div>
       </div>
     );
-  }
+  },
 );
 
 export default class ProductDetailModal extends Modal {
@@ -143,5 +143,5 @@ const useStyleSheet = (props: ProductDetailModalContentProps) =>
           marginBottom: 10,
         },
       }),
-    []
+    [],
   );

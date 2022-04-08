@@ -45,7 +45,7 @@ import ProductCategoryDisputeState from "@merchant/model/products/ProductCategor
 import { ProductCategoryDisputeReason } from "@schema/types";
 
 import Link from "@next-toolkit/Link";
-import NextImage from "next/image";
+import NextImage from "@next-toolkit/Image";
 
 type Props = BaseProps & {
   readonly state: ProductCategoryDisputeState;
@@ -63,7 +63,7 @@ const CreateProductCategoryDisputeSection: React.FC<Props> = ({
   const styles = useStylesheet();
 
   const [attachments, setAttachments] = useState<ReadonlyArray<AttachmentInfo>>(
-    []
+    [],
   );
 
   const product = initialData.productCatalog?.product;
@@ -76,7 +76,7 @@ const CreateProductCategoryDisputeSection: React.FC<Props> = ({
       initialData.productCatalog?.product?.trueTags
         ? getTopLevelTags(initialData.productCatalog.product.trueTags)
         : null,
-    [initialData]
+    [initialData],
   );
 
   const euDisputeReasons =
@@ -298,6 +298,6 @@ const useStylesheet = () => {
           marginTop: 4,
         },
       }),
-    [textBlack]
+    [textBlack],
   );
 };

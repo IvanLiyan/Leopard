@@ -13,7 +13,7 @@ import { Text } from "@ContextLogic/lego";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
-import NextImage from "next/image";
+import NextImage from "@next-toolkit/Image";
 
 export type PromotionCardBannerProps = BaseProps & {
   readonly logoSource?: string | null | undefined;
@@ -62,7 +62,7 @@ export default observer((props: PromotionCardBannerProps) => {
 });
 
 const useStylesheet = (
-  logoBackground: PromotionCardBannerProps["logoBackground"]
+  logoBackground: PromotionCardBannerProps["logoBackground"],
 ) => {
   return useMemo(
     () =>
@@ -105,6 +105,6 @@ const useStylesheet = (
           lineHeight: 1.1,
         },
       }),
-    [logoBackground]
+    [logoBackground],
   );
 };

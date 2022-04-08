@@ -7,7 +7,7 @@ import {
   SetStateAction,
   useMemo,
 } from "react";
-import Image from "next/image";
+import Image from "@next-toolkit/Image";
 import { Flags4x3 } from "@toolkit/countries";
 
 type CounterContextType = {

@@ -14,7 +14,7 @@ import uploadIcon from "@assets/img/upload_products_ill.svg";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
-import NextImage from "next/image";
+import NextImage from "@next-toolkit/Image";
 
 export default (props: BaseProps) => {
   const styles = useStylesheet();
@@ -84,5 +84,5 @@ const useStylesheet = () =>
           fontFamily: fonts.proxima,
         },
       }),
-    []
+    [],
   );

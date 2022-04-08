@@ -18,7 +18,7 @@ import {
   CleanedBaseDivProps,
 } from "@ContextLogic/lego/toolkit/react";
 
-import NextImage from "next/image";
+import NextImage from "@next-toolkit/Image";
 
 export type IconName = keyof typeof icons;
 

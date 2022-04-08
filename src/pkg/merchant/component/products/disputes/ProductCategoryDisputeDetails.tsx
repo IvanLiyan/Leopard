@@ -44,7 +44,7 @@ import {
 } from "@toolkit/products/product-category-dispute";
 
 import Link from "@next-toolkit/Link";
-import NextImage from "next/image";
+import NextImage from "@next-toolkit/Image";
 
 type Props = BaseProps & {
   readonly dispute: PickedProductCategoryDisputeDetailsSchema;
@@ -71,14 +71,14 @@ const ProductCategoryDisputeDetails: React.FC<Props> = ({
       (ordersAll || []).filter(
         (order) =>
           order.oneoffPayment != null &&
-          order.oneoffPayment.type === "REV_SHARE_ADJUSTMENT"
+          order.oneoffPayment.type === "REV_SHARE_ADJUSTMENT",
       ),
-    [ordersAll]
+    [ordersAll],
   );
 
   const pageResults = useMemo(
     () => (orders || []).slice(offset, limit + offset),
-    [orders, limit, offset]
+    [orders, limit, offset],
   );
 
   const onPageChange = (_nextPage: number) => {
@@ -87,7 +87,7 @@ const ProductCategoryDisputeDetails: React.FC<Props> = ({
   };
 
   const renderOrdersTable = (
-    orders: ReadonlyArray<PickedOrder> | null | undefined
+    orders: ReadonlyArray<PickedOrder> | null | undefined,
   ) => {
     if (orders == null || orders.length === 0) {
       return null;
@@ -233,7 +233,7 @@ const ProductCategoryDisputeDetails: React.FC<Props> = ({
                   rangeStart={offset + 1}
                   rangeEnd={Math.min(
                     offset + pageResults.length,
-                    offset + limit
+                    offset + limit,
                   )}
                   hasNext={limit + offset < orders.length}
                   hasPrev={offset > 0}
@@ -401,6 +401,6 @@ const useStylesheet = () => {
           maxHeight: 30,
         },
       }),
-    [borderPrimary]
+    [borderPrimary],
   );
 };

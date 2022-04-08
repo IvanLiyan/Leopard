@@ -20,7 +20,7 @@ import {
   CleanedBaseImageProps,
 } from "@ContextLogic/lego/toolkit/react";
 
-import NextImage from "next/image";
+import NextImage from "@next-toolkit/Image";
 
 export type IllustrationName = keyof typeof illustrations;
 
@@ -74,7 +74,7 @@ const Illustration: React.FC<IllustrationProps> = observer(
         <Content />
       </StaggeredScaleIn>
     );
-  }
+  },
 );
 
 export default Illustration;

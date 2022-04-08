@@ -19,7 +19,7 @@ import Icon from "@merchant/component/core/DEPRECATED_Icon";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
-import NextImage from "next/image";
+import NextImage from "@next-toolkit/Image";
 
 export type ModalHeaderProps = BaseProps & {
   readonly title?: string | (() => ReactNode);
@@ -98,7 +98,11 @@ class ModalHeader extends Component<ModalHeaderProps> {
       <div className={css(this.styles.root, className, style)}>
         <div className={css(this.styles.title)}>
           {icon && (
-            <NextImage src={icon} className={css(this.styles.icon)} alt="icon" />
+            <NextImage
+              src={icon}
+              className={css(this.styles.icon)}
+              alt="icon"
+            />
           )}
           {typeof title === "string" ? title : title()}
         </div>

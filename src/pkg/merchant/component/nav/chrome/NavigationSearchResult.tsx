@@ -15,7 +15,7 @@ import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { NavigationSearchResult } from "@stores/NavigationStore";
 
 import Link from "@next-toolkit/Link";
-import NextImage from "next/image";
+import NextImage from "@next-toolkit/Image";
 
 type Props = BaseProps & {
   readonly result: NavigationSearchResult;
@@ -98,6 +98,6 @@ const useStylesheet = ({ isSelected }: Props) => {
           color: palettes.textColors.Ink,
         },
       }),
-    [isSelected]
+    [isSelected],
   );
 };

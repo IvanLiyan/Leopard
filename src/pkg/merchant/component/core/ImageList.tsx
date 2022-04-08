@@ -16,7 +16,7 @@ import { palettes } from "@toolkit/lego-legacy/DEPRECATED_colors";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
-import NextImage from "next/image";
+import NextImage from "@next-toolkit/Image";
 
 type ImageProps = BaseProps & {
   readonly src: string;
@@ -95,7 +95,11 @@ class Image extends Component<ImageProps> {
           className={css(this.styles.imageContainer)}
           onClick={this.handleClick}
         >
-          <NextImage draggable={false} className={css(this.styles.image)} src={src} />
+          <NextImage
+            draggable={false}
+            className={css(this.styles.image)}
+            src={src}
+          />
         </div>
         <div className={css(this.styles.imageName)} title={name}>
           {name}
@@ -191,7 +195,7 @@ class ImageList extends Component<ImageListProps> {
     }
 
     const childCount = React.Children.count(
-      React.Children.toArray(children).filter((_) => React.isValidElement(_))
+      React.Children.toArray(children).filter((_) => React.isValidElement(_)),
     );
     const totalCount = moreImageCount + childCount;
     let buttonText = i`${totalCount} images in total`;

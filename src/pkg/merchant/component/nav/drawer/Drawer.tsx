@@ -18,7 +18,7 @@ import DrawerContent from "./DrawerContent";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
-import NextImage from "next/image";
+import NextImage from "@next-toolkit/Image";
 import { useChromeContext } from "@stores/ChromeStore";
 
 const DrawerContentContainer = posed.nav({

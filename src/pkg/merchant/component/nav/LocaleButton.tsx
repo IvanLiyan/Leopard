@@ -15,7 +15,7 @@ import Locales, { Locale } from "@toolkit/locales";
 import DeviceStore from "@stores/DeviceStore";
 import { Option } from "@ContextLogic/lego";
 
-import NextImage from "next/image";
+import NextImage from "@next-toolkit/Image";
 
 type LocaleButtonProps = Option<Locale> & {
   readonly compressOnSmallScreen: boolean;
@@ -26,7 +26,7 @@ type LocaleButtonContext = LocaleButtonProps & {
 };
 
 const useLocaleButtonContext = (
-  props: LocaleButtonProps
+  props: LocaleButtonProps,
 ): LocaleButtonContext => {
   const { compressOnSmallScreen } = props;
   const deviceStore = DeviceStore.instance();
@@ -106,6 +106,6 @@ const useStylesheet = (ctx: LocaleButtonContext) => {
           height: 13,
         },
       }),
-    []
+    [],
   );
 };

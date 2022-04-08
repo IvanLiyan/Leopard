@@ -32,7 +32,7 @@ import ProductDetailPopover from "./ProductDetailPopover";
 import { BasicColumnProps, CellInfo } from "@ContextLogic/lego";
 import { useProductStore } from "@merchant/stores/ProductStore";
 
-import NextImage from "next/image";
+import NextImage from "@next-toolkit/Image";
 
 export type ProductColumnProps = BasicColumnProps & {
   readonly imageSize?: number | null | undefined;
@@ -215,6 +215,6 @@ const useStylesheet = ({
           fontFamily: proxima,
         },
       }),
-    [imageSize, fontSize, fontColor]
+    [imageSize, fontSize, fontColor],
   );
 };

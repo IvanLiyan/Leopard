@@ -12,7 +12,7 @@ import Drawer from "@merchant/component/nav/drawer/Drawer";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { useDeviceStore } from "@stores/DeviceStore";
 
-import NextImage from "next/image";
+import NextImage from "@next-toolkit/Image";
 import { useChromeContext } from "@stores/ChromeStore";
 
 type DrawerButtonProps = BaseProps;
