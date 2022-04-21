@@ -79,8 +79,6 @@ const ChromeSideMenu: React.FC<Props> = (props: Props) => {
     ? tree.children.filter((child) => child.showInSideMenu)
     : [];
 
-  console.log("children", children, selectedNode);
-
   const SideMenuContentContainer = useMemo(
     () =>
       posed.nav({

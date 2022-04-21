@@ -49,7 +49,9 @@ const Illustration: React.FC<IllustrationProps> = observer(
 
     const Content = () => (
       <NextImage
-        src={illustrationSrc}
+        // lliepert: nextjs svg loader returns urls of the form
+        // {src: '/_next/static/media/red-x.c35a6eb1.svg', height: 24, width: 24}
+        src={illustrationSrc.src}
         alt={alt}
         draggable={false}
         style={{ width: "100%", height: "100%" }}

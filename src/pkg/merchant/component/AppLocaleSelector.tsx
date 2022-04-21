@@ -3,9 +3,6 @@ import { StyleSheet, CSSProperties } from "aphrodite";
 import { observer } from "mobx-react";
 import { computed } from "mobx";
 
-/* External Libraries */
-import FontAwesome from "react-fontawesome";
-
 /* Lego Components */
 import { Select } from "@ContextLogic/lego";
 import { Chevron } from "@ContextLogic/lego";
@@ -13,9 +10,6 @@ import { Chevron } from "@ContextLogic/lego";
 /* Lego Toolkit */
 import { css } from "@toolkit/styling";
 import { Flags4x3 } from "@toolkit/countries";
-
-/* Merchant Components */
-import LocaleButton from "@merchant/component/nav/LocaleButton";
 
 /* Toolkit */
 import Locales, { Locale } from "@toolkit/locales";
@@ -25,7 +19,6 @@ import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { Option } from "@ContextLogic/lego";
 import LocalizationStore from "@stores/LocalizationStore";
 import NavigationStore from "@stores/NavigationStore";
-import UserStore from "@stores/UserStore";
 import DeviceStore from "@stores/DeviceStore";
 import { ThemeWrapper } from "@stores/ThemeStore";
 import { ThemeContext } from "@stores/ThemeStore";
@@ -34,7 +27,6 @@ import EnvironmentStore from "@stores/EnvironmentStore";
 import NextImage from "@next-toolkit/Image";
 
 export type AppLocaleSelectorProps = BaseProps & {
-  readonly compressOnSmallScreen?: boolean;
   readonly textColor?: string;
   readonly customLocales?: ReadonlyArray<Locale>;
 };
@@ -120,38 +112,10 @@ class AppLocaleSelector extends Component<AppLocaleSelectorProps> {
     });
   }
 
-  renderButtonForBlueNav = (option: Option<Locale> | null | undefined) => {
-    const text = option?.text;
-
-    return (
-      <div
-        className={css(this.styles.navButton)}
-        style={{ padding: "0px 20px" }}
-      >
-        {option && option.img && (
-          <NextImage
-            src={option.img}
-            className={css(this.iconStyle)}
-            height="12px"
-            width="16px"
-          />
-        )}
-        <div className={css(this.styles.textContainer)}>
-          <div className={css(this.styles.text)}>{text}</div>
-          <FontAwesome
-            name="chevron-down"
-            className={css(this.styles.chevron)}
-          />
-        </div>
-      </div>
-    );
-  };
-
   renderButtonForChrome = (option: Option<Locale> | null | undefined) => {
     const { textWhite, textDark } = this.context;
-    const { isDev, isStaging } = EnvironmentStore.instance();
 
-    const useLightIcon = isDev || isStaging;
+    const useLightIcon = false; // isDev || isStaging; TODO [lliepert] bring back once we have the top bar colour back
     return (
       <div
         className={css(this.styles.chromeNavButton)}
@@ -185,24 +149,11 @@ class AppLocaleSelector extends Component<AppLocaleSelectorProps> {
         const countryCode = localeInfo.country.toLowerCase();
         const { [countryCode]: img } = Flags4x3;
         return {
-          img,
+          img: img.src,
           text: localeInfo.name,
           value: code,
         };
       },
-    );
-  }
-
-  @computed
-  get showLocalButton(): boolean {
-    // show default locale button for either non-login user or specific external pages
-    const { isLoggedIn } = UserStore.instance();
-    const navStore = NavigationStore.instance();
-    return (
-      !isLoggedIn ||
-      navStore.currentPath === "/partner-developer" ||
-      (!!navStore.currentPath &&
-        navStore.currentPath.startsWith("/documentation/api/v3/release-notes"))
     );
   }
 
@@ -215,23 +166,10 @@ class AppLocaleSelector extends Component<AppLocaleSelectorProps> {
       return null;
     }
 
-    const { compressOnSmallScreen = true, className } = this.props;
+    const { className } = this.props;
 
     const Button = ({ option }: { readonly option: Option<Locale> }) => {
-      if (this.showLocalButton) {
-        return (
-          <LocaleButton
-            {...option}
-            compressOnSmallScreen={compressOnSmallScreen}
-          />
-        );
-      }
-
-      if (isNavyBlueNav) {
-        return this.renderButtonForChrome(option);
-      }
-
-      return this.renderButtonForBlueNav(option);
+      return this.renderButtonForChrome(option);
     };
 
     return (

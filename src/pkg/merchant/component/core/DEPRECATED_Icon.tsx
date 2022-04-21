@@ -38,7 +38,9 @@ const Icon: React.FC<IconProps> = (props: IconProps) => {
 
   const Content = () => (
     <NextImage
-      src={iconSrc}
+      // lliepert: nextjs svg loader returns urls of the form
+      // {src: '/_next/static/media/red-x.c35a6eb1.svg', height: 24, width: 24}
+      src={iconSrc.src}
       alt={alt || toSentenceCase(name)}
       draggable={false}
       style={{ width: "100%", height: "100%" }}

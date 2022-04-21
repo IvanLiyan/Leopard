@@ -514,7 +514,11 @@ import zaFlag4x3 from "@assets/img/flags/4x3/za.svg";
 import zmFlag4x3 from "@assets/img/flags/4x3/zm.svg";
 import zwFlag4x3 from "@assets/img/flags/4x3/zw.svg";
 
-export const Flags1x1: { [cc: string]: string } = {
+export type NextSVGLoaderBody = { src: string; height: number; width: number };
+
+export const Flags1x1: {
+  [cc: string]: NextSVGLoaderBody;
+} = {
   d: globalFlag1x1,
   ad: adFlag1x1,
   ae: aeFlag1x1,
@@ -769,7 +773,9 @@ export const Flags1x1: { [cc: string]: string } = {
   zw: zwFlag1x1,
 };
 
-export const Flags4x3: { [cc: string]: string } = {
+export const Flags4x3: {
+  [cc: string]: NextSVGLoaderBody;
+} = {
   d: globalFlag4x3,
   ad: adFlag4x3,
   ae: aeFlag4x3,
@@ -1523,7 +1529,7 @@ const countries = {
 export type { CountryCode };
 
 export const getCountryName = (
-  countryCode: CountryCode | "EU" | "D" | null | undefined
+  countryCode: CountryCode | "EU" | "D" | null | undefined,
 ): string => {
   if (!countryCode) {
     return "";

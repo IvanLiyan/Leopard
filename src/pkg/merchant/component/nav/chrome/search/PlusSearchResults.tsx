@@ -20,11 +20,11 @@ import SearchResultsSection from "./PlusSearchResultsSection";
 
 /* Type Imports */
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
+import { useTheme } from "@stores/ThemeStore";
 import {
   NavigationSearchResult,
-  useNavigationStore,
-} from "@stores/NavigationStore";
-import { useTheme } from "@stores/ThemeStore";
+  useSearchStore,
+} from "@next-toolkit/chrome/searchStore";
 
 type Props = BaseProps & {
   // Reason: can't find the type definition for a ref handle.
@@ -37,7 +37,7 @@ const PlusSearchResults = observer((props: Props) => {
   const { className, style, containerRef, selectedResult, setSelectedResult } =
     props;
   const styles = useStylesheet();
-  const { searchResultGroups } = useNavigationStore();
+  const { searchResultGroups } = useSearchStore();
 
   return (
     <section ref={containerRef} className={css(styles.root, className, style)}>
@@ -87,6 +87,6 @@ const useStylesheet = () => {
           backgroundColor: surfaceLightest,
         },
       }),
-    [surfaceLightest]
+    [surfaceLightest],
   );
 };

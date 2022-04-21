@@ -36,6 +36,7 @@ import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import Icon from "@merchant/component/core/Icon";
 
 import Link from "@next-toolkit/Link";
+import { SearchStoreProvider } from "@next-toolkit/chrome/searchStore";
 
 type MerchantAppTopbarProps = BaseProps & {
   disableMenu?: boolean;
@@ -82,72 +83,74 @@ const MerchantAppTopbar: React.FC<MerchantAppTopbarProps> = ({
   const canSeeUpdatesSwitch = isProd && canToggleAdminEdit;
 
   return (
-    <Chrome.TopBar
-      renderLogo={() => (
+    <SearchStoreProvider>
+      <Chrome.TopBar
+        renderLogo={() => (
+          <Layout.FlexRow>
+            {!disableMenu && (
+              <div
+                onClick={() => {
+                  setIsDrawerOpen((cur: boolean) => !cur);
+                }}
+                className={css(styles.burgerContainer)}
+              >
+                <Icon
+                  className={css(styles.burger)}
+                  name="menu"
+                  size={20}
+                  color={appIconTheme === "white" ? textWhite : textDark}
+                />
+                {showMenuDot && <div className={css(styles.dot)} />}
+              </div>
+            )}
+            <Link href="/home">
+              <MerchantPlus mode={appIconTheme} className={css(styles.logo)} />
+            </Link>
+          </Layout.FlexRow>
+        )}
+        renderSearch={
+          hasMerchantId && canAccessHome && !isVerySmallScreen
+            ? () => <MerchantAppSearch />
+            : undefined
+        }
+        backgroundColor={topbarBackground}
+        className={css(styles.root, style, className)}
+      >
         <Layout.FlexRow>
-          {!disableMenu && (
-            <div
-              onClick={() => {
-                setIsDrawerOpen((cur: boolean) => !cur);
-              }}
-              className={css(styles.burgerContainer)}
+          {canSeeUpdatesSwitch && (
+            <Popover
+              popoverContent={
+                apolloStore.adminUpdatesAllowed
+                  ? `Updates allowed`
+                  : `Updates off`
+              }
+              position="bottom center"
             >
-              <Icon
-                className={css(styles.burger)}
-                name="menu"
-                size={20}
-                color={appIconTheme === "white" ? textWhite : textDark}
+              <Switch
+                onToggle={(isOn) => {
+                  if (isOn) {
+                    apolloStore.allowAdminUpdates();
+                  } else {
+                    apolloStore.blockAdminUpdates();
+                  }
+                }}
+                isOn={apolloStore.adminUpdatesAllowed}
+                showText={false}
+                className={css(styles.item)}
               />
-              {showMenuDot && <div className={css(styles.dot)} />}
-            </div>
+            </Popover>
           )}
-          <Link href="/home">
-            <MerchantPlus mode={appIconTheme} className={css(styles.logo)} />
-          </Link>
+          {!isStoreMerchant && (
+            <NotificationsButton className={css(styles.item)} />
+          )}
+          <PlusUserAvatar className={css(styles.avatar, styles.item)} />
+          <AppLocaleSelector
+            textColor={appIconTheme == "white" ? textWhite : textBlack}
+            className={css(styles.item)}
+          />
         </Layout.FlexRow>
-      )}
-      renderSearch={
-        hasMerchantId && canAccessHome && !isVerySmallScreen
-          ? () => <MerchantAppSearch />
-          : undefined
-      }
-      backgroundColor={topbarBackground}
-      className={css(styles.root, style, className)}
-    >
-      <Layout.FlexRow>
-        {canSeeUpdatesSwitch && (
-          <Popover
-            popoverContent={
-              apolloStore.adminUpdatesAllowed
-                ? `Updates allowed`
-                : `Updates off`
-            }
-            position="bottom center"
-          >
-            <Switch
-              onToggle={(isOn) => {
-                if (isOn) {
-                  apolloStore.allowAdminUpdates();
-                } else {
-                  apolloStore.blockAdminUpdates();
-                }
-              }}
-              isOn={apolloStore.adminUpdatesAllowed}
-              showText={false}
-              className={css(styles.item)}
-            />
-          </Popover>
-        )}
-        {!isStoreMerchant && (
-          <NotificationsButton className={css(styles.item)} />
-        )}
-        <PlusUserAvatar className={css(styles.avatar, styles.item)} />
-        <AppLocaleSelector
-          textColor={appIconTheme == "white" ? textWhite : textBlack}
-          className={css(styles.item)}
-        />
-      </Layout.FlexRow>
-    </Chrome.TopBar>
+      </Chrome.TopBar>
+    </SearchStoreProvider>
   );
 };
 

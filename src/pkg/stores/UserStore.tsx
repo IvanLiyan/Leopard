@@ -27,6 +27,7 @@ import {
   PaymentCurrencyCode as CurrencyCode,
 } from "@schema/types";
 
+// TODO [lliepert]: bring back isApiUser once code is merged
 export const USER_STORE_INITIAL_QUERY = gql`
   query UserStore_InitialQuery {
     currentCountry {
@@ -44,6 +45,7 @@ export const USER_STORE_INITIAL_QUERY = gql`
       merchantId
       firstName
       lastName
+      displayName
       email
       phoneNumber
       businessAddress {
@@ -99,11 +101,9 @@ type PickedCurrentUser = {
   | "companyName"
   | "entityType"
   | "isStoreOrMerchantUser"
-> & {
-    // TODO [lliepert]: add these to GQL
-    displayName?: string;
-    isApiUser: boolean;
-  };
+  | "displayName"
+  | "isApiUser"
+>;
 
 type PickedSU = Pick<UserSchema, "id" | "isAdmin">;
 

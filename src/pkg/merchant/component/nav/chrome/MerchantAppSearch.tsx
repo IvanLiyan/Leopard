@@ -9,7 +9,6 @@ import { StyleSheet } from "aphrodite";
 import { observer } from "mobx-react";
 
 /* Lego Components */
-/* eslint-disable local-rules/no-lego-direct-import */
 import {
   KEYCODE_R,
   KEYCODE_UP,
@@ -17,8 +16,7 @@ import {
   KEYCODE_ENTER,
   KEYCODE_ESCAPE,
 } from "@toolkit/dom";
-import { TopBarHeight } from "@merchant/component/nav/chrome/ChromeTopBar"; // eslint-disable-line local-rules/no-lego-direct-import
-/* eslint-enable local-rules/no-lego-direct-import */
+import { TopBarHeight } from "@merchant/component/nav/chrome/ChromeTopBar";
 import { SearchBox, StaggeredFadeIn } from "@ContextLogic/lego";
 
 /* Lego Toolkit */
@@ -39,7 +37,10 @@ import { useEnvironmentStore } from "@stores/EnvironmentStore";
 import { useLocalizationStore } from "@stores/LocalizationStore";
 import { useUserStore } from "@stores/UserStore";
 import { useTheme, useThemeStore } from "@stores/ThemeStore";
-import { NavigationSearchResult } from "@next-toolkit/chrome/search";
+import {
+  NavigationSearchResult,
+  useSearchStore,
+} from "@next-toolkit/chrome/searchStore";
 
 const SEARCH_WIDTH = 600;
 const SEARCH_HEIGHT = TopBarHeight * 0.65;
@@ -57,9 +58,10 @@ const MerchantAppSearch: React.FC<BaseProps> = ({
 
   const resultsRef = useRef<HTMLDivElement | null>(null);
 
-  // const { pageSearchResult, searchResultGroups } = navigationStore;
-  const searchResultGroups = [];
-  const pageSearchResult = null;
+  const searchStore = useSearchStore();
+
+  const { pageSearchResult, searchResultGroups } = searchStore;
+
   const { lightenedTopbarBackground } = useThemeStore();
   const currentPagePhrase = pageSearchResult?.search_phrase;
   const [hasFocus, setHasFocus] = useState(false);
@@ -131,7 +133,7 @@ const MerchantAppSearch: React.FC<BaseProps> = ({
             return;
           }
           if (selectedResult) {
-            // navigationStore.rawSearchQuery = "";
+            searchStore.rawSearchQuery = "";
             navigationStore.navigate(selectedResult.url);
             inputRef.blur();
           }
@@ -141,6 +143,7 @@ const MerchantAppSearch: React.FC<BaseProps> = ({
     [
       hasFocus,
       inputRef,
+      searchStore,
       navigationStore,
       setSelectedElementIndex,
       allResults,
@@ -175,7 +178,7 @@ const MerchantAppSearch: React.FC<BaseProps> = ({
   }, [focusInputOnSearchShortcutPressed]);
 
   const logger = useLogger("CHROME_SEARCH");
-  const loggedQuery = ""; //useDebouncer(navigationStore.rawSearchQuery, 1500);
+  const loggedQuery = useDebouncer(searchStore.rawSearchQuery, 1500);
   useEffect(() => {
     if (loggedQuery.trim().length == 0) {
       return;
@@ -198,7 +201,7 @@ const MerchantAppSearch: React.FC<BaseProps> = ({
   return (
     <div className={css(styles.root, className, style)}>
       <SearchBox
-        value={""} //navigationStore.rawSearchQuery}
+        value={searchStore.rawSearchQuery}
         icon="search"
         height={SEARCH_HEIGHT}
         fontSize={16}
@@ -221,12 +224,12 @@ const MerchantAppSearch: React.FC<BaseProps> = ({
         onFocus={() => {
           setHasFocus(true);
           setDropdownVisibility(true);
-          // if (navigationStore.rawSearchQuery == (currentPagePhrase || "")) {
-          //   navigationStore.rawSearchQuery = "";
-          // }
+          if (searchStore.rawSearchQuery == (currentPagePhrase || "")) {
+            searchStore.rawSearchQuery = "";
+          }
         }}
         onChange={({ text }) => {
-          // navigationStore.rawSearchQuery = text;
+          searchStore.rawSearchQuery = text;
         }}
         inputStyle={{
           backgroundColor: inputBackgroundColor,

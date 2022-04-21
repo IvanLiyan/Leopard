@@ -39,7 +39,7 @@ const MerchantPlus: React.FC<Props> = (props: Props) => {
       <Illustration
         name={getIllustration(mode)}
         animate={false}
-        alt={text || i`Merchant Plus`}
+        alt={text || i`Wish for Merchants`}
         className={css(styles.logo)}
       />
       <Text

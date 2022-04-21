@@ -171,7 +171,10 @@ export const ChromeProvider: React.FC<{
   const hasNotifications =
     filteredTree && counts && getNodeCount(filteredTree, counts) > 0;
 
-  console.log("filteredTree", filteredTree);
+  // TODO [lliepert]: looks like we're not showing chrome until
+  // the get alerts query resolves; this is really slow rn so it's hiding
+  // chrome when we don't need to be (can just pop the alerts in after)
+  // fix this (https://jira.wish.site/browse/MKL-58592)
 
   return (
     <ChromeContext.Provider value={{ isDrawerOpen, setIsDrawerOpen }}>

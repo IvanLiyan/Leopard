@@ -10,7 +10,12 @@ import { StyleSheet, CSSProperties } from "aphrodite";
 
 /* Lego Toolkit */
 import { css } from "@toolkit/styling";
-import { Flags4x3, Flags1x1, getCountryName } from "@toolkit/countries";
+import {
+  Flags4x3,
+  Flags1x1,
+  getCountryName,
+  NextSVGLoaderBody,
+} from "@toolkit/countries";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { CountryCode } from "@toolkit/countries";
@@ -73,7 +78,7 @@ const demoProps: FlagProps = {
 const flagUrl = (
   countryCode: string,
   aspectRatio?: FlagAspectRatio | null | undefined,
-): string => {
+): NextSVGLoaderBody => {
   switch (aspectRatio) {
     case "4x3":
       return Flags4x3[countryCode.toLowerCase()];
@@ -98,7 +103,7 @@ const Flag = (props: FlagProps) => {
   const flag = (
     <NextImage
       alt={alt || `flag for ${countryCode}`}
-      src={flagUrl(countryCode, aspectRatio)}
+      src={flagUrl(countryCode, aspectRatio).src}
       height="12px"
       width="16px"
       draggable={false}
