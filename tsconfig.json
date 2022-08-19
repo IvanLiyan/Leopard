@@ -40,7 +40,9 @@
     "jest.config.js",
     "jest.setup.js",
     "build-tools/ast-util.js",
-    "build-tools/localization-plugin.js"
+    "build-tools/localization-plugin.js",
+    "scripts/create-certs.js",
+    "server.js"
   ],
   "exclude": ["node_modules"]
 }

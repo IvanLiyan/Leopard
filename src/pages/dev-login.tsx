@@ -103,6 +103,16 @@ const DevLoginPage: NextPage<Record<string, never>> = () => {
           {currentMerchant}
         </Text>
       </Layout.FlexRow>
+      <Layout.FlexRow>
+        <Text>Merch-FE Target: </Text>
+        <Text
+          style={{
+            marginLeft: 10,
+          }}
+        >
+          {process.env.NEXT_PUBLIC_MD_URL}
+        </Text>
+      </Layout.FlexRow>
     </LegoProvider>
   );
 };

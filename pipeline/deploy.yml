@@ -2,9 +2,7 @@ deploy:s3_staging:
   stage: deploy_staging
   image: registry-gitlab.i.wish.com/contextlogic/leopard/aws-base:latest
   script:
-    - sh ./deployment/deploy-staging.sh
+    - sh ./scripts/deploy-staging.sh
   environment:
     name: staging
-  when:
-    manual
-
+  when: manual

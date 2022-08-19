@@ -1,60 +1,69 @@
 # Leopard
 
-## **⚠⚠⚠ Temporary Merch-FE Requirements ⚠⚠⚠**
-
-At this time, changes required for Leopard to query `merch-fe` have not yet made it into the master branch of clroot, so it is necessary to run `merch-fe` locally targetting the `LEOPARD_DEV` branch. You must correctly populate `NEXT_PUBLIC_MD_URL` with your local `merch-fe` endpoint (as described in the below _Getting Started_ instructions).
-
-For help starting `merch-fe`, visit [Confluence: Development Environment Setup](https://wiki.wish.site/display/ENG/Development+Environment+Setup).
-
 ## Getting Started
 
 1. Clone the repo.
 2. Create a `.env.local` file. A template is included via the file `.env.example`.
-3. Run `yarn install`.
-4. Run `yarn dev`.
-    > **Note**
-    > `dev` starts a Next.JS development server running on port 8080.
-5. Navigate to `http://localhost:8080/<page>`.
+3. Run `yarn create-certs`.
+   > **Note**
+   >
+   > `create-certs` creates SSL certificates used to run the local Next.JS server with HTTPS. HTTPS is required to communicate with `merch-fe`.
+   >
+   > We use [devcert](https://github.com/davewasmer/devcert) under the hood to power cert management; this is the same tool used by [Gatsby](https://www.gatsbyjs.com/docs/local-https/), so it should be getting a significant amount of use and testing through that framework.
+4. Run `yarn install`.
+5. Run `yarn dev`.
+   > **Note** `dev` starts a Next.JS development server running on port 8080.
+6. Navigate to `http://localhost:8080/<page>`.
 
 ### Logging In
 
 While Leopard itself does not employ any authentication to view pages (see _Why don't we have page based authentication?_ below), the APIs it accesses do require authentication. On production, Leopard will get the `merchant.wish.com` authentication cookies automatically since we're hosted under that domain. For local development, we've implemented a special _dev-login_ flow leveraging the local Next.JS development server. To log in as your admin account, and then as a merchant:
+
 1. Confirm your `.env.local` file is populated with your admin username and password and start the local dev server (`yarn dev`).
-    > **Warning**
-    > `.env.local` is ignored by our `.gitignore`. **Never commit this file**, or any other file with your username and password.
+   > **Warning** `.env.local` is ignored by our `.gitignore`. **Never commit this file**, or any other file with your username and password.
 2. Navigate to `http://localhost:8080/dev-login`.
-3. 🏗 _Following instructions under construction due to issues with local dev environment._ 🏗
+3. Press the `Dev Login` button.
+   - The Leopard dev server will execute a query against the provided merch-fe backend and log you in under your admin account.
+   - After the query is finished you should see your admin account's user ID next to `Current User ID`.
+4. Navigate to `/go/<mid>`.
+   - Leopard will use the merch-fe's native `/go` URL to log you in as the provided merchant.
+5. Navigate to `/dev-login`. Click the `Fetch api/graphql` button.
+   - Leopard will execute a query to get the current user and merchant IDs. You should see both your user ID and the merchant's merchant ID displayed after the query finishes executing.
 
 ## Project Tour
 
-* `src/pages`
+- `src/pages`
 
-    Next.JS uses a file-system based router that maps routes to pages via the formula
-    * `leopard.url/my-page` -> `src/pages/my-page`
-    * `leopard.url/subdir/my-page` -> `src/pages/subdir/my-page`
-    * etc.
+  Next.JS uses a file-system based router that maps routes to pages via the formula
 
-    Thus, all the pages in Leopard are stored in `src/pages`. Each file exports a React Component of type `NextPage<Record<string, never>>`, and they are free to import from the various other component packages in order to more easily build that component.
+  - `leopard.url/my-page` -> `src/pages/my-page`
+  - `leopard.url/subdir/my-page` -> `src/pages/subdir/my-page`
+  - etc.
 
-    For more information on pages and routing, visit [Next.JS: Pages](https://nextjs.org/docs/basic-features/pages) and [Next.JS: Routing](https://nextjs.org/docs/routing/introduction).
+  Thus, all the pages in Leopard are stored in `src/pages`. Each file exports a React Component of type `NextPage<Record<string, never>>`, and they are free to import from the various other component packages in order to more easily build that component.
 
-    > **Note**
-    > **Why are all the page components typed as `NextPage<Record<string, never>>`?**
-    >
-    > The type `NextPage<Props>` is a type template where props represents props fetched either at build time or at render time (when using SSR). Since we use static site generation and not SSR, our pages should not have any props, and instead the React component itself should be responsible for executing any requests for data it requires.
+  For more information on pages and routing, visit [Next.JS: Pages](https://nextjs.org/docs/basic-features/pages) and [Next.JS: Routing](https://nextjs.org/docs/routing/introduction).
 
-    > **Warning**
-    > The following files in `src/pages` are special and should not be modified during the normal feature development workflow:
-    > * `src/pages/api/*`
-    > * `src/pages/_app.tsx`
-    > * `src/pages/_document.tsx`
-    > * `src/pages/dev-login.tsx`
+  > **Note**
+  >
+  > **Why are all the page components typed as `NextPage<Record<string, never>>`?**
+  >
+  > The type `NextPage<Props>` is a type template where props represents props fetched either at build time or at render time (when using SSR). Since we use static site generation and not SSR, our pages should not have any props, and instead the React component itself should be responsible for executing any requests for data it requires.
 
-* `src/pkg`
+  > **Warning**
+  >
+  > The following files in `src/pages` are special and should not be modified during the normal feature development workflow:
+  >
+  > - `src/pages/api/*`
+  > - `src/pages/_app.tsx`
+  > - `src/pages/_document.tsx`
+  > - `src/pages/dev-login.tsx`
+
+- `src/pkg`
 
   The `pkg` folder is based on the legacy package structure used when Merchant Dashboard was part of the clroot monolith. By using the same structure here we're able to more efficiently migrate over existing pages to Leopard and maintain both codebases.
 
-  * `pkg/assets`
+  - `pkg/assets`
 
     The `assets` package represents all the `.svg` / etc assets used throught the dashboard.
 
@@ -62,57 +71,56 @@ While Leopard itself does not employ any authentication to view pages (see _Why 
 
     🏗 _TODO_ 🏗
 
-  * `pkg/merchant`
+  - `pkg/merchant`
 
     The `merchant` package contains all React compoennts used in the merchant facing section of the Merchant Dashboard (as opposed to, for example, the admin facing components stored in the `internal` package in clroot). **Since Leopard is only meant for merchant facing pages, all React components are contained in this package.** The package is further subdivided into the following sections:
 
-    * `merchant/component`
+    - `merchant/component`
 
       This folder contains all the standard React components used throughout the dashboard.
 
       To help with organization, utilize a feature specific sub-folder when building feature specific components (as opposed to general use components stored in `component/core`).
 
-    * `merchant/container`
+    - `merchant/container`
 
       This folder contains the React components functioning as page containers. This is a pattern that existed in the legacy clroot repository and no longer needs to be followed. **New pages do not need to be wrapped in a container.**
 
-    * 🏗 _TODO: the rest_ 🏗
+    - 🏗 _TODO: the rest_ 🏗
 
-  * `pkg/schema`
+  - `pkg/schema`
 
     The `schema` package contains the GQL schema and corresponding TS types generated by the `ggt` finch function in clroot.
 
     🏗 _TODO: method for efficiently keeping `schema` in sync between clroot and Leopard_ 🏗
 
-  * `pkg/stores`
+  - `pkg/stores`
 
     The `stores` package contains various providers and mobx stores used to power MD wide features such as navigation.
 
     > **Warning**
     > This package should not be modified during the normal feature development workflow.
 
-  * `pkg/toolkit`
+  - `pkg/toolkit`
 
     The `toolkit` package contains `.ts` files that don't represent React components. Please follow a similar pattern of organization as seen in the `pkg/merchant/component` folder.
 
-  * `pkg/workers`
+  - `pkg/workers`
 
     The `workers` package contains Web Workers.
 
-* `src/styles`
+- `src/styles`
 
   This folder contains `global.css` which represents the default css stylesheet loaded for all pages.
 
   > **Warning**
   > This folder should not be modified during the normal feature development workflow.
 
-* `src/toolkit`
+- `src/toolkit`
 
   This folder contains code required to power the Leopard specific aspects of the Merchant Dashboard.
 
   > **Warning**
   > This folder should not be modified during the normal feature development workflow.
-
 
 ## Creating a New Page
 
@@ -131,172 +139,7 @@ Leopard does not employ page based authentication. This is because Leopard is bu
 However, all requests for data (the sensitive part) go through GQL to `merch-fe`, which **_does_** employ authentication. Thus the most a malicious user could get without authenticating would be the page skeleton with no actual client data.
 
 > **Note**
+>
 > In `merch-fe`, page based authentication is often combined with redirects to provide a nice user experience where users who didn't have the correct permissions to access a page is redirected to a page they can access, or a 404 page, vs. being shown a broken page. Note that this behavior can still be accomplished in Leopard by employing client side checks and redirects - it's just important to note it doesn't provide actual authentication since the user can bypass the redirect and view the skeleton if they so desire.
 
 On production, Leopard will get the required `merchant.wish.com` authentication cookies automatically since we're hosted under that domain. For local development, we've implemented a special _dev-login_ flow (see _Logging In_ above).
-
-<details><summary>Source READMEs</summary>
-## Getting Started
-
-Before running leopard, add the root file `.env.local` populated with the following environment variables:
-
-```
-NEXT_PUBLIC_MD_URL=<url to your instance of merch-fe, ex: https://yourid-ec2-merch.vpn.contextlogic.com>
-NEXT_PUBLIC_ENV=dev
-USERNAME=<username for your MD admin account, used in /api/dev-login flow>
-PASSWORD=<password for your MD admin account, used in /api/dev-login flow>
-```
-
-## MIDs for Testing
-
-- `590cece8ee77233e8153dffa`: contains backfilled feed
-- `593528d9e81e8a481cac4ea7`: contains products
-
-# Default-service
-
-This is a barebones project, that gives you the CI/CD benefits of a new service. The entire application is intended to be discarded. Users of this template are required to re-write their Dockerfile along with everything within the application. This **IS NOT** a ready made template project. It requires full customization by the user.
-
-The benefits of using this template comes from the already defined `Gitlab pipeline`. The definitions which are housed in the `.gitlab-ci.yml` automatically build docker images with every commit to the repository.
-Also, the project allows the user to deploy to Kubernetes using the deploy jobs if the project is properly configured in k8s and kube-deploy.
-
-## Creating a project off default-service
-
-To create a project off this template, go to [one-click](https://one-click.i.wish.com), and put in your project details. Make sure to select `default-service` as your template of choice.
-
-Follow the instructions in the [one-click wiki](https://wiki.wish.site/display/Infra/One-Click).
-
-## Deploying your service
-
-To run your service (docker image) in Kubernetes, you need to push your code to the [Amazon ECR](https://us-west-1.console.aws.amazon.com/ecr/repositories?region=us-west-1#) registry, setup your k8s manifest, and setup `kube-deploy`.
-You should also look at the [one-click wiki](https://wiki.wish.site/display/Infra/One-Click) for instructions around maintaining and updating your service.
-And this [CI/CD](https://wiki.wish.site/pages/viewpage.action?pageId=13927283) break down for understanding what your pipeline jobs do.
-
-You can push your images to `ECR` using `Gitlab`. Anytime code is pushed to the remote repository, a Gitlab pipeline will be triggered to build your docker image, and push it to `ECR`. The image tag that is sent to `ECR` will defer by branch.
-
-> Note: If you've updated your service, make sure you expose a `/status` enpoint for the k8s liveness probe. If not, your service deployment will fail.
-
-- All branches have a manual `deploy-dev` button for pushing an image with the `dev` tag.
-- feature branches (any branch besides `master`, `release_candidate` and `production`)
-  - Automatically builds and pushes image with the `commit-sha` as its tag.
-  - `deploy-dev`
-- `master` branch
-  - `deploy-dev`
-- `release_candidate` branch
-  - `deploy-stage` - Automatic job
-  - `deploy-dev`
-- `production` branch
-  - `deploy-canary`
-  - `deploy-prod-01` - mapped to K8s cluster app-01 (more information on k8s in the **About K8s** section)
-  - `deploy-prod-02` - mapped to k8s cluster app-02
-  - `deploy-prod-06` - mapped to k8s cluster app-06
-  - `deploy-prod-07` - mapped to k8s cluster app-07
-  - `deploy-dev`
-
-You can verify your image was built in [Amazon ECR](https://us-west-1.console.aws.amazon.com/ecr/repositories?region=us-west-1#). To get access to ECR, you will need to assume the [Registry Role](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-console.html) on AWS. To do so, contact IT or the #security channel to give you permissions to do so. Once you've assumed the Registry Role, clicking on the Amazon ECR link above, should take you to the ECR repositories page. The name of the ECR repo will follow the format
-`contextlogic/<repository-name>`.
-
-> Note: Built images will be under the `contextlogic/` folder in ECR. E.g. `contextlogic/default-service`.
-
-## Testing your deployed service
-
-To test the newly running service, you can issue a curl against it via `Consul` to test the http server:
-
-> Action: Replace service-name with the name of your service. E.g. `curl http://default-service-dev.service.consul:8080/status`
-
-`curl http://<service-name>-dev.service.consul:8080/status`
-
-# With Docker
-
-This examples shows how to use Docker with Next.js based on the [deployment documentation](https://nextjs.org/docs/deployment#docker-image). Additionally, it contains instructions for deploying to Google Cloud Run. However, you can use any container-based deployment host.
-
-## How to use
-
-Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/init) or [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/) to bootstrap the example:
-
-```bash
-npx create-next-app --example with-docker nextjs-docker
-# or
-yarn create next-app --example with-docker nextjs-docker
-```
-
-## Using Docker
-
-1. [Install Docker](https://docs.docker.com/get-docker/) on your machine.
-1. Build your container: `docker build -t nextjs-docker .`.
-1. Run your container: `docker run -p 8080:8080 nextjs-docker`.
-
-You can view your images created with `docker images`.
-
-## Deploying to Google Cloud Run
-
-The `start` script in `package.json` has been modified to accept a `PORT` environment variable (for compatability with Google Cloud Run).
-
-1. Install the [Google Cloud SDK](https://cloud.google.com/sdk/docs/install) so you can use `gcloud` on the command line.
-1. Run `gcloud auth login` to log in to your account.
-1. [Create a new project](https://cloud.google.com/run/docs/quickstarts/build-and-deploy) in Google Cloud Run (e.g. `nextjs-docker`). Ensure billing is turned on.
-1. Build your container image using Cloud Build: `gcloud builds submit --tag gcr.io/PROJECT-ID/helloworld --project PROJECT-ID`. This will also enable Cloud Build for your project.
-1. Deploy to Cloud Run: `gcloud run deploy --image gcr.io/PROJECT-ID/helloworld --project PROJECT-ID --platform managed`. Choose a region of your choice.
-
-   - You will be prompted for the service name: press Enter to accept the default name, `helloworld`.
-   - You will be prompted for [region](https://cloud.google.com/run/docs/quickstarts/build-and-deploy#follow-cloud-run): select the region of your choice, for example `us-central1`.
-   - You will be prompted to **allow unauthenticated invocations**: respond `y`.
-
-Or click the button below, authorize the script, and select the project and region when prompted:
-
-[![Run on Google Cloud](https://deploy.cloud.run/button.svg)](https://deploy.cloud.run/?git_repo=https://github.com/vercel/next.js.git&dir=examples/with-docker)
-
-## Running Locally
-
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-```
-
-Open [http://localhost:8080](http://localhost:8080) with your browser to see the result.
-
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
-
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:8080/api/hello](http://localhost:8080/api/hello). This endpoint can be edited in `pages/api/hello.js`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-# Typescript
-
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
-
-## Getting Started
-
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-```
-
-Open [http://localhost:8080](http://localhost:8080) with your browser to see the result.
-
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
-
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:8080/api/hello](http://localhost:8080/api/hello). This endpoint can be edited in `pages/api/hello.tsx`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
-</details>
