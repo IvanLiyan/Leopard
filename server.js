@@ -5,7 +5,7 @@ const next = require("next");
 const fs = require("fs");
 
 const dev = process.env.NODE_ENV !== "production";
-const hostname = "leopard.dev";
+const hostname = "leopard.wish.com";
 const port = 3000;
 const app = next({ dev, hostname, port });
 const handle = app.getRequestHandler();

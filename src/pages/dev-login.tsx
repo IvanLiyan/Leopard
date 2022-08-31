@@ -1,5 +1,8 @@
+// dev page, not exposed to merchants
+/* eslint-disable no-console */
 import { NextPage } from "next";
 import { useState } from "react";
+import Cookies from "js-cookie";
 import {
   Button,
   H1,
@@ -9,47 +12,92 @@ import {
   Text,
 } from "@ContextLogic/lego";
 
+const useError = (
+  initialState: string | null,
+): [
+  error: string | null,
+  setError: (error: string, ...rest: unknown[]) => void,
+] => {
+  const [error, setError] = useState<string | null>(initialState);
+
+  const onError = (errorProp: string, ...rest: unknown[]) => {
+    setError(errorProp);
+    console.log(errorProp, ...rest);
+  };
+
+  return [error, onError];
+};
+
 const DevLoginPage: NextPage<Record<string, never>> = () => {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
+  // use numbers to emulate a stack of requests that need to complete before
+  // loading is finished
+  const [loading, setLoading] = useState(0);
+  const [error, setError] = useError(null);
   const [currentUser, setCurrentUser] = useState(null);
   const [currentMerchant, setCurrentMerchant] = useState(null);
 
   const devLogin = async () => {
-    setLoading(true);
-    const resp = await fetch("/api/dev-login");
-    setLoading(false);
-    if (!resp.ok) {
-      setError(true);
+    setLoading((cur) => cur + 1);
+    try {
+      const resp = await fetch("/api/dev-login");
+      if (!resp.ok) {
+        setError(
+          "An error occurred while logging you in. Please see the console for more details.",
+          resp,
+        );
+        return;
+      }
+      void fetchApiGraphql();
+    } finally {
+      setLoading((cur) => cur - 1);
     }
-    void fetchApiGraphql();
   };
 
   const fetchApiGraphql = async () => {
-    const res = await fetch("/api/graphql", {
-      body: '{"operationName":null,"variables":{},"query":"{\\n  currentMerchant {\\n    id\\n  }\\n  currentUser {\\n    id\\n  }\\n}\\n"}',
-      method: "POST",
-      headers: {
-        "cache-control": "no-cache",
-        "content-type": "application/json",
-        accept: "application/json",
-        "sec-fetch-mode": "cors",
-        "sec-fetch-site": "same-origin",
-      },
-      mode: "cors",
-      credentials: "include",
-    });
-    const jsonResponse = await res.json();
-    setCurrentUser(
-      jsonResponse.data.currentUser
-        ? jsonResponse.data.currentUser.id
-        : "User not logged in",
-    );
-    setCurrentMerchant(
-      jsonResponse.data.currentMerchant
-        ? jsonResponse.data.currentMerchant.id
-        : "Merchant not logged in",
-    );
+    setLoading((cur) => cur + 1);
+    try {
+      const xsrf = Cookies.get("_xsrf");
+
+      if (xsrf === undefined) {
+        setError(
+          "XSRF cookie is missing, aborting /api/graphql fetch. Have you logged into the dashboard via dev-login yet? If not, try that.",
+        );
+        return;
+      }
+
+      const resp = await fetch("/api/graphql", {
+        body: '{"operationName":null,"variables":{},"query":"{\\n  currentMerchant {\\n    id\\n  }\\n  currentUser {\\n    id\\n  }\\n}\\n"}',
+        method: "POST",
+        headers: {
+          "cache-control": "no-cache",
+          "content-type": "application/json",
+          accept: "application/json",
+          "sec-fetch-mode": "cors",
+          "sec-fetch-site": "same-origin",
+          "x-xsrftoken": xsrf,
+        },
+        mode: "cors",
+        credentials: "include",
+      });
+      const jsonResponse = await resp.json();
+      setCurrentUser(
+        jsonResponse.data.currentUser
+          ? jsonResponse.data.currentUser.id
+          : "User not logged in",
+      );
+      setCurrentMerchant(
+        jsonResponse.data.currentMerchant
+          ? jsonResponse.data.currentMerchant.id
+          : "Merchant not logged in",
+      );
+    } catch (e) {
+      setError(
+        "An error occurred while fetching api/graphql. Have you logged into the dashboard via dev-login yet? If not, try that. (You can view the full error in the console.)",
+        e,
+      );
+    } finally {
+      setLoading((cur) => cur - 1);
+    }
   };
 
   if (loading) {
@@ -69,10 +117,7 @@ const DevLoginPage: NextPage<Record<string, never>> = () => {
       </Layout.FlexRow>
       <Layout.FlexRow>
         {error ? (
-          <Text>
-            An error occurred while logging you in. Please see the console for
-            more details.
-          </Text>
+          <Text>{error}</Text>
         ) : (
           <Text>
             You have been successfully logged in to the Merchant Dashboard.

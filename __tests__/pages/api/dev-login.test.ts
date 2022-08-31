@@ -54,6 +54,12 @@ describe("parseSetCookieHeader", () => {
         `c="asdfghjkk|asdfghjkl"`,
         `_d=a|bcdefg`,
       ],
+      cookies: {
+        a: "",
+        b: "qwertyuiop",
+        c: '"asdfghjkk|asdfghjkl"',
+        _d: "a|bcdefg",
+      },
     };
 
     const response = parseSetCookieHeader(setCookieString);
@@ -75,6 +81,12 @@ describe("parseSetCookieHeader", () => {
         `c="asdfghjkk|asdfghjkl"`,
         `_d=a|bcdefg`,
       ],
+      cookies: {
+        a: "",
+        b: "qwertyuiop",
+        c: '"asdfghjkk|asdfghjkl"',
+        _d: "a|bcdefg",
+      },
     };
 
     const response = parseSetCookieHeader(setCookieString);
@@ -98,6 +110,13 @@ describe("parseSetCookieHeader", () => {
         `_d=a|bcdefg`,
         `e=`,
       ],
+      cookies: {
+        a: "",
+        b: "qwertyuiop",
+        c: '"asdfghjkk|asdfghjkl"',
+        _d: "a|bcdefg",
+        e: "",
+      },
     };
 
     const response = parseSetCookieHeader(setCookieString);

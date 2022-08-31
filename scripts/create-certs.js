@@ -4,7 +4,7 @@ const devcert = require("devcert");
 const fs = require("fs");
 
 devcert
-  .certificateFor("leopard.dev", { getCaPath: true })
+  .certificateFor("leopard.wish.com", { getCaPath: true })
   .then(({ key, cert, caPath }) => {
     fs.writeFileSync("./certs/devcert.key", key);
     fs.writeFileSync("./certs/devcert.cert", cert);

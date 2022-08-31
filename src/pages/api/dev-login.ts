@@ -1,5 +1,6 @@
+// dev page, not exposed to merchants
+/* eslint-disable no-console */
 import type { NextApiRequest, NextApiResponse } from "next";
-import { isDev } from "@stores/EnvironmentStore";
 
 const MD_URL = process.env.NEXT_PUBLIC_MD_URL || "";
 const USERNAME = process.env.USERNAME || "";
@@ -7,13 +8,23 @@ const PASSWORD = process.env.PASSWORD || "";
 
 export const parseSetCookieString = (
   dirtySetCookieString: string,
-): { readonly setCookieString: string; readonly cookieString: string } => {
+): {
+  readonly setCookieString: string;
+  readonly cookieString: string;
+} => {
+  const cookieString = dirtySetCookieString.split(";")[0].trim();
+
   return {
     setCookieString: dirtySetCookieString.trim(),
     // the cookie name=value is always the first element per
     // https://datatracker.ietf.org/doc/html/rfc6265#section-5.2
-    cookieString: dirtySetCookieString.split(";")[0].trim(),
+    cookieString,
   };
+};
+
+const getCookieObject = (cookieString: string): Record<string, string> => {
+  const splitCookieString = cookieString.split("=");
+  return { [splitCookieString[0]]: splitCookieString[1] };
 };
 
 export const parseSetCookieHeader = (
@@ -21,9 +32,10 @@ export const parseSetCookieHeader = (
 ): {
   readonly setCookieStrings: ReadonlyArray<string>;
   readonly cookieStrings: ReadonlyArray<string>;
+  readonly cookies: Record<string, string>;
 } => {
   if (header === "" || header == null) {
-    return { setCookieStrings: [], cookieStrings: [] };
+    return { setCookieStrings: [], cookieStrings: [], cookies: {} };
   }
 
   const [cur, rest] = header.split(/,(.+)/);
@@ -35,6 +47,7 @@ export const parseSetCookieHeader = (
     return {
       setCookieStrings: [setCookieString],
       cookieStrings: [cookieString],
+      cookies: getCookieObject(cookieString),
     };
   }
 
@@ -50,10 +63,12 @@ export const parseSetCookieHeader = (
     const {
       setCookieStrings: restSetCookieStrings,
       cookieStrings: restCookieStrings,
+      cookies: restCookies,
     } = parseSetCookieHeader(rest2);
     return {
       setCookieStrings: [setCookieString, ...restSetCookieStrings],
       cookieStrings: [cookieString, ...restCookieStrings],
+      cookies: { ...getCookieObject(cookieString), ...restCookies },
     };
   }
 
@@ -62,10 +77,12 @@ export const parseSetCookieHeader = (
   const {
     setCookieStrings: restSetCookieStrings,
     cookieStrings: restCookieStrings,
+    cookies: restCookies,
   } = parseSetCookieHeader(rest);
   return {
     setCookieStrings: [setCookieString, ...restSetCookieStrings],
     cookieStrings: [cookieString, ...restCookieStrings],
+    cookies: { ...getCookieObject(cookieString), ...restCookies },
   };
 };
 
@@ -73,20 +90,30 @@ const devLogin = async (
   _: NextApiRequest,
   res: NextApiResponse,
 ): Promise<void> => {
-  if (!isDev) {
-    // TODO [lliepert]: do we want to log this somehow?
-    // eslint-disable-next-line no-console
-    console.log("attempting to call dev-login in non-dev environment");
-    res.status(500).end();
+  // set xsrf token for staging
+  let respXSRF;
+  try {
+    respXSRF = await fetch(`${MD_URL}/`);
+  } catch (e) {
+    console.log(`error fetching${MD_URL}/`, "resp", respXSRF, "e", e);
     return;
   }
 
+  const {
+    cookieStrings: cookieStringsXSRF,
+    setCookieStrings: setCookieStringsXSRF,
+    cookies: cookiesXSRF,
+  } = parseSetCookieHeader(respXSRF.headers.get("set-cookie") || "");
+
+  // perform login call
   const resp = await fetch(`${MD_URL}/api/graphql/batch`, {
     headers: {
       "cache-control": "no-cache",
       "content-type": "application/json",
       "sec-fetch-mode": "cors",
       "sec-fetch-site": "same-origin",
+      "x-xsrftoken": cookiesXSRF["_xsrf"],
+      cookie: cookieStringsXSRF?.join("; "),
     },
     body: `[{"operationName":"Leopard_devLoginMutation","variables":{"input":{"username":"${USERNAME}","password":"${PASSWORD}"}},"query":"mutation Leopard_devLoginMutation($input: LoginMutationInput!) {\\n  authentication {\\n    login(input: $input) {\\n      loginOk\\n      error\\n      __typename\\n    }\\n    __typename\\n  }\\n}\\n"}]`,
     method: "POST",
@@ -102,9 +129,6 @@ const devLogin = async (
     isOk = json[0].data.authentication.login.loginOk;
     error = json[0].data.authentication.login.error;
   } catch (e) {
-    // this code is only executed when running in the local dev environment
-    // add a hint to the error since we don't have type safety here
-    // eslint-disable-next-line no-console
     console.log(
       "\n\nparsing dev-login gql call failed. see `yarn dev` console for more details\n",
       resp,
@@ -114,10 +138,6 @@ const devLogin = async (
   }
 
   if (!isOk) {
-    // this code is only executed when running in the local dev environment
-    // we want the developer to know why they are currently unable to
-    // authenticate to merchant dashboard
-    // eslint-disable-next-line no-console
     console.log(
       `\n\ndev-login gql call failed with status ${gqlStatus}, isOk: ${isOk}, error:${error}. see \`yarn dev\` console for more details\n`,
       resp,
@@ -127,9 +147,10 @@ const devLogin = async (
     return;
   }
 
-  const { setCookieStrings } = parseSetCookieHeader(
+  const { setCookieStrings: setCookieStrings_ } = parseSetCookieHeader(
     resp.headers.get("set-cookie") || "",
   );
+  const setCookieStrings = [...setCookieStringsXSRF, ...setCookieStrings_];
   res.setHeader("Set-Cookie", setCookieStrings);
   res.status(200).end();
 };

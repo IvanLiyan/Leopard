@@ -13,7 +13,7 @@
 4. Run `yarn install`.
 5. Run `yarn dev`.
    > **Note** `dev` starts a Next.JS development server running on port 8080.
-6. Navigate to `http://localhost:8080/<page>`.
+6. Navigate to `https://leopard.wish.com:3000/<page>`.
 
 ### Logging In
 
@@ -21,7 +21,7 @@ While Leopard itself does not employ any authentication to view pages (see _Why 
 
 1. Confirm your `.env.local` file is populated with your admin username and password and start the local dev server (`yarn dev`).
    > **Warning** `.env.local` is ignored by our `.gitignore`. **Never commit this file**, or any other file with your username and password.
-2. Navigate to `http://localhost:8080/dev-login`.
+2. Navigate to `https://leopard.wish.com:3000/dev-login`.
 3. Press the `Dev Login` button.
    - The Leopard dev server will execute a query against the provided merch-fe backend and log you in under your admin account.
    - After the query is finished you should see your admin account's user ID next to `Current User ID`.
@@ -36,8 +36,8 @@ While Leopard itself does not employ any authentication to view pages (see _Why 
 
   Next.JS uses a file-system based router that maps routes to pages via the formula
 
-  - `leopard.url/my-page` -> `src/pages/my-page`
-  - `leopard.url/subdir/my-page` -> `src/pages/subdir/my-page`
+  - `leopard.wish.com/my-page` -> `src/pages/my-page`
+  - `leopard.wish.com/subdir/my-page` -> `src/pages/subdir/my-page`
   - etc.
 
   Thus, all the pages in Leopard are stored in `src/pages`. Each file exports a React Component of type `NextPage<Record<string, never>>`, and they are free to import from the various other component packages in order to more easily build that component.
