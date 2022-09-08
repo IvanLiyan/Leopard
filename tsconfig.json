@@ -18,15 +18,37 @@
     "baseUrl": "./",
     "downlevelIteration": true,
     "paths": {
-      "@assets/*": ["src/pkg/assets/index", "src/pkg/assets/*"],
-      "@legacy/*": ["src/legacy/index", "src/legacy/*"],
-      "@merchant/*": ["src/pkg/merchant/index", "src/pkg/merchant/*"],
-      "@plus/*": ["src/pkg/plus/index", "src/pkg/plus/*"],
-      "@schema/*": ["src/pkg/schema/index", "src/pkg/schema/*"],
-      "@stores/*": ["src/pkg/stores/index", "src/pkg/stores/*"],
-      "@toolkit/*": ["src/pkg/toolkit/index", "src/pkg/toolkit/*"],
+      "@schema": ["src/app/schema"],
+      "@src/*": ["src/*"],
+      "@core/*": ["src/app/core/*"],
+      "@chrome/*": ["src/app/chrome/*"],
+      // legacy stuff
+      "@assets/*": [
+        "src/deprecated/pkg/assets/index",
+        "src/deprecated/pkg/assets/*"
+      ],
+      "@merchant/*": [
+        "src/deprecated/pkg/merchant/index",
+        "src/deprecated/pkg/merchant/*"
+      ],
+      "@plus/*": ["src/deprecated/pkg/plus/index", "src/deprecated/pkg/plus/*"],
+      "@schema/*": [
+        "src/deprecated/pkg/schema/index",
+        "src/deprecated/pkg/schema/*"
+      ],
+      "@toolkit/*": [
+        "src/deprecated/pkg/toolkit/index",
+        "src/deprecated/pkg/toolkit/*"
+      ],
       "@next-toolkit/*": ["src/toolkit/index", "src/toolkit/*"],
-      "@public/*": ["public/index", "public/*"]
+      "@public/*": ["public/index", "public/*"],
+      // modified legacy stuff
+      "@stores/*": ["src/app/core/stores/*"],
+      "@legacy/core/*": ["src/app/core/toolkit/*"],
+      //// temp solutions for deprecated code
+      "@toolkit/styling": ["src/app/core/toolkit/styling"],
+      "@next-toolkit/Image": ["src/app/core/components/Image"],
+      "@next-toolkit/Link": ["src/app/core/components/Link"]
     },
     "experimentalDecorators": true,
     "incremental": true

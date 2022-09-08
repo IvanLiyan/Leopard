@@ -32,6 +32,8 @@ While Leopard itself does not employ any authentication to view pages (see _Why 
 
 ## Project Tour
 
+**:warning: :warning: :warning: Below info is out of date; updated project tour is incoming :warning :warning: :warning:**
+
 - `src/pages`
 
   Next.JS uses a file-system based router that maps routes to pages via the formula

@@ -1,7 +1,7 @@
 import "../styles/global.css";
 
 import { AppProps } from "next/app";
-import MerchantDashboardProvider from "@next-toolkit/MerchantDashboardProvider";
+import MerchantDashboardProvider from "@chrome/MerchantDashboardProvider";
 
 function MerchantDashboard({
   Component,

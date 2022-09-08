@@ -8,10 +8,9 @@ lighthouse:
     - export
     - npm install -g @lhci/cli@0.8.x octokit
     - lhci autorun || echo "LHCI failed!"
-    - cd test/lhci && npm install
+    - cd lighthouse && npm install
     - node lhci.mjs
   artifacts:
     when: always
     paths:
       - lhcireport
-
