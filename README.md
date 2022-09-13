@@ -4,8 +4,10 @@
 
 1. Clone the repo.
 2. Create a `.env.local` file. A template is included via the file `.env.example`.
-3. Run `yarn create-certs`.
+3. Run `yarn setup`.
    > **Note**
+   >
+   > `setup` runs a setup script that installs [pre-commit](https://pre-commit.com/), sets up git to check the `.githooks` directory for hooks, and runs `create-certs`.
    >
    > `create-certs` creates SSL certificates used to run the local Next.JS server with HTTPS. HTTPS is required to communicate with `merch-fe`.
    >

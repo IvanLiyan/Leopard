@@ -1,0 +1,5 @@
+#!/bin/bash
+
+if git status --porcelain | grep -q 'M package.json'; then
+  yarn install
+fi
