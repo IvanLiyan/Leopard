@@ -35,6 +35,10 @@ const moduleExports = {
             source: "/go/:mid",
             destination: `${MD_URL}/go/:mid`,
           },
+          {
+            source: "/logout",
+            destination: `${MD_URL}/logout`,
+          },
         ]
       : [];
   },

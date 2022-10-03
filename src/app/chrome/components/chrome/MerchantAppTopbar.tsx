@@ -34,7 +34,7 @@ import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import Icon from "@core/components/Icon";
 
 import Link from "@core/components/Link";
-import { SearchStoreProvider } from "../../searchStore";
+import { SearchStoreProvider } from "@chrome/search/searchStore";
 
 type MerchantAppTopbarProps = BaseProps & {
   disableMenu?: boolean;

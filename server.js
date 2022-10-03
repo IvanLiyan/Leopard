@@ -19,5 +19,6 @@ app.prepare().then(() => {
   createServer(options, (req, res) => handle(req, res)).listen(port, (err) => {
     if (err) throw err;
     console.log(`> Ready on https://${hostname}:${port}`);
+    console.log(`> Log in through https://${hostname}:${port}/dev-login`);
   });
 });

@@ -15,7 +15,7 @@ import SearchResultsSection from "./SearchResultsSection";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { useNavigationStore } from "@core/stores/NavigationStore";
-import { NavigationSearchResult } from "@chrome/searchStore";
+import { NavigationSearchResult } from "@chrome/search/searchStore";
 
 type Props = BaseProps & {
   // Reason: can't find the type definition for a ref handle.

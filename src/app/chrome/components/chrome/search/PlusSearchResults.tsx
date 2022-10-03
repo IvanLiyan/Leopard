@@ -21,7 +21,10 @@ import SearchResultsSection from "./PlusSearchResultsSection";
 /* Type Imports */
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { useTheme } from "@core/stores/ThemeStore";
-import { NavigationSearchResult, useSearchStore } from "@chrome/searchStore";
+import {
+  NavigationSearchResult,
+  useSearchStore,
+} from "@chrome/search/searchStore";
 
 type Props = BaseProps & {
   // Reason: can't find the type definition for a ref handle.

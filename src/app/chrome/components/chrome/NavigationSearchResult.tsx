@@ -11,7 +11,7 @@ import { css } from "@core/toolkit/styling";
 import * as fonts from "@core/toolkit/fonts";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import { NavigationSearchResult } from "../../searchStore";
+import { NavigationSearchResult } from "@chrome/search/searchStore";
 
 import Link from "@core/components/Link";
 import NextImage from "@core/components/Image";

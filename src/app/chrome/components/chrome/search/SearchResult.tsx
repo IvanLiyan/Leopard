@@ -12,7 +12,7 @@ import * as fonts from "@core/toolkit/fonts";
 import { palettes } from "@src/deprecated/pkg/toolkit/lego-legacy/DEPRECATED_colors";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import { NavigationSearchResult } from "@chrome/searchStore";
+import { NavigationSearchResult } from "@chrome/search/searchStore";
 
 import Link from "@core/components/Link";
 import NextImage from "@core/components/Image";

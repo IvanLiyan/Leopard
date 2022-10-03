@@ -1,42 +1,136 @@
 // dev page, not exposed to merchants
 /* eslint-disable no-console */
 import { NextPage } from "next";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Cookies from "js-cookie";
+import { Button, Tooltip } from "@ContextLogic/atlas-ui";
 import {
-  Button,
-  H1,
-  Layout,
-  LegoProvider,
-  LoadingIndicator,
-  Text,
-} from "@ContextLogic/lego";
+  CssBaseline,
+  Box,
+  Paper,
+  Typography,
+  Divider,
+  Snackbar,
+  Alert,
+} from "@mui/material";
 
 const useError = (
   initialState: string | null,
 ): [
-  error: string | null,
+  errorBody: string | null,
+  errorOpen: boolean,
   setError: (error: string, ...rest: unknown[]) => void,
+  closeError: () => void,
 ] => {
-  const [error, setError] = useState<string | null>(initialState);
+  const [errorBody, setErrorBody] = useState<string | null>(initialState);
+  const [errorOpen, setErrorOpen] = useState(false);
 
   const onError = (errorProp: string, ...rest: unknown[]) => {
-    setError(errorProp);
+    setErrorBody(errorProp);
+    setErrorOpen(true);
     console.log(errorProp, ...rest);
   };
 
-  return [error, onError];
+  const onClose = () => {
+    setErrorOpen(false);
+  };
+
+  return [errorBody, errorOpen, onError, onClose];
 };
+
+// begin zendesk test (to be removed)
+import { useZendesk } from "@chrome/search/zendesk";
+import {
+  TextField,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from "@mui/material";
+
+const ZendeskTest: React.FC<Record<string, never>> = () => {
+  const [query, setQuery] = useState<undefined | string>(undefined);
+  const { data } = useZendesk(query);
+
+  const rows = data?.results || [];
+
+  return (
+    <>
+      <Divider sx={{ marginTop: 1, marginBottom: 1 }} />
+      <Typography
+        variant="h6"
+        component="h2"
+        sx={{ marginTop: 1, marginBottom: 1 }}
+      >
+        Zendesk Playground
+      </Typography>
+      <TextField
+        variant="outlined"
+        placeholder="Search Query"
+        value={query}
+        onChange={(e) => {
+          setQuery(e.target.value);
+        }}
+        sx={{ marginTop: 1, marginBottom: 1 }}
+      />
+
+      <TableContainer sx={{ maxWidth: 650 }}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>id</TableCell>
+              <TableCell>title</TableCell>
+              <TableCell>result_type</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {rows.length === 0 ? (
+              <TableRow
+                key={"no-data"}
+                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+              >
+                <TableCell
+                  align="center"
+                  colSpan={3}
+                  sx={{ fontStyle: "italic" }}
+                >
+                  No Data
+                </TableCell>
+              </TableRow>
+            ) : (
+              rows.map((row) => (
+                <TableRow
+                  key={row.name}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                >
+                  <TableCell component="th" scope="row">
+                    {row.id}
+                  </TableCell>
+                  <TableCell>{row.title}</TableCell>
+                  <TableCell>{row.result_type}</TableCell>
+                </TableRow>
+              ))
+            )}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </>
+  );
+};
+// end zendesk test
 
 const DevLoginPage: NextPage<Record<string, never>> = () => {
   // use numbers to emulate a stack of requests that need to complete before
   // loading is finished
-  const [loading, setLoading] = useState(0);
-  const [error, setError] = useError(null);
-  const [currentUser, setCurrentUser] = useState(null);
-  const [currentMerchant, setCurrentMerchant] = useState(null);
+  const [loading_, setLoading] = useState(0);
+  const loading = Boolean(loading_);
+  const [errorBody, errorOpen, setError, closeError] = useError(null);
+  const [currentUser, setCurrentUser] = useState("none");
+  const [currentMerchant, setCurrentMerchant] = useState("none");
 
-  const devLogin = async () => {
+  const loginAsAdmin = async () => {
     setLoading((cur) => cur + 1);
     try {
       const resp = await fetch("/api/dev-login");
@@ -47,13 +141,50 @@ const DevLoginPage: NextPage<Record<string, never>> = () => {
         );
         return;
       }
-      void fetchApiGraphql();
+      void fetchCurrentUser();
     } finally {
       setLoading((cur) => cur - 1);
     }
   };
 
-  const fetchApiGraphql = async () => {
+  const loginAsMerchant = async () => {
+    setLoading((cur) => cur + 1);
+    try {
+      if (currentUser === "none") {
+        await loginAsAdmin();
+      }
+      const resp = await fetch(`/go/${process.env.NEXT_PUBLIC_MID}`);
+      if (!resp.ok && !resp.redirected) {
+        setError(
+          "An error occurred while logging you in. Please see the console for more details.",
+          resp,
+        );
+        return;
+      }
+      void fetchCurrentUser();
+    } finally {
+      setLoading((cur) => cur - 1);
+    }
+  };
+
+  const logout = async () => {
+    setLoading((cur) => cur + 1);
+    try {
+      const resp = await fetch("/logout");
+      if (!resp.ok && !resp.redirected) {
+        setError(
+          "An error occurred while logging you in. Please see the console for more details.",
+          resp,
+        );
+        return;
+      }
+      void fetchCurrentUser();
+    } finally {
+      setLoading((cur) => cur - 1);
+    }
+  };
+
+  const fetchCurrentUser = async () => {
     setLoading((cur) => cur + 1);
     try {
       const xsrf = Cookies.get("_xsrf");
@@ -83,12 +214,12 @@ const DevLoginPage: NextPage<Record<string, never>> = () => {
       setCurrentUser(
         jsonResponse.data.currentUser
           ? jsonResponse.data.currentUser.id
-          : "User not logged in",
+          : "none",
       );
       setCurrentMerchant(
         jsonResponse.data.currentMerchant
           ? jsonResponse.data.currentMerchant.id
-          : "Merchant not logged in",
+          : "none",
       );
     } catch (e) {
       setError(
@@ -100,65 +231,117 @@ const DevLoginPage: NextPage<Record<string, never>> = () => {
     }
   };
 
-  if (loading) {
-    return (
-      <LegoProvider locale="en">
-        <Layout.FlexRow alignItems="center" justifyContent="center">
-          <LoadingIndicator type="swinging-bar" />
-        </Layout.FlexRow>
-      </LegoProvider>
-    );
-  }
+  useEffect(() => {
+    void fetchCurrentUser();
+    // only want to run on mount
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
-    <LegoProvider locale="en">
-      <Layout.FlexRow alignItems="center" justifyContent="center">
-        <H1>dev-login</H1>
-      </Layout.FlexRow>
-      <Layout.FlexRow>
-        {error ? (
-          <Text>{error}</Text>
-        ) : (
-          <Text>
-            You have been successfully logged in to the Merchant Dashboard.
-          </Text>
-        )}
-      </Layout.FlexRow>
-      <Layout.FlexRow>
-        <Button onClick={devLogin}>Dev Login</Button>
-        <Button onClick={fetchApiGraphql}>Fetch api/graphql</Button>
-      </Layout.FlexRow>
-      <Layout.FlexRow>
-        <Text>Current User ID:</Text>
-        <Text
-          style={{
-            marginLeft: 10,
-          }}
-        >
-          {currentUser}
-        </Text>
-      </Layout.FlexRow>
-      <Layout.FlexRow>
-        <Text>Current Merchant ID: </Text>
-        <Text
-          style={{
-            marginLeft: 10,
-          }}
-        >
-          {currentMerchant}
-        </Text>
-      </Layout.FlexRow>
-      <Layout.FlexRow>
-        <Text>Merch-FE Target: </Text>
-        <Text
-          style={{
-            marginLeft: 10,
-          }}
-        >
-          {process.env.NEXT_PUBLIC_MD_URL}
-        </Text>
-      </Layout.FlexRow>
-    </LegoProvider>
+    <>
+      <CssBaseline />
+      <Box
+        sx={{
+          height: "100vh",
+          width: "100vw",
+          display: "flex",
+        }}
+      >
+        <Paper variant="outlined" sx={{ padding: 4, margin: "auto" }}>
+          <Typography variant="h4" component="h1">
+            Developer Login
+          </Typography>
+
+          <Divider sx={{ marginTop: 1, marginBottom: 1 }} />
+
+          <Tooltip
+            content={() => (
+              <Box sx={{ maxWidth: 300 }}>
+                Log in to Merch-FE as your admin account, stored in .env.local.
+              </Box>
+            )}
+            placement="right"
+          >
+            <Button
+              primary
+              onClick={loginAsAdmin}
+              style={{ display: "block", width: "100%", margin: "10px 0px" }}
+              disabled={loading}
+            >
+              Login as Admin
+            </Button>
+          </Tooltip>
+          <Tooltip
+            content={() => (
+              <Box sx={{ maxWidth: 300 }}>
+                Log into Merch-FE as your admin account, if not yet logged in,
+                then as the MID specified in your .env.local file via \go.
+              </Box>
+            )}
+            placement="right"
+          >
+            <Button
+              primary
+              onClick={loginAsMerchant}
+              style={{ display: "block", width: "100%", margin: "10px 0px" }}
+              disabled={loading}
+            >
+              Login as Merchant
+            </Button>
+          </Tooltip>
+
+          <Tooltip
+            content={() => <Box>Log out of Merch-FE via /logout.</Box>}
+            placement="right"
+          >
+            <Button
+              primary
+              onClick={logout}
+              style={{ display: "block", width: "100%", margin: "10px 0px" }}
+              disabled={loading}
+            >
+              Logout
+            </Button>
+          </Tooltip>
+
+          <Divider sx={{ marginTop: 1, marginBottom: 1 }} />
+
+          <Paper variant="outlined" sx={{ bgcolor: "grey.200", padding: 1 }}>
+            <Typography>
+              Current User ID:{" "}
+              <Typography fontFamily="monospace" component="span">
+                {currentUser}
+              </Typography>
+            </Typography>
+
+            <Typography>
+              Current Merchant ID:{" "}
+              <Typography fontFamily="monospace" component="span">
+                {currentMerchant}
+              </Typography>
+            </Typography>
+
+            <Typography>
+              Merch-FE Target:{" "}
+              <Typography fontFamily="monospace" component="span">
+                {process.env.NEXT_PUBLIC_MD_URL}
+              </Typography>
+            </Typography>
+          </Paper>
+          <ZendeskTest />
+        </Paper>
+      </Box>
+      <Snackbar
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        open={errorOpen}
+        onClose={closeError}
+        message={errorBody}
+      >
+        <Alert variant="filled" severity="error">
+          {errorBody}
+        </Alert>
+      </Snackbar>
+    </>
   );
 };
 

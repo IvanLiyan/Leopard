@@ -37,7 +37,10 @@ import { useEnvironmentStore } from "@core/stores/EnvironmentStore";
 import { useLocalizationStore } from "@core/stores/LocalizationStore";
 import { useUserStore } from "@core/stores/UserStore";
 import { useTheme, useThemeStore } from "@core/stores/ThemeStore";
-import { NavigationSearchResult, useSearchStore } from "@chrome/searchStore";
+import {
+  NavigationSearchResult,
+  useSearchStore,
+} from "@chrome/search/searchStore";
 
 const SEARCH_WIDTH = 600;
 const SEARCH_HEIGHT = TopBarHeight * 0.65;

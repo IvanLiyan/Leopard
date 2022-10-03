@@ -18,7 +18,7 @@ import * as fonts from "@core/toolkit/fonts";
 
 /* Type Imports */
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import { NavigationSearchResult } from "@chrome/searchStore";
+import { NavigationSearchResult } from "@chrome/search/searchStore";
 import { useTheme } from "@core/stores/ThemeStore";
 
 import Link from "@core/components/Link";

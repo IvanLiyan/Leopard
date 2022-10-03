@@ -15,12 +15,7 @@ import sortBy from "lodash/sortBy";
 import flatten from "lodash/flatten";
 
 /* Lego Components */
-import { NavigationNode } from "./toolkit";
-
-/* Merchant API */
-import * as adminApi from "./api/admin";
-import * as chromeApi from "./api/chrome";
-import * as zendeskApi from "./api/zendesk";
+import { NavigationNode } from "../toolkit";
 
 /* Relative Imports */
 import UserStore from "@core/stores/UserStore";
@@ -338,10 +333,11 @@ class SearchStore {
       return null;
     }
 
-    return chromeApi.objectSearch({
-      oid: searchQuery.trim(),
-      current_path: currentPath,
-    }).response?.data?.result;
+    return null;
+    // chromeApi.objectSearch({
+    //   oid: searchQuery.trim(),
+    //   current_path: currentPath,
+    // }).response?.data?.result;
   }
 
   @computed
@@ -358,15 +354,17 @@ class SearchStore {
       return [];
     }
 
-    const results = zendeskApi.searchZendesk({
-      query: searchQuery,
-      locale,
-    }).response?.data?.results;
+    const results = null;
+    //  zendeskApi.searchZendesk({
+    //   query: searchQuery,
+    //   locale,
+    // }).response?.data?.results;
 
     if (results == null) {
       return [];
     }
 
+    // @ts-expect-error zendesk API not yet integrated, hardcoded null response so returns above
     return results.map((result) => {
       return {
         type: "zendesk",
@@ -389,24 +387,26 @@ class SearchStore {
       return [];
     }
 
-    const merchants = adminApi
-      .getMerchants({
-        start: 0,
-        count: 3,
-        query: searchQuery,
-        sort: "username",
-        order: "asc",
-        submerchants: false,
-        search_type: "",
-        as_su: true,
-        get_channel_partners: true,
-      })
-      .setOptions({ failSilently: true }).response?.data?.merchants;
+    const merchants = null;
+    // adminApi
+    //   .getMerchants({
+    //     start: 0,
+    //     count: 3,
+    //     query: searchQuery,
+    //     sort: "username",
+    //     order: "asc",
+    //     submerchants: false,
+    //     search_type: "",
+    //     as_su: true,
+    //     get_channel_partners: true,
+    //   })
+    //   .setOptions({ failSilently: true }).response?.data?.merchants;
     if (merchants == null) {
       return [];
     }
 
     const redirectPath = isMerchant && currentPath ? currentPath : "/";
+    // @ts-expect-error chrome API does not yet exist, hardcoded null response so returns above
     return merchants.map((merchant: any) => {
       return {
         type: "merchant",
