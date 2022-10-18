@@ -36,13 +36,6 @@ datadogRum.init({
 });
 
 const MerchantDashboardProvider: React.FC = ({ children }) => {
-  // blocking SSR until we can properly test that path (mostly GQL queries and
-  // stores)
-  const ssr = typeof window === "undefined";
-  if (ssr) {
-    <div>ssr mode, please wait...</div>;
-  }
-
   // NOTE: we perform the queries here instead of in the providers so we don't
   // have to wait for the previous query to finish and children are rendered
   // to kick of the next provider / query, but instead can perform them all

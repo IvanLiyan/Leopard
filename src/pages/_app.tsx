@@ -3,26 +3,30 @@ import "../styles/global.css";
 import { AppProps } from "next/app";
 import MerchantDashboardProvider from "@chrome/MerchantDashboardProvider";
 
-function MerchantDashboard({
+const MerchantDashboard = ({
   Component,
   pageProps,
   router,
-}: AppProps): JSX.Element {
-  // /dev-login is a edge case that initializes cookies required for _app
-  // skip _app in that case
-
+}: AppProps): JSX.Element => {
   const independentSubpaths = ["/dev-login", "/hello-world", "/go"];
-  const foundValidSubpath = independentSubpaths.some((element) =>
+  const foundIndependentSubpath = independentSubpaths.some((element) =>
     router.pathname.includes(element),
   );
 
-  if (foundValidSubpath) return <Component {...pageProps} />;
+  if (foundIndependentSubpath) return <Component {...pageProps} />;
 
   return (
     <MerchantDashboardProvider>
       <Component {...pageProps} />
     </MerchantDashboardProvider>
   );
-}
+};
 
-export default MerchantDashboard;
+const App = (props: AppProps): JSX.Element => {
+  return (
+    <div suppressHydrationWarning>
+      {typeof window === "undefined" ? null : <MerchantDashboard {...props} />}
+    </div>
+  );
+};
+export default App;
