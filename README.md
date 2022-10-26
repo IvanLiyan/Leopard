@@ -147,3 +147,7 @@ However, all requests for data (the sensitive part) go through GQL to `merch-fe`
 > In `merch-fe`, page based authentication is often combined with redirects to provide a nice user experience where users who didn't have the correct permissions to access a page is redirected to a page they can access, or a 404 page, vs. being shown a broken page. Note that this behavior can still be accomplished in Leopard by employing client side checks and redirects - it's just important to note it doesn't provide actual authentication since the user can bypass the redirect and view the skeleton if they so desire.
 
 On production, Leopard will get the required `merchant.wish.com` authentication cookies automatically since we're hosted under that domain. For local development, we've implemented a special _dev-login_ flow (see _Logging In_ above).
+
+## `package.json` Comments:
+
+- sharp installed due to issue with alpine docker images and node 18: https://github.com/vercel/next.js/issues/38020

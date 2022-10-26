@@ -1,5 +1,8 @@
 // dev page, not exposed to merchants
 /* eslint-disable no-console */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-misused-promises */
+// above fixed in next scheduled PR [lliepert]
 import { NextPage } from "next";
 import { useState, useEffect } from "react";
 import Cookies from "js-cookie";
