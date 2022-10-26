@@ -1,20 +1,14 @@
-image: registry-gitlab.i.wish.com/contextlogic/tooling-image/node:16-alpine3.11
-
-variables:
-  ITA_TEMPLATE: default-service # DO NOT change this
-  ITA_ADD_BUILD_ARGS: "ITA_JOB_TOKEN ITA_PROJECT_NAME"
-
 stages:
   - schedule
-  - pre-test
+  - install
   - build
-  - test
-  - tag
-  - deploy_staging
-  - deploy_production
+  # temp disabling lighthouse so we can remove docker - will re-write at a later date
+  # - test
+  - deploy
 
 install_dependencies:
-  stage: pre-test
+  stage: install
+  image: node:16
   script:
     - yarn install --frozen-lockfile
   artifacts:
@@ -23,11 +17,39 @@ install_dependencies:
   except:
     - schedules
 
-include:
-  - project: "contextlogic/includes"
-    ref: master
-    file: "/templates/job-build-and-tag/ecr-commit.yml"
-  - local: 'pipeline/schedule.yml'
-  - local: 'pipeline/test.yml'
-  - local: 'pipeline/build.yml'
-  - local: 'pipeline/deploy.yml'
+build:
+  stage: build
+  image: node:16
+  script:
+    - yarn build
+  artifacts:
+    when: always
+    paths:
+      - out
+
+deploy_staging:
+  stage: deploy
+  image: registry-gitlab.i.wish.com/contextlogic/leopard/aws-base:latest
+  script:
+    - sh scripts/deploy.sh -s=leopard-staging -c=E1SMAHICCX1GPQ
+  environment:
+    name: staging
+  when: manual
+  tags: [leopard-staging]
+
+deploy_prod:
+  stage: deploy
+  image: registry-gitlab.i.wish.com/contextlogic/leopard/aws-base:latest
+  script:
+    - sh scripts/deploy.sh -s=leopard-production -c=E1SMAHICCX1GPQ
+  environment:
+    name: production
+  when: manual
+  tags: [leopard]
+# temp disabling lighthouse so we can remove docker - will re-write at a later date
+# include:
+#   - project: "contextlogic/includes"
+#     ref: master
+#     file: "/templates/job-build-and-tag/ecr-commit.yml"
+#   - local: "pipeline/schedule.yml"
+#   - local: "pipeline/test.yml"

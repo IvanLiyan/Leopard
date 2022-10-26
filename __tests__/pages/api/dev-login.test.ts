@@ -1,7 +1,7 @@
 import {
   parseSetCookieString,
   parseSetCookieHeader,
-} from "../../../src/pages/api/dev-login";
+} from "../../../src/pages/api/dev-login.dev";
 
 describe("parseSetCookieString", () => {
   test("Return the proper set cookie string and cookie string when set cookie options are included", () => {

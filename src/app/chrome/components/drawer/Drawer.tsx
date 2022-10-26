@@ -45,7 +45,6 @@ const Drawer = ({ children }: DrawerProps) => {
     <>
       <PoseGroup>
         {isDrawerOpen && (
-          // @ts-expect-error - TODO [lliepert]: fix this typing
           <Backdrop
             className={css(styles.backdrop)}
             key="backdrop"
@@ -53,7 +52,6 @@ const Drawer = ({ children }: DrawerProps) => {
           />
         )}
       </PoseGroup>
-      {/* @ts-expect-error - TODO [lliepert]: fix this typing */}
       <DrawerContentContainer
         className={css(styles.drawer)}
         key="drawer"

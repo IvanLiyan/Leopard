@@ -155,14 +155,12 @@ const ChromeSideMenu: React.FC<Props> = (props: Props) => {
   return (
     <PoseGroup flipMove={false}>
       {isDrawerOpen && (
-        // @ts-expect-error - TODO [lliepert]: fix this typing
         <OverlayContainer
           key="overlay"
           className={css(styles.overlay)}
           onClick={onOverlayClick}
         ></OverlayContainer>
       )}
-      {/* @ts-expect-error - TODO [lliepert]: fix this typing */}
       <SideMenuContentContainer
         className={css(styles.root, className, style)}
         ref={contentRef}
@@ -193,7 +191,6 @@ const ChromeSideMenu: React.FC<Props> = (props: Props) => {
           )}
         </Layout.FlexColumn>
         {enableDrawer && (
-          // @ts-expect-error - TODO [lliepert]: fix this typing
           <DrawerContentContainer
             key="drawer"
             pose={drawerOpen ? "open" : "closed"}

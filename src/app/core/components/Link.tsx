@@ -18,7 +18,18 @@ export type LinkProps = Omit<SimpleLinkProps, "href"> & {
   readonly fadeOnHover?: boolean | null | undefined;
 };
 
-const Link = (props: LinkProps) => {
+const isValidURL = (s: string): boolean => {
+  try {
+    new URL(s);
+    // test has passed, s is a valid URL
+    return true;
+  } catch (_) {
+    // test failed, s is not a valid URL
+    return false;
+  }
+};
+
+const Link = (_props: LinkProps) => {
   const {
     href: hrefProp,
     style,
@@ -26,9 +37,8 @@ const Link = (props: LinkProps) => {
     DEPRECATED_isRouterLink,
     openInNewTab,
     onClick,
-    children,
     ...otherProps
-  } = props;
+  } = _props;
 
   // TODO [hdinh]: delete all files using Link w/ DEPRECATED_isRouterLink prop
   // https://jira.wish.site/browse/MKL-56811
@@ -36,30 +46,32 @@ const Link = (props: LinkProps) => {
     return null;
   }
 
-  // TODO [hdinh]: add next/link-passhref lint
-  // https://nextjs.org/docs/api-reference/next/link#if-the-child-is-a-custom-component-that-wraps-an-a-tag
-
-  // css prop is missing in SimpleLink's props, for now it's set to undefined
-  // has to be an issue with NextJS
-  // similar to issues identified with emotion: https://github.com/emotion-js/emotion/issues/2111
-  // emotion has gotten into the prop types, which is adding a css variable that does not normally exist in this type in Lego
-
   // required since legacy lego link allows href to be null, but anchor doesn't
   const href = hrefProp === null ? undefined : hrefProp;
 
+  const props = {
+    href,
+    style: [style, className],
+    rel: openInNewTab || onClick ? "noopener noreferrer" : undefined,
+    target: openInNewTab ? "_blank" : undefined,
+    onClick,
+    // css prop is missing in SimpleLink's props, for now it's set to undefined
+    // has to be an issue with NextJS
+    // similar to issues identified with emotion: https://github.com/emotion-js/emotion/issues/2111
+    // emotion has gotten into the prop types, which is adding a css variable that does not normally exist in this type in Lego
+    css: undefined,
+    ...otherProps,
+  };
+
+  // urls of the form `${window.location.href}/slug` can be used to access
+  // Merch-FE pages, while "/slug" can be used to access Leopard pages
+  if (!href || isValidURL(href)) {
+    return <SimpleLink {...props} />;
+  }
+
   return (
     <NextLink href={{ pathname: href }} passHref>
-      <SimpleLink
-        href={href}
-        style={[style, className]}
-        rel={openInNewTab || onClick ? "noopener noreferrer" : undefined}
-        target={openInNewTab ? "_blank" : undefined}
-        onClick={onClick}
-        css={undefined}
-        {...otherProps}
-      >
-        {children}
-      </SimpleLink>
+      <SimpleLink {...props} />
     </NextLink>
   );
 };

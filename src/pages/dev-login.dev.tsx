@@ -133,7 +133,7 @@ const DevLoginPage: NextPage<Record<string, never>> = () => {
   const loginAsAdmin = async () => {
     setLoading((cur) => cur + 1);
     try {
-      const resp = await fetch("/api/dev-login");
+      const resp = await fetch("/md/api/dev-login");
       if (!resp.ok) {
         setError(
           "An error occurred while logging you in. Please see the console for more details.",

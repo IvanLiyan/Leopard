@@ -20,6 +20,7 @@ import {
   CHROME_STORE_INITIAL_QUERY,
   ChromeStoreInitialQueryResponse,
 } from "../core/stores/ChromeStore";
+import { LoadingIndicator } from "@ContextLogic/lego";
 import { env } from "../core/stores/EnvironmentStore";
 import { datadogRum } from "@datadog/browser-rum";
 
@@ -65,7 +66,18 @@ const MerchantDashboardProvider: React.FC = ({ children }) => {
 
   // simplify, currently for testing purposes
   if (userStoreLoading || localizationStoreLoading || chromeStoreLoading) {
-    return <div>loading...</div>;
+    return (
+      <LoadingIndicator
+        style={{
+          position: "absolute",
+          top: 0,
+          bottom: 0,
+          left: 0,
+          right: 0,
+          margin: "auto",
+        }}
+      />
+    );
   }
 
   if (userStoreInitialData == null || userStoreError) {
