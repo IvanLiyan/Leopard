@@ -120,13 +120,6 @@ export const ToastProvider: React.FC = ({ children }) => {
       return;
     }
 
-    if (!isProd) {
-      // eslint-disable-next-line no-console
-      console.log(`TRIGGERING TOAST`);
-      // eslint-disable-next-line no-console
-      console.table(config);
-    }
-
     const { timeoutMs = 2500 } = config;
     if (currentTimeout) {
       clearTimeout(currentTimeout);

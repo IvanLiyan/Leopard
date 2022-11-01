@@ -351,18 +351,6 @@ export class MerchantAPIRequest<B, D> extends BaseAPIRequest<B, D> {
   }
 }
 
-export const call = (url: string, body: undefined | any): Promise<any> => {
-  return new Promise((resolve) => {
-    api.call(
-      url,
-      body,
-      // if you find this please fix the any types (legacy)
-      (resp: any) => resolve(resp),
-      (errResponse: any) => resolve(errResponse),
-    );
-  });
-};
-
 export const launchErrorToast = (message: string) => {
   ToastStore.instance().error(message);
 };

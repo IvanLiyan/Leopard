@@ -42,6 +42,19 @@ module.exports = (phase, { defaultConfig }) => {
           "process.env.BUILD_ID": JSON.stringify(buildId),
         }),
       );
+
+      config.resolve.alias.i18nModule = "src/app/core/toolkit/i18n";
+      config.plugins.push(
+        new webpack.ProvidePlugin({
+          i18nModule: "i18nModule",
+          i18n: ["i18nModule", "i18n"],
+          ni18n: ["i18nModule", "ni18n"],
+          ci18n: ["i18nModule", "ci18n"],
+          cni18n: ["i18nModule", "cni18n"],
+          sprintf: ["i18nModule", "sprintf"],
+        }),
+      );
+
       return config;
     },
     typescript: {

@@ -20,8 +20,8 @@
     "paths": {
       "@schema": ["src/app/schema"],
       "@src/*": ["src/*"],
-      "@core/*": ["src/app/core/*"],
       "@chrome/*": ["src/app/chrome/*"],
+      "@core/*": ["src/app/core/*"],
       // legacy stuff
       "@assets/*": [
         "src/deprecated/pkg/assets/index",

@@ -13,10 +13,17 @@ const MerchantDashboard = ({
     router.pathname.includes(element),
   );
 
+  // if a page is in this array, any queries made for setting up stores that
+  // require a logged in user (e.g. navigation graph) will be skipped
+  const publicSubpaths = ["/welcome-mms"];
+  const isPublic = publicSubpaths.some((element) => {
+    return router.asPath.includes(element);
+  });
+
   if (foundIndependentSubpath) return <Component {...pageProps} />;
 
   return (
-    <MerchantDashboardProvider>
+    <MerchantDashboardProvider isPublic={isPublic}>
       <Component {...pageProps} />
     </MerchantDashboardProvider>
   );

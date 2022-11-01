@@ -27,7 +27,6 @@ import {
   PaymentCurrencyCode as CurrencyCode,
 } from "@schema";
 
-// TODO [lliepert]: bring back isApiUser once code is merged
 export const USER_STORE_INITIAL_QUERY = gql`
   query UserStore_InitialQuery {
     currentCountry {
@@ -48,6 +47,7 @@ export const USER_STORE_INITIAL_QUERY = gql`
       displayName
       email
       phoneNumber
+      isApiUser
       businessAddress {
         streetAddress1
         streetAddress2
@@ -138,36 +138,45 @@ class UserStore {
   su: Readonly<PickedSU> | null | undefined;
   merchant: Readonly<PickedCurrentMerchant> | null | undefined;
 
-  constructor({
-    currentCountry,
-    currentMerchant,
-    currentUser,
-    su,
-    recentUsers: pickedRecentUsers,
-  }: UserStoreInitialQueryResponse) {
-    this.countryCodeByIp = currentCountry != null ? currentCountry.code : null;
-    this.isCostBased =
-      currentMerchant != null ? currentMerchant.isCostBased : false;
-    this.isSu = su != null;
-    this.loggedInMerchantUser = currentUser;
-    this.merchantSourceCurrency =
-      currentMerchant != null ? currentMerchant.primaryCurrency : null;
-    this.recentUsers = pickedRecentUsers.map((pickedUser) => {
-      let displayName = "";
-      if (pickedUser.displayName != null) {
-        displayName = pickedUser.displayName;
-      } else if (pickedUser.name != null) {
-        displayName = pickedUser.name;
-      }
+  constructor(initialData?: UserStoreInitialQueryResponse | null) {
+    if (initialData != null) {
+      const {
+        currentCountry,
+        currentMerchant,
+        currentUser,
+        su,
+        recentUsers: pickedRecentUsers,
+      } = initialData;
+      this.countryCodeByIp =
+        currentCountry != null ? currentCountry.code : null;
+      this.isCostBased =
+        currentMerchant != null ? currentMerchant.isCostBased : false;
+      this.isSu = su != null;
+      this.loggedInMerchantUser = currentUser;
+      this.merchantSourceCurrency =
+        currentMerchant != null ? currentMerchant.primaryCurrency : null;
+      this.recentUsers = pickedRecentUsers.map((pickedUser) => {
+        let displayName = "";
+        if (pickedUser.displayName != null) {
+          displayName = pickedUser.displayName;
+        } else if (pickedUser.name != null) {
+          displayName = pickedUser.name;
+        }
 
-      return {
-        id: pickedUser.id,
-        displayName,
-        isMerchant: pickedUser.isStoreOrMerchantUser,
-      };
-    });
-    this.su = su;
-    this.merchant = currentMerchant;
+        return {
+          id: pickedUser.id,
+          displayName,
+          isMerchant: pickedUser.isStoreOrMerchantUser,
+        };
+      });
+      this.su = su;
+      this.merchant = currentMerchant;
+      return;
+    }
+
+    this.recentUsers = [];
+    this.isSu = false;
+    this.isCostBased = false;
   }
 
   @computed
@@ -242,7 +251,7 @@ const UserStoreContext = createContext(new UserStore(defaultUserStoreArgs));
 const UserStoreRef = createRef<UserStore>();
 
 export const UserStoreProvider: React.FC<{
-  initialData: UserStoreInitialQueryResponse;
+  readonly initialData?: UserStoreInitialQueryResponse | null;
 }> = ({ initialData, children }) => {
   const [showChildren, setShowChildren] = useState<boolean>(false);
 

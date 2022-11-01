@@ -3,29 +3,27 @@ import { StyleSheet } from "aphrodite";
 import { observer } from "mobx-react";
 
 /* Lego Toolkit */
-import { css } from "@core/toolkit/styling";
-import * as icons from "@src/deprecated/pkg/assets/icons";
+import { css } from "@toolkit/styling";
 
 /* Merchant Components */
-import Drawer from "@chrome/components/drawer/Drawer";
+import Drawer from "./Drawer";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { useDeviceStore } from "@core/stores/DeviceStore";
-
-import NextImage from "@core/components/Image";
-import { useChromeContext } from "@core/stores/ChromeStore";
+import { useChromeContext } from "@stores/ChromeStore";
+import Icon from "@src/app/core/components/Icon";
 
 type DrawerButtonProps = BaseProps;
 
 const DrawerButton = (props: DrawerButtonProps) => {
   const { isSmallScreen } = useDeviceStore();
-  const { setIsDrawerOpen } = useChromeContext();
+  const chromeStore = useChromeContext();
   const { style, className, children } = props;
   const styles = useStylesheet();
 
   const onClick = useCallback(() => {
-    setIsDrawerOpen(true);
-  }, [setIsDrawerOpen]);
+    chromeStore.setIsDrawerOpen(true);
+  }, [chromeStore]);
 
   if (!isSmallScreen) {
     return null;
@@ -34,13 +32,7 @@ const DrawerButton = (props: DrawerButtonProps) => {
   return (
     <>
       <div className={css(styles.root, className, style)} onClick={onClick}>
-        <NextImage
-          className={css(styles.img)}
-          // TODO [lliepert]: move these to public/
-          src={icons.burger}
-          draggable="false"
-          alt="TODO"
-        />
+        <Icon className={css(styles.img)} name="menu" />
       </div>
       <Drawer className={css(styles.drawer)}>{children}</Drawer>
     </>

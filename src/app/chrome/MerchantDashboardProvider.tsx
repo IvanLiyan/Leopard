@@ -36,7 +36,14 @@ datadogRum.init({
   replaySampleRate: 25,
 });
 
-const MerchantDashboardProvider: React.FC = ({ children }) => {
+type MerchantDashboardProviderProps = {
+  readonly isPublic?: boolean;
+};
+
+const MerchantDashboardProvider: React.FC<MerchantDashboardProviderProps> = ({
+  children,
+  isPublic = false,
+}) => {
   // NOTE: we perform the queries here instead of in the providers so we don't
   // have to wait for the previous query to finish and children are rendered
   // to kick of the next provider / query, but instead can perform them all
@@ -47,6 +54,7 @@ const MerchantDashboardProvider: React.FC = ({ children }) => {
     error: userStoreError,
   } = useQuery<UserStoreInitialQueryResponse>(USER_STORE_INITIAL_QUERY, {
     client,
+    skip: isPublic,
   });
   const {
     data: localizationStoreInitialData,
@@ -54,7 +62,9 @@ const MerchantDashboardProvider: React.FC = ({ children }) => {
     error: localizationStoreError,
   } = useQuery<LocalizationStoreInitialQueryResponse>(
     LOCALIZATION_STORE_INITIAL_QUERY,
-    { client },
+    {
+      client,
+    },
   );
   const {
     data: chromeStoreInitialData,
@@ -62,6 +72,7 @@ const MerchantDashboardProvider: React.FC = ({ children }) => {
     error: chromeStoreError,
   } = useQuery<ChromeStoreInitialQueryResponse>(CHROME_STORE_INITIAL_QUERY, {
     client,
+    skip: isPublic,
   });
 
   // simplify, currently for testing purposes
@@ -80,7 +91,7 @@ const MerchantDashboardProvider: React.FC = ({ children }) => {
     );
   }
 
-  if (userStoreInitialData == null || userStoreError) {
+  if (!isPublic && (userStoreInitialData == null || userStoreError)) {
     /* eslint-disable no-console */
     console.log("userStoreInitialData", userStoreInitialData);
     console.log("userStoreError", userStoreError);
@@ -88,7 +99,7 @@ const MerchantDashboardProvider: React.FC = ({ children }) => {
     return <div>error loading userStore (see console for details)</div>;
   }
 
-  if (localizationStoreInitialData == null || localizationStoreError) {
+  if (localizationStoreError) {
     /* eslint-disable no-console */
     console.log("localizationStoreInitialData", localizationStoreInitialData);
     console.log("localizationStoreError", localizationStoreError);
@@ -96,7 +107,7 @@ const MerchantDashboardProvider: React.FC = ({ children }) => {
     return <div>error loading localizationStore (see console for details)</div>;
   }
 
-  if (chromeStoreInitialData == null || chromeStoreError) {
+  if (!isPublic && (chromeStoreInitialData == null || chromeStoreError)) {
     /* eslint-disable no-console */
     console.log("chromeStoreInitialData", chromeStoreInitialData);
     console.log("chromeStoreError", chromeStoreError);
@@ -133,7 +144,7 @@ const MerchantDashboardProvider: React.FC = ({ children }) => {
         <ApolloProvider>
           <ToastProvider>
             <PersistenceStoreProvider
-              userId={userStoreInitialData.currentUser?.id || "none"}
+              userId={userStoreInitialData?.currentUser?.id ?? "none"}
             >
               <DeviceStoreProvider>
                 <LocalizationStoreProvider

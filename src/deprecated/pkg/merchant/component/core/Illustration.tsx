@@ -9,7 +9,7 @@ import React from "react";
 import { observer } from "mobx-react";
 
 /* Lego Components */
-import { StaggeredScaleIn } from "@ContextLogic/lego";
+import { Layout, StaggeredScaleIn } from "@ContextLogic/lego";
 
 /* Lego Toolkit */
 import { css } from "@toolkit/styling";
@@ -61,9 +61,9 @@ const Illustration: React.FC<IllustrationProps> = observer(
 
     if (!animate) {
       return (
-        <div className={css(className, style)}>
+        <Layout.FlexRow className={css(className, style)}>
           <Content />
-        </div>
+        </Layout.FlexRow>
       );
     }
 

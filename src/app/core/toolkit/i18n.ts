@@ -1,132 +1,183 @@
-// these functions are placeholders and will be replaced in a future ticket
-// variable names are preserved for documentation purposes
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-export const i18n = (...args: (string | number | null | undefined)[]): string =>
-  String(args?.[0]);
-export const ni18n = (
-  ...args: (string | number | null | undefined)[]
-): string => String(args?.[0]);
-export const ci18n = (
-  ...args: (string | number | null | undefined)[]
-): string => String(args?.[0]);
-export const cni18n = (
-  ...args: (string | number | null | undefined)[]
-): string => String(args?.[0]);
+import { Jed } from "jed";
+import csTranslations from "@ContextLogic/merchantstrings/cs_CZ.jed.json";
+import deTranslations from "@ContextLogic/merchantstrings/de_DE.jed.json";
+import esTranslations from "@ContextLogic/merchantstrings/es_LA.jed.json";
+import frTranslations from "@ContextLogic/merchantstrings/fr_FR.jed.json";
+import itTranslations from "@ContextLogic/merchantstrings/it_IT.jed.json";
+import jaTranslations from "@ContextLogic/merchantstrings/ja_JP.jed.json";
+import koTranslations from "@ContextLogic/merchantstrings/ko_KR.jed.json";
+import nlTranslations from "@ContextLogic/merchantstrings/nl_NL.jed.json";
+import ptTranslations from "@ContextLogic/merchantstrings/pt_BR.jed.json";
+import svTranslations from "@ContextLogic/merchantstrings/sv_SE.jed.json";
+import trTranslations from "@ContextLogic/merchantstrings/tr_TR.jed.json";
+import viTranslations from "@ContextLogic/merchantstrings/vi_VN.jed.json";
+import zhTranslations from "@ContextLogic/merchantstrings/zh_CN.jed.json";
+import { Locale } from "@schema";
+import { getBrowserLocale } from "../stores/LocalizationStore";
 
-// define(["jed"], function (jed) {
-//   var Jed = jed.Jed;
-//   var locale = window.locale_info["locale"];
-//   var jedi18n = undefined;
+type SupportedLocale = ExcludeStrict<
+  Locale,
+  "id" | "pl" | "ar" | "hu" | "da" | "fi" | "nb" | "th"
+>;
 
-//   if (!window.localeJson) {
-//     jedi18n = new Jed({});
-//   } else {
-//     jedi18n = new Jed(window.localeJson);
-//   }
+const LocaleTranslations: {
+  readonly [T in SupportedLocale]: Record<string, unknown>;
+} = {
+  en: {},
+  up: {},
+  zh: zhTranslations,
+  pt: ptTranslations,
+  es: esTranslations,
+  ko: koTranslations,
+  fr: frTranslations,
+  de: deTranslations,
+  ja: jaTranslations,
+  it: itTranslations,
+  vi: viTranslations,
+  tr: trTranslations,
+  cs: csTranslations,
+  nl: nlTranslations,
+  sv: svTranslations,
+};
 
-//   function _format(jedChain, args) {
-//     try {
-//       return jedChain.fetch(args);
-//     } catch {
-//       // pass
-//     }
+const isSupportedLocale = (value: string) => {
+  return Object.keys(LocaleTranslations).includes(value);
+};
 
-//     const str = jedChain.fetch();
-//     let nonPositionalMatchCount = 0;
+const getAppLocaleCookie = () => {
+  if (typeof document == "undefined") {
+    return;
+  }
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; app_locale=`);
+  if (parts != null && parts.length === 2) {
+    const part = parts.pop();
+    if (part != null) {
+      const value = part.split(";").shift();
+      if (value == null || !isSupportedLocale(value)) {
+        return undefined;
+      }
+      return value;
+    }
+  }
+};
 
-//     function replacer(match, capturedNum) {
-//       let argIndex = 0;
-//       if (capturedNum !== undefined) {
-//         argIndex = capturedNum - 1;
-//       } else {
-//         argIndex = nonPositionalMatchCount;
-//         nonPositionalMatchCount++;
-//       }
-//       return args[argIndex] !== undefined ? args[argIndex] : "";
-//     }
+const locale = (getAppLocaleCookie() ??
+  getBrowserLocale() ??
+  "en") as SupportedLocale;
 
-//     const sprintfPlaceholderRegex = /%(\d+)\$[ds]|%[ds]/g;
-//     const result = str.replace(sprintfPlaceholderRegex, replacer);
+const jedi18n = (() => {
+  const { [locale]: jedConfiguration = {} } = LocaleTranslations;
 
-//     const descPlaceholderRegex = /\{%(\d+)=[^{}]+\}/g;
-//     return result.replace(descPlaceholderRegex, replacer);
-//   }
+  if (Object.keys(jedConfiguration).length == 0) {
+    return new Jed({});
+  }
 
-//   function _i18n(str) {
-//     var _args = Array.prototype.slice.apply(arguments);
+  // po2json inserts nulls inside the entries arrays so instead of
+  // "My string": ["translation"], we get "My string": [null, "translation"]
+  // Take out the nulls, before sending the object to Jed()
+  const polishedJedConfiguration: any = { ...jedConfiguration };
+  for (const string of Object.keys(polishedJedConfiguration.locale_data.wish)) {
+    const translations = polishedJedConfiguration.locale_data.wish[string];
+    if (Array.isArray(translations) && translations.length) {
+      polishedJedConfiguration.locale_data.wish[string] = translations.filter(
+        (_) => _ !== null,
+      );
+    }
+  }
 
-//     if (typeof str !== "string") {
-//       console.log("You passed in '" + str + "' to i18n, did you mean ni18n?");
-//     }
+  return new Jed(polishedJedConfiguration);
+})();
 
-//     let result = jedi18n.translate(str);
-//     result = _format(result, _args.slice(1));
+function _format(jedChain: any, args: any) {
+  try {
+    return jedChain.fetch(args);
+  } catch {
+    // pass
+  }
 
-//     if (locale == "up") {
-//       result = result.toUpperCase();
-//     }
-//     return result;
-//   }
+  const str = jedChain.fetch();
+  let nonPositionalMatchCount = 0;
 
-//   function _ni18n(num, singular, plural) {
-//     var _args = Array.prototype.slice.apply(arguments);
-//     format_args = _args.slice(3);
-//     format_args.splice(0, 0, _args[0]);
+  function replacer(match: any, capturedNum: any) {
+    let argIndex = 0;
+    if (capturedNum !== undefined) {
+      argIndex = capturedNum - 1;
+    } else {
+      argIndex = nonPositionalMatchCount;
+      nonPositionalMatchCount++;
+    }
+    return args[argIndex] !== undefined ? args[argIndex] : "";
+  }
 
-//     var str = jedi18n.translate(singular).ifPlural(num, plural);
-//     str = _format(str, format_args);
+  const sprintfPlaceholderRegex = /%(\d+)\$[ds]|%[ds]/g;
+  const result = str.replace(sprintfPlaceholderRegex, replacer);
 
-//     if (locale == "up") {
-//       str = str.toUpperCase();
-//     }
-//     return str;
-//   }
+  const descPlaceholderRegex = /\{%(\d+)=[^{}]+\}/g;
+  return result.replace(descPlaceholderRegex, replacer);
+}
 
-//   function _ci18n(context, message) {
-//     context = context.toUpperCase();
-//     var _args = Array.prototype.slice.apply(arguments);
+function _i18n(str: string, ...args: any[]) {
+  let result = jedi18n.translate(str);
+  result = _format(result, args);
 
-//     if (!context) {
-//       return _i18n(message);
-//     }
+  if (locale == "up") {
+    result = result.toUpperCase();
+  }
+  return result;
+}
 
-//     var result = jedi18n.translate(message).withContext(context);
-//     result = _format(result, _args.slice(2));
+function _ni18n(num: number, singular: string, plural: string, ...args: any[]) {
+  const format_args = [num, ...args];
 
-//     if (locale == "up") {
-//       result = result.toUpperCase();
-//     }
+  let str = jedi18n.translate(singular).ifPlural(num, plural);
+  str = _format(str, format_args);
 
-//     return result;
-//   }
+  if (locale == "up") {
+    str = str.toUpperCase();
+  }
+  return str;
+}
 
-//   function _cni18n(context, num, singular, plural) {
-//     context = context.toUpperCase();
-//     var _args = Array.prototype.slice.apply(arguments);
-//     format_args = _args.slice(4);
-//     format_args.splice(0, 0, _args[1]);
+function _ci18n(context: string, message: string, ...args: any[]) {
+  context = context.toUpperCase();
 
-//     if (!context) {
-//       return _ni18n(num, singular, plural);
-//     }
+  let result = jedi18n.translate(message).withContext(context);
+  result = _format(result, args);
 
-//     var str = jedi18n
-//       .translate(singular)
-//       .ifPlural(num, plural)
-//       .withContext(context);
-//     str = _format(str, format_args);
+  if (locale == "up") {
+    result = result.toUpperCase();
+  }
 
-//     if (locale == "up") {
-//       str = str.toUpperCase();
-//     }
-//     return str;
-//   }
+  return result;
+}
 
-//   return {
-//     i18n: _i18n,
-//     ni18n: _ni18n,
-//     ci18n: _ci18n,
-//     cni18n: _cni18n,
-//     sprintf: Jed.sprintf,
-//   };
-// });
+function _cni18n(
+  context: string,
+  num: number,
+  singular: string,
+  plural: string,
+  ...args: any
+) {
+  context = context.toUpperCase();
+  const format_args = [num, ...args];
+
+  let str = jedi18n
+    .translate(singular)
+    .ifPlural(num, plural)
+    .withContext(context);
+  str = _format(str, format_args);
+
+  if (locale == "up") {
+    str = str.toUpperCase();
+  }
+  return str;
+}
+
+export const i18n = _i18n;
+export const ci18n = _ci18n;
+export const ni18n = _ni18n;
+export const cni18n = _cni18n;

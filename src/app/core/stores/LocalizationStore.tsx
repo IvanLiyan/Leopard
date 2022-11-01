@@ -21,7 +21,7 @@ export type LocaleInfo = {
 
 /* We don't translate the actual language names */
 /* eslint-disable local-rules/unwrapped-i18n */
-const Locales: {
+export const Locales: {
   [key in Locale]: LocaleInfo;
 } = {
   en: {
@@ -120,19 +120,38 @@ const Locales: {
 };
 // end @toolkit/locales
 
+const supportedBrowserLocales: ReadonlySet<Locale> = new Set(
+  Object.keys(Locales) as ReadonlyArray<Locale>,
+);
+const isLocale = (arg: string): arg is Locale => {
+  return supportedBrowserLocales.has(arg as Locale);
+};
+export const getBrowserLocale = (): Locale | undefined => {
+  if (typeof navigator === "undefined" || navigator.language == null) {
+    return;
+  }
+
+  const browserLocale = navigator.language.slice(0, 2);
+
+  if (isLocale(browserLocale)) {
+    return browserLocale;
+  }
+};
+
 class LocalizationStore {
   availableLocales: ReadonlyArray<Locale>;
   locale: Locale;
   preferredProperLocale: string;
 
-  constructor({
-    currentLocale: locale,
-    currentProperLocale: preferredProperLocale,
-    platformConstants: { availableLocales },
-  }: LocalizationStoreInitialQueryResponse) {
-    this.availableLocales = availableLocales ? availableLocales : [];
-    this.locale = locale;
-    this.preferredProperLocale = preferredProperLocale;
+  constructor(params?: LocalizationStoreInitialQueryResponse) {
+    this.availableLocales = params?.platformConstants.availableLocales
+      ? params.platformConstants.availableLocales
+      : [];
+    this.locale = params?.currentLocale ?? getBrowserLocale() ?? "en";
+    this.preferredProperLocale =
+      params?.currentProperLocale ??
+      getBrowserLocale()?.toLocaleLowerCase() ??
+      "en-us";
   }
 
   @computed
@@ -193,7 +212,7 @@ const LocalizationStoreContext = createContext(
 const LocalizationStoreRef = createRef<LocalizationStore>();
 
 export const LocalizationStoreProvider: React.FC<{
-  initialData: LocalizationStoreInitialQueryResponse;
+  initialData?: LocalizationStoreInitialQueryResponse;
 }> = ({ initialData, children }) => {
   const localizationStore = new LocalizationStore(initialData);
   useImperativeHandle(LocalizationStoreRef, () => localizationStore);

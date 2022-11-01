@@ -229,7 +229,7 @@ class ModalContainer extends Component<ModalContainerProps> {
           <div
             className={css(
               this.styles.modalContent,
-              exiting ? this.styles.contentExit : this.styles.contentEntrance
+              exiting ? this.styles.contentExit : this.styles.contentEntrance,
             )}
             ref={(_) => (this.contentRef = _)}
           >
@@ -399,7 +399,7 @@ export default class Modal {
             </ModalContainer>
           </ApolloProvider>
         ) as any,
-        this.container
+        this.container,
       );
     }
 

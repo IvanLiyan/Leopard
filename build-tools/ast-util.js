@@ -1,10 +1,10 @@
-// special module for babel
-/* eslint-disable no-console */
+// ES6 imports don't work here
 /* eslint-disable @typescript-eslint/no-var-requires */
 const t = require("@babel/types");
 const parser = require("@babel/parser");
 const generate = require("@babel/generator").default;
 const traverse = require("@babel/traverse").default;
+/* eslint-enable @typescript-eslint/no-var-requires */
 
 exports.print = (ast) => generate(ast).code;
 
@@ -212,7 +212,7 @@ const getPlaceholderName = (expr) => {
       return `${consequentName} or ${alternateName}`;
     }
   } catch (error) {
-    console.log(`Error building descriptive placeholder: ${error}`);
+    return;
   }
 
   return "";
@@ -293,11 +293,10 @@ const transformTemplateLiteral = ({ expr }) => {
   }
   format = sanitize(format);
 
-  // $FlowFixMe
   const transformedArgs = e.expressions.map((expr) =>
     transformI18n({ expr, transformLiterals: false }),
   );
-  return t.callExpression(t.identifier(""), [
+  return t.callExpression(t.identifier("i18n"), [
     t.stringLiteral(format),
     ...transformedArgs,
   ]);
@@ -515,14 +514,13 @@ const transformStringInterpolationJSXElement = ({ expr }) => {
   format = format.trim();
   format = sanitize(format).replace(/^\s+|\s+$/g, "");
 
-  // $FlowFixMe
   const callArgs = children.filter((_) => t.isJSXExpressionContainer(_));
   const transformedArgs = callArgs.map((expr) =>
     transformI18n({ expr, transformLiterals: false }),
   );
   expr.children = [
     t.jSXExpressionContainer(
-      t.callExpression(t.identifier(""), [
+      t.callExpression(t.identifier("i18n"), [
         t.stringLiteral(format),
         ...transformedArgs,
       ]),

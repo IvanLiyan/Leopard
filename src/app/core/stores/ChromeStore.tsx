@@ -114,7 +114,7 @@ export type ChromeStoreInitialQueryResponse = {
 };
 
 export const ChromeProvider: React.FC<{
-  initialData: ChromeStoreInitialQueryResponse;
+  readonly initialData?: ChromeStoreInitialQueryResponse;
 }> = ({ children, initialData }) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const styles = useStylesheet();
@@ -178,61 +178,65 @@ export const ChromeProvider: React.FC<{
 
   return (
     <ChromeContext.Provider value={{ isDrawerOpen, setIsDrawerOpen }}>
-      <Chrome>
-        <Chrome.Content
-          sideMenuWidth={0}
-          isRightToLeft={isRTL}
-          alerts={alerts?.currentUser.alerts}
-        >
-          <Layout.FlexColumn style={styles.content} alignItems="stretch">
-            {children}
-            <div className={css(styles.toastContainer)}>
-              <Toast contentAlignment="left" />
-            </div>
-            {/* progressiveLoadingStatus == "IN_PROGRESS" ||  */}
-            {isLoadingIssues && (
-              <div className={css(styles.loadingScreen)}>
-                <LoadingIndicator type="spinner" size={40} />
+      {tree == null ? (
+        children
+      ) : (
+        <Chrome>
+          <Chrome.Content
+            sideMenuWidth={0}
+            isRightToLeft={isRTL}
+            alerts={alerts?.currentUser.alerts}
+          >
+            <Layout.FlexColumn style={styles.content} alignItems="stretch">
+              {children}
+              <div className={css(styles.toastContainer)}>
+                <Toast contentAlignment="left" />
               </div>
+              {/* progressiveLoadingStatus == "IN_PROGRESS" ||  */}
+              {isLoadingIssues && (
+                <div className={css(styles.loadingScreen)}>
+                  <LoadingIndicator type="spinner" size={40} />
+                </div>
+              )}
+            </Layout.FlexColumn>
+          </Chrome.Content>
+          <Chrome.SideMenu
+            enableDrawer
+            tree={filteredTree}
+            counts={counts}
+            backgroundColor={surfaceLightest}
+            sideMenuWidth={210}
+            renderIcon={({ node }) => (
+              <ChromeSideMenuButton node={node} counts={counts} />
             )}
-          </Layout.FlexColumn>
-        </Chrome.Content>
-        <Chrome.SideMenu
-          enableDrawer
-          tree={filteredTree}
-          counts={counts}
-          backgroundColor={surfaceLightest}
-          sideMenuWidth={210}
-          renderIcon={({ node }) => (
-            <ChromeSideMenuButton node={node} counts={counts} />
-          )}
-          isRightToLeft={isRTL}
-          renderBottomAnchor={(onNodeClicked) => {
-            if (bottomNodes == null || bottomNodes.length == 0) {
-              return null;
-            }
-            return (
-              <Layout.FlexColumn>
-                {bottomNodes.map((node) => {
-                  return (
-                    <div key={node.label} onClick={() => onNodeClicked(node)}>
-                      <ChromeSideMenuButton
-                        node={node}
-                        key={node.label}
-                        counts={counts}
-                      />
-                    </div>
-                  );
-                })}
-              </Layout.FlexColumn>
-            );
-          }}
-        />
-        <MerchantAppTopbar
-          disableMenu={disableMenu}
-          showMenuDot={hasNotifications || false}
-        />
-      </Chrome>
+            isRightToLeft={isRTL}
+            renderBottomAnchor={(onNodeClicked) => {
+              if (bottomNodes == null || bottomNodes.length == 0) {
+                return null;
+              }
+              return (
+                <Layout.FlexColumn>
+                  {bottomNodes.map((node) => {
+                    return (
+                      <div key={node.label} onClick={() => onNodeClicked(node)}>
+                        <ChromeSideMenuButton
+                          node={node}
+                          key={node.label}
+                          counts={counts}
+                        />
+                      </div>
+                    );
+                  })}
+                </Layout.FlexColumn>
+              );
+            }}
+          />
+          <MerchantAppTopbar
+            disableMenu={disableMenu}
+            showMenuDot={hasNotifications || false}
+          />
+        </Chrome>
+      )}
     </ChromeContext.Provider>
   );
 };

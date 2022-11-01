@@ -230,7 +230,7 @@ export class PhoneNumberValidator extends Validator {
 
       if (countryCode == "US") {
         const stateKey = specialUSStateKeyArray.find((key) =>
-          nationalNumber.startsWith(key)
+          nationalNumber.startsWith(key),
         );
         if (stateKey) {
           // if you find this please fix the any types (legacy)
@@ -538,7 +538,7 @@ export class TaxNumberValidator extends Validator {
         new RegexBasedValidator({
           customMessage,
           pattern,
-        })
+        }),
       );
     }
 
@@ -894,7 +894,7 @@ export class DatetimeInputValidator extends Validator<DatetimeInput> {
   }
 
   async validateText(
-    datetimeInput: DatetimeInput | undefined
+    datetimeInput: DatetimeInput | undefined,
   ): Promise<ValidationResponse> {
     const { format, cannotSelectFuture, cannotSelectPast, required } = this;
     if (!datetimeInput) {

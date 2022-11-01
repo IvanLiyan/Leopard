@@ -15,7 +15,7 @@
   "dependencies": {
     "@ContextLogic/atlas-ui": "0.0.1-1664220946",
     "@ContextLogic/lego": "0.0.1-1649131753",
-    "@ContextLogic/merchantstrings": "0.0.1649133322",
+    "@ContextLogic/merchantstrings": "0.0.1665981415",
     "@ContextLogic/zeus": "0.0.1-1643061651",
     "@apollo/client": "^3.4.16",
     "@datadog/browser-rum": "4.7.0",
@@ -24,6 +24,7 @@
     "@fortawesome/fontawesome": "^1.1.5",
     "@fortawesome/react-fontawesome": "^0.0.18",
     "@loadable/component": "^5.13.1",
+    "@mui/base": "^5.0.0-alpha.90",
     "@mui/material": "^5.10.6",
     "@sentry/nextjs": "^6.11.0",
     "@types/lodash": "^4.14.168",
