@@ -1,7 +1,0 @@
-{
-    "rules": {
-       "local-rules/validate-root": "off",
-       "filenames/match-exported": "off",
-       "local-rules/no-relative-imports": "error"
-    }
-  }

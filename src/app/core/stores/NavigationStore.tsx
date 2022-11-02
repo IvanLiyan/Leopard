@@ -68,14 +68,14 @@ type NavigationStore = {
   readonly currentHash: string;
   readonly pathParams: (path: string) => Readonly<Record<string, string>>;
   readonly queryParams: Readonly<Record<string, string>>;
-  readonly pushPath: (path: string, options?: PushOptions) => void;
-  readonly replace: (path: string, options?: ReplaceOptions) => void;
+  readonly pushPath: (path: string, options?: PushOptions) => Promise<void>;
+  readonly replace: (path: string, options?: ReplaceOptions) => Promise<void>;
   readonly placeNavigationLock: (message: string) => void;
   readonly releaseNavigationLock: () => void;
   readonly reload: (options_DEPRECATED?: ReloadOptions_DEPRECATED) => void;
   readonly back: () => void;
   readonly download: (path: string) => void;
-  readonly navigate: (path: string, options?: NavigateOptions) => void;
+  readonly navigate: (path: string, options?: NavigateOptions) => Promise<void>;
 };
 
 const NavigationContext = createContext<NavigationStore>({

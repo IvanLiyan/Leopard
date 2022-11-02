@@ -14,7 +14,7 @@ import { Chevron } from "@ContextLogic/lego";
 
 /* Lego Toolkit */
 import { css } from "@core/toolkit/styling";
-import { palettes } from "@src/deprecated/pkg/toolkit/lego-legacy/DEPRECATED_colors";
+import { palettes } from "@deprecated/pkg/toolkit/lego-legacy/DEPRECATED_colors";
 import * as fonts from "@core/toolkit/fonts";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
@@ -29,7 +29,7 @@ type Props = BaseProps & {
 
 export default observer((props: Props) => {
   const { className, style, node, isSelected, ...otherProps } = props;
-  const styles = useStylesheet(props);
+  const styles = useStylesheet(isSelected);
   const { label, url, children } = node;
   return (
     <Link
@@ -46,7 +46,7 @@ export default observer((props: Props) => {
   );
 });
 
-const useStylesheet = ({ isSelected }: Props) => {
+const useStylesheet = (isSelected: boolean | undefined) => {
   return useMemo(
     () =>
       StyleSheet.create({

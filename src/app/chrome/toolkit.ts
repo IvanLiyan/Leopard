@@ -1,6 +1,6 @@
 import gql from "graphql-tag";
 import { useApolloStore } from "../core/stores/ApolloStore";
-import { useQuery } from "@apollo/client";
+import { QueryResult, useQuery } from "@apollo/client";
 import {
   UserSchema,
   MerchantSchema,
@@ -224,7 +224,10 @@ export const GET_NOTIFICATION_BUTTON_QUERY = gql`
   }
 `;
 
-export const useAppTopBarData = () => {
+export const useAppTopBarData = (): QueryResult<
+  GetAppTopbarDataResponse,
+  void
+> => {
   const { nonBatchingClient: client } = useApolloStore();
   return useQuery<GetAppTopbarDataResponse, void>(GET_APP_TOPBAR_DATA_QUERY, {
     client,

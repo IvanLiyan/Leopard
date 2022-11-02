@@ -40,7 +40,10 @@ type MutationVariables = {
   readonly input: LogToTreasureDataInput;
 };
 
-export const log = async (table: LoggableTable, data: LogData) => {
+export const log = async (
+  table: LoggableTable,
+  data: LogData,
+): Promise<void> => {
   const { isSu } = UserStore.instance();
   if (isSu) {
     return;
@@ -52,7 +55,11 @@ export const log = async (table: LoggableTable, data: LogData) => {
   });
 };
 
-export const useLogger = (table: LoggableTable) => {
+export const useLogger = (
+  table: LoggableTable,
+): {
+  info(data: LogData): void;
+} => {
   const [sessionId] = useState(`${new Date().getTime()}_${Math.random()}`);
   return useMemo(
     () => ({

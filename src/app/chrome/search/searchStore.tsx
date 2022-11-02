@@ -1,3 +1,5 @@
+// re-writing file soon
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /*
 
     MobX Store used to power the search bar in MD Chrome.
@@ -165,6 +167,7 @@ class SearchStore {
   }
 
   @computed
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   get fuzeSearch(): Fuse<NavigationSearchResult, any> {
     // TODO [lliepert]: fix any type before merging
     const { searchDocuments } = this;
@@ -407,6 +410,7 @@ class SearchStore {
 
     const redirectPath = isMerchant && currentPath ? currentPath : "/";
     // @ts-expect-error chrome API does not yet exist, hardcoded null response so returns above
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return merchants.map((merchant: any) => {
       return {
         type: "merchant",

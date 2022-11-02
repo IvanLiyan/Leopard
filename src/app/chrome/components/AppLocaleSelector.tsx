@@ -6,22 +6,22 @@ import { Select } from "@ContextLogic/lego";
 import { Chevron } from "@ContextLogic/lego";
 
 /* Lego Toolkit */
-import { css } from "@toolkit/styling";
-import { Flags4x3 } from "@chrome/countries";
+import { css } from "@core/toolkit/styling";
+import { Flags4x3 } from "@core/toolkit/countries";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { Option } from "@ContextLogic/lego";
-import { Locales, useLocalizationStore } from "@stores/LocalizationStore";
-import { useNavigationStore } from "@stores/NavigationStore";
-import { useDeviceStore } from "@stores/DeviceStore";
-import { useTheme } from "@stores/ThemeStore";
+import { Locales, useLocalizationStore } from "@core/stores/LocalizationStore";
+import { useNavigationStore } from "@core/stores/NavigationStore";
+import { useDeviceStore } from "@core/stores/DeviceStore";
+import { useTheme } from "@core/stores/ThemeStore";
 
-import NextImage from "@next-toolkit/Image";
+import NextImage from "@core/components/Image";
 import { observer } from "mobx-react";
 import gql from "graphql-tag";
 import { ChangeLocale, Locale, LocaleMutationsChangeLocaleArgs } from "@schema";
 import { useMutation } from "@apollo/client";
-import { useToastStore } from "@src/app/core/stores/ToastStore";
+import { useToastStore } from "@core/stores/ToastStore";
 
 export type AppLocaleSelectorProps = BaseProps & {
   readonly textColor?: string;

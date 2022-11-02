@@ -9,7 +9,7 @@ import React from "react";
 
 /* Lego Toolkit */
 import { css } from "@core/toolkit/styling";
-import * as icons from "@src/deprecated/pkg/assets/icons";
+import * as icons from "@deprecated/pkg/assets/icons";
 import { toSentenceCase } from "@ContextLogic/lego/toolkit/string";
 
 import {

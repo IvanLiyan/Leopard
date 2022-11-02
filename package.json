@@ -8,9 +8,11 @@
     "build": "next build && next export",
     "tsc": "tsc --noemit",
     "eslint": "eslint .",
-    "lint": "eslint . && tsc --noemit",
+    "prettier": "prettier -c src",
+    "lint": "yarn eslint && yarn tsc && yarn prettier",
     "clean": "rm -rf node_modules",
-    "test": "jest --watch"
+    "test": "jest --watch",
+    "test-ci": "jest --coverage"
   },
   "dependencies": {
     "@ContextLogic/atlas-ui": "0.0.1-1664220946",
@@ -164,8 +166,8 @@
     "@types/webpack": "4.41.12",
     "@types/webpack-bundle-analyzer": "^3.8.0",
     "@types/webpackbar": "^4.0.0",
-    "@typescript-eslint/eslint-plugin": "^4.32.0",
-    "@typescript-eslint/parser": "^4.32.0",
+    "@typescript-eslint/eslint-plugin": "^5.41.0",
+    "@typescript-eslint/parser": "^5.41.0",
     "babel-jest": "^27.4.6",
     "cache-loader": "^1.2.5",
     "chalk": "^2.4.1",
@@ -209,7 +211,7 @@
     "sharp": "^0.31.1",
     "string-similarity": "^4.0.1",
     "terser-webpack-plugin": "^1.2.3",
-    "typescript": "^4.2.2",
+    "typescript": "^4.8.4",
     "webpack": "4.4.0",
     "webpack-build-notifier": "^0.1.30",
     "webpack-bundle-analyzer": "^3.8.0",

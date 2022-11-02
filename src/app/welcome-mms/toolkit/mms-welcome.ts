@@ -3,7 +3,7 @@ import {
   MerchantLeadProductCategory,
   MmsLeadSubmissionMutation,
   MmsLeadYearlyRevenue,
-} from "@schema/types";
+} from "@schema";
 import gql from "graphql-tag";
 import { ci18n } from "@core/toolkit/i18n";
 

@@ -27,8 +27,7 @@ import {
 } from "@chrome/search/searchStore";
 
 type Props = BaseProps & {
-  // Reason: can't find the type definition for a ref handle.
-  readonly containerRef: any;
+  readonly containerRef: React.LegacyRef<HTMLElement> | undefined;
   readonly selectedResult: NavigationSearchResult | null | undefined;
   readonly setSelectedResult: (result: NavigationSearchResult) => void;
 };

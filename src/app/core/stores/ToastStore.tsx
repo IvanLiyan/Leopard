@@ -19,7 +19,6 @@ import { useMountEffect } from "@ContextLogic/lego/toolkit/hooks";
 
 /* Relative Imports */
 import { usePersistenceStore } from "./PersistenceStore";
-import { isProd } from "./EnvironmentStore";
 
 type ToastOptions = {
   readonly deferred?: boolean;

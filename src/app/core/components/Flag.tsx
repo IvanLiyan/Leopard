@@ -2,18 +2,18 @@ import React, { useMemo } from "react";
 import { StyleSheet, CSSProperties } from "aphrodite";
 
 /* Lego Toolkit */
-import { css } from "@toolkit/styling";
+import { css } from "@core/toolkit/styling";
 import {
   Flags4x3,
   Flags1x1,
   getCountryName,
   NextSVGLoaderBody,
-} from "@toolkit/countries";
+  CountryCode,
+} from "@core/toolkit/countries";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import { CountryCode } from "@toolkit/countries";
 
-import NextImage from "@next-toolkit/Image";
+import NextImage from "@core/components/Image";
 
 export type FlagAspectRatio = "4x3" | "1x1";
 

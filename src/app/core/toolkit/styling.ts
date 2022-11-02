@@ -75,7 +75,13 @@ export const css = (...configs: ReadonlyArray<Style>): string => {
   return `${_css(styles)} ${classNames}`;
 };
 
-export const getDimensions = (section: HTMLElement | null | undefined) => {
+export const getDimensions = (
+  section: HTMLElement | null | undefined,
+): {
+  height: number;
+  offsetTop: number;
+  offsetBottom: number;
+} => {
   if (section != null) {
     const { height } = section.getBoundingClientRect();
     const offsetTop = section.offsetTop;

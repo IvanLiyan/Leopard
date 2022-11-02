@@ -9,13 +9,13 @@ import { StyleSheet } from "aphrodite";
 import { observer } from "mobx-react";
 
 import { Layout, H2, Text } from "@ContextLogic/lego";
-import { useTheme } from "@stores/ThemeStore";
+import { useTheme } from "@core/stores/ThemeStore";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import Illustration, {
   IllustrationName,
-} from "@merchant/component/core/Illustration";
+} from "@deprecated/pkg/merchant/component/core/Illustration";
 
-import { ci18n } from "@legacy/core/i18n";
+import { ci18n } from "@core/toolkit/i18n";
 
 type Props = BaseProps;
 

@@ -24,7 +24,7 @@ import { useLocalizationStore } from "@core/stores/LocalizationStore";
 
 import Link from "@core/components/Link";
 
-type Props = BaseProps & {
+type Props = Omit<BaseProps, "children"> & {
   readonly node: NavigationNode;
   readonly onMouseOver?: () => unknown;
   readonly counts?: SideMenuCounts;
@@ -77,15 +77,7 @@ const IconMappings: {
 
 type NumberType = number;
 export default observer((props: Props) => {
-  const {
-    children,
-    className,
-    style,
-    node,
-    counts,
-    isSelected,
-    ...otherProps
-  } = props;
+  const { className, style, node, counts, isSelected, ...otherProps } = props;
   const rootRef = useRef<HTMLDivElement | null>(null);
   const [tooltipTop, setTooltipTop] = useState<NumberType | null>(null);
   const styles = useStylesheet({ ...props, tooltipTop });

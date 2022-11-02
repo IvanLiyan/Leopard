@@ -25,7 +25,7 @@ const MerchantSearchDiscovery = observer((props: BaseProps) => {
   return (
     <div className={css(styles.root, className, style)}>
       <div className={css(styles.sectionTitle)}>Recent Logins</div>
-      {recentUsers.map((su: any) => {
+      {recentUsers.map((su) => {
         const redirectPath = isMerchant && su.isMerchant ? currentPath : "/";
         return (
           <Link

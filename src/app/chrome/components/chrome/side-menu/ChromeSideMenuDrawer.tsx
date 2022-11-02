@@ -38,7 +38,7 @@ const ChromeSideMenuDrawer: React.FC<Props> = ({
   const [expandedNodes, setExpandedNodes] = useState<NodeSet>(new Set());
   const styles = useStylesheet();
 
-  const children = tree.children.filter((child: any) => child.showInSideMenu);
+  const children = tree.children.filter((child) => child.showInSideMenu);
   return (
     <Layout.FlexColumn
       className={css(styles.root, className, style)}
@@ -47,7 +47,7 @@ const ChromeSideMenuDrawer: React.FC<Props> = ({
       <Text className={css(styles.title)} weight="medium">
         {tree.label}
       </Text>
-      {children.map((node: any) => {
+      {children.map((node) => {
         const expanded = expandedNodes.has(node);
         return (
           <ChromeSideMenuButton

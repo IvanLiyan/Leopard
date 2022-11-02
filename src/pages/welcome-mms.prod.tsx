@@ -3,17 +3,17 @@ import { StyleSheet } from "aphrodite";
 import { observer } from "mobx-react";
 
 import { TopBottomButton, Layout } from "@ContextLogic/lego";
-import { useBoolQueryParam } from "@toolkit/url";
-import QuestionnaireModal from "@src/app/welcome-mms/QuestionnaireModal";
+import { useBoolQueryParam } from "@core/toolkit/url";
+import QuestionnaireModal from "@welcome-mms/QuestionnaireModal";
 import { useDeviceStore } from "@core/stores/DeviceStore";
-import HeroBanner from "@src/app/welcome-mms/HeroBanner";
-import Services from "@src/app/welcome-mms/Services";
-import HowToJoin from "@src/app/welcome-mms/HowToJoin";
-import Navigation from "@src/app/welcome-mms/navigation/Navigation";
-import Pricing from "@src/app/welcome-mms/Pricing";
-import Footer from "@src/app/welcome-mms/Footer";
-import { IS_SMALL_SCREEN } from "@toolkit/styling";
-import QuestionnaireButton from "@src/app/welcome-mms/QuestionnaireButton";
+import HeroBanner from "@welcome-mms/HeroBanner";
+import Services from "@welcome-mms/Services";
+import HowToJoin from "@welcome-mms/HowToJoin";
+import Navigation from "@welcome-mms/navigation/Navigation";
+import Pricing from "@welcome-mms/Pricing";
+import Footer from "@welcome-mms/Footer";
+import { IS_SMALL_SCREEN } from "@core/toolkit/styling";
+import QuestionnaireButton from "@welcome-mms/QuestionnaireButton";
 import { NextPage } from "next";
 
 const MmsWelcomeContainer: NextPage<Record<string, never>> = () => {

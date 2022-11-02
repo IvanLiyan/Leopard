@@ -16,6 +16,7 @@ pre-commit install
 echo "setting core.hooksPath..."
 git config core.hooksPath .githooks
 mv .git/hooks/pre-commit .githooks/
+chmod ug+x .githooks/*
 
 # create certs required for HTTPS
 echo "setting up certs..."

@@ -16,11 +16,11 @@ import posed from "react-pose";
 import { Link } from "@ContextLogic/lego";
 
 /* Lego Toolkit */
-import { css } from "@toolkit/styling";
+import { css } from "@core/toolkit/styling";
 
 /* Merchant Components */
 import DrawerButton from "./DrawerButton";
-import WishForMerchants from "@src/app/chrome/components/WishForMerchants";
+import WishForMerchants from "@chrome/components/WishForMerchants";
 
 /* Merchant Store */
 import { useTheme } from "@core/stores/ThemeStore";
@@ -31,7 +31,7 @@ import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { useNavigationStore } from "@core/stores/NavigationStore";
 import { useDeviceStore } from "@core/stores/DeviceStore";
 import { useUserStore } from "@core/stores/UserStore";
-import AppLocaleSelector from "@src/app/chrome/components/AppLocaleSelector";
+import AppLocaleSelector from "@chrome/components/AppLocaleSelector";
 
 type NavigationProps = BaseProps & {
   readonly insetX?: number;

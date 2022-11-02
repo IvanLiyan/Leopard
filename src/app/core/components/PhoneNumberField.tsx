@@ -18,19 +18,16 @@ import {
   OnTextChangeEvent,
   Popover,
 } from "@ContextLogic/lego";
-import Flag from "./Flag";
+import Flag from "@core/components/Flag";
 
 /* Lego Toolkit */
-import { css } from "@toolkit/styling";
-import * as fonts from "@toolkit/fonts";
-import { palettes } from "@toolkit/lego-legacy/DEPRECATED_colors";
-import AreaCodes from "@toolkit/area-codes";
-import CountryNames from "@toolkit/countries";
-import { PhoneNumberValidator } from "@toolkit/validators";
-import { Flags4x3 } from "@toolkit/countries";
-
-import { useDeviceStore } from "@stores/DeviceStore";
-import { CountryCode } from "@toolkit/countries";
+import { css } from "@core/toolkit/styling";
+import * as fonts from "@core/toolkit/fonts";
+import { palettes } from "@deprecated/pkg/toolkit/lego-legacy/DEPRECATED_colors";
+import AreaCodes from "@core/toolkit/area-codes";
+import { PhoneNumberValidator } from "@core/toolkit/validators";
+import { useDeviceStore } from "@core/stores/DeviceStore";
+import CountryNames, { Flags4x3, CountryCode } from "@core/toolkit/countries";
 
 export type PhoneNumberFieldProps = TextInputProps & {
   readonly country: CountryCode;

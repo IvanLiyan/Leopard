@@ -216,12 +216,12 @@ const DevLoginPage: NextPage<Record<string, never>> = () => {
       const jsonResponse = await resp.json();
       setCurrentUser(
         jsonResponse.data.currentUser
-          ? jsonResponse.data.currentUser.id
+          ? String(jsonResponse.data.currentUser.id)
           : "none",
       );
       setCurrentMerchant(
         jsonResponse.data.currentMerchant
-          ? jsonResponse.data.currentMerchant.id
+          ? String(jsonResponse.data.currentMerchant.id)
           : "none",
       );
     } catch (e) {

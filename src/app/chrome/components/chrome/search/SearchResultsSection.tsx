@@ -4,7 +4,7 @@ import { observer } from "mobx-react";
 
 /* Lego Toolkit */
 import { css } from "@core/toolkit/styling";
-import { palettes } from "@src/deprecated/pkg/toolkit/lego-legacy/DEPRECATED_colors";
+import { palettes } from "@deprecated/pkg/toolkit/lego-legacy/DEPRECATED_colors";
 import * as fonts from "@core/toolkit/fonts";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";

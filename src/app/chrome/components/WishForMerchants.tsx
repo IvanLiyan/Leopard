@@ -2,10 +2,11 @@ import React, { useMemo } from "react";
 import { StyleSheet } from "aphrodite";
 import { observer } from "mobx-react";
 
-import Illustration from "@merchant/component/core/Illustration";
+import Illustration, {
+  IllustrationName,
+} from "@deprecated/pkg/merchant/component/core/Illustration";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import { IllustrationName } from "@merchant/component/core/Illustration";
 import { useLocalizationStore } from "@core/stores/LocalizationStore";
 
 export type WishForMerchantsMode = "default" | "ink" | "white";

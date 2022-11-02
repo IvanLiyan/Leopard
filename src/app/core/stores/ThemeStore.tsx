@@ -32,9 +32,7 @@ import {
 } from "@ContextLogic/lego/toolkit/providers";
 import UserStore from "./UserStore";
 import { useNavigationStore } from "./NavigationStore";
-import EnvironmentStore, {
-  useEnvironmentStore,
-} from "./EnvironmentStore";
+import EnvironmentStore, { useEnvironmentStore } from "./EnvironmentStore";
 import { useLocalizationStore } from "./LocalizationStore";
 import { useToastStore } from "./ToastStore";
 
@@ -274,9 +272,11 @@ class ThemeStore {
   }
 
   static instance(): ThemeStore {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let { themeStore } = window as any;
     if (themeStore == null) {
       themeStore = new ThemeStore();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (window as any).themeStore = themeStore;
     }
     return themeStore;
@@ -452,6 +452,8 @@ export const ThemeWrapper: React.FC<{ overrideThemeAs?: ThemeName }> = ({
       // TODO [lliepert]: fix this any type
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       pushPath(path: string, queryParams?: any | null | undefined) {
+        // TODO [lliepert]: test out this behavior - do we need lego navigation anymore?
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-floating-promises
         navigationStore.pushPath(path, queryParams);
       },
       getQueryParameters(): Readonly<{

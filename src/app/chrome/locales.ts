@@ -1,5 +1,5 @@
 /* Lego Toolkit */
-import { Locale, CountryCode } from "@schema/types";
+import { Locale, CountryCode } from "@schema";
 export type { Locale };
 
 export type LocaleInfo = {

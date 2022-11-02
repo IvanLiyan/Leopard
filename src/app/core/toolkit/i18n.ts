@@ -80,6 +80,7 @@ const jedi18n = (() => {
   // "My string": ["translation"], we get "My string": [null, "translation"]
   // Take out the nulls, before sending the object to Jed()
   const polishedJedConfiguration: any = { ...jedConfiguration };
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   for (const string of Object.keys(polishedJedConfiguration.locale_data.wish)) {
     const translations = polishedJedConfiguration.locale_data.wish[string];
     if (Array.isArray(translations) && translations.length) {

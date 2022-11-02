@@ -11,8 +11,8 @@ import { observer } from "mobx-react";
 import { Layout, H2, Text, Link } from "@ContextLogic/lego";
 import { useTheme } from "@core/stores/ThemeStore";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import Illustration from "@merchant/component/core/Illustration";
-import { css, IS_SMALL_SCREEN } from "@toolkit/styling";
+import Illustration from "@deprecated/pkg/merchant/component/core/Illustration";
+import { css, IS_SMALL_SCREEN } from "@core/toolkit/styling";
 
 type Props = BaseProps & {
   readonly onOpenQuestionnaire: () => unknown;

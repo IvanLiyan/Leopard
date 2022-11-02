@@ -75,7 +75,7 @@ const PlusUserAvatar: React.FC<BaseProps> = ({
 
   const onQuickLoginClick = async (id: string) => {
     if (id == "me") {
-      navigationStore.navigate("/switchsu");
+      await navigationStore.navigate("/switchsu");
     } else {
       const input: ByUserIdInput = {
         id,
@@ -87,7 +87,7 @@ const PlusUserAvatar: React.FC<BaseProps> = ({
       }
       const { ok, error } = data.authentication.loginAs.user;
       if (ok) {
-        navigationStore.navigate("/", { fullReload: true });
+        await navigationStore.navigate("/", { fullReload: true });
       } else {
         toastStore.error(error || i`Something went wrong`);
       }
@@ -103,7 +103,8 @@ const PlusUserAvatar: React.FC<BaseProps> = ({
         {recentUsers.map((rsu) => (
           <div className={css(styles.item)} key={rsu.id}>
             <Link
-              onClick={async () => await onQuickLoginClick(rsu.id)}
+              // TODO [lliepert]: confirm this void behavior
+              onClick={void (async () => await onQuickLoginClick(rsu.id))}
               key={rsu.id}
               fadeOnHover={false}
               style={{ color: textDark }}

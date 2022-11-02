@@ -57,15 +57,6 @@ module.exports = (phase, { defaultConfig }) => {
 
       return config;
     },
-    typescript: {
-      // !! WARN !!
-      // Dangerously allow production builds to successfully complete even if
-      // your project has type errors.
-      // temporarily added to allow demoing on staging while the final tsc etc.
-      // errors are being resolved
-      // !! WARN !!
-      ignoreBuildErrors: true,
-    },
     pageExtensions: ["tsx", "ts", "jsx", "js"]
       .map((ext) =>
         phase === PHASE_DEVELOPMENT_SERVER

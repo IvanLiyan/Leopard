@@ -71,6 +71,7 @@ const ChromeSideMenuButton: React.FC<Props> = (props: Props) => {
     onClick,
     ...otherProps
   } = props;
+  void leadingPadding; // passed to useStylesheet via props, need to extract from otherProps
   const [isHovering, setIsHovering] = useState(false);
 
   const styles = useStylesheet(props, isHovering);
@@ -180,10 +181,7 @@ const ChromeSideMenuButton: React.FC<Props> = (props: Props) => {
 
 export default observer(ChromeSideMenuButton);
 
-const useStylesheet = (
-  { expand, leadingPadding = 0, node }: Props,
-  isHovering: boolean,
-) => {
+const useStylesheet = ({ leadingPadding = 0 }: Props, isHovering: boolean) => {
   const { textDark, primary, primaryLight } = useTheme();
   return useMemo(
     () =>

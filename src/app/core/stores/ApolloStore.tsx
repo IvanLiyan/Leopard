@@ -59,7 +59,7 @@ const apolloClientFactory = (
               // TODO [lliepert]: remove this method of triggering toasts. This prevents
               // us from using SSR since ToastStore must exist (instantiated on the
               // client in _app.tsx)
-              ToastStoreRef.current?.error(message);
+              ToastStoreRef.current?.error(String(message));
               window.location.href = reloginUrl;
               break;
             }

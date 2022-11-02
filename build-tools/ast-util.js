@@ -1,5 +1,6 @@
 // ES6 imports don't work here
 /* eslint-disable @typescript-eslint/no-var-requires */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 const t = require("@babel/types");
 const parser = require("@babel/parser");
 const generate = require("@babel/generator").default;

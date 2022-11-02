@@ -1,12 +1,10 @@
 stages:
   - schedule
   - install
-  - build
-  # temp disabling lighthouse so we can remove docker - will re-write at a later date
-  # - test
+  - test
   - deploy
 
-install_dependencies:
+install dependencies:
   stage: install
   image: node:18
   script:
@@ -17,8 +15,24 @@ install_dependencies:
   except:
     - schedules
 
+test:
+  stage: test
+  image: node:18
+  script:
+    - yarn test-ci
+  dependencies:
+    - install dependencies
+
+lint:
+  stage: test
+  image: node:18
+  script:
+    - yarn lint
+  dependencies:
+    - install dependencies
+
 build:
-  stage: build
+  stage: test
   image: node:18
   script:
     - yarn build
@@ -26,8 +40,10 @@ build:
     when: always
     paths:
       - out
+  dependencies:
+    - install dependencies
 
-deploy_staging:
+deploy staging:
   stage: deploy
   image: registry-gitlab.i.wish.com/contextlogic/leopard/aws-base:latest
   script:
@@ -36,8 +52,10 @@ deploy_staging:
     name: staging
   when: manual
   tags: [leopard-staging]
+  dependencies:
+    - build
 
-deploy_prod:
+deploy prod:
   stage: deploy
   image: registry-gitlab.i.wish.com/contextlogic/leopard/aws-base:latest
   script:
@@ -46,6 +64,8 @@ deploy_prod:
     name: production
   when: manual
   tags: [leopard]
+  dependencies:
+    - build
 # temp disabling lighthouse so we can remove docker - will re-write at a later date
 # include:
 #   - project: "contextlogic/includes"

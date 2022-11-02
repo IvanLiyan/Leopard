@@ -10,7 +10,7 @@ import { observer } from "mobx-react";
 
 import Illustration, {
   IllustrationName,
-} from "@src/deprecated/pkg/merchant/component/core/Illustration";
+} from "@deprecated/pkg/merchant/component/core/Illustration";
 import { Layout, Text } from "@ContextLogic/lego";
 
 /* Lego Toolkit */

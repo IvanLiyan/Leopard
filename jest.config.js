@@ -17,12 +17,12 @@ module.exports = {
     "^.+\\.(jpg|jpeg|png|gif|webp|avif|svg)$": `<rootDir>/__mocks__/fileMock.js`,
 
     // Handle module aliases
-    "^@assets/(.*)$": "<rootDir>/src/pkg/assets/$1",
+    "^@deprecated/pkg/assets/(.*)$": "<rootDir>/src/pkg/assets/$1",
     "^@legacy/(.*)$": "<rootDir>/src/pkg/legacy/$1",
     "^@merchant/(.*)$": "<rootDir>/src/pkg/merchant/$1",
     "^@plus/(.*)$": "<rootDir>/src/pkg/plus/$1",
     "^@schema/(.*)$": "<rootDir>/src/pkg/schema/$1",
-    "^@stores/(.*)$": "<rootDir>/src/pkg/stores/$1",
+    "^@core/stores/(.*)$": "<rootDir>/src/pkg/stores/$1",
     "^@toolkit/(.*)$": "<rootDir>/src/pkg/toolkit/$1",
     "^@next-toolkit/(.*)$": "<rootDir>/src/toolkit/$1",
   },

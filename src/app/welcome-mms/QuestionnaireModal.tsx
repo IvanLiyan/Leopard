@@ -19,7 +19,7 @@ import {
 } from "@ContextLogic/lego";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { useToastStore } from "@core/stores/ToastStore";
-import { ci18n } from "@legacy/core/i18n";
+import { ci18n } from "@core/toolkit/i18n";
 import { useTheme } from "@core/stores/ThemeStore";
 import {
   EmailValidator,
@@ -38,8 +38,8 @@ import {
   SubmitMmsMerchantLeadRequestType,
   SubmitMmsMerchantLeadResponseType,
   MmsCompanyRevenueRanges,
-} from "@src/app/welcome-mms/toolkit/mms-welcome";
-import Modal from "@src/app/core/components/Modal";
+} from "@welcome-mms/toolkit/mms-welcome";
+import Modal from "@core/components/Modal";
 import SuccessModalContent from "./SuccessModalContent";
 
 type Props = BaseProps & {

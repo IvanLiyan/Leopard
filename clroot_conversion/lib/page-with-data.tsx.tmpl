@@ -3,7 +3,7 @@ import Head from "next/head";
 import { gql, useQuery } from "@apollo/client";
 import { observer } from "mobx-react";
 import { LoadingIndicator } from "@ContextLogic/lego";
-import { isProd } from "@stores/EnvironmentStore";
+import { isProd } from "@core/stores/EnvironmentStore";
 import { $containerName } from "@$packageName/container";
 
 // TODO [lliepert]: do we need to wrap these in observers?

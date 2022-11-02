@@ -9,15 +9,15 @@ import posed, { PoseGroup } from "react-pose";
 import {
   palettes,
   modalBackdrop,
-} from "@toolkit/lego-legacy/DEPRECATED_colors";
-import { css } from "@toolkit/styling";
+} from "@deprecated/pkg/toolkit/lego-legacy/DEPRECATED_colors";
+import { css } from "@core/toolkit/styling";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { useChromeContext } from "@core/stores/ChromeStore";
-import Icon from "@src/app/core/components/Icon";
+import Icon from "@core/components/Icon";
 import { SideMenu } from "@ContextLogic/lego";
-import AppLocaleSelector from "@src/app/chrome/components/AppLocaleSelector";
-import { useNavigationStore } from "@src/app/core/stores/NavigationStore";
+import AppLocaleSelector from "@chrome/components/AppLocaleSelector";
+import { useNavigationStore } from "@core/stores/NavigationStore";
 import QuestionnaireModal from "../QuestionnaireModal";
 
 const DrawerContentContainer = posed.nav({

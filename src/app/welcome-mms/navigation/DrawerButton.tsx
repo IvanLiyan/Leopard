@@ -3,15 +3,15 @@ import { StyleSheet } from "aphrodite";
 import { observer } from "mobx-react";
 
 /* Lego Toolkit */
-import { css } from "@toolkit/styling";
+import { css } from "@core/toolkit/styling";
 
 /* Merchant Components */
 import Drawer from "./Drawer";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { useDeviceStore } from "@core/stores/DeviceStore";
-import { useChromeContext } from "@stores/ChromeStore";
-import Icon from "@src/app/core/components/Icon";
+import { useChromeContext } from "@core/stores/ChromeStore";
+import Icon from "@core/components/Icon";
 
 type DrawerButtonProps = BaseProps;
 

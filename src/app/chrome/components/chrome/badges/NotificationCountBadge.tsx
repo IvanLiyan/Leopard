@@ -24,7 +24,7 @@ type Props = BaseProps & {
 
 const NotificationCountBadge: React.FC<Props> = (props: Props) => {
   const { className, style, count } = props;
-  const styles = useStylesheet(props);
+  const styles = useStylesheet();
   if (count <= 0) {
     return null;
   }
@@ -38,7 +38,7 @@ const NotificationCountBadge: React.FC<Props> = (props: Props) => {
 
 export default observer(NotificationCountBadge);
 
-const useStylesheet = (props: Props) => {
+const useStylesheet = () => {
   return useMemo(
     () =>
       StyleSheet.create({

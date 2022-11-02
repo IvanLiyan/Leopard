@@ -42,11 +42,13 @@ const ChromePersistentAlerts: React.FC<Props> = ({
             contentAlignment="left"
           >
             <Markdown
-              onLinkClicked={() => {
-                if (link) {
-                  navigationStore.navigate(link);
-                }
-              }}
+              onLinkClicked={
+                void (async () => {
+                  if (link) {
+                    await navigationStore.navigate(link);
+                  }
+                })
+              }
               text={i`${date == null ? "" : `${date.formatted} UTC - `}${
                 link == null ? description : `[${description}](${link})`
               }`}

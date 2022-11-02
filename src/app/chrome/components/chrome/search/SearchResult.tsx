@@ -9,7 +9,7 @@ import { Markdown } from "@ContextLogic/lego";
 /* Lego Toolkit */
 import { css } from "@core/toolkit/styling";
 import * as fonts from "@core/toolkit/fonts";
-import { palettes } from "@src/deprecated/pkg/toolkit/lego-legacy/DEPRECATED_colors";
+import { palettes } from "@deprecated/pkg/toolkit/lego-legacy/DEPRECATED_colors";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { NavigationSearchResult } from "@chrome/search/searchStore";

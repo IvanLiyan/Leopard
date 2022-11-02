@@ -2,12 +2,12 @@ import React, { useMemo } from "react";
 import { StyleSheet } from "aphrodite";
 import { observer } from "mobx-react";
 
-import Flag from "@src/deprecated/pkg/merchant/component/core/Flag";
+import Flag from "@core/components/Flag";
 
 /* Lego Toolkit */
 import { css } from "@core/toolkit/styling";
-import { palettes } from "@src/deprecated/pkg/toolkit/lego-legacy/DEPRECATED_colors";
-import * as icons from "@src/deprecated/pkg/assets/icons";
+import { palettes } from "@deprecated/pkg/toolkit/lego-legacy/DEPRECATED_colors";
+import * as icons from "@deprecated/pkg/assets/icons";
 
 /* Toolkit */
 import Locales, { Locale } from "@chrome/locales";
@@ -36,7 +36,7 @@ const useLocaleButtonContext = (
 
 const LocaleButton = (props: LocaleButtonProps) => {
   const context = useLocaleButtonContext(props);
-  const styles = useStylesheet(context);
+  const styles = useStylesheet();
   const { showText, text, value } = context;
   const { country: countryCode } = Locales[value];
 
@@ -63,7 +63,7 @@ const LocaleButton = (props: LocaleButtonProps) => {
 
 export default observer(LocaleButton);
 
-const useStylesheet = (ctx: LocaleButtonContext) => {
+const useStylesheet = () => {
   return useMemo(
     () =>
       StyleSheet.create({

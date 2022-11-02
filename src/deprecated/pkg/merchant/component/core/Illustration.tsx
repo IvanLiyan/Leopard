@@ -12,15 +12,15 @@ import { observer } from "mobx-react";
 import { Layout, StaggeredScaleIn } from "@ContextLogic/lego";
 
 /* Lego Toolkit */
-import { css } from "@toolkit/styling";
-import * as illustrations from "@assets/illustrations";
+import { css } from "@core/toolkit/styling";
+import * as illustrations from "@deprecated/pkg/assets/illustrations";
 
 import {
   BaseProps,
   CleanedBaseImageProps,
 } from "@ContextLogic/lego/toolkit/react";
 
-import NextImage from "@next-toolkit/Image";
+import NextImage from "@core/components/Image";
 
 export type IllustrationName = keyof typeof illustrations;
 

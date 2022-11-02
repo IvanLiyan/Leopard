@@ -1,3 +1,4 @@
+/* eslint-disable */ // file is not current, will re-enable when we begin using it again
 /* npx jscodeshift -t leopardMods.ts testFile.input.ts --parser=tsx */
 import {
   API,
@@ -13,7 +14,7 @@ import { deleteFile } from "./runMods";
 /*
   import EnvironmentStore, { useEnvironmentStore } from "@merchant/stores/EnvironmentStore";
   to
-  import EnvironmentStore, { useEnvironmentStore } from "@stores/EnvironmentStore";
+  import EnvironmentStore, { useEnvironmentStore } from "@core/stores/EnvironmentStore";
   */
 const updateModuleStore = (store: string, j: JSCodeshift, root: Collection) => {
   root
@@ -21,7 +22,7 @@ const updateModuleStore = (store: string, j: JSCodeshift, root: Collection) => {
       source: { value: `@merchant/stores/${store}` },
     })
     .replaceWith(({ node }) => {
-      node.source.value = `@stores/${store}`;
+      node.source.value = `@core/stores/${store}`;
       return node;
     });
 };
@@ -29,7 +30,7 @@ const updateModuleStore = (store: string, j: JSCodeshift, root: Collection) => {
 /*
   import EnvironmentStore, { useEnvironmentStore } from "./EnvironmentStore";
   to
-  import EnvironmentStore, { useEnvironmentStore } from "@stores/EnvironmentStore";
+  import EnvironmentStore, { useEnvironmentStore } from "@core/stores/EnvironmentStore";
   */
 const updateRelativeStore = (
   store: string,
@@ -50,7 +51,7 @@ const updateRelativeStore = (
       source: { value: `./${store}` },
     })
     .replaceWith(({ node }) => {
-      node.source.value = `@stores/${store}`;
+      node.source.value = `@core/stores/${store}`;
       return node;
     });
 };

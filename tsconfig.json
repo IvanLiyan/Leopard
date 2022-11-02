@@ -18,37 +18,12 @@
     "baseUrl": "./",
     "downlevelIteration": true,
     "paths": {
-      "@schema": ["src/app/schema"],
-      "@src/*": ["src/*"],
       "@chrome/*": ["src/app/chrome/*"],
       "@core/*": ["src/app/core/*"],
-      // legacy stuff
-      "@assets/*": [
-        "src/deprecated/pkg/assets/index",
-        "src/deprecated/pkg/assets/*"
-      ],
-      "@merchant/*": [
-        "src/deprecated/pkg/merchant/index",
-        "src/deprecated/pkg/merchant/*"
-      ],
-      "@plus/*": ["src/deprecated/pkg/plus/index", "src/deprecated/pkg/plus/*"],
-      "@schema/*": [
-        "src/deprecated/pkg/schema/index",
-        "src/deprecated/pkg/schema/*"
-      ],
-      "@toolkit/*": [
-        "src/deprecated/pkg/toolkit/index",
-        "src/deprecated/pkg/toolkit/*"
-      ],
-      "@next-toolkit/*": ["src/toolkit/index", "src/toolkit/*"],
-      "@public/*": ["public/index", "public/*"],
-      // modified legacy stuff
-      "@stores/*": ["src/app/core/stores/*"],
-      "@legacy/core/*": ["src/app/core/toolkit/*"],
-      //// temp solutions for deprecated code
-      "@toolkit/styling": ["src/app/core/toolkit/styling"],
-      "@next-toolkit/Image": ["src/app/core/components/Image"],
-      "@next-toolkit/Link": ["src/app/core/components/Link"]
+      "@welcome-mms/*": ["src/app/welcome-mms/*"],
+      "@schema": ["src/app/schema"],
+      "@deprecated/*": ["src/deprecated/*"],
+      "@public/*": ["public/index", "public/*"]
     },
     "experimentalDecorators": true,
     "incremental": true
@@ -64,7 +39,8 @@
     "build-tools/ast-util.js",
     "build-tools/localization-plugin.js",
     "scripts/create-certs.js",
-    "server.js"
+    "server.js",
+    "lighthouserc.js"
   ],
   "exclude": ["node_modules"]
 }

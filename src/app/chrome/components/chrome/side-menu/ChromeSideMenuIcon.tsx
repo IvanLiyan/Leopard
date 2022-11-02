@@ -21,33 +21,28 @@ import { NavigationNode } from "@chrome/toolkit";
 
 import Link from "@core/components/Link";
 
-type Props = BaseProps & {
+type Props = Omit<BaseProps, "children"> & {
   readonly node: NavigationNode;
   readonly onMouseOver?: () => unknown;
-  readonly counts?: {
-    readonly [key: string]: number;
-  };
 };
 
 export const IconButtonPadding = 30;
 export const IconButtonHeight = 20;
 export const IconButtonWidth = 20;
 
-export default observer(
-  ({ children, className, style, node, counts, ...otherProps }: Props) => {
-    const styles = useStylesheet();
-    const { label, url } = node;
-    return (
-      <Link
-        className={css(styles.root, className, style)}
-        href={url}
-        {...otherProps}
-      >
-        {label}
-      </Link>
-    );
-  },
-);
+export default observer(({ className, style, node, ...otherProps }: Props) => {
+  const styles = useStylesheet();
+  const { label, url } = node;
+  return (
+    <Link
+      className={css(styles.root, className, style)}
+      href={url}
+      {...otherProps}
+    >
+      {label}
+    </Link>
+  );
+});
 
 const useStylesheet = () => {
   return useMemo(

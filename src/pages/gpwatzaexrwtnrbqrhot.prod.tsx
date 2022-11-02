@@ -2,7 +2,7 @@ import { NextPage } from "next";
 import { Button } from "@ContextLogic/atlas-ui";
 import Link from "@core/components/Link";
 import { useToastStore } from "@core/stores/ToastStore";
-import { useNavigationStore } from "@src/app/core/stores/NavigationStore";
+import { useNavigationStore } from "@core/stores/NavigationStore";
 
 const DemoPageA: NextPage<Record<string, never>> = () => {
   const toastStore = useToastStore();

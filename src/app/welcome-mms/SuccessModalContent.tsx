@@ -10,10 +10,10 @@ import { observer } from "mobx-react";
 
 import { H4, Layout, Text } from "@ContextLogic/lego";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import { ci18n } from "@legacy/core/i18n";
-import Illustration from "@merchant/component/core/Illustration";
+import { ci18n } from "@core/toolkit/i18n";
+import Illustration from "@deprecated/pkg/merchant/component/core/Illustration";
 import { useTheme } from "@core/stores/ThemeStore";
-import Icon from "@merchant/component/core/Icon";
+import Icon from "@core/components/Icon";
 
 type Props = BaseProps & {
   readonly name: string;

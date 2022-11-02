@@ -1,6 +1,6 @@
 import { NextPage } from "next";
 import { Button } from "@ContextLogic/atlas-ui";
-import { useNavigationStore } from "@src/app/core/stores/NavigationStore";
+import { useNavigationStore } from "@core/stores/NavigationStore";
 
 const DemoPageC: NextPage<Record<string, never>> = () => {
   const { back } = useNavigationStore();

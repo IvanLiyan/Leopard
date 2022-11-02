@@ -1,4 +1,3 @@
-/* eslint-disable filenames/match-regex */
 /* eslint-disable local-rules/unwrapped-i18n */
 //
 //  toolkit/colors.tsx

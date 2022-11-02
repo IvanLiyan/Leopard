@@ -93,7 +93,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "-s",
         "--schema-only",
-        help="only copy in the schema. useful when creating a PR that needs to pass CI, since files in @stores reference @schema. (can be run alongside --clean-only)",
+        help="only copy in the schema. useful when creating a PR that needs to pass CI, since files in @core/stores reference @schema. (can be run alongside --clean-only)",
         action="store_true",
     )
     parser.add_argument(

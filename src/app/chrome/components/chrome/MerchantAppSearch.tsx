@@ -66,11 +66,13 @@ const MerchantAppSearch: React.FC<BaseProps> = ({
   const currentPagePhrase = pageSearchResult?.search_phrase;
   const [hasFocus, setHasFocus] = useState(false);
   const [dropdownVisible, setDropdownVisible] = useState(false);
-  const [inputRef, setInputRef] = useState<HTMLInputElement | null>(null);
+  const [inputRef, setInputRef] = useState<
+    HTMLInputElement | HTMLTextAreaElement | null
+  >(null);
   const [selectedElementIndex, setSelectedElementIndex] = useState(0);
 
   const onRefSet = useCallback(
-    (ref) => {
+    (ref: HTMLInputElement | HTMLTextAreaElement | null) => {
       setInputRef(ref);
     },
     [setInputRef],
@@ -134,8 +136,7 @@ const MerchantAppSearch: React.FC<BaseProps> = ({
           }
           if (selectedResult) {
             searchStore.rawSearchQuery = "";
-            navigationStore.navigate(selectedResult.url);
-            inputRef.blur();
+            void navigationStore.navigate(selectedResult.url);
           }
         }
       }

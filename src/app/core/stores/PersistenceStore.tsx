@@ -38,9 +38,9 @@ class PersistenceStore {
     const items = { ...window.localStorage };
     Object.keys(items).forEach((key) => {
       try {
-        const storedItem = JSON.parse(items[key]);
+        const storedItem = JSON.parse(String(items[key]));
         if (storedItem.type === "object") {
-          this.storage.set(key, JSON.parse(storedItem.value));
+          this.storage.set(key, JSON.parse(String(storedItem.value)));
         } else {
           this.storage.set(key, storedItem.value);
         }

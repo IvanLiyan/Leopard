@@ -42,6 +42,8 @@ module.exports = {
     "jest.config.js",
     "node_modules",
     "build",
+    "out",
     "eslint-local-rules-OLD.js",
+    "lighthouse", // if linting lighthouse is desired, we should give it it's own eslintrc
   ],
 };
