@@ -31,13 +31,13 @@ export default observer((props: Props) => {
       description,
       breadcrumbs,
       url,
-      image_url: imageUrl,
-      open_in_new_tab: openInNewTab,
+      imageUrl,
+      openInNewTab,
       nuggets = [],
     },
   } = props;
   const styles = useStylesheet(props);
-  const filteredNuggets = nuggets.filter((nugget) => nugget != null);
+  const filteredNuggets = (nuggets ?? []).filter((nugget) => nugget != null);
   return (
     <Link
       className={css(className, style)}
@@ -49,7 +49,7 @@ export default observer((props: Props) => {
           <NextImage className={css(styles.image)} src={imageUrl} alt="TODO" />
         )}
         <div className={css(styles.rightContent)}>
-          <Markdown className={css(styles.title)} text={title} />
+          {title && <Markdown className={css(styles.title)} text={title} />}
           {description && (
             <div className={css(styles.description)} title={description}>
               <Markdown text={description} />

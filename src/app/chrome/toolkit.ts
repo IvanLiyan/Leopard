@@ -20,30 +20,11 @@ import {
 import { BannerSentiment } from "@ContextLogic/lego";
 import sum from "lodash/sum";
 import get from "lodash/get";
+import { ChromeNavigationNode } from "../core/stores/ChromeStore";
 
 export type NavigationBadge = {
   readonly type: ChromeBadgeType;
   readonly expiry_date: number;
-};
-
-// TODO [lliepert]: pull this from schema
-export type NavigationNode = {
-  readonly url: string;
-  readonly path: string | null | undefined;
-  readonly label: string;
-  readonly overviewLabel?: string | null | undefined;
-  readonly badge: NavigationBadge | null | undefined;
-  readonly children: ReadonlyArray<NavigationNode>;
-  readonly nodeid?: string | null | undefined;
-  readonly description?: string | null | undefined;
-  readonly search_phrase?: string | null | undefined;
-  readonly showInSideMenu: boolean;
-  readonly open_in_new_tab: boolean;
-  readonly keywords: ReadonlyArray<string>;
-  readonly total_hits: number | null | undefined;
-  readonly most_recent_hit: number | null | undefined;
-  readonly count_field?: string | null | undefined;
-  readonly count_selectors?: ReadonlyArray<string>;
 };
 
 export const SIDE_MENU_COUNTS_QUERY = gql`
@@ -160,12 +141,12 @@ export type SideMenuCounts = {
 };
 
 export const getNodeCount = (
-  node: NavigationNode,
+  node: ChromeNavigationNode,
   counts: SideMenuCounts,
 ): number => {
-  const currentNodeCount = node.count_selectors
+  const currentNodeCount = node.countSelectors
     ? sum(
-        node.count_selectors.map(
+        (node.countSelectors ?? []).map(
           // Reason: Need string based lookup from server.
           // eslint-disable-next-line local-rules/no-unnecessary-use-of-lodash
           (selector: string) => get(counts, selector) || 0,
@@ -174,7 +155,7 @@ export const getNodeCount = (
     : 0;
   const childrenNodeCount = node.children
     ? sum(
-        node.children.map((child: NavigationNode) =>
+        node.children.map((child: ChromeNavigationNode) =>
           getNodeCount(child, counts),
         ),
       )

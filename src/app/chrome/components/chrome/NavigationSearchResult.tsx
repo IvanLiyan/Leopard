@@ -26,7 +26,7 @@ export default observer((props: Props) => {
   const {
     className,
     style,
-    result: { title, description, breadcrumbs, url, image_url: imageUrl },
+    result: { title, description, breadcrumbs, url, imageUrl },
   } = props;
   const styles = useStylesheet(props);
   return (
@@ -36,7 +36,7 @@ export default observer((props: Props) => {
           <NextImage className={css(styles.image)} src={imageUrl} alt="TODO" />
         )}
         <div className={css(styles.rightContent)}>
-          <Markdown className={css(styles.title)} text={title} />
+          {title && <Markdown className={css(styles.title)} text={title} />}
           {description && (
             <div className={css(styles.description)} title={description}>
               <Markdown text={description} />

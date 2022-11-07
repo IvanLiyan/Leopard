@@ -7,7 +7,13 @@
     to ease migration.
 
 */
-import React, { useState, createContext, useContext } from "react";
+import React, {
+  useState,
+  createContext,
+  useContext,
+  createRef,
+  useImperativeHandle,
+} from "react";
 import { observable, computed, reaction, toJS } from "mobx";
 
 /* External Libraries */
@@ -16,16 +22,51 @@ import Fuse from "fuse.js";
 import sortBy from "lodash/sortBy";
 import flatten from "lodash/flatten";
 
-/* Lego Components */
-import { NavigationNode } from "../toolkit";
-
 /* Relative Imports */
 import UserStore from "@core/stores/UserStore";
-import EnvironmentStore from "@core/stores/EnvironmentStore";
-import LocalizationStore from "@core/stores/LocalizationStore";
 import NavigationStore from "@core/stores/NavigationStore";
+import ApolloStore from "@core/stores/ApolloStore";
+import { gql } from "@apollo/client";
+import {
+  ChromeSchemaObjectSearchArgs,
+  NavigationResultSchema,
+  NavigationResultType,
+} from "@schema";
+import { ChromeNavigationNode } from "@core/stores/ChromeStore";
+import { queryZendesk } from "./zendesk";
+import LocalizationStore from "@core/stores/LocalizationStore";
 
-export const InternalUrlPrefix = "merchant://";
+const OBJECT_SEARCH_QUERY = gql`
+  query SearchStore_ObjectSearchQuery(
+    $objectId: ObjectIdType!
+    $currentPath: String
+  ) {
+    chrome {
+      objectSearch(objectId: $objectId, currentPath: $currentPath) {
+        type
+        title
+        description
+        imageUrl
+        url
+        nuggets
+      }
+    }
+  }
+`;
+
+type ObjectSearchQueryRequestType = ChromeSchemaObjectSearchArgs;
+type ObjectSearchQueryResponseType = {
+  readonly chrome?: {
+    readonly objectSearch?: Pick<
+      NavigationResultSchema,
+      "type" | "title" | "description" | "imageUrl" | "url" | "nuggets"
+    > | null;
+  } | null;
+};
+
+type SearchStoreProps = {
+  readonly tree?: ChromeNavigationNode;
+};
 
 type ResultType =
   | "page"
@@ -39,6 +80,15 @@ type ResultType =
   | "warning"
   | "zendesk"
   | "tracking_dispute";
+
+const ObjectSearchTypeToResultType: {
+  readonly [T in NavigationResultType]: ResultType;
+} = {
+  MERCHANT: "merchant",
+  ORDER: "order",
+  WARNING: "warning",
+  PRODUCT: "product",
+};
 
 const TypeNameMap: { [key in ResultType]: string } = {
   page: i`Pages`,
@@ -55,8 +105,8 @@ const TypeNameMap: { [key in ResultType]: string } = {
 };
 
 type FlattenedNode = {
-  readonly node: NavigationNode;
-  readonly parents: ReadonlyArray<NavigationNode>;
+  readonly node: ChromeNavigationNode;
+  readonly parents: ReadonlyArray<ChromeNavigationNode>;
 };
 
 export type WeightedNode = FlattenedNode & {
@@ -66,18 +116,18 @@ export type WeightedNode = FlattenedNode & {
 type SearchResultPayloadType = WeightedNode | undefined;
 
 export type NavigationSearchResult = {
-  readonly url: string;
+  readonly url?: string | null;
   readonly type: ResultType;
-  readonly title: string;
+  readonly title?: string | null;
   readonly description?: null | string;
-  readonly image_url?: null | string;
-  readonly keywords?: ReadonlyArray<string>;
-  readonly breadcrumbs?: ReadonlyArray<string>;
-  readonly search_phrase?: string;
-  readonly open_in_new_tab?: boolean;
-  readonly nuggets?: ReadonlyArray<string | null>;
-  readonly weight?: number;
-  readonly payload?: SearchResultPayloadType;
+  readonly imageUrl?: null | string;
+  readonly keywords?: ReadonlyArray<string> | null;
+  readonly breadcrumbs?: ReadonlyArray<string> | null;
+  readonly searchPhrase?: string | null;
+  readonly openInNewTab?: boolean | null;
+  readonly nuggets?: ReadonlyArray<string | null> | null;
+  readonly weight?: number | null;
+  readonly payload?: SearchResultPayloadType | null;
 };
 
 export type SearchResultGroup = {
@@ -94,6 +144,15 @@ class SearchStore {
   searchQuery = "";
 
   debouceTimeoutId: ReturnType<typeof setTimeout> | null = null;
+
+  @observable
+  tree?: ChromeNavigationNode;
+
+  @observable
+  searchResults: ReadonlyArray<SearchResultGroup> = [];
+
+  // time in unix when the latest search was made
+  latestSearchTime: number | undefined;
 
   init(): void {
     reaction(
@@ -115,23 +174,18 @@ class SearchStore {
       { fireImmediately: false },
     );
 
-    // TODO [lliepert]: confirm we don't need this in leopard
-    // reaction(
-    //   () => this.pageSearchResult,
-    //   (pageSearchResult) => {
-    //     const { isStoreUser } = UserStore.instance();
-    //     const productName = isStoreUser ? i`Wish Local` : i`Wish for Merchants`;
-    //     const appName = productName;
-    //     if (pageSearchResult == null) {
-    //       document.title = appName;
-    //       return;
-    //     }
+    reaction(
+      () => this.searchQuery,
+      () => {
+        void this.populateSearchResultGroups();
+      },
+      { fireImmediately: true },
+    );
+  }
 
-    //     const { title } = pageSearchResult;
-    //     document.title = `${title} | ${appName}`;
-    //   },
-    //   { fireImmediately: true },
-    // );
+  constructor({ tree }: SearchStoreProps) {
+    this.tree = tree;
+    this.init();
   }
 
   @computed
@@ -150,6 +204,9 @@ class SearchStore {
 
     const results = searchDocuments.filter((doc) => {
       try {
+        if (doc.url == null) {
+          return false;
+        }
         const url = new URL(doc.url);
 
         if (url.search || url.hash) {
@@ -162,14 +219,16 @@ class SearchStore {
       }
     });
 
-    const topResults = sortBy(results, (doc) => doc.url.length);
+    // url cannot be missing here as no URL docs are filtered above
+    const topResults = sortBy(results, (doc) => doc.url?.length ?? 0);
     return topResults[0];
   }
 
   @computed
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  get fuzeSearch(): Fuse<NavigationSearchResult, any> {
-    // TODO [lliepert]: fix any type before merging
+  get fuzeSearch(): Fuse<
+    NavigationSearchResult,
+    Fuse.IFuseOptions<NavigationSearchResult>
+  > {
     const { searchDocuments } = this;
 
     const keys: {
@@ -177,7 +236,7 @@ class SearchStore {
       weight: number;
     }[] = [
       { name: "title", weight: 0.2 },
-      { name: "search_phrase", weight: 0.3 },
+      { name: "searchPhrase", weight: 0.3 },
       { name: "keywords", weight: 0.2 },
       { name: "description", weight: 0.2 },
       { name: "breadcrumbs", weight: 0.1 },
@@ -206,22 +265,37 @@ class SearchStore {
     return new Fuse(cleanSearchDocuments, options, index);
   }
 
-  @computed
-  get rawSearchResults(): ReadonlyArray<NavigationSearchResult> {
+  populateSearchResultGroups = async (): Promise<void> => {
+    const startTime = new Date().getTime();
+    this.latestSearchTime = startTime;
+    const results = await this.getSearchResultGroups();
+    if (this.latestSearchTime === startTime) {
+      this.searchResults = results;
+    }
+  };
+
+  getRawSearchResults = async (): Promise<
+    ReadonlyArray<NavigationSearchResult>
+  > => {
     const {
-      objectSearchResult,
+      getObjectSearchResult,
       searchQuery,
-      zendeskResults,
+      getZendeskResults,
       mostRecentlyVisitedPages,
-      merchantSearchResults,
     } = this;
+
     if (searchQuery.trim().length == 0) {
       return mostRecentlyVisitedPages;
     }
 
+    const objectSearchResult = await getObjectSearchResult();
+
     if (objectSearchResult != null) {
       return [objectSearchResult];
     }
+
+    const zendeskResults = await getZendeskResults();
+
     const results = this.fuzeSearch.search(this.searchQuery);
 
     const rankedResults = sortBy(results, (result) => {
@@ -230,15 +304,12 @@ class SearchStore {
         ((1 - (result.score || 0)) * 0.7 + (result.item.weight || 0) * 0.3);
       return finalScore;
     });
-    return [
-      ...rankedResults.map((result) => result.item),
-      ...merchantSearchResults,
-      ...zendeskResults,
-    ];
-  }
+    return [...rankedResults.map((result) => result.item), ...zendeskResults];
+  };
 
-  @computed
-  get searchResultGroups(): ReadonlyArray<SearchResultGroup> {
+  getSearchResultGroups = async (): Promise<
+    ReadonlyArray<SearchResultGroup>
+  > => {
     const MAX_RESULTS_PER_GROUP = 3;
     const priority: {
       [key in ResultType]: number;
@@ -256,7 +327,10 @@ class SearchStore {
       tracking_dispute: 1,
     };
 
-    const { rawSearchResults } = this;
+    const { getRawSearchResults } = this;
+
+    const rawSearchResults = await getRawSearchResults();
+
     const groupedResults: {
       [T in ResultType]?: ReadonlyArray<NavigationSearchResult>;
     } = {};
@@ -325,31 +399,56 @@ class SearchStore {
     });
 
     return sortedGroups;
-  }
+  };
 
-  @computed
-  get objectSearchResult(): null | undefined | NavigationSearchResult {
+  getObjectSearchResult = async (): Promise<
+    null | undefined | NavigationSearchResult
+  > => {
     const { searchIsObjectID, searchQuery } = this;
     // TODO [lliepert]: replace .instance calls with initialization vars
     const { currentPath } = NavigationStore.instance();
+    const { client } = ApolloStore.instance();
     if (!searchIsObjectID) {
       return null;
     }
 
-    return null;
-    // chromeApi.objectSearch({
-    //   oid: searchQuery.trim(),
-    //   current_path: currentPath,
-    // }).response?.data?.result;
-  }
+    const { data } = await client.query<
+      ObjectSearchQueryResponseType,
+      ObjectSearchQueryRequestType
+    >({
+      query: OBJECT_SEARCH_QUERY,
+      variables: {
+        objectId: searchQuery,
+        currentPath,
+      },
+    });
+
+    if (data.chrome?.objectSearch == null) {
+      return null;
+    }
+
+    const {
+      chrome: { objectSearch },
+    } = data;
+
+    return {
+      url: objectSearch.url,
+      type: ObjectSearchTypeToResultType[objectSearch.type],
+      title: objectSearch.title,
+      description: objectSearch.description,
+      imageUrl: objectSearch.imageUrl,
+      nuggets: objectSearch.nuggets ?? undefined,
+    };
+  };
 
   @computed
   get searchIsObjectID(): boolean {
     return Id.isValid(this.searchQuery.trim());
   }
 
-  @computed
-  get zendeskResults(): ReadonlyArray<NavigationSearchResult> {
+  getZendeskResults = async (): Promise<
+    ReadonlyArray<NavigationSearchResult>
+  > => {
     const { searchQuery } = this;
     const { isMerchant } = UserStore.instance();
     const { locale } = LocalizationStore.instance();
@@ -357,18 +456,16 @@ class SearchStore {
       return [];
     }
 
-    const results = null;
-    //  zendeskApi.searchZendesk({
-    //   query: searchQuery,
-    //   locale,
-    // }).response?.data?.results;
+    const zendeskData = await queryZendesk({
+      query: searchQuery,
+      locale,
+    });
 
-    if (results == null) {
+    if (zendeskData == null) {
       return [];
     }
 
-    // @ts-expect-error zendesk API not yet integrated, hardcoded null response so returns above
-    return results.map((result) => {
+    return zendeskData.results.map((result) => {
       return {
         type: "zendesk",
         url: result.html_url,
@@ -377,56 +474,13 @@ class SearchStore {
         open_in_new_tab: true,
       };
     });
-  }
-
-  @computed
-  get merchantSearchResults(): ReadonlyArray<NavigationSearchResult> {
-    const { searchQuery } = this;
-    const { isMerchant } = UserStore.instance();
-    const { currentPath } = NavigationStore.instance();
-    const { isStaging } = EnvironmentStore.instance();
-
-    if (isStaging || searchQuery.trim().length == 0) {
-      return [];
-    }
-
-    const merchants = null;
-    // adminApi
-    //   .getMerchants({
-    //     start: 0,
-    //     count: 3,
-    //     query: searchQuery,
-    //     sort: "username",
-    //     order: "asc",
-    //     submerchants: false,
-    //     search_type: "",
-    //     as_su: true,
-    //     get_channel_partners: true,
-    //   })
-    //   .setOptions({ failSilently: true }).response?.data?.merchants;
-    if (merchants == null) {
-      return [];
-    }
-
-    const redirectPath = isMerchant && currentPath ? currentPath : "/";
-    // @ts-expect-error chrome API does not yet exist, hardcoded null response so returns above
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    return merchants.map((merchant: any) => {
-      return {
-        type: "merchant",
-        url: `/go/${merchant.merchant_id}?next=${encodeURIComponent(
-          redirectPath,
-        )}`,
-        title: merchant.merchant_name,
-      };
-    });
-  }
+  };
 
   flattenNodes(
-    node: NavigationNode,
-    parents: ReadonlyArray<NavigationNode>,
+    node: ChromeNavigationNode,
+    parents: ReadonlyArray<ChromeNavigationNode>,
   ): ReadonlyArray<FlattenedNode> {
-    if (node.children.length == 0) {
+    if (node == null || node.children == null || node.children.length == 0) {
       return [
         {
           node,
@@ -446,19 +500,16 @@ class SearchStore {
     flattenedNodes: ReadonlyArray<FlattenedNode>,
   ): ReadonlyArray<NavigationSearchResult> {
     const globalMaxHits = Math.max(
-      ...flattenedNodes.map(({ node }) => node.total_hits || 0),
+      ...flattenedNodes.map(({ node }) => node.totalHits || 0),
     );
     const globalMostRecentHit = Math.max(
-      ...flattenedNodes.map(({ node }) => node.most_recent_hit || 0),
+      ...flattenedNodes.map(({ node }) => node.mostRecentHit?.unix || 0),
     );
 
     const weightedNodes: ReadonlyArray<WeightedNode> = flattenedNodes.map(
       (node) => {
         const {
-          node: {
-            total_hits: totalHits = 0,
-            most_recent_hit: mostRecentHit = 0,
-          },
+          node: { totalHits, mostRecentHit },
         } = node;
         const frequencyScore =
           globalMaxHits == 0 || totalHits == null
@@ -467,7 +518,7 @@ class SearchStore {
         const recencyScore =
           globalMostRecentHit == 0 || mostRecentHit == null
             ? 0
-            : mostRecentHit / globalMostRecentHit;
+            : mostRecentHit.unix / globalMostRecentHit;
 
         const weight = 0.6 * frequencyScore + 0.4 * recencyScore;
 
@@ -477,17 +528,13 @@ class SearchStore {
 
     return weightedNodes.map((weightedNode) => {
       const {
-        node: {
-          label: title,
-          url,
-          keywords,
-          description,
-          search_phrase: searchPhrase,
-        },
+        node: { label: title, url, keywords, description, searchPhrase },
         parents,
         weight,
       } = weightedNode;
-      const breadcrumbs = [...parents.map((node) => node.label), title];
+      const breadcrumbs = [...parents.map((node) => node.label), title].filter(
+        (crumb) => crumb != null,
+      ) as ReadonlyArray<string>;
       return {
         type: "page",
         url,
@@ -495,7 +542,7 @@ class SearchStore {
         keywords,
         description,
         breadcrumbs,
-        search_phrase: searchPhrase || title,
+        searchPhrase: searchPhrase || title,
         weight,
         payload: weightedNode,
       };
@@ -504,70 +551,20 @@ class SearchStore {
 
   @computed
   get searchDocuments(): ReadonlyArray<NavigationSearchResult> {
-    const { userSearchDocuments, adminSearchDocuments } = this;
-    return [...userSearchDocuments, ...adminSearchDocuments];
-  }
-
-  @computed
-  get userSearchDocuments(): ReadonlyArray<NavigationSearchResult> {
-    // TODO [lliepert]: bring back once we have usergraphs accessible
-    return [];
-    //   const { flattenedNodes } = this;
-    //   return this.convertToDocuments(flattenedNodes);
-  }
-
-  @computed
-  get adminSearchDocuments(): ReadonlyArray<NavigationSearchResult> {
-    // TODO [lliepert]: bring back once we have usergraphs accessible
-    return [];
-    //   const { isSuAdmin } = UserStore.instance();
-    //   if (isSuAdmin) {
-    //     // Don't show admin pages when spoofing
-    //     return [];
-    //   }
-
-    //   const { flattenedAdminNodes } = this;
-    //   return this.convertToDocuments(flattenedAdminNodes).map((doc) => ({
-    //     ...doc,
-    //     type: "admin_page",
-    //   }));
+    const { flattenedNodes } = this;
+    return this.convertToDocuments(flattenedNodes);
   }
 
   @computed
   get flattenedNodes(): ReadonlyArray<FlattenedNode> {
-    // TODO [lliepert]: bring back once we have usergraphs accessible
-    return [];
-    //   const { userGraph } = this;
-    //   if (userGraph == null) {
-    //     return [];
-    //   }
+    const { tree } = this;
+    if (tree == null) {
+      return [];
+    }
 
-    //   return flatten(
-    //     userGraph.children.map((node) => this.flattenNodes(node, [])),
-    //   );
-  }
-
-  @computed
-  get flattenedAdminNodes(): ReadonlyArray<FlattenedNode> {
-    // TODO [lliepert]: bring back once we have usergraphs accessible
-    return [];
-    //     const { adminGraph } = this;
-    // if (adminGraph == null) {
-    //   return [];
-    // }
-
-    // return flatten(
-    //   adminGraph.children.map((node) => this.flattenNodes(node, [])),
-    // ).map((node) => {
-    //   const updatedNode = {
-    //     ...node.node,
-    //     url: `/go/me?next=${encodeURIComponent(node.node.url)}`,
-    //   };
-    //   return {
-    //     ...node,
-    //     node: updatedNode,
-    //   };
-    // });
+    return flatten(
+      (tree?.children ?? []).map((node) => this.flattenNodes(node, [])),
+    );
   }
 
   @computed
@@ -575,7 +572,7 @@ class SearchStore {
     const { searchDocuments } = this;
     return sortBy(
       searchDocuments,
-      ({ payload }) => -1 * (payload?.node.most_recent_hit || 0),
+      ({ payload }) => -1 * (payload?.node.mostRecentHit?.unix ?? 0),
     )
       .filter(({ payload }) => payload?.node.nodeid != "home")
       .slice(0, 10)
@@ -587,7 +584,7 @@ class SearchStore {
     const { searchDocuments, mostRecentlyVisitedPages } = this;
     const res: NavigationSearchResult[] = sortBy(
       searchDocuments,
-      ({ payload }) => -1 * (payload?.node.total_hits || 0),
+      ({ payload }) => -1 * (payload?.node.totalHits || 0),
     )
       .filter(({ payload }) => payload?.node.nodeid != "home")
       .slice(0, 10);
@@ -608,10 +605,17 @@ class SearchStore {
   }
 }
 
-const SearchStoreContext = createContext(new SearchStore());
+const SearchStoreContext = createContext(
+  new SearchStore({
+    tree: undefined,
+  }),
+);
 
-export const SearchStoreProvider: React.FC = ({ children }) => {
-  const [searchStore] = useState(new SearchStore());
+export const SearchStoreProvider: React.FC<SearchStoreProps> = ({
+  children,
+  tree,
+}) => {
+  const [searchStore] = useState(new SearchStore({ tree }));
 
   return (
     <SearchStoreContext.Provider value={searchStore}>

@@ -33,20 +33,25 @@ import ChromeSideMenuDrawer, {
 
 import { useTheme } from "@core/stores/ThemeStore";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import { NavigationNode, SideMenuCounts } from "@chrome/toolkit";
+import { SideMenuCounts } from "@chrome/toolkit";
 import { Layout } from "@ContextLogic/lego";
-import { useChromeContext } from "@core/stores/ChromeStore";
+import {
+  ChromeNavigationNode,
+  useChromeContext,
+} from "@core/stores/ChromeStore";
 
 type Props = BaseProps & {
-  readonly tree: NavigationNode | null | undefined;
+  readonly tree: ChromeNavigationNode | null | undefined;
   readonly counts?: SideMenuCounts;
   readonly sideMenuWidth: number;
-  readonly renderIcon?: (args: { readonly node: NavigationNode }) => ReactNode;
+  readonly renderIcon?: (args: {
+    readonly node: ChromeNavigationNode;
+  }) => ReactNode;
   readonly backgroundColor?: string;
   readonly isRightToLeft?: boolean;
   readonly enableDrawer?: boolean;
   readonly renderBottomAnchor?: (
-    onClick: (node: NavigationNode) => void,
+    onClick: (node: ChromeNavigationNode) => void,
   ) => ReactNode;
 };
 
@@ -63,19 +68,23 @@ const ChromeSideMenu: React.FC<Props> = (props: Props) => {
     sideMenuWidth,
   } = props;
   const contentRef = useRef<HTMLElement | null>(null);
-  const [selectedNode, setSelectedNode] = useState<NavigationNode | null>(null);
+  const [selectedNode, setSelectedNode] = useState<ChromeNavigationNode | null>(
+    null,
+  );
   const { isDrawerOpen, setIsDrawerOpen } = useChromeContext();
 
   const drawerOpen =
-    enableDrawer && selectedNode != null && selectedNode.children.length > 0;
+    enableDrawer &&
+    selectedNode != null &&
+    (selectedNode.children ?? []).length > 0;
 
   const styles = useStylesheet({
     ...props,
     drawerOpen,
   });
 
-  const children: ReadonlyArray<NavigationNode> = tree
-    ? tree.children.filter((child) => child.showInSideMenu)
+  const children: ReadonlyArray<ChromeNavigationNode> = tree
+    ? (tree.children ?? []).filter((child) => child.showInSideMenu)
     : [];
 
   const SideMenuContentContainer = useMemo(
@@ -136,14 +145,14 @@ const ChromeSideMenu: React.FC<Props> = (props: Props) => {
     return () => document.removeEventListener("click", listener);
   }, [closeDrawer]);
 
-  const renderSideMenuChild = (node: NavigationNode) => {
+  const renderSideMenuChild = (node: ChromeNavigationNode) => {
     if (renderIcon) {
       return renderIcon({ node });
     }
     return <ChromeSideMenuTextLabel key={node.label} node={node} />;
   };
 
-  const onNodeClicked = (node: NavigationNode) => {
+  const onNodeClicked = (node: ChromeNavigationNode) => {
     setSelectedNode(node);
   };
 
@@ -201,10 +210,10 @@ const ChromeSideMenu: React.FC<Props> = (props: Props) => {
               <ChromeSideMenuDrawer
                 tree={selectedNode}
                 counts={counts}
-                onNodeClick={(node: NavigationNode) => {
+                onNodeClick={(node: ChromeNavigationNode) => {
                   if (
                     (node.path != null || node.url != null) &&
-                    node.children.length == 0
+                    (node.children ?? []).length == 0
                   ) {
                     closeDrawer();
                     setIsDrawerOpen(false);

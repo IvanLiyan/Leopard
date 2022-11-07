@@ -1,5 +1,6 @@
 import useSWR, { Fetcher } from "swr";
 import { useLocalizationStore } from "@core/stores/LocalizationStore";
+import { Locale } from "@schema";
 
 type ZendeskResult = {
   readonly id: number;
@@ -64,4 +65,23 @@ export const useZendesk = (
   );
 
   return { data, isLoading: !data && !error, error };
+};
+
+export const queryZendesk = async ({
+  query,
+  locale,
+}: {
+  readonly query: string;
+  readonly locale: Locale;
+}): Promise<ZendeskResponse | undefined> => {
+  const data = await fetcher(
+    `https://merchantfaq.wish.com/api/v2/help_center/articles/search.json?${new URLSearchParams(
+      {
+        query,
+        locale,
+      },
+    )}`,
+  );
+
+  return data ?? undefined;
 };

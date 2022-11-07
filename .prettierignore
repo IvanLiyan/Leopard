@@ -1,0 +1,7 @@
+# schema.ts is copied over from clroot regularly
+schema.ts
+
+# build output
+.next
+build
+out

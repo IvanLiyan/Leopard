@@ -27,7 +27,10 @@ import NotificationsButton from "./NotificationsButton";
 import PlusUserAvatar from "./PlusUserAvatar";
 import MerchantAppSearch from "./MerchantAppSearch";
 import { useAppTopBarData } from "../../toolkit";
-import { useChromeContext } from "@core/stores/ChromeStore";
+import {
+  ChromeNavigationNode,
+  useChromeContext,
+} from "@core/stores/ChromeStore";
 
 /* Type Imports */
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
@@ -37,8 +40,9 @@ import Link from "@core/components/Link";
 import { SearchStoreProvider } from "@chrome/search/searchStore";
 
 type MerchantAppTopbarProps = BaseProps & {
-  disableMenu?: boolean;
-  showMenuDot?: boolean;
+  readonly disableMenu?: boolean;
+  readonly showMenuDot?: boolean;
+  readonly tree: ChromeNavigationNode;
 };
 
 const MerchantAppTopbar: React.FC<MerchantAppTopbarProps> = ({
@@ -46,6 +50,7 @@ const MerchantAppTopbar: React.FC<MerchantAppTopbarProps> = ({
   className,
   disableMenu,
   showMenuDot,
+  tree,
 }: MerchantAppTopbarProps) => {
   const styles = useStylesheet();
   const { setIsDrawerOpen } = useChromeContext();
@@ -81,7 +86,7 @@ const MerchantAppTopbar: React.FC<MerchantAppTopbarProps> = ({
   const canSeeUpdatesSwitch = isProd && canToggleAdminEdit;
 
   return (
-    <SearchStoreProvider>
+    <SearchStoreProvider tree={tree}>
       <Chrome.TopBar
         renderLogo={() => (
           <Layout.FlexRow>

@@ -25,7 +25,6 @@ import MerchantAppTopbar from "../../chrome/components/chrome/MerchantAppTopbar"
 import { TopBarHeight } from "../../chrome/components/chrome/ChromeTopBar";
 import {
   GetAlertsRequestType,
-  NavigationNode,
   GET_ALERTS_QUERY,
   SIDE_MENU_COUNTS_QUERY,
   SideMenuCounts,
@@ -35,6 +34,7 @@ import {
 import { useTheme } from "@core/stores/ThemeStore";
 import { useUserStore } from "@core/stores/UserStore";
 import { useLocalizationStore } from "@core/stores/LocalizationStore";
+import { ChromeBadgeSchema, ChromeNodeSchema, Datetime } from "@schema";
 
 type ChromeContext = {
   isDrawerOpen: boolean;
@@ -67,6 +67,7 @@ export const CHROME_STORE_INITIAL_QUERY = gql`
     badge {
       badgeType
       expiryDate {
+        unix
         datetime
       }
     }
@@ -105,11 +106,35 @@ export const CHROME_STORE_INITIAL_QUERY = gql`
   }
 `;
 
+export type ChromeNavigationNode = Pick<
+  ChromeNodeSchema,
+  | "url"
+  | "path"
+  | "label"
+  | "overviewLabel"
+  | "nodeid"
+  | "keywords"
+  | "description"
+  | "searchPhrase"
+  | "showInSideMenu"
+  | "openInNewTab"
+  | "totalHits"
+  | "countSelectors"
+> & {
+  readonly badge?:
+    | (Pick<ChromeBadgeSchema, "badgeType"> & {
+        readonly expiryDate?: Pick<Datetime, "datetime" | "unix"> | null;
+      })
+    | null;
+  readonly mostRecentHit?: Pick<Datetime, "datetime" | "unix"> | null;
+  readonly children?: ReadonlyArray<ChromeNavigationNode> | null;
+};
+
 export type ChromeStoreInitialQueryResponse = {
   // will update once gql is finished
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   readonly chrome: {
-    readonly merchantGraph: NavigationNode;
+    readonly merchantGraph: ChromeNavigationNode;
   };
 };
 
@@ -144,22 +169,23 @@ export const ChromeProvider: React.FC<{
 
   const tree = initialData?.chrome?.merchantGraph;
 
-  const bottomNodes: ReadonlyArray<NavigationNode> | null = useMemo(() => {
-    if (tree == null) {
-      return null;
-    }
-    return tree.children.filter(
-      (node) => node.nodeid != null && BOTTOM_NODES.has(node.nodeid),
-    );
-  }, [tree]);
+  const bottomNodes: ReadonlyArray<ChromeNavigationNode> | null =
+    useMemo(() => {
+      if (tree == null) {
+        return null;
+      }
+      return (tree?.children ?? []).filter(
+        (node) => node.nodeid != null && BOTTOM_NODES.has(node.nodeid),
+      );
+    }, [tree]);
 
-  const filteredTree: NavigationNode | null | undefined = useMemo(() => {
+  const filteredTree: ChromeNavigationNode | null | undefined = useMemo(() => {
     if (tree == null) {
       return null;
     }
     return {
       ...tree,
-      children: tree.children.filter(
+      children: (tree?.children ?? []).filter(
         (node) => node.nodeid != null && !BOTTOM_NODES.has(node.nodeid),
       ),
     };
@@ -232,6 +258,7 @@ export const ChromeProvider: React.FC<{
             }}
           />
           <MerchantAppTopbar
+            tree={tree}
             disableMenu={disableMenu}
             showMenuDot={hasNotifications || false}
           />

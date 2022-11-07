@@ -17,12 +17,12 @@ import "@ContextLogic/lego";
 import { css } from "@core/toolkit/styling";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import { NavigationNode } from "@chrome/toolkit";
 
 import Link from "@core/components/Link";
+import { ChromeNavigationNode } from "@core/stores/ChromeStore";
 
-type Props = Omit<BaseProps, "children"> & {
-  readonly node: NavigationNode;
+type Props = BaseProps & {
+  readonly node: ChromeNavigationNode;
   readonly onMouseOver?: () => unknown;
 };
 

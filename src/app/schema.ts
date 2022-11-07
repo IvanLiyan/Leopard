@@ -9,12 +9,14 @@ export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: unknown }> = {
   [K in keyof T]: T[K];
 };
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
-  [SubKey in K]?: Maybe<T[SubKey]>;
-};
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
-  [SubKey in K]: Maybe<T[SubKey]>;
-};
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> &
+  {
+    [SubKey in K]?: Maybe<T[SubKey]>;
+  };
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> &
+  {
+    [SubKey in K]: Maybe<T[SubKey]>;
+  };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -702,7 +704,8 @@ export type AuthorizeReturnInput = {
   readonly message: Scalars["String"];
   readonly returnTrackingId: Scalars["String"];
   readonly returnShippingCarrier: Scalars["String"];
-  readonly merchantFileId: Scalars["String"];
+  readonly prepaidReturnLabelUrl: Scalars["String"];
+  readonly prepaidReturnLabelFilename: Scalars["String"];
 };
 
 export type AuthType = "MERCHANT" | "WISH";
@@ -1301,6 +1304,22 @@ export type BrandTypeCode =
   | "COPYRIGHT_IMAGE"
   | "BRAND_OF_INTEREST";
 
+export type BulkReviewInput = {
+  readonly merchantUserIds: ReadonlyArray<Scalars["ObjectIdType"]>;
+  readonly reviewState: SanctionScreeningHitStateType;
+  readonly reviewComment: Scalars["String"];
+  readonly pausedImpressionState?: Maybe<Scalars["Boolean"]>;
+};
+
+export type BulkReviewMutation = {
+  readonly __typename?: "BulkReviewMutation";
+  readonly ok: Scalars["Boolean"];
+  readonly updatedIds: ReadonlyArray<Scalars["ObjectIdType"]>;
+  readonly totalToUpdate: Scalars["Int"];
+  readonly successfullyUpdated: Scalars["Int"];
+  readonly errorMessage?: Maybe<Scalars["String"]>;
+};
+
 export type BusinessDocTypes =
   | "OFFICIAL_BANK_STATEMENT"
   | "RECENT_BUSINESS_RETURNS"
@@ -1765,6 +1784,12 @@ export type ChromeSchema = {
   readonly __typename?: "ChromeSchema";
   readonly merchantGraph?: Maybe<ChromeNodeSchema>;
   readonly merchantGraphString?: Maybe<Scalars["String"]>;
+  readonly objectSearch?: Maybe<NavigationResultSchema>;
+};
+
+export type ChromeSchemaObjectSearchArgs = {
+  objectId: Scalars["ObjectIdType"];
+  currentPath?: Maybe<Scalars["String"]>;
 };
 
 export type ClearAllUiState = {
@@ -2008,6 +2033,7 @@ export type CounterfeitReason =
   | "BLURRED_LABEL"
   | "MEDICAL_MATERIALS"
   | "AMBIGUOUS_LISTING"
+  | "JEWELRY_AND_METALS"
   | "HOVERBOARD"
   | "CELEBRITY_PHOTO"
   | "TRICK_CANDLES"
@@ -2058,6 +2084,7 @@ export type CounterfeitReasonCode =
   | "BLURRED_LABEL"
   | "MEDICAL_MATERIALS"
   | "AMBIGUOUS_LISTING"
+  | "JEWELRY_AND_METALS"
   | "HOVERBOARD"
   | "CELEBRITY_PHOTO"
   | "TRICK_CANDLES"
@@ -2791,6 +2818,7 @@ export type CustomerSupportTicketMutations = {
   readonly contactBuyer?: Maybe<ContactBuyer>;
   readonly authorizeReturn?: Maybe<AuthorizeReturn>;
   readonly cancelReturn?: Maybe<CancelReturn>;
+  readonly rejectReturn?: Maybe<RejectReturn>;
   readonly issueRefund?: Maybe<IssueRefund>;
 };
 
@@ -2799,16 +2827,55 @@ export type CustomerSupportTicketMutationsContactBuyerArgs = {
 };
 
 export type CustomerSupportTicketMutationsAuthorizeReturnArgs = {
-  input?: Maybe<AuthorizeReturnInput>;
+  input: AuthorizeReturnInput;
 };
 
 export type CustomerSupportTicketMutationsCancelReturnArgs = {
   input: CancelReturnInput;
 };
 
+export type CustomerSupportTicketMutationsRejectReturnArgs = {
+  input: RejectReturnInput;
+};
+
 export type CustomerSupportTicketMutationsIssueRefundArgs = {
   input: IssueRefundInput;
 };
+
+export type CustomerSupportTicketReplyMessageType =
+  | "CANCELLED_REPLACEMENT_REQUEST"
+  | "MOVE_TO_FRAUD_QUEUE"
+  | "LOGGED_OUT_FORM_CREATION_MESSAGE"
+  | "MANUAL_REFUND_CONFIRMATION"
+  | "MOVE_TO_ORIGINAL_QUEUE"
+  | "GURU_LINK"
+  | "MERCHANT_APPEAL_TO_SUPPORT"
+  | "ACCEPT_REPLACEMENT_REQUEST"
+  | "ADMIN_REQUEST_REFUND_CONFIRMATION"
+  | "DECLINE_REPLACEMENT_REQUEST"
+  | "COMMENT"
+  | "MESSAGE_TO_ADMIN"
+  | "AUTO_BOUNCED_TO_ADMIN"
+  | "ADMIN_DELEGATE"
+  | "TEXT_REPLY"
+  | "CLOSE_REPLY"
+  | "ADMIN_REQUEST_SUPER"
+  | "EXPIRED_REPLACEMENT_REQUEST"
+  | "ESCALATE_TO_FRAUD_INTERNAL"
+  | "MERGED"
+  | "RELABEL_REPLY"
+  | "ESCALATE_TO_INTERNAL"
+  | "ESCALATE_TO_MERCHANT"
+  | "HIDDEN_TO_MERCHANT_ADMIN_REPLY"
+  | "REOPENED"
+  | "AUTO_BOUNCED_TO_ADMIN_120"
+  | "CHANGE_LOCALE_REPLY"
+  | "USER_APPEAL_TO_SUPPORT"
+  | "REFUND_CONFIRMATION"
+  | "ADMIN_REPLY"
+  | "REPORT_STORE"
+  | "AUTO_BOUNCED_TO_ADMIN_24"
+  | "REQUIRE_REVIEW_MERCHANT_REPLY";
 
 export type CustomerSupportTicketReplySchema = {
   readonly __typename?: "CustomerSupportTicketReplySchema";
@@ -2819,7 +2886,19 @@ export type CustomerSupportTicketReplySchema = {
   readonly userLocale?: Maybe<Scalars["String"]>;
   readonly date?: Maybe<Datetime>;
   readonly imageUrls?: Maybe<ReadonlyArray<Scalars["String"]>>;
+  readonly messageType: CustomerSupportTicketReplyMessageType;
+  readonly senderType: CustomerSupportTicketReplySenderType;
 };
+
+export type CustomerSupportTicketReplySenderType =
+  | "MERCHANT"
+  | "WISH_ASSISTANT"
+  | "SHIP_PROVIDER"
+  | "ADMIN"
+  | "AUTO"
+  | "LIVE_CHAT"
+  | "USER"
+  | "FAKE_AS_ADMIN";
 
 export type CustomerSupportTicketRequestType =
   | "CLAIM"
@@ -6518,6 +6597,7 @@ export type MerchantStats = {
   readonly storeRatings: ReadonlyArray<StoreRating>;
   readonly storeRatingsCount: Scalars["Int"];
   readonly productRatings: ReadonlyArray<ProductRating>;
+  readonly productRatingsCount: Scalars["Int"];
   readonly tracking?: Maybe<TrackingPerformanceStats>;
   readonly delivery?: Maybe<DeliveryPerformanceStats>;
   readonly refunds?: Maybe<RefundPerformanceStats>;
@@ -7425,6 +7505,7 @@ export type MfpServiceSchemaCampaignEventsCountArgs = {
 export type MfpServiceSchemaCheckEligibilityArgs = {
   variationIds?: Maybe<ReadonlyArray<Scalars["ObjectIdType"]>>;
   promotionType?: Maybe<MfpCampaignPromotionType>;
+  eventId?: Maybe<Scalars["ObjectIdType"]>;
 };
 
 export type MfpUnqualifiedVariationData = {
@@ -7554,6 +7635,18 @@ export type MsrCategory =
   | "PPE"
   | "ELECTRICAL_PRODUCTS"
   | "TOYS";
+
+export type NavigationResultSchema = {
+  readonly __typename?: "NavigationResultSchema";
+  readonly imageUrl?: Maybe<Scalars["String"]>;
+  readonly url: Scalars["String"];
+  readonly type: NavigationResultType;
+  readonly title: Scalars["String"];
+  readonly description?: Maybe<Scalars["String"]>;
+  readonly nuggets?: Maybe<ReadonlyArray<Scalars["String"]>>;
+};
+
+export type NavigationResultType = "MERCHANT" | "PRODUCT" | "WARNING" | "ORDER";
 
 export type NotificationsServiceSchema = {
   readonly __typename?: "NotificationsServiceSchema";
@@ -8561,6 +8654,7 @@ export type PermissionType =
   | "CAN_ACT_ON_EU_MERCHANT"
   | "SHOW_COUNTERFEIT_TAGGER_TEST_RESULT"
   | "TAG_STATUS_CHECK"
+  | "CAN_ACCESS_MERCHANT_RISK_REVIEW_OUTCOME_ONEOFF"
   | "VIEW_HOLDS_FOR_LOCAL_MERCHANTS"
   | "CREATE_LISTING_REVIEW_JOB"
   | "MANAGE_SHIPPING_SETTINGS"
@@ -8618,6 +8712,7 @@ export type PermissionType =
   | "CAN_ACT_ON_BR_MERCHANT"
   | "CAN_ACT_ON_ASIAN_MERCHANT"
   | "CAN_REVIEW_MERCHANT_INFO_ONLY"
+  | "UPDATE_SANCTION_SCREENING_HITS"
   | "SHOW_STORE_ASSETS"
   | "CAN_HANDLE_ORDER_CHANGE_REQUEST"
   | "CAN_ACCESS_ONEOFF_REQ_TOOL"
@@ -8833,6 +8928,7 @@ export type PermissionType =
   | "CAN_REVERSE_FINE"
   | "VIEW_RESTRICTED_PRODUCT_REQUEST"
   | "IP_VIOLATION_AUDIT_TAG"
+  | "REVIEW_ONEOFF_REQ_BAN_MERCHANTS"
   | "CAN_ISSUE_PB_CREDITS"
   | "CAN_ACCESS_ONEOFF_API_GET_FIELDS_INFO"
   | "CAN_VIEW_SHIP_TO_STORE_PACKAGE"
@@ -10427,6 +10523,7 @@ export type ProductVideo = {
   readonly audio?: Maybe<ProductVideoAudio>;
   readonly audioStartTime?: Maybe<Scalars["Float"]>;
   readonly videoSource?: Maybe<ProductVideoSource>;
+  readonly lastUpdated?: Maybe<Datetime>;
 };
 
 export type ProductVideoAudio = {
@@ -10485,6 +10582,11 @@ export type ProductVideoDailyStats = {
   readonly likes?: Maybe<Scalars["Int"]>;
   readonly watchTime?: Maybe<Scalars["Float"]>;
   readonly gmv?: Maybe<Scalars["Float"]>;
+  readonly avgWatchTime: Scalars["Float"];
+  readonly engagedViews: Scalars["Int"];
+  readonly buyerIntent: Scalars["Float"];
+  readonly addToCart: Scalars["Int"];
+  readonly conversions: Scalars["Float"];
 };
 
 export type ProductVideoIpTagMutations = {
@@ -10951,6 +11053,19 @@ export type RegulatorSchema = {
   readonly title?: Maybe<Scalars["String"]>;
 };
 
+export type RejectReturn = {
+  readonly __typename?: "RejectReturn";
+  readonly ok: Scalars["Boolean"];
+  readonly message?: Maybe<Scalars["String"]>;
+};
+
+export type RejectReturnInput = {
+  readonly orderId: Scalars["ObjectIdType"];
+  readonly rejectReason: ReturnRequestRejectReason;
+  readonly message: Scalars["String"];
+  readonly otherReasonExplanation?: Maybe<Scalars["String"]>;
+};
+
 export type RejectTrademarkInput = {
   readonly id: Scalars["ObjectIdType"];
   readonly rejectionReason?: Maybe<Scalars["String"]>;
@@ -11343,12 +11458,16 @@ export type RestrictedProductSchemaRestrictedProductCategoriesArgs = {
 export type ReturnDetailsSchema = {
   readonly __typename?: "ReturnDetailsSchema";
   readonly id?: Maybe<Scalars["ObjectIdType"]>;
+  readonly shippingLabelFilename?: Maybe<Scalars["String"]>;
+  readonly returnSlipFilename?: Maybe<Scalars["String"]>;
+  readonly returnSlipId?: Maybe<Scalars["Int"]>;
   readonly trackingId?: Maybe<Scalars["ObjectIdType"]>;
   readonly trackingUrl?: Maybe<Scalars["String"]>;
   readonly shippingProviderName?: Maybe<Scalars["String"]>;
   readonly actualDeliverDays?: Maybe<Timedelta>;
   readonly shippingLabelUrl?: Maybe<Scalars["String"]>;
   readonly returnSlipUrl?: Maybe<Scalars["String"]>;
+  readonly warehouseConfirmedTime?: Maybe<Datetime>;
 };
 
 export type ReturnInformationSchema = {
@@ -11491,6 +11610,12 @@ export type ReturnRequestRefundReason =
   | "MERCHANT_REPORTED_ORDER"
   | "PICKUP_NOW_ITEM_NOT_PICKED_UP";
 
+export type ReturnRequestRejectReason =
+  | "LATE_RETURN"
+  | "OTHER"
+  | "PRODUCT_DAMAGED"
+  | "WRONG_PRODUCT";
+
 export type ReturnRequestSchema = {
   readonly __typename?: "ReturnRequestSchema";
   readonly id?: Maybe<Scalars["ObjectIdType"]>;
@@ -11501,6 +11626,8 @@ export type ReturnRequestSchema = {
   readonly availableReturnCarriers: ReadonlyArray<ShippingProviderSchema>;
   readonly actions?: Maybe<ReadonlyArray<ReturnRequestActionSchema>>;
   readonly shippingLabelSentDate?: Maybe<Datetime>;
+  readonly merchantAuthorizedTime?: Maybe<Datetime>;
+  readonly lastAction: ReturnRequestActionSchema;
 };
 
 export type ReturnRequestState =
@@ -11694,6 +11821,7 @@ export type RootMutation = {
   readonly merchantSafety?: Maybe<MerchantSafetyMutations>;
   readonly customerSupportTickets?: Maybe<CustomerSupportTicketMutations>;
   readonly locale?: Maybe<LocaleMutations>;
+  readonly sanctionScreening?: Maybe<SanctionScreeningMutations>;
 };
 
 export type RootQuery = {
@@ -11753,7 +11881,10 @@ export type SalesforceLeadInfo = {
   readonly country: Country;
 };
 
-export type SalesforceLeadSource = "NOT_IMPLEMENTED" | "Lead_Questionnaire";
+export type SalesforceLeadSource =
+  | "NOT_IMPLEMENTED"
+  | "Lead_Questionnaire"
+  | "MMS_Lead_Questionnaire";
 
 export type SalesPerformanceStats = {
   readonly __typename?: "SalesPerformanceStats";
@@ -11765,6 +11896,23 @@ export type SalesPerformanceStats = {
   readonly checkoutConversion?: Maybe<Scalars["Float"]>;
   readonly orders?: Maybe<Scalars["Int"]>;
   readonly gmv: CurrencyValue;
+};
+
+export type SanctionScreeningHitStateType =
+  | "NEWLY_IDENTITY_VERIFIED"
+  | "ESCALATE"
+  | "FALSE_HIT"
+  | "TRUE_HIT"
+  | "NEWLY_IDENTITY_VERIFIED_EEA"
+  | "UNSET";
+
+export type SanctionScreeningMutations = {
+  readonly __typename?: "SanctionScreeningMutations";
+  readonly bulkReview?: Maybe<BulkReviewMutation>;
+};
+
+export type SanctionScreeningMutationsBulkReviewArgs = {
+  input: BulkReviewInput;
 };
 
 export type ScheduledAddBudgetSchema = {
@@ -12777,7 +12925,7 @@ export type TaggingViolationSubReasonCode =
   | "RECREATIONAL_DRUGS_AND_CHEMICALS"
   | "SUBSCRIPTIONS_OR_MEMBERSHIPS"
   | "DOMESTIC_TERRORISTS_MEMORABILIA"
-  | "VAPE_LIQUID"
+  | "HYPERREALISTIC_CONTENT"
   | "PLANT_SEED_WITH_IMPOSSIBLE_CLAIM"
   | "DANGEROUS_NON_CPA_VIOLATION"
   | "LASER_DISC"
@@ -12794,6 +12942,7 @@ export type TaggingViolationSubReasonCode =
   | "IMAGE_OR_TITLE_CHANGE"
   | "SIZE_MISREPRESENTATION_MAIN_IMAGE"
   | "SIZE_NOT_AS_ADVERTISED"
+  | "SEXUALLY_SUGGESTIVE_CONTENT"
   | "PENICILLIN"
   | "VHS_TAPE"
   | "VIDEO_GAME"
@@ -12829,12 +12978,14 @@ export type TaggingViolationSubReasonCode =
   | "PLANTS"
   | "VITAMINS_AND_SUPPLEMENTS"
   | "FOOD"
+  | "NON_CLINICAL_CONTENT"
   | "ENDANGERED_SPECIES"
   | "MOD_BOXES"
   | "UNSUPPORTED_MEDICAL_CLAIMS"
   | "BULLYING"
   | "BRANDING_CHANGE"
   | "EROTIC_SETUPS"
+  | "SEXUALLY_EXPLICIT_CONTENT"
   | "OTC_MEDICATION"
   | "HOVERBOARDS"
   | "EPA_PESTICIDES_US"
@@ -12880,6 +13031,7 @@ export type TaggingViolationSubReasonCode =
   | "BEVERAGES"
   | "CPSC_VIOLATION"
   | "UNVERIFIED_SHIPPING_TIME_FRAME"
+  | "MISLEADING_CLAIMS"
   | "IMAGE_OF_PENETRATION"
   | "CASSETTE_TAPE"
   | "GLYPHOSATE"
@@ -12892,6 +13044,7 @@ export type TaggingViolationSubReasonCode =
   | "LASER_POINTERS"
   | "VALUE_VARIANCE"
   | "SEXUALLY_EXPLICIT_MATERIAL"
+  | "BULLION"
   | "JAMMERS"
   | "FIREARMS_AND_GUNS"
   | "CHILD_CARSEAT"
@@ -12909,6 +13062,7 @@ export type TaggingViolationSubReasonCode =
   | "CN_PROHIBITED_PRODUCT_AIRSOFT"
   | "HATEFUL_CORONAVIRUS_PRODUCTS"
   | "INJECTABLE_ITEMS"
+  | "CONTAINS_HARMFUL_CONTENT"
   | "SOFTWARE"
   | "SIZE_COLOR_OPTION_GAMING"
   | "HATE_GROUPS"
@@ -12917,11 +13071,13 @@ export type TaggingViolationSubReasonCode =
   | "CUSTOMER_FEEDBACK_ABOUT_FALSE_SPEC"
   | "BUTANE"
   | "PURCHANSED_FOLLOWERS"
+  | "MISSING_KEY_REQUIREMENTS"
   | "GUN_SILENCERS"
   | "CONTACTS"
   | "TITLE_IMAGE_MISMATCH"
   | "COCKROACH_CHALK"
   | "HOOKAH_PEN"
+  | "VAPE_LIQUID"
   | "DANGEROUS_CPA_VIOLATION"
   | "AMMUNITION";
 
@@ -15231,12 +15387,12 @@ export type WishPostShippingUpdatesSchema = {
 export type WishSellerStandardStats = {
   readonly __typename?: "WishSellerStandardStats";
   readonly maturedOrderCount: Scalars["Int"];
-  readonly userRating: Scalars["Float"];
-  readonly orderFultillmentRate: Scalars["Float"];
-  readonly validTrackingRate: Scalars["Float"];
-  readonly productQualityRefundRate: Scalars["Float"];
-  readonly productLogisticsRefundRate: Scalars["Float"];
-  readonly fulfillmentSpeed: Timedelta;
+  readonly userRating?: Maybe<Scalars["Float"]>;
+  readonly orderFultillmentRate?: Maybe<Scalars["Float"]>;
+  readonly validTrackingRate?: Maybe<Scalars["Float"]>;
+  readonly productQualityRefundRate?: Maybe<Scalars["Float"]>;
+  readonly productLogisticsRefundRate?: Maybe<Scalars["Float"]>;
+  readonly fulfillmentSpeed?: Maybe<Timedelta>;
   readonly orderCancellationCount: Scalars["Int"];
   readonly ninetyDayOrderCount: Scalars["Int"];
   readonly unfulfilledOrderCount: Scalars["Int"];

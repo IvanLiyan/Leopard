@@ -36,11 +36,11 @@ const PlusSearchResults = observer((props: Props) => {
   const { className, style, containerRef, selectedResult, setSelectedResult } =
     props;
   const styles = useStylesheet();
-  const { searchResultGroups } = useSearchStore();
+  const { searchResults } = useSearchStore();
 
   return (
     <section ref={containerRef} className={css(styles.root, className, style)}>
-      {searchResultGroups.map(({ title, type, results }) => (
+      {searchResults.map(({ title, type, results }) => (
         <SearchResultsSection key={type} title={title}>
           {results.map((result) => (
             <div

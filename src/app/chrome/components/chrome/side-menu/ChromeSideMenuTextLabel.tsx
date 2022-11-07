@@ -18,18 +18,18 @@ import { palettes } from "@deprecated/pkg/toolkit/lego-legacy/DEPRECATED_colors"
 import * as fonts from "@core/toolkit/fonts";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import { NavigationNode } from "@chrome/toolkit";
 
 import Link from "@core/components/Link";
+import { ChromeNavigationNode } from "@core/stores/ChromeStore";
 
 type Props = BaseProps & {
-  readonly node: NavigationNode;
+  readonly node: ChromeNavigationNode;
   readonly isSelected?: boolean;
 };
 
 export default observer((props: Props) => {
   const { className, style, node, isSelected, ...otherProps } = props;
-  const styles = useStylesheet(isSelected);
+  const styles = useStylesheet({ isSelected });
   const { label, url, children } = node;
   return (
     <Link
@@ -39,14 +39,14 @@ export default observer((props: Props) => {
       {...otherProps}
     >
       <div className={css(styles.label)}>{label}</div>
-      {children.length > 0 && (
+      {(children ?? []).length > 0 && (
         <Chevron direction="right" className={css(styles.chevron)} />
       )}
     </Link>
   );
 });
 
-const useStylesheet = (isSelected: boolean | undefined) => {
+const useStylesheet = ({ isSelected }: { readonly isSelected?: boolean }) => {
   return useMemo(
     () =>
       StyleSheet.create({

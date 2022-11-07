@@ -16,17 +16,18 @@ import { useTheme } from "@core/stores/ThemeStore";
 import ChromeSideMenuButton, { ButtonPadding } from "./ChromeSideMenuButton";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import { NavigationNode, SideMenuCounts } from "@chrome/toolkit";
+import { SideMenuCounts } from "@chrome/toolkit";
+import { ChromeNavigationNode } from "@core/stores/ChromeStore";
 
 type Props = BaseProps & {
-  readonly tree: NavigationNode;
-  readonly onNodeClick?: (node: NavigationNode) => void;
+  readonly tree: ChromeNavigationNode;
+  readonly onNodeClick?: (node: ChromeNavigationNode) => void;
   readonly counts?: SideMenuCounts;
 };
 
 export const SideMenuDrawerSize = 230;
 
-type NodeSet = Set<NavigationNode>;
+type NodeSet = Set<ChromeNavigationNode>;
 
 const ChromeSideMenuDrawer: React.FC<Props> = ({
   className,
@@ -38,7 +39,9 @@ const ChromeSideMenuDrawer: React.FC<Props> = ({
   const [expandedNodes, setExpandedNodes] = useState<NodeSet>(new Set());
   const styles = useStylesheet();
 
-  const children = tree.children.filter((child) => child.showInSideMenu);
+  const children = (tree?.children ?? []).filter(
+    (child) => child.showInSideMenu,
+  );
   return (
     <Layout.FlexColumn
       className={css(styles.root, className, style)}
@@ -53,12 +56,12 @@ const ChromeSideMenuDrawer: React.FC<Props> = ({
           <ChromeSideMenuButton
             key={node.label}
             node={node}
-            onClick={(clickedNode: NavigationNode) => {
+            onClick={(clickedNode: ChromeNavigationNode) => {
               if (onNodeClick != null) {
                 onNodeClick(clickedNode);
               }
 
-              const canExpand = node.children.length > 0;
+              const canExpand = (node?.children ?? []).length > 0;
               if (!canExpand) {
                 return;
               }

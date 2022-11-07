@@ -19,13 +19,14 @@ import { css } from "@core/toolkit/styling";
 import { palettes } from "../../../../deprecated/pkg/toolkit/lego-legacy/DEPRECATED_colors";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import { NavigationNode, SideMenuCounts, getNodeCount } from "../../toolkit";
+import { SideMenuCounts, getNodeCount } from "../../toolkit";
 import { useLocalizationStore } from "@core/stores/LocalizationStore";
 
 import Link from "@core/components/Link";
+import { ChromeNavigationNode } from "@core/stores/ChromeStore";
 
 type Props = Omit<BaseProps, "children"> & {
-  readonly node: NavigationNode;
+  readonly node: ChromeNavigationNode;
   readonly onMouseOver?: () => unknown;
   readonly counts?: SideMenuCounts;
   readonly isSelected?: boolean;

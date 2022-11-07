@@ -20,17 +20,18 @@ import { css } from "@core/toolkit/styling";
 import { useTheme } from "@core/stores/ThemeStore";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import { NavigationNode, SideMenuCounts, getNodeCount } from "@chrome/toolkit";
+import { SideMenuCounts, getNodeCount } from "@chrome/toolkit";
 import { ChromeBadgeType } from "@schema";
 
 import { IconName } from "@ContextLogic/zeus";
 import Icon from "@core/components/Icon";
 
 import Link from "@core/components/Link";
+import { ChromeNavigationNode } from "@core/stores/ChromeStore";
 
 type Props = BaseProps & {
-  readonly node: NavigationNode;
-  readonly onClick?: (clickedNode: NavigationNode) => unknown;
+  readonly node: ChromeNavigationNode;
+  readonly onClick?: (clickedNode: ChromeNavigationNode) => unknown;
   readonly expand?: boolean;
   readonly expandable?: boolean;
   readonly leadingPadding?: number;
@@ -74,19 +75,12 @@ const ChromeSideMenuButton: React.FC<Props> = (props: Props) => {
   void leadingPadding; // passed to useStylesheet via props, need to extract from otherProps
   const [isHovering, setIsHovering] = useState(false);
 
-  const styles = useStylesheet(props, isHovering);
+  const styles = useStylesheet({ leadingPadding, isHovering });
   const { primary, textDark } = useTheme();
 
-  const {
-    label,
-    children,
-    url,
-    badge,
-    nodeid,
-    open_in_new_tab: openInNewTab,
-  } = node;
+  const { label, children, url, badge, nodeid, openInNewTab } = node;
   const icon = nodeid != null ? IconMappings[nodeid] : undefined;
-  const expandable = allowExpansion && children?.length > 0;
+  const expandable = allowExpansion && (children?.length ?? 0) > 0;
   const notificationCount = counts && getNodeCount(node, counts);
 
   const renderBadge = () => {
@@ -98,17 +92,17 @@ const ChromeSideMenuButton: React.FC<Props> = (props: Props) => {
       return null;
     }
     const currentTime = new Date().getTime() / 1000;
-    const { type, expiry_date: expiryDate } = badge;
+    const { badgeType, expiryDate } = badge;
 
-    if (expiryDate < currentTime) {
+    if (expiryDate == null || expiryDate.unix < currentTime) {
       return null;
     }
 
-    if (type == "BETA") {
+    if (badgeType == "BETA") {
       return <BetaBadge />;
     }
 
-    if (type == "NEW") {
+    if (badgeType == "NEW") {
       return <NewBadge />;
     }
 
@@ -164,7 +158,7 @@ const ChromeSideMenuButton: React.FC<Props> = (props: Props) => {
 
       {expand && expandable && (
         <>
-          {children.map((node) => (
+          {(children ?? []).map((node) => (
             <ChromeSideMenuButton
               key={node.label}
               node={node}
@@ -181,7 +175,13 @@ const ChromeSideMenuButton: React.FC<Props> = (props: Props) => {
 
 export default observer(ChromeSideMenuButton);
 
-const useStylesheet = ({ leadingPadding = 0 }: Props, isHovering: boolean) => {
+const useStylesheet = ({
+  leadingPadding = 0,
+  isHovering,
+}: {
+  readonly leadingPadding: Props["leadingPadding"];
+  readonly isHovering: boolean;
+}) => {
   const { textDark, primary, primaryLight } = useTheme();
   return useMemo(
     () =>
@@ -218,18 +218,18 @@ const useStylesheet = ({ leadingPadding = 0 }: Props, isHovering: boolean) => {
 };
 
 export const useHasNotificationBadge = (
-  node: NavigationNode,
+  node: ChromeNavigationNode,
   badgeType: ChromeBadgeType,
 ): boolean => {
-  const getHasNotificationBadge: (arg0: NavigationNode) => boolean =
+  const getHasNotificationBadge: (arg0: ChromeNavigationNode) => boolean =
     useCallback(
-      ({ badge, children }: NavigationNode) => {
-        const type = badge?.type;
+      ({ badge, children }: ChromeNavigationNode) => {
+        const type = badge?.badgeType;
         if (type == badgeType) {
           return true;
         }
 
-        return children.some((child) => getHasNotificationBadge(child));
+        return (children ?? []).some((child) => getHasNotificationBadge(child));
       },
       [badgeType],
     );

@@ -60,10 +60,10 @@ const MerchantAppSearch: React.FC<BaseProps> = ({
 
   const searchStore = useSearchStore();
 
-  const { pageSearchResult, searchResultGroups } = searchStore;
+  const { pageSearchResult, searchResults } = searchStore;
 
   const { lightenedTopbarBackground } = useThemeStore();
-  const currentPagePhrase = pageSearchResult?.search_phrase;
+  const currentPagePhrase = pageSearchResult?.searchPhrase;
   const [hasFocus, setHasFocus] = useState(false);
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [inputRef, setInputRef] = useState<
@@ -80,12 +80,12 @@ const MerchantAppSearch: React.FC<BaseProps> = ({
 
   const allResults: ReadonlyArray<NavigationSearchResult> = useMemo(() => {
     let results: NavigationSearchResult[] = [];
-    for (const resultGroup of searchResultGroups) {
+    for (const resultGroup of searchResults) {
       results = [...results, ...resultGroup.results];
     }
 
     return results;
-  }, [searchResultGroups]);
+  }, [searchResults]);
 
   const selectedResult =
     selectedElementIndex >= 0 && selectedElementIndex < allResults.length
@@ -134,7 +134,7 @@ const MerchantAppSearch: React.FC<BaseProps> = ({
           if (!hasFocus) {
             return;
           }
-          if (selectedResult) {
+          if (selectedResult != null && selectedResult.url != null) {
             searchStore.rawSearchQuery = "";
             void navigationStore.navigate(selectedResult.url);
           }
