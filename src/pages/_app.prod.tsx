@@ -1,6 +1,7 @@
 import "../styles/global.css";
 
 import { AppProps } from "next/app";
+import Head from "next/head";
 import MerchantDashboardProvider from "@chrome/MerchantDashboardProvider";
 
 const MerchantDashboard = ({
@@ -32,6 +33,9 @@ const MerchantDashboard = ({
 const App = (props: AppProps): JSX.Element => {
   return (
     <div suppressHydrationWarning>
+      <Head>
+        <title>Wish for Merchants</title>
+      </Head>
       {typeof window === "undefined" ? null : <MerchantDashboard {...props} />}
     </div>
   );

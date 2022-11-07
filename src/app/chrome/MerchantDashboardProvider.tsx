@@ -1,28 +1,31 @@
+import { useEffect, useState } from "react";
 import { useQuery } from "@apollo/client";
+import Cookies from "js-cookie";
 import {
   UserStoreProvider,
   USER_STORE_INITIAL_QUERY,
   UserStoreInitialQueryResponse,
-} from "../core/stores/UserStore";
-import { NavigationProvider } from "../core/stores/NavigationStore";
-import { PersistenceStoreProvider } from "../core/stores/PersistenceStore";
-import { ToastProvider } from "../core/stores/ToastStore";
-import { DeviceStoreProvider } from "../core/stores/DeviceStore";
+} from "@core/stores/UserStore";
+import { NavigationProvider } from "@core/stores/NavigationStore";
+import { PersistenceStoreProvider } from "@core/stores/PersistenceStore";
+import { ToastProvider } from "@core/stores/ToastStore";
+import { DeviceStoreProvider } from "@core/stores/DeviceStore";
 import {
   LocalizationStoreProvider,
   LOCALIZATION_STORE_INITIAL_QUERY,
   LocalizationStoreInitialQueryResponse,
-} from "../core/stores/LocalizationStore";
-import { ApolloProvider, client } from "../core/stores/ApolloStore";
-import { ThemeStoreProvider } from "../core/stores/ThemeStore";
+} from "@core/stores/LocalizationStore";
+import { ApolloProvider, client } from "@core/stores/ApolloStore";
+import { ThemeStoreProvider } from "@core/stores/ThemeStore";
 import {
   ChromeProvider,
   CHROME_STORE_INITIAL_QUERY,
   ChromeStoreInitialQueryResponse,
-} from "../core/stores/ChromeStore";
+} from "@core/stores/ChromeStore";
 import { LoadingIndicator } from "@ContextLogic/lego";
-import { env } from "../core/stores/EnvironmentStore";
+import { env } from "@core/stores/EnvironmentStore";
 import { datadogRum } from "@datadog/browser-rum";
+import Image from "@core/components/Image";
 
 datadogRum.init({
   applicationId: "901bc1fd-28d9-4542-88ca-f109e88b2a43",
@@ -44,6 +47,32 @@ const MerchantDashboardProvider: React.FC<MerchantDashboardProviderProps> = ({
   children,
   isPublic = false,
 }) => {
+  const [xsrfCheckLoading, setXsrfCheckLoading] = useState(true);
+  const [xsrfCheckError, setXsrfCheckError] = useState(false);
+
+  useEffect(() => {
+    const effect = async () => {
+      try {
+        // below code checks to see if we have an XSRF token from merch-fe yet;
+        // if we don't, all GQL queries will fail.
+        const xsrf = Cookies.get("_xsrf");
+        if (xsrf == undefined) {
+          // we don't have one - make a trivial GET call to merch-fe to set the
+          // cookie. hacky method :(, wastes a round trip to merch-fe, but
+          // should only be required on the first load of the site ever (or
+          // if cookies are cleared)
+          await fetch("/", { redirect: "manual" });
+        }
+      } catch {
+        setXsrfCheckError(true);
+      } finally {
+        setXsrfCheckLoading(false);
+      }
+    };
+
+    void effect();
+  }, []);
+
   // NOTE: we perform the queries here instead of in the providers so we don't
   // have to wait for the previous query to finish and children are rendered
   // to kick of the next provider / query, but instead can perform them all
@@ -54,7 +83,7 @@ const MerchantDashboardProvider: React.FC<MerchantDashboardProviderProps> = ({
     error: userStoreError,
   } = useQuery<UserStoreInitialQueryResponse>(USER_STORE_INITIAL_QUERY, {
     client,
-    skip: isPublic,
+    skip: isPublic || xsrfCheckLoading,
   });
   const {
     data: localizationStoreInitialData,
@@ -64,6 +93,7 @@ const MerchantDashboardProvider: React.FC<MerchantDashboardProviderProps> = ({
     LOCALIZATION_STORE_INITIAL_QUERY,
     {
       client,
+      skip: xsrfCheckLoading,
     },
   );
   const {
@@ -72,11 +102,15 @@ const MerchantDashboardProvider: React.FC<MerchantDashboardProviderProps> = ({
     error: chromeStoreError,
   } = useQuery<ChromeStoreInitialQueryResponse>(CHROME_STORE_INITIAL_QUERY, {
     client,
-    skip: isPublic,
+    skip: isPublic || xsrfCheckLoading,
   });
 
-  // simplify, currently for testing purposes
-  if (userStoreLoading || localizationStoreLoading || chromeStoreLoading) {
+  if (
+    xsrfCheckLoading ||
+    userStoreLoading ||
+    localizationStoreLoading ||
+    chromeStoreLoading
+  ) {
     return (
       <LoadingIndicator
         style={{
@@ -91,54 +125,31 @@ const MerchantDashboardProvider: React.FC<MerchantDashboardProviderProps> = ({
     );
   }
 
-  if (!isPublic && (userStoreInitialData == null || userStoreError)) {
-    /* eslint-disable no-console */
-    console.log("userStoreInitialData", userStoreInitialData);
-    console.log("userStoreError", userStoreError);
-    /* eslint-enable no-console */
-    return <div>error loading userStore (see console for details)</div>;
-  }
-
-  if (localizationStoreError) {
-    /* eslint-disable no-console */
-    console.log("localizationStoreInitialData", localizationStoreInitialData);
-    console.log("localizationStoreError", localizationStoreError);
-    /* eslint-enable no-console */
-    return <div>error loading localizationStore (see console for details)</div>;
-  }
-
-  if (!isPublic && (chromeStoreInitialData == null || chromeStoreError)) {
-    /* eslint-disable no-console */
-    console.log("chromeStoreInitialData", chromeStoreInitialData);
-    console.log("chromeStoreError", chromeStoreError);
-    /* eslint-enable no-console */
-    return <div>error loading chromeStore (see console for details)</div>;
+  if (
+    (!isPublic && (userStoreInitialData == null || userStoreError)) ||
+    localizationStoreError ||
+    (!isPublic && (chromeStoreInitialData == null || chromeStoreError)) ||
+    xsrfCheckError
+  ) {
+    return (
+      <Image
+        src="/md/images/error-500.svg"
+        alt={i`Something went wrong.`}
+        style={{
+          position: "absolute",
+          top: 0,
+          bottom: 0,
+          left: 0,
+          right: 0,
+          margin: "auto",
+        }}
+      />
+    );
   }
 
   // TODO [lliepert]: clean up userStore file now that we aren't using it here
 
   return (
-    // TODO [lliepert]: this is used to set the title. move to <Head /> in _app.tsx
-    // reaction(
-    //   () => this.pageSearchResult,
-    //   (pageSearchResult) => {
-    //     const { isPlusUser, loggedInMerchantUser, isStoreUser } =
-    //       UserStore.instance();
-    //     const productName = isStoreUser ? i`Wish Local` : i`Wish for Merchants`;
-    //     const appName = isPlusUser
-    //       ? loggedInMerchantUser.display_name
-    //       : productName;
-    //     if (pageSearchResult == null) {
-    //       document.title = appName;
-    //       return;
-    //     }
-
-    //     const { title } = pageSearchResult;
-    //     document.title = `${title} | ${appName}`;
-    //   },
-    //   { fireImmediately: true },
-    // );
-
     <NavigationProvider>
       <UserStoreProvider initialData={userStoreInitialData}>
         <ApolloProvider>

@@ -33,6 +33,12 @@ module.exports = (phase, { defaultConfig }) => {
               destination: `${MD_URL}/logout`,
               basePath: false,
             },
+            {
+              // used for xsrf check
+              source: "/",
+              destination: `${MD_URL}/`,
+              basePath: false,
+            },
           ]
         : [];
     },
