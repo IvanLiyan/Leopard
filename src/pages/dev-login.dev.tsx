@@ -6,7 +6,7 @@
 import { NextPage } from "next";
 import { useState, useEffect } from "react";
 import Cookies from "js-cookie";
-import { Button, Tooltip } from "@ContextLogic/atlas-ui";
+import { Button } from "@ContextLogic/atlas-ui";
 import {
   CssBaseline,
   Box,
@@ -257,23 +257,24 @@ const DevLoginPage: NextPage<Record<string, never>> = () => {
 
           <Divider sx={{ marginTop: 1, marginBottom: 1 }} />
 
-          <Tooltip
+          {/* lliepert: temp removing tooltip while atlas tooltip is finalized */}
+          {/* <Tooltip
             content={() => (
               <Box sx={{ maxWidth: 300 }}>
                 Log in to Merch-FE as your admin account, stored in .env.local.
               </Box>
             )}
             placement="right"
+          > */}
+          <Button
+            primary
+            onClick={loginAsAdmin}
+            style={{ display: "block", width: "100%", margin: "10px 0px" }}
+            disabled={loading}
           >
-            <Button
-              primary
-              onClick={loginAsAdmin}
-              style={{ display: "block", width: "100%", margin: "10px 0px" }}
-              disabled={loading}
-            >
-              Login as Admin
-            </Button>
-          </Tooltip>
+            Login as Admin
+          </Button>
+          {/* </Tooltip>
           <Tooltip
             content={() => (
               <Box sx={{ maxWidth: 300 }}>
@@ -282,30 +283,30 @@ const DevLoginPage: NextPage<Record<string, never>> = () => {
               </Box>
             )}
             placement="right"
+          > */}
+          <Button
+            primary
+            onClick={loginAsMerchant}
+            style={{ display: "block", width: "100%", margin: "10px 0px" }}
+            disabled={loading}
           >
-            <Button
-              primary
-              onClick={loginAsMerchant}
-              style={{ display: "block", width: "100%", margin: "10px 0px" }}
-              disabled={loading}
-            >
-              Login as Merchant
-            </Button>
-          </Tooltip>
+            Login as Merchant
+          </Button>
+          {/* </Tooltip>
 
           <Tooltip
             content={() => <Box>Log out of Merch-FE via /logout.</Box>}
             placement="right"
+          > */}
+          <Button
+            primary
+            onClick={logout}
+            style={{ display: "block", width: "100%", margin: "10px 0px" }}
+            disabled={loading}
           >
-            <Button
-              primary
-              onClick={logout}
-              style={{ display: "block", width: "100%", margin: "10px 0px" }}
-              disabled={loading}
-            >
-              Logout
-            </Button>
-          </Tooltip>
+            Logout
+          </Button>
+          {/* </Tooltip> */}
 
           <Divider sx={{ marginTop: 1, marginBottom: 1 }} />
 

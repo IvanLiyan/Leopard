@@ -25,6 +25,7 @@ import {
   CountryCode,
   Country,
   PaymentCurrencyCode as CurrencyCode,
+  RoleSchema,
 } from "@schema";
 
 export const USER_STORE_INITIAL_QUERY = gql`
@@ -47,7 +48,13 @@ export const USER_STORE_INITIAL_QUERY = gql`
       displayName
       email
       phoneNumber
+      companyName
+      entityType
+      isStoreOrMerchantUser
       isApiUser
+      roles {
+        name
+      }
       businessAddress {
         streetAddress1
         streetAddress2
@@ -59,9 +66,6 @@ export const USER_STORE_INITIAL_QUERY = gql`
           code
         }
       }
-      companyName
-      entityType
-      isStoreOrMerchantUser
     }
     su {
       id
@@ -81,6 +85,8 @@ type PickedCurrentMerchant = Pick<
   "id" | "isCostBased" | "isStoreMerchant" | "primaryCurrency" | "state"
 >;
 
+type PickedRoles = Pick<RoleSchema, "name">;
+
 type PickedBusinessAddress = {
   readonly country: Pick<Country, "name" | "code">;
 } & Pick<
@@ -89,6 +95,7 @@ type PickedBusinessAddress = {
 >;
 
 type PickedCurrentUser = {
+  readonly roles: ReadonlyArray<PickedRoles> | null;
   readonly businessAddress: PickedBusinessAddress;
 } & Pick<
   UserSchema,
@@ -96,12 +103,12 @@ type PickedCurrentUser = {
   | "merchantId"
   | "firstName"
   | "lastName"
+  | "displayName"
   | "email"
   | "phoneNumber"
   | "companyName"
   | "entityType"
   | "isStoreOrMerchantUser"
-  | "displayName"
   | "isApiUser"
 >;
 

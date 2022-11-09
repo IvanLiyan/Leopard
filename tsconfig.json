@@ -20,6 +20,7 @@
     "paths": {
       "@chrome/*": ["src/app/chrome/*"],
       "@core/*": ["src/app/core/*"],
+      "@performance/*": ["src/app/performance/*"],
       "@welcome-mms/*": ["src/app/welcome-mms/*"],
       "@schema": ["src/app/schema"],
       "@deprecated/*": ["src/deprecated/*"],

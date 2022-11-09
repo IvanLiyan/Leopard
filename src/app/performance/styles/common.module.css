@@ -1,0 +1,86 @@
+.tableTooltip {
+  vertical-align: middle;
+  margin-left: 4px;
+  cursor: pointer;
+}
+
+.linkStyle {
+  color: #305bef !important;
+  font-weight: bolder;
+}
+.linkStyle a {
+  color: #305bef !important;
+  font-weight: bold;
+  text-decoration: none;
+}
+.linkStyle a:active {
+  color: #305bef !important;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.linkStyle a:visited {
+  color: #305bef !important;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.header {
+  padding: 10px 0px;
+  font-size: 24px;
+  font-family: "Proxima-Bold";
+  color: #000;
+  margin: 10px 0;
+}
+
+.buttonClear {
+  padding: 0 !important;
+  background: "#f3f3f3" !important;
+}
+
+.productColumn {
+  white-space: nowrap;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 255px;
+}
+.productColumn a {
+  color: #305bef !important;
+  font-weight: bold;
+  text-decoration: none;
+}
+.productColumn a:active {
+  color: #305bef !important;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.productColumn a:visited {
+  color: #305bef !important;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.breadcrumbs a {
+  color: #305bef !important;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.breadcrumbs a:active {
+  color: #305bef !important;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.breadcrumbs a:visited {
+  color: #305bef !important;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.calculateText {
+  color: #305bef;
+  cursor: pointer;
+}
