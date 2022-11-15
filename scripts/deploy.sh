@@ -5,16 +5,7 @@ case $i in
     S3_BUCKET="${i#*=}"
     shift # past argument=value
     ;;
-    -c=*|--cloudfront_distribution_id=*)
-    CLOUDFRONT_DISTRIBUTION_ID="${i#*=}"
-    shift # past argument=value
-    ;;
-    --default)
-    DEFAULT=YES
-    shift # past argument with no value
-    ;;
-    *)
-          # unknown option
+    *) # unknown option
     ;;
 esac
 done
@@ -30,10 +21,5 @@ for f in $(find out -name '*.html')
 do
  tmp=${f#out/}
  cleaned=${tmp%.html}
- aws s3 cp $f s3://$S3_BUCKET/md/$cleaned --content-type "text/html"
+ aws s3 cp $f s3://$S3_BUCKET/md/$cleaned --content-type "text/html" --cache-control "no-cache"
 done
-
-# temp disabling cloudfront invalidation; have reached out to SRE to find the
-# best way to do so for prod CF distrobution
-# echo "Add cloudfront invalidation"
-# aws cloudfront create-invalidation --distribution-id $CLOUDFRONT_DISTRIBUTION_ID --paths "/*" --profile $AWS_SANDBOX_PROFILE

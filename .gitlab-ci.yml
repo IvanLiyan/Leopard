@@ -47,7 +47,7 @@ deploy staging:
   stage: deploy
   image: registry-gitlab.i.wish.com/contextlogic/leopard/aws-base:latest
   script:
-    - sh scripts/deploy.sh -s=leopard-staging -c=E1SMAHICCX1GPQ
+    - sh scripts/deploy.sh -s=leopard-staging
   environment:
     name: staging
   when: manual
@@ -59,7 +59,7 @@ deploy prod:
   stage: deploy
   image: registry-gitlab.i.wish.com/contextlogic/leopard/aws-base:latest
   script:
-    - sh scripts/deploy.sh -s=leopard-production -c=E1SMAHICCX1GPQ
+    - sh scripts/deploy.sh -s=leopard-production
   environment:
     name: production
   when: manual

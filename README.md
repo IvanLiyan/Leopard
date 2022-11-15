@@ -96,3 +96,10 @@ On production, Leopard will get the required `merchant.wish.com` authentication 
 ## `package.json` Comments:
 
 - sharp installed due to issue with alpine docker images and node 18: https://github.com/vercel/next.js/issues/38020
+
+## RFCs
+
+Below is a list of RFCs relating to Leopard.
+
+- [Design Doc](https://docs.google.com/document/d/17cbVHjsqULJThlPjVRTJwe-9s_a44gQoxCOT1N31kwU)
+- [RFC 001: Cloudfront Caching](https://docs.google.com/document/d/1G8FXsaCpLce8_j47g319pyXmO2SzFB_EJjJI08NvNms)
