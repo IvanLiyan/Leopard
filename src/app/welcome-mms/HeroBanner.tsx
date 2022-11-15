@@ -11,7 +11,7 @@ import { observer } from "mobx-react";
 import { Layout, Markdown, PrimaryButton, Text } from "@ContextLogic/lego";
 import { useTheme } from "@core/stores/ThemeStore";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import Illustration from "@deprecated/pkg/merchant/component/core/Illustration";
+import Illustration from "@core/components/Illustration";
 import { ci18n } from "@core/toolkit/i18n";
 
 type Props = BaseProps & {

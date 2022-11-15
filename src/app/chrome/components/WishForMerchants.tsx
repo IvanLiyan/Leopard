@@ -2,9 +2,7 @@ import React, { useMemo } from "react";
 import { StyleSheet } from "aphrodite";
 import { observer } from "mobx-react";
 
-import Illustration, {
-  IllustrationName,
-} from "@deprecated/pkg/merchant/component/core/Illustration";
+import Illustration, { IllustrationName } from "@core/components/Illustration";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { useLocalizationStore } from "@core/stores/LocalizationStore";
@@ -51,87 +49,87 @@ const useTranslatedLogo = (mode?: WishForMerchantsMode): IllustrationName => {
     case "zh":
       return getLogoByMode({
         mode,
-        whiteLogo: "newWishMerchantLogoWhiteCN",
-        inkLogo: "newWishMerchantLogoCN",
+        whiteLogo: "merchantLogoWhiteCN",
+        inkLogo: "merchantLogoCN",
       });
     case "cs":
       return getLogoByMode({
         mode,
-        whiteLogo: "newWishMerchantLogoWhiteCZ",
-        inkLogo: "newWishMerchantLogoCZ",
+        whiteLogo: "merchantLogoWhiteCZ",
+        inkLogo: "merchantLogoCZ",
       });
     case "de":
       return getLogoByMode({
         mode,
-        whiteLogo: "newWishMerchantLogoWhiteDE",
-        inkLogo: "newWishMerchantLogoDE",
+        whiteLogo: "merchantLogoWhiteDE",
+        inkLogo: "merchantLogoDE",
       });
     case "es":
       return getLogoByMode({
         mode,
-        whiteLogo: "newWishMerchantLogoWhiteES",
-        inkLogo: "newWishMerchantLogoES",
+        whiteLogo: "merchantLogoWhiteES",
+        inkLogo: "merchantLogoES",
       });
     case "fr":
       return getLogoByMode({
         mode,
-        whiteLogo: "newWishMerchantLogoWhiteFR",
-        inkLogo: "newWishMerchantLogoFR",
+        whiteLogo: "merchantLogoWhiteFR",
+        inkLogo: "merchantLogoFR",
       });
     case "it":
       return getLogoByMode({
         mode,
-        whiteLogo: "newWishMerchantLogoWhiteIT",
-        inkLogo: "newWishMerchantLogoIT",
+        whiteLogo: "merchantLogoWhiteIT",
+        inkLogo: "merchantLogoIT",
       });
     case "ja":
       return getLogoByMode({
         mode,
-        whiteLogo: "newWishMerchantLogoWhiteJP",
-        inkLogo: "newWishMerchantLogoJP",
+        whiteLogo: "merchantLogoWhiteJP",
+        inkLogo: "merchantLogoJP",
       });
     case "ko":
       return getLogoByMode({
         mode,
-        whiteLogo: "newWishMerchantLogoWhiteKR",
-        inkLogo: "newWishMerchantLogoKR",
+        whiteLogo: "merchantLogoWhiteKR",
+        inkLogo: "merchantLogoKR",
       });
     case "nl":
       return getLogoByMode({
         mode,
-        whiteLogo: "newWishMerchantLogoWhiteNL",
-        inkLogo: "newWishMerchantLogoNL",
+        whiteLogo: "merchantLogoWhiteNL",
+        inkLogo: "merchantLogoNL",
       });
     case "pt":
       return getLogoByMode({
         mode,
-        whiteLogo: "newWishMerchantLogoWhitePT",
-        inkLogo: "newWishMerchantLogoPT",
+        whiteLogo: "merchantLogoWhitePT",
+        inkLogo: "merchantLogoPT",
       });
     case "sv":
       return getLogoByMode({
         mode,
-        whiteLogo: "newWishMerchantLogoWhiteSE",
-        inkLogo: "newWishMerchantLogoSE",
+        whiteLogo: "merchantLogoWhiteSE",
+        inkLogo: "merchantLogoSE",
       });
     case "tr":
       return getLogoByMode({
         mode,
-        whiteLogo: "newWishMerchantLogoWhiteTR",
-        inkLogo: "newWishMerchantLogoTR",
+        whiteLogo: "merchantLogoWhiteTR",
+        inkLogo: "merchantLogoTR",
       });
     case "vi":
       return getLogoByMode({
         mode,
-        whiteLogo: "newWishMerchantLogoWhiteVN",
-        inkLogo: "newWishMerchantLogoVN",
+        whiteLogo: "merchantLogoWhiteVN",
+        inkLogo: "merchantLogoVN",
       });
     case "en":
     default:
       return getLogoByMode({
         mode,
-        whiteLogo: "newWishMerchantLogoWhiteEN",
-        inkLogo: "newWishMerchantLogoEN",
+        whiteLogo: "merchantLogoWhiteEN",
+        inkLogo: "merchantLogoEN",
       });
   }
 };

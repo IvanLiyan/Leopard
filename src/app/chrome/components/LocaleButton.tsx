@@ -7,7 +7,6 @@ import Flag from "@core/components/Flag";
 /* Lego Toolkit */
 import { css } from "@core/toolkit/styling";
 import { palettes } from "@deprecated/pkg/toolkit/lego-legacy/DEPRECATED_colors";
-import * as icons from "@deprecated/pkg/assets/icons";
 
 /* Toolkit */
 import Locales, { Locale } from "@chrome/locales";
@@ -15,7 +14,7 @@ import Locales, { Locale } from "@chrome/locales";
 import DeviceStore from "@core/stores/DeviceStore";
 import { Option } from "@ContextLogic/lego";
 
-import NextImage from "@core/components/Image";
+import Icon from "@core/components/Icon";
 
 type LocaleButtonProps = Option<Locale> & {
   readonly compressOnSmallScreen: boolean;
@@ -51,11 +50,7 @@ const LocaleButton = (props: LocaleButtonProps) => {
       )}
       <div className={css(styles.textContainer)}>
         {showText && <section className={css(styles.text)}>{text}</section>}
-        <NextImage
-          src={icons.chevronRight}
-          className={css(styles.chevron)}
-          alt="TODO"
-        />
+        <Icon name="chevronRightLarge" className={css(styles.chevron)} />
       </div>
     </div>
   );

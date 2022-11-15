@@ -11,7 +11,7 @@ import { observer } from "mobx-react";
 import { Layout, H2, Text } from "@ContextLogic/lego";
 import { useTheme } from "@core/stores/ThemeStore";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import Illustration from "@deprecated/pkg/merchant/component/core/Illustration";
+import Illustration from "@core/components/Illustration";
 import { IS_SMALL_SCREEN } from "@core/toolkit/styling";
 import { ci18n } from "@core/toolkit/i18n";
 

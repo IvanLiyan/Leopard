@@ -1,5 +1,4 @@
 import { useCallback, useMemo } from "react";
-import { computed, decorate } from "mobx";
 import moment from "moment/moment";
 import { isStaging, isTesting, isSandbox } from "@core/stores/EnvironmentStore";
 import NavigationStore, {
@@ -175,73 +174,71 @@ export const getZendeskLocale = (locale?: string): string => {
   return zendeskLocale;
 };
 
-export const StringOptions = {
+export const StringOptions: QueryParamOptions<string> = {
   default: "",
   mapper: {
-    deserialize: (value: string | null | undefined) => value,
-    serialize: (str: string | null | undefined) => str || "",
+    deserialize: (value) => value,
+    serialize: (str) => str || "",
   },
 };
 
-export const IntOptions = {
+export const IntOptions: QueryParamOptions<number> = {
   default: "",
   mapper: {
-    deserialize: (str: string | null | undefined) => parseInt(str || "") || 0,
-    serialize: (value: number | null | undefined) =>
-      value != null ? value.toString() : "",
+    deserialize: (str) => parseInt(str || "") || 0,
+    serialize: (value) => (value != null ? value.toString() : ""),
   },
 };
 
-export const BoolOptions = {
+export const BoolOptions: QueryParamOptions<boolean> = {
   default: null,
   mapper: {
-    deserialize: (str: string | null | undefined) =>
-      str == null ? str : str === "true",
-    serialize: (value: boolean | null | undefined) =>
-      value ? value.toString() : "",
+    deserialize: (str) => (str == null ? str : str === "true"),
+    serialize: (value) => (value ? value.toString() : ""),
   },
 };
 
-export const StringArrayOptions = {
+export const StringArrayOptions: QueryParamOptions<ReadonlyArray<string>> = {
   default: "",
   mapper: {
-    deserialize: (str: string | null | undefined) =>
-      (str || "").split(",").filter((_) => _.length > 0),
-    serialize: (list: ReadonlyArray<string>) => list.join(","),
+    deserialize: (str) => (str || "").split(",").filter((_) => _.length > 0),
+    serialize: (list): string => list.join(","),
   },
 };
 
-export const SetOptions = {
+export const SetOptions: QueryParamOptions<ReadonlySet<unknown>> = {
   default: "",
   mapper: {
-    deserialize: (str: string | null | undefined): ReadonlySet<unknown> =>
+    deserialize: (str) =>
       new Set((str || "").split(",").filter((_) => _.length > 0)),
-    serialize: (set: ReadonlySet<unknown>) => Array.from(set).join(","),
+    serialize: (set) => Array.from(set).join(","),
   },
 };
 
-export const IntArrayOptions = {
+export const IntArrayOptions: QueryParamOptions<ReadonlyArray<number>> = {
   default: "",
   mapper: {
-    deserialize: (str: string | null | undefined) =>
+    deserialize: (str) =>
       (str || "")
         .split(",")
         .map((_) => parseInt(_))
         .filter((_) => !isNaN(_)),
-    serialize: (list: ReadonlyArray<unknown>) => list.join(","),
+    serialize: (list) => list.join(","),
   },
 };
 
-export const dateOptions = (args: { format: string }) => ({
+export const dateOptions = (args: {
+  format: string;
+}): QueryParamOptions<Date> => ({
   default: "",
   mapper: {
-    deserialize: (str: string | null | undefined) => {
+    deserialize: (str) => {
       if (!str) {
         return null;
       }
       return moment(str, args.format).toDate();
     },
-    serialize: (date: Date | null | undefined) => {
+    serialize: (date) => {
       if (!date) {
         return "";
       }
@@ -249,111 +246,6 @@ export const dateOptions = (args: { format: string }) => ({
     },
   },
 });
-
-// legacy code, any's need to be fixed
-/* eslint-disable @typescript-eslint/no-explicit-any */
-const queryParamDecorator = (
-  queryFieldName: string,
-  options: {
-    default?: any;
-    mapper?: {
-      deserialize?: (rawValue: string) => any;
-      serialize?: (domain: any) => string;
-    };
-  } = { default: null },
-) => {
-  const navigationStore = NavigationStore.instance();
-  // eslint-disable-next-line local-rules/no-large-method-params
-  return function (target: any, name: string, descriptor: any) {
-    const computedFieldName = `compute_${name}`;
-
-    if (!target.constructor.__filterFieldNames) {
-      target.constructor.__filterFieldNames = [];
-    }
-
-    target.constructor.__filterFieldNames.push(queryFieldName);
-
-    Object.defineProperty(target, computedFieldName, {
-      enumerable: true,
-      configurable: true,
-
-      get() {
-        const { queryParams } = navigationStore;
-        let retValue = queryParams[queryFieldName];
-        if (options.mapper && options.mapper.deserialize) {
-          retValue = options.mapper.deserialize(retValue);
-        }
-        return retValue;
-      },
-
-      set(val) {
-        const { queryParams, currentPath } = navigationStore;
-        const _queryParams = { ...queryParams };
-
-        if (options.mapper && options.mapper.serialize) {
-          val = options.mapper.serialize(val);
-        }
-
-        if (!val || !options || options.default == val) {
-          delete _queryParams[queryFieldName];
-        } else {
-          _queryParams[queryFieldName] = val;
-        }
-
-        if (currentPath != null) {
-          void navigationStore.pushPath(currentPath, _queryParams);
-        }
-      },
-    });
-
-    // make `computedFieldName` @computed.
-    decorate(target, {
-      [computedFieldName]: computed,
-    });
-
-    descriptor = { ...descriptor };
-
-    delete descriptor.writable;
-    delete descriptor.initializer;
-
-    descriptor = {
-      ...descriptor,
-      get() {
-        return this[computedFieldName];
-      },
-      set(val: any) {
-        return (this[computedFieldName] = val);
-      },
-    };
-
-    return descriptor;
-  };
-};
-/* eslint-enable @typescript-eslint/no-explicit-any */
-
-export const params_DEPRECATED = {
-  int(queryFieldName: string) {
-    return queryParamDecorator(queryFieldName, IntOptions);
-  },
-  string(queryFieldName: string) {
-    return queryParamDecorator(queryFieldName, StringOptions);
-  },
-  bool(queryFieldName: string) {
-    return queryParamDecorator(queryFieldName, BoolOptions);
-  },
-  array(queryFieldName: string) {
-    return queryParamDecorator(queryFieldName, StringArrayOptions);
-  },
-  intArray(queryFieldName: string) {
-    return queryParamDecorator(queryFieldName, IntArrayOptions);
-  },
-  date(
-    queryFieldName: string,
-    args: { format: string } = { format: "YYYY-MM-DD" },
-  ) {
-    return queryParamDecorator(queryFieldName, dateOptions(args));
-  },
-};
 
 export const usePathParams = (
   pattern: string,
@@ -366,18 +258,18 @@ export const usePathParams = (
   return navigationStore.pathParams(pattern);
 };
 
-export const mdLink = (text: string, url: string) => {
+export const mdLink = (text: string, url: string): string => {
   return `[${text}](${url})`;
 };
 
-export const mdList = (text: string) => {
+export const mdList = (text: string): string => {
   return `- ${text}`;
 };
 
 export const learnMoreLink = (
   learnMoreURL?: string,
   addFinalPeriod?: boolean,
-) => {
+): string => {
   if (!learnMoreURL) {
     return "";
   }
@@ -389,7 +281,7 @@ export const learnMoreLink = (
 export const learnMoreZendesk = (
   zendeskNumber: string,
   addFinalPeriod?: boolean,
-) => {
+): string => {
   if (!zendeskNumber) {
     return "";
   }
@@ -399,24 +291,26 @@ export const learnMoreZendesk = (
 export const learnMoreZendeskCategory = (
   zendeskNumber: string,
   addFinalPeriod?: boolean,
-) => {
+): string => {
   if (!zendeskNumber) {
     return "";
   }
   return learnMoreLink(zendeskCategoryURL(zendeskNumber), addFinalPeriod);
 };
 
+type QueryParamOptions<T> = {
+  // legacy code, any's need to be fixed
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  default?: any;
+  mapper?: {
+    deserialize?: (rawValue: string) => T | null | undefined;
+    serialize?: (domain: T) => string;
+  };
+};
+
 const useQueryParam = <T>(
   key: string,
-  options: {
-    // legacy code, any's need to be fixed
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    default?: any;
-    mapper?: {
-      deserialize?: (rawValue: string) => T | null | undefined;
-      serialize?: (domain: T) => string;
-    };
-  } = { default: null },
+  options: QueryParamOptions<T> = { default: null },
 ): [T | null | undefined, (value: T | null | undefined) => void] => {
   const navigationStore = useNavigationStore();
   const { queryParams, currentPath } = navigationStore;
@@ -498,17 +392,17 @@ export const useStringEnumQueryParam = <T>(
   ];
 };
 
-export const useStringEnumArrayQueryParam = <T>(
+export const useStringEnumArrayQueryParam = (
   key: string,
-  defaultValue?: ReadonlyArray<T>,
-): [ReadonlyArray<T>, (value: ReadonlyArray<T>) => void] => {
+  defaultValue?: ReadonlyArray<string>,
+): [ReadonlyArray<string>, (value: ReadonlyArray<string>) => void] => {
   const [v, setter] = useQueryParam<ReadonlyArray<string>>(
     key,
     StringArrayOptions,
   );
   return [
-    (v || defaultValue || []) as ReadonlyArray<T>,
-    setter as (value: ReadonlyArray<T>) => void,
+    v || defaultValue || [],
+    setter as (value: ReadonlyArray<string>) => void,
   ];
 };
 

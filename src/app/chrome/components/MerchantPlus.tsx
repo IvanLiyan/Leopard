@@ -8,9 +8,7 @@ import React, { useMemo } from "react";
 import { StyleSheet } from "aphrodite";
 import { observer } from "mobx-react";
 
-import Illustration, {
-  IllustrationName,
-} from "@deprecated/pkg/merchant/component/core/Illustration";
+import Illustration, { IllustrationName } from "@core/components/Illustration";
 import { Layout, Text } from "@ContextLogic/lego";
 
 /* Lego Toolkit */

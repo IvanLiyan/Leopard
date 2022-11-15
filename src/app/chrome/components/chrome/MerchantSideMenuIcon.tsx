@@ -9,7 +9,6 @@ import React, { useMemo, useRef, useState } from "react";
 import { StyleSheet } from "aphrodite";
 import { observer } from "mobx-react";
 
-import Icon, { IconName } from "../deprecated/Icon";
 import "@ContextLogic/lego";
 
 import { useHasNotificationBadge } from "./side-menu/ChromeSideMenuButton";
@@ -24,6 +23,7 @@ import { useLocalizationStore } from "@core/stores/LocalizationStore";
 
 import Link from "@core/components/Link";
 import { ChromeNavigationNode } from "@core/stores/ChromeStore";
+import Illustration, { IllustrationName } from "@core/components/Illustration";
 
 type Props = Omit<BaseProps, "children"> & {
   readonly node: ChromeNavigationNode;
@@ -33,7 +33,10 @@ type Props = Omit<BaseProps, "children"> & {
   readonly onMouseLeave?: () => unknown;
 };
 
-type IconSet = { readonly selected: IconName; readonly notSelected: IconName };
+type IconSet = {
+  readonly selected: IllustrationName;
+  readonly notSelected: IllustrationName;
+};
 
 const IconMappings: {
   [key: string]: IconSet;
@@ -129,13 +132,15 @@ export default observer((props: Props) => {
         {...otherProps}
       >
         {isSelected && <div className={css(styles.leftBar)} />}
-        <Icon
+        <Illustration
           name={selected}
+          alt={nodeid}
           className={css(styles.icon)}
           style={{ display: isSelected ? "block" : "none" }}
         />
-        <Icon
+        <Illustration
           name={notSelected}
+          alt={nodeid}
           className={css(styles.icon)}
           style={{ display: isSelected ? "none" : "block" }}
         />
