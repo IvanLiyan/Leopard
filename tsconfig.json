@@ -20,6 +20,7 @@
     "paths": {
       "@chrome/*": ["src/app/chrome/*"],
       "@core/*": ["src/app/core/*"],
+      "@core-builder/*": ["src/app/core-builder/*"],
       "@performance/*": ["src/app/performance/*"],
       "@landing-pages/*": ["src/app/landing-pages/*"],
       "@schema": ["src/app/schema"],

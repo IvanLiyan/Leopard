@@ -1,9 +1,8 @@
 import { NextPage } from "next";
-import Link from "next/link";
 import { observer } from "mobx-react";
 import { useEffect, forwardRef } from "react";
 import { useQuery } from "@apollo/client";
-import { Tooltip, Alert, Breadcrumbs, Typography } from "@mui/material";
+import { Tooltip, Alert } from "@mui/material";
 import { Button } from "@ContextLogic/atlas-ui";
 import UnwrappedIcon, { IconProps } from "@core/components/Icon";
 import { formatCurrency } from "@core/toolkit/currency";
@@ -16,7 +15,7 @@ import store, {
   ProductDataQueryArguments,
   AugmentedProduct,
 } from "@performance/stores/ProductStore";
-import { Table, Title } from "@performance/components";
+import { Table } from "@performance/components";
 import { TableColumn } from "@performance/components/Table";
 import { addCommas, round } from "@core/toolkit/stringUtils";
 import { useUserStore } from "@core/stores/UserStore";
@@ -28,6 +27,8 @@ import {
 import { exportCSV, isBD } from "@performance/toolkit/utils";
 import commonStyles from "@performance/styles/common.module.css";
 import styles from "@performance/styles/product.module.css";
+import PageHeader from "@core/components/PageHeader";
+import { merchFeURL } from "@core/toolkit/url";
 
 const Icon = forwardRef<HTMLSpanElement, IconProps>((props, ref) => (
   // extra div because Icon does not currently forward refs, changes required at the Zeus level
@@ -305,18 +306,16 @@ const PerformanceProductPage: NextPage<Record<string, never>> = () => {
 
   return (
     <PageRoot>
-      <PageGuide relaxed style={{ paddingTop: 15 }}>
-        <Breadcrumbs
-          aria-label="breadcrumb"
-          className={commonStyles.breadcrumbs}
-        >
-          <Link href={`${window.location.href}/home`}>Home</Link>
-          <Link href={`${window.location.href}/performance-overview`}>
-            Performance
-          </Link>
-          <Typography color="text.primary">Product Performance</Typography>
-        </Breadcrumbs>
-        <Title className={commonStyles.header}>Product Performance</Title>
+      <PageHeader
+        relaxed
+        breadcrumbs={[
+          { name: i`Home`, href: merchFeURL("/home") },
+          { name: i`Performance`, href: merchFeURL("/performance-overview") },
+          { name: i`Product Performance`, href: window.location.href },
+        ]}
+        title={i`Product Performance`}
+      />
+      <PageGuide relaxed style={{ paddingTop: 20 }}>
         <Alert severity="info">
           {i`Please refer to the metrics on the Wish Standards page as the definitive source for your performance.`}
         </Alert>
