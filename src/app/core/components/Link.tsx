@@ -2,16 +2,15 @@ import React from "react";
 import { observer } from "mobx-react";
 
 /* External Libraries */
-import NextLink from "next/link";
+import NextLink, { LinkProps as NextLinkProps } from "next/link";
 
 import SimpleLink, {
   SimpleLinkProps,
 } from "@ContextLogic/lego/component/button/SimpleLink";
 
 export type LinkProps = Omit<SimpleLinkProps, "href"> & {
-  readonly href?: string | null | undefined;
+  readonly href?: NextLinkProps["href"] | null; // null required to match legacy clroot typing
   readonly download?: boolean | null | undefined;
-  readonly DEPRECATED_isRouterLink?: boolean | null | undefined;
   readonly openInNewTab?: boolean | null | undefined;
   readonly onMouseOver?: (() => unknown) | null | undefined;
   readonly onMouseLeave?: (() => unknown) | null | undefined;
@@ -34,23 +33,15 @@ const Link = (_props: LinkProps) => {
     href: hrefProp,
     style,
     className,
-    DEPRECATED_isRouterLink,
     openInNewTab,
     onClick,
     ...otherProps
   } = _props;
 
-  // TODO [hdinh]: delete all files using Link w/ DEPRECATED_isRouterLink prop
-  // https://jira.wish.site/browse/MKL-56811
-  if (DEPRECATED_isRouterLink) {
-    return null;
-  }
-
   // required since legacy lego link allows href to be null, but anchor doesn't
   const href = hrefProp === null ? undefined : hrefProp;
 
-  const props = {
-    href,
+  const propsWithoutHref = {
     style: [style, className],
     rel: openInNewTab || onClick ? "noopener noreferrer" : undefined,
     target: openInNewTab ? "_blank" : undefined,
@@ -65,13 +56,13 @@ const Link = (_props: LinkProps) => {
 
   // urls of the form `${window.location.href}/slug` can be used to access
   // Merch-FE pages, while "/slug" can be used to access Leopard pages
-  if (!href || isValidURL(href)) {
-    return <SimpleLink {...props} />;
+  if (!href || (typeof href == "string" && isValidURL(href))) {
+    return <SimpleLink href={href} {...propsWithoutHref} />;
   }
 
   return (
-    <NextLink href={{ pathname: href }} passHref>
-      <SimpleLink {...props} />
+    <NextLink href={href} passHref>
+      <SimpleLink href={href?.toString()} {...propsWithoutHref} />
     </NextLink>
   );
 };

@@ -9,7 +9,7 @@ import { ci18n } from "@core/toolkit/i18n";
 import { useDeviceStore } from "@core/stores/DeviceStore";
 import { useTheme } from "@core/stores/ThemeStore";
 import { css } from "@core/toolkit/styling";
-import { merchFeLink } from "@core/toolkit/url";
+import { merchFeURL } from "@core/toolkit/url";
 
 export type SiteFooterProps = BaseProps;
 
@@ -23,12 +23,12 @@ type OptionListType = {
 const APIList: Array<OptionListType> = [
   {
     text: `API 2.0`,
-    href: merchFeLink("/documentation/api/v2"),
+    href: merchFeURL("/documentation/api/v2"),
     info: i`Not ready to switch to the update? Select this version.`,
   },
   {
     text: `API 3.0`,
-    href: merchFeLink("/documentation/api/v3/reference"),
+    href: merchFeURL("/documentation/api/v3/reference"),
     info: i`For all the latest features, select this version.`,
   },
 ];
@@ -40,7 +40,7 @@ const PartnerList: Array<OptionListType> = [
   },
   {
     text: ci18n("Developer as in software developer", "Developer Resources"),
-    href: merchFeLink("/partner-developer"),
+    href: merchFeURL("/partner-developer"),
   },
 ];
 
@@ -88,20 +88,20 @@ const SiteFooter: React.FC<SiteFooterProps> = ({ className, style }) => {
       >
         <Link style={styles.link}>Partners &#x25B4;</Link>
       </Popover>
-      <Link href={merchFeLink("/terms-of-service")} style={styles.link}>
+      <Link href={merchFeURL("/terms-of-service")} style={styles.link}>
         Terms of Service
       </Link>
-      <Link href={merchFeLink("/privacy-policy")} style={styles.link}>
+      <Link href={merchFeURL("/privacy-policy")} style={styles.link}>
         Privacy Policy
       </Link>
-      <Link href={merchFeLink("/policy/home")} style={styles.link}>
+      <Link href={merchFeURL("/policy/home")} style={styles.link}>
         Merchant Policies
       </Link>
-      <Link href={merchFeLink("/intellectual-property")} style={styles.link}>
+      <Link href={merchFeURL("/intellectual-property")} style={styles.link}>
         Intellectual Property
       </Link>
       <Link
-        href={merchFeLink("/trust-and-safety/regulator-portal")}
+        href={merchFeURL("/trust-and-safety/regulator-portal")}
         style={styles.link}
       >
         Trust & Safety Regulator Portal

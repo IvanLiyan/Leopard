@@ -9,6 +9,7 @@ import UnwrappedIcon, { IconProps } from "@core/components/Icon";
 import { formatCurrency } from "@core/toolkit/currency";
 import { LoadingIndicator } from "@ContextLogic/lego";
 import PageRoot from "@core/components/PageRoot";
+import PageGuide from "@core/components/PageGuide";
 import store, {
   PERFORMANCE_PRODUCT_DATA_QUERY,
   ProductDataQueryResponse,
@@ -304,76 +305,81 @@ const PerformanceProductPage: NextPage<Record<string, never>> = () => {
 
   return (
     <PageRoot>
-      <Breadcrumbs aria-label="breadcrumb" className={commonStyles.breadcrumbs}>
-        <Link href={`${window.location.href}/home`}>Home</Link>
-        <Link href={`${window.location.href}/performance-overview`}>
-          Performance
-        </Link>
-        <Typography color="text.primary">Product Performance</Typography>
-      </Breadcrumbs>
-      <Title className={commonStyles.header}>Product Performance</Title>
-      <Alert severity="info">
-        {i`Please refer to the metrics on the Wish Standards page as the definitive source for your performance.`}
-      </Alert>
-      <div className={styles.toolkit}>
-        {store.productCNYFlag && (
-          <div>
-            <Button
-              secondary
-              disabled={store.currencyCode === CURRENCY_CODE.USD}
-              onClick={() => store.updateCurrencyCode(CURRENCY_CODE.USD)}
-            >
-              {i`Display in USD`} $
-            </Button>
-            <Button
-              secondary
-              disabled={store.currencyCode === CURRENCY_CODE.CNY}
-              onClick={() => store.updateCurrencyCode(CURRENCY_CODE.CNY)}
-            >
-              {i`Display in CNY`} ¥
-            </Button>
-            <Tooltip
-              title={
-                <div
-                  style={{ fontSize: "14px" }}
-                >{i`USD values recorded prior to your CNY migration date are being
+      <PageGuide relaxed style={{ paddingTop: 15 }}>
+        <Breadcrumbs
+          aria-label="breadcrumb"
+          className={commonStyles.breadcrumbs}
+        >
+          <Link href={`${window.location.href}/home`}>Home</Link>
+          <Link href={`${window.location.href}/performance-overview`}>
+            Performance
+          </Link>
+          <Typography color="text.primary">Product Performance</Typography>
+        </Breadcrumbs>
+        <Title className={commonStyles.header}>Product Performance</Title>
+        <Alert severity="info">
+          {i`Please refer to the metrics on the Wish Standards page as the definitive source for your performance.`}
+        </Alert>
+        <div className={styles.toolkit}>
+          {store.productCNYFlag && (
+            <div>
+              <Button
+                secondary
+                disabled={store.currencyCode === CURRENCY_CODE.USD}
+                onClick={() => store.updateCurrencyCode(CURRENCY_CODE.USD)}
+              >
+                {i`Display in USD`} $
+              </Button>
+              <Button
+                secondary
+                disabled={store.currencyCode === CURRENCY_CODE.CNY}
+                onClick={() => store.updateCurrencyCode(CURRENCY_CODE.CNY)}
+              >
+                {i`Display in CNY`} ¥
+              </Button>
+              <Tooltip
+                title={
+                  <div
+                    style={{ fontSize: "14px" }}
+                  >{i`USD values recorded prior to your CNY migration date are being
               calculated at 1 USD = 7.0 CNY, in order to view full performance
               data in CNY`}</div>
-              }
-            >
-              <span className={commonStyles.calculateText}>
-                {" "}
-                {i`How are currency values calculated?`}
-              </span>
-            </Tooltip>
-          </div>
-        )}
+                }
+              >
+                <span className={commonStyles.calculateText}>
+                  {" "}
+                  {i`How are currency values calculated?`}
+                </span>
+              </Tooltip>
+            </div>
+          )}
 
-        <Button
-          secondary
-          className={styles.downloadBtn}
-          onClick={() =>
-            exportCSV({
-              type: EXPORT_CSV_TYPE.MERCHANT,
-              stats_type: EXPORT_CSV_STATS_TYPE.PRODUCT_OVERVIEW,
-              id: exportId,
-              is_bd,
-              currencyCode: store.currencyCode,
-              target_date:
-                new Date(
-                  store.data[store.data.length - 1].startDate.mmddyyyy,
-                ).getTime() / 1000,
-            })
-          }
-        >
-          {i`Export CSV`}
-        </Button>
-      </div>
-      {loading ? (
-        <LoadingIndicator />
-      ) : (
-        <Table data={store.data} columns={columns} />
-      )}
+          <Button
+            secondary
+            className={styles.downloadBtn}
+            onClick={() =>
+              exportCSV({
+                type: EXPORT_CSV_TYPE.MERCHANT,
+                stats_type: EXPORT_CSV_STATS_TYPE.PRODUCT_OVERVIEW,
+                id: exportId,
+                is_bd,
+                currencyCode: store.currencyCode,
+                target_date:
+                  new Date(
+                    store.data[store.data.length - 1].startDate.mmddyyyy,
+                  ).getTime() / 1000,
+              })
+            }
+          >
+            {i`Export CSV`}
+          </Button>
+        </div>
+        {loading ? (
+          <LoadingIndicator />
+        ) : (
+          <Table data={store.data} columns={columns} />
+        )}
+      </PageGuide>
     </PageRoot>
   );
 };
