@@ -1,4 +1,4 @@
-import React, { useMemo, useCallback, useState } from "react";
+import React, { useMemo, useCallback } from "react";
 import { StyleSheet } from "aphrodite";
 import { observer } from "mobx-react";
 
@@ -18,7 +18,6 @@ import Icon from "@core/components/Icon";
 import { SideMenu } from "@ContextLogic/lego";
 import AppLocaleSelector from "@chrome/components/AppLocaleSelector";
 import { useNavigationStore } from "@core/stores/NavigationStore";
-import QuestionnaireModal from "../QuestionnaireModal";
 
 const DrawerContentContainer = posed.nav({
   open: { right: "0%", staggerChildren: 100 },
@@ -30,14 +29,15 @@ const Backdrop = posed.div({
   exit: { opacity: 0 },
 });
 
-type DrawerProps = BaseProps;
+type DrawerProps = BaseProps & {
+  readonly onClickCta?: () => unknown;
+  readonly ctaText?: string;
+};
 
-const Drawer: React.FC<DrawerProps> = ({ children }) => {
+const Drawer: React.FC<DrawerProps> = ({ children, onClickCta, ctaText }) => {
   const chromeContext = useChromeContext();
   const styles = useStylesheet();
   const navigationStore = useNavigationStore();
-  const [isQuestionnaireModalOpen, setIsQuestionnaireModalOpen] =
-    useState(false);
 
   const closeDrawer = useCallback(() => {
     chromeContext.setIsDrawerOpen(false);
@@ -61,10 +61,6 @@ const Drawer: React.FC<DrawerProps> = ({ children }) => {
         key="drawer"
         pose={isOpen ? "open" : "closed"}
       >
-        <QuestionnaireModal
-          isOpen={isQuestionnaireModalOpen}
-          onClose={() => setIsQuestionnaireModalOpen(false)}
-        />
         <div className={css(styles.header)}>
           <Icon
             className={css(styles.closeButton)}
@@ -85,10 +81,18 @@ const Drawer: React.FC<DrawerProps> = ({ children }) => {
                         : "/login"
                     }
                   />
-                  <SideMenu.Item
-                    title={i`Complete the questionnaire`}
-                    onClick={() => setIsQuestionnaireModalOpen(true)}
-                  />
+                  {ctaText != null && (
+                    <SideMenu.Item
+                      title={i`Complete the questionnaire`}
+                      onClick={
+                        onClickCta == null
+                          ? undefined
+                          : () => {
+                              onClickCta();
+                            }
+                      }
+                    />
+                  )}
                 </>
               )}
             </SideMenu>

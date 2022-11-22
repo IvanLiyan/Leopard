@@ -191,7 +191,7 @@ const Services: React.FC<Props> = ({ className, style }) => {
       <Text style={styles.description}>
         For wholesale merchants or factories looking to sell on Wish, Managed
         Merchant Services can help you set up and scale cross-border e-commerce,
-        reach customers, impact sales, and more. You&apos;ll have a trusted
+        reach customers, impact sales, and more. You&#39;ll have a trusted
         operational partner helping you succeed on Wish.
       </Text>
       <Layout.FlexRow style={styles.services} justifyContent="center">

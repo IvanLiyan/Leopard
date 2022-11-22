@@ -266,6 +266,13 @@ export const mdList = (text: string): string => {
   return `- ${text}`;
 };
 
+export const merchFeLink = (link: string): string => {
+  if (typeof window == "undefined") {
+    return `https://merchant.wish.com${link}`;
+  }
+  return `${window.location.origin}${link}`;
+};
+
 export const learnMoreLink = (
   learnMoreURL?: string,
   addFinalPeriod?: boolean,

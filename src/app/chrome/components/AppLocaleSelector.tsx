@@ -18,32 +18,18 @@ import { useTheme } from "@core/stores/ThemeStore";
 
 import NextImage from "@core/components/Image";
 import { observer } from "mobx-react";
-import gql from "graphql-tag";
-import { ChangeLocale, Locale, LocaleMutationsChangeLocaleArgs } from "@schema";
+import { Locale } from "@schema";
 import { useMutation } from "@apollo/client";
 import { useToastStore } from "@core/stores/ToastStore";
+import {
+  ChangeLocalRequestType,
+  ChangeLocalResponseType,
+  CHANGE_LOCALE_MUTATION,
+} from "../localeMutations";
 
 export type AppLocaleSelectorProps = BaseProps & {
   readonly textColor?: string;
   readonly customLocales?: ReadonlyArray<Locale>;
-};
-
-const CHANGE_LOCALE_MUTATION = gql`
-  mutation AppLocalSelector_ChangeLocaleMutation($input: ChangeLocaleInput!) {
-    locale {
-      changeLocale(input: $input) {
-        ok
-        message
-      }
-    }
-  }
-`;
-
-type ChangeLocalRequestType = LocaleMutationsChangeLocaleArgs;
-type ChangeLocalResponseType = {
-  readonly locale: {
-    readonly changeLocale: Pick<ChangeLocale, "ok" | "message">;
-  };
 };
 
 const AppLocaleSelector: React.FC<AppLocaleSelectorProps> = ({

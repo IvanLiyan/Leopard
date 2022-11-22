@@ -13,12 +13,15 @@ import { useDeviceStore } from "@core/stores/DeviceStore";
 import { useChromeContext } from "@core/stores/ChromeStore";
 import Icon from "@core/components/Icon";
 
-type DrawerButtonProps = BaseProps;
+type DrawerButtonProps = BaseProps & {
+  readonly onClickCta?: () => unknown;
+  readonly ctaText?: string;
+};
 
 const DrawerButton = (props: DrawerButtonProps) => {
   const { isSmallScreen } = useDeviceStore();
   const chromeStore = useChromeContext();
-  const { style, className, children } = props;
+  const { style, className, children, onClickCta, ctaText } = props;
   const styles = useStylesheet();
 
   const onClick = useCallback(() => {
@@ -34,7 +37,13 @@ const DrawerButton = (props: DrawerButtonProps) => {
       <div className={css(styles.root, className, style)} onClick={onClick}>
         <Icon className={css(styles.img)} name="menu" />
       </div>
-      <Drawer className={css(styles.drawer)}>{children}</Drawer>
+      <Drawer
+        className={css(styles.drawer)}
+        onClickCta={onClickCta}
+        ctaText={ctaText}
+      >
+        {children}
+      </Drawer>
     </>
   );
 };

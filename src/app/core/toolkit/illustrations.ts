@@ -68,6 +68,13 @@ import fbwFbsNotSelectedURL from "public/images/side-menu-icons/fbw-fbs-not-sele
 import earlyPaymentSelectedURL from "public/images/side-menu-icons/early-payment-selected.svg";
 import earlyPaymentNotSelectedURL from "public/images/side-menu-icons/early-payment-not-selected.svg";
 
+import shippingPriceDropURL from "public/images/welcome-invite-only/shipping-price-drop.svg";
+import manCheeringURL from "public/images/welcome-invite-only/man-cheering.svg";
+import landingHeaderIllustrationLeftURL from "public/images/welcome-invite-only/landing-header-illustration-left.svg";
+import landingHeaderIllustrationRightURL from "public/images/welcome-invite-only/landing-header-illustration-right.svg";
+import landingHeaderIllustrationSmallerURL from "public/images/welcome-invite-only/landing-header-illustration-smaller.svg";
+import globePhoneLocationsURL from "public/images/welcome-invite-only/globe-phone-locations.svg";
+
 export const wishLogoInk = wishLogoInkURL;
 export const wishLogoWhite = wishLogoWhiteURL;
 export const wishLogoBlue = wishLogoBlueURL;
@@ -134,3 +141,10 @@ export const fbwFbsSelected = fbwFbsSelectedURL;
 export const fbwFbsNotSelected = fbwFbsNotSelectedURL;
 export const earlyPaymentSelected = earlyPaymentSelectedURL;
 export const earlyPaymentNotSelected = earlyPaymentNotSelectedURL;
+export const shippingPriceDrop = shippingPriceDropURL;
+export const manCheering = manCheeringURL;
+export const landingHeaderIllustrationLeft = landingHeaderIllustrationLeftURL;
+export const landingHeaderIllustrationRight = landingHeaderIllustrationRightURL;
+export const landingHeaderIllustrationSmaller =
+  landingHeaderIllustrationSmallerURL;
+export const globePhoneLocations = globePhoneLocationsURL;

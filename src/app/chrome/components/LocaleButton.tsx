@@ -11,7 +11,7 @@ import { palettes } from "@deprecated/pkg/toolkit/lego-legacy/DEPRECATED_colors"
 /* Toolkit */
 import Locales, { Locale } from "@chrome/locales";
 
-import DeviceStore from "@core/stores/DeviceStore";
+import { useDeviceStore } from "@core/stores/DeviceStore";
 import { Option } from "@ContextLogic/lego";
 
 import Icon from "@core/components/Icon";
@@ -28,7 +28,7 @@ const useLocaleButtonContext = (
   props: LocaleButtonProps,
 ): LocaleButtonContext => {
   const { compressOnSmallScreen } = props;
-  const deviceStore = DeviceStore.instance();
+  const deviceStore = useDeviceStore();
   const showText = !compressOnSmallScreen || !deviceStore.isSmallScreen;
   return { ...props, showText };
 };

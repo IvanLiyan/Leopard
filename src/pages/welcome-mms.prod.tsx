@@ -4,16 +4,15 @@ import { observer } from "mobx-react";
 
 import { TopBottomButton, Layout } from "@ContextLogic/lego";
 import { useBoolQueryParam } from "@core/toolkit/url";
-import QuestionnaireModal from "@welcome-mms/QuestionnaireModal";
+import QuestionnaireModal from "@landing-pages/welcome-mms/QuestionnaireModal";
 import { useDeviceStore } from "@core/stores/DeviceStore";
-import HeroBanner from "@welcome-mms/HeroBanner";
-import Services from "@welcome-mms/Services";
-import HowToJoin from "@welcome-mms/HowToJoin";
-import Navigation from "@welcome-mms/navigation/Navigation";
-import Pricing from "@welcome-mms/Pricing";
-import Footer from "@welcome-mms/Footer";
+import HeroBanner from "@landing-pages/welcome-mms/HeroBanner";
+import Services from "@landing-pages/welcome-mms/Services";
+import HowToJoin from "@landing-pages/welcome-mms/HowToJoin";
+import LoggedOutChrome from "src/app/landing-pages/common/logged-out-chrome/LoggedOutChrome";
+import Pricing from "@landing-pages/welcome-mms/Pricing";
+import Footer from "@landing-pages/welcome-mms/Footer";
 import { IS_SMALL_SCREEN } from "@core/toolkit/styling";
-import QuestionnaireButton from "@welcome-mms/QuestionnaireButton";
 import { NextPage } from "next";
 
 const MmsWelcomeContainer: NextPage<Record<string, never>> = () => {
@@ -36,17 +35,12 @@ const MmsWelcomeContainer: NextPage<Record<string, never>> = () => {
 
   return (
     <Layout.FlexColumn alignItems="stretch">
-      <Navigation
+      <LoggedOutChrome
         style={styles.navigation}
         insetX={insetX}
-        expansionThreshold={350}
-      >
-        <QuestionnaireButton
-          onClick={() => {
-            setIsQuestionnaireModalOpen(true);
-          }}
-        />
-      </Navigation>
+        ctaText={i`Complete the Questionnaire`}
+        onClickCta={() => setIsQuestionnaireModalOpen(true)}
+      />
       <HeroBanner
         onOpenQuestionnaire={() => setIsQuestionnaireModalOpen(true)}
       />

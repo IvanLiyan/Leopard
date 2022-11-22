@@ -1,9 +1,3 @@
-/*
- * LandingNavigationV2.tsx
- *
- * Created by Don Sirivat on Mon Jan 24 2022
- * Copyright © 2022-present ContextLogic Inc. All rights reserved.
- */
 import React, { useMemo } from "react";
 import { StyleSheet } from "aphrodite";
 import { observer } from "mobx-react";
@@ -13,7 +7,7 @@ import Color from "color";
 import posed from "react-pose";
 
 /* Lego Components */
-import { Link } from "@ContextLogic/lego";
+import { Link, PrimaryButton } from "@ContextLogic/lego";
 
 /* Lego Toolkit */
 import { css } from "@core/toolkit/styling";
@@ -35,7 +29,8 @@ import AppLocaleSelector from "@chrome/components/AppLocaleSelector";
 
 type NavigationProps = BaseProps & {
   readonly insetX?: number;
-  readonly expansionThreshold?: number;
+  readonly onClickCta?: () => unknown;
+  readonly ctaText?: string;
 };
 
 type Context = NavigationProps & {
@@ -48,7 +43,7 @@ const Navigation = (props: NavigationProps) => {
   const styles = useStylesheet(ctx);
   const navigationStore = useNavigationStore();
   const { renderLoginButton, isExpanded } = ctx;
-  const { style, className, children } = props;
+  const { style, className, children, ctaText, onClickCta } = props;
 
   const { textDark } = useTheme();
   const deviceStore = useDeviceStore();
@@ -81,12 +76,29 @@ const Navigation = (props: NavigationProps) => {
                 Login
               </Link>
             )}
+            {ctaText != null && (
+              <PrimaryButton
+                onClick={
+                  onClickCta == null
+                    ? undefined
+                    : () => {
+                        onClickCta();
+                      }
+                }
+              >
+                {ctaText}
+              </PrimaryButton>
+            )}
             {children}
           </div>
         )}
         <AppLocaleSelector textColor={textDark} />
         {deviceStore.isSmallScreen && (
-          <DrawerButton className={css(styles.drawerButton)} />
+          <DrawerButton
+            className={css(styles.drawerButton)}
+            onClickCta={onClickCta}
+            ctaText={ctaText}
+          />
         )}
       </div>
     </ExpansionAnimation>
@@ -94,7 +106,7 @@ const Navigation = (props: NavigationProps) => {
 };
 
 const useContext = (props: NavigationProps): Context => {
-  const { expansionThreshold = 30 } = props;
+  const expansionThreshold = 30;
   const deviceStore = useDeviceStore();
   const userStore = useUserStore();
 

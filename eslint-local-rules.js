@@ -19,7 +19,7 @@ const getManifestFilePatterns = () => {
 
   _.forEach(stringFiles, function (stringFile) {
     const stringFileYaml = yaml.safeLoad(
-      fs.readFileSync(rulesPath.resolve("../../" + stringFile), "utf8")
+      fs.readFileSync(rulesPath.resolve("../../" + stringFile), "utf8"),
     );
     features = features.concat(stringFileYaml.features);
   });
@@ -338,7 +338,7 @@ module.exports = {
             const expressionType = node.value.expression.type;
             if (
               ["TemplateLiteral", "Literal", "BinaryExpression"].indexOf(
-                expressionType
+                expressionType,
               ) >= 0
             ) {
               context.report({
@@ -818,7 +818,7 @@ module.exports = {
               const hasDisplayFlex = properties.some(
                 (p) =>
                   p.key === "display" &&
-                  ["flex", "grid", "inline-flex"].includes(p.value)
+                  ["flex", "grid", "inline-flex"].includes(p.value),
               );
 
               if (!hasDisplayFlex) {
@@ -856,7 +856,7 @@ module.exports = {
           }
 
           const decorators = (node.decorators || []).map((d) =>
-            _.get(d, "expression.name")
+            _.get(d, "expression.name"),
           );
           if (!decorators.includes("observer")) {
             context.report({
@@ -948,7 +948,7 @@ module.exports = {
             const childObjectName = _.get(node.callee, "object.object.name");
             const childPropertyName = _.get(
               node.callee,
-              "object.property.name"
+              "object.property.name",
             );
 
             if (
@@ -1412,7 +1412,7 @@ module.exports = {
           if (["find"].includes(property)) {
             if (
               ["ArrowFunctionExpression", "FunctionExpression"].includes(
-                node.arguments[1].type
+                node.arguments[1].type,
               )
             ) {
               context.report({
@@ -1456,7 +1456,7 @@ module.exports = {
           }
 
           const nonEmptyChildren = node.parent.children.filter(
-            (c) => ["JSXText", "Literal"].indexOf(c.type) < 0
+            (c) => ["JSXText", "Literal"].indexOf(c.type) < 0,
           );
 
           if (nonEmptyChildren.length === 1) {
@@ -1610,7 +1610,7 @@ module.exports = {
             children.some(
               (child) =>
                 child.type == "JSXExpressionContainer" ||
-                child.type == "JSXText"
+                child.type == "JSXText",
             )
           ) {
             return;
@@ -2298,10 +2298,10 @@ module.exports = {
           });
 
           const hasJSXElement = nonEmptyChildren.some(
-            (child) => child.type == "JSXElement"
+            (child) => child.type == "JSXElement",
           );
           const hasLiteral = nonEmptyChildren.some(
-            (child) => child.type == "Literal" || child.type == "JSXText"
+            (child) => child.type == "Literal" || child.type == "JSXText",
           );
 
           if (hasJSXElement && hasLiteral) {
@@ -2599,7 +2599,7 @@ module.exports = {
           }
 
           const hasDefaultImport = node.specifiers.some(
-            (s) => s.type === "ImportDefaultSpecifier"
+            (s) => s.type === "ImportDefaultSpecifier",
           );
           if (!hasDefaultImport) {
             return;
@@ -2659,12 +2659,12 @@ module.exports = {
             });
 
             const hasFlexDirectionRow = properties.some(
-              (p) => p.key === "flexDirection" && p.value === "row"
+              (p) => p.key === "flexDirection" && p.value === "row",
             );
 
             if (hasFlexDirectionRow) {
               const hasAlignItems = properties.some(
-                (p) => p.key === "alignItems"
+                (p) => p.key === "alignItems",
               );
               if (!hasAlignItems) {
                 context.report({
@@ -2939,7 +2939,7 @@ module.exports = {
         ImportDeclaration(node) {
           if (
             !node.source.value.startsWith(
-              "@ContextLogic/lego/toolkit/providers"
+              "@ContextLogic/lego/toolkit/providers",
             )
           ) {
             return;

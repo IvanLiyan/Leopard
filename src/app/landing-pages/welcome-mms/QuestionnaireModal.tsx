@@ -38,7 +38,7 @@ import {
   SubmitMmsMerchantLeadRequestType,
   SubmitMmsMerchantLeadResponseType,
   MmsCompanyRevenueRanges,
-} from "@welcome-mms/toolkit/mms-welcome";
+} from "@landing-pages/welcome-mms/toolkit/mms-welcome";
 import Modal from "@core/components/Modal";
 import SuccessModalContent from "./SuccessModalContent";
 

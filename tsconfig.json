@@ -21,7 +21,7 @@
       "@chrome/*": ["src/app/chrome/*"],
       "@core/*": ["src/app/core/*"],
       "@performance/*": ["src/app/performance/*"],
-      "@welcome-mms/*": ["src/app/welcome-mms/*"],
+      "@landing-pages/*": ["src/app/landing-pages/*"],
       "@schema": ["src/app/schema"],
       "@deprecated/*": ["src/deprecated/*"],
       "@public/*": ["public/index", "public/*"]
