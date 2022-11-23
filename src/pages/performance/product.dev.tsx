@@ -2,11 +2,11 @@ import { NextPage } from "next";
 import { observer } from "mobx-react";
 import { useEffect, forwardRef } from "react";
 import { useQuery } from "@apollo/client";
-import { Tooltip, Alert } from "@mui/material";
+import { Tooltip } from "@mui/material";
 import { Button } from "@ContextLogic/atlas-ui";
 import UnwrappedIcon, { IconProps } from "@core/components/Icon";
 import { formatCurrency } from "@core/toolkit/currency";
-import { LoadingIndicator } from "@ContextLogic/lego";
+import { Alert, LoadingIndicator } from "@ContextLogic/lego";
 import PageRoot from "@core/components/PageRoot";
 import PageGuide from "@core/components/PageGuide";
 import store, {
@@ -316,9 +316,10 @@ const PerformanceProductPage: NextPage<Record<string, never>> = () => {
         title={i`Product Performance`}
       />
       <PageGuide relaxed style={{ paddingTop: 20 }}>
-        <Alert severity="info">
-          {i`Please refer to the metrics on the Wish Standards page as the definitive source for your performance.`}
-        </Alert>
+        <Alert
+          sentiment="info"
+          text={i`Please refer to the metrics on the Wish Standards page as the definitive source for your performance.`}
+        />
         <div className={styles.toolkit}>
           {store.productCNYFlag && (
             <div>
