@@ -1,0 +1,18 @@
+.rangeDateCon {
+  width: 400px;
+  margin-bottom: 20px;
+}
+.titleCon {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+.chartCon {
+  position: relative;
+}
+
+.loading {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translateX(-50%);
+}

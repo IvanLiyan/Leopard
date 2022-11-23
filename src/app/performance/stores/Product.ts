@@ -14,7 +14,7 @@ import {
 } from "@performance/toolkit/utils";
 
 export const PERFORMANCE_PRODUCT_DATA_QUERY = gql`
-  query test_product_performance_data($weeks: Int!) {
+  query Product_PerformanceProductDataQuery($weeks: Int!) {
     currentMerchant {
       storeStats {
         weekly(weeks: $weeks) {

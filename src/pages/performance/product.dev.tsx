@@ -14,7 +14,7 @@ import store, {
   ProductDataQueryResponse,
   ProductDataQueryArguments,
   AugmentedProduct,
-} from "@performance/stores/ProductStore";
+} from "@performance/stores/Product";
 import { Table } from "@performance/components";
 import { TableColumn } from "@performance/components/Table";
 import { addCommas, round } from "@core/toolkit/stringUtils";
@@ -52,12 +52,13 @@ const columns: ReadonlyArray<TableColumn> = [
     key: "activeProducts",
     titleRender: () => (
       <>
-        <span>{i`Enabled Products With Inventory`}</span>
+        <span>Enabled Products With Inventory</span>
         <Tooltip
           title={
-            <div
-              style={{ fontSize: "14px" }}
-            >{i`The number of products your store has enabled, with nonzero inventory`}</div>
+            <div style={{ fontSize: "14px" }}>
+              The number of products your store has enabled, with nonzero
+              inventory
+            </div>
           }
           className={commonStyles.tableTooltip}
         >
@@ -77,11 +78,9 @@ const columns: ReadonlyArray<TableColumn> = [
     key: "activeSkus",
     titleRender: () => (
       <>
-        <span>{i`Total SKUs`}</span>
+        <span>Total SKUs</span>
         <Tooltip
-          title={
-            <div style={{ fontSize: "14px" }}>{i`Number of active SKUs`}</div>
-          }
+          title={<div style={{ fontSize: "14px" }}>Number of active SKUs</div>}
           className={commonStyles.tableTooltip}
         >
           <Icon name="help" size={20} color={"#000"} />
@@ -100,12 +99,12 @@ const columns: ReadonlyArray<TableColumn> = [
     key: "skusPerProduct",
     titleRender: () => (
       <>
-        <span>{i`SKUs Per Product`}</span>
+        <span>SKUs Per Product</span>
         <Tooltip
           title={
-            <div
-              style={{ fontSize: "14px" }}
-            >{i`Active SKUs divided by active products`}</div>
+            <div style={{ fontSize: "14px" }}>
+              Active SKUs divided by active products
+            </div>
           }
           className={commonStyles.tableTooltip}
         >
@@ -126,10 +125,10 @@ const columns: ReadonlyArray<TableColumn> = [
     key: "averagePrice",
     titleRender: () => (
       <>
-        <span>{i`Average Price`}</span>
+        <span>Average Price</span>
         <Tooltip
           title={
-            <div style={{ fontSize: "14px" }}>{i`Average price of orders`}</div>
+            <div style={{ fontSize: "14px" }}>Average price of orders</div>
           }
           className={commonStyles.tableTooltip}
         >
@@ -153,12 +152,12 @@ const columns: ReadonlyArray<TableColumn> = [
     key: "averageShippingPrice",
     titleRender: () => (
       <>
-        <span>{i`Average Shipping`}</span>
+        <span>Average Shipping</span>
         <Tooltip
           title={
-            <div
-              style={{ fontSize: "14px" }}
-            >{i`Average shipping price of orders`}</div>
+            <div style={{ fontSize: "14px" }}>
+              Average shipping price of orders
+            </div>
           }
           className={commonStyles.tableTooltip}
         >
@@ -182,12 +181,12 @@ const columns: ReadonlyArray<TableColumn> = [
     key: "priceToShippingRatio",
     titleRender: () => (
       <>
-        <span>{i`Price to Shipping Ratio`}</span>
+        <span>Price to Shipping Ratio</span>
         <Tooltip
           title={
-            <div
-              style={{ fontSize: "14px" }}
-            >{i`Average price divided by average shipping`}</div>
+            <div style={{ fontSize: "14px" }}>
+              Average price divided by average shipping
+            </div>
           }
           className={commonStyles.tableTooltip}
         >
@@ -207,12 +206,13 @@ const columns: ReadonlyArray<TableColumn> = [
     key: "averageAdditonalImagesPerProduct",
     titleRender: () => (
       <>
-        <span>{i`Average Additional Images Per Product`}</span>
+        <span>Average Additional Images Per Product</span>
         <Tooltip
           title={
-            <div
-              style={{ fontSize: "14px" }}
-            >{i`Total number of additional images divide by number of active products`}</div>
+            <div style={{ fontSize: "14px" }}>
+              Total number of additional images divide by number of active
+              products
+            </div>
           }
           className={commonStyles.tableTooltip}
         >
@@ -233,12 +233,12 @@ const columns: ReadonlyArray<TableColumn> = [
     key: "productImpressions",
     titleRender: () => (
       <>
-        <span>{i`Impressions`}</span>
+        <span>Impressions</span>
         <Tooltip
           title={
-            <div
-              style={{ fontSize: "14px" }}
-            >{i`Number of times your products were viewed`}</div>
+            <div style={{ fontSize: "14px" }}>
+              Number of times your products were viewed
+            </div>
           }
           className={commonStyles.tableTooltip}
         >
@@ -258,12 +258,10 @@ const columns: ReadonlyArray<TableColumn> = [
     key: "gmv",
     titleRender: () => (
       <>
-        <span>{i`GMV`}</span>
+        <span>GMV</span>
         <Tooltip
           title={
-            <div
-              style={{ fontSize: "14px" }}
-            >{i`Gross merchandising value`}</div>
+            <div style={{ fontSize: "14px" }}>Gross merchandising value</div>
           }
           className={commonStyles.tableTooltip}
         >
@@ -328,27 +326,26 @@ const PerformanceProductPage: NextPage<Record<string, never>> = () => {
                 disabled={store.currencyCode === CURRENCY_CODE.USD}
                 onClick={() => store.updateCurrencyCode(CURRENCY_CODE.USD)}
               >
-                {i`Display in USD`} $
+                Display in USD $
               </Button>
               <Button
                 secondary
                 disabled={store.currencyCode === CURRENCY_CODE.CNY}
                 onClick={() => store.updateCurrencyCode(CURRENCY_CODE.CNY)}
               >
-                {i`Display in CNY`} ¥
+                Display in CNY ¥
               </Button>
               <Tooltip
                 title={
-                  <div
-                    style={{ fontSize: "14px" }}
-                  >{i`USD values recorded prior to your CNY migration date are being
-              calculated at 1 USD = 7.0 CNY, in order to view full performance
-              data in CNY`}</div>
+                  <div style={{ fontSize: "14px" }}>
+                    USD values recorded prior to your CNY migration date are
+                    being calculated at 1 USD = 7.0 CNY, in order to view full
+                    performance data in CNY
+                  </div>
                 }
               >
                 <span className={commonStyles.calculateText}>
-                  {" "}
-                  {i`How are currency values calculated?`}
+                  How are currency values calculated?
                 </span>
               </Tooltip>
             </div>
@@ -371,7 +368,7 @@ const PerformanceProductPage: NextPage<Record<string, never>> = () => {
               })
             }
           >
-            {i`Export CSV`}
+            Export CSV
           </Button>
         </div>
         {loading ? (

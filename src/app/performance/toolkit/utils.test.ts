@@ -1,4 +1,8 @@
-import { countTableDataCurrencyAmount, CountTableDataItem } from "./utils";
+import {
+  countTableDataCurrencyAmount,
+  CountTableDataItem,
+  getOffsetDays,
+} from "./utils";
 
 describe("countTableDataCurrencyAmount", () => {
   test("when initial data is in CNY, it adds USD and CNY correctly to only the specified keys", () => {
@@ -197,5 +201,32 @@ describe("countTableDataCurrencyAmount", () => {
         },
       },
     ]);
+  });
+});
+
+describe("getOffsetDays", () => {
+  test("Calculate the number of days between ordinal dates", () => {
+    const from = new Date("2022-10-10");
+    const to = new Date("2022-10-30");
+    const result = getOffsetDays(from, to);
+    expect(result).toEqual(20);
+  });
+  test("Calculate the number of days between reverse dates", () => {
+    const from = new Date("2022-10-30");
+    const to = new Date("2022-10-10");
+    const result = getOffsetDays(from, to);
+    expect(result).toEqual(-20);
+  });
+  test("Calculate the number of days between null dates", () => {
+    const from = null;
+    const to = new Date("2022-10-10");
+    const result = getOffsetDays(from, to);
+    expect(result).toEqual(0);
+  });
+  test("Calculate the number of days between all null dates", () => {
+    const from = null;
+    const to = undefined;
+    const result = getOffsetDays(from, to);
+    expect(result).toEqual(0);
   });
 });

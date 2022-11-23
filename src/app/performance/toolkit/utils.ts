@@ -9,9 +9,7 @@ export function exportCSV(params: {
   readonly currencyCode?: PaymentCurrencyCode;
 }): void {
   const { type, id, is_bd, target_date, stats_type, currencyCode } = params;
-
   let queryPath = "";
-
   if (is_bd) {
     queryPath = `/stats/bd/weekly/export?target_date=${target_date}&stats_type=${stats_type}&bd_id=${id}`;
   } else {
@@ -35,8 +33,8 @@ export interface CountTableDataItem {
 }
 
 export type AugmentedPrice = {
-  CNY_amount?: number;
-  USD_amount?: number;
+  readonly CNY_amount?: number;
+  readonly USD_amount?: number;
 };
 
 export const countTableDataCurrencyAmount = (
@@ -60,3 +58,11 @@ export const countTableDataCurrencyAmount = (
     return item;
   });
 };
+
+export function getOffsetDays(
+  from: Date | null | undefined,
+  to: Date | null | undefined,
+): number {
+  if (!to || !from) return 0;
+  return Math.round((to.getTime() - from.getTime()) / (24 * 3600 * 1000));
+}

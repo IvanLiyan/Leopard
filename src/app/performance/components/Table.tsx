@@ -10,7 +10,7 @@ import {
   TablePagination,
 } from "@mui/material";
 import { PER_PAGE_LIMIT } from "@performance/toolkit/enums";
-import { AugmentedProduct } from "@performance/stores/ProductStore";
+import { AugmentedProduct } from "@performance/stores/Product";
 
 export type TableColumn = {
   key: string;
