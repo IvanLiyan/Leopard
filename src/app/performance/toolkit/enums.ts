@@ -1,6 +1,7 @@
 import { PaymentCurrencyCode } from "@schema";
 
 export const PER_PAGE_LIMIT = 20;
+export const REQUEST_WEEKS = 20;
 
 export const CURRENCY_CODE: {
   USD: PaymentCurrencyCode;

@@ -166,7 +166,7 @@ const SalesProductBreakdownPage: NextPage<Record<string, never>> = () => {
         ]}
         title={i`Customer Experience Graph`}
       />
-      <PageGuide relaxed style={{ paddingTop: 15 }}>
+      <PageGuide relaxed style={{ paddingTop: 20 }}>
         <Alert
           sentiment="info"
           text={i`Please refer to the metrics on the Wish Standards page as the

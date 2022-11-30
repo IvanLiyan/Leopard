@@ -84,3 +84,15 @@
   color: #305bef;
   cursor: pointer;
 }
+.toolkit {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  height: 45px;
+}
+.toolkit button {
+  margin-right: 10px;
+  margin-bottom: 10px;
+}

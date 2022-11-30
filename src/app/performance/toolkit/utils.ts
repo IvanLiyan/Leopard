@@ -4,13 +4,13 @@ export function exportCSV(params: {
   readonly type: string;
   readonly stats_type: string;
   readonly id: UserSchema["id" | "merchantId"];
-  readonly is_bd: boolean;
+  readonly isBDUser: boolean;
   readonly target_date: number;
   readonly currencyCode?: PaymentCurrencyCode;
 }): void {
-  const { type, id, is_bd, target_date, stats_type, currencyCode } = params;
+  const { type, id, isBDUser, target_date, stats_type, currencyCode } = params;
   let queryPath = "";
-  if (is_bd) {
+  if (isBDUser) {
     queryPath = `/stats/bd/weekly/export?target_date=${target_date}&stats_type=${stats_type}&bd_id=${id}`;
   } else {
     queryPath = `/stats/${type}/weekly/export?target_date=${target_date}&stats_type=${stats_type}&merchant_id=${id}&selected_currency=${currencyCode}`;
