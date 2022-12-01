@@ -7,6 +7,7 @@ import NextLink, { LinkProps as NextLinkProps } from "next/link";
 import SimpleLink, {
   SimpleLinkProps,
 } from "@ContextLogic/lego/component/button/SimpleLink";
+import { useTheme } from "@core/stores/ThemeStore";
 
 export type LinkProps = Omit<SimpleLinkProps, "href"> & {
   readonly href?: NextLinkProps["href"] | null; // null required to match legacy clroot typing
@@ -15,7 +16,7 @@ export type LinkProps = Omit<SimpleLinkProps, "href"> & {
   readonly onMouseOver?: (() => unknown) | null | undefined;
   readonly onMouseLeave?: (() => unknown) | null | undefined;
   readonly fadeOnHover?: boolean | null | undefined;
-};
+} & ({ readonly light: true } | { readonly light?: never }); // this functionality should be moved to the Atlas link when built
 
 const isValidURL = (s: string): boolean => {
   try {
@@ -35,14 +36,16 @@ const Link = (_props: LinkProps) => {
     className,
     openInNewTab,
     onClick,
+    light,
     ...otherProps
   } = _props;
+  const { corePrimaryLight } = useTheme();
 
   // required since legacy lego link allows href to be null, but anchor doesn't
   const href = hrefProp === null ? undefined : hrefProp;
 
   const propsWithoutHref = {
-    style: [style, className],
+    style: [style, className, { color: light ? corePrimaryLight : undefined }],
     rel: openInNewTab || onClick ? "noopener noreferrer" : undefined,
     target: openInNewTab ? "_blank" : undefined,
     onClick,

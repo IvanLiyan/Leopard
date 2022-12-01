@@ -41,89 +41,6 @@ const useError = (
   return [errorBody, errorOpen, onError, onClose];
 };
 
-// begin zendesk test (to be removed)
-import { useZendesk } from "@chrome/search/zendesk";
-import {
-  TextField,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-} from "@mui/material";
-
-const ZendeskTest: React.FC<Record<string, never>> = () => {
-  const [query, setQuery] = useState<undefined | string>(undefined);
-  const { data } = useZendesk(query);
-
-  const rows = data?.results || [];
-
-  return (
-    <>
-      <Divider sx={{ marginTop: 1, marginBottom: 1 }} />
-      <Typography
-        variant="h6"
-        component="h2"
-        sx={{ marginTop: 1, marginBottom: 1 }}
-      >
-        Zendesk Playground
-      </Typography>
-      <TextField
-        variant="outlined"
-        placeholder="Search Query"
-        value={query}
-        onChange={(e) => {
-          setQuery(e.target.value);
-        }}
-        sx={{ marginTop: 1, marginBottom: 1 }}
-      />
-
-      <TableContainer sx={{ maxWidth: 650 }}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>id</TableCell>
-              <TableCell>title</TableCell>
-              <TableCell>result_type</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows.length === 0 ? (
-              <TableRow
-                key={"no-data"}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              >
-                <TableCell
-                  align="center"
-                  colSpan={3}
-                  sx={{ fontStyle: "italic" }}
-                >
-                  No Data
-                </TableCell>
-              </TableRow>
-            ) : (
-              rows.map((row) => (
-                <TableRow
-                  key={row.name}
-                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                >
-                  <TableCell component="th" scope="row">
-                    {row.id}
-                  </TableCell>
-                  <TableCell>{row.title}</TableCell>
-                  <TableCell>{row.result_type}</TableCell>
-                </TableRow>
-              ))
-            )}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </>
-  );
-};
-// end zendesk test
-
 const DevLoginPage: NextPage<Record<string, never>> = () => {
   // use numbers to emulate a stack of requests that need to complete before
   // loading is finished
@@ -332,7 +249,6 @@ const DevLoginPage: NextPage<Record<string, never>> = () => {
               </Typography>
             </Typography>
           </Paper>
-          <ZendeskTest />
         </Paper>
       </Box>
       <Snackbar
