@@ -6,16 +6,15 @@ import { useQuery } from "@apollo/client";
 import { Tooltip } from "@mui/material";
 import { Button } from "@ContextLogic/atlas-ui";
 import Image from "@core/components/Image";
-import Icon from "@core/components/Icon";
 import { formatCurrency } from "@core/toolkit/currency";
 import { Alert, LoadingIndicator } from "@ContextLogic/lego";
-import { useUserStore } from "@core/stores/UserStore";
 import { useToastStore } from "@core/stores/ToastStore";
 import { wishURL, contestImageURL } from "@core/toolkit/url";
 import PageRoot from "@core/components/PageRoot";
-import { exportCSV, isBD } from "@performance/toolkit/utils";
-import { Table } from "@performance/components";
-import { TableColumn, useSalesBaseColumn } from "@performance/components/Table";
+import { useExportCSV } from "@performance/toolkit/utils";
+import { Table, Icon } from "@performance/components";
+import { TableColumn } from "@performance/components/Table";
+import useSalesBaseColumn from "@performance/components/sales/SalesBaseColumn";
 import store, {
   PERFORMANCE_BREAKDOWN_DATA_QUERY,
   AugmentedSalesBreakdown,
@@ -40,10 +39,7 @@ const SalesProductBreakdownPage: NextPage<Record<string, never>> = () => {
   const toastStore = useToastStore();
   const { textBlack } = useTheme();
   const salesBaseColumn = useSalesBaseColumn();
-  const { loggedInMerchantUser } = useUserStore();
-  const { merchantId, id, roles } = loggedInMerchantUser || {};
-  const isBDUser = isBD(roles || []);
-  const exportId = isBDUser ? id : merchantId;
+  const exportCSV = useExportCSV();
   const router = useRouter();
   const {
     data: breakdownData,
@@ -69,7 +65,7 @@ const SalesProductBreakdownPage: NextPage<Record<string, never>> = () => {
   }, [breakdownData, breakdownReqLoading]);
 
   const columns = useMemo(() => {
-    const columns: Array<TableColumn> = [
+    const columns: Array<TableColumn<AugmentedSalesBreakdown>> = [
       {
         key: "rangeDate",
         title: i`Date Range`,
@@ -82,23 +78,16 @@ const SalesProductBreakdownPage: NextPage<Record<string, never>> = () => {
       {
         key: "id",
         title: i`Product Id`,
-        render: ({ value }) => {
-          const valueCast = value as AugmentedSalesBreakdown["id"];
-          const url = wishURL(`/product/${valueCast}?share=web`); // "?share=web" keep as old page url
+        render: ({ row: { id } }) => {
+          const url = wishURL(`/product/${id}?share=web`); // "?share=web" keep as old page url
           return (
             <div className={commonStyles.productColumn}>
               <Image
-                src={contestImageURL(valueCast, "tiny")}
+                src={contestImageURL(id, "tiny")}
                 alt={i`Picture of product`}
-                style={{
-                  width: "40px",
-                  height: "40px",
-                  display: "flex",
-                  marginRight: "10px",
-                }}
               />
               <Link href={url} openInNewTab>
-                {valueCast}
+                {id}
               </Link>
             </div>
           );
@@ -121,12 +110,11 @@ const SalesProductBreakdownPage: NextPage<Record<string, never>> = () => {
             </Tooltip>
           </>
         ),
-        render: ({ value }) => {
-          const valueCast = value as AugmentedSalesBreakdown["gmv"];
+        render: ({ row: { gmv } }) => {
           const amount =
             store.breakdownCurrencyCode === CURRENCY_CODE.CNY
-              ? valueCast?.CNY_amount
-              : valueCast?.USD_amount;
+              ? gmv.CNY_amount
+              : gmv.USD_amount;
           return amount
             ? formatCurrency(amount, store.breakdownCurrencyCode)
             : "-";
@@ -163,9 +151,9 @@ const SalesProductBreakdownPage: NextPage<Record<string, never>> = () => {
           text={i`Please refer to the metrics on the Wish Standards page as the
           definitive source for your performance.`}
         />
-        <div className={commonStyles.toolkit} style={{ height: "45px" }}>
-          {store.productCNYFlag && (
-            <div>
+        <div className={commonStyles.toolkit}>
+          {store.productCNYFlag ? (
+            <div className={commonStyles.changeCurrencyCon}>
               <Button
                 secondary
                 disabled={store.breakdownCurrencyCode === CURRENCY_CODE.USD}
@@ -199,6 +187,8 @@ const SalesProductBreakdownPage: NextPage<Record<string, never>> = () => {
                 </span>
               </Tooltip>
             </div>
+          ) : (
+            <div></div>
           )}
           <Button
             secondary
@@ -206,8 +196,6 @@ const SalesProductBreakdownPage: NextPage<Record<string, never>> = () => {
               exportCSV({
                 type: EXPORT_CSV_TYPE.PRODUCT,
                 stats_type: EXPORT_CSV_STATS_TYPE.PRESALE,
-                id: exportId,
-                isBDUser,
                 currencyCode: store.breakdownCurrencyCode,
                 target_date:
                   new Date(
@@ -221,7 +209,7 @@ const SalesProductBreakdownPage: NextPage<Record<string, never>> = () => {
         </div>
         <div className={styles.metricsModule}>
           {breakdownReqLoading ? (
-            <LoadingIndicator className={styles.loading} />
+            <LoadingIndicator className={commonStyles.loading} />
           ) : (
             <Table
               data={store.breakdownData}

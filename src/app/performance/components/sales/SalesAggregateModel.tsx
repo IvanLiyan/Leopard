@@ -4,11 +4,9 @@ import { observer } from "mobx-react";
 import { useQuery } from "@apollo/client";
 import { Tooltip } from "@mui/material";
 import { Button } from "@ContextLogic/atlas-ui";
-import Icon from "@core/components/Icon";
-import { useUserStore } from "@core/stores/UserStore";
 import { LoadingIndicator, Alert } from "@ContextLogic/lego";
 import PageHeader from "@core/components/PageHeader";
-import { Table } from "@performance/components";
+import { Table, Icon } from "@performance/components";
 import { formatCurrency } from "@core/toolkit/currency";
 import { MerchantStatsWeeklyArgs } from "@schema";
 import store, {
@@ -22,8 +20,9 @@ import {
   EXPORT_CSV_STATS_TYPE,
   EXPORT_CSV_TYPE,
 } from "@performance/toolkit/enums";
-import { TableColumn, useSalesBaseColumn } from "@performance/components/Table";
-import { exportCSV, isBD } from "@performance/toolkit/utils";
+import { TableColumn } from "@performance/components/Table";
+import useSalesBaseColumn from "@performance/components/sales/SalesBaseColumn";
+import { useExportCSV } from "@performance/toolkit/utils";
 import commonStyles from "@performance/styles/common.module.css";
 import styles from "@performance/styles/sales.module.css";
 import { merchFeURL } from "@core/toolkit/url";
@@ -32,12 +31,8 @@ import { useTheme } from "@core/stores/ThemeStore";
 
 const SalesAggregateModel: React.FC = () => {
   const { textBlack } = useTheme();
-  const { loggedInMerchantUser } = useUserStore();
-  const { merchantId, id, roles } = loggedInMerchantUser || {};
-  const isBDUser = isBD(roles || []);
-  const exportId = isBDUser ? id : merchantId;
+  const exportCSV = useExportCSV();
   const salesBaseColumn = useSalesBaseColumn();
-
   const { data, loading: aggregateReqLoading } = useQuery<
     SalesAggregateResponseData,
     MerchantStatsWeeklyArgs
@@ -56,19 +51,24 @@ const SalesAggregateModel: React.FC = () => {
   }, [data]);
 
   const columns = useMemo(() => {
-    const columns: Array<TableColumn> = [
+    const columns: Array<TableColumn<AugmentedSalesAggregate>> = [
       {
         key: "rangeDate",
         title: i`Date Range`,
-        render: ({ row: { startDate, endDate }, index }) => (
-          <div style={{ textAlign: "left" }} className={commonStyles.linkStyle}>
-            <Link
-              href={`/performance/sales/product-breakdown?weeks_from_the_latest=${index}`}
+        render: ({ row: { startDate, endDate }, index }) => {
+          return (
+            <div
+              style={{ textAlign: "left" }}
+              className={commonStyles.linkStyle}
             >
-              {`${startDate.mmddyyyy}-${endDate.mmddyyyy}`}
-            </Link>
-          </div>
-        ),
+              <Link
+                href={`/performance/sales/product-breakdown?weeks_from_the_latest=${index}`}
+              >
+                {`${startDate.mmddyyyy}-${endDate.mmddyyyy}`}
+              </Link>
+            </div>
+          );
+        },
       },
       {
         key: "gmv",
@@ -87,12 +87,11 @@ const SalesAggregateModel: React.FC = () => {
             </Tooltip>
           </>
         ),
-        render: ({ value }) => {
-          const valueCast = value as AugmentedSalesAggregate["gmv"];
+        render: ({ row: { gmv } }) => {
           const amount =
             store.aggreagateCurrencyCode === CURRENCY_CODE.CNY
-              ? valueCast?.CNY_amount
-              : valueCast?.USD_amount;
+              ? gmv.CNY_amount
+              : gmv.USD_amount;
           return amount
             ? formatCurrency(amount, store.aggreagateCurrencyCode)
             : "-";
@@ -122,8 +121,8 @@ const SalesAggregateModel: React.FC = () => {
           definitive source for your performance.`}
         />
         <div className={commonStyles.toolkit}>
-          {store.aggregateCNYFlag && (
-            <div>
+          {store.aggregateCNYFlag ? (
+            <div className={commonStyles.changeCurrencyCon}>
               <Button
                 secondary
                 disabled={store.aggreagateCurrencyCode === CURRENCY_CODE.USD}
@@ -131,7 +130,7 @@ const SalesAggregateModel: React.FC = () => {
                   store.updateAggreagateCurrencyCode(CURRENCY_CODE.USD)
                 }
               >
-                {i`Display in USD`} $
+                Display in USD $
               </Button>
               <Button
                 secondary
@@ -140,7 +139,7 @@ const SalesAggregateModel: React.FC = () => {
                   store.updateAggreagateCurrencyCode(CURRENCY_CODE.CNY)
                 }
               >
-                {i`Display in CNY`} ¥
+                Display in CNY ¥
               </Button>
               <Tooltip
                 className={commonStyles.tableTooltip}
@@ -157,6 +156,8 @@ const SalesAggregateModel: React.FC = () => {
                 </span>
               </Tooltip>
             </div>
+          ) : (
+            <div></div>
           )}
           <Button
             secondary
@@ -164,8 +165,6 @@ const SalesAggregateModel: React.FC = () => {
               exportCSV({
                 type: EXPORT_CSV_TYPE.PRODUCT,
                 stats_type: EXPORT_CSV_STATS_TYPE.PRESALE,
-                id: exportId,
-                isBDUser,
                 currencyCode: store.aggreagateCurrencyCode,
                 target_date:
                   new Date(
@@ -179,7 +178,7 @@ const SalesAggregateModel: React.FC = () => {
         </div>
         <div className={styles.metricsModule}>
           {aggregateReqLoading ? (
-            <LoadingIndicator />
+            <LoadingIndicator className={commonStyles.loading} />
           ) : (
             <Table data={store.aggregateData} columns={columns} />
           )}

@@ -1,6 +1,11 @@
+import { DetailedHTMLProps, HTMLAttributes } from "react";
 interface Props {
   readonly desc?: string;
   readonly className?: string;
+  readonly style?: DetailedHTMLProps<
+    HTMLAttributes<HTMLHeadingElement>,
+    HTMLHeadingElement
+  >["style"];
 }
 
 const Title: React.FC<Props> = (props) => {

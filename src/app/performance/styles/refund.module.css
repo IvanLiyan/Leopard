@@ -1,0 +1,22 @@
+.metricsModule {
+  margin-bottom: 20px;
+}
+.desc > h3,
+.desc > a,
+.desc > span {
+  margin-right: 16px;
+  display: inline-block;
+}
+
+.alertDesc p {
+  margin-top: 4px;
+  margin-bottom: 0;
+}
+.alertDesc > b {
+  font-weight: bold;
+  font-size: 16px;
+}
+.alertDesc p > a {
+  display: inline-block;
+  margin-left: 6px;
+}

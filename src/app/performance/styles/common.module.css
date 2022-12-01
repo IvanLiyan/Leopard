@@ -3,7 +3,6 @@
   margin-left: 4px;
   cursor: pointer;
 }
-
 .linkStyle {
   color: #305bef !important;
   font-weight: bolder;
@@ -25,12 +24,9 @@
   text-decoration: none;
 }
 
-.header {
-  padding: 10px 0px;
-  font-size: 24px;
-  font-family: "Proxima-Bold";
-  color: #000;
-  margin: 10px 0;
+.title {
+  padding: 20px 0px;
+  margin: 0;
 }
 
 .buttonClear {
@@ -45,10 +41,17 @@
   align-items: center;
   width: 255px;
 }
+.productColumn > * {
+  vertical-align: middle;
+}
 .productColumn a {
   color: #305bef !important;
   font-weight: bold;
   text-decoration: none;
+}
+.productColumn img {
+  width: 40px;
+  height: 40px;
 }
 .productColumn a:active {
   color: #305bef !important;
@@ -90,9 +93,17 @@
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
-  height: 45px;
 }
-.toolkit button {
+.changeCurrencyCon button {
   margin-right: 10px;
-  margin-bottom: 10px;
+}
+.themedLabel {
+  border-radius: 0 !important;
+  align-items: flex-end !important;
+}
+.loading {
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 20px;
 }

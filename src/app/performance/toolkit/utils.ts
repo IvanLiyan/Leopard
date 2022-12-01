@@ -1,26 +1,5 @@
-import { UserSchema, PaymentCurrencyCode } from "@schema";
-
-export function exportCSV(params: {
-  readonly type: string;
-  readonly stats_type: string;
-  readonly id: UserSchema["id" | "merchantId"];
-  readonly isBDUser: boolean;
-  readonly target_date: number;
-  readonly currencyCode?: PaymentCurrencyCode;
-}): void {
-  const { type, id, isBDUser, target_date, stats_type, currencyCode } = params;
-  let queryPath = "";
-  if (isBDUser) {
-    queryPath = `/stats/bd/weekly/export?target_date=${target_date}&stats_type=${stats_type}&bd_id=${id}`;
-  } else {
-    queryPath = `/stats/${type}/weekly/export?target_date=${target_date}&stats_type=${stats_type}&merchant_id=${id}&selected_currency=${currencyCode}`;
-  }
-  location.href = `${window.location.origin}${queryPath}`;
-}
-
-export function isBD(roles: ReadonlyArray<{ readonly name: string }>): boolean {
-  return Boolean(roles.find((role) => role.name === "BD"));
-}
+import { PaymentCurrencyCode } from "@schema";
+import { useUserStore } from "@core/stores/UserStore";
 
 export interface CountTableDataItem {
   [x: string]: {
@@ -59,10 +38,33 @@ export const countTableDataCurrencyAmount = (
   });
 };
 
-export function getOffsetDays(
+export const getOffsetDays = (
   from: Date | null | undefined,
   to: Date | null | undefined,
-): number {
+): number => {
   if (!to || !from) return 0;
   return Math.round((to.getTime() - from.getTime()) / (24 * 3600 * 1000));
-}
+};
+
+export const useExportCSV = () => {
+  const { loggedInMerchantUser } = useUserStore();
+  const { merchantId, id, roles } = loggedInMerchantUser || {};
+  const isBDUser = Boolean(roles?.find((role) => role.name === "BD"));
+
+  const exportCSV = (params: {
+    readonly type: string;
+    readonly stats_type: string;
+    readonly target_date: number;
+    readonly currencyCode?: PaymentCurrencyCode;
+  }): void => {
+    const { type, target_date, stats_type, currencyCode } = params;
+    let queryPath = "";
+    if (isBDUser) {
+      queryPath = `/stats/bd/weekly/export?target_date=${target_date}&stats_type=${stats_type}&bd_id=${id}`;
+    } else {
+      queryPath = `/stats/${type}/weekly/export?target_date=${target_date}&stats_type=${stats_type}&merchant_id=${merchantId}&selected_currency=${currencyCode}`;
+    }
+    location.href = `${window.location.origin}${queryPath}`;
+  };
+  return exportCSV;
+};

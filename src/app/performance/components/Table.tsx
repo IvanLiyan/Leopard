@@ -6,47 +6,25 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Paper,
   TablePagination,
 } from "@mui/material";
 import { PER_PAGE_LIMIT } from "@performance/toolkit/enums";
-import { Tooltip } from "@mui/material";
-import { forwardRef } from "react";
-import UnwrappedIcon, { IconProps } from "@core/components/Icon";
-import { formatPercentage, addCommas } from "@core/toolkit/stringUtils";
-import commonStyles from "@performance/styles/common.module.css";
-import {
-  AugmentedSalesAggregate,
-  AugmentedSalesBreakdown,
-} from "@performance/stores/Sales";
-import { AugmentedProduct } from "@performance/stores/Product";
 import { useTheme } from "@core/stores/ThemeStore";
 
-const Icon = forwardRef<HTMLSpanElement, IconProps>((props, ref) => (
-  // extra div because Icon does not currently forward refs, changes required at the Zeus level
-  <span ref={ref}>
-    <UnwrappedIcon {...props} />
-  </span>
-));
-Icon.displayName = "Icon";
-
-export type TableColumn = {
+export type TableColumn<RowType> = {
   key: string;
   title?: string;
   titleRender?: () => JSX.Element;
   render?: (props: {
-    value: unknown;
-    row: AugmentedProduct | AugmentedSalesAggregate | AugmentedSalesBreakdown;
+    row: RowType;
     index: number;
   }) => JSX.Element | string | number;
 };
 
-interface Props {
+interface Props<RowType> {
   readonly children?: React.ReactNode;
-  data: ReadonlyArray<
-    AugmentedProduct | AugmentedSalesAggregate | AugmentedSalesBreakdown
-  >;
-  columns: ReadonlyArray<TableColumn>;
+  data: ReadonlyArray<RowType>;
+  columns: ReadonlyArray<TableColumn<RowType>>;
   width?: number;
   pagination?: {
     pageChange?: (newPage: number) => void;
@@ -55,8 +33,9 @@ interface Props {
   };
 }
 
-const CustomTable = (props: Props): JSX.Element => {
-  const { columns, data, width, pagination } = props;
+const CustomTable = <RowType,>(props: Props<RowType>): JSX.Element => {
+  const { columns, data, pagination, width } = props;
+  const { borderPrimary, surfaceLightest, surfaceLight } = useTheme();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(PER_PAGE_LIMIT);
   const handleChangePage = (event: unknown, newPage: number) => {
@@ -73,12 +52,17 @@ const CustomTable = (props: Props): JSX.Element => {
   return (
     <>
       <TableContainer
-        component={Paper}
-        sx={width ? { maxWidth: `${width}px` } : {}}
+        sx={{
+          backgroundColor: surfaceLightest,
+          borderRadius: "4px",
+          border: `solid 1px ${borderPrimary}`,
+          boxShadow: "none",
+          maxWidth: width ? `${width}px` : undefined,
+        }}
       >
         <Table>
           <TableHead>
-            <TableRow style={{ backgroundColor: "#f3f3f3" }}>
+            <TableRow style={{ backgroundColor: surfaceLight }}>
               {columns.map((column) => {
                 const displayHead =
                   (column.titleRender && column.titleRender()) || column.title;
@@ -105,8 +89,6 @@ const CustomTable = (props: Props): JSX.Element => {
                   const displayContent =
                     (column.render &&
                       column.render({
-                        // @ts-ignore code is not type safe but we only pass in keys that correspond to row
-                        value: row[key],
                         row,
                         index: rowIndex,
                       })) ||
@@ -139,131 +121,6 @@ const CustomTable = (props: Props): JSX.Element => {
       )}
     </>
   );
-};
-
-export const useSalesBaseColumn = (): ReadonlyArray<TableColumn> => {
-  const { textBlack } = useTheme();
-  const salesBaseColumn: ReadonlyArray<TableColumn> = [
-    {
-      key: "productImpressions",
-      titleRender: () => (
-        <>
-          <span>Product Impressions</span>
-          <Tooltip
-            title={
-              <div style={{ fontSize: "14px" }}>
-                Number of times your products were viewed
-              </div>
-            }
-            className={commonStyles.tableTooltip}
-          >
-            <Icon name="help" size={20} color={textBlack} />
-          </Tooltip>
-        </>
-      ),
-      render: ({ value }) => {
-        const valueCast =
-          value as AugmentedSalesAggregate["productImpressions"];
-        return valueCast == null ? "-" : addCommas(String(valueCast));
-      },
-    },
-    {
-      key: "addToCart",
-      titleRender: () => (
-        <>
-          <span>Buy Button Clicks</span>
-          <Tooltip
-            title={
-              <div style={{ fontSize: "14px" }}>
-                Number of times the buy button is clicked
-              </div>
-            }
-            className={commonStyles.tableTooltip}
-          >
-            <Icon name="help" size={20} color={textBlack} />
-          </Tooltip>
-        </>
-      ),
-      render: ({ value }) => {
-        const valueCast = value as AugmentedSalesAggregate["addToCart"];
-        return valueCast == null ? "-" : addCommas(String(valueCast));
-      },
-    },
-    {
-      key: "addToCartConversion",
-      titleRender: () => (
-        <>
-          <span>Buy Button CTR</span>
-          <Tooltip
-            title={
-              <div style={{ fontSize: "14px" }}>
-                Buy button click divided by product impressions
-              </div>
-            }
-            className={commonStyles.tableTooltip}
-          >
-            <Icon name="help" size={20} color={textBlack} />
-          </Tooltip>
-        </>
-      ),
-      render: ({ value }) => {
-        const valueCast =
-          value as AugmentedSalesAggregate["addToCartConversion"];
-        return valueCast == null
-          ? "-"
-          : formatPercentage(String(valueCast), "1", 4);
-      },
-    },
-    {
-      key: "orders",
-      titleRender: () => (
-        <>
-          <span>Orders</span>
-          <Tooltip
-            title={
-              <div style={{ fontSize: "14px" }}>
-                Number of times your products were bought
-              </div>
-            }
-            className={commonStyles.tableTooltip}
-          >
-            <Icon name="help" size={20} color={textBlack} />
-          </Tooltip>
-        </>
-      ),
-      render: ({ value }) => {
-        const valueCast = value as AugmentedSalesAggregate["orders"];
-        return valueCast == null ? "-" : addCommas(String(valueCast));
-      },
-    },
-    {
-      key: "checkoutConversion",
-      titleRender: () => (
-        <>
-          <span>Checkout Conversion</span>
-          <Tooltip
-            title={
-              <div style={{ fontSize: "12px" }}>
-                Orders divided by shopping cart impressions
-              </div>
-            }
-            className={commonStyles.tableTooltip}
-          >
-            <Icon name="help" size={20} color={textBlack} />
-          </Tooltip>
-        </>
-      ),
-      render: ({ value }) => {
-        const valueCast =
-          value as AugmentedSalesAggregate["checkoutConversion"];
-        return valueCast == null
-          ? "-"
-          : formatPercentage(String(valueCast), "1", 2);
-      },
-    },
-  ];
-
-  return salesBaseColumn;
 };
 
 export default CustomTable;

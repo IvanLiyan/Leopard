@@ -11,6 +11,7 @@ import PageRoot from "@core/components/PageRoot";
 import { SingleAxisLineChart, Title } from "@performance/components";
 import { useTheme } from "@core/stores/ThemeStore";
 import { useToastStore } from "@core/stores/ToastStore";
+import commonStyles from "@performance/styles/common.module.css";
 import store, {
   PERFORMANCE_CE_GRAPHS_DATA_QUERY,
   CEGraphResponseData,
@@ -173,7 +174,7 @@ const SalesProductBreakdownPage: NextPage<Record<string, never>> = () => {
           definitive source for your performance.`}
         />
         <Title
-          className={styles.titleCon}
+          className={commonStyles.title}
           desc={i`average number of days it takes you to fulfill orders`}
         >
           Average Fulfillment Time
@@ -222,7 +223,7 @@ const SalesProductBreakdownPage: NextPage<Record<string, never>> = () => {
           />
         </div>
         <Title
-          className={styles.titleCon}
+          className={commonStyles.title}
           desc={i`percent of total transactions that were refunded in the previous 30 days`}
         >
           Refund Rate
@@ -267,7 +268,7 @@ const SalesProductBreakdownPage: NextPage<Record<string, never>> = () => {
           />
         </div>
         <Title
-          className={styles.titleCon}
+          className={commonStyles.title}
           desc={i`average time elapsed between an order is marked shipped and it arrived at customer`}
         >
           Average Shipping Time
@@ -314,7 +315,7 @@ const SalesProductBreakdownPage: NextPage<Record<string, never>> = () => {
           />
         </div>
         <Title
-          className={styles.titleCon}
+          className={commonStyles.title}
           desc={i`average number of days between you shipping an order and its tracking information becoming available`}
         >
           Average Shipment Delay
@@ -363,7 +364,7 @@ const SalesProductBreakdownPage: NextPage<Record<string, never>> = () => {
           />
         </div>
         <Title
-          className={styles.titleCon}
+          className={commonStyles.title}
           desc={i`your average rating from the past 30 days`}
         >
           Average Rating

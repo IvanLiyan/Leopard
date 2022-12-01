@@ -1,10 +1,9 @@
 import { NextPage } from "next";
 import { observer } from "mobx-react";
-import { useEffect, forwardRef, useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { useQuery } from "@apollo/client";
 import { Tooltip } from "@mui/material";
 import { Button } from "@ContextLogic/atlas-ui";
-import UnwrappedIcon, { IconProps } from "@core/components/Icon";
 import { formatCurrency } from "@core/toolkit/currency";
 import { Alert, LoadingIndicator } from "@ContextLogic/lego";
 import PageRoot from "@core/components/PageRoot";
@@ -15,35 +14,24 @@ import store, {
   ProductDataQueryArguments,
   AugmentedProduct,
 } from "@performance/stores/Product";
-import { Table } from "@performance/components";
+import { Table, Icon } from "@performance/components";
 import { TableColumn } from "@performance/components/Table";
 import { addCommas, round } from "@core/toolkit/stringUtils";
-import { useUserStore } from "@core/stores/UserStore";
+
 import {
   CURRENCY_CODE,
   EXPORT_CSV_STATS_TYPE,
   EXPORT_CSV_TYPE,
 } from "@performance/toolkit/enums";
-import { exportCSV, isBD } from "@performance/toolkit/utils";
+import { useExportCSV } from "@performance/toolkit/utils";
 import commonStyles from "@performance/styles/common.module.css";
 import PageHeader from "@core/components/PageHeader";
 import { merchFeURL } from "@core/toolkit/url";
 import { useTheme } from "@core/stores/ThemeStore";
 
-const Icon = forwardRef<HTMLSpanElement, IconProps>((props, ref) => (
-  // extra div because Icon does not currently forward refs, changes required at the Zeus level
-  <span ref={ref}>
-    <UnwrappedIcon {...props} />
-  </span>
-));
-Icon.displayName = "Icon";
-
 const PerformanceProductPage: NextPage<Record<string, never>> = () => {
   const { textBlack } = useTheme();
-  const { loggedInMerchantUser } = useUserStore();
-  const { merchantId, id, roles } = loggedInMerchantUser || {};
-  const isBDUser = isBD(roles || []);
-  const exportId = isBDUser ? id : merchantId;
+  const exportCSV = useExportCSV();
   const { data, loading } = useQuery<
     ProductDataQueryResponse,
     ProductDataQueryArguments
@@ -58,7 +46,7 @@ const PerformanceProductPage: NextPage<Record<string, never>> = () => {
   }, [data]);
 
   const columns = useMemo(() => {
-    const columns: ReadonlyArray<TableColumn> = [
+    const columns: ReadonlyArray<TableColumn<AugmentedProduct>> = [
       {
         title: i`Time Period`,
         key: "RangeDate",
@@ -86,12 +74,11 @@ const PerformanceProductPage: NextPage<Record<string, never>> = () => {
             </Tooltip>
           </>
         ),
-        render: ({ value }) => {
-          const valueCast = value as AugmentedProduct["activeProducts"];
-          if (valueCast == null) {
+        render: ({ row: { activeProducts } }) => {
+          if (activeProducts == null) {
             return "-";
           }
-          return addCommas(String(valueCast));
+          return addCommas(String(activeProducts));
         },
       },
       {
@@ -109,12 +96,11 @@ const PerformanceProductPage: NextPage<Record<string, never>> = () => {
             </Tooltip>
           </>
         ),
-        render: ({ value }) => {
-          const valueCast = value as AugmentedProduct["activeSkus"];
-          if (valueCast == null) {
+        render: ({ row: { activeSkus } }) => {
+          if (activeSkus == null) {
             return "-";
           }
-          return addCommas(String(valueCast));
+          return addCommas(String(activeSkus));
         },
       },
       {
@@ -134,12 +120,11 @@ const PerformanceProductPage: NextPage<Record<string, never>> = () => {
             </Tooltip>
           </>
         ),
-        render: ({ value }) => {
-          const valueCast = value as AugmentedProduct["skusPerProduct"];
-          if (valueCast == null) {
+        render: ({ row: { skusPerProduct } }) => {
+          if (skusPerProduct == null) {
             return "-";
           }
-          return round(String(valueCast), 2);
+          return round(String(skusPerProduct), 2);
         },
       },
 
@@ -158,12 +143,11 @@ const PerformanceProductPage: NextPage<Record<string, never>> = () => {
             </Tooltip>
           </>
         ),
-        render: ({ value }) => {
-          const valueCast = value as AugmentedProduct["averagePrice"];
+        render: ({ row: { averagePrice } }) => {
           const amount =
             store.currencyCode === CURRENCY_CODE.CNY
-              ? valueCast?.CNY_amount
-              : valueCast?.USD_amount;
+              ? averagePrice.CNY_amount
+              : averagePrice.USD_amount;
           if (amount == null) {
             return "-";
           }
@@ -187,12 +171,11 @@ const PerformanceProductPage: NextPage<Record<string, never>> = () => {
             </Tooltip>
           </>
         ),
-        render: ({ value }) => {
-          const valueCast = value as AugmentedProduct["averageShippingPrice"];
+        render: ({ row: { averageShippingPrice } }) => {
           const amount =
             store.currencyCode === CURRENCY_CODE.CNY
-              ? valueCast?.CNY_amount
-              : valueCast?.USD_amount;
+              ? averageShippingPrice.CNY_amount
+              : averageShippingPrice.USD_amount;
           if (amount == null) {
             return "-";
           }
@@ -216,12 +199,11 @@ const PerformanceProductPage: NextPage<Record<string, never>> = () => {
             </Tooltip>
           </>
         ),
-        render: ({ value }) => {
-          const valueCast = value as AugmentedProduct["priceToShippingRatio"];
-          if (valueCast == null) {
+        render: ({ row: { priceToShippingRatio } }) => {
+          if (priceToShippingRatio == null) {
             return "-";
           }
-          return round(String(valueCast), 2);
+          return round(String(priceToShippingRatio), 2);
         },
       },
       {
@@ -242,13 +224,11 @@ const PerformanceProductPage: NextPage<Record<string, never>> = () => {
             </Tooltip>
           </>
         ),
-        render: ({ value }) => {
-          const valueCast =
-            value as AugmentedProduct["averageAdditonalImagesPerProduct"];
-          if (valueCast == null) {
+        render: ({ row: { averageAdditonalImagesPerProduct } }) => {
+          if (averageAdditonalImagesPerProduct == null) {
             return "-";
           }
-          return round(String(valueCast), 2);
+          return round(String(averageAdditonalImagesPerProduct), 2);
         },
       },
       {
@@ -268,12 +248,11 @@ const PerformanceProductPage: NextPage<Record<string, never>> = () => {
             </Tooltip>
           </>
         ),
-        render: ({ value }) => {
-          const valueCast = value as AugmentedProduct["productImpressions"];
-          if (valueCast == null) {
+        render: ({ row: { productImpressions } }) => {
+          if (productImpressions == null) {
             return "-";
           }
-          return addCommas(String(valueCast));
+          return addCommas(String(productImpressions));
         },
       },
       {
@@ -294,12 +273,11 @@ const PerformanceProductPage: NextPage<Record<string, never>> = () => {
           </>
         ),
 
-        render: ({ value }) => {
-          const valueCast = value as AugmentedProduct["gmv"];
+        render: ({ row: { gmv } }) => {
           const amount =
             store.currencyCode === CURRENCY_CODE.CNY
-              ? valueCast?.CNY_amount
-              : valueCast?.USD_amount;
+              ? gmv.CNY_amount
+              : gmv.USD_amount;
           if (amount == null) {
             return "-";
           }
@@ -327,8 +305,8 @@ const PerformanceProductPage: NextPage<Record<string, never>> = () => {
           text={i`Please refer to the metrics on the Wish Standards page as the definitive source for your performance.`}
         />
         <div className={commonStyles.toolkit}>
-          {store.productCNYFlag && (
-            <div>
+          {store.productCNYFlag ? (
+            <div className={commonStyles.changeCurrencyCon}>
               <Button
                 secondary
                 disabled={store.currencyCode === CURRENCY_CODE.USD}
@@ -358,16 +336,15 @@ const PerformanceProductPage: NextPage<Record<string, never>> = () => {
                 </span>
               </Tooltip>
             </div>
+          ) : (
+            <div></div>
           )}
-
           <Button
             secondary
             onClick={() =>
               exportCSV({
                 type: EXPORT_CSV_TYPE.MERCHANT,
                 stats_type: EXPORT_CSV_STATS_TYPE.PRODUCT_OVERVIEW,
-                id: exportId,
-                isBDUser,
                 currencyCode: store.currencyCode,
                 target_date:
                   new Date(
@@ -380,7 +357,7 @@ const PerformanceProductPage: NextPage<Record<string, never>> = () => {
           </Button>
         </div>
         {loading ? (
-          <LoadingIndicator />
+          <LoadingIndicator className={commonStyles.loading} />
         ) : (
           <Table data={store.data} columns={columns} />
         )}
