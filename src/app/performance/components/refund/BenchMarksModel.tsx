@@ -19,7 +19,7 @@ const BenchMarksModel: React.FC = () => {
   const columns = useMemo(() => {
     const columns: ReadonlyArray<TableColumn<RefundAggregateBenchMark>> = [
       {
-        title: i`BenchMark`,
+        title: i`Benchmark`,
         key: "benchMark",
         render: ({ row: { benchMark } }) => (
           <ThemedLabel theme={"Red"} className={commonStyles.themedLabel}>
