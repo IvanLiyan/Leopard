@@ -80,37 +80,36 @@ export const wishURL = (path: string): string => {
 };
 
 export const contestImageURL = (
-  contest_id: string,
-  size?: string,
-  sequence_id?: string,
-  cache_buster?: string,
+  contestId: string,
+  size = "medium",
+  sequenceId?: string,
+  cacheBuster?: string,
 ): string => {
-  if (!size) {
-    size = "medium";
+  let sequenceIdString = "";
+  if (sequenceId) {
+    sequenceIdString = sequenceId + "-";
   }
-  let sequence_id_string = "";
-  if (sequence_id) {
-    sequence_id_string = sequence_id + "-";
-  }
-  let cache_buster_string = "";
-  if (cache_buster) {
-    cache_buster_string = "?cache_buster=" + cache_buster;
+  let cacheBusterString = "";
+  if (cacheBuster) {
+    cacheBusterString = "?cache_buster=" + cacheBuster;
   }
 
-  // @ts-expect-error: need to add lemmings_url to GQL (ex: "https://canary.contestimg.wish.com/api/webimage") (https://jira.wish.site/browse/MKL-54835)
-  return `${window.lemmings_url}/${contest_id}-${sequence_id_string}${size}.jpg${cache_buster_string}`;
+  // clroot uses a different lemmings URL if mockS3 is true or it is running in sandbox
+  // see sweeper/merchant_dashboard/base_handler.py:3749
+  // since we aren't supporting either option, we can hardcode the standard URL
+  return `https://canary.contestimg.wish.com/api/webimage/${contestId}-${sequenceIdString}${size}.jpg${cacheBusterString}`;
 };
 
 export const resizedContestImageURL = (
-  contest_id: string,
+  contestId: string,
   width?: number,
   height?: number,
-  sequence_id?: string,
+  sequenceId?: string,
   mode?: string,
 ): string => {
   let url = window.location.protocol;
   url += "//canary.contestimg.wish.com/api/image/fetch?contest_id=";
-  url += contest_id;
+  url += contestId;
 
   if (width) {
     url += "&w=";
@@ -122,9 +121,9 @@ export const resizedContestImageURL = (
     url += Math.ceil(height);
   }
 
-  if (sequence_id) {
+  if (sequenceId) {
     url += "&s=";
-    url += sequence_id;
+    url += sequenceId;
   }
 
   if (mode != null) {
@@ -135,18 +134,18 @@ export const resizedContestImageURL = (
   return url;
 };
 
-export const zendeskURL = (article_id: string): string => {
+export const zendeskURL = (articleId: string): string => {
   const zendeskLocale = getZendeskLocale();
-  const zendeskUrl = `https://merchantfaq.wish.com/hc/${zendeskLocale}/articles/${article_id}`;
+  const zendeskUrl = `https://merchantfaq.wish.com/hc/${zendeskLocale}/articles/${articleId}`;
   return absExtURL(zendeskUrl);
 };
 
 export const zendeskCategoryURL = (
-  category_id: string,
+  categoryId: string,
   locale?: string,
 ): string => {
   const zendeskLocale = getZendeskLocale(locale);
-  const zendeskCategoryUrl = `https://merchantfaq.wish.com/hc/${zendeskLocale}/categories/${category_id}`;
+  const zendeskCategoryUrl = `https://merchantfaq.wish.com/hc/${zendeskLocale}/categories/${categoryId}`;
   return absExtURL(zendeskCategoryUrl);
 };
 

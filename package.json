@@ -7,10 +7,10 @@
     "dev": "NODE_EXTRA_CA_CERTS=\"$(cat ./certs/.capath)\" node server.js",
     "build": "next build && next export",
     "tsc": "tsc --noemit",
-    "eslint": "eslint .",
+    "eslint": "eslint --max-warnings=0 .",
     "prettier": "prettier -c src",
     "lint": "yarn eslint && yarn tsc && yarn prettier",
-    "clean": "rm -rf node_modules",
+    "clean": "rm -rf node_modules build out",
     "test": "jest --watch",
     "test-ci": "jest --coverage"
   },

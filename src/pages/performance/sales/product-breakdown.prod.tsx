@@ -86,7 +86,12 @@ const SalesProductBreakdownPage: NextPage<Record<string, never>> = () => {
                 src={contestImageURL(id, "tiny")}
                 alt={i`Picture of product`}
               />
-              <Link href={url} openInNewTab>
+              <Link
+                href={url}
+                openInNewTab
+                style={{ marginLeft: "10px" }}
+                className={commonStyles.linkStyle}
+              >
                 {id}
               </Link>
             </div>

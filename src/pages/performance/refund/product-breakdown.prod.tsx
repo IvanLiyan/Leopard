@@ -91,7 +91,7 @@ const ProductBreakdownPage = () => {
               <Link
                 href={url}
                 openInNewTab
-                style={{ display: "flex", marginLeft: "10px" }}
+                style={{ marginLeft: "10px" }}
                 className={commonStyles.linkStyle}
               >
                 {row.id}
