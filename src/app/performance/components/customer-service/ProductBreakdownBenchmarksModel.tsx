@@ -15,7 +15,7 @@ const ProductBreakdownBenchMarksData: ReadonlyArray<CustomerServiceProductBreakd
       refundRatio93d: i`> 8%`,
     },
     {
-      benchmark: i`Warning (Risk of Suspension)`,
+      benchmark: i`Warning`,
       refundRatio30d: i`> 10%`,
       refundRatio93d: i`> 10%`,
     },

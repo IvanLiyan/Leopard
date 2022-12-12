@@ -9,7 +9,7 @@ import { Tooltip } from "@mui/material";
 
 const benchMarksData: ReadonlyArray<ShippingBenchMark> = [
   {
-    timePeriod: i`Warning (Risk of Suspension)`,
+    timePeriod: i`Warning`,
     averageClaimedFulfillmentTime: i`> 72 Hours (3 Days)`,
     averageFulfillmentTime: i`> 120 Hours (5 Days)`,
     validTrackingRate: i`< 99%`,

@@ -201,6 +201,8 @@ const PerformanceShippingPage: NextPage<Record<string, never>> = () => {
             <ThemedLabel theme={"Red"} className={commonStyles.themedLabel}>
               {formatPercentage(String(validTrackingRate), "1", 2)}
             </ThemedLabel>
+          ) : validTrackingRate > 1 ? (
+            formatPercentage(String(1), "1", 2)
           ) : (
             formatPercentage(String(validTrackingRate), "1", 2)
           );
@@ -360,8 +362,8 @@ const PerformanceShippingPage: NextPage<Record<string, never>> = () => {
           </>
         ),
         render: ({ row: { ordersConfirmedDelivered }, index }) =>
-          // The data in the last four weeks of this column need to display Not Available Yet
-          index < 4 ? (
+          // The data in the last six weeks of this column need to display Not Available Yet
+          index < 6 ? (
             <span style={{ color: textLight }}>Not Available Yet</span>
           ) : ordersConfirmedDelivered == null ||
             ordersConfirmedDelivered == 0 ? (
@@ -388,8 +390,8 @@ const PerformanceShippingPage: NextPage<Record<string, never>> = () => {
           </>
         ),
         render: ({ row: { ordersConfirmedDeliveredRate }, index }) =>
-          // The data in the last four weeks of this column need to display Not Available Yet
-          index < 4 ? (
+          // The data in the last six weeks of this column need to display Not Available Yet
+          index < 6 ? (
             <span style={{ color: textLight }}>Not Available Yet</span>
           ) : ordersConfirmedDeliveredRate == null ||
             ordersConfirmedDeliveredRate == 0 ? (
@@ -417,8 +419,8 @@ const PerformanceShippingPage: NextPage<Record<string, never>> = () => {
           </>
         ),
         render: ({ row: { shippingTime }, index }) => {
-          // The data in the last four weeks of this column need to display Not Available Yet
-          return index < 4 ? (
+          // The data in the last six weeks of this column need to display Not Available Yet
+          return index < 6 ? (
             <span style={{ color: textLight }}>Not Available Yet</span>
           ) : shippingTime == null || shippingTime.days == 0 ? (
             "-"
@@ -450,8 +452,8 @@ const PerformanceShippingPage: NextPage<Record<string, never>> = () => {
           </>
         ),
         render: ({ row: { timeToDoor }, index }) => {
-          // The data in the last four weeks of this column need to display Not Available Yet
-          return index < 4 ? (
+          // The data in the last six weeks of this column need to display Not Available Yet
+          return index < 6 ? (
             <span style={{ color: textLight }}>Not Available Yet</span>
           ) : timeToDoor == null || timeToDoor.days == 0 ? (
             "-"

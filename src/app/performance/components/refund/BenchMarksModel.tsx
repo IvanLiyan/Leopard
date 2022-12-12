@@ -9,7 +9,7 @@ import { Tooltip } from "@mui/material";
 
 const benchMarksData: ReadonlyArray<RefundAggregateBenchMark> = [
   {
-    benchMark: i`Warning (Risk of Suspension)`,
+    benchMark: i`Warning`,
     refundRate: 0.1,
   },
 ];

@@ -20,7 +20,7 @@ const AggregateBenchMarksData: ReadonlyArray<CustomerServiceAggregateBenchMark> 
       customerSatisfaction: "-",
     },
     {
-      benchmark: i`Warning (Risk of Suspension)`,
+      benchmark: i`Warning`,
       refundRatio30d: i`> 10%`,
       refundRatio93d: i`> 10%`,
       chargebackRatio: i`> 0.5%`,
