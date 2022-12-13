@@ -10,9 +10,10 @@ describe("pass file", () => {
 export {};
 
 // import {
-//   countTableDataCurrencyAmount,
-//   CountTableDataItem,
+// countTableDataCurrencyAmount,
+// CountTableDataItem,
 //   getOffsetDays,
+//   useDateRange,
 // } from "./utils";
 
 // describe("countTableDataCurrencyAmount", () => {
@@ -239,5 +240,40 @@ export {};
 //     const to = undefined;
 //     const result = getOffsetDays(from, to);
 //     expect(result).toEqual(0);
+//   });
+// });
+
+// describe("useDateRange", () => {
+//   test("Calculate [minVal, maxVal] in recommendValue and data when recommendValue is minimum value", () => {
+//     const recommendValue = 2;
+//     const data = [
+//       5, 4.6, 4.6, 4.6, 4.6, 4.6, 4.6, 4.6, 4.6, 4.5, 4.5, 4.5, 4.5, 4.5, 4.5,
+//       4.5, 4.5, 4.5, 4.5, 4.5, 4.5, 4.333, 4.333, 4.333, 4.333, 4.333, 4.333,
+//       4.333, 4.333, 4.333,
+//     ];
+//     const result = useDateRange({ recommendValue, data });
+//     expect(result).toEqual([2, 5]);
+//   });
+
+//   test("Calculate [minVal, maxVal] in recommendValue and data when recommendValue is maximum value", () => {
+//     const recommendValue = 6;
+//     const data = [
+//       5, 4.6, 4.6, 4.6, 4.6, 4.6, 4.6, 4.6, 4.6, 4.5, 4.5, 4.5, 4.5, 4.5, 4.5,
+//       4.5, 4.5, 4.5, 4.5, 4.5, 4.5, 4.333, 4.333, 4.333, 4.333, 4.333, 4.333,
+//       4.333, 4.333, 4.333,
+//     ];
+//     const result = useDateRange({ recommendValue, data });
+//     expect(result).toEqual([4.333, 6]);
+//   });
+
+//   test("Calculate [minVal, maxVal] in recommendValue and data when recommendValue is median value", () => {
+//     const recommendValue = 5;
+//     const data = [
+//       5, 4.6, 4.6, 4.6, 4.6, 4.6, 4.6, 4.6, 4.6, 4.5, 4.5, 4.5, 4.5, 4.5, 4.5,
+//       4.5, 4.5, 4.5, 4.5, 4.5, 4.5, 4.333, 4.333, 4.333, 4.333, 4.333, 4.333,
+//       4.333, 4.333, 4.333,
+//     ];
+//     const result = useDateRange({ recommendValue, data });
+//     expect(result).toEqual([4.333, 5]);
 //   });
 // });

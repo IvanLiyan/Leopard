@@ -46,7 +46,7 @@ export const PERFORMANCE_AGGREGATE_DATA_QUERY = gql`
 type PickedSalesAggregate = {
   readonly startDate: Pick<Datetime, "mmddyyyy">;
   readonly endDate: Pick<Datetime, "mmddyyyy">;
-  readonly gmv: Pick<CurrencyValue, "amount" | "currencyCode">;
+  readonly gmv?: Pick<CurrencyValue, "amount" | "currencyCode">;
 } & Pick<
   SalesPerformanceStats,
   | "productImpressions"
@@ -57,7 +57,8 @@ type PickedSalesAggregate = {
 >;
 
 export type AugmentedSalesAggregate = Omit<PickedSalesAggregate, "gmv"> & {
-  readonly gmv: Pick<CurrencyValue, "amount" | "currencyCode"> & AugmentedPrice;
+  readonly gmv?: Pick<CurrencyValue, "amount" | "currencyCode"> &
+    AugmentedPrice;
 };
 
 export type SalesAggregateResponseData = {
@@ -108,7 +109,7 @@ export const PERFORMANCE_BREAKDOWN_DATA_QUERY = gql`
 `;
 
 type PickedSalesBreakdown = {
-  readonly gmv: Pick<CurrencyValue, "amount" | "currencyCode">;
+  readonly gmv?: Pick<CurrencyValue, "amount" | "currencyCode">;
 } & Pick<
   SalesPerformanceStats,
   | "productImpressions"
@@ -120,7 +121,8 @@ type PickedSalesBreakdown = {
 
 export type AugmentedSalesBreakdown = Omit<PickedSalesBreakdown, "gmv"> & {
   readonly id: ProductSchema["id"];
-  readonly gmv: Pick<CurrencyValue, "amount" | "currencyCode"> & AugmentedPrice;
+  readonly gmv?: Pick<CurrencyValue, "amount" | "currencyCode"> &
+    AugmentedPrice;
   readonly startDate: Pick<Datetime, "mmddyyyy">;
   readonly endDate: Pick<Datetime, "mmddyyyy">;
 };
@@ -193,7 +195,7 @@ class Store {
       salesData as unknown as ReadonlyArray<CountTableDataItem>, // cast is very dangerous but original code was not type safe. please do not repeat
       ["gmv"],
     ) as unknown as ReadonlyArray<AugmentedSalesAggregate>;
-    if (salesData[0].gmv.currencyCode === "CNY") this.aggregateCNYFlag = true;
+    if (salesData[0].gmv?.currencyCode === "CNY") this.aggregateCNYFlag = true;
   }
 
   @action
@@ -218,7 +220,7 @@ class Store {
       ["gmv"],
     ) as unknown as ReadonlyArray<AugmentedSalesBreakdown>; // cast is very dangerous but original code was not type safe. please do not repeat;
 
-    if (productData[0].gmv.currencyCode === "CNY") this.productCNYFlag = true;
+    if (productData[0].gmv?.currencyCode === "CNY") this.productCNYFlag = true;
   }
 }
 

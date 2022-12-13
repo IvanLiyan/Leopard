@@ -1,5 +1,6 @@
 import { PaymentCurrencyCode } from "@schema";
 import { useUserStore } from "@core/stores/UserStore";
+import { useMemo } from "react";
 
 export interface CountTableDataItem {
   [x: string]: {
@@ -43,7 +44,7 @@ export const getOffsetDays = (
   to: Date | null | undefined,
 ): number => {
   if (!to || !from) return 0;
-  return Math.round((to.getTime() - from.getTime()) / (24 * 3600 * 1000));
+  return Math.ceil((to.getTime() - from.getTime()) / (24 * 3600 * 1000));
 };
 
 export const useExportCSV = () => {
@@ -67,4 +68,24 @@ export const useExportCSV = () => {
     location.href = `${window.location.origin}${queryPath}`;
   };
   return exportCSV;
+};
+
+export const useDateRange = ({
+  recommendValue,
+  data,
+}: {
+  readonly recommendValue: number;
+  readonly data: ReadonlyArray<number>;
+}): [number, number] => {
+  return useMemo(() => {
+    const sortedData = [...data, recommendValue].sort(
+      (pre: number, next: number) => pre - next,
+    );
+    const min = sortedData[0];
+    const max = sortedData[sortedData.length - 1];
+    return [min, max];
+    // looks like a false positive due to mobx
+    // if we remove it the memo doesn't re-compute as required
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data]);
 };

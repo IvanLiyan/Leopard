@@ -146,8 +146,8 @@ const PerformanceProductPage: NextPage<Record<string, never>> = () => {
         render: ({ row: { averagePrice } }) => {
           const amount =
             store.currencyCode === CURRENCY_CODE.CNY
-              ? averagePrice.CNY_amount
-              : averagePrice.USD_amount;
+              ? averagePrice?.CNY_amount
+              : averagePrice?.USD_amount;
           if (amount == null) {
             return "-";
           }
@@ -174,8 +174,8 @@ const PerformanceProductPage: NextPage<Record<string, never>> = () => {
         render: ({ row: { averageShippingPrice } }) => {
           const amount =
             store.currencyCode === CURRENCY_CODE.CNY
-              ? averageShippingPrice.CNY_amount
-              : averageShippingPrice.USD_amount;
+              ? averageShippingPrice?.CNY_amount
+              : averageShippingPrice?.USD_amount;
           if (amount == null) {
             return "-";
           }
@@ -276,8 +276,8 @@ const PerformanceProductPage: NextPage<Record<string, never>> = () => {
         render: ({ row: { gmv } }) => {
           const amount =
             store.currencyCode === CURRENCY_CODE.CNY
-              ? gmv.CNY_amount
-              : gmv.USD_amount;
+              ? gmv?.CNY_amount
+              : gmv?.USD_amount;
           if (amount == null) {
             return "-";
           }

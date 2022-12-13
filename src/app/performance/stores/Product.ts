@@ -51,11 +51,14 @@ export const PERFORMANCE_PRODUCT_DATA_QUERY = gql`
 `;
 
 type PickedProduct = {
-  startDate: Pick<Datetime, "mmddyyyy">;
-  endDate: Pick<Datetime, "mmddyyyy">;
-  averagePrice: Pick<CurrencyValue, "amount" | "currencyCode">;
-  averageShippingPrice: Pick<CurrencyValue, "amount" | "currencyCode">;
-  gmv: Pick<CurrencyValue, "amount" | "currencyCode">;
+  readonly startDate: Pick<Datetime, "mmddyyyy">;
+  readonly endDate: Pick<Datetime, "mmddyyyy">;
+  readonly averagePrice?: Pick<CurrencyValue, "amount" | "currencyCode">;
+  readonly averageShippingPrice?: Pick<
+    CurrencyValue,
+    "amount" | "currencyCode"
+  >;
+  readonly gmv?: Pick<CurrencyValue, "amount" | "currencyCode">;
 } & Pick<
   ProductPerformanceStats,
   | "activeProducts"
@@ -82,10 +85,15 @@ export type AugmentedProduct = Omit<
   PickedProduct,
   "averagePrice" | "averageShippingPrice" | "gmv"
 > & {
-  averagePrice: Pick<CurrencyValue, "amount" | "currencyCode"> & AugmentedPrice;
-  averageShippingPrice: Pick<CurrencyValue, "amount" | "currencyCode"> &
+  readonly averagePrice?: Pick<CurrencyValue, "amount" | "currencyCode"> &
     AugmentedPrice;
-  gmv: Pick<CurrencyValue, "amount" | "currencyCode"> & AugmentedPrice;
+  readonly averageShippingPrice?: Pick<
+    CurrencyValue,
+    "amount" | "currencyCode"
+  > &
+    AugmentedPrice;
+  readonly gmv?: Pick<CurrencyValue, "amount" | "currencyCode"> &
+    AugmentedPrice;
 };
 
 class Store {
@@ -113,7 +121,7 @@ class Store {
       productData as unknown as ReadonlyArray<CountTableDataItem>, // cast is very dangerous but original code was not type safe. please do not repeat
       ["averagePrice", "averageShippingPrice", "gmv"],
     ) as unknown as ReadonlyArray<AugmentedProduct>; // cast is very dangerous but original code was not type safe. please do not repeat
-    if (productData[0].gmv.currencyCode === "CNY") this.productCNYFlag = true;
+    if (productData[0].gmv?.currencyCode === "CNY") this.productCNYFlag = true;
   }
 }
 

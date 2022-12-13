@@ -118,8 +118,8 @@ const SalesProductBreakdownPage: NextPage<Record<string, never>> = () => {
         render: ({ row: { gmv } }) => {
           const amount =
             store.breakdownCurrencyCode === CURRENCY_CODE.CNY
-              ? gmv.CNY_amount
-              : gmv.USD_amount;
+              ? gmv?.CNY_amount
+              : gmv?.USD_amount;
           return amount
             ? formatCurrency(amount, store.breakdownCurrencyCode)
             : "-";
@@ -153,8 +153,7 @@ const SalesProductBreakdownPage: NextPage<Record<string, never>> = () => {
       <PageGuide relaxed style={{ paddingTop: 20 }}>
         <Alert
           sentiment="info"
-          text={i`Please refer to the metrics on the Wish Standards page as the
-          definitive source for your performance.`}
+          text={i`Please refer to the metrics on the Wish Standards page as the definitive source for your performance.`}
         />
         <div className={commonStyles.toolkit}>
           {store.productCNYFlag ? (

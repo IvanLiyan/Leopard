@@ -218,8 +218,7 @@ const ProductBreakdownPage = () => {
       <PageGuide relaxed style={{ paddingTop: 20 }}>
         <Alert
           sentiment="info"
-          text={i`Please refer to the metrics on the Wish Standards page as the
-          definitive source for your performance.`}
+          text={i`Please refer to the metrics on the Wish Standards page as the definitive source for your performance.`}
         />
         <div className={styles.metricsModule}>
           <div className={commonStyles.toolkit}>

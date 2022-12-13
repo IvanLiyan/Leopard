@@ -90,8 +90,8 @@ const SalesAggregateModel: React.FC = () => {
         render: ({ row: { gmv } }) => {
           const amount =
             store.aggreagateCurrencyCode === CURRENCY_CODE.CNY
-              ? gmv.CNY_amount
-              : gmv.USD_amount;
+              ? gmv?.CNY_amount
+              : gmv?.USD_amount;
           return amount
             ? formatCurrency(amount, store.aggreagateCurrencyCode)
             : "-";
@@ -117,8 +117,7 @@ const SalesAggregateModel: React.FC = () => {
       <PageGuide relaxed style={{ paddingTop: 20 }}>
         <Alert
           sentiment="info"
-          text={i`Please refer to the metrics on the Wish Standards page as the
-          definitive source for your performance.`}
+          text={i`Please refer to the metrics on the Wish Standards page as the definitive source for your performance.`}
         />
         <div className={commonStyles.toolkit}>
           {store.aggregateCNYFlag ? (
