@@ -45,7 +45,7 @@ build:
 
 deploy staging:
   stage: deploy
-  image: registry-gitlab.i.wish.com/contextlogic/leopard/aws-base:latest
+  image: registry-gitlab.i.wish.com/contextlogic/leopard/aws-base-with-brotli:latest
   script:
     - sh scripts/deploy.sh -s=leopard-staging
   environment:
@@ -57,7 +57,7 @@ deploy staging:
 
 deploy prod:
   stage: deploy
-  image: registry-gitlab.i.wish.com/contextlogic/leopard/aws-base:latest
+  image: registry-gitlab.i.wish.com/contextlogic/leopard/aws-base-with-brotli:latest
   script:
     - sh scripts/deploy.sh -s=leopard-production
   environment:

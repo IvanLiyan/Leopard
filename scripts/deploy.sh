@@ -10,11 +10,20 @@ case $i in
 esac
 done
 
-echo "Checking AWS configuration..."
+echo "Checking AWS configuration"
 aws configure list
 
-echo "Copy non-html build contents to S3"
-aws s3 sync --delete --exclude "*.html" ./out s3://$S3_BUCKET/md
+echo "Copy non-html non-js build contents to S3"
+aws s3 sync --delete --exclude "*.html" --exclude "*.js" ./out s3://$S3_BUCKET/md
+
+echo "Copy html build contents to S3"
+for f in $(find out -name '*.js')
+do
+ echo "Encoding $f"
+ brotli $f
+ cleaned=${f#out/}
+ aws s3 cp $f.br s3://$S3_BUCKET/md/$cleaned --content-type "application/javascript" --content-encoding "br"
+done
 
 echo "Copy html build contents to S3"
 for f in $(find out -name '*.html')
