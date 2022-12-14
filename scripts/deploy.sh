@@ -14,7 +14,7 @@ echo "Checking AWS configuration"
 aws configure list
 
 echo "Copy non-html non-js build contents to S3"
-aws s3 sync --delete --exclude "*.html" --exclude "*.js" ./out s3://$S3_BUCKET/md
+aws s3 sync --exclude "*.html" --exclude "*.js" ./out s3://$S3_BUCKET/md
 
 echo "Copy html build contents to S3"
 for f in $(find out -name '*.js')
