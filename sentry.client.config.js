@@ -4,25 +4,15 @@
 
 import * as Sentry from "@sentry/nextjs";
 
-// auto generated file
-// eslint-disable-next-line no-undef
-const SENTRY_DSN = process.env.SENTRY_DSN || process.env.NEXT_PUBLIC_SENTRY_DSN;
-// eslint-disable-next-line no-undef
-const ENV = process.env.ENV || "local";
+const ENV = process.env.ENV;
 
-Sentry.init(
-  // ENV === "local"
-  // TODO [lliepert]: temp disabling sentry until vault is set up
-  // eslint-disable-next-line no-constant-condition
-  true
-    ? {}
-    : {
-        dsn: SENTRY_DSN, // Adjust this value in production, or use tracesSampler for greater control
-        tracesSampleRate: 1.0,
-        environment: ENV,
-        // ...
-        // Note: if you want to override the automatic release value, do not set a
-        // `release` value here - use the environment variable `SENTRY_RELEASE`, so
-        // that it will also get attached to your source maps
-      },
-);
+Sentry.init({
+  dsn: `https://346261e9302d40f091ea74b719183fba@${window.location.host}/sentry-proxy-v2/280`,
+  tracesSampleRate: 0, // disable performance monitoring; it uses the /envelope URL which is not supported on sentry v10 (current sentry.infra.wish.com version)
+  environment: ENV,
+  autoSessionTracking: false, // session tracking uses the /envelope URL which is not supported on sentry v10 (current sentry.infra.wish.com version)
+  // ...
+  // Note: if you want to override the automatic release value, do not set a
+  // `release` value here - use the environment variable `SENTRY_RELEASE`, so
+  // that it will also get attached to your source maps
+});

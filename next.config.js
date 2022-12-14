@@ -1,4 +1,5 @@
 const { PHASE_DEVELOPMENT_SERVER } = require("next/constants");
+const { withSentryConfig } = require("@sentry/nextjs");
 const withTM = require("next-transpile-modules")([
   "recharts",
   "@ContextLogic/lego",
@@ -6,7 +7,7 @@ const withTM = require("next-transpile-modules")([
 
 const MD_URL = process.env.NEXT_PUBLIC_MD_URL || "";
 
-module.exports = (phase, { defaultConfig }) => {
+const moduleExports = (phase, { defaultConfig }) => {
   return withTM({
     ...defaultConfig,
     distDir: "build",
@@ -70,5 +71,11 @@ module.exports = (phase, { defaultConfig }) => {
           : [`prod.${ext}`],
       )
       .flat(),
+    sentry: {
+      disableServerWebpackPlugin: true, // disable source maps
+      disableClientWebpackPlugin: true, // disable source maps
+    },
   });
 };
+
+module.exports = withSentryConfig(moduleExports);
