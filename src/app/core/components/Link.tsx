@@ -45,7 +45,7 @@ const Link = (_props: LinkProps) => {
   const href = hrefProp === null ? undefined : hrefProp;
 
   const propsWithoutHref = {
-    style: [style, className, { color: light ? corePrimaryLight : undefined }],
+    style: [{ color: light ? corePrimaryLight : undefined }, style, className],
     rel: openInNewTab || onClick ? "noopener noreferrer" : undefined,
     target: openInNewTab ? "_blank" : undefined,
     onClick,
@@ -57,7 +57,7 @@ const Link = (_props: LinkProps) => {
     ...otherProps,
   };
 
-  // urls of the form `${window.location.href}/slug` can be used to access
+  // urls of the form `${window.location.origin}/slug` can be used to access
   // Merch-FE pages, while "/slug" can be used to access Leopard pages
   if (!href || (typeof href == "string" && isValidURL(href))) {
     return <SimpleLink href={href} {...propsWithoutHref} />;

@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import { StyleSheet } from "aphrodite";
 import { observer } from "mobx-react";
 
-import { Layout, Link, Popover, Text } from "@ContextLogic/lego";
+import { Layout, Popover, Text } from "@ContextLogic/lego";
 import { Info } from "@ContextLogic/lego";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { ci18n } from "@core/toolkit/i18n";
@@ -10,6 +10,7 @@ import { useDeviceStore } from "@core/stores/DeviceStore";
 import { useTheme } from "@core/stores/ThemeStore";
 import { css } from "@core/toolkit/styling";
 import { merchFeURL } from "@core/toolkit/url";
+import Link from "@core/components/Link";
 
 export type SiteFooterProps = BaseProps;
 

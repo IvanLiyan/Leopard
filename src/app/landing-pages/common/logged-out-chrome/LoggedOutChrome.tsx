@@ -7,7 +7,7 @@ import Color from "color";
 import posed from "react-pose";
 
 /* Lego Components */
-import { Link, PrimaryButton } from "@ContextLogic/lego";
+import { PrimaryButton } from "@ContextLogic/lego";
 
 /* Lego Toolkit */
 import { css } from "@core/toolkit/styling";
@@ -26,6 +26,8 @@ import { useNavigationStore } from "@core/stores/NavigationStore";
 import { useDeviceStore } from "@core/stores/DeviceStore";
 import { useUserStore } from "@core/stores/UserStore";
 import AppLocaleSelector from "@chrome/components/AppLocaleSelector";
+import { merchFeURL } from "@core/toolkit/url";
+import Link from "@core/components/Link";
 
 type NavigationProps = BaseProps & {
   readonly insetX?: number;
@@ -55,7 +57,11 @@ const Navigation = (props: NavigationProps) => {
     >
       <Link
         className={css(styles.logo)}
-        href={navigationStore.currentPath === "/open-express" ? "#" : "/"}
+        href={
+          navigationStore.currentPath === "/open-express"
+            ? "#"
+            : merchFeURL("/")
+        }
       >
         <WishForMerchants mode="default" />
       </Link>
@@ -65,12 +71,13 @@ const Navigation = (props: NavigationProps) => {
           <div className={css(styles.rightSectionLinks)}>
             {renderLoginButton && (
               <Link
-                className={css(styles.link)}
-                style={{ color: textDark }}
+                style={[styles.link, { color: textDark }]}
                 href={
                   navigationStore.queryParams.next
-                    ? `/login?next=${navigationStore.queryParams.next}`
-                    : "/login"
+                    ? merchFeURL(
+                        `/login?next=${navigationStore.queryParams.next}`,
+                      )
+                    : merchFeURL("/login")
                 }
               >
                 Login
