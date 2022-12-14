@@ -20,6 +20,7 @@ import { useRouter } from "next/router";
 /* External Libraries */
 import queryString from "query-string";
 import Path from "path-parser";
+import { isValidURL } from "@core/components/Link";
 
 const getPath = (str: string | null | undefined): string | null | undefined => {
   if (str == null) {
@@ -215,9 +216,11 @@ export const NavigationProvider: React.FC = ({ children }) => {
         return;
       }
 
-      await router.push(_path);
-      // TODO [lliepert]: handle next.js vs non-next.js pages
-      // window.location.href = _path;
+      if (isValidURL(_path)) {
+        window.location.href = _path;
+      } else {
+        await router.push(_path);
+      }
     };
 
     return {

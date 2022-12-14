@@ -23,6 +23,7 @@ import { useTheme } from "@core/stores/ThemeStore";
 import { useEnvironmentStore } from "@core/stores/EnvironmentStore";
 
 import Link from "@core/components/Link";
+import { merchFeURL } from "@core/toolkit/url";
 
 type Props = BaseProps;
 
@@ -42,7 +43,7 @@ const NotificationsButton: React.FC<Props> = ({ style, className }: Props) => {
   const useLightIcon = isDev || isStaging;
 
   return (
-    <Link href="/notifications">
+    <Link href={merchFeURL("/notifications")}>
       <Layout.FlexRow className={css(styles.root, style, className)}>
         <Icon
           name="bell"

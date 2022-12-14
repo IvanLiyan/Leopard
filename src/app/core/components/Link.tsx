@@ -18,7 +18,7 @@ export type LinkProps = Omit<SimpleLinkProps, "href"> & {
   readonly fadeOnHover?: boolean | null | undefined;
 } & ({ readonly light: true } | { readonly light?: never }); // this functionality should be moved to the Atlas link when built
 
-const isValidURL = (s: string): boolean => {
+export const isValidURL = (s: string): boolean => {
   try {
     new URL(s);
     // test has passed, s is a valid URL

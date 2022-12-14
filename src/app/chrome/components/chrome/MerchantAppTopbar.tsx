@@ -38,6 +38,7 @@ import Icon from "@core/components/Icon";
 
 import Link from "@core/components/Link";
 import { SearchStoreProvider } from "@chrome/search/searchStore";
+import { merchFeURL } from "@core/toolkit/url";
 
 type MerchantAppTopbarProps = BaseProps & {
   readonly disableMenu?: boolean;
@@ -106,7 +107,7 @@ const MerchantAppTopbar: React.FC<MerchantAppTopbarProps> = ({
                 {showMenuDot && <div className={css(styles.dot)} />}
               </div>
             )}
-            <Link href="/home">
+            <Link href={merchFeURL("/home")}>
               <MerchantPlus mode={appIconTheme} className={css(styles.logo)} />
             </Link>
           </Layout.FlexRow>

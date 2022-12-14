@@ -218,7 +218,6 @@ export const ChromeProvider: React.FC<{
               <div className={css(styles.toastContainer)}>
                 <Toast contentAlignment="left" />
               </div>
-              {/* progressiveLoadingStatus == "IN_PROGRESS" ||  */}
               {isLoadingIssues && (
                 <div className={css(styles.loadingScreen)}>
                   <LoadingIndicator type="spinner" size={40} />
