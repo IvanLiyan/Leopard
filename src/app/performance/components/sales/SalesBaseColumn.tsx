@@ -116,7 +116,7 @@ export default function useSalesBaseColumn() {
           <span>Checkout Conversion</span>
           <Tooltip
             title={
-              <div style={{ fontSize: "12px" }}>
+              <div style={{ fontSize: "14px" }}>
                 Orders divided by shopping cart impressions
               </div>
             }

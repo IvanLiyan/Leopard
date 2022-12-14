@@ -321,8 +321,8 @@ const CustomerServiceAggregateModule: React.FC = () => {
         render: ({ row: { chargebackAmount } }) => {
           const amount =
             store.aggreagateCurrencyCode === CURRENCY_CODE.CNY
-              ? chargebackAmount.CNY_amount
-              : chargebackAmount.USD_amount;
+              ? chargebackAmount?.CNY_amount
+              : chargebackAmount?.USD_amount;
           return amount
             ? formatCurrency(amount, store.aggreagateCurrencyCode)
             : "-";

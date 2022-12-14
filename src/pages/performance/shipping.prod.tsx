@@ -396,6 +396,8 @@ const PerformanceShippingPage: NextPage<Record<string, never>> = () => {
           ) : ordersConfirmedDeliveredRate == null ||
             ordersConfirmedDeliveredRate == 0 ? (
             "-"
+          ) : ordersConfirmedDeliveredRate > 1 ? (
+            formatPercentage(String(1), "1", 2)
           ) : (
             formatPercentage(String(ordersConfirmedDeliveredRate), "1", 2)
           ),

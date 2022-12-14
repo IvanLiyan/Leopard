@@ -83,7 +83,7 @@ type PickedCustomerServiceAggregate = {
   readonly startDate: Pick<Datetime, "mmddyyyy">;
   readonly endDate: Pick<Datetime, "mmddyyyy">;
   readonly gmv: Pick<CurrencyValue, "amount" | "currencyCode">;
-  readonly chargebackAmount: Pick<CurrencyValue, "amount" | "currencyCode">;
+  readonly chargebackAmount?: Pick<CurrencyValue, "amount" | "currencyCode">;
   readonly averageTicketResponseTime: Pick<Timedelta, "hours">;
 } & Pick<
   CsPerformanceStats,
@@ -109,7 +109,7 @@ export type AugmentedCustomerServiceAggregate = Omit<
   "gmv"
 > & {
   readonly gmv: Pick<CurrencyValue, "amount" | "currencyCode"> & AugmentedPrice;
-  readonly chargebackAmount: Pick<CurrencyValue, "amount" | "currencyCode"> &
+  readonly chargebackAmount?: Pick<CurrencyValue, "amount" | "currencyCode"> &
     AugmentedPrice;
 };
 
