@@ -39,6 +39,7 @@ import { ByUserIdInput } from "@schema";
 import { useAppTopBarData } from "@chrome/toolkit";
 
 import Link from "@core/components/Link";
+import { merchFeURL } from "@core/toolkit/url";
 
 const PlusUserAvatar: React.FC<BaseProps> = ({
   style,
@@ -75,7 +76,7 @@ const PlusUserAvatar: React.FC<BaseProps> = ({
 
   const onQuickLoginClick = async (id: string) => {
     if (id == "me") {
-      await navigationStore.navigate("/switchsu");
+      await navigationStore.navigate(merchFeURL("/switchsu"));
     } else {
       const input: ByUserIdInput = {
         id,
@@ -87,7 +88,7 @@ const PlusUserAvatar: React.FC<BaseProps> = ({
       }
       const { ok, error } = data.authentication.loginAs.user;
       if (ok) {
-        await navigationStore.navigate("/", { fullReload: true });
+        await navigationStore.navigate(merchFeURL("/"), { fullReload: true });
       } else {
         toastStore.error(error || i`Something went wrong`);
       }
@@ -126,7 +127,7 @@ const PlusUserAvatar: React.FC<BaseProps> = ({
         >
           <div className={css(styles.item)}>
             <Link
-              href="/settings"
+              href={merchFeURL("/settings")}
               fadeOnHover={false}
               style={{ color: textDark }}
             >
@@ -134,7 +135,11 @@ const PlusUserAvatar: React.FC<BaseProps> = ({
             </Link>
           </div>
           <div className={css(styles.item)}>
-            <Link href="/faq" fadeOnHover={false} style={{ color: textDark }}>
+            <Link
+              href={merchFeURL("/faq")}
+              fadeOnHover={false}
+              style={{ color: textDark }}
+            >
               Help Center
             </Link>
           </div>
@@ -167,7 +172,7 @@ const PlusUserAvatar: React.FC<BaseProps> = ({
           )}
           <div className={css(styles.item, styles.divider)}>
             <Link
-              href="/logout"
+              href={merchFeURL("/logout")}
               fadeOnHover={false}
               style={{ fontWeight: weightSemibold, color: negative }}
             >
