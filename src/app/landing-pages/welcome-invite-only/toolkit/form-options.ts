@@ -34,9 +34,12 @@ export type RevenueOption = {
 
 export const getCountryCodes = (): ReadonlyArray<SelectOption> => {
   const countryCodes = Object.keys(CountryNames) as CountryCode[];
-  const countryCodeOptions = countryCodes.map((code) => {
-    return { value: code, text: getCountryName(code) };
-  });
+  const excludedCodes = ["EU", "D"];
+  const countryCodeOptions = countryCodes
+    .filter((code) => !excludedCodes.includes(code))
+    .map((code) => {
+      return { value: code, text: getCountryName(code) };
+    });
 
   return countryCodeOptions;
 };
