@@ -1,60 +1,31 @@
-//
-//  component/nav/Toast.tsx
-//  Project-Lego
-//
-//  Created by Sola Ogunsakin on 11/20/18.
-//  Copyright © 2018-present ContextLogic Inc. All rights reserved.
-//
 import React, { useMemo } from "react";
 import { StyleSheet } from "aphrodite";
 import { observer } from "mobx-react";
-
-/* Lego Components */
 import { Banner, BannerProps } from "@ContextLogic/lego";
-
-/* Lego Toolkit */
 import { css } from "@core/toolkit/styling";
-
 import { useToastStore } from "@core/stores/ToastStore";
 
-export type ToastProps = Omit<BannerProps, "text" | "sentiment" | "link"> & {
-  readonly insideModal?: boolean;
-};
+export type ToastProps = Omit<BannerProps, "text" | "sentiment" | "link">;
 
-export default observer((props: ToastProps) => {
-  const { className, insideModal: insideModalProp, ...bannerProps } = props;
-  const isNavyBlueNav = true; // [lliepert] deprecated const { isNavyBlueNav } = useNavigationStore();
-  const { currentToast, modalOpen } = useToastStore();
-
-  const insideModal = !!insideModalProp;
-
+const Toast = (props: ToastProps) => {
+  const { className, ...bannerProps } = props;
+  const { currentToast } = useToastStore();
   const styles = useStylesheet();
 
   if (currentToast == null) {
     return null;
   }
 
-  if (insideModal !== modalOpen) {
-    // Should be either:
-    //   - inside modal, with modal open
-    //   - NOT inside modal, with modal NOT open
-    return null;
-  }
-
   return (
     <Banner
-      className={css(
-        styles.root,
-        isNavyBlueNav ? null : styles.selfPositioning,
-        className,
-      )}
+      className={css(styles.root, className)}
       text={currentToast.message}
       sentiment={currentToast.sentiment}
       link={currentToast.link}
       {...bannerProps}
     />
   );
-});
+};
 
 const useStylesheet = () => {
   const { willClose } = useToastStore();
@@ -102,3 +73,5 @@ const useStylesheet = () => {
     });
   }, [willClose]);
 };
+
+export default observer(Toast);

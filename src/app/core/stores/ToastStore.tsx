@@ -1,10 +1,3 @@
-//
-//  stores/ToastStore.tsx
-//  Project-Lego
-//
-//  Created by Sola Ogunsakin on 8/7/18.
-//  Copyright © 2018-present ContextLogic Inc. All rights reserved.
-//
 import {
   useState,
   createContext,
@@ -37,7 +30,6 @@ type ToastConfig = ToastOptions & {
 const PERSISTENCE_KEY = "ToastStore:ToastMessage";
 
 export type ToastStore = {
-  isNavyBlueNav: boolean;
   currentToast: ToastConfig | null | undefined;
   willClose: boolean;
   modalOpen: boolean;
@@ -56,7 +48,6 @@ export type ToastStore = {
 export const ToastStoreRef = createRef<ToastStore>();
 
 const ToastContext = createContext<ToastStore>({
-  isNavyBlueNav: false,
   currentToast: undefined,
   willClose: false,
   modalOpen: false,
@@ -94,9 +85,6 @@ export const useToastStore = (): ToastStore => {
 
 export const ToastProvider: React.FC = ({ children }) => {
   const persistenceStore = usePersistenceStore();
-  // will bring back set when we have the user graph
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [isNavyBlueNav, setIsNavyBlueNav] = useState(false);
   const [currentToast, setCurrentToast] = useState<
     ToastConfig | null | undefined
   >(null);
@@ -114,7 +102,7 @@ export const ToastProvider: React.FC = ({ children }) => {
   };
 
   const post = (config: ToastConfig): void => {
-    if (config.deferred && !isNavyBlueNav) {
+    if (config.deferred) {
       persistenceStore.set(PERSISTENCE_KEY, config);
       return;
     }
@@ -179,7 +167,6 @@ export const ToastProvider: React.FC = ({ children }) => {
   });
 
   const toastStore: ToastStore = {
-    isNavyBlueNav,
     currentToast,
     willClose,
     modalOpen,
