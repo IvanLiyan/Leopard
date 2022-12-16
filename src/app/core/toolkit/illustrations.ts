@@ -1,7 +1,5 @@
 import wishLogoInkURL from "public/images/wish-logo-ink.svg";
 import wishLogoWhiteURL from "public/images/wish-logo-white.svg";
-import wishLogoBlueURL from "public/images/wish-logo-blue.svg";
-
 import merchantLogoWhiteCNURL from "public/images/merchant-logo/merchant-logo-white-cn.svg";
 import merchantLogoCNURL from "public/images/merchant-logo/merchant-logo-cn.svg";
 import merchantLogoWhiteCZURL from "public/images/merchant-logo/merchant-logo-white-cz.svg";
@@ -77,7 +75,6 @@ import globePhoneLocationsURL from "public/images/welcome-invite-only/globe-phon
 
 export const wishLogoInk = wishLogoInkURL;
 export const wishLogoWhite = wishLogoWhiteURL;
-export const wishLogoBlue = wishLogoBlueURL;
 export const merchantLogoWhiteCN = merchantLogoWhiteCNURL;
 export const merchantLogoCN = merchantLogoCNURL;
 export const merchantLogoWhiteCZ = merchantLogoWhiteCZURL;

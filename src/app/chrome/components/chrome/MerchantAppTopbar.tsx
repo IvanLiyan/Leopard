@@ -2,43 +2,33 @@ import React, { useMemo } from "react";
 import { StyleSheet } from "aphrodite";
 import { observer } from "mobx-react";
 
-/* Lego Components */
 import { Layout, Switch, Popover } from "@ContextLogic/lego";
-import Chrome from "./Chrome";
-import AppLocaleSelector from "../AppLocaleSelector";
+import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
-/* Lego Toolkit */
-import { css } from "@core/toolkit/styling";
-
-/* Merchant Store */
+import Icon from "@core/components/Icon";
+import Link from "@core/components/Link";
 import { useApolloStore } from "@core/stores/ApolloStore";
 import { useDeviceStore } from "@core/stores/DeviceStore";
 import { useEnvironmentStore } from "@core/stores/EnvironmentStore";
 import { useLocalizationStore } from "@core/stores/LocalizationStore";
-import { useThemeStore } from "@core/stores/ThemeStore";
-
-/* Merchant Plus Components */
-import MerchantPlus, { MerchantPlusMode } from "../MerchantPlus";
-
-import { useTheme } from "@core/stores/ThemeStore";
-import NotificationsButton from "./NotificationsButton";
-
-/* Relative Imports */
-import PlusUserAvatar from "./PlusUserAvatar";
-import MerchantAppSearch from "./MerchantAppSearch";
-import { useAppTopBarData } from "../../toolkit";
+import { useThemeStore, useTheme } from "@core/stores/ThemeStore";
 import {
   ChromeNavigationNode,
   useChromeContext,
 } from "@core/stores/ChromeStore";
-
-/* Type Imports */
-import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import Icon from "@core/components/Icon";
-
-import Link from "@core/components/Link";
-import { SearchStoreProvider } from "@chrome/search/searchStore";
+import { ci18n } from "@core/toolkit/i18n";
+import { css } from "@core/toolkit/styling";
 import { merchFeURL } from "@core/toolkit/url";
+
+import { useAppTopBarData } from "@chrome/toolkit";
+import { SearchStoreProvider } from "@chrome/search/searchStore";
+import AppLocaleSelector from "@chrome/components/AppLocaleSelector";
+import WishLogo, { WishLogoMode } from "@chrome/components/WishLogo";
+
+import Chrome from "./Chrome";
+import NotificationsButton from "./NotificationsButton";
+import PlusUserAvatar from "./PlusUserAvatar";
+import MerchantAppSearch from "./MerchantAppSearch";
 
 type MerchantAppTopbarProps = BaseProps & {
   readonly disableMenu?: boolean;
@@ -61,14 +51,14 @@ const MerchantAppTopbar: React.FC<MerchantAppTopbarProps> = ({
   const { textBlack, textWhite, textDark } = useTheme();
   const { topbarBackground } = useThemeStore();
 
-  const appIconTheme: MerchantPlusMode = useMemo(() => {
+  const appIconTheme: WishLogoMode = useMemo(() => {
     switch (env) {
       case "fe_qa_staging":
       case "sandbox":
       case "stage":
         return "white";
       default:
-        return "default";
+        return "ink";
     }
   }, [env]);
 
@@ -92,23 +82,29 @@ const MerchantAppTopbar: React.FC<MerchantAppTopbarProps> = ({
         renderLogo={() => (
           <Layout.FlexRow>
             {!disableMenu && (
-              <div
+              <Layout.FlexColumn
+                alignItems="center"
+                style={styles.burgerContainer}
                 onClick={() => {
                   setIsDrawerOpen((cur: boolean) => !cur);
                 }}
-                className={css(styles.burgerContainer)}
+                role="button"
+                aria-label={ci18n(
+                  "Description of a button that toggles the nav",
+                  "Toggle navigation",
+                )}
               >
                 <Icon
-                  className={css(styles.burger)}
+                  style={styles.burger}
                   name="menu"
                   size={20}
                   color={appIconTheme === "white" ? textWhite : textDark}
                 />
                 {showMenuDot && <div className={css(styles.dot)} />}
-              </div>
+              </Layout.FlexColumn>
             )}
             <Link href={merchFeURL("/home")}>
-              <MerchantPlus mode={appIconTheme} className={css(styles.logo)} />
+              <WishLogo mode={appIconTheme} style={styles.logo} />
             </Link>
           </Layout.FlexRow>
         )}
@@ -118,7 +114,7 @@ const MerchantAppTopbar: React.FC<MerchantAppTopbarProps> = ({
             : undefined
         }
         backgroundColor={topbarBackground}
-        className={css(styles.root, style, className)}
+        style={[styles.root, style, className]}
       >
         <Layout.FlexRow>
           {canSeeUpdatesSwitch && (
@@ -140,17 +136,15 @@ const MerchantAppTopbar: React.FC<MerchantAppTopbarProps> = ({
                 }}
                 isOn={apolloStore.adminUpdatesAllowed}
                 showText={false}
-                className={css(styles.item)}
+                style={styles.item}
               />
             </Popover>
           )}
-          {!isStoreMerchant && (
-            <NotificationsButton className={css(styles.item)} />
-          )}
-          <PlusUserAvatar className={css(styles.avatar, styles.item)} />
+          {!isStoreMerchant && <NotificationsButton style={styles.item} />}
+          <PlusUserAvatar style={[styles.avatar, styles.item]} />
           <AppLocaleSelector
             textColor={appIconTheme == "white" ? textWhite : textBlack}
-            className={css(styles.item)}
+            style={styles.item}
           />
         </Layout.FlexRow>
       </Chrome.TopBar>
@@ -180,11 +174,11 @@ const useStylesheet = () => {
         burgerContainer: {
           position: "relative",
           flexShrink: 0,
+          cursor: "pointer",
         },
         burger: {
           height: 20,
           marginRight: 15,
-          cursor: "pointer",
         },
         notification: {
           height: 15,

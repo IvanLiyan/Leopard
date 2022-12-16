@@ -1,33 +1,25 @@
-/* moved from
- * @plus/component/nav/MerchantPlus.tsx
- * by https://gist.github.com/yuhchen-wish/b80dd7fb4233edf447350a7daec083b1
- * on 1/18/2022
- */
-
 import React, { useMemo } from "react";
 import { StyleSheet } from "aphrodite";
 import { observer } from "mobx-react";
-
-import Illustration, { IllustrationName } from "@core/components/Illustration";
 import { Layout, Text } from "@ContextLogic/lego";
-
-/* Lego Toolkit */
-import { css } from "@core/toolkit/styling";
-
-/* Merchant Store */
-import { useUserStore } from "@core/stores/UserStore";
-
-/* Type Imports */
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
+import Illustration, { IllustrationName } from "@core/components/Illustration";
+import {
+  css,
+  IS_NOT_VERY_LARGE_SCREEN,
+  IS_VERY_LARGE_SCREEN,
+} from "@core/toolkit/styling";
+import { useUserStore } from "@core/stores/UserStore";
 import { useTheme } from "@core/stores/ThemeStore";
+import { ci18n } from "@core/toolkit/i18n";
 
-export type MerchantPlusMode = "default" | "ink" | "white";
+export type WishLogoMode = "ink" | "white";
 type Props = BaseProps & {
   readonly text?: string;
-  readonly mode?: MerchantPlusMode;
+  readonly mode: WishLogoMode;
 };
 
-const MerchantPlus: React.FC<Props> = (props: Props) => {
+const WishLogo: React.FC<Props> = (props: Props) => {
   const { className, style, text, mode } = props;
 
   const styles = useStylesheet(props);
@@ -38,56 +30,55 @@ const MerchantPlus: React.FC<Props> = (props: Props) => {
       <Illustration
         name={getIllustration(mode)}
         animate={false}
-        alt={text || i`Wish for Merchants`}
-        className={css(styles.logo)}
+        alt={text || ci18n("alt label for image", "Wish for Merchants")}
+        style={styles.logo}
       />
-      <Text
-        className={css(styles.textContainer)}
-        weight="medium"
-        style={{ lineHeight: 1 }}
-      >
-        {headerText}
-      </Text>
+      {headerText && (
+        <Text style={styles.textContainer} weight="medium" renderAsSpan>
+          {headerText}
+        </Text>
+      )}
     </Layout.FlexRow>
   );
 };
 
-const useHeaderText = ({ text }: Props): string => {
+const useHeaderText = ({ text }: Props): string | null | undefined => {
   const { isDisabledMerchant, loggedInMerchantUser } = useUserStore();
   if (text) {
     return text;
   }
 
   if (isDisabledMerchant) {
-    return i`Disabled`;
+    return ci18n(
+      "label telling merchants their account has been disabled",
+      "Disabled",
+    );
   }
 
-  return loggedInMerchantUser?.displayName || "";
+  return loggedInMerchantUser?.displayName;
 };
 
-const getIllustration = (mode?: MerchantPlusMode): IllustrationName => {
+const getIllustration = (mode?: WishLogoMode): IllustrationName => {
   switch (mode) {
-    case "ink":
-      return "wishLogoInk";
     case "white":
       return "wishLogoWhite";
+    case "ink":
     default:
-      return "wishLogoBlue";
+      return "wishLogoInk";
   }
 };
 
-const useTextColor = (mode?: MerchantPlusMode): string => {
-  const { textBlack, surfaceLightest } = useTheme();
+const useTextColor = (mode: WishLogoMode): string => {
+  const { textBlack, textWhite } = useTheme();
   switch (mode) {
     case "ink":
-    case "white":
-      return surfaceLightest;
-    default:
       return textBlack;
+    case "white":
+      return textWhite;
   }
 };
 
-export default observer(MerchantPlus);
+export default observer(WishLogo);
 
 const useStylesheet = ({ mode }: Props) => {
   const textColor = useTextColor(mode);
@@ -97,22 +88,24 @@ const useStylesheet = ({ mode }: Props) => {
         logo: {
           width: 70,
           minHeight: 23,
-          marginRight: 7,
+          marginRight: 10,
           flexShrink: 0,
         },
         textContainer: {
+          verticalAlign: "text-bottom",
           color: textColor,
           fontSize: 13,
+          lineHeight: "10px",
           textTransform: "uppercase",
           userSelect: "none",
           whiteSpace: "nowrap",
           textOverflow: "ellipsis",
           overflow: "hidden",
           letterSpacing: "0.1em",
-          "@media (max-width: 1150px)": {
+          [`@media ${IS_NOT_VERY_LARGE_SCREEN}`]: {
             display: "none",
           },
-          "@media (min-width: 1150px)": {
+          [`@media ${IS_VERY_LARGE_SCREEN}`]: {
             maxWidth: 200,
           },
         },

@@ -102,4 +102,7 @@ export const IS_VERY_SMALL_SCREEN = `(max-width: ${
 }px)`;
 export const IS_SMALL_SCREEN = `(max-width: ${BREAKPOINTS.largeScreen - 1}px)`;
 export const IS_LARGE_SCREEN = `(min-width: ${BREAKPOINTS.largeScreen}px)`;
+export const IS_NOT_VERY_LARGE_SCREEN = `(max-width: ${
+  BREAKPOINTS.veryLargeScreen - 1
+}px)`;
 export const IS_VERY_LARGE_SCREEN = `(min-width: ${BREAKPOINTS.veryLargeScreen}px)`;
