@@ -1,6 +1,7 @@
 import { PaymentCurrencyCode } from "@schema";
 import { useUserStore } from "@core/stores/UserStore";
 import { useMemo } from "react";
+import { useRouter } from "next/router";
 
 export interface CountTableDataItem {
   [x: string]: {
@@ -88,4 +89,54 @@ export const useDateRange = ({
     // if we remove it the memo doesn't re-compute as required
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
+};
+
+type ProductBreakdownURI = {
+  readonly weeksFromLatest: number;
+  readonly startDate: string;
+  readonly endDate: string;
+};
+
+export const encodeProductBreakdownURI = ({
+  weeksFromLatest,
+  startDate,
+  endDate,
+}: ProductBreakdownURI): string => {
+  return `q=${encodeURIComponent(
+    JSON.stringify({
+      w: weeksFromLatest,
+      s: startDate,
+      e: endDate,
+    }),
+  )}`;
+};
+
+export const useDecodedProductBreakdownURI = (): {
+  [key in keyof ProductBreakdownURI]: ProductBreakdownURI[key] | undefined;
+} => {
+  const router = useRouter();
+
+  if (typeof router.query.q !== "string") {
+    return {
+      weeksFromLatest: undefined,
+      startDate: undefined,
+      endDate: undefined,
+    };
+  }
+
+  const decodedComponent = JSON.parse(decodeURIComponent(router.query.q));
+  const weeksFromLatestAsNumber = Number(decodedComponent.w);
+  const weeksFromLatest = isNaN(weeksFromLatestAsNumber)
+    ? undefined
+    : weeksFromLatestAsNumber;
+  const startDate =
+    typeof decodedComponent.s === "string" ? decodedComponent.s : undefined;
+  const endDate =
+    typeof decodedComponent.e === "string" ? decodedComponent.e : undefined;
+
+  return {
+    weeksFromLatest,
+    startDate,
+    endDate,
+  };
 };

@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo } from "react";
 import { observer } from "mobx-react";
 import { NextPage } from "next";
-import { useRouter } from "next/router";
 import { useQuery } from "@apollo/client";
 import { Tooltip } from "@mui/material";
 import { Button } from "@ContextLogic/atlas-ui";
@@ -11,7 +10,10 @@ import { Alert, LoadingIndicator } from "@ContextLogic/lego";
 import { useToastStore } from "@core/stores/ToastStore";
 import { wishURL, contestImageURL } from "@core/toolkit/url";
 import PageRoot from "@core/components/PageRoot";
-import { useExportCSV } from "@performance/toolkit/utils";
+import {
+  useDecodedProductBreakdownURI,
+  useExportCSV,
+} from "@performance/toolkit/utils";
 import { Table, Icon } from "@performance/components";
 import { TableColumn } from "@performance/components/Table";
 import useSalesBaseColumn from "@performance/components/sales/SalesBaseColumn";
@@ -40,7 +42,8 @@ const SalesProductBreakdownPage: NextPage<Record<string, never>> = () => {
   const { textBlack } = useTheme();
   const salesBaseColumn = useSalesBaseColumn();
   const exportCSV = useExportCSV();
-  const router = useRouter();
+  const { weeksFromLatest, startDate, endDate } =
+    useDecodedProductBreakdownURI();
   const {
     data: breakdownData,
     loading: breakdownReqLoading,
@@ -52,7 +55,7 @@ const SalesProductBreakdownPage: NextPage<Record<string, never>> = () => {
         offset: 0,
         limit: 20 || PER_PAGE_LIMIT,
         sort: { order: "DESC", field: "SALES" },
-        weeks_from_the_latest: Number(router.query.weeks_from_the_latest) || 0,
+        weeks_from_the_latest: weeksFromLatest,
       },
       notifyOnNetworkStatusChange: true,
     },
@@ -60,7 +63,7 @@ const SalesProductBreakdownPage: NextPage<Record<string, never>> = () => {
 
   useEffect(() => {
     if (breakdownData && !breakdownReqLoading) {
-      store.updataBreakdownData(breakdownData);
+      store.updateBreakdownData(breakdownData);
     }
   }, [breakdownData, breakdownReqLoading]);
 
@@ -69,10 +72,10 @@ const SalesProductBreakdownPage: NextPage<Record<string, never>> = () => {
       {
         key: "rangeDate",
         title: i`Date Range`,
-        render: ({ row: { startDate, endDate } }) => {
-          const displayStartDate =
-            startDate?.mmddyyyy || router.query.start_date;
-          const displayEndDate = endDate?.mmddyyyy || router.query.end_date;
+        render: ({ row: { startDate: rowStartDate, endDate: rowEndDate } }) => {
+          // check if we have data for the row; if not, bail to the overall page's data
+          const displayStartDate = rowStartDate?.mmddyyyy || startDate;
+          const displayEndDate = rowEndDate?.mmddyyyy || endDate;
           return (
             <div style={{ textAlign: "left" }}>
               {displayStartDate && displayEndDate
@@ -135,19 +138,10 @@ const SalesProductBreakdownPage: NextPage<Record<string, never>> = () => {
     ];
     columns.splice(2, 0, ...salesBaseColumn);
     return columns;
-  }, [
-    salesBaseColumn,
-    textBlack,
-    router.query.start_date,
-    router.query.end_date,
-  ]);
+  }, [salesBaseColumn, textBlack, startDate, endDate]);
 
   const dateRange =
-    store.breakdownData.length > 0
-      ? i`- week of ${router.query.start_date || ""} - ${
-          router.query.end_date || ""
-        }`
-      : "";
+    startDate && endDate ? i` - week of ${startDate} - ${endDate}` : "";
 
   return (
     <PageRoot>
@@ -162,7 +156,7 @@ const SalesProductBreakdownPage: NextPage<Record<string, never>> = () => {
           },
           { name: i`Product Breakdown`, href: window.location.href },
         ]}
-        title={i`Product Breakdown ${dateRange}`}
+        title={i`Product Breakdown${dateRange}`}
       />
       <PageGuide relaxed style={{ paddingTop: 20 }}>
         <Alert
@@ -208,13 +202,10 @@ const SalesProductBreakdownPage: NextPage<Record<string, never>> = () => {
           ) : (
             <div></div>
           )}
-          {store.breakdownData[0]?.startDate?.mmddyyyy && (
+          {startDate && (
             <Button
               secondary
               onClick={() => {
-                // above assertion confirms this will not be null
-                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                const startDate = store.breakdownData[0]!.startDate!.mmddyyyy;
                 exportCSV({
                   type: EXPORT_CSV_TYPE.PRODUCT,
                   stats_type: EXPORT_CSV_STATS_TYPE.PRESALE,

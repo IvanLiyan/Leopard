@@ -22,7 +22,10 @@ import {
 } from "@performance/toolkit/enums";
 import { TableColumn } from "@performance/components/Table";
 import useSalesBaseColumn from "@performance/components/sales/SalesBaseColumn";
-import { useExportCSV } from "@performance/toolkit/utils";
+import {
+  encodeProductBreakdownURI,
+  useExportCSV,
+} from "@performance/toolkit/utils";
 import commonStyles from "@performance/styles/common.module.css";
 import styles from "@performance/styles/sales.module.css";
 import { merchFeURL } from "@core/toolkit/url";
@@ -46,7 +49,7 @@ const SalesAggregateModel: React.FC = () => {
     // do some checking here to ensure data exist
     if (data) {
       // mutate data if you need to
-      store.updataAggregateData(data);
+      store.updateAggregateData(data);
     }
   }, [data]);
 
@@ -62,7 +65,13 @@ const SalesAggregateModel: React.FC = () => {
               className={commonStyles.linkStyle}
             >
               <Link
-                href={`/performance/sales/product-breakdown?weeks_from_the_latest=${index}&start_date=${startDate.mmddyyyy}&end_date=${endDate.mmddyyyy}`}
+                href={`/performance/sales/product-breakdown?${encodeProductBreakdownURI(
+                  {
+                    weeksFromLatest: index,
+                    startDate: startDate.mmddyyyy,
+                    endDate: endDate.mmddyyyy,
+                  },
+                )}`}
               >
                 {`${startDate.mmddyyyy}-${endDate.mmddyyyy}`}
               </Link>
@@ -89,11 +98,11 @@ const SalesAggregateModel: React.FC = () => {
         ),
         render: ({ row: { gmv } }) => {
           const amount =
-            store.aggreagateCurrencyCode === CURRENCY_CODE.CNY
+            store.aggregateCurrencyCode === CURRENCY_CODE.CNY
               ? gmv?.CNY_amount
               : gmv?.USD_amount;
           return amount
-            ? formatCurrency(amount, store.aggreagateCurrencyCode)
+            ? formatCurrency(amount, store.aggregateCurrencyCode)
             : "-";
         },
       },
@@ -124,18 +133,18 @@ const SalesAggregateModel: React.FC = () => {
             <div className={commonStyles.changeCurrencyCon}>
               <Button
                 secondary
-                disabled={store.aggreagateCurrencyCode === CURRENCY_CODE.USD}
+                disabled={store.aggregateCurrencyCode === CURRENCY_CODE.USD}
                 onClick={() =>
-                  store.updateAggreagateCurrencyCode(CURRENCY_CODE.USD)
+                  store.updateAggregateCurrencyCode(CURRENCY_CODE.USD)
                 }
               >
                 Display in USD $
               </Button>
               <Button
                 secondary
-                disabled={store.aggreagateCurrencyCode === CURRENCY_CODE.CNY}
+                disabled={store.aggregateCurrencyCode === CURRENCY_CODE.CNY}
                 onClick={() =>
-                  store.updateAggreagateCurrencyCode(CURRENCY_CODE.CNY)
+                  store.updateAggregateCurrencyCode(CURRENCY_CODE.CNY)
                 }
               >
                 Display in CNY ¥
@@ -164,7 +173,7 @@ const SalesAggregateModel: React.FC = () => {
               exportCSV({
                 type: EXPORT_CSV_TYPE.PRODUCT,
                 stats_type: EXPORT_CSV_STATS_TYPE.PRESALE,
-                currencyCode: store.aggreagateCurrencyCode,
+                currencyCode: store.aggregateCurrencyCode,
                 target_date:
                   new Date(
                     store.aggregateData[0].startDate.mmddyyyy,

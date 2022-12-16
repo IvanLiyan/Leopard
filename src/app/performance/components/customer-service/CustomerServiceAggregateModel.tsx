@@ -20,7 +20,10 @@ import {
   EXPORT_CSV_TYPE,
 } from "@performance/toolkit/enums";
 import { TableColumn } from "@performance/components/Table";
-import { useExportCSV } from "@performance/toolkit/utils";
+import {
+  encodeProductBreakdownURI,
+  useExportCSV,
+} from "@performance/toolkit/utils";
 import commonStyles from "@performance/styles/common.module.css";
 import { merchFeURL } from "@core/toolkit/url";
 import PageGuide from "@core/components/PageGuide";
@@ -47,7 +50,7 @@ const CustomerServiceAggregateModule: React.FC = () => {
 
   useEffect(() => {
     if (data) {
-      store.updataAggregateData(data);
+      store.updateAggregateData(data);
     }
   }, [data]);
 
@@ -63,7 +66,13 @@ const CustomerServiceAggregateModule: React.FC = () => {
               className={commonStyles.linkStyle}
             >
               <Link
-                href={`/performance/customer-service/product-breakdown?weeks_from_the_latest=${index}&start_date=${startDate.mmddyyyy}&end_date=${endDate.mmddyyyy}`}
+                href={`/performance/customer-service/product-breakdown?${encodeProductBreakdownURI(
+                  {
+                    weeksFromLatest: index,
+                    startDate: startDate.mmddyyyy,
+                    endDate: endDate.mmddyyyy,
+                  },
+                )}`}
               >
                 {`${startDate.mmddyyyy}-${endDate.mmddyyyy}`}
               </Link>
@@ -90,11 +99,11 @@ const CustomerServiceAggregateModule: React.FC = () => {
         ),
         render: ({ row: { gmv } }) => {
           const amount =
-            store.aggreagateCurrencyCode === CURRENCY_CODE.CNY
+            store.aggregateCurrencyCode === CURRENCY_CODE.CNY
               ? gmv?.CNY_amount
               : gmv?.USD_amount;
           return amount
-            ? formatCurrency(amount, store.aggreagateCurrencyCode)
+            ? formatCurrency(amount, store.aggregateCurrencyCode)
             : "-";
         },
       },
@@ -320,11 +329,11 @@ const CustomerServiceAggregateModule: React.FC = () => {
         ),
         render: ({ row: { chargebackAmount } }) => {
           const amount =
-            store.aggreagateCurrencyCode === CURRENCY_CODE.CNY
+            store.aggregateCurrencyCode === CURRENCY_CODE.CNY
               ? chargebackAmount?.CNY_amount
               : chargebackAmount?.USD_amount;
           return amount
-            ? formatCurrency(amount, store.aggreagateCurrencyCode)
+            ? formatCurrency(amount, store.aggregateCurrencyCode)
             : "-";
         },
       },
@@ -522,18 +531,18 @@ const CustomerServiceAggregateModule: React.FC = () => {
               <div className={commonStyles.changeCurrencyCon}>
                 <Button
                   secondary
-                  disabled={store.aggreagateCurrencyCode === CURRENCY_CODE.USD}
+                  disabled={store.aggregateCurrencyCode === CURRENCY_CODE.USD}
                   onClick={() =>
-                    store.updateAggreagateCurrencyCode(CURRENCY_CODE.USD)
+                    store.updateAggregateCurrencyCode(CURRENCY_CODE.USD)
                   }
                 >
                   Display in USD $
                 </Button>
                 <Button
                   secondary
-                  disabled={store.aggreagateCurrencyCode === CURRENCY_CODE.CNY}
+                  disabled={store.aggregateCurrencyCode === CURRENCY_CODE.CNY}
                   onClick={() =>
-                    store.updateAggreagateCurrencyCode(CURRENCY_CODE.CNY)
+                    store.updateAggregateCurrencyCode(CURRENCY_CODE.CNY)
                   }
                 >
                   Display in CNY ¥
@@ -563,7 +572,7 @@ const CustomerServiceAggregateModule: React.FC = () => {
               exportCSV({
                 type: EXPORT_CSV_TYPE.MERCHANT,
                 stats_type: EXPORT_CSV_STATS_TYPE.CUSTOMER_SERVICE,
-                currencyCode: store.aggreagateCurrencyCode,
+                currencyCode: store.aggregateCurrencyCode,
                 target_date:
                   new Date(
                     store.aggregateData[

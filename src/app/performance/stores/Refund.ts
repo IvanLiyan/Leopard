@@ -187,7 +187,7 @@ class Store {
   }
 
   @action
-  updataAggregateData(data: RefundAggregateResponseData) {
+  updateAggregateData(data: RefundAggregateResponseData) {
     const weeklyData = data?.currentMerchant?.storeStats?.weekly;
     this.aggregateData = weeklyData.map((item) => item.refund);
   }

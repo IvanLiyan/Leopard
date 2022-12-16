@@ -161,7 +161,7 @@ class Store {
   breakdownDataTotalCount = 0;
 
   @observable
-  aggreagateCurrencyCode: PaymentCurrencyCode = "USD";
+  aggregateCurrencyCode: PaymentCurrencyCode = "USD";
 
   @observable
   breakdownCurrencyCode: PaymentCurrencyCode = "USD";
@@ -175,8 +175,8 @@ class Store {
   @observable
   pageNo = 0;
 
-  @action updateAggreagateCurrencyCode(currencyCode: PaymentCurrencyCode) {
-    this.aggreagateCurrencyCode = currencyCode;
+  @action updateAggregateCurrencyCode(currencyCode: PaymentCurrencyCode) {
+    this.aggregateCurrencyCode = currencyCode;
   }
   @action updateBreakdownCurrencyCode(currencyCode: PaymentCurrencyCode) {
     this.breakdownCurrencyCode = currencyCode;
@@ -187,7 +187,7 @@ class Store {
   }
 
   @action
-  updataAggregateData(data: SalesAggregateResponseData) {
+  updateAggregateData(data: SalesAggregateResponseData) {
     const salesData = data?.currentMerchant?.storeStats?.weekly?.map(
       (item) => item.sales,
     );
@@ -199,7 +199,7 @@ class Store {
   }
 
   @action
-  updataBreakdownData(data: SalesProductBreakdownResponseData) {
+  updateBreakdownData(data: SalesProductBreakdownResponseData) {
     this.breakdownDataTotalCount = data.productCatalog.productCountV2;
     const productData = data.productCatalog.productsV2.map((product) => {
       const { weekly } = product.stats;

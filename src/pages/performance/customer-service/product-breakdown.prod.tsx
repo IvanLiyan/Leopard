@@ -2,13 +2,15 @@ import React, { useEffect, useMemo } from "react";
 import Link from "@core/components/Link";
 import { observer } from "mobx-react";
 import { useQuery } from "@apollo/client";
-import { useRouter } from "next/router";
 import { Tooltip } from "@mui/material";
 import { Button } from "@ContextLogic/atlas-ui";
 import { ThemedLabel, Alert, LoadingIndicator } from "@ContextLogic/lego";
 import { TableColumn } from "@performance/components/Table";
 import Image from "@core/components/Image";
-import { useExportCSV } from "@performance/toolkit/utils";
+import {
+  useDecodedProductBreakdownURI,
+  useExportCSV,
+} from "@performance/toolkit/utils";
 import store, {
   CS_PERFORMANCE_BREAKDOWN_DATA_QUERY,
   AugmentedCustomerServiceBreakdown,
@@ -42,7 +44,8 @@ const ProductView: React.FC = () => {
   const toastStore = useToastStore();
   const { textBlack } = useTheme();
   const exportCSV = useExportCSV();
-  const router = useRouter();
+  const { weeksFromLatest, startDate, endDate } =
+    useDecodedProductBreakdownURI();
   const {
     data: breakdownData,
     loading: breakdownReqLoading,
@@ -55,14 +58,14 @@ const ProductView: React.FC = () => {
       offset: 0,
       limit: 20 || PER_PAGE_LIMIT,
       sort: { order: "DESC", field: "SALES" },
-      weeks_from_the_latest: Number(router.query.weeks_from_the_latest) || 0,
+      weeks_from_the_latest: weeksFromLatest,
     },
     notifyOnNetworkStatusChange: true,
   });
 
   useEffect(() => {
     if (breakdownData && !breakdownReqLoading) {
-      store.updataBreakdownData(breakdownData);
+      store.updateBreakdownData(breakdownData);
     }
   }, [breakdownData, breakdownReqLoading]);
 
@@ -71,10 +74,9 @@ const ProductView: React.FC = () => {
       {
         key: "rangeDate",
         titleRender: () => <span>Benchmark</span>,
-        render: ({ row: { startDate, endDate } }) => {
-          const displayStartDate =
-            startDate?.mmddyyyy || router.query.start_date;
-          const displayEndDate = endDate?.mmddyyyy || router.query.end_date;
+        render: ({ row: { startDate: rowStartDate, endDate: rowEndDate } }) => {
+          const displayStartDate = rowStartDate?.mmddyyyy || startDate;
+          const displayEndDate = rowEndDate?.mmddyyyy || endDate;
           return (
             <div style={{ textAlign: "left" }}>
               {displayStartDate && displayEndDate
@@ -328,14 +330,10 @@ const ProductView: React.FC = () => {
       },
     ];
     return columns;
-  }, [textBlack, router.query.start_date, router.query.end_date]);
+  }, [textBlack, startDate, endDate]);
 
   const dateRange =
-    store.breakdownData.length > 0
-      ? i`- week of ${router.query.start_date || ""} - ${
-          router.query.end_date || ""
-        }`
-      : "";
+    startDate && endDate ? i` - week of ${startDate} - ${endDate}` : "";
 
   return (
     <PageRoot>
@@ -350,7 +348,7 @@ const ProductView: React.FC = () => {
           },
           { name: i`Product Breakdown`, href: window.location.href },
         ]}
-        title={i`Product Breakdown ${dateRange}`}
+        title={i`Product Breakdown${dateRange}`}
       />
       <PageGuide relaxed style={{ paddingTop: 20 }}>
         <Alert
@@ -408,13 +406,10 @@ const ProductView: React.FC = () => {
               </Tooltip>
             </div>
           )}
-          {store.breakdownData[0]?.startDate?.mmddyyyy && (
+          {startDate && (
             <Button
               secondary
               onClick={() => {
-                // above assertion confirms this will not be null
-                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                const startDate = store.breakdownData[0]!.startDate!.mmddyyyy;
                 exportCSV({
                   type: EXPORT_CSV_TYPE.PRODUCT,
                   stats_type: EXPORT_CSV_STATS_TYPE.CUSTOMER_SERVICE,

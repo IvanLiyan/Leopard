@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo } from "react";
 import Link from "@core/components/Link";
 import { observer } from "mobx-react";
-import { useRouter } from "next/router";
 import { useQuery } from "@apollo/client";
 import { Button } from "@ContextLogic/atlas-ui";
 import { Tooltip } from "@mui/material";
@@ -17,7 +16,10 @@ import {
   zendeskURL,
 } from "@core/toolkit/url";
 import { useToastStore } from "@core/stores/ToastStore";
-import { useExportCSV } from "@performance/toolkit/utils";
+import {
+  useDecodedProductBreakdownURI,
+  useExportCSV,
+} from "@performance/toolkit/utils";
 import { TableColumn } from "@performance/components/Table";
 import useRefundBaseColumn from "@performance/components/refund/RefundBaseColumn";
 import store, {
@@ -43,7 +45,8 @@ const ProductBreakdownPage = () => {
   const refundBaseColumn = useRefundBaseColumn();
   const { textBlack } = useTheme();
   const exportCSV = useExportCSV();
-  const router = useRouter();
+  const { weeksFromLatest, startDate, endDate } =
+    useDecodedProductBreakdownURI();
   const { data, loading, refetch } = useQuery<
     RefundBreakdownResponseData,
     BreakdownRequestArgs
@@ -52,7 +55,7 @@ const ProductBreakdownPage = () => {
       offset: 0,
       limit: 20 || PER_PAGE_LIMIT,
       sort: { order: "DESC", field: "SALES" },
-      weeks_from_the_latest: Number(router.query.weeks_from_the_latest) || 0,
+      weeks_from_the_latest: weeksFromLatest,
     },
     notifyOnNetworkStatusChange: true,
   });
@@ -68,10 +71,10 @@ const ProductBreakdownPage = () => {
       {
         key: "RangeDate",
         title: i`Time Period`,
-        render: ({ row: { startDate, endDate } }) => {
-          const displayStartDate =
-            startDate?.mmddyyyy || router.query.start_date;
-          const displayEndDate = endDate?.mmddyyyy || router.query.end_date;
+        render: ({ row: { startDate: rowStartDate, endDate: rowEndDate } }) => {
+          // check if we have data for the row; if not, bail to the overall page's data
+          const displayStartDate = rowStartDate?.mmddyyyy || startDate;
+          const displayEndDate = rowEndDate?.mmddyyyy || endDate;
           return (
             <div style={{ textAlign: "left" }}>
               {displayStartDate && displayEndDate
@@ -197,19 +200,10 @@ const ProductBreakdownPage = () => {
     ];
     columns.splice(3, 0, ...refundBaseColumn);
     return columns;
-  }, [
-    refundBaseColumn,
-    textBlack,
-    router.query.start_date,
-    router.query.end_date,
-  ]);
+  }, [refundBaseColumn, textBlack, startDate, endDate]);
 
   const dateRange =
-    store.breakdownData.length > 0
-      ? i`- week of ${router.query.start_date || ""} - ${
-          router.query.end_date || ""
-        }`
-      : "";
+    startDate && endDate ? i` - week of ${startDate} - ${endDate}` : "";
   return (
     <PageRoot>
       <PageHeader
@@ -223,7 +217,7 @@ const ProductBreakdownPage = () => {
           },
           { name: i`Product Breakdown`, href: window.location.href },
         ]}
-        title={i`Product Breakdown ${dateRange}`}
+        title={i`Product Breakdown${dateRange}`}
       />
       <PageGuide relaxed style={{ paddingTop: 20 }}>
         <Alert
@@ -233,13 +227,10 @@ const ProductBreakdownPage = () => {
         <div className={styles.metricsModule}>
           <div className={commonStyles.toolkit}>
             <div></div>
-            {store.breakdownData[0]?.startDate?.mmddyyyy && (
+            {startDate && (
               <Button
                 secondary
                 onClick={() => {
-                  // above assertion confirms this will not be null
-                  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                  const startDate = store.breakdownData[0]!.startDate!.mmddyyyy;
                   exportCSV({
                     type: EXPORT_CSV_TYPE.PRODUCT,
                     stats_type: EXPORT_CSV_STATS_TYPE.REFUND_BREAKDOWN,

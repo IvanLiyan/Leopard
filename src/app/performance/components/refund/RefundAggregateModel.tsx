@@ -12,7 +12,10 @@ import { TableColumn } from "@performance/components/Table";
 import useRefundBaseColumn from "@performance/components/refund/RefundBaseColumn";
 import { zendeskURL } from "@core/toolkit/url";
 import { MerchantStatsWeeklyArgs } from "@schema";
-import { useExportCSV } from "@performance/toolkit/utils";
+import {
+  encodeProductBreakdownURI,
+  useExportCSV,
+} from "@performance/toolkit/utils";
 import { PER_PAGE_LIMIT } from "@performance/toolkit/enums";
 import store, {
   PERFORMANCE_AGGREGATE_DATA_QUERY,
@@ -44,7 +47,7 @@ const RefundAggregateModule: React.FC = () => {
   });
   useEffect(() => {
     if (data && !loading) {
-      store.updataAggregateData(data);
+      store.updateAggregateData(data);
     }
   }, [data, loading]);
 
@@ -60,7 +63,13 @@ const RefundAggregateModule: React.FC = () => {
               className={commonStyles.linkStyle}
             >
               <Link
-                href={`/performance/refund/product-breakdown?weeks_from_the_latest=${index}&start_date=${startDate.mmddyyyy}&end_date=${endDate.mmddyyyy}`}
+                href={`/performance/refund/product-breakdown?${encodeProductBreakdownURI(
+                  {
+                    weeksFromLatest: index,
+                    startDate: startDate.mmddyyyy,
+                    endDate: endDate.mmddyyyy,
+                  },
+                )}`}
               >
                 {`${startDate.mmddyyyy}-${endDate.mmddyyyy}`}
               </Link>
