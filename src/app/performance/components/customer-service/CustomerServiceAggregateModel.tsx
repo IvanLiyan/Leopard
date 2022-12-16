@@ -63,7 +63,7 @@ const CustomerServiceAggregateModule: React.FC = () => {
               className={commonStyles.linkStyle}
             >
               <Link
-                href={`/performance/customer-service/product-breakdown?weeks_from_the_latest=${index}`}
+                href={`/performance/customer-service/product-breakdown?weeks_from_the_latest=${index}&start_date=${startDate.mmddyyyy}&end_date=${endDate.mmddyyyy}`}
               >
                 {`${startDate.mmddyyyy}-${endDate.mmddyyyy}`}
               </Link>
@@ -91,8 +91,8 @@ const CustomerServiceAggregateModule: React.FC = () => {
         render: ({ row: { gmv } }) => {
           const amount =
             store.aggreagateCurrencyCode === CURRENCY_CODE.CNY
-              ? gmv.CNY_amount
-              : gmv.USD_amount;
+              ? gmv?.CNY_amount
+              : gmv?.USD_amount;
           return amount
             ? formatCurrency(amount, store.aggreagateCurrencyCode)
             : "-";

@@ -62,7 +62,7 @@ const SalesAggregateModel: React.FC = () => {
               className={commonStyles.linkStyle}
             >
               <Link
-                href={`/performance/sales/product-breakdown?weeks_from_the_latest=${index}`}
+                href={`/performance/sales/product-breakdown?weeks_from_the_latest=${index}&start_date=${startDate.mmddyyyy}&end_date=${endDate.mmddyyyy}`}
               >
                 {`${startDate.mmddyyyy}-${endDate.mmddyyyy}`}
               </Link>

@@ -62,6 +62,7 @@ type PickedRefundAggregate = {
   | "failToFulfillPercentage"
   | "deliverWrongAddressPercentage"
   | "incompleteOrderPercentage"
+  | "refundRatePercentile"
 >;
 
 export type AugmentedRefundAggregate = PickedRefundAggregate;
@@ -131,8 +132,8 @@ type PickedRefundBreakdown = Pick<
 >;
 
 export type AugmentedRefundBreakdown = {
-  readonly startDate: Pick<Datetime, "mmddyyyy">;
-  readonly endDate: Pick<Datetime, "mmddyyyy">;
+  readonly startDate?: Pick<Datetime, "mmddyyyy">;
+  readonly endDate?: Pick<Datetime, "mmddyyyy">;
 } & PickedRefundBreakdown &
   Pick<ProductSchema, "id" | "isReturnsEnabled">;
 
@@ -146,7 +147,7 @@ export type RefundBreakdownResponseData = {
     readonly productsV2: ReadonlyArray<
       {
         readonly stats: {
-          readonly weekly: {
+          readonly weekly?: {
             readonly startDate: Pick<Datetime, "mmddyyyy">;
             readonly endDate: Pick<Datetime, "mmddyyyy">;
           } & {
@@ -193,18 +194,16 @@ class Store {
   @action
   updateBreakdownData(data: RefundBreakdownResponseData) {
     this.breakdownDataTotalCount = data.productCatalog.productCountV2;
-    this.breakdownData = data?.productCatalog?.productsV2
-      ?.filter((obj) => obj.stats.weekly)
-      .map((item) => {
-        const { weekly } = item.stats;
-        return {
-          id: item.id,
-          isReturnsEnabled: item.isReturnsEnabled,
-          startDate: weekly.startDate,
-          endDate: weekly.endDate,
-          ...weekly.refund,
-        };
-      });
+    this.breakdownData = data?.productCatalog?.productsV2.map((item) => {
+      const { weekly } = item.stats;
+      return {
+        id: item.id,
+        isReturnsEnabled: item.isReturnsEnabled,
+        startDate: weekly?.startDate,
+        endDate: weekly?.endDate,
+        ...weekly?.refund,
+      };
+    });
   }
 }
 

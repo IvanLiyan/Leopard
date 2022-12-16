@@ -82,7 +82,7 @@ export const CS_PERFORMANCE_AGGREGATE_DATA_QUERY = gql`
 type PickedCustomerServiceAggregate = {
   readonly startDate: Pick<Datetime, "mmddyyyy">;
   readonly endDate: Pick<Datetime, "mmddyyyy">;
-  readonly gmv: Pick<CurrencyValue, "amount" | "currencyCode">;
+  readonly gmv?: Pick<CurrencyValue, "amount" | "currencyCode">;
   readonly chargebackAmount?: Pick<CurrencyValue, "amount" | "currencyCode">;
   readonly averageTicketResponseTime: Pick<Timedelta, "hours">;
 } & Pick<
@@ -108,7 +108,8 @@ export type AugmentedCustomerServiceAggregate = Omit<
   PickedCustomerServiceAggregate,
   "gmv"
 > & {
-  readonly gmv: Pick<CurrencyValue, "amount" | "currencyCode"> & AugmentedPrice;
+  readonly gmv?: Pick<CurrencyValue, "amount" | "currencyCode"> &
+    AugmentedPrice;
   readonly chargebackAmount?: Pick<CurrencyValue, "amount" | "currencyCode"> &
     AugmentedPrice;
 };
@@ -166,7 +167,7 @@ export const CS_PERFORMANCE_BREAKDOWN_DATA_QUERY = gql`
 `;
 
 type PickedCustomerServiceBreakdown = {
-  readonly gmv: Pick<CurrencyValue, "amount" | "currencyCode">;
+  readonly gmv?: Pick<CurrencyValue, "amount" | "currencyCode">;
 } & Pick<
   CsPerformanceStats,
   | "orders"
@@ -184,9 +185,10 @@ export type AugmentedCustomerServiceBreakdown = Omit<
   "gmv"
 > & {
   readonly id: ProductSchema["id"];
-  readonly gmv: Pick<CurrencyValue, "amount" | "currencyCode"> & AugmentedPrice;
-  readonly startDate: Pick<Datetime, "mmddyyyy">;
-  readonly endDate: Pick<Datetime, "mmddyyyy">;
+  readonly gmv?: Pick<CurrencyValue, "amount" | "currencyCode"> &
+    AugmentedPrice;
+  readonly startDate?: Pick<Datetime, "mmddyyyy">;
+  readonly endDate?: Pick<Datetime, "mmddyyyy">;
 };
 
 export type CustomerServiceProductBreakdownResponseData = {
@@ -194,7 +196,7 @@ export type CustomerServiceProductBreakdownResponseData = {
     readonly productsV2: ReadonlyArray<
       {
         readonly stats: {
-          readonly weekly: {
+          readonly weekly?: {
             readonly cs: PickedCustomerServiceBreakdown;
           } & {
             readonly startDate: Pick<Datetime, "mmddyyyy">;
@@ -260,33 +262,28 @@ class Store {
       customerServiceData as unknown as ReadonlyArray<CountTableDataItem>, // cast is very dangerous but original code was not type safe. please do not repeat
       ["gmv", "chargebackAmount"],
     ) as unknown as ReadonlyArray<AugmentedCustomerServiceAggregate>;
-    if (customerServiceData[0].gmv.currencyCode === "CNY")
+    if (customerServiceData[0].gmv?.currencyCode === "CNY")
       this.aggregateCNYFlag = true;
   }
 
   @action
   updataBreakdownData(data: CustomerServiceProductBreakdownResponseData) {
     this.breakdownDataTotalCount = data.productCatalog.productCountV2;
-    const productData = data.productCatalog.productsV2
-      ?.filter((obj) => obj.stats.weekly)
-      .map((product) => {
-        const { startDate, endDate, cs } = product.stats.weekly;
-        return {
-          id: product.id,
-          startDate,
-          endDate,
-          ...cs,
-        };
-      });
-    if (productData.length === 0) {
-      return;
-    }
+    const productData = data.productCatalog.productsV2.map((product) => {
+      const { weekly } = product.stats;
+      return {
+        id: product.id,
+        startDate: weekly?.startDate,
+        endDate: weekly?.endDate,
+        ...weekly?.cs,
+      };
+    });
     this.breakdownData = countTableDataCurrencyAmount(
       productData as unknown as ReadonlyArray<CountTableDataItem>, // cast is very dangerous but original code was not type safe. please do not repeat
       ["gmv"],
     ) as unknown as ReadonlyArray<AugmentedCustomerServiceBreakdown>; // cast is very dangerous but original code was not type safe. please do not repeat;
 
-    if (productData[0].gmv.currencyCode === "CNY") this.productCNYFlag = true;
+    if (productData[0].gmv?.currencyCode === "CNY") this.productCNYFlag = true;
   }
 }
 

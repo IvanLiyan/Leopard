@@ -53,16 +53,16 @@ const RefundAggregateModule: React.FC = () => {
       {
         key: "rangeDate",
         title: i`Time Period`,
-        render: ({ row, index }) => {
+        render: ({ row: { startDate, endDate }, index }) => {
           return (
             <div
               style={{ textAlign: "left" }}
               className={commonStyles.linkStyle}
             >
               <Link
-                href={`/performance/refund/product-breakdown?weeks_from_the_latest=${index}`}
+                href={`/performance/refund/product-breakdown?weeks_from_the_latest=${index}&start_date=${startDate.mmddyyyy}&end_date=${endDate.mmddyyyy}`}
               >
-                {`${row.startDate.mmddyyyy}-${row.endDate.mmddyyyy}`}
+                {`${startDate.mmddyyyy}-${endDate.mmddyyyy}`}
               </Link>
             </div>
           );
@@ -167,10 +167,12 @@ const RefundAggregateModule: React.FC = () => {
               >
                 Your Metrics
               </Title>
-              <span>
-                Last week your refund rate was higher than 36% of merchants on
-                Wish.
-              </span>
+              {store.aggregateData[0]?.refundRatePercentile && (
+                <span>
+                  {i`Last week your refund rate was higher than ${store.aggregateData[0]?.refundRatePercentile}% of merchants on Wish.`}
+                </span>
+              )}
+
               <Link
                 href={zendeskURL("204531528")}
                 className={commonStyles.linkStyle}

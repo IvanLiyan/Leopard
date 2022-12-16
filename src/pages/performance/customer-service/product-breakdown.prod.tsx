@@ -71,11 +71,18 @@ const ProductView: React.FC = () => {
       {
         key: "rangeDate",
         titleRender: () => <span>Benchmark</span>,
-        render: ({ row: { startDate, endDate } }) => (
-          <div style={{ textAlign: "left" }}>
-            {`${startDate.mmddyyyy}-${endDate.mmddyyyy}`}
-          </div>
-        ),
+        render: ({ row: { startDate, endDate } }) => {
+          const displayStartDate =
+            startDate?.mmddyyyy || router.query.start_date;
+          const displayEndDate = endDate?.mmddyyyy || router.query.end_date;
+          return (
+            <div style={{ textAlign: "left" }}>
+              {displayStartDate && displayEndDate
+                ? `${displayStartDate}-${displayEndDate}`
+                : "-"}
+            </div>
+          );
+        },
       },
       {
         key: "id",
@@ -88,7 +95,12 @@ const ProductView: React.FC = () => {
                 src={contestImageURL(id, "tiny")}
                 alt={i`Picture of product`}
               />
-              <Link href={url} openInNewTab>
+              <Link
+                href={url}
+                openInNewTab
+                style={{ marginLeft: "10px" }}
+                className={commonStyles.linkStyle}
+              >
                 {id}
               </Link>
             </div>
@@ -115,8 +127,8 @@ const ProductView: React.FC = () => {
         render: ({ row: { gmv } }) => {
           const amount =
             store.breakdownCurrencyCode === CURRENCY_CODE.CNY
-              ? gmv.CNY_amount
-              : gmv.USD_amount;
+              ? gmv?.CNY_amount
+              : gmv?.USD_amount;
           return amount
             ? formatCurrency(amount, store.breakdownCurrencyCode)
             : "-";
@@ -139,9 +151,8 @@ const ProductView: React.FC = () => {
             </Tooltip>
           </>
         ),
-        render: ({ row: { orders } }) => {
-          return addCommas(String(orders));
-        },
+        render: ({ row: { orders } }) =>
+          orders == null || orders == 0 ? "-" : addCommas(String(orders)),
       },
       {
         key: "orders30d",
@@ -160,7 +171,10 @@ const ProductView: React.FC = () => {
             </Tooltip>
           </>
         ),
-        render: ({ row: { orders30d } }) => addCommas(String(orders30d)),
+        render: ({ row: { orders30d } }) =>
+          orders30d == null || orders30d == 0
+            ? "-"
+            : addCommas(String(orders30d)),
       },
       {
         key: "refund30d",
@@ -179,7 +193,8 @@ const ProductView: React.FC = () => {
             </Tooltip>
           </>
         ),
-        render: ({ row: { refund30d } }) => String(refund30d),
+        render: ({ row: { refund30d } }) =>
+          refund30d == null || refund30d == 0 ? "-" : String(refund30d),
       },
       {
         key: "refundRatio30d",
@@ -230,7 +245,10 @@ const ProductView: React.FC = () => {
             </Tooltip>
           </>
         ),
-        render: ({ row: { orders93d } }) => addCommas(String(orders93d)),
+        render: ({ row: { orders93d } }) =>
+          orders93d == null || orders93d == 0
+            ? "-"
+            : addCommas(String(orders93d)),
       },
       {
         key: "refund93d",
@@ -249,7 +267,8 @@ const ProductView: React.FC = () => {
             </Tooltip>
           </>
         ),
-        render: ({ row: { refund93d } }) => String(refund93d),
+        render: ({ row: { refund93d } }) =>
+          refund93d == null || refund93d == 0 ? "-" : String(refund93d),
       },
       {
         key: "refundRatio93d",
@@ -309,11 +328,13 @@ const ProductView: React.FC = () => {
       },
     ];
     return columns;
-  }, [textBlack]);
+  }, [textBlack, router.query.start_date, router.query.end_date]);
 
   const dateRange =
     store.breakdownData.length > 0
-      ? i`- week of ${store.breakdownData[0].startDate.mmddyyyy} - ${store.breakdownData[0].endDate.mmddyyyy}`
+      ? i`- week of ${router.query.start_date || ""} - ${
+          router.query.end_date || ""
+        }`
       : "";
 
   return (
@@ -387,23 +408,24 @@ const ProductView: React.FC = () => {
               </Tooltip>
             </div>
           )}
-
-          <Button
-            secondary
-            onClick={() => {
-              return exportCSV({
-                type: EXPORT_CSV_TYPE.PRODUCT,
-                stats_type: EXPORT_CSV_STATS_TYPE.CUSTOMER_SERVICE,
-                currencyCode: store.breakdownCurrencyCode,
-                target_date:
-                  new Date(
-                    store.breakdownData[0].startDate.mmddyyyy,
-                  ).getTime() / 1000,
-              });
-            }}
-          >
-            Export CSV
-          </Button>
+          {store.breakdownData[0]?.startDate?.mmddyyyy && (
+            <Button
+              secondary
+              onClick={() => {
+                // above assertion confirms this will not be null
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                const startDate = store.breakdownData[0]!.startDate!.mmddyyyy;
+                exportCSV({
+                  type: EXPORT_CSV_TYPE.PRODUCT,
+                  stats_type: EXPORT_CSV_STATS_TYPE.CUSTOMER_SERVICE,
+                  currencyCode: store.breakdownCurrencyCode,
+                  target_date: new Date(startDate).getTime() / 1000,
+                });
+              }}
+            >
+              Export CSV
+            </Button>
+          )}
         </div>
         <div>
           {breakdownReqLoading ? (

@@ -69,11 +69,18 @@ const SalesProductBreakdownPage: NextPage<Record<string, never>> = () => {
       {
         key: "rangeDate",
         title: i`Date Range`,
-        render: ({ row: { startDate, endDate } }) => (
-          <div style={{ textAlign: "left" }}>
-            {`${startDate.mmddyyyy}-${endDate.mmddyyyy}`}
-          </div>
-        ),
+        render: ({ row: { startDate, endDate } }) => {
+          const displayStartDate =
+            startDate?.mmddyyyy || router.query.start_date;
+          const displayEndDate = endDate?.mmddyyyy || router.query.end_date;
+          return (
+            <div style={{ textAlign: "left" }}>
+              {displayStartDate && displayEndDate
+                ? `${displayStartDate}-${displayEndDate}`
+                : "-"}
+            </div>
+          );
+        },
       },
       {
         key: "id",
@@ -128,11 +135,18 @@ const SalesProductBreakdownPage: NextPage<Record<string, never>> = () => {
     ];
     columns.splice(2, 0, ...salesBaseColumn);
     return columns;
-  }, [salesBaseColumn, textBlack]);
+  }, [
+    salesBaseColumn,
+    textBlack,
+    router.query.start_date,
+    router.query.end_date,
+  ]);
 
   const dateRange =
     store.breakdownData.length > 0
-      ? i`- week of ${store.breakdownData[0].startDate.mmddyyyy} - ${store.breakdownData[0].endDate.mmddyyyy}`
+      ? i`- week of ${router.query.start_date || ""} - ${
+          router.query.end_date || ""
+        }`
       : "";
 
   return (
@@ -194,22 +208,24 @@ const SalesProductBreakdownPage: NextPage<Record<string, never>> = () => {
           ) : (
             <div></div>
           )}
-          <Button
-            secondary
-            onClick={() =>
-              exportCSV({
-                type: EXPORT_CSV_TYPE.PRODUCT,
-                stats_type: EXPORT_CSV_STATS_TYPE.PRESALE,
-                currencyCode: store.breakdownCurrencyCode,
-                target_date:
-                  new Date(
-                    store.breakdownData[0].startDate.mmddyyyy,
-                  ).getTime() / 1000,
-              })
-            }
-          >
-            Export CSV
-          </Button>
+          {store.breakdownData[0]?.startDate?.mmddyyyy && (
+            <Button
+              secondary
+              onClick={() => {
+                // above assertion confirms this will not be null
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                const startDate = store.breakdownData[0]!.startDate!.mmddyyyy;
+                exportCSV({
+                  type: EXPORT_CSV_TYPE.PRODUCT,
+                  stats_type: EXPORT_CSV_STATS_TYPE.PRESALE,
+                  currencyCode: store.breakdownCurrencyCode,
+                  target_date: new Date(startDate).getTime() / 1000,
+                });
+              }}
+            >
+              Export CSV
+            </Button>
+          )}
         </div>
         <div className={styles.metricsModule}>
           {breakdownReqLoading ? (
