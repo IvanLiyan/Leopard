@@ -1,21 +1,16 @@
-import { observable, action } from "mobx";
 import { gql } from "@apollo/client";
 import {
   CurrencyValue,
   Datetime,
+  MerchantSchema,
   MerchantStatsWeeklyArgs,
-  PaymentCurrencyCode,
   ProductPerformanceStats,
 } from "@schema";
-import {
-  AugmentedPrice,
-  countTableDataCurrencyAmount,
-  CountTableDataItem,
-} from "@performance/toolkit/utils";
 
 export const PERFORMANCE_PRODUCT_DATA_QUERY = gql`
   query Product_PerformanceProductDataQuery($weeks: Int!) {
     currentMerchant {
+      primaryCurrency
       storeStats {
         weekly(weeks: $weeks) {
           product {
@@ -50,7 +45,7 @@ export const PERFORMANCE_PRODUCT_DATA_QUERY = gql`
   }
 `;
 
-type PickedProduct = {
+export type PickedProduct = {
   readonly startDate: Pick<Datetime, "mmddyyyy">;
   readonly endDate: Pick<Datetime, "mmddyyyy">;
   readonly averagePrice?: Pick<CurrencyValue, "amount" | "currencyCode">;
@@ -70,7 +65,7 @@ type PickedProduct = {
 >;
 
 export type ProductDataQueryResponse = {
-  readonly currentMerchant: {
+  readonly currentMerchant?: Pick<MerchantSchema, "primaryCurrency"> & {
     readonly storeStats: {
       readonly weekly: ReadonlyArray<{
         readonly product: PickedProduct;
@@ -80,49 +75,3 @@ export type ProductDataQueryResponse = {
 };
 
 export type ProductDataQueryArguments = MerchantStatsWeeklyArgs;
-
-export type AugmentedProduct = Omit<
-  PickedProduct,
-  "averagePrice" | "averageShippingPrice" | "gmv"
-> & {
-  readonly averagePrice?: Pick<CurrencyValue, "amount" | "currencyCode"> &
-    AugmentedPrice;
-  readonly averageShippingPrice?: Pick<
-    CurrencyValue,
-    "amount" | "currencyCode"
-  > &
-    AugmentedPrice;
-  readonly gmv?: Pick<CurrencyValue, "amount" | "currencyCode"> &
-    AugmentedPrice;
-};
-
-class Store {
-  readonly storeName = "performance-product-store";
-
-  @observable
-  data: ReadonlyArray<AugmentedProduct> = [];
-
-  @observable
-  currencyCode: PaymentCurrencyCode = "USD";
-
-  @observable
-  productCNYFlag = false;
-
-  @action updateCurrencyCode(currencyCode: PaymentCurrencyCode) {
-    this.currencyCode = currencyCode;
-  }
-
-  @action
-  updatePerProductData(data: ProductDataQueryResponse) {
-    const productData = data?.currentMerchant?.storeStats?.weekly?.map(
-      (week) => week.product,
-    );
-    this.data = countTableDataCurrencyAmount(
-      productData as unknown as ReadonlyArray<CountTableDataItem>, // cast is very dangerous but original code was not type safe. please do not repeat
-      ["averagePrice", "averageShippingPrice", "gmv"],
-    ) as unknown as ReadonlyArray<AugmentedProduct>; // cast is very dangerous but original code was not type safe. please do not repeat
-    if (productData[0].gmv?.currencyCode === "CNY") this.productCNYFlag = true;
-  }
-}
-
-export default new Store();

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import { observer } from "mobx-react";
 import { NextPage } from "next";
 import { useQuery } from "@apollo/client";
@@ -7,7 +7,6 @@ import { Button } from "@ContextLogic/atlas-ui";
 import Image from "@core/components/Image";
 import { formatCurrency } from "@core/toolkit/currency";
 import { Alert, LoadingIndicator } from "@ContextLogic/lego";
-import { useToastStore } from "@core/stores/ToastStore";
 import { wishURL, contestImageURL } from "@core/toolkit/url";
 import PageRoot from "@core/components/PageRoot";
 import {
@@ -17,14 +16,13 @@ import {
 import { Table, Icon } from "@performance/components";
 import { TableColumn } from "@performance/components/Table";
 import useSalesBaseColumn from "@performance/components/sales/SalesBaseColumn";
-import store, {
+import {
   PERFORMANCE_BREAKDOWN_DATA_QUERY,
   AugmentedSalesBreakdown,
   SalesProductBreakdownResponseData,
   BreakdownRequestArgs,
-} from "@performance/stores/Sales";
+} from "@performance/toolkit/salesProductBreakdown";
 import {
-  CURRENCY_CODE,
   PER_PAGE_LIMIT,
   EXPORT_CSV_STATS_TYPE,
   EXPORT_CSV_TYPE,
@@ -38,34 +36,39 @@ import PageHeader from "@core/components/PageHeader";
 import { useTheme } from "@core/stores/ThemeStore";
 
 const SalesProductBreakdownPage: NextPage<Record<string, never>> = () => {
-  const toastStore = useToastStore();
+  const [pageNo, setPageNo] = useState(0);
   const { textBlack } = useTheme();
   const salesBaseColumn = useSalesBaseColumn();
   const exportCSV = useExportCSV();
   const { weeksFromLatest, startDate, endDate } =
     useDecodedProductBreakdownURI();
-  const {
-    data: breakdownData,
-    loading: breakdownReqLoading,
-    refetch,
-  } = useQuery<SalesProductBreakdownResponseData, BreakdownRequestArgs>(
-    PERFORMANCE_BREAKDOWN_DATA_QUERY,
-    {
-      variables: {
-        offset: 0,
-        limit: 20 || PER_PAGE_LIMIT,
-        sort: { order: "DESC", field: "SALES" },
-        weeks_from_the_latest: weeksFromLatest,
-      },
-      notifyOnNetworkStatusChange: true,
+  const { data, loading: breakdownReqLoading } = useQuery<
+    SalesProductBreakdownResponseData,
+    BreakdownRequestArgs
+  >(PERFORMANCE_BREAKDOWN_DATA_QUERY, {
+    variables: {
+      offset: pageNo * PER_PAGE_LIMIT,
+      limit: PER_PAGE_LIMIT,
+      sort: { order: "DESC", field: "SALES" },
+      weeks_from_the_latest: weeksFromLatest,
     },
-  );
+    notifyOnNetworkStatusChange: true,
+  });
 
-  useEffect(() => {
-    if (breakdownData && !breakdownReqLoading) {
-      store.updateBreakdownData(breakdownData);
-    }
-  }, [breakdownData, breakdownReqLoading]);
+  const currencyCodeForExportCSV = data?.currentMerchant?.primaryCurrency;
+
+  const tableData: ReadonlyArray<AugmentedSalesBreakdown> | undefined =
+    useMemo(() => {
+      return data?.productCatalog?.productsV2.map((product) => {
+        const { weekly } = product.stats;
+        return {
+          id: product.id,
+          startDate: weekly?.startDate,
+          endDate: weekly?.endDate,
+          ...weekly?.sales,
+        };
+      });
+    }, [data?.productCatalog?.productsV2]);
 
   const columns = useMemo(() => {
     const columns: Array<TableColumn<AugmentedSalesBreakdown>> = [
@@ -125,15 +128,8 @@ const SalesProductBreakdownPage: NextPage<Record<string, never>> = () => {
             </Tooltip>
           </>
         ),
-        render: ({ row: { gmv } }) => {
-          const amount =
-            store.breakdownCurrencyCode === CURRENCY_CODE.CNY
-              ? gmv?.CNY_amount
-              : gmv?.USD_amount;
-          return amount
-            ? formatCurrency(amount, store.breakdownCurrencyCode)
-            : "-";
-        },
+        render: ({ row: { gmv } }) =>
+          gmv ? formatCurrency(gmv.amount, gmv.currencyCode) : "-",
       },
     ];
     columns.splice(2, 0, ...salesBaseColumn);
@@ -164,52 +160,15 @@ const SalesProductBreakdownPage: NextPage<Record<string, never>> = () => {
           text={i`Please refer to the metrics on the Wish Standards page as the definitive source for your performance.`}
         />
         <div className={commonStyles.toolkit}>
-          {store.productCNYFlag ? (
-            <div className={commonStyles.changeCurrencyCon}>
-              <Button
-                secondary
-                disabled={store.breakdownCurrencyCode === CURRENCY_CODE.USD}
-                onClick={() =>
-                  store.updateBreakdownCurrencyCode(CURRENCY_CODE.USD)
-                }
-              >
-                Display in USD $
-              </Button>
-              <Button
-                secondary
-                disabled={store.breakdownCurrencyCode === CURRENCY_CODE.CNY}
-                onClick={() =>
-                  store.updateBreakdownCurrencyCode(CURRENCY_CODE.CNY)
-                }
-              >
-                Display in CNY ¥
-              </Button>
-              <Tooltip
-                className={commonStyles.tableTooltip}
-                title={
-                  <div style={{ fontSize: "14px" }}>
-                    USD values recorded prior to your CNY migration date are
-                    being calculated at 1 USD = 7.0 CNY, in order to view full
-                    performance data in CNY
-                  </div>
-                }
-              >
-                <span className={commonStyles.calculateText}>
-                  How are currency values calculated?
-                </span>
-              </Tooltip>
-            </div>
-          ) : (
-            <div></div>
-          )}
-          {startDate && (
+          <div />
+          {startDate && currencyCodeForExportCSV && (
             <Button
               secondary
               onClick={() => {
                 exportCSV({
                   type: EXPORT_CSV_TYPE.PRODUCT,
                   stats_type: EXPORT_CSV_STATS_TYPE.PRESALE,
-                  currencyCode: store.breakdownCurrencyCode,
+                  currencyCode: currencyCodeForExportCSV,
                   target_date: new Date(startDate).getTime() / 1000,
                 });
               }}
@@ -221,24 +180,20 @@ const SalesProductBreakdownPage: NextPage<Record<string, never>> = () => {
         <div className={styles.metricsModule}>
           {breakdownReqLoading ? (
             <LoadingIndicator className={commonStyles.loading} />
-          ) : (
+          ) : tableData ? (
             <Table
-              data={store.breakdownData}
+              data={tableData}
               columns={columns}
               pagination={{
-                pageNo: store.pageNo,
-                totalCount: store.breakdownDataTotalCount,
+                pageNo,
+                totalCount: data?.productCatalog?.productCountV2 || 0,
                 pageChange: (pageNo: number) => {
-                  refetch({ offset: pageNo * PER_PAGE_LIMIT })
-                    .then(() => {
-                      store.updatePageNo(pageNo);
-                    })
-                    .catch(({ message }: { message: string }) => {
-                      toastStore.error(message);
-                    });
+                  setPageNo(pageNo);
                 },
               }}
             />
+          ) : (
+            <div>No data available</div>
           )}
         </div>
       </PageGuide>

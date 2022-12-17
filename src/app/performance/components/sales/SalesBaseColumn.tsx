@@ -5,14 +5,14 @@ import { addCommas, formatPercentage } from "@core/toolkit/stringUtils";
 import { Icon } from "@performance/components";
 import { useTheme } from "@core/stores/ThemeStore";
 import commonStyles from "@performance/styles/common.module.css";
-import { AugmentedSalesAggregate } from "@performance/stores/Sales";
+import { PickedSales } from "@performance/toolkit/sales";
 
 export default function useSalesBaseColumn() {
   const { textBlack } = useTheme();
   const salesBaseColumn: ReadonlyArray<
     TableColumn<
       Pick<
-        AugmentedSalesAggregate,
+        PickedSales,
         | "productImpressions"
         | "addToCart"
         | "addToCartConversion"

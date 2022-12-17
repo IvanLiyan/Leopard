@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useMemo } from "react";
 import { observer } from "mobx-react";
 import Link from "@core/components/Link";
 import { useQuery } from "@apollo/client";
@@ -7,14 +7,13 @@ import { Tooltip } from "@mui/material";
 import { Button } from "@ContextLogic/atlas-ui";
 import { Table, Title, Icon } from "@performance/components";
 import { formatCurrency } from "@ContextLogic/lego/toolkit/currency";
-import store, {
+import {
   CS_PERFORMANCE_AGGREGATE_DATA_QUERY,
-  AugmentedCustomerServiceAggregate,
   CustomerServiceAggregateResponseData,
   CustomerServiceAggregateArgs,
-} from "@performance/stores/CustomerService";
+  PickedCustomerServiceAggregate,
+} from "@performance/toolkit/cs";
 import {
-  CURRENCY_CODE,
   REQUEST_WEEKS,
   EXPORT_CSV_STATS_TYPE,
   EXPORT_CSV_TYPE,
@@ -48,14 +47,15 @@ const CustomerServiceAggregateModule: React.FC = () => {
     },
   });
 
-  useEffect(() => {
-    if (data) {
-      store.updateAggregateData(data);
-    }
-  }, [data]);
+  const currencyCodeForExportCSV = data?.currentMerchant?.primaryCurrency;
+
+  const tableData: ReadonlyArray<PickedCustomerServiceAggregate> | undefined =
+    useMemo(() => {
+      return data?.currentMerchant?.storeStats?.weekly?.map((week) => week.cs);
+    }, [data?.currentMerchant?.storeStats?.weekly]);
 
   const columns = useMemo(() => {
-    const columns: Array<TableColumn<AugmentedCustomerServiceAggregate>> = [
+    const columns: Array<TableColumn<PickedCustomerServiceAggregate>> = [
       {
         key: "timePeriod",
         title: i`Date Range`,
@@ -97,15 +97,8 @@ const CustomerServiceAggregateModule: React.FC = () => {
             </Tooltip>
           </div>
         ),
-        render: ({ row: { gmv } }) => {
-          const amount =
-            store.aggregateCurrencyCode === CURRENCY_CODE.CNY
-              ? gmv?.CNY_amount
-              : gmv?.USD_amount;
-          return amount
-            ? formatCurrency(amount, store.aggregateCurrencyCode)
-            : "-";
-        },
+        render: ({ row: { gmv } }) =>
+          gmv ? formatCurrency(gmv.amount, gmv.currencyCode) : "-",
       },
       {
         key: "orders",
@@ -327,15 +320,13 @@ const CustomerServiceAggregateModule: React.FC = () => {
             </Tooltip>
           </>
         ),
-        render: ({ row: { chargebackAmount } }) => {
-          const amount =
-            store.aggregateCurrencyCode === CURRENCY_CODE.CNY
-              ? chargebackAmount?.CNY_amount
-              : chargebackAmount?.USD_amount;
-          return amount
-            ? formatCurrency(amount, store.aggregateCurrencyCode)
-            : "-";
-        },
+        render: ({ row: { chargebackAmount } }) =>
+          chargebackAmount
+            ? formatCurrency(
+                chargebackAmount.amount,
+                chargebackAmount.currencyCode,
+              )
+            : "-",
       },
       {
         key: "chargebackAmountRatio",
@@ -513,83 +504,37 @@ const CustomerServiceAggregateModule: React.FC = () => {
           }
         />
         <AggregateBenchMarksModel />
-        <div
-          className={commonStyles.toolkit}
-          style={{ alignItems: "center", padding: 0 }}
-        >
-          <div
-            className={commonStyles.toolkit}
-            style={{ alignItems: "center" }}
-          >
-            <Title
-              style={{ marginRight: "20px", padding: 0 }}
-              className={commonStyles.title}
+        <div className={commonStyles.toolkit} style={{ alignItems: "center" }}>
+          <Title style={{ padding: 0 }} className={commonStyles.title}>
+            Your Metrics
+          </Title>
+
+          {tableData && tableData.length > 0 && (
+            <Button
+              secondary
+              onClick={() =>
+                exportCSV({
+                  type: EXPORT_CSV_TYPE.MERCHANT,
+                  stats_type: EXPORT_CSV_STATS_TYPE.CUSTOMER_SERVICE,
+                  currencyCode: currencyCodeForExportCSV,
+                  target_date:
+                    new Date(
+                      tableData[tableData.length - 1].startDate.mmddyyyy,
+                    ).getTime() / 1000,
+                })
+              }
             >
-              Your Metrics
-            </Title>
-            {store.aggregateCNYFlag ? (
-              <div className={commonStyles.changeCurrencyCon}>
-                <Button
-                  secondary
-                  disabled={store.aggregateCurrencyCode === CURRENCY_CODE.USD}
-                  onClick={() =>
-                    store.updateAggregateCurrencyCode(CURRENCY_CODE.USD)
-                  }
-                >
-                  Display in USD $
-                </Button>
-                <Button
-                  secondary
-                  disabled={store.aggregateCurrencyCode === CURRENCY_CODE.CNY}
-                  onClick={() =>
-                    store.updateAggregateCurrencyCode(CURRENCY_CODE.CNY)
-                  }
-                >
-                  Display in CNY ¥
-                </Button>
-                <Tooltip
-                  className={commonStyles.tableTooltip}
-                  title={
-                    <div style={{ fontSize: "14px" }}>
-                      USD values recorded prior to your CNY migration date are
-                      being calculated at 1 USD = 7.0 CNY, in order to view full
-                      performance data in CNY
-                    </div>
-                  }
-                >
-                  <span className={commonStyles.calculateText}>
-                    How are currency values calculated?
-                  </span>
-                </Tooltip>
-              </div>
-            ) : (
-              <div></div>
-            )}
-          </div>
-          <Button
-            secondary
-            onClick={() =>
-              exportCSV({
-                type: EXPORT_CSV_TYPE.MERCHANT,
-                stats_type: EXPORT_CSV_STATS_TYPE.CUSTOMER_SERVICE,
-                currencyCode: store.aggregateCurrencyCode,
-                target_date:
-                  new Date(
-                    store.aggregateData[
-                      store.aggregateData.length - 1
-                    ].startDate.mmddyyyy,
-                  ).getTime() / 1000,
-              })
-            }
-          >
-            Export CSV
-          </Button>
+              Export CSV
+            </Button>
+          )}
         </div>
 
         {loading ? (
           <LoadingIndicator className={commonStyles.loading} />
+        ) : tableData ? (
+          <Table data={tableData} columns={columns} />
         ) : (
-          <Table data={store.aggregateData} columns={columns} />
+          <div>No data available</div>
         )}
       </PageGuide>
     </>

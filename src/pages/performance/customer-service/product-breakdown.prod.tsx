@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import Link from "@core/components/Link";
 import { observer } from "mobx-react";
 import { useQuery } from "@apollo/client";
@@ -11,16 +11,15 @@ import {
   useDecodedProductBreakdownURI,
   useExportCSV,
 } from "@performance/toolkit/utils";
-import store, {
+import {
   CS_PERFORMANCE_BREAKDOWN_DATA_QUERY,
   AugmentedCustomerServiceBreakdown,
   CustomerServiceProductBreakdownResponseData,
   BreakdownRequestArgs,
-} from "@performance/stores/CustomerService";
+} from "@performance/toolkit/csProductBreakdown";
 import ProductBreakdownBenchMarksModel from "@performance/components/customer-service/ProductBreakdownBenchmarksModel";
 import PageRoot from "@core/components/PageRoot";
 import { formatCurrency } from "@ContextLogic/lego/toolkit/currency";
-import { useToastStore } from "@core/stores/ToastStore";
 import { wishURL, contestImageURL } from "@core/toolkit/url";
 import {
   addCommas,
@@ -29,7 +28,6 @@ import {
 } from "src/app/core/toolkit/stringUtils";
 import { Table, Title, Icon } from "@performance/components";
 import {
-  CURRENCY_CODE,
   EXPORT_CSV_STATS_TYPE,
   PER_PAGE_LIMIT,
   EXPORT_CSV_TYPE,
@@ -41,33 +39,39 @@ import PageHeader from "@core/components/PageHeader";
 import { useTheme } from "@core/stores/ThemeStore";
 
 const ProductView: React.FC = () => {
-  const toastStore = useToastStore();
+  const [pageNo, setPageNo] = useState(0);
   const { textBlack } = useTheme();
   const exportCSV = useExportCSV();
   const { weeksFromLatest, startDate, endDate } =
     useDecodedProductBreakdownURI();
-  const {
-    data: breakdownData,
-    loading: breakdownReqLoading,
-    refetch,
-  } = useQuery<
+  const { data, loading: breakdownReqLoading } = useQuery<
     CustomerServiceProductBreakdownResponseData,
     BreakdownRequestArgs
   >(CS_PERFORMANCE_BREAKDOWN_DATA_QUERY, {
     variables: {
-      offset: 0,
-      limit: 20 || PER_PAGE_LIMIT,
+      offset: pageNo * PER_PAGE_LIMIT,
+      limit: PER_PAGE_LIMIT,
       sort: { order: "DESC", field: "SALES" },
       weeks_from_the_latest: weeksFromLatest,
     },
     notifyOnNetworkStatusChange: true,
   });
 
-  useEffect(() => {
-    if (breakdownData && !breakdownReqLoading) {
-      store.updateBreakdownData(breakdownData);
-    }
-  }, [breakdownData, breakdownReqLoading]);
+  const currencyCodeForExportCSV = data?.currentMerchant?.primaryCurrency;
+
+  const tableData:
+    | ReadonlyArray<AugmentedCustomerServiceBreakdown>
+    | undefined = useMemo(() => {
+    return data?.productCatalog?.productsV2.map((product) => {
+      const { weekly } = product.stats;
+      return {
+        id: product.id,
+        startDate: weekly?.startDate,
+        endDate: weekly?.endDate,
+        ...weekly?.cs,
+      };
+    });
+  }, [data?.productCatalog?.productsV2]);
 
   const columns = useMemo(() => {
     const columns: Array<TableColumn<AugmentedCustomerServiceBreakdown>> = [
@@ -126,15 +130,8 @@ const ProductView: React.FC = () => {
             </Tooltip>
           </>
         ),
-        render: ({ row: { gmv } }) => {
-          const amount =
-            store.breakdownCurrencyCode === CURRENCY_CODE.CNY
-              ? gmv?.CNY_amount
-              : gmv?.USD_amount;
-          return amount
-            ? formatCurrency(amount, store.breakdownCurrencyCode)
-            : "-";
-        },
+        render: ({ row: { gmv } }) =>
+          gmv ? formatCurrency(gmv.amount, gmv.currencyCode) : "-",
       },
       {
         key: "orders",
@@ -359,53 +356,8 @@ const ProductView: React.FC = () => {
           }
         />
         <ProductBreakdownBenchMarksModel />
-        <div className={commonStyles.toolkit} style={{ paddingBottom: "0px" }}>
-          <div className={commonStyles.toolkitLeft}>
-            <Title
-              className={commonStyles.title}
-              desc={i`There are only stats for products with at least one action in the week`}
-            >
-              Your Product Metrics Breakdown
-            </Title>
-          </div>
-        </div>
-        <div className={commonStyles.toolkit} style={{ paddingTop: "0px" }}>
-          {store.productCNYFlag && (
-            <div className={commonStyles.changeCurrencyCon}>
-              <Button
-                secondary
-                disabled={store.breakdownCurrencyCode === CURRENCY_CODE.USD}
-                onClick={() =>
-                  store.updateBreakdownCurrencyCode(CURRENCY_CODE.USD)
-                }
-              >
-                Display in USD $
-              </Button>
-              <Button
-                secondary
-                disabled={store.breakdownCurrencyCode === CURRENCY_CODE.CNY}
-                onClick={() =>
-                  store.updateBreakdownCurrencyCode(CURRENCY_CODE.CNY)
-                }
-              >
-                Display in CNY ¥
-              </Button>
-              <Tooltip
-                className={commonStyles.tableTooltip}
-                title={
-                  <div style={{ fontSize: "14px" }}>
-                    USD values recorded prior to your CNY migration date are
-                    being calculated at 1 USD = 7.0 CNY, in order to view full
-                    performance data in CNY
-                  </div>
-                }
-              >
-                <span className={commonStyles.calculateText}>
-                  How are currency values calculated?
-                </span>
-              </Tooltip>
-            </div>
-          )}
+        <div className={commonStyles.toolkit}>
+          <Title style={{ margin: 0 }}>Your Product Metrics Breakdown</Title>
           {startDate && (
             <Button
               secondary
@@ -413,7 +365,7 @@ const ProductView: React.FC = () => {
                 exportCSV({
                   type: EXPORT_CSV_TYPE.PRODUCT,
                   stats_type: EXPORT_CSV_STATS_TYPE.CUSTOMER_SERVICE,
-                  currencyCode: store.breakdownCurrencyCode,
+                  currencyCode: currencyCodeForExportCSV,
                   target_date: new Date(startDate).getTime() / 1000,
                 });
               }}
@@ -425,24 +377,20 @@ const ProductView: React.FC = () => {
         <div>
           {breakdownReqLoading ? (
             <LoadingIndicator className={commonStyles.loading} />
-          ) : (
+          ) : tableData ? (
             <Table
-              data={store.breakdownData}
+              data={tableData}
               columns={columns}
               pagination={{
-                pageNo: store.pageNo,
-                totalCount: store.breakdownDataTotalCount,
+                pageNo,
+                totalCount: data?.productCatalog?.productCountV2 || 0,
                 pageChange: (pageNo: number) => {
-                  refetch({ offset: pageNo * PER_PAGE_LIMIT })
-                    .then(() => {
-                      store.updatePageNo(pageNo);
-                    })
-                    .catch(({ message }: { message: string }) => {
-                      toastStore.error(message);
-                    });
+                  setPageNo(pageNo);
                 },
               }}
             />
+          ) : (
+            <div>No data available</div>
           )}
         </div>
       </PageGuide>

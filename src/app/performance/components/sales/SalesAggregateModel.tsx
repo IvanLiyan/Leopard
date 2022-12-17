@@ -1,5 +1,5 @@
 import Link from "@core/components/Link";
-import React, { useEffect, useMemo } from "react";
+import React, { useMemo } from "react";
 import { observer } from "mobx-react";
 import { useQuery } from "@apollo/client";
 import { Tooltip } from "@mui/material";
@@ -9,13 +9,12 @@ import PageHeader from "@core/components/PageHeader";
 import { Table, Icon } from "@performance/components";
 import { formatCurrency } from "@core/toolkit/currency";
 import { MerchantStatsWeeklyArgs } from "@schema";
-import store, {
-  PERFORMANCE_AGGREGATE_DATA_QUERY,
-  AugmentedSalesAggregate,
-  SalesAggregateResponseData,
-} from "@performance/stores/Sales";
 import {
-  CURRENCY_CODE,
+  PERFORMANCE_AGGREGATE_DATA_QUERY,
+  PickedSales,
+  SalesAggregateResponseData,
+} from "@performance/toolkit/sales";
+import {
   REQUEST_WEEKS,
   EXPORT_CSV_STATS_TYPE,
   EXPORT_CSV_TYPE,
@@ -45,16 +44,14 @@ const SalesAggregateModel: React.FC = () => {
     },
   });
 
-  useEffect(() => {
-    // do some checking here to ensure data exist
-    if (data) {
-      // mutate data if you need to
-      store.updateAggregateData(data);
-    }
-  }, [data]);
+  const currencyCodeForExportCSV = data?.currentMerchant?.primaryCurrency;
+
+  const tableData: ReadonlyArray<PickedSales> | undefined = useMemo(() => {
+    return data?.currentMerchant?.storeStats?.weekly?.map((week) => week.sales);
+  }, [data?.currentMerchant?.storeStats?.weekly]);
 
   const columns = useMemo(() => {
-    const columns: Array<TableColumn<AugmentedSalesAggregate>> = [
+    const columns: Array<TableColumn<PickedSales>> = [
       {
         key: "rangeDate",
         title: i`Date Range`,
@@ -96,15 +93,8 @@ const SalesAggregateModel: React.FC = () => {
             </Tooltip>
           </>
         ),
-        render: ({ row: { gmv } }) => {
-          const amount =
-            store.aggregateCurrencyCode === CURRENCY_CODE.CNY
-              ? gmv?.CNY_amount
-              : gmv?.USD_amount;
-          return amount
-            ? formatCurrency(amount, store.aggregateCurrencyCode)
-            : "-";
-        },
+        render: ({ row: { gmv } }) =>
+          gmv ? formatCurrency(gmv.amount, gmv.currencyCode) : "-",
       },
     ];
 
@@ -129,66 +119,31 @@ const SalesAggregateModel: React.FC = () => {
           text={i`Please refer to the metrics on the Wish Standards page as the definitive source for your performance.`}
         />
         <div className={commonStyles.toolkit}>
-          {store.aggregateCNYFlag ? (
-            <div className={commonStyles.changeCurrencyCon}>
-              <Button
-                secondary
-                disabled={store.aggregateCurrencyCode === CURRENCY_CODE.USD}
-                onClick={() =>
-                  store.updateAggregateCurrencyCode(CURRENCY_CODE.USD)
-                }
-              >
-                Display in USD $
-              </Button>
-              <Button
-                secondary
-                disabled={store.aggregateCurrencyCode === CURRENCY_CODE.CNY}
-                onClick={() =>
-                  store.updateAggregateCurrencyCode(CURRENCY_CODE.CNY)
-                }
-              >
-                Display in CNY ¥
-              </Button>
-              <Tooltip
-                className={commonStyles.tableTooltip}
-                title={
-                  <div style={{ fontSize: "14px" }}>
-                    USD values recorded prior to your CNY migration date are
-                    being calculated at 1 USD = 7.0 CNY, in order to view full
-                    performance data in CNY
-                  </div>
-                }
-              >
-                <span className={commonStyles.calculateText}>
-                  How are currency values calculated?
-                </span>
-              </Tooltip>
-            </div>
-          ) : (
-            <div></div>
+          <div />
+          {tableData && tableData.length > 0 && (
+            <Button
+              secondary
+              onClick={() =>
+                exportCSV({
+                  type: EXPORT_CSV_TYPE.MERCHANT,
+                  stats_type: EXPORT_CSV_STATS_TYPE.PRESALE,
+                  currencyCode: currencyCodeForExportCSV,
+                  target_date:
+                    new Date(tableData[0].startDate.mmddyyyy).getTime() / 1000,
+                })
+              }
+            >
+              Export CSV
+            </Button>
           )}
-          <Button
-            secondary
-            onClick={() =>
-              exportCSV({
-                type: EXPORT_CSV_TYPE.PRODUCT,
-                stats_type: EXPORT_CSV_STATS_TYPE.PRESALE,
-                currencyCode: store.aggregateCurrencyCode,
-                target_date:
-                  new Date(
-                    store.aggregateData[0].startDate.mmddyyyy,
-                  ).getTime() / 1000,
-              })
-            }
-          >
-            Export CSV
-          </Button>
         </div>
         <div className={styles.metricsModule}>
           {aggregateReqLoading ? (
             <LoadingIndicator className={commonStyles.loading} />
+          ) : tableData ? (
+            <Table data={tableData} columns={columns} />
           ) : (
-            <Table data={store.aggregateData} columns={columns} />
+            <div>No data available</div>
           )}
         </div>
       </PageGuide>

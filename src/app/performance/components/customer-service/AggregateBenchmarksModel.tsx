@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import { Table, Title, Icon } from "@performance/components";
 import { TableColumn } from "@performance/components/Table";
-import { CustomerServiceAggregateBenchMark } from "@performance/stores/CustomerService";
+import { CustomerServiceAggregateBenchMark } from "@performance/toolkit/cs";
 import commonStyles from "@performance/styles/common.module.css";
 import { useTheme } from "@core/stores/ThemeStore";
 import { ThemedLabel } from "@ContextLogic/lego";

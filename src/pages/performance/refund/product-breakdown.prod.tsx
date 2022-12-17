@@ -226,7 +226,7 @@ const ProductBreakdownPage = () => {
         />
         <div className={styles.metricsModule}>
           <div className={commonStyles.toolkit}>
-            <div></div>
+            <div />
             {startDate && (
               <Button
                 secondary

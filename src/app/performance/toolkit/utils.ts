@@ -13,11 +13,6 @@ export interface CountTableDataItem {
   };
 }
 
-export type AugmentedPrice = {
-  readonly CNY_amount?: number;
-  readonly USD_amount?: number;
-};
-
 export const countTableDataCurrencyAmount = (
   data: ReadonlyArray<CountTableDataItem>,
   keys: string[],
