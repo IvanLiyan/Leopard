@@ -129,7 +129,9 @@ const SalesAggregateModel: React.FC = () => {
                   stats_type: EXPORT_CSV_STATS_TYPE.PRESALE,
                   currencyCode: currencyCodeForExportCSV,
                   target_date:
-                    new Date(tableData[0].startDate.mmddyyyy).getTime() / 1000,
+                    new Date(
+                      tableData[tableData.length - 1].startDate.mmddyyyy,
+                    ).getTime() / 1000,
                 })
               }
             >
