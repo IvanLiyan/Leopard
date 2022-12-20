@@ -20,7 +20,7 @@
     "@ContextLogic/merchantstrings": "0.0.1665981415",
     "@ContextLogic/zeus": "0.0.1-1643061651",
     "@apollo/client": "^3.4.16",
-    "@datadog/browser-rum": "4.7.0",
+    "@datadog/browser-rum": "4.28.1",
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
     "@fortawesome/fontawesome": "^1.1.5",

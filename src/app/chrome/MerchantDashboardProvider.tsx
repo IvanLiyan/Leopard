@@ -37,6 +37,7 @@ datadogRum.init({
   env: env,
   sampleRate: 100,
   replaySampleRate: 25,
+  trackInteractions: true,
 });
 
 type MerchantDashboardProviderProps = {
