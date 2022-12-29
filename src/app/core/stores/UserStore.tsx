@@ -124,7 +124,7 @@ export type UserStoreInitialQueryResponse = {
   readonly currentMerchant?: PickedCurrentMerchant;
   readonly currentUser?: PickedCurrentUser;
   readonly su?: PickedSU;
-  readonly recentUsers: ReadonlyArray<PickedRecentUser>;
+  readonly recentUsers?: ReadonlyArray<PickedRecentUser>;
 };
 
 // the difference between a PickedRecentUser and a RecentUser is that we perform
@@ -141,7 +141,7 @@ class UserStore {
   isSu: boolean;
   loggedInMerchantUser: Readonly<PickedCurrentUser> | null | undefined;
   merchantSourceCurrency: CurrencyCode | null | undefined;
-  recentUsers: ReadonlyArray<RecentUser>; // TODO [lliepert]: confirm this is equivalent to recent_su
+  recentUsers: ReadonlyArray<RecentUser>;
   su: Readonly<PickedSU> | null | undefined;
   merchant: Readonly<PickedCurrentMerchant> | null | undefined;
 
@@ -162,20 +162,21 @@ class UserStore {
       this.loggedInMerchantUser = currentUser;
       this.merchantSourceCurrency =
         currentMerchant != null ? currentMerchant.primaryCurrency : null;
-      this.recentUsers = pickedRecentUsers.map((pickedUser) => {
-        let displayName = "";
-        if (pickedUser.displayName != null) {
-          displayName = pickedUser.displayName;
-        } else if (pickedUser.name != null) {
-          displayName = pickedUser.name;
-        }
+      this.recentUsers =
+        pickedRecentUsers?.map((pickedUser) => {
+          let displayName = "";
+          if (pickedUser.displayName != null) {
+            displayName = pickedUser.displayName;
+          } else if (pickedUser.name != null) {
+            displayName = pickedUser.name;
+          }
 
-        return {
-          id: pickedUser.id,
-          displayName,
-          isMerchant: pickedUser.isStoreOrMerchantUser,
-        };
-      });
+          return {
+            id: pickedUser.id,
+            displayName,
+            isMerchant: pickedUser.isStoreOrMerchantUser,
+          };
+        }) || [];
       this.su = su;
       this.merchant = currentMerchant;
       return;
