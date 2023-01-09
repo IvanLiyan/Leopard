@@ -27,8 +27,8 @@ export const CS_PERFORMANCE_BREAKDOWN_DATA_QUERY = gql`
       primaryCurrency
     }
     productCatalog {
-      productCountV2
-      productsV2(limit: $limit, offset: $offset, sort: $sort) {
+      productCountV2(isEnabled: true)
+      productsV2(limit: $limit, offset: $offset, sort: $sort, isEnabled: true) {
         id
         stats {
           weekly(weeksFromTheLatest: $weeks_from_the_latest) {
