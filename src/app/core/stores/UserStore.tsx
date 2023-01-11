@@ -52,6 +52,7 @@ export const USER_STORE_INITIAL_QUERY = gql`
       entityType
       isStoreOrMerchantUser
       isApiUser
+      isAdmin
       roles {
         name
       }
@@ -110,6 +111,7 @@ type PickedCurrentUser = {
   | "entityType"
   | "isStoreOrMerchantUser"
   | "isApiUser"
+  | "isAdmin"
 >;
 
 type PickedSU = Pick<UserSchema, "id" | "isAdmin">;
@@ -144,6 +146,7 @@ class UserStore {
   recentUsers: ReadonlyArray<RecentUser>;
   su: Readonly<PickedSU> | null | undefined;
   merchant: Readonly<PickedCurrentMerchant> | null | undefined;
+  isAdmin = false;
 
   constructor(initialData?: UserStoreInitialQueryResponse | null) {
     if (initialData != null) {
@@ -179,7 +182,11 @@ class UserStore {
         }) || [];
       this.su = su;
       this.merchant = currentMerchant;
-      return;
+      this.isAdmin =
+        // logged in as merchant through admin
+        (su?.isAdmin ?? false) ||
+        // logged in as admin but not as merchant
+        (currentUser?.isAdmin ?? false);
     }
 
     this.recentUsers = [];

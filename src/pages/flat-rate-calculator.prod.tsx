@@ -14,6 +14,8 @@ import {
 } from "@ContextLogic/lego";
 import Icon from "@core/components/Icon";
 import { round, uniqueId } from "lodash";
+import { useUserStore } from "@core/stores/UserStore";
+import FullPageError from "@core/components/FullPageError";
 
 type Product = {
   readonly itemPrice: number;
@@ -511,6 +513,11 @@ const FlatRateCalculatorContainer: NextPage<Record<string, never>> = () => {
   const [shippingCommission, setShippingCommission] = useState<number>(15);
   const [wishPostFlatRate, setWishPostFlatRate] = useState<number>(3);
   const [wishPostPerItemCost, setWishPostPerItemCost] = useState<number>(1);
+
+  const { isAdmin } = useUserStore();
+  if (!isAdmin) {
+    return <FullPageError error="404" />;
+  }
 
   return (
     <Layout.FlexColumn alignItems="stretch" style={{ gap: 16, margin: 24 }}>
