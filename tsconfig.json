@@ -21,8 +21,9 @@
       "@chrome/*": ["src/app/chrome/*"],
       "@core/*": ["src/app/core/*"],
       "@core-builder/*": ["src/app/core-builder/*"],
-      "@performance/*": ["src/app/performance/*"],
+      "@infractions/*": ["src/app/infractions/*"],
       "@landing-pages/*": ["src/app/landing-pages/*"],
+      "@performance/*": ["src/app/performance/*"],
       "@schema": ["src/app/schema"],
       "@deprecated/*": ["src/deprecated/*"],
       "@public/*": ["public/index", "public/*"]
