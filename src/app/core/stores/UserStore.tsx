@@ -35,7 +35,6 @@ export const USER_STORE_INITIAL_QUERY = gql`
     }
     currentMerchant {
       id
-      isCostBased
       isStoreMerchant
       primaryCurrency
       state
@@ -83,7 +82,7 @@ export const USER_STORE_INITIAL_QUERY = gql`
 
 type PickedCurrentMerchant = Pick<
   MerchantSchema,
-  "id" | "isCostBased" | "isStoreMerchant" | "primaryCurrency" | "state"
+  "id" | "isStoreMerchant" | "primaryCurrency" | "state"
 >;
 
 type PickedRoles = Pick<RoleSchema, "name">;
@@ -139,7 +138,6 @@ export type RecentUser = {
 
 class UserStore {
   countryCodeByIp: CountryCode | null | undefined;
-  isCostBased: boolean;
   isSu: boolean;
   loggedInMerchantUser: Readonly<PickedCurrentUser> | null | undefined;
   merchantSourceCurrency: CurrencyCode | null | undefined;
@@ -159,8 +157,6 @@ class UserStore {
       } = initialData;
       this.countryCodeByIp =
         currentCountry != null ? currentCountry.code : null;
-      this.isCostBased =
-        currentMerchant != null ? currentMerchant.isCostBased : false;
       this.isSu = su != null;
       this.loggedInMerchantUser = currentUser;
       this.merchantSourceCurrency =
@@ -191,7 +187,6 @@ class UserStore {
 
     this.recentUsers = [];
     this.isSu = false;
-    this.isCostBased = false;
   }
 
   @computed

@@ -504,6 +504,7 @@ import ytFlag4x3 from "public/images/flags/4x3/yt.svg";
 import zaFlag4x3 from "public/images/flags/4x3/za.svg";
 import zmFlag4x3 from "public/images/flags/4x3/zm.svg";
 import zwFlag4x3 from "public/images/flags/4x3/zw.svg";
+import { ci18n } from "./i18n";
 
 export type NextSVGLoaderBody = { src: string; height: number; width: number };
 
@@ -1513,6 +1514,11 @@ const countries = {
   ZR: i`Democratic Republic of the Congo`,
   QA: i`Qatar`,
   UA: i`Ukraine`,
+  MF: ci18n(
+    "Saint Martin is part of the Leeward Islands in the Caribbean Sea",
+    "Saint Martin",
+  ),
+  CD: i`Democratic Republic of the Congo`,
   // TODO: find a fix for this hack
   D: i`Global`,
 };
