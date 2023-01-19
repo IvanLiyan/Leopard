@@ -26,6 +26,7 @@ import { LoadingIndicator } from "@ContextLogic/lego";
 import { env } from "@core/stores/EnvironmentStore";
 import { datadogRum } from "@datadog/browser-rum";
 import Image from "@core/components/Image";
+import SalesforceWidget from "@chrome/components/SalesforceWidget";
 
 datadogRum.init({
   applicationId: "901bc1fd-28d9-4542-88ca-f109e88b2a43",
@@ -162,11 +163,13 @@ const MerchantDashboardProvider: React.FC<MerchantDashboardProviderProps> = ({
                 <LocalizationStoreProvider
                   initialData={localizationStoreInitialData}
                 >
-                  <ThemeStoreProvider>
-                    <ChromeProvider initialData={chromeStoreInitialData}>
-                      {children}
-                    </ChromeProvider>
-                  </ThemeStoreProvider>
+                  <SalesforceWidget>
+                    <ThemeStoreProvider>
+                      <ChromeProvider initialData={chromeStoreInitialData}>
+                        {children}
+                      </ChromeProvider>
+                    </ThemeStoreProvider>
+                  </SalesforceWidget>
                 </LocalizationStoreProvider>
               </DeviceStoreProvider>
             </PersistenceStoreProvider>

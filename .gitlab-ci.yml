@@ -31,7 +31,21 @@ lint:
   dependencies:
     - install dependencies
 
-build:
+build staging:
+  stage: test
+  image: node:18
+  script:
+    # we want the `development` configs on staging, even though we are optimizing the build for prod
+    - cp .env.development .env.production
+    - yarn build
+  artifacts:
+    when: always
+    paths:
+      - out
+  dependencies:
+    - install dependencies
+
+build prod:
   stage: test
   image: node:18
   script:
@@ -53,7 +67,7 @@ deploy staging:
   when: manual
   tags: [leopard-staging]
   dependencies:
-    - build
+    - build staging
 
 deploy prod:
   stage: deploy
@@ -65,7 +79,7 @@ deploy prod:
   when: manual
   tags: [leopard]
   dependencies:
-    - build
+    - build prod
 # temp disabling lighthouse so we can remove docker - will re-write at a later date
 # include:
 #   - project: "contextlogic/includes"
