@@ -71,12 +71,13 @@ const ProductBreakdownPage = () => {
       {
         key: "RangeDate",
         title: i`Time Period`,
+        align: "left",
         render: ({ row: { startDate: rowStartDate, endDate: rowEndDate } }) => {
           // check if we have data for the row; if not, bail to the overall page's data
           const displayStartDate = rowStartDate?.mmddyyyy || startDate;
           const displayEndDate = rowEndDate?.mmddyyyy || endDate;
           return (
-            <div style={{ textAlign: "left" }}>
+            <div>
               {displayStartDate && displayEndDate
                 ? `${displayStartDate}-${displayEndDate}`
                 : "-"}
@@ -87,6 +88,7 @@ const ProductBreakdownPage = () => {
       {
         key: "id",
         title: i`Product Id`,
+        align: "left",
         render: ({ row }) => {
           const url = wishURL(`/product/${row.id}?share=web`);
           return (

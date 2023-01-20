@@ -59,12 +59,10 @@ const CustomerServiceAggregateModule: React.FC = () => {
       {
         key: "timePeriod",
         title: i`Date Range`,
+        align: "left",
         render: ({ row: { startDate, endDate }, index }) => {
           return (
-            <div
-              style={{ textAlign: "left" }}
-              className={commonStyles.linkStyle}
-            >
+            <div className={commonStyles.linkStyle}>
               <Link
                 href={`/performance/customer-service/product-breakdown?${encodeProductBreakdownURI(
                   {

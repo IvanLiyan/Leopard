@@ -14,6 +14,7 @@ import { useTheme } from "@core/stores/ThemeStore";
 export type TableColumn<RowType> = {
   key: string;
   title?: string;
+  align?: "left" | "center" | "right";
   titleRender?: () => JSX.Element;
   render?: (props: {
     row: RowType;
@@ -73,6 +74,7 @@ const CustomTable = <RowType,>(props: Props<RowType>): JSX.Element => {
                       fontWeight: "bold",
                       padding: "8px",
                       verticalAlign: "top",
+                      textAlign: column.align || "right",
                     }}
                   >
                     {displayHead}
@@ -97,7 +99,10 @@ const CustomTable = <RowType,>(props: Props<RowType>): JSX.Element => {
                   return (
                     <TableCell
                       key={columnIndex}
-                      style={{ padding: "8px", textAlign: "right" }}
+                      style={{
+                        padding: "8px",
+                        textAlign: column.align || "right",
+                      }}
                     >
                       {displayContent}
                     </TableCell>

@@ -55,12 +55,10 @@ const SalesAggregateModel: React.FC = () => {
       {
         key: "rangeDate",
         title: i`Date Range`,
+        align: "left",
         render: ({ row: { startDate, endDate }, index }) => {
           return (
-            <div
-              style={{ textAlign: "left" }}
-              className={commonStyles.linkStyle}
-            >
+            <div className={commonStyles.linkStyle}>
               <Link
                 href={`/performance/sales/product-breakdown?${encodeProductBreakdownURI(
                   {
@@ -108,7 +106,10 @@ const SalesAggregateModel: React.FC = () => {
         relaxed
         breadcrumbs={[
           { name: i`Home`, href: merchFeURL("/home") },
-          { name: i`Performance`, href: merchFeURL("/performance-overview") },
+          {
+            name: i`Performance`,
+            href: merchFeURL("/performance-overview"),
+          },
           { name: i`Sales Performance`, href: window.location.href },
         ]}
         title={i`Sales Performance`}

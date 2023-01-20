@@ -27,9 +27,10 @@ const BenchMarksModel: React.FC = () => {
       {
         titleRender: () => <span>Benchmark</span>,
         key: "timePeriod",
+        align: "left",
         render: ({ row: { timePeriod } }) => {
           return (
-            <ThemedLabel theme={"Red"} className={commonStyles.themedLabel}>
+            <ThemedLabel theme={"Red"} className={commonStyles.benchMark}>
               {timePeriod}
             </ThemedLabel>
           );

@@ -56,12 +56,10 @@ const RefundAggregateModule: React.FC = () => {
       {
         key: "rangeDate",
         title: i`Time Period`,
+        align: "left",
         render: ({ row: { startDate, endDate }, index }) => {
           return (
-            <div
-              style={{ textAlign: "left" }}
-              className={commonStyles.linkStyle}
-            >
+            <div className={commonStyles.linkStyle}>
               <Link
                 href={`/performance/refund/product-breakdown?${encodeProductBreakdownURI(
                   {

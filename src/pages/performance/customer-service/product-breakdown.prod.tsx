@@ -77,12 +77,13 @@ const ProductView: React.FC = () => {
     const columns: Array<TableColumn<AugmentedCustomerServiceBreakdown>> = [
       {
         key: "rangeDate",
+        align: "left",
         titleRender: () => <span>Benchmark</span>,
         render: ({ row: { startDate: rowStartDate, endDate: rowEndDate } }) => {
           const displayStartDate = rowStartDate?.mmddyyyy || startDate;
           const displayEndDate = rowEndDate?.mmddyyyy || endDate;
           return (
-            <div style={{ textAlign: "left" }}>
+            <div>
               {displayStartDate && displayEndDate
                 ? `${displayStartDate}-${displayEndDate}`
                 : "-"}
@@ -93,6 +94,7 @@ const ProductView: React.FC = () => {
       {
         key: "id",
         title: i`Product Id`,
+        align: "left",
         render: ({ row: { id } }) => {
           const url = wishURL(`/product/${id}`);
           return (

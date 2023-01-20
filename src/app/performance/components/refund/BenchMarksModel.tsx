@@ -21,8 +21,9 @@ const BenchMarksModel: React.FC = () => {
       {
         title: i`Benchmark`,
         key: "benchMark",
+        align: "left",
         render: ({ row: { benchMark } }) => (
-          <ThemedLabel theme={"Red"} className={commonStyles.themedLabel}>
+          <ThemedLabel theme={"Red"} className={commonStyles.benchMark}>
             {benchMark}
           </ThemedLabel>
         ),

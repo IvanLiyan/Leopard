@@ -75,12 +75,13 @@ const SalesProductBreakdownPage: NextPage<Record<string, never>> = () => {
       {
         key: "rangeDate",
         title: i`Date Range`,
+        align: "left",
         render: ({ row: { startDate: rowStartDate, endDate: rowEndDate } }) => {
           // check if we have data for the row; if not, bail to the overall page's data
           const displayStartDate = rowStartDate?.mmddyyyy || startDate;
           const displayEndDate = rowEndDate?.mmddyyyy || endDate;
           return (
-            <div style={{ textAlign: "left" }}>
+            <div>
               {displayStartDate && displayEndDate
                 ? `${displayStartDate}-${displayEndDate}`
                 : "-"}
@@ -91,6 +92,7 @@ const SalesProductBreakdownPage: NextPage<Record<string, never>> = () => {
       {
         key: "id",
         title: i`Product Id`,
+        align: "left",
         render: ({ row: { id } }) => {
           const url = wishURL(`/product/${id}?share=web`); // "?share=web" keep as old page url
           return (

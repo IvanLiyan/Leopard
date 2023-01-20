@@ -39,11 +39,12 @@ const AggregateBenchMarksModel: React.FC = () => {
     > = [
       {
         key: "benchmark",
+        align: "left",
         titleRender: () => <span>Benchmark</span>,
         render: ({ row: { benchmark }, index }) => (
           <ThemedLabel
             theme={index === 0 ? "Yellow" : "Red"}
-            className={commonStyles.themedLabel}
+            className={commonStyles.benchMark}
           >
             {benchmark}
           </ThemedLabel>

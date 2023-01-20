@@ -101,6 +101,10 @@
   border-radius: 0 !important;
   align-items: flex-end !important;
 }
+.benchMark {
+  border-radius: 0 !important;
+  align-items: flex-start !important;
+}
 .loading {
   position: relative;
   left: 50%;

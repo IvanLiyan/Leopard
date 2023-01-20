@@ -53,10 +53,9 @@ const PerformanceProductPage: NextPage<Record<string, never>> = () => {
       {
         title: i`Time Period`,
         key: "RangeDate",
+        align: "left",
         render: ({ row: { startDate, endDate } }) => (
-          <div style={{ textAlign: "left" }}>
-            {`${startDate.mmddyyyy}-${endDate.mmddyyyy}`}
-          </div>
+          <div>{`${startDate.mmddyyyy}-${endDate.mmddyyyy}`}</div>
         ),
       },
       {
