@@ -57,7 +57,7 @@
     "mobx": "^4.15.2",
     "mobx-react": "^6.1.4",
     "mobx-react-router": "^4.0.4",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "moment-timezone": "0.5.28",
     "next-transpile-modules": "^9.0.0",
     "numeral": "^2.0.6",
