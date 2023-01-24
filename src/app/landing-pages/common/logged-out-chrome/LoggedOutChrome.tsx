@@ -33,6 +33,9 @@ type NavigationProps = BaseProps & {
   readonly insetX?: number;
   readonly onClickCta?: () => unknown;
   readonly ctaText?: string;
+  readonly showLoginButton?: boolean;
+  readonly showTopBarCtaButton?: boolean;
+  readonly backgroundColor?: string;
 };
 
 type Context = NavigationProps & {
@@ -45,7 +48,14 @@ const Navigation = (props: NavigationProps) => {
   const styles = useStylesheet(ctx);
   const navigationStore = useNavigationStore();
   const { renderLoginButton, isExpanded } = ctx;
-  const { style, className, children, ctaText, onClickCta } = props;
+  const {
+    style,
+    className,
+    children,
+    ctaText,
+    onClickCta,
+    showTopBarCtaButton = true,
+  } = props;
 
   const { textDark } = useTheme();
   const deviceStore = useDeviceStore();
@@ -83,7 +93,7 @@ const Navigation = (props: NavigationProps) => {
                 Login
               </Link>
             )}
-            {ctaText != null && (
+            {ctaText != null && showTopBarCtaButton && (
               <PrimaryButton
                 onClick={
                   onClickCta == null
@@ -113,11 +123,12 @@ const Navigation = (props: NavigationProps) => {
 };
 
 const useContext = (props: NavigationProps): Context => {
+  const { showLoginButton = true } = props;
   const expansionThreshold = 30;
   const deviceStore = useDeviceStore();
   const userStore = useUserStore();
 
-  const renderLoginButton = !userStore.isLoggedIn;
+  const renderLoginButton = !userStore.isLoggedIn && showLoginButton;
   const isExpanded = deviceStore.pageYOffset > expansionThreshold;
   return { ...props, isExpanded, renderLoginButton };
 };
@@ -133,7 +144,7 @@ const useStylesheet = (ctx: Context) => {
   const { pageBackground, textWhite } = useTheme();
   const deviceStore = useDeviceStore();
   const defaultInset = deviceStore.isSmallScreen ? 50 : 100;
-  const { insetX = defaultInset, isExpanded } = ctx;
+  const { insetX = defaultInset, isExpanded, backgroundColor } = ctx;
   const borderColor = isExpanded
     ? new Color(pageBackground).darken(0.2).toString()
     : pageBackground;
@@ -147,7 +158,7 @@ const useStylesheet = (ctx: Context) => {
           alignItems: "center",
           flexDirection: "row",
           padding: `0px ${insetX}px`,
-          backgroundColor: textWhite,
+          backgroundColor: backgroundColor || textWhite,
           border: `1px solid ${borderColor}`,
           transition: "border 0.3 linear",
         },
@@ -176,6 +187,6 @@ const useStylesheet = (ctx: Context) => {
           marginLeft: 15,
         },
       }),
-    [insetX, borderColor, textWhite],
+    [insetX, backgroundColor, textWhite, borderColor],
   );
 };

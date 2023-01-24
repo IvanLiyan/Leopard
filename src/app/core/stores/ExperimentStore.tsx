@@ -108,7 +108,10 @@ export const useExperiment = (
       setBucket(bucket);
       setIsLoading(false);
     })();
-  }, [name, experimentStore]);
+    // Exclude experimentStore in dependency to avoid infinite loop, as updating states "isLoading" and "bucket" will
+    // cause a component re-render, and a new experimentStore to be instantiated, hence this useEffect hook will run infinitely
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [name]);
 
   return { bucket, isLoading };
 };
@@ -130,7 +133,10 @@ export const useDeciderKey = (
       setDecision(decision);
       setIsLoading(false);
     })();
-  }, [name, experimentStore]);
+    // Exclude experimentStore in dependency to avoid infinite loop, as updating states "isLoading" and "bucket" will
+    // cause a component re-render, and a new experimentStore to be instantiated, hence this useEffect hook will run infinitely
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [name]);
 
   return { decision, isLoading };
 };

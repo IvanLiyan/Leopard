@@ -205,7 +205,12 @@ export const ChromeProvider: React.FC<{
   return (
     <ChromeContext.Provider value={{ isDrawerOpen, setIsDrawerOpen }}>
       {tree == null ? (
-        children
+        <Layout.FlexColumn alignItems="stretch">
+          {children}
+          <div className={css(styles.toastContainerWithoutChrome)}>
+            <Toast />
+          </div>
+        </Layout.FlexColumn>
       ) : (
         <Chrome>
           <Chrome.Content
@@ -292,6 +297,15 @@ const useStylesheet = () => {
         toastContainer: {
           position: "fixed",
           top: TopBarHeight,
+          right: 0,
+          left: 0,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "stretch",
+          zIndex: 999999,
+        },
+        toastContainerWithoutChrome: {
+          position: "fixed",
           right: 0,
           left: 0,
           display: "flex",

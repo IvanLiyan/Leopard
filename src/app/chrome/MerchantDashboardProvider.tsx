@@ -163,7 +163,7 @@ const MerchantDashboardProvider: React.FC<MerchantDashboardProviderProps> = ({
                 <LocalizationStoreProvider
                   initialData={localizationStoreInitialData}
                 >
-                  <SalesforceWidget>
+                  <SalesforceWidget isPublic={isPublic}>
                     <ThemeStoreProvider>
                       <ChromeProvider initialData={chromeStoreInitialData}>
                         {children}

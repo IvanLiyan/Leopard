@@ -83,7 +83,7 @@ const Drawer: React.FC<DrawerProps> = ({ children, onClickCta, ctaText }) => {
                   />
                   {ctaText != null && (
                     <SideMenu.Item
-                      title={i`Complete the questionnaire`}
+                      title={ctaText}
                       onClick={
                         onClickCta == null
                           ? undefined

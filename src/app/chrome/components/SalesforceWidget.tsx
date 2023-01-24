@@ -18,7 +18,10 @@ declare global {
   }
 }
 
-const SalesforceWidget: React.FC = ({ children }) => {
+const SalesforceWidget: React.FC<{ isPublic: boolean }> = ({
+  children,
+  isPublic,
+}) => {
   const styles = useStylesheet();
 
   const { localeProper } = useLocalizationStore();
@@ -29,7 +32,9 @@ const SalesforceWidget: React.FC = ({ children }) => {
   const { data, loading: loggedInUserLoading } = useQuery<
     MerchantSupportConfigQueryResponse,
     never
-  >(MerchantSupportConfigQuery);
+  >(MerchantSupportConfigQuery, {
+    skip: isPublic,
+  });
   const loggedInUser = data?.currentUser;
 
   const initConfig = useMemo(() => {

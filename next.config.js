@@ -43,6 +43,15 @@ const moduleExports = (phase, { defaultConfig }) => {
           ]
         : [];
     },
+    async redirects() {
+      return [
+        {
+          source: "/v2-login",
+          destination: "/login",
+          permanent: false,
+        },
+      ];
+    },
     webpack: (config, { buildId, webpack }) => {
       config.plugins.push(
         new webpack.DefinePlugin({
