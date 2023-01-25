@@ -84,3 +84,12 @@ label {
   src: url("//d2ujdsqe3ri19m.cloudfront.net/latest/assets/fonts/proximanova-boldit")
     format("opentype");
 }
+
+.gtm-noscript {
+  display: none;
+  visibility: hidden;
+}
+
+.truste_cursor_pointer {
+  display: none;
+}
