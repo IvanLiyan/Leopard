@@ -77,9 +77,21 @@ deploy prod:
   environment:
     name: production
   when: manual
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   tags: [leopard]
   dependencies:
     - build prod
+
+extract strings for translation:
+  stage: deploy
+  image: registry-gitlab.i.wish.com/contextlogic/strings:latest_v2
+  script:
+    - /go/bin/strings extract $(pwd) --client-id="${XTM_CLIENT_ID}" --client-secret="${XTM_CLIENT_SECRET}"
+  when: on_success
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+#
 # temp disabling lighthouse so we can remove docker - will re-write at a later date
 # include:
 #   - project: "contextlogic/includes"

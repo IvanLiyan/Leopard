@@ -1,29 +1,249 @@
 project:
-  name: "leopard"
+  name: "merchant"
 
 smartling:
-  project_name: "Consumer Content"
+  project_name: "Merchant Content"
 
 package:
   platforms:
     javascript:
-      package_name: leopardstrings
+      package_name: merchantstrings
+  dependent_projects:
+    - "Merchant Content"
+    - "Merchant Legal"
+    - "Wish Local Messages"
+  dependent_features:
+    - name: "Local Email"
+      project_name: "Wish Local"
+    - name: "Local API"
+      project_name: "Wish Local"
+    - name: "Local Notifications"
+      project_name: "Wish Local"
+    - name: "Local Onboarding Emails V2"
+      project_name: "Wish Local"
+    - name: "Ship to Store Enrollment Email"
+      project_name: "Wish Local"
+    - name: "Pay Stores of Mystery Gifts"
+      project_name: "Wish Local"
+    - name: "Wish Blue Subuser Feature Launch"
+      project_name: "Wish Local"
+    - name: "Wish Blue PayPal Cash Collection"
+      project_name: "Wish Local"
+    - name: "Wish Local Delivery Program Email"
+      project_name: "Wish Local"
+    - name: "Wish Local Update ToS Emails"
+      project_name: "Wish Local"
+    - name: "Wish Local Store Upload"
+      project_name: "Wish Local"
+    - name: "Wish Local Blue App Redirect"
+      project_name: "Wish Local"
+    - name: "Wish Local Activation Reminder Email"
+      project_name: "Wish Local"
+    - name: "Ship-to-Store Signup Flow"
+      project_name: "Wish Local"
+    - name: "Wish Local Merchant Plus Launch Emails"
+      project_name: "Wish Local"
+    - name: "Wish Local Store Dashboard Link Emails"
+      project_name: "Wish Local"
+    - name: "Wish Local Store Dashboard Banner"
+      project_name: "Wish Local"
+    - name: "Wish Local Store Payment"
+      project_name: "Wish Local"
+    - name: "Wish Local Delivery Checkpoints"
+      project_name: "Wish Local"
+    - name: "Re-enable Store Communication Email"
+      project_name: "Wish Local"
+    - name: "Wish Local Unsubscribe Emails Strings"
+      project_name: "Wish Local"
+    - name: "Store Signup Pages"
+      project_name: "Wish Local"
+    - name: "Store Identity"
+      project_name: "Wish Local"
+    - name: "Store Referral"
+      project_name: "Wish Local"
+    - name: "Store App In-app Promotions"
+      project_name: "Wish Local"
+    - name: "Ship to Store Enrolment"
+      project_name: "Wish Local"
+    - name: "Wish Local Store Onboarding"
+      project_name: "Wish Local"
+    - name: "Ship to Store Scan Inactivity"
+      project_name: "Wish Local"
+    - name: "Shipment Status Message"
+      project_name: "Wish Local"
+    - name: "Store Achievements Notification"
+      project_name: "Wish Local"
+    - name: "Store First Check-in Email"
+      project_name: "Wish Local"
+    - name: "Store First Shipment Email"
+      project_name: "Wish Local"
+    - name: "Store Performance Email"
+      project_name: "Wish Local"
+    - name: "Store Upload Bonus Banner"
+      project_name: "Wish Local"
+    - name: "Wish Local Merchant Liquidation Email"
+      project_name: "Wish Local"
+    - name: "Wish Local Ship to Store SMS"
+      project_name: "Wish Local"
+    - name: "Export In Stock Inventory Email"
+      project_name: "Wish Local"
+    - name: "Non-Wish Order Customer Email"
+      project_name: "Wish Local"
+    - name: "Sell-on-wish bonuses"
+      project_name: "Wish Local"
+    - name: "Send feature deprecation notice email"
+      project_name: "Wish Local"
+    - name: "Resend data form request"
+      project_name: "Wish Local"
+    - name: "Wish Local store feature banner"
+      project_name: "Wish Local"
+    - name: "Deprecated programs liquidation email"
+      project_name: "Wish Local"
+    - name: "Relist deprecation email"
+      project_name: "Wish Local"
+    - name: "Shipment Checkin issue email"
+      project_name: "Wish Local"
+    - name: "Salesforce app categories and subcategories"
+      project_name: "Wish Local"
 
-extraction:
-  disallow_jsx_inference: true
+lint:
+  strict_categorization:
+    files:
+      - "src/*"
+    ignore:
+      - "src/app/schema.ts"
+      - "src/pages/api/*"
+      - "src/pages/.eslintrc.js"
+      - "src/pages/dev-login.dev.tsx"
+      - "src/pages/flat-rate-calculator.prod.tsx"
+      - "src/styles/*"
+  invalid_args: true
+  disable_invalid_placeholder: false
+  disable_short_string_context: false
+  strings_in_feature_limit: 200
+  bad_description_or_name:
+    words:
+      - all
+    denylist:
+      - keyword: handler
+      - keyword: lib
+      - keyword: frontend
+      - keyword: backend
+      - keyword: client
+        unless_includes: ["Know Your Client"]
+      - keyword: server
+      - keyword: python
+      - keyword: javascript
+      - keyword: react
+      - keyword: typescript
+      - keyword: refactor
+      - keyword: commit
+      - keyword: DB
+      - keyword: database
+      - keyword: mongo
+      - keyword: mongodb
+      - keyword: rds
+      - keyword: sql
+      - keyword: TD
+      - keyword: spec
+      - keyword: model
+      - keyword: exceptions
+      - keyword: Lego
+      - keyword: cron
+      - keyword: script
+      - keyword: ATO
+        unless_includes: ["Account take over"]
+      - keyword: 2FA
+        unless_includes:
+          ["2 Factor Authentication", "Two Factor Authentication"]
+      - keyword: AOV
+        unless_includes: ["Average Order Value"]
+      - keyword: BD
+        unless_includes: ["Business Development"]
+      - keyword: CAC
+        unless_includes: ["Customer Acquisition Cost"]
+      - keyword: CAT
+        unless_includes: ["Cohort Analysis Tool"]
+      - keyword: CS
+        unless_includes: ["Customer Support"]
+      - keyword: DAU
+        unless_includes: ["Daily Active User"]
+      - keyword: EPC
+        unless_includes: ["Export Package Center", "Export Package Combination"]
+      - keyword: FBS
+        unless_includes:
+          ["Fulfill By Store", "Fulfilled by Store", "Fulfillment by Store"]
+      - keyword: FBW
+        unless_includes:
+          ["Fulfill By Wish", "Fulfilled By Wish", "Fulfillment By Wish"]
+      - keyword: GMV
+        unless_includes: ["Gross Merchandise Value"]
+      - keyword: LQD
+        unless_includes: ["Limited Quantity Deal"]
+      - keyword: LTV
+        unless_includes: ["Life Time Value"]
+      - keyword: MAU
+        unless_includes: ["Monthly Active User"]
+      - keyword: MSRP
+        unless_includes: ["Manufacturer's Suggested Retail Price"]
+      - keyword: Wish Blue
+        unless_includes: ["Wish Local"]
+      - keyword: CN
+        unless_includes: ["China"]
 
 features:
-  - name: Leopard
+  - name: App Chrome - Leopard
     owners:
       - lliepert@wish.com
     files:
-      - src/components/*
-      - src/riptide/components/*
-      - src/pages/*
+      - src/app/chrome/*
     description: >
-      The Leopard project provides the front end for the Storefronts project.
-      The strings contained are part of a merchant's storefront page shown to
-      Wish consumers in the mobile apps and on desktop. These pages contain
-      basic information about the merchant, such as their rating, creation date,
-      and a basic store description, and include lists of products that
-      consumers can browse.
+      This feature contains components related to the Merchant Dashboard App
+      Chrome. The App Chrome includes components such as navigation bars.
+  - name: App Core - Leopard
+    owners:
+      - lliepert@wish.com
+    files:
+      - src/app/core/*
+      - src/app/core-builder/*
+      - src/pages/_app.prod.tsx
+      - src/pages/_document.prod.tsx
+      - src/pages/_error.prod.tsx
+      - src/pages/404.prod.tsx
+    description: >
+      This feature contains components that are used in various features across
+      the merchant dashboard. These components are generic and reusable, and
+      can be used for any feature on the site.
+  - name: Infractions - Leopard
+    owners:
+      - lliepert@wish.com
+    files:
+      - src/app/infractions/*
+      - src/pages/infractions/*
+    description: >
+      This feature allows merchants to view infractions against their products,
+      orders they have fulfilled, or their merchant account. They can also
+      dispute these infractions with Wish.
+  - name: Landing Pages - Leopard
+    owners:
+      - jdlin@wish.com
+    files:
+      - src/app/landing-pages/*
+      - src/pages/welcome-invite-only.prod.tsx
+      - src/pages/welcome-mms.prod.tsx
+    description: >
+      This feature contains various landing pages used on the Wish Merchant
+      Dashboard. These pages are often users' first touch-point with the site,
+      and can describe various programs offered by Wish, call the user to sign
+      up for Wish, and allow the user to log in to their account.
+  - name: Performance - Leopard
+    owners:
+      - ryu@wish.com
+    files:
+      - src/app/performance/*
+      - src/pages/performance/*
+    description: >
+      This feature allows merchants to view information relating to their
+      performance across Wish, such as how well their products are selling,
+      how well they are fulfilling orders, and other performance related
+      metrics.
