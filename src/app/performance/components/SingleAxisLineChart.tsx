@@ -2,40 +2,29 @@ import React, { useMemo } from "react";
 import { StyleSheet } from "aphrodite";
 import hash from "object-hash";
 
-import {
-  H4,
-  H5,
-  Card,
-  LineChart,
-  CartesianGrid,
-  XAxis,
-  RechartsTooltip,
-  Line,
-  YAxis,
-  Legend,
-  Info,
-  LegendProps,
-  RechartsTooltipProps,
-} from "@ContextLogic/lego";
+import { H4, H5, Card, Info } from "@ContextLogic/lego";
 
 /* Lego Toolkit */
 import { css } from "@core/toolkit/styling";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { useTheme } from "src/app/core/stores/ThemeStore";
 
-type CustomRechartsToolTipProps = Omit<RechartsTooltipProps, "payload"> & {
-  readonly payload: ReadonlyArray<
-    unknown & {
-      readonly name: string;
-      readonly value: string;
-      readonly color: string;
-      readonly dataKey: string;
-      readonly strokeDasharray: string | undefined;
-      readonly payload: GraphData;
-      readonly unit?: string;
-    }
-  >;
-};
+import { Props as LegendProps } from "recharts/types/component/DefaultLegendContent";
+import {
+  CartesianGrid,
+  Legend,
+  Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip,
+  TooltipProps,
+  XAxis,
+  YAxis,
+} from "recharts";
+import {
+  NameType,
+  ValueType,
+} from "recharts/types/component/DefaultTooltipContent";
 
 type LineProps = {
   readonly name: string;
@@ -43,19 +32,6 @@ type LineProps = {
   readonly stroke: string;
   readonly strokeDasharray?: string;
   readonly unit?: string;
-};
-
-type GraphData = {
-  readonly date: string;
-  readonly name: string;
-  readonly impressions: number;
-  readonly impressionsDisplay: string;
-  readonly gmv?: number;
-  readonly gmvDisplay?: string;
-  readonly orders: number;
-  readonly ordersDisplay: string;
-  readonly avgOrderValue?: number;
-  readonly avgOrderValueDisplay?: string;
 };
 
 type LegendData = {
@@ -147,7 +123,7 @@ const StoreChart = (props: Props) => {
     );
   };
 
-  const tooltipFormatter = (props: CustomRechartsToolTipProps) => {
+  const tooltipFormatter = (props: TooltipProps<ValueType, NameType>) => {
     const { payload } = props;
 
     if (payload == null || payload.length === 0) {
@@ -195,32 +171,51 @@ const StoreChart = (props: Props) => {
   const { textDark } = useTheme();
   return (
     <div className={css(styles.chart, className, style)}>
-      <LineChart data={graphData}>
-        <CartesianGrid vertical={false} strokeDasharray="4" horizontal />
-        <XAxis dataKey="date" />
-        <Legend
-          verticalAlign="top"
-          align="right"
-          wrapperStyle={{ top: -30, width: "auto" }}
-          content={legendFormatter}
-        />
-        <RechartsTooltip
-          imageFormatter={() => null}
-          content={tooltipFormatter}
-        />
-        <YAxis
-          yAxisId="left"
-          dataKey={firstLineProps.dataKey}
-          stroke={textDark}
-          tickCount={11}
-          domain={dataRange || ["dataMin", "dataMax"]}
-          type="number"
-        />
-        <Line yAxisId="left" strokeWidth={3} {...firstLineProps} />
-        {secondLineProps && (
-          <Line yAxisId="left" strokeWidth={3} {...secondLineProps} />
-        )}
-      </LineChart>
+      <ResponsiveContainer>
+        <LineChart data={Array.from(graphData ?? [])}>
+          <CartesianGrid vertical={false} strokeDasharray="4" horizontal />
+          <XAxis
+            xAxisId="x"
+            dataKey="date"
+            fontSize={12}
+            axisLine={false}
+            tickLine={false}
+          />
+          <Legend
+            verticalAlign="top"
+            align="right"
+            wrapperStyle={{ top: -30, width: "auto" }}
+            content={legendFormatter}
+          />
+          <Tooltip content={tooltipFormatter} />
+          <YAxis
+            yAxisId="left"
+            dataKey={firstLineProps.dataKey}
+            stroke={textDark}
+            tickCount={11}
+            domain={dataRange || ["dataMin", "dataMax"]}
+            type="number"
+            fontSize={12}
+            axisLine={false}
+            tickLine={false}
+          />
+          <Line
+            type={"monotone"}
+            xAxisId="x"
+            yAxisId="left"
+            strokeWidth={3}
+            {...firstLineProps}
+          />
+          {secondLineProps && (
+            <Line
+              xAxisId="x"
+              yAxisId="left"
+              strokeWidth={3}
+              {...secondLineProps}
+            />
+          )}
+        </LineChart>
+      </ResponsiveContainer>
     </div>
   );
 };
