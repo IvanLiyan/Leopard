@@ -16,9 +16,8 @@ import React, { useMemo } from "react";
 import { StyleSheet } from "aphrodite";
 import { observer } from "mobx-react";
 
-/* Lego Components */
-import { Link } from "@ContextLogic/lego";
-import { LinkProps } from "@ContextLogic/lego";
+/* Components */
+import Link, { LinkProps } from "@core/components/Link";
 
 /* Lego Toolkit */
 import { css } from "@core/toolkit/styling";
@@ -30,7 +29,7 @@ import { useTheme } from "@core/stores/ThemeStore";
 
 /* Type Imports */
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import { merchFeURL } from "@core/toolkit/url";
+import { merchFeURL } from "@core/toolkit/router";
 
 export type SiteFooterProps = BaseProps & {
   readonly showCopyright?: boolean;

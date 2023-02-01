@@ -4,7 +4,7 @@ import { observer } from "mobx-react";
 import { Alert } from "@ContextLogic/lego";
 import PageRoot from "@core/components/PageRoot";
 import PageGuide from "@core/components/PageGuide";
-import { merchFeURL } from "@core/toolkit/url";
+import { merchFeURL } from "@core/toolkit/router";
 import PageHeader from "@core/components/PageHeader";
 import AverageFulfillmentTimeModel from "@performance/components/customer-experience-graphs/AverageFulfillmentTimeModel";
 import RefundRateModel from "@performance/components/customer-experience-graphs/RefundRateModel";

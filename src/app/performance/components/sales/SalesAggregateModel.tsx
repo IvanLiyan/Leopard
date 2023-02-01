@@ -27,7 +27,7 @@ import {
 } from "@performance/toolkit/utils";
 import commonStyles from "@performance/styles/common.module.css";
 import styles from "@performance/styles/sales.module.css";
-import { merchFeURL } from "@core/toolkit/url";
+import { merchFeURL } from "@core/toolkit/router";
 import PageGuide from "@core/components/PageGuide";
 import { useTheme } from "@core/stores/ThemeStore";
 

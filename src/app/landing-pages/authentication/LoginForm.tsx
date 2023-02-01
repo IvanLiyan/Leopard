@@ -10,7 +10,6 @@ import Cookies from "js-cookie";
 
 /* Lego Components */
 import {
-  Link,
   Field,
   TextInput,
   OnTextChangeEvent,
@@ -35,10 +34,10 @@ import CaptchaInput, {
 import PasswordField from "@core/components/PasswordField";
 import LoginCard from "@landing-pages/authentication/LoginCard";
 import WechatQrInput from "@landing-pages/authentication/WechatQrInput";
+import Link from "@core/components/Link";
 
 /* Merchant Stores */
 import { useToastStore } from "@core/stores/ToastStore";
-import { useNavigationStore } from "@core/stores/NavigationStore";
 
 /* Toolkit */
 import {
@@ -51,7 +50,8 @@ import {
   TwoFactorGenTokenResponseType,
   TwoFactorGenTokenRequestType,
 } from "@landing-pages/authentication/toolkit/gen-token";
-import { merchFeURL, useStringQueryParam } from "@core/toolkit/url";
+import { useStringQueryParam } from "@core/toolkit/url";
+import { merchFeURL, useRouter } from "@core/toolkit/router";
 
 type LoginFormProps = BaseProps;
 
@@ -63,7 +63,7 @@ const LoginForm: React.FC<LoginFormProps> = (props: LoginFormProps) => {
   const styles = useStylesheet();
 
   const toastStore = useToastStore();
-  const navigationStore = useNavigationStore();
+  const router = useRouter();
 
   const savedUsername = Cookies.get("remember_me");
   const [isLoading, setIsLoading] = useState(false);
@@ -208,7 +208,7 @@ const LoginForm: React.FC<LoginFormProps> = (props: LoginFormProps) => {
       if (rememberMe && sessionKey != null) {
         Cookies.set("remember_me", username);
       }
-      await navigationStore.navigate(merchFeURL(nextUrl || "/"));
+      await router.push(merchFeURL(nextUrl || "/"));
     }
   };
 

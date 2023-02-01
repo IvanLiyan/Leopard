@@ -3,7 +3,7 @@ import { StyleSheet } from "aphrodite";
 import { observer } from "mobx-react";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import Link, { LinkProps } from "@core/components/Link";
-import { merchFeURL } from "@core/toolkit/url";
+import { merchFeURL } from "@core/toolkit/router";
 import { css } from "@core/toolkit/styling";
 import * as fonts from "@core/toolkit/fonts";
 import { useTheme } from "@core/stores/ThemeStore";

@@ -26,7 +26,7 @@ import { useNavigationStore } from "@core/stores/NavigationStore";
 import { useDeviceStore } from "@core/stores/DeviceStore";
 import { useUserStore } from "@core/stores/UserStore";
 import AppLocaleSelector from "@chrome/components/AppLocaleSelector";
-import { merchFeURL } from "@core/toolkit/url";
+import { merchFeURL } from "@core/toolkit/router";
 import Link from "@core/components/Link";
 
 type NavigationProps = BaseProps & {

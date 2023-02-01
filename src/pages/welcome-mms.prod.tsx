@@ -2,8 +2,9 @@ import React, { useMemo, useEffect, useState } from "react";
 import { StyleSheet } from "aphrodite";
 import { observer } from "mobx-react";
 
-import { TopBottomButton, Layout } from "@ContextLogic/lego";
+import { TopBottomButton, Layout, LoadingIndicator } from "@ContextLogic/lego";
 import { useBoolQueryParam } from "@core/toolkit/url";
+import { merchFeURL, useRouter } from "@core/toolkit/router";
 import QuestionnaireModal from "@landing-pages/welcome-mms/QuestionnaireModal";
 import { useDeviceStore } from "@core/stores/DeviceStore";
 import HeroBanner from "@landing-pages/welcome-mms/HeroBanner";
@@ -14,10 +15,13 @@ import Pricing from "@landing-pages/welcome-mms/Pricing";
 import Footer from "@landing-pages/welcome-mms/Footer";
 import { IS_SMALL_SCREEN } from "@core/toolkit/styling";
 import { NextPage } from "next";
+import { useUserStore } from "@core/stores/UserStore";
 
 const MmsWelcomeContainer: NextPage<Record<string, never>> = () => {
   const styles = useStylesheet();
   const { isSmallScreen, screenInnerWidth } = useDeviceStore();
+  const { loggedInMerchantUser } = useUserStore();
+  const router = useRouter();
 
   const [renderForm] = useBoolQueryParam("renderModal", false);
   const [firstLoad, setFirstLoad] = useState(true);
@@ -32,6 +36,11 @@ const MmsWelcomeContainer: NextPage<Record<string, never>> = () => {
     }
     setFirstLoad(false);
   }, [firstLoad, renderForm]);
+
+  if (loggedInMerchantUser != null) {
+    void router.push(merchFeURL("/"));
+    return <LoadingIndicator style={styles.loadingIndicator} />;
+  }
 
   return (
     <Layout.FlexColumn alignItems="stretch">
@@ -105,6 +114,14 @@ const useStylesheet = () => {
           right: 50,
           bottom: 45,
           zIndex: 10,
+        },
+        loadingIndicator: {
+          position: "absolute",
+          top: 0,
+          bottom: 0,
+          left: 0,
+          right: 0,
+          margin: "auto",
         },
       }),
     [],

@@ -85,7 +85,8 @@ const MerchantDashboardProvider: React.FC<MerchantDashboardProviderProps> = ({
     error: userStoreError,
   } = useQuery<UserStoreInitialQueryResponse>(USER_STORE_INITIAL_QUERY, {
     client,
-    skip: isPublic || xsrfCheckLoading,
+    skip: xsrfCheckLoading,
+    errorPolicy: isPublic ? "ignore" : undefined,
   });
   const {
     data: localizationStoreInitialData,

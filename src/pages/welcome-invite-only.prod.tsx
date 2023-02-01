@@ -3,7 +3,7 @@ import { StyleSheet } from "aphrodite";
 import { observer } from "mobx-react";
 
 /* Lego Components */
-import { TopBottomButton, Layout } from "@ContextLogic/lego";
+import { TopBottomButton, Layout, LoadingIndicator } from "@ContextLogic/lego";
 
 /* Lego Toolkit */
 import InviteOnlySection from "src/app/landing-pages/welcome-invite-only/InviteOnlySection";
@@ -14,14 +14,18 @@ import LoggedOutChrome from "src/app/landing-pages/common/logged-out-chrome/Logg
 import { NextPage } from "next";
 import { useDeviceStore } from "@core/stores/DeviceStore";
 import { useBoolQueryParam } from "@core/toolkit/url";
+import { merchFeURL, useRouter } from "@core/toolkit/router";
 import SiteFooter from "@landing-pages/common/logged-out-chrome/SiteFooter";
 import { useTheme } from "@core/stores/ThemeStore";
 import SignupQuestionnaireModal from "src/app/landing-pages/welcome-invite-only/questionnaire/SignupQuestionnaireModal";
+import { useUserStore } from "@core/stores/UserStore";
 
 const WelcomeInviteOnlyContainer: NextPage<Record<string, never>> = () => {
   const { isSmallScreen, screenInnerWidth } = useDeviceStore();
   const insetX = isSmallScreen ? 30 : 0.17 * screenInnerWidth;
   const styles = useStylesheet({ insetX });
+  const { loggedInMerchantUser } = useUserStore();
+  const router = useRouter();
 
   const [isQuestionnaireModalOpen, setIsQuestionnaireModalOpen] =
     useState(false);
@@ -34,6 +38,11 @@ const WelcomeInviteOnlyContainer: NextPage<Record<string, never>> = () => {
     }
     setFirstLoad(false);
   }, [firstLoad, renderForm]);
+
+  if (loggedInMerchantUser != null) {
+    void router.push(merchFeURL("/"));
+    return <LoadingIndicator style={styles.loadingIndicator} />;
+  }
 
   return (
     <Layout.FlexColumn alignItems="stretch">
@@ -94,6 +103,14 @@ const useStylesheet = ({ insetX }: { readonly insetX: number }) => {
         footer: {
           paddingLeft: insetX,
           paddingRight: insetX,
+        },
+        loadingIndicator: {
+          position: "absolute",
+          top: 0,
+          bottom: 0,
+          left: 0,
+          right: 0,
+          margin: "auto",
         },
       }),
     [textWhite, insetX],

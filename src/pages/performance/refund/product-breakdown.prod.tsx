@@ -9,12 +9,8 @@ import { LoadingIndicator, Alert } from "@ContextLogic/lego";
 import Image from "@core/components/Image";
 import { Table, Icon } from "@performance/components";
 import PageRoot from "@core/components/PageRoot";
-import {
-  wishURL,
-  contestImageURL,
-  merchFeURL,
-  zendeskURL,
-} from "@core/toolkit/url";
+import { wishURL, contestImageURL, zendeskURL } from "@core/toolkit/url";
+import { merchFeURL } from "@core/toolkit/router";
 import { useToastStore } from "@core/stores/ToastStore";
 import {
   useDecodedProductBreakdownURI,

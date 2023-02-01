@@ -2,13 +2,13 @@ import React, { useMemo } from "react";
 import { StyleSheet } from "aphrodite";
 import { observer } from "mobx-react";
 import { useQuery } from "@apollo/client";
-import { NextPage } from "next";
 
 /* Lego Components */
 import { Layout } from "@ContextLogic/lego";
 
 /* Lego Toolkit */
 import { useIntQueryParam, useStringQueryParam } from "@core/toolkit/url";
+import { useRouter } from "@core/toolkit/router";
 import { useMountEffect } from "@ContextLogic/lego/toolkit/hooks";
 
 import {
@@ -24,11 +24,10 @@ import SiteFooter from "@core/components/PlusSiteFooter";
 import { useTheme } from "@core/stores/ThemeStore";
 import { useToastStore } from "@core/stores/ToastStore";
 import LoggedOutChrome from "@landing-pages/common/logged-out-chrome/LoggedOutChrome";
-import { useNavigationStore } from "@core/stores/NavigationStore";
 
-const LoginContainer: NextPage<Record<string, never>> = () => {
+const LoginContainer: React.FC = () => {
   const styles = useStylesheet();
-  const navigationStore = useNavigationStore();
+  const router = useRouter();
   const { pageBackground } = useTheme();
 
   const [reset] = useIntQueryParam("reset");
@@ -66,7 +65,7 @@ const LoginContainer: NextPage<Record<string, never>> = () => {
           showLoginButton={false}
           ctaText={i`Complete the Questionnaire`}
           onClickCta={() =>
-            navigationStore.navigate("/welcome-invite-only?renderModal=true")
+            router.push("/welcome-invite-only?renderModal=true")
           }
           showTopBarCtaButton={false}
           backgroundColor={pageBackground}

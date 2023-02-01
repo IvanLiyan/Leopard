@@ -9,7 +9,7 @@ import { ci18n } from "@core/toolkit/i18n";
 import { useDeviceStore } from "@core/stores/DeviceStore";
 import { useTheme } from "@core/stores/ThemeStore";
 import { css } from "@core/toolkit/styling";
-import { merchFeURL } from "@core/toolkit/url";
+import { merchFeURL } from "@core/toolkit/router";
 import Link from "@core/components/Link";
 
 export type SiteFooterProps = BaseProps;

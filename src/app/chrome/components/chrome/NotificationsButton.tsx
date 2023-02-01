@@ -23,7 +23,7 @@ import { useTheme } from "@core/stores/ThemeStore";
 import { useEnvironmentStore } from "@core/stores/EnvironmentStore";
 
 import Link from "@core/components/Link";
-import { merchFeURL } from "@core/toolkit/url";
+import { merchFeURL } from "@core/toolkit/router";
 
 type Props = BaseProps;
 

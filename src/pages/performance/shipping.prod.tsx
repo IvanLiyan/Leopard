@@ -29,7 +29,7 @@ import { TableColumn } from "@performance/components/Table";
 import commonStyles from "@performance/styles/common.module.css";
 import PageHeader from "@core/components/PageHeader";
 import PageGuide from "@core/components/PageGuide";
-import { merchFeURL } from "@core/toolkit/url";
+import { merchFeURL } from "@core/toolkit/router";
 import { useTheme } from "@core/stores/ThemeStore";
 
 const PerformanceShippingPage: NextPage<Record<string, never>> = () => {

@@ -28,7 +28,7 @@ import { RequiredValidator } from "@core/toolkit/validators";
 
 /* Toolkit */
 import { GetCaptchaResponse } from "@landing-pages/authentication/toolkit/authentication";
-import { merchFeURL } from "@core/toolkit/url";
+import { merchFeURL } from "@core/toolkit/router";
 
 /* Components */
 import Icon from "@core/components/Icon";

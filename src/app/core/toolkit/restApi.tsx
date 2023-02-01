@@ -4,7 +4,13 @@ import axios, { Method } from "axios";
 import Cookies from "js-cookie";
 
 import { isProd } from "@core/stores/EnvironmentStore";
-import { ToastStoreRef } from "@core/stores/ToastStore";
+import { useToastStore } from "@core/stores/ToastStore";
+import { merchFeURL, useRouter } from "@core/toolkit/router";
+
+const REST_ERROR_CODES = {
+  SESSION_EXPIRED: 2,
+  SECURE_SESSION_EXPIRED: 3,
+};
 
 export type RestApiResponse<TResponse> = {
   readonly code: number;
@@ -52,6 +58,8 @@ export const useRequest = <TResponse, TRequest = RestApiBody>(
 ): SWRResponse<TResponse | undefined> => {
   const { url, method, body } = queryParams;
   const { revalidateOnFocus = false } = options ?? {};
+  const toastStore = useToastStore();
+  const router = useRouter();
 
   const formattedUrl = useMemo(() => {
     if (!url.startsWith("/api/")) {
@@ -86,6 +94,41 @@ export const useRequest = <TResponse, TRequest = RestApiBody>(
         return data.data;
       })
       .catch((error) => {
+        const currentPath = window.location.pathname;
+        // session expired
+        if (
+          error.response?.data?.code == REST_ERROR_CODES.SESSION_EXPIRED &&
+          error.response?.data?.data?.session_expired == true
+        ) {
+          const loginUrl = `/login?next=${encodeURI(currentPath)}`;
+          toastStore.error(
+            error.response.data.msg
+              ? String(error.response.data.msg)
+              : i`Something went wrong`,
+          );
+          // shli TODO: remove merchFeURL after login page live
+          void router.push(merchFeURL(loginUrl));
+
+          return undefined;
+        }
+
+        // secure session expired
+        if (
+          error.response?.data?.code ==
+            REST_ERROR_CODES.SECURE_SESSION_EXPIRED &&
+          error.response?.data?.data?.secure_session_expired == true
+        ) {
+          const reloginUrl = `/relogin-secure?next=${encodeURI(currentPath)}`;
+          toastStore.error(
+            error.response.data.msg
+              ? String(error.response.data.msg)
+              : i`Something went wrong`,
+          );
+          void router.push(merchFeURL(reloginUrl));
+
+          return undefined;
+        }
+
         if (!isProd) {
           let errorMessage = i`Unknown API Error`;
           if (error.response && error.response.data) {
@@ -97,12 +140,13 @@ export const useRequest = <TResponse, TRequest = RestApiBody>(
           // Want a console log here for debugging in development
           // eslint-disable-next-line no-console
           console.log(errorMessage);
-          ToastStoreRef.current?.error(errorMessage, {
+          toastStore.error(errorMessage, {
             timeoutMs: 30 * 1000,
           });
         } else {
-          ToastStoreRef.current?.error(i`Something went wrong`);
+          toastStore.error(i`Something went wrong`);
         }
+
         return undefined;
       });
   };

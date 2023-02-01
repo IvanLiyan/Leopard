@@ -25,7 +25,7 @@ import {
 import { useExportCSV } from "@performance/toolkit/utils";
 import commonStyles from "@performance/styles/common.module.css";
 import PageHeader from "@core/components/PageHeader";
-import { merchFeURL } from "@core/toolkit/url";
+import { merchFeURL } from "@core/toolkit/router";
 import { useTheme } from "@core/stores/ThemeStore";
 
 const PerformanceProductPage: NextPage<Record<string, never>> = () => {

@@ -39,7 +39,7 @@ import { ByUserIdInput } from "@schema";
 import { useAppTopBarData } from "@chrome/toolkit";
 
 import Link from "@core/components/Link";
-import { merchFeURL } from "@core/toolkit/url";
+import { merchFeURL } from "@core/toolkit/router";
 
 const PlusUserAvatar: React.FC<BaseProps> = ({
   style,
