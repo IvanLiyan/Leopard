@@ -68,7 +68,7 @@ const AppLocaleSelector: React.FC<AppLocaleSelectorProps> = ({
         const countryCode = localeInfo.country.toLowerCase();
         const { [countryCode]: img } = Flags4x3;
         return {
-          img: img.src,
+          img: `/md${img.src}`,
           text: localeInfo.name,
           value: code,
         };

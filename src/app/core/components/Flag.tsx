@@ -59,7 +59,7 @@ const Flag: React.FC<FlagProps> = (props) => {
   const flag = (
     <NextImage
       alt={alt || `flag for ${countryCode}`}
-      src={flagUrl(countryCode, aspectRatio).src}
+      src={`/md${flagUrl(countryCode, aspectRatio).src}`}
       height="12px"
       width="16px"
       draggable={false}
