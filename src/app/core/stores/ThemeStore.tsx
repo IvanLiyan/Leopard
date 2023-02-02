@@ -117,6 +117,7 @@ const COMMON_THEME = {
   primaryDarker: PALETTES.BLUE["800"],
   primaryDarkest: PALETTES.BLUE["900"],
 
+  secondaryLightest: PALETTES.COBALT["100"],
   secondaryLighter: PALETTES.COBALT["200"],
   secondaryLight: PALETTES.COBALT["300"],
   secondary: PALETTES.COBALT["400"],
@@ -364,6 +365,7 @@ export interface AppTheme {
   readonly primaryDarker: string;
   readonly primaryDarkest: string;
 
+  readonly secondaryLightest: string;
   readonly secondaryLighter: string;
   readonly secondaryLight: string;
   readonly secondary: string;

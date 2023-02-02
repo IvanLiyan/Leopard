@@ -5,7 +5,7 @@ import { observer } from "mobx-react";
 import { Layout, FlexRowProps } from "@ContextLogic/lego";
 import Icon, { IconProps } from "../Icon";
 import { useTheme } from "@core/stores/ThemeStore";
-import { Header } from "@ContextLogic/atlas-ui";
+import { Heading } from "@ContextLogic/atlas-ui";
 
 type Props = FlexRowProps & {
   readonly title?: string;
@@ -44,9 +44,9 @@ const ModalTitle: React.FC<Props> = ({
       {...props}
     >
       {title !== undefined && (
-        <Header variant="h3" id={titleId}>
+        <Heading variant="h3" id={titleId}>
           {title}
-        </Header>
+        </Heading>
       )}
       {children}
       {!hideCloseButton && (

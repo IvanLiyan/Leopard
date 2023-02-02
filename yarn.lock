@@ -2,20 +2,20 @@
 # yarn lockfile v1
 
 
-"@ContextLogic/atlas-ui@0.0.1-1674577571":
-  version "0.0.1-1674577571"
-  resolved "https://npm.infra.wish.com/@ContextLogic%2fatlas-ui/-/atlas-ui-0.0.1-1674577571.tgz#3c1d02e98417b5476855067d995f7b2738777b52"
-  integrity sha512-vPEQaFy5al2L7nuqEbGcbY/G5YfIV1Iq+LcOexP1DAxA7esP7FvLJHGeFy6f2m4evG9WBoHfbqnokEcA6j1ovA==
+"@ContextLogic/atlas-ui@^0.0.1-1675371785":
+  version "0.0.1-1675371785"
+  resolved "https://npm.infra.wish.com/@ContextLogic%2fatlas-ui/-/atlas-ui-0.0.1-1675371785.tgz#6f01223c13e1b1aec3e62fafae53f1b521ef7e2f"
+  integrity sha512-BZpBNzCU3F5s3j5WaQDb0BaUz7wjWjPct+EFEzsGoPOYMOKAWzR/AyBHTlTTOzKJplUipyvWBISK1FHXQGoFwg==
   dependencies:
     "@ContextLogic/zeus" "^0.0.1-1669324295"
     "@emotion/react" "^11.10.4"
     "@emotion/styled" "^11.10.4"
     "@mui/material" "^5.11.5"
 
-"@ContextLogic/lego@0.0.1-1669739732":
-  version "0.0.1-1669739732"
-  resolved "https://npm.infra.wish.com/@ContextLogic%2flego/-/lego-0.0.1-1669739732.tgz#6caf2348e7cff921ff911f549d9ea8b50eefe065"
-  integrity sha512-1D9SeHkMLdY8uovINMxFKKJw++s7UWB3kKREQL9OIxPAdalYRdvmFR9Dex5gDOnK0beaVusJ1S0bt3PNSctMpA==
+"@ContextLogic/lego@^0.0.1-1675370998":
+  version "0.0.1-1675370998"
+  resolved "https://npm.infra.wish.com/@ContextLogic%2flego/-/lego-0.0.1-1675370998.tgz#4d0c98bd733a9afb49ee13dd2fdf48c4eb5e8177"
+  integrity sha512-S68SZx4Nq9+QzRwkB6umOM+8fo6ldL2A73Mva5aFk7lDjfiozOns2YKw9CBDK6ilDYnQ0BzudZtL4agmoNx7Yw==
   dependencies:
     "@ContextLogic/legostrings" "0.0.1664165201"
     "@ContextLogic/zeus" "0.0.1-1669324295"
@@ -3964,6 +3964,7 @@ aphrodite@2.2.3:
 aphrodite@^2.4.0:
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/aphrodite/-/aphrodite-2.4.0.tgz#ec1a2afa41ba7310a47a4f1fba27919d99572c91"
+  integrity sha512-1rVRlLco+j1YAT5aKEE8Wuw5zWV+tI41/quEheJAG0vNaGHE64iJ/a2SiVMz8Uc80VdP2/Hjlfd2bPJOWsqJuQ==
   dependencies:
     asap "^2.0.3"
     inline-style-prefixer "^5.1.0"
@@ -4091,6 +4092,7 @@ arrify@^1.0.0, arrify@^1.0.1:
 asap@^2.0.3, asap@~2.0.3:
   version "2.0.6"
   resolved "https://registry.yarnpkg.com/asap/-/asap-2.0.6.tgz#e50347611d7e690943208bbdafebcbc2fb866d46"
+  integrity sha512-BSHWgDSAiKs50o2Re8ppvp3seVHXSRM44cdSsT9FfNEUUZLOGWVCsiWaRPWM1Znn+mqZ1OfVZ3z3DWEzSp7hRA==
 
 asn1.js@^5.2.0:
   version "5.4.1"
@@ -5895,7 +5897,12 @@ core-js@^2.4.0, core-js@^2.4.1, core-js@^2.5.0, core-js@^2.6.10:
   version "2.6.12"
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.6.12.tgz#d9333dfa7b065e347cc5682219d6f690859cc2ec"
 
-core-js@^3.12.1, core-js@^3.2.1, core-js@^3.6.4:
+core-js@^3.12.1:
+  version "3.27.2"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.27.2.tgz#85b35453a424abdcacb97474797815f4d62ebbf7"
+  integrity sha512-9ashVQskuh5AZEZ1JdQWp1GqSoC1e1G87MzRqg2gIfVAQ7Qn9K+uFj8EcniUFA4P2NLZfV+TOlX1SzoKfo+s7w==
+
+core-js@^3.2.1, core-js@^3.6.4:
   version "3.20.3"
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.20.3.tgz#c710d0a676e684522f3db4ee84e5e18a9d11d69a"
 
@@ -6038,6 +6045,7 @@ css-color-names@0.0.4:
 css-in-js-utils@^2.0.0:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/css-in-js-utils/-/css-in-js-utils-2.0.1.tgz#3b472b398787291b47cfe3e44fecfdd9e914ba99"
+  integrity sha512-PJF0SpJT+WdbVVt0AOYp9C8GnuruRlL/UFW7932nLWmFLQTaWEzTBQEx7/hn4BuV+WON75iAViSUJLiU3PKbpA==
   dependencies:
     hyphenate-style-name "^1.0.2"
     isobject "^3.0.1"
@@ -8628,6 +8636,7 @@ humps@^2.0.1:
 hyphenate-style-name@^1.0.2:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/hyphenate-style-name/-/hyphenate-style-name-1.0.4.tgz#691879af8e220aea5750e8827db4ef62a54e361d"
+  integrity sha512-ygGZLjmXfPHj+ZWh6LwbC37l43MhfztxetbFCoYTM2VjkIUpeHgSNn7QIyVFj7YQ1Wl9Cbw5sholVJPzWvC2MQ==
 
 iconv-lite@0.4.24, iconv-lite@^0.4.24:
   version "0.4.24"
@@ -8790,6 +8799,7 @@ inline-style-prefixer@^4.0.2:
 inline-style-prefixer@^5.1.0:
   version "5.1.2"
   resolved "https://registry.yarnpkg.com/inline-style-prefixer/-/inline-style-prefixer-5.1.2.tgz#e5a5a3515e25600e016b71e39138971228486c33"
+  integrity sha512-PYUF+94gDfhy+LsQxM0g3d6Hge4l1pAqOSOiZuHWzMvQEGsbRQ/ck2WioLqrY2ZkHyPgVUXxn+hrkF7D6QUGbA==
   dependencies:
     css-in-js-utils "^2.0.0"
 
@@ -9255,6 +9265,7 @@ isobject@^2.0.0:
 isobject@^3.0.0, isobject@^3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/isobject/-/isobject-3.0.1.tgz#4e431e92b11a9731636aa1f9c8d1ccbcfdab78df"
+  integrity sha512-WhB9zCku7EGTj/HQQRz5aUQEUeoQZH2bWcltRErOpymJ4boYE6wL9Tbr23krRPSZ+C5zqNSrSw+Cc7sZZ4b7vg==
 
 isomorphic-fetch@^2.1.1:
   version "2.2.1"
@@ -14036,6 +14047,7 @@ string-env-interpolation@1.0.1, string-env-interpolation@^1.0.1:
 string-hash@1.1.3, string-hash@^1.1.3:
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/string-hash/-/string-hash-1.1.3.tgz#e8aafc0ac1855b4666929ed7dd1275df5d6c811b"
+  integrity sha512-kJUvRUFK49aub+a7T1nNE66EJbZBMnBgoC1UbCZ5n6bsZKBRga4KgBRTMn/pFkeCZSYtNeSyMxPDM0AXWELk2A==
 
 string-length@^4.0.1:
   version "4.0.2"

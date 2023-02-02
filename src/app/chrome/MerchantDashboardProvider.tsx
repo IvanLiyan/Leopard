@@ -26,8 +26,8 @@ import { LoadingIndicator } from "@ContextLogic/lego";
 import { env } from "@core/stores/EnvironmentStore";
 import { datadogRum } from "@datadog/browser-rum";
 import FullPageError from "@core/components/FullPageError";
-import { AtlasThemeProvider } from "@ContextLogic/atlas-ui";
 import SalesforceWidget from "@chrome/components/SalesforceWidget";
+import { AtlasThemeProvider } from "@ContextLogic/atlas-ui";
 
 datadogRum.init({
   applicationId: "901bc1fd-28d9-4542-88ca-f109e88b2a43",
@@ -141,10 +141,10 @@ const MerchantDashboardProvider: React.FC<MerchantDashboardProviderProps> = ({
   // TODO [lliepert]: clean up userStore file now that we aren't using it here
 
   return (
-    <NavigationProvider>
-      <UserStoreProvider initialData={userStoreInitialData}>
-        <ApolloProvider>
-          <AtlasThemeProvider>
+    <AtlasThemeProvider>
+      <NavigationProvider>
+        <UserStoreProvider initialData={userStoreInitialData}>
+          <ApolloProvider>
             <ToastProvider>
               <PersistenceStoreProvider
                 userId={userStoreInitialData?.currentUser?.id ?? "none"}
@@ -164,10 +164,10 @@ const MerchantDashboardProvider: React.FC<MerchantDashboardProviderProps> = ({
                 </DeviceStoreProvider>
               </PersistenceStoreProvider>
             </ToastProvider>
-          </AtlasThemeProvider>
-        </ApolloProvider>
-      </UserStoreProvider>
-    </NavigationProvider>
+          </ApolloProvider>
+        </UserStoreProvider>
+      </NavigationProvider>
+    </AtlasThemeProvider>
   );
 };
 
