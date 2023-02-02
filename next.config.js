@@ -74,6 +74,15 @@ const moduleExports = (phase, { defaultConfig }) => {
 
       return config;
     },
+    typescript: {
+      // Dangerously allow production builds to successfully complete even if
+      // your project has type errors.
+      // We're confident disabling type checking in the build process because
+      // we always run it in conjunction with `lint` which also performs
+      // type checking. By disabling it here we speed up pipelines by
+      // parallelizing the type checking
+      ignoreBuildErrors: true,
+    },
     pageExtensions: ["tsx", "ts", "jsx", "js"]
       .map((ext) =>
         phase === PHASE_DEVELOPMENT_SERVER
