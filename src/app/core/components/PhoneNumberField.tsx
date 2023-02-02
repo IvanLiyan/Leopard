@@ -117,7 +117,7 @@ const PhoneNumberField: React.FC<PhoneNumberFieldProps> = ({
         return {
           text: `${countryCode} (+${AreaCodes[countryCode]})`,
           value: countryCode,
-          img: `/md${Flags4x3[countryCode.toLowerCase()]?.src}`,
+          img: Flags4x3[countryCode.toLowerCase()]?.src,
         };
       });
   }, [countryOptions]);
