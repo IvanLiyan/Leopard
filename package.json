@@ -5,7 +5,7 @@
   "scripts": {
     "setup": "bash scripts/setup.sh",
     "dev": "NODE_EXTRA_CA_CERTS=\"$(cat ./certs/.capath)\" NODE_OPTIONS=--openssl-legacy-provider node server.js",
-    "build": "NODE_OPTIONS=--openssl-legacy-provider next build && next export",
+    "build": "NODE_OPTIONS=\"--openssl-legacy-provider --max-old-space-size=14336\" next build && next export",
     "tsc": "tsc --noemit",
     "eslint": "eslint --max-warnings=0 .",
     "prettier": "prettier -c src",
@@ -15,8 +15,8 @@
     "test-ci": "jest --coverage"
   },
   "dependencies": {
-    "@ContextLogic/atlas-ui": "0.0.1-1665589450",
-    "@ContextLogic/lego": "0.0.1-1649131753",
+    "@ContextLogic/atlas-ui": "0.0.1-1674577571",
+    "@ContextLogic/lego": "0.0.1-1669739732",
     "@ContextLogic/merchantstrings": "0.0.1665981415",
     "@ContextLogic/zeus": "0.0.1-1643061651",
     "@apollo/client": "^3.4.16",

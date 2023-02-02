@@ -124,8 +124,13 @@ export const NavigationProvider: React.FC = ({ children }) => {
   const router = useRouter();
 
   const currentPath = router.pathname;
-  const currentSearch = window.location.search;
-  const currentHash = window.location.search; // TODO [lliepert]: deprecate in favour of currentSearch
+  // window.location.search changes when the Nextjs router is pushed to, but won't
+  // know to refresh unless it's explicit, see Nextjs docs
+  // https://nextjs.org/docs/api-reference/next/router#resetting-state-after-navigation
+  /* eslint-disable react-hooks/exhaustive-deps */
+  const currentSearch = useMemo(() => window.location.search, [router.asPath]);
+  const currentHash = useMemo(() => window.location.search, [router.asPath]); // TODO [lliepert]: deprecate in favour of currentSearch
+  /* eslint-enable react-hooks/exhaustive-deps */
 
   const navigationStore = useMemo<NavigationStore>(() => {
     const pathParams = (_path: string) => {

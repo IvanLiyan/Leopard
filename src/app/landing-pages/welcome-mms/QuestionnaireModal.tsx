@@ -39,7 +39,7 @@ import {
   SubmitMmsMerchantLeadResponseType,
   MmsCompanyRevenueRanges,
 } from "@landing-pages/welcome-mms/toolkit/mms-welcome";
-import Modal from "@core/components/Modal";
+import Modal from "@core/components/modal/Modal";
 import SuccessModalContent from "./SuccessModalContent";
 
 type Props = BaseProps & {

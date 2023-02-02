@@ -15,6 +15,7 @@ const moduleExports = (phase, { defaultConfig }) => {
     reactStrictMode: true,
     images: {
       domains: ["canary.contestimg.wish.com"],
+      path: "",
     },
     async rewrites() {
       return MD_URL

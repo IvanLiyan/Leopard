@@ -25,7 +25,8 @@ import {
 import { LoadingIndicator } from "@ContextLogic/lego";
 import { env } from "@core/stores/EnvironmentStore";
 import { datadogRum } from "@datadog/browser-rum";
-import Image from "@core/components/Image";
+import FullPageError from "@core/components/FullPageError";
+import { AtlasThemeProvider } from "@ContextLogic/atlas-ui";
 import SalesforceWidget from "@chrome/components/SalesforceWidget";
 
 datadogRum.init({
@@ -134,20 +135,7 @@ const MerchantDashboardProvider: React.FC<MerchantDashboardProviderProps> = ({
     (!isPublic && (chromeStoreInitialData == null || chromeStoreError)) ||
     xsrfCheckError
   ) {
-    return (
-      <Image
-        src="/md/images/error-500.svg"
-        alt={i`Something went wrong.`}
-        style={{
-          position: "absolute",
-          top: 0,
-          bottom: 0,
-          left: 0,
-          right: 0,
-          margin: "auto",
-        }}
-      />
-    );
+    return <FullPageError error="500" />;
   }
 
   // TODO [lliepert]: clean up userStore file now that we aren't using it here
@@ -156,25 +144,27 @@ const MerchantDashboardProvider: React.FC<MerchantDashboardProviderProps> = ({
     <NavigationProvider>
       <UserStoreProvider initialData={userStoreInitialData}>
         <ApolloProvider>
-          <ToastProvider>
-            <PersistenceStoreProvider
-              userId={userStoreInitialData?.currentUser?.id ?? "none"}
-            >
-              <DeviceStoreProvider>
-                <LocalizationStoreProvider
-                  initialData={localizationStoreInitialData}
-                >
-                  <SalesforceWidget isPublic={isPublic}>
-                    <ThemeStoreProvider>
-                      <ChromeProvider initialData={chromeStoreInitialData}>
-                        {children}
-                      </ChromeProvider>
-                    </ThemeStoreProvider>
-                  </SalesforceWidget>
-                </LocalizationStoreProvider>
-              </DeviceStoreProvider>
-            </PersistenceStoreProvider>
-          </ToastProvider>
+          <AtlasThemeProvider>
+            <ToastProvider>
+              <PersistenceStoreProvider
+                userId={userStoreInitialData?.currentUser?.id ?? "none"}
+              >
+                <DeviceStoreProvider>
+                  <LocalizationStoreProvider
+                    initialData={localizationStoreInitialData}
+                  >
+                    <SalesforceWidget isPublic={isPublic}>
+                      <ThemeStoreProvider>
+                        <ChromeProvider initialData={chromeStoreInitialData}>
+                          {children}
+                        </ChromeProvider>
+                      </ThemeStoreProvider>
+                    </SalesforceWidget>
+                  </LocalizationStoreProvider>
+                </DeviceStoreProvider>
+              </PersistenceStoreProvider>
+            </ToastProvider>
+          </AtlasThemeProvider>
         </ApolloProvider>
       </UserStoreProvider>
     </NavigationProvider>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="120px" height="120px" viewBox="0 0 120 120" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 62 (91390) - https://sketch.com -->
+    <title>Group 9</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <rect id="path-1" x="0" y="0" width="120" height="120"></rect>
+        <path d="M13.7323712,3.0027767 L22.269551,17.8005551 C22.8215292,18.7573173 22.4933869,19.980393 21.5366248,20.5323712 C21.2327183,20.7077018 20.8880358,20.8 20.5371798,20.8 L0,20.8 L0,20.8 L10.2676288,3.0027767 C10.819607,2.04601452 12.0426827,1.71787225 12.9994449,2.26985043 C13.3039161,2.44550688 13.5567147,2.69830552 13.7323712,3.0027767 Z" id="path-3"></path>
+    </defs>
+    <g id="App-Management-Page" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+    <linearGradient id="ImageLoadingGradient1" x1="0" x2="0" y1="0" y2="1">
+      <stop stop-color="#EEF2F5" offset="0%" />
+      <stop stop-color="#dce2e6" offset="100%" />
+    </linearGradient>
+    <rect id="Rectangle" fill="url(#ImageLoadingGradient1)" mask="url(#mask-2)" x="0" y="0" width="120" height="120"></rect>
+    </g>
+</svg>

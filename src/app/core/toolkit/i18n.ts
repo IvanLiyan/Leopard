@@ -131,7 +131,12 @@ function _i18n(str: string, ...args: any[]) {
   return result;
 }
 
-function _ni18n(num: number, singular: string, plural: string, ...args: any[]) {
+function _ni18n(
+  num: number,
+  singular: string,
+  plural: string,
+  ...args: any[]
+): string {
   const format_args = [num, ...args];
 
   let str = jedi18n.translate(singular).ifPlural(num, plural);

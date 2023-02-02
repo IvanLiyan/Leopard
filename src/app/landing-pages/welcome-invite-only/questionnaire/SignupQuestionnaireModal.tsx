@@ -11,7 +11,7 @@ import {
   MerchantLeadSubmissionInputType,
 } from "../toolkit/merchant-submission";
 import { ci18n } from "@core/toolkit/i18n";
-import Modal from "@core/components/Modal";
+import Modal from "@core/components/modal/Modal";
 import SignupSuccessModalContent from "./SignupSuccessModalContent";
 import { useToastStore } from "@core/stores/ToastStore";
 import { useMutation } from "@apollo/client";

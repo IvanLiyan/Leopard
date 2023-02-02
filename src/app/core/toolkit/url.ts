@@ -1,9 +1,10 @@
 import { useCallback, useMemo } from "react";
 import moment from "moment/moment";
 import { isStaging, isTesting, isSandbox } from "@core/stores/EnvironmentStore";
-import NavigationStore, {
-  useNavigationStore,
-} from "@core/stores/NavigationStore";
+import NavigationStore from "@core/stores/NavigationStore";
+import isEqual from "lodash/isEqual";
+import { useRouter } from "next/router";
+import { ParsedUrlQueryInput } from "querystring";
 
 export const absURL = (path: string, hostname?: string): string => {
   let port = location.port;
@@ -226,25 +227,24 @@ export const IntArrayOptions: QueryParamOptions<ReadonlyArray<number>> = {
   },
 };
 
-export const dateOptions = (args: {
-  format: string;
-}): QueryParamOptions<Date> => ({
+export const DateOptions: QueryParamOptions<Date> = {
   default: "",
   mapper: {
     deserialize: (str) => {
-      if (!str) {
+      const unix = parseInt(str);
+      if (!unix) {
         return null;
       }
-      return moment(str, args.format).toDate();
+      return moment.unix(unix).toDate();
     },
     serialize: (date) => {
       if (!date) {
         return "";
       }
-      return moment(date).format(args.format);
+      return `${moment(date).unix()}`;
     },
   },
-});
+};
 
 export const usePathParams = (
   pattern: string,
@@ -301,34 +301,46 @@ type QueryParamOptions<T> = {
   // legacy code, any's need to be fixed
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   default?: any;
-  mapper?: {
+  mapper: {
     deserialize?: (rawValue: string) => T | null | undefined;
-    serialize?: (domain: T) => string;
+    serialize: (domain: T) => string;
   };
 };
 
 const useQueryParam = <T>(
   key: string,
-  options: QueryParamOptions<T> = { default: null },
-): [T | null | undefined, (value: T | null | undefined) => void] => {
-  const navigationStore = useNavigationStore();
-  const { queryParams, currentPath } = navigationStore;
+  options: QueryParamOptions<T>,
+): [T | null | undefined, (value: T | null | undefined) => Promise<void>] => {
+  const router = useRouter();
+  const { query, asPath, replace } = router;
+
   const value: T | null | undefined = useMemo(() => {
-    const currentValueRaw = queryParams[key];
+    const queryValue = query[key];
+    const currentValueRaw = queryValue;
     let currentValue: T | null | undefined = null;
-    if (options.mapper && options.mapper.deserialize) {
-      currentValue = options.mapper.deserialize(currentValueRaw);
+    if (
+      options.mapper &&
+      options.mapper.deserialize &&
+      currentValueRaw != null
+    ) {
+      currentValue = options.mapper.deserialize(
+        typeof currentValueRaw === "object"
+          ? currentValueRaw.join(",")
+          : currentValueRaw,
+      );
     }
 
     return currentValue;
-    // Eslint bug: it thinks `T` is dependency, but its a type.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [key, options.mapper, queryParams]);
+  }, [options.mapper, query, key]);
 
   const setter = useCallback(
     async (value: T | null | undefined) => {
-      const { queryParams } = navigationStore;
-      const newQueryParams = { ...queryParams };
+      const query: ParsedUrlQueryInput = {};
+      new URLSearchParams(window.location.search).forEach(
+        (value, key) => (query[key] = value),
+      );
+
+      const newQuery = { ...query };
 
       let valRaw: string | null | undefined = null;
       if (value != null && options.mapper && options.mapper.serialize) {
@@ -336,30 +348,100 @@ const useQueryParam = <T>(
       }
 
       if (valRaw == null || options?.default == valRaw) {
-        delete newQueryParams[key];
+        delete newQuery[key];
       } else {
-        newQueryParams[key] = valRaw;
+        newQuery[key] = valRaw;
       }
 
-      if (currentPath != null) {
-        if (valRaw != null || Object.keys(newQueryParams).length) {
-          await navigationStore.pushPath(currentPath, newQueryParams);
-        } else {
-          await navigationStore.pushPath(currentPath);
-        }
+      if (asPath != null && !isEqual(newQuery, query)) {
+        await replace({
+          query: newQuery,
+        });
       }
     },
-    // Eslint bug: it thinks `T` is dependency, but its a type.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [key, options, navigationStore, currentPath],
+    [key, options, asPath, replace],
   );
 
   return [value, setter];
 };
+export type UpsertQueryParamsQuery = Record<string, unknown>;
+
+const serialize = (value: unknown): string | undefined => {
+  if (value == null) {
+    return undefined;
+  }
+
+  if (typeof value === "string") {
+    return StringOptions.mapper.serialize(value);
+  }
+
+  if (typeof value === "number") {
+    return IntOptions.mapper.serialize(value);
+  }
+
+  if (value instanceof Set) {
+    return SetOptions.mapper.serialize(value);
+  }
+
+  if (
+    value instanceof Array &&
+    value.every((entry) => typeof entry === "string")
+  ) {
+    return StringArrayOptions.mapper.serialize(value);
+  }
+
+  if (
+    value instanceof Array &&
+    value.every((entry) => typeof entry === "number")
+  ) {
+    return IntArrayOptions.mapper.serialize(value);
+  }
+
+  if (typeof value === "boolean") {
+    return BoolOptions.mapper.serialize(value);
+  }
+
+  if (value instanceof Date) {
+    return DateOptions.mapper.serialize(value);
+  }
+
+  return String(value);
+};
+
+export const useUpsertQueryParams = () => {
+  const { replace } = useRouter();
+
+  return async (rawQuery: UpsertQueryParamsQuery) => {
+    const queryObj: ParsedUrlQueryInput = {};
+    const newQuery = new URLSearchParams(window.location.search);
+    newQuery.forEach((value, key) => (queryObj[key] = value));
+
+    const query: ParsedUrlQueryInput = Object.entries(
+      rawQuery,
+    ).reduce<ParsedUrlQueryInput>((acc, [key, value]) => {
+      const serializedValue = serialize(value);
+
+      if (serializedValue == null) {
+        delete acc[key];
+        return acc;
+      }
+
+      return {
+        ...acc,
+        [key]: serializedValue,
+      };
+    }, queryObj);
+
+    await replace({ query });
+  };
+};
 
 export const useIntQueryParam = (
   key: string,
-): [number | null | undefined, (value: number | null | undefined) => void] => {
+): [
+  number | null | undefined,
+  (value: number | null | undefined) => Promise<void>,
+] => {
   return useQueryParam(key, IntOptions);
 };
 
@@ -367,7 +449,7 @@ export const useIntArrayQueryParam = (
   key: string,
 ): [
   ReadonlyArray<number> | null | undefined,
-  (value: ReadonlyArray<number> | null | undefined) => void,
+  (value: ReadonlyArray<number> | null | undefined) => Promise<void>,
 ] => {
   return useQueryParam<ReadonlyArray<number>>(key, IntArrayOptions);
 };
@@ -375,7 +457,7 @@ export const useIntArrayQueryParam = (
 export const useStringQueryParam = (
   key: string,
   defaultValue = "",
-): [string, (value: string | null | undefined) => void] => {
+): [string, (value: string | null | undefined) => Promise<void>] => {
   const [v, setter] = useQueryParam(key, StringOptions);
   return [v || defaultValue, setter];
 };
@@ -383,36 +465,36 @@ export const useStringQueryParam = (
 export const useStringEnumQueryParam = <T>(
   key: string,
   defaultValue?: null | undefined | T,
-): [T, (value: null | undefined | T) => void] => {
+): [T, (value: null | undefined | T) => Promise<void>] => {
   const [v, setter] = useQueryParam(key, StringOptions);
   return [
     (v || defaultValue) as T,
-    setter as (value: null | undefined | T) => void,
+    setter as (value: null | undefined | T) => Promise<void>,
   ];
 };
 
 export const useStringEnumArrayQueryParam = (
   key: string,
   defaultValue?: ReadonlyArray<string>,
-): [ReadonlyArray<string>, (value: ReadonlyArray<string>) => void] => {
+): [ReadonlyArray<string>, (value: ReadonlyArray<string>) => Promise<void>] => {
   const [v, setter] = useQueryParam<ReadonlyArray<string>>(
     key,
     StringArrayOptions,
   );
   return [
     v || defaultValue || [],
-    setter as (value: ReadonlyArray<string>) => void,
+    setter as (value: ReadonlyArray<string>) => Promise<void>,
   ];
 };
 
 export const useIntEnumQueryParam = <T>(
   key: string,
   defaultValue: null | undefined | T,
-): [T, (value: null | undefined | T) => void] => {
+): [T, (value: null | undefined | T) => Promise<void>] => {
   const [v, setter] = useQueryParam(key, IntOptions);
   return [
     (v || defaultValue) as T,
-    setter as (value: null | undefined | T) => void,
+    setter as (value: null | undefined | T) => Promise<void>,
   ];
 };
 
@@ -420,7 +502,7 @@ export const useIntEnumQueryParam = <T>(
 export const useStringArrayQueryParam = (
   key: string,
   defaultValue?: null | undefined | ReadonlyArray<string>,
-): [ReadonlyArray<string>, (value: ReadonlyArray<string>) => void] => {
+): [ReadonlyArray<string>, (value: ReadonlyArray<string>) => Promise<void>] => {
   const [v, setter] = useQueryParam<ReadonlyArray<string>>(
     key,
     StringArrayOptions,
@@ -432,34 +514,40 @@ export const useStringArrayQueryParam = (
   );
   return [
     value,
-    setter as (value: null | undefined | ReadonlyArray<string>) => void,
+    setter as (
+      value: null | undefined | ReadonlyArray<string>,
+    ) => Promise<void>,
   ];
 };
 
 export const useStringSetQueryParam = <T>(
   key: string,
   defaultValue: ReadonlySet<T> = new Set(),
-): [ReadonlySet<T>, (value: ReadonlySet<T>) => void] => {
+): [
+  ReadonlySet<T> | null | undefined,
+  (value: ReadonlySet<T> | null | undefined) => Promise<void>,
+] => {
   const [v, setter] = useQueryParam(key, SetOptions);
-  const value = useMemo(() => v || defaultValue, [v, defaultValue]);
-  return [value as ReadonlySet<T>, setter];
+  const value = v || defaultValue;
+  return [value as ReadonlySet<T> | null | undefined, setter];
 };
 
 export const useDateQueryParam = (
   key: string,
-  args: { format: string; defaultValue?: Date | null | undefined } = {
-    format: "YYYY-MM-DD",
-  },
-): [Date | null | undefined, (value: Date | null | undefined) => void] => {
-  const [v, setter] = useQueryParam(key, dateOptions(args));
-  const value = useMemo(() => v || args.defaultValue, [v, args.defaultValue]);
+  args: { defaultValue?: Date | null | undefined },
+): [
+  Date | null | undefined,
+  (value: Date | null | undefined) => Promise<void>,
+] => {
+  const [v, setter] = useQueryParam(key, DateOptions);
+  const value = v || args.defaultValue;
   return [value, setter];
 };
 
 export const useBoolQueryParam = (
   key: string,
   defaultValue = false,
-): [boolean, (value: boolean | null | undefined) => void] => {
+): [boolean, (value: boolean | null | undefined) => Promise<void>] => {
   const [val, setter] = useQueryParam(key, BoolOptions);
   return [val != null ? val : defaultValue, setter];
 };

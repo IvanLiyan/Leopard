@@ -18,6 +18,8 @@
     "baseUrl": "./",
     "downlevelIteration": true,
     "paths": {
+      "@add-edit-product/*": ["src/app/add-edit-product/*"],
+      "@all-products/*": ["src/app/all-products/*"],
       "@chrome/*": ["src/app/chrome/*"],
       "@core/*": ["src/app/core/*"],
       "@core-builder/*": ["src/app/core-builder/*"],

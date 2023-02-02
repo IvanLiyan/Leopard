@@ -73,6 +73,13 @@ import landingHeaderIllustrationRightURL from "public/images/welcome-invite-only
 import landingHeaderIllustrationSmallerURL from "public/images/welcome-invite-only/landing-header-illustration-smaller.svg";
 import globePhoneLocationsURL from "public/images/welcome-invite-only/globe-phone-locations.svg";
 
+import brandedURL from "public/images/product-badges/branded.svg";
+import wishExpressURL from "public/images/product-badges/wish-express.svg";
+import yellowBadgeURL from "public/images/product-badges/yellow-badge.svg";
+import cleanImageURL from "public/images/product-badges/clean-image.svg";
+import returnEnrolledURL from "public/images/product-badges/return-enrolled.svg";
+import clockCircleArrowURL from "public/images/clock-circle-arrow.svg";
+
 import error403URL from "public/images/error-403.svg";
 import error404URL from "public/images/error-404.svg";
 import error500URL from "public/images/error-500.svg";
@@ -149,6 +156,12 @@ export const landingHeaderIllustrationRight = landingHeaderIllustrationRightURL;
 export const landingHeaderIllustrationSmaller =
   landingHeaderIllustrationSmallerURL;
 export const globePhoneLocations = globePhoneLocationsURL;
+export const branded = brandedURL;
+export const wishExpress = wishExpressURL;
+export const yellowBadge = yellowBadgeURL;
+export const cleanImage = cleanImageURL;
+export const returnEnrolled = returnEnrolledURL;
+export const clockCircleArrow = clockCircleArrowURL;
 export const error403 = error403URL;
 export const error404 = error404URL;
 export const error500 = error500URL;
