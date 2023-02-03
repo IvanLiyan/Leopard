@@ -10,7 +10,7 @@
     "eslint": "eslint --max-warnings=0 .",
     "prettier": "prettier -c src",
     "lint": "yarn eslint && yarn tsc && yarn prettier",
-    "clean": "rm -rf node_modules build out",
+    "clean": "rm -rf node_modules build out .next",
     "test": "jest --watch",
     "test-ci": "jest --coverage"
   },
