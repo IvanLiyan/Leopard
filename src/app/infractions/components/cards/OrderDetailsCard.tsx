@@ -1,25 +1,18 @@
-import React from "react";
+import React, { useContext } from "react";
 import { observer } from "mobx-react";
-import { Markdown } from "@ContextLogic/lego";
-import {
-  useInfraction,
-  useInfractionDetailsStylesheet,
-} from "@infractions/toolkit";
+import Markdown from "@infractions/components/Markdown";
+import { useInfractionDetailsStylesheet } from "@infractions/toolkit";
 import Card from "./Card";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
+import { InfractionContext } from "@infractions/InfractionContext";
 
-type Props = Pick<BaseProps, "className" | "style"> & {
-  readonly infractionId: string;
-};
-
-const OrderDetailsCard: React.FC<Props> = ({
+const OrderDetailsCard: React.FC<Pick<BaseProps, "className" | "style">> = ({
   className,
   style,
-  infractionId,
 }) => {
   const styles = useInfractionDetailsStylesheet();
   const {
-    data: {
+    infraction: {
       orderCancellationReason,
       orderId: orderID,
       orderStatus,
@@ -33,46 +26,52 @@ const OrderDetailsCard: React.FC<Props> = ({
       trackingId: trackingID,
       carrier,
     },
-  } = useInfraction(infractionId);
+  } = useContext(InfractionContext);
 
   return (
     <Card title={i`Order Details`} style={[className, style]}>
       <Markdown
         text={i`Cancellation reason: ${orderCancellationReason}`}
-        style={styles.cardItem}
+        style={styles.cardMargin}
       />
-      <Markdown text={i`Order ID: ${orderID}`} style={styles.cardItem} />
+      <Markdown text={i`Order ID: ${orderID}`} style={styles.cardMargin} />
       <Markdown
         text={i`Order status: ${orderStatus}`}
-        style={styles.cardItem}
+        style={styles.cardMargin}
       />
-      <Markdown text={i`Order total: ${orderTotal}`} style={styles.cardItem} />
+      <Markdown
+        text={i`Order total: ${orderTotal}`}
+        style={styles.cardMargin}
+      />
       <Markdown
         text={i`Wish logistics program: ${wishLogisticsProgram}`}
-        style={styles.cardItem}
+        style={styles.cardMargin}
       />
       <Markdown
         text={i`Available for fulfillment: ${availableForFulfillmentDate}`}
-        style={styles.cardItem}
+        style={styles.cardMargin}
       />
       <Markdown
         text={i`Confirmed fulfillment date: ${confirmedFulfillmentDate}`}
-        style={styles.cardItem}
+        style={styles.cardMargin}
       />
       <Markdown
         text={i`Confirmed delivery date: ${confirmedDeliveryDate}`}
-        style={styles.cardItem}
+        style={styles.cardMargin}
       />
       <Markdown
         text={i`Auto-refunded date: ${autoRefundedDate}`}
-        style={styles.cardItem}
+        style={styles.cardMargin}
       />
       <Markdown
         text={i`Tracking status: ${trackingStatus}`}
-        style={styles.cardItem}
+        style={styles.cardMargin}
       />
-      <Markdown text={i`Tracking ID: ${trackingID}`} style={styles.cardItem} />
-      <Markdown text={i`Carrier: ${carrier}`} style={styles.cardItem} />
+      <Markdown
+        text={i`Tracking ID: ${trackingID}`}
+        style={styles.cardMargin}
+      />
+      <Markdown text={i`Carrier: ${carrier}`} style={styles.cardMargin} />
     </Card>
   );
 };

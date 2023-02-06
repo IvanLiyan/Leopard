@@ -1,26 +1,20 @@
-import React, { useMemo } from "react";
+import React, { useContext, useMemo } from "react";
 import { StyleSheet } from "aphrodite";
 import { observer } from "mobx-react";
-import { Markdown } from "@ContextLogic/lego";
-import { useInfraction } from "@infractions/toolkit";
+import Markdown from "@infractions/components/Markdown";
 import Card from "./Card";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { useTheme } from "@core/stores/ThemeStore";
 import { css } from "@core/toolkit/styling";
+import { InfractionContext } from "@infractions/InfractionContext";
 
-type Props = Pick<BaseProps, "className" | "style"> & {
-  readonly infractionId: string;
-};
-
-const InfractionEvidenceCard: React.FC<Props> = ({
-  className,
-  style,
-  infractionId,
-}) => {
+const InfractionEvidenceCard: React.FC<
+  Pick<BaseProps, "className" | "style">
+> = ({ className, style }) => {
   const styles = useStylesheet();
   const {
-    data: { infractionEvidence },
-  } = useInfraction(infractionId);
+    infraction: { infractionEvidence },
+  } = useContext(InfractionContext);
 
   return (
     <Card title={i`Infraction Evidence`} style={[className, style]}>

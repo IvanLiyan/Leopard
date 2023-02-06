@@ -18,11 +18,22 @@ const ActionCard: React.FC<Props> = ({
 }) => {
   const styles = useInfractionDetailsStylesheet();
   return (
-    <LegoCard style={[styles.cardRoot, className, style]}>
-      <H6 style={{ paddingBottom: 12 }}>{title}</H6>
+    <LegoCard
+      style={[styles.cardRoot, { boxShadow: "none" }, className, style]}
+    >
+      <H6 style={{ marginBottom: 16 }}>{title}</H6>
       {children}
       {ctaButtons && (
-        <Layout.FlexRow justifyContent="flex-end">{ctaButtons}</Layout.FlexRow>
+        <Layout.FlexColumn
+          alignItems="flex-end"
+          style={{
+            ":nth-child(1n) > button": {
+              marginTop: 16,
+            },
+          }}
+        >
+          {ctaButtons}
+        </Layout.FlexColumn>
       )}
     </LegoCard>
   );

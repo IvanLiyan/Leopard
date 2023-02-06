@@ -14,27 +14,30 @@ import ProductListingDetailsCard from "@infractions/components/cards/ProductList
 import BrandDetailsCard from "@infractions/components/cards/BrandDetailsCard";
 import InfractionEvidenceCard from "@infractions/components/cards/InfractionEvidenceCard";
 import FixesCard from "@infractions/components/cards/FixesCard";
+import RequestPaymentCard from "@infractions/components/cards/RequestPaymentCard";
 import MessagesCard from "@infractions/components/cards/MessagesCard";
 
 const InfractionsPage: NextPage<Record<string, never>> = () => {
   const styles = useInfractionDetailsStylesheet();
   const [infractionId] = useStringQueryParam("id");
+  void infractionId; // TODO: will use to populate InfractionContext.Provider during GQL integration
 
   return (
     <PageRoot>
       <PageHeader relaxed title={i`Infraction Details`} />
       <PageGuide relaxed contentContainerStyle={styles.content}>
         <Layout.FlexColumn style={styles.column}>
-          <InfractionDetailsCard infractionId={infractionId} />
-          <InfractionImpactCard infractionId={infractionId} />
-          <OrderDetailsCard infractionId={infractionId} />
-          <ProductListingDetailsCard infractionId={infractionId} />
-          <BrandDetailsCard infractionId={infractionId} />
-          <InfractionEvidenceCard infractionId={infractionId} />
+          <InfractionDetailsCard />
+          <InfractionImpactCard />
+          <OrderDetailsCard />
+          <ProductListingDetailsCard />
+          <BrandDetailsCard />
+          <InfractionEvidenceCard />
         </Layout.FlexColumn>
         <Layout.FlexColumn style={styles.column}>
-          <FixesCard infractionId={infractionId} />
-          <MessagesCard infractionId={infractionId} />
+          <FixesCard />
+          <RequestPaymentCard />
+          <MessagesCard />
         </Layout.FlexColumn>
       </PageGuide>
     </PageRoot>

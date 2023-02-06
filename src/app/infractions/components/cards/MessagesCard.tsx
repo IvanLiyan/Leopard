@@ -1,21 +1,19 @@
 /* eslint-disable no-console */
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { observer } from "mobx-react";
 import { useMessages } from "@infractions/toolkit";
 import Card from "./Card";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import Conversation from "@core/components/conversation/Conversation";
+import { InfractionContext } from "@infractions/InfractionContext";
 
-type Props = Pick<BaseProps, "className" | "style"> & {
-  readonly infractionId: string;
-};
-
-const InfractionDetailsCard: React.FC<Props> = ({
-  className,
-  style,
-  infractionId,
-}) => {
-  const messages = useMessages(infractionId);
+const InfractionDetailsCard: React.FC<
+  Pick<BaseProps, "className" | "style">
+> = ({ className, style }) => {
+  const {
+    infraction: { id },
+  } = useContext(InfractionContext);
+  const messages = useMessages(id);
   const [response, setResponse] = useState<string | undefined>();
 
   return (
