@@ -219,7 +219,7 @@ features:
       - lliepert@wish.com
     files:
       - src/app/infractions/*
-      - src/pages/infractions/*
+      - src/pages/warnings/*
     description: >
       This feature allows merchants to view infractions against their products,
       orders they have fulfilled, or their merchant account. They can also
