@@ -7,6 +7,7 @@ import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { useTheme } from "@core/stores/ThemeStore";
 import { css } from "@core/toolkit/styling";
 import { InfractionContext } from "@infractions/InfractionContext";
+import { ci18n } from "@core/toolkit/i18n";
 
 const InfractionEvidenceCard: React.FC<
   Pick<BaseProps, "className" | "style">
@@ -17,7 +18,10 @@ const InfractionEvidenceCard: React.FC<
   } = useContext(InfractionContext);
 
   return (
-    <Card title={i`Infraction Evidence`} style={[className, style]}>
+    <Card
+      title={ci18n("card title", "Infraction Evidence")}
+      style={[className, style]}
+    >
       <div className={css(styles.tableContainer)}>
         <table className={css({ all: "unset" })}>
           <tr className={css(styles.tableRow)}>

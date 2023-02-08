@@ -19,7 +19,7 @@ const ProvideProofOfAuthenticity: React.FC<
   return (
     <ActionCard
       style={[className, style]}
-      title={i`Provide proof of authenticity`}
+      title={i`Provide Proof of Authenticity`}
       ctaButtons={
         <>
           <Button

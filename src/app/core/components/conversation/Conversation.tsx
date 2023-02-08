@@ -1,4 +1,4 @@
-import React, { useMemo, useRef } from "react";
+import React, { useState, useMemo, useRef } from "react";
 import { StyleSheet } from "aphrodite";
 import { observer } from "mobx-react";
 import { Card, Layout, TextInput } from "@ContextLogic/lego";
@@ -9,16 +9,33 @@ import { Button } from "@ContextLogic/atlas-ui";
 import { css } from "@core/toolkit/styling";
 import MessageComponent, { Message as MessageType } from "./Message";
 import Divider from "./Divider";
+import UploadFileModal, {
+  Props as FileUploadModalProps,
+  Attachment as AttachmentType,
+} from "./FileUploadModal";
+import { ci18n } from "@core/toolkit/i18n";
 
+// re-exported types for ease of use
+export type Attachment = AttachmentType;
 export type Message = MessageType;
 export type MessageGroup = {
   readonly title?: string;
   readonly messages: ReadonlyArray<Message>;
 };
 
+/*
+  notes on usage:
+    - if you want the conversation to include the upload files flow, provide
+      the "fileUploadProps" prop. not providing it will remove the "Upload
+      File" button and modal from the component
+    - if you want to provide the ability to respond to the conversation, provide
+      "response", etc. not providing them will remove the text input and "Send"
+      button from the component
+*/
 type Props = Pick<BaseProps, "className" | "style"> & {
   readonly messageGroups: ReadonlyArray<MessageGroup>;
   readonly maxHeight?: number;
+  readonly fileUploadProps?: Omit<FileUploadModalProps, "isOpen" | "onClose">;
 } & (
     | {
         readonly response: React.ComponentProps<typeof TextInput>["value"];
@@ -29,31 +46,23 @@ type Props = Pick<BaseProps, "className" | "style"> & {
           React.ComponentProps<typeof TextInput>,
           "value" | "onChange"
         >;
-        // onSubmit is called both on the submit button press and when the
-        // user types enter; if more control over the submit button onClick
-        // is required (say, handling the event prop), submitProps.onClick
-        // can be provided. however, onSubmit is still required to handle
+        // onSend is called both on the send button press and when the
+        // user types enter; if more control over the send button onClick
+        // is required (say, handling the event prop), send.onClick
+        // can be provided. however, onSend is still required to handle
         // the enter press
-        readonly onSubmit: () => unknown;
-        readonly submitProps?: Omit<
+        readonly onSend: () => unknown;
+        readonly sendProps?: Omit<
           React.ComponentProps<typeof Button>,
           "onClick" | "primary" | "secondary" | "tertiary"
         >;
       }
     | {
-        readonly response?: undefined;
-        readonly onResponseChange?: undefined;
-        readonly responseProps?: undefined;
-        readonly onSubmit?: undefined;
-        readonly submitProps?: undefined;
-      }
-  ) &
-  (
-    | {
-        onFileUpload: () => unknown;
-      }
-    | {
-        onFileUpload?: undefined;
+        readonly response?: never;
+        readonly onResponseChange?: never;
+        readonly responseProps?: never;
+        readonly onSend?: never;
+        readonly sendProps?: never;
       }
   );
 
@@ -71,11 +80,12 @@ const Conversation: React.FC<Props> = ({
   response,
   onResponseChange,
   responseProps,
-  onSubmit,
-  submitProps,
-  onFileUpload,
+  onSend,
+  sendProps,
+  fileUploadProps,
 }) => {
   const styles = useStylesheet(maxHeight);
+  const [uploadFileModalOpen, setUploadFileModalOpen] = useState(false);
 
   const messageContainerRef = useRef<HTMLDivElement | null>(null);
 
@@ -130,7 +140,7 @@ const Conversation: React.FC<Props> = ({
           onChange={onResponseChange}
           onKeyUp={(code) => {
             if (code === KEYCODE_ENTER) {
-              onSubmit();
+              onSend();
             }
           }}
           placeholder={i`Please type your response here`}
@@ -139,23 +149,40 @@ const Conversation: React.FC<Props> = ({
         />
       )}
       <Layout.FlexRow justifyContent="flex-end">
-        {onFileUpload && (
-          <Button
-            secondary
-            onClick={onFileUpload}
-            className={css(styles.button)}
-          >
-            Upload File
-          </Button>
+        {fileUploadProps && (
+          <>
+            <Button
+              secondary
+              onClick={() => {
+                setUploadFileModalOpen(true);
+              }}
+              className={css(styles.button)}
+            >
+              {ci18n(
+                "button text, allows a merchant to upload a file",
+                "Upload File",
+              )}
+            </Button>
+            <UploadFileModal
+              isOpen={uploadFileModalOpen}
+              onClose={() => {
+                setUploadFileModalOpen(false);
+              }}
+              {...fileUploadProps}
+            />
+          </>
         )}
         {onResponseChange && (
           <Button
-            onClick={onSubmit}
+            onClick={onSend}
             className={css(styles.button)}
             disabled={!response}
-            {...submitProps}
+            {...sendProps}
           >
-            Submit
+            {ci18n(
+              "button text, will send a message the merchant has typed",
+              "Send",
+            )}
           </Button>
         )}
       </Layout.FlexRow>

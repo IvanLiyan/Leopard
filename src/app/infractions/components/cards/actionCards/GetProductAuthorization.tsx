@@ -18,7 +18,7 @@ const GetProductAuthorization: React.FC<
   return (
     <ActionCard
       style={[className, style]}
-      title={i`Get product authorization`}
+      title={i`Get Product Authorization`}
       ctaButtons={
         <Button
           onClick={() => {

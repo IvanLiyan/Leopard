@@ -6,6 +6,7 @@ import { Button } from "@ContextLogic/atlas-ui";
 import ActionCard from "./ActionCard";
 import { InfractionContext } from "@infractions/InfractionContext";
 import { useInfractionDetailsStylesheet } from "@infractions/toolkit";
+import { ci18n } from "@core/toolkit/i18n";
 
 const Dispute: React.FC<Pick<BaseProps, "className" | "style">> = ({
   className,
@@ -19,7 +20,7 @@ const Dispute: React.FC<Pick<BaseProps, "className" | "style">> = ({
   return (
     <ActionCard
       style={[className, style]}
-      title={i`Dispute`}
+      title={ci18n("card title", "Dispute")}
       ctaButtons={
         <Button
           onClick={() => {

@@ -5,6 +5,7 @@ import { useInfractionDetailsStylesheet } from "@infractions/toolkit";
 import Card from "./Card";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { InfractionContext } from "@infractions/InfractionContext";
+import { ci18n } from "@core/toolkit/i18n";
 
 const OrderDetailsCard: React.FC<Pick<BaseProps, "className" | "style">> = ({
   className,
@@ -29,7 +30,10 @@ const OrderDetailsCard: React.FC<Pick<BaseProps, "className" | "style">> = ({
   } = useContext(InfractionContext);
 
   return (
-    <Card title={i`Order Details`} style={[className, style]}>
+    <Card
+      title={ci18n("card title", "Order Details")}
+      style={[className, style]}
+    >
       <Markdown
         text={i`Cancellation reason: ${orderCancellationReason}`}
         style={styles.cardMargin}

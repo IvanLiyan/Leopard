@@ -4,28 +4,33 @@ import { observer } from "mobx-react";
 import { useMessages } from "@infractions/toolkit";
 import Card from "./Card";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import Conversation from "@core/components/conversation/Conversation";
+import Conversation, {
+  Attachment,
+} from "@core/components/conversation/Conversation";
 import { InfractionContext } from "@infractions/InfractionContext";
+import { ci18n } from "@core/toolkit/i18n";
 
-const InfractionDetailsCard: React.FC<
-  Pick<BaseProps, "className" | "style">
-> = ({ className, style }) => {
+const MessagesCard: React.FC<Pick<BaseProps, "className" | "style">> = ({
+  className,
+  style,
+}) => {
   const {
     infraction: { id },
   } = useContext(InfractionContext);
   const messages = useMessages(id);
   const [response, setResponse] = useState<string | undefined>();
+  const [attachments, setAttachments] = useState<ReadonlyArray<Attachment>>([]);
 
   return (
-    <Card title={i`Messages`} style={[className, style]}>
+    <Card title={ci18n("card title", "Messages")} style={[className, style]}>
       <Conversation
         messageGroups={messages}
         response={response}
         onResponseChange={({ text }) => {
           setResponse(text);
         }}
-        onSubmit={() => {
-          alert("submit clicked");
+        onSend={() => {
+          alert("send clicked");
         }}
         responseProps={{
           placeholder: "override",
@@ -33,12 +38,21 @@ const InfractionDetailsCard: React.FC<
             console.log("mouse over");
           },
         }}
-        onFileUpload={() => {
-          alert("file upload clicked");
+        fileUploadProps={{
+          accepts: ".pdf,.jpeg,.png",
+          maxSizeMB: 5,
+          attachments,
+          onAttachmentsChanged: (attachments) => {
+            setAttachments(attachments);
+          },
+          bucket: "TEMP_UPLOADS_V2",
+          onSend: () => {
+            alert("file upload clicked");
+          },
         }}
       />
     </Card>
   );
 };
 
-export default observer(InfractionDetailsCard);
+export default observer(MessagesCard);

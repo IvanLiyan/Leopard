@@ -8,7 +8,7 @@ const UpdateMaxDeliveryDays: React.FC<
   Pick<BaseProps, "className" | "style">
 > = ({ className, style }) => {
   return (
-    <ActionCard style={[className, style]} title={i`Update max delivery days`}>
+    <ActionCard style={[className, style]} title={i`Update Max Delivery Days`}>
       <Markdown
         text={i`To avoid future infractions like this one, set a more attainable goal for max delivery days on this product, while working to consistently maintain an acceptable warehouse Late Delivery Rate for ${4} full, consecutive weeks from the affected warehouse(s).`}
       />

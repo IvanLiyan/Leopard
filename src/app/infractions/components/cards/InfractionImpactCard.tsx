@@ -5,6 +5,7 @@ import { useInfractionDetailsStylesheet } from "@infractions/toolkit";
 import Card from "./Card";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { InfractionContext } from "@infractions/InfractionContext";
+import { ci18n } from "@core/toolkit/i18n";
 
 const InfractionImpactCard: React.FC<
   Pick<BaseProps, "className" | "style">
@@ -15,7 +16,10 @@ const InfractionImpactCard: React.FC<
   } = useContext(InfractionContext);
 
   return (
-    <Card title={i`Infraction Impact`} style={[className, style]}>
+    <Card
+      title={ci18n("card title", "Infraction Impact")}
+      style={[className, style]}
+    >
       {infractionImpacts && infractionImpacts.length > 0 && (
         <Markdown
           text={`* ${infractionImpacts.join("\n\n* ")}`}

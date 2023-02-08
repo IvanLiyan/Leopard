@@ -5,13 +5,13 @@ import Markdown from "@infractions/components/Markdown";
 import ActionCard from "./ActionCard";
 import { useInfractionDetailsStylesheet } from "@infractions/toolkit";
 
-const ReviewMerchantPolicy: React.FC<
+const ReviewInfractionDetails: React.FC<
   Pick<BaseProps, "className" | "style">
 > = ({ className, style }) => {
   const styles = useInfractionDetailsStylesheet();
 
   return (
-    <ActionCard style={[className, style]} title={i`Review infraction details`}>
+    <ActionCard style={[className, style]} title={i`Review Infraction Details`}>
       <Markdown
         style={styles.cardMargin}
         text={i`Unfortunately, you cannot take any action on this infraction. Please review the related policy for this infraction (left) to avoid it in the future.`}
@@ -24,4 +24,4 @@ const ReviewMerchantPolicy: React.FC<
   );
 };
 
-export default observer(ReviewMerchantPolicy);
+export default observer(ReviewInfractionDetails);

@@ -4,13 +4,13 @@ import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import Markdown from "@infractions/components/Markdown";
 import ActionCard from "./ActionCard";
 
-const ReviewMerchantPolicy: React.FC<
+const AddressUnderlyingInfractions: React.FC<
   Pick<BaseProps, "className" | "style">
 > = ({ className, style }) => {
   return (
     <ActionCard
       style={[className, style]}
-      title={i`Address underlying infractions`}
+      title={i`Address Underlying Infractions`}
     >
       <Markdown
         text={i`Take action to close or resolve all underlying infractions (listed as Infraction Evidence) related to this infraction.`}
@@ -19,4 +19,4 @@ const ReviewMerchantPolicy: React.FC<
   );
 };
 
-export default observer(ReviewMerchantPolicy);
+export default observer(AddressUnderlyingInfractions);

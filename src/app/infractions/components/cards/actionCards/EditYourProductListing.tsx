@@ -15,7 +15,7 @@ const EditYouProductListing: React.FC<
   return (
     <ActionCard
       style={[className, style]}
-      title={i`Edit your product listing`}
+      title={i`Edit Your Product Listing`}
       ctaButtons={
         <Button
           onClick={() => {

@@ -9,7 +9,7 @@ const PayWishPostBalance: React.FC<Pick<BaseProps, "className" | "style">> = ({
   style,
 }) => {
   return (
-    <ActionCard style={[className, style]} title={i`Pay WishPost balance`}>
+    <ActionCard style={[className, style]} title={i`Pay WishPost Balance`}>
       <Markdown
         text={i`To have this infraction reversed, please re-pay your WishPost account balance in full.`}
       />
