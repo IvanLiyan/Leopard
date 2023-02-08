@@ -39,13 +39,13 @@ const Link = (_props: LinkProps) => {
     light,
     ...otherProps
   } = _props;
-  const { corePrimaryLight } = useTheme();
+  const { corePrimaryLight, primary } = useTheme();
 
   // required since legacy lego link allows href to be null, but anchor doesn't
   const href = hrefProp === null ? undefined : hrefProp;
 
   const propsWithoutHref = {
-    style: [{ color: light ? corePrimaryLight : undefined }, style, className],
+    style: [{ color: light ? corePrimaryLight : primary }, style, className],
     rel: openInNewTab || onClick ? "noopener noreferrer" : undefined,
     target: openInNewTab ? "_blank" : undefined,
     onClick,

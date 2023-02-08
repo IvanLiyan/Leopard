@@ -61,7 +61,7 @@ const SiteFooter = (props: SiteFooterProps) => {
       {ssoUrl && (
         <>
           <FooterDivider />
-          <FooterLink href={ssoUrl}>Sign in with SSO</FooterLink>
+          <FooterLink href={merchFeURL(ssoUrl)}>Sign in with SSO</FooterLink>
         </>
       )}
       {!hideSitemap && (

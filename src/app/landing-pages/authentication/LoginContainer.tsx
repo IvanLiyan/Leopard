@@ -18,7 +18,7 @@ import {
 
 /* Merchant Components */
 import LoginForm from "@landing-pages/authentication/LoginForm";
-import SiteFooter from "@core/components/PlusSiteFooter";
+import SiteFooter from "@core/components/SiteFooter";
 
 /* Merchant Store */
 import { useTheme } from "@core/stores/ThemeStore";
@@ -58,8 +58,8 @@ const LoginContainer: React.FC = () => {
   });
 
   return (
-    <Layout.FlexColumn>
-      <Layout.FlexColumn style={styles.root} alignItems="center">
+    <Layout.FlexColumn style={styles.root} justifyContent="space-between">
+      <Layout.FlexColumn style={styles.topContainer} alignItems="center">
         <LoggedOutChrome
           style={styles.navigation}
           showLoginButton={false}
@@ -83,6 +83,9 @@ const useStylesheet = () => {
     () =>
       StyleSheet.create({
         root: {
+          minHeight: "100vh",
+        },
+        topContainer: {
           padding: "50px 20px 0px 20px",
           backgroundColor: pageBackground,
           minHeight: "calc(100% - 298px)",
