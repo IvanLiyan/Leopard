@@ -228,6 +228,16 @@ const ProductTable: React.FC<Props> = ({
       hideBorder
       cellPadding="16px 24px"
       maxVisibleColumns={15}
+      rowDataCy={(row: AllProductsTableEntry) => {
+        if (row.type === "VARIATION") {
+          return `variation_${row.variation.sku}`;
+        }
+        if (row.type === "PRODUCT") {
+          return `product_${row.product.id}`;
+        }
+
+        return `variation_expand_row`;
+      }}
       rowStyle={({ row }: { readonly row: AllProductsTableEntry }) => {
         if (row.type == "VARIATION_EXPAND_ROW") {
           return {
@@ -272,6 +282,7 @@ const ProductTable: React.FC<Props> = ({
     >
       <Table.Column
         _key="img"
+        columnDataCy="column_image"
         columnKey="id"
         title={() => (
           <ProductTableColumnHeader
@@ -335,6 +346,7 @@ const ProductTable: React.FC<Props> = ({
       </Table.Column>
       <Table.Column
         _key="name"
+        columnDataCy="column_id"
         columnKey="id"
         title={() => (
           <ProductTableColumnHeader
@@ -383,6 +395,7 @@ const ProductTable: React.FC<Props> = ({
       </Table.Column>
       <Table.Column
         _key="category"
+        columnDataCy="column_category"
         columnKey="id"
         title={() => (
           <ProductTableColumnHeader
@@ -425,6 +438,7 @@ const ProductTable: React.FC<Props> = ({
       </Table.Column>
       <Table.Column
         _key="sales"
+        columnDataCy="column_sales_wishes"
         columnKey="id"
         title={() => (
           <ProductTableColumnHeader
@@ -478,6 +492,7 @@ const ProductTable: React.FC<Props> = ({
       </Table.Column>
       <Table.Column
         _key="enabled"
+        columnDataCy="column_enabled"
         columnKey="id"
         title={() => (
           <ProductTableColumnHeader
@@ -599,6 +614,7 @@ const ProductTable: React.FC<Props> = ({
       </Table.Column>
       <Table.Column
         _key="sku"
+        columnDataCy="column_sku"
         columnKey="id"
         title={() => (
           <ProductTableColumnHeader
@@ -645,6 +661,7 @@ const ProductTable: React.FC<Props> = ({
       </Table.Column>
       <Table.Column
         _key="price"
+        columnDataCy="column_price"
         columnKey="id"
         title={() => (
           <ProductTableColumnHeader
@@ -768,6 +785,7 @@ const ProductTable: React.FC<Props> = ({
       </Table.Column>
       <Table.Column
         _key="inventory"
+        columnDataCy="column_inventory"
         columnKey="id"
         title={() => (
           <ProductTableColumnHeader
@@ -876,6 +894,7 @@ const ProductTable: React.FC<Props> = ({
       </Table.Column>
       <Table.Column
         _key="countryShippingPrice"
+        columnDataCy="column_country_shipping_price"
         columnKey="id"
         title={() => (
           <ProductTableColumnHeader title={i`Country Shipping Price`} />
@@ -910,6 +929,7 @@ const ProductTable: React.FC<Props> = ({
       </Table.Column>
       <Table.Column
         _key="lastUpdated"
+        columnDataCy="column_last_updated"
         columnKey="id"
         title={() => (
           <ProductTableColumnHeader
@@ -952,6 +972,7 @@ const ProductTable: React.FC<Props> = ({
       </Table.Column>
       <Table.Column
         _key="state"
+        columnDataCy="column_state"
         columnKey="id"
         title={() => (
           <ProductTableColumnHeader
@@ -980,7 +1001,7 @@ const ProductTable: React.FC<Props> = ({
           );
         }}
       </Table.Column>
-      <Table.Column _key="actions" columnKey="id">
+      <Table.Column _key="actions" columnKey="id" columnDataCy="column_actions">
         {({ row }: CellInfo<React.ReactNode, AllProductsTableEntry>) => {
           if (row.type == "VARIATION_EXPAND_ROW" || row.type == "VARIATION") {
             return null;

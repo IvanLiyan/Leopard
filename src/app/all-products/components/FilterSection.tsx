@@ -195,6 +195,7 @@ const FilterSection: React.FC<Props> = ({ className, style }) => {
                   <RadioGroup.Item
                     key={stateOption}
                     value={stateOption}
+                    data-cy={`radio-option-state-${stateOption}`}
                     text={() => (
                       <Text style={styles.filterOptionText} weight="regular">
                         {ci18n(
@@ -208,6 +209,7 @@ const FilterSection: React.FC<Props> = ({ className, style }) => {
                   <RadioGroup.Item
                     key={stateOption}
                     value={stateOption}
+                    data-cy={`radio-option-state-${stateOption}`}
                     text={() => (
                       <Text style={styles.filterOptionText} weight="regular">
                         {ListingStateTitle[stateOption]}
@@ -252,6 +254,7 @@ const FilterSection: React.FC<Props> = ({ className, style }) => {
                 <RadioGroup.Item
                   key={enabledOption}
                   value={enabledOption}
+                  data-cy={`radio-option-enabled-${enabledOption}`}
                   text={() => (
                     <Text style={styles.filterOptionText} weight="regular">
                       {ListingEnabledSelectionTitle[enabledOption]}
@@ -298,6 +301,7 @@ const FilterSection: React.FC<Props> = ({ className, style }) => {
                       areFiltersDisabled && styles.disabled,
                     ]}
                     justifyContent="space-between"
+                    data-cy={`checkbox-field-option-badges-${badge}`}
                   >
                     <Text style={styles.filterOptionText}>
                       {BadgeTitle[badge]}
@@ -331,6 +335,7 @@ const FilterSection: React.FC<Props> = ({ className, style }) => {
           <PrimaryButton
             onClick={() => submit()}
             isDisabled={!hasChanges || areFiltersDisabled}
+            data-cy="filter-section-apply-button"
           >
             {ci18n(
               "Text on a button that when clicked applies the selected filters",

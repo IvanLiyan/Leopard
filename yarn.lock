@@ -2,7 +2,7 @@
 # yarn lockfile v1
 
 
-"@ContextLogic/atlas-ui@^0.0.1-1675371785":
+"@ContextLogic/atlas-ui@^0.0.1-1675370998":
   version "0.0.1-1675371785"
   resolved "https://npm.infra.wish.com/@ContextLogic%2fatlas-ui/-/atlas-ui-0.0.1-1675371785.tgz#6f01223c13e1b1aec3e62fafae53f1b521ef7e2f"
   integrity sha512-BZpBNzCU3F5s3j5WaQDb0BaUz7wjWjPct+EFEzsGoPOYMOKAWzR/AyBHTlTTOzKJplUipyvWBISK1FHXQGoFwg==

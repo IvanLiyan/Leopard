@@ -126,7 +126,9 @@ const AllProducts: React.FC<Props> = ({
 
   const debouncedQuery = useDebouncer(searchTerm, 800);
   const searchQuery =
-    debouncedQuery.trim().length > 0 ? debouncedQuery : undefined;
+    searchTerm != null && searchTerm !== "" && debouncedQuery.trim().length > 0
+      ? debouncedQuery
+      : undefined;
 
   const [filterOn, setFilterOn] = useState(false);
   const [rawStateFilter] = useStateFilter();
@@ -185,8 +187,20 @@ const AllProducts: React.FC<Props> = ({
     await setOffset(nextPage * limit);
   };
 
-  const badgesQueryParams: Partial<GetProductsRequestType> = useMemo(() => {
-    return {
+  const variables: GetProductsRequestType = useMemo(() => {
+    const effectiveStateFilter = areFiltersEnabled ? stateFilter : "ALL";
+    const state: GetProductsRequestType["state"] =
+      effectiveStateFilter == "ALL" ? undefined : effectiveStateFilter;
+
+    const effectiveEnabledFilter = areFiltersEnabled ? enabledFilter : "ALL";
+    const isEnabled: GetProductsRequestType["isEnabled"] =
+      effectiveEnabledFilter == "FALSE"
+        ? false
+        : effectiveEnabledFilter == "TRUE"
+        ? true
+        : undefined;
+
+    const badgesQueryParams: Partial<GetProductsRequestType> = {
       hasBrand:
         badgesFilter != null && badgesFilter.has("BRANDED") ? true : undefined,
       isWishExpress:
@@ -206,22 +220,8 @@ const AllProducts: React.FC<Props> = ({
           ? true
           : undefined,
     };
-  }, [badgesFilter]);
 
-  const variables: GetProductsRequestType = useMemo(() => {
-    const effectiveStateFilter = areFiltersEnabled ? stateFilter : "ALL";
-    const state: GetProductsRequestType["state"] =
-      effectiveStateFilter == "ALL" ? undefined : effectiveStateFilter;
-
-    const effectiveEnabledFilter = areFiltersEnabled ? enabledFilter : "ALL";
-    const isEnabled: GetProductsRequestType["isEnabled"] =
-      effectiveEnabledFilter == "FALSE"
-        ? false
-        : effectiveEnabledFilter == "TRUE"
-        ? true
-        : undefined;
-
-    return {
+    const vars = {
       offset,
       limit,
       searchType: searchQuery == null ? undefined : searchType,
@@ -232,17 +232,18 @@ const AllProducts: React.FC<Props> = ({
       sort,
       ...(areFiltersEnabled ? badgesQueryParams : {}),
     };
+    return vars;
   }, [
     offset,
     limit,
     searchQuery,
     searchType,
-    warehouse,
+    warehouse.id,
     sort,
-    badgesQueryParams,
     enabledFilter,
     stateFilter,
     areFiltersEnabled,
+    badgesFilter,
   ]);
 
   const {
@@ -447,6 +448,7 @@ const AllProducts: React.FC<Props> = ({
               onClick={() => setFilterOn(!filterOn)}
               padding="10px 16px"
               style={styles.filterParent}
+              data-cy="toggle-filters-menu-button"
             >
               <Layout.FlexRow>
                 <Icon
