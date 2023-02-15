@@ -28,6 +28,8 @@ const SalesforceWidget: React.FC<{ isPublic: boolean }> = ({
   const { decision: showWidget, isLoading: showWidgetLoading } = useDeciderKey(
     "md_salesforce_widget",
   );
+  const { decision: showWidgetCN, isLoading: showWidgetCNLoading } =
+    useDeciderKey("md_salesforce_widget_cn");
 
   const { data, loading: loggedInUserLoading } = useQuery<
     MerchantSupportConfigQueryResponse,
@@ -37,89 +39,90 @@ const SalesforceWidget: React.FC<{ isPublic: boolean }> = ({
   });
   const loggedInUser = data?.currentUser;
 
-  const initConfig = useMemo(() => {
-    if (loggedInUser?.supportConfig?.isEnBd) {
-      return Config.salesforceUS;
-    }
-    if (loggedInUser?.supportConfig?.isNonEnBd) {
-      return Config.salesforceCN;
-    }
-    return undefined;
-  }, [
-    loggedInUser?.supportConfig?.isEnBd,
-    loggedInUser?.supportConfig?.isNonEnBd,
-  ]);
-
   if (
     loggedInUserLoading ||
     !loggedInUser ||
     showWidgetLoading ||
-    !showWidget
+    showWidgetCNLoading
   ) {
     return <>{children}</>;
   }
 
+  const chatScript = (
+    config: typeof Config.salesforceCN | typeof Config.salesforceUS,
+  ) => (
+    <>
+      <Script
+        src="https://service.force.com/embeddedservice/5.0/esw.min.js"
+        onLoad={() => {
+          const initESW = function (gslbBaseURL: unknown) {
+            window.embedded_svc.settings.displayHelpButton = true;
+            window.embedded_svc.settings.language = localeProper;
+
+            window.embedded_svc.settings.defaultMinimizedText = i`Chat with Us`;
+            window.embedded_svc.settings.disabledMinimizedText = i`Agent Offline`;
+
+            window.embedded_svc.settings.loadingText = i`Loading`;
+
+            window.embedded_svc.settings.prepopulatedPrechatFields = {
+              SuppliedName: loggedInUser.displayName,
+              SuppliedEmail: loggedInUser.email,
+            };
+            window.embedded_svc.settings.offlineSupportMinimizedText = i`Contact Us`;
+
+            window.embedded_svc.settings.enabledFeatures = ["LiveAgent"];
+            window.embedded_svc.settings.entryFeature = "LiveAgent";
+
+            window.embedded_svc.init(
+              config.customSalesforceUrl,
+              config.customWishUrl,
+              gslbBaseURL,
+              config.regionId,
+              config.apiName,
+              {
+                baseLiveAgentContentURL: config.baseLiveAgentContentURL,
+                deploymentId: config.deploymentId,
+                buttonId: config.buttonId,
+                baseLiveAgentURL: config.baseLiveAgentURL,
+                eswLiveAgentDevName: config.eswBaseLiveAgentDevName,
+                isOfflineSupportEnabled: true,
+              },
+            );
+          };
+
+          if (!window.embedded_svc) {
+            const s = document.createElement("script");
+            s.setAttribute(
+              "src",
+              `${config.customSalesforceUrl}/embeddedservice/5.0/esw.min.js`,
+            );
+            s.onload = function () {
+              initESW(null);
+            };
+            document.body.appendChild(s);
+          } else {
+            initESW("https://service.force.com");
+          }
+        }}
+      />
+      {children}
+    </>
+  );
+
   // If merchant is in US or CN support group, show
   // Salesforce chat widget
-  if (initConfig) {
-    return (
-      <>
-        <Script
-          src="https://service.force.com/embeddedservice/5.0/esw.min.js"
-          onLoad={() => {
-            const initESW = function (gslbBaseURL: unknown) {
-              window.embedded_svc.settings.displayHelpButton = true;
-              window.embedded_svc.settings.language = localeProper;
+  if (loggedInUser.supportConfig?.isEnBd) {
+    if (showWidget) {
+      return chatScript(Config.salesforceUS);
+    }
+    return <>{children}</>;
+  }
 
-              window.embedded_svc.settings.defaultMinimizedText = i`Chat with Us`;
-              window.embedded_svc.settings.disabledMinimizedText = i`Agent Offline`;
-
-              window.embedded_svc.settings.loadingText = i`Loading`;
-
-              window.embedded_svc.settings.prepopulatedPrechatFields = {
-                SuppliedName: loggedInUser.displayName,
-                SuppliedEmail: loggedInUser.email,
-              };
-              window.embedded_svc.settings.offlineSupportMinimizedText = i`Contact Us`;
-
-              window.embedded_svc.settings.enabledFeatures = ["LiveAgent"];
-              window.embedded_svc.settings.entryFeature = "LiveAgent";
-
-              window.embedded_svc.init(
-                initConfig.customSalesforceUrl,
-                initConfig.customWishUrl,
-                gslbBaseURL,
-                initConfig.regionId,
-                initConfig.apiName,
-                {
-                  baseLiveAgentContentURL: initConfig.baseLiveAgentContentURL,
-                  deploymentId: initConfig.deploymentId,
-                  buttonId: initConfig.buttonId,
-                  baseLiveAgentURL: initConfig.baseLiveAgentURL,
-                  eswLiveAgentDevName: initConfig.apiName,
-                  isOfflineSupportEnabled: true,
-                },
-              );
-            };
-
-            if (!window.embedded_svc) {
-              const s = document.createElement("script");
-              s.setAttribute(
-                "src",
-                `${initConfig.customSalesforceUrl}/embeddedservice/5.0/esw.min.js`,
-              );
-              s.onload = function () {
-                initESW(null);
-              };
-              document.body.appendChild(s);
-            } else {
-              initESW("https://service.force.com");
-            }
-          }}
-        />
-        {children}
-      </>
-    );
+  if (loggedInUser?.supportConfig?.isNonEnBd) {
+    if (showWidgetCN) {
+      return chatScript(Config.salesforceCN);
+    }
+    return <>{children}</>;
   }
 
   // Otherwise, if merchant has a BD assigned specifically,
