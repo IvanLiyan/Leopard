@@ -3,7 +3,7 @@ import { observer } from "mobx-react";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import Markdown from "@infractions/components/Markdown";
 import ActionCard from "./ActionCard";
-import { useInfractionDetailsStylesheet } from "@infractions/toolkit";
+import { useInfractionDetailsStylesheet } from "@infractions/styles";
 
 const ReviewInfractionDetails: React.FC<
   Pick<BaseProps, "className" | "style">

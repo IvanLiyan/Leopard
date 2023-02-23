@@ -5,15 +5,16 @@ import Markdown from "@infractions/components/Markdown";
 import { Button } from "@ContextLogic/atlas-ui";
 import ActionCard from "./ActionCard";
 import { InfractionContext } from "@infractions/InfractionContext";
-import { useInfractionDetailsStylesheet } from "@infractions/toolkit";
+import { useInfractionDetailsStylesheet } from "@infractions/styles";
 import { ci18n } from "@core/toolkit/i18n";
+import { DisputeStatusDisplayText } from "@infractions/toolkit";
 
 const Dispute: React.FC<Pick<BaseProps, "className" | "style">> = ({
   className,
   style,
 }) => {
   const {
-    infraction: { disputeStatus, disputeDeadline },
+    infraction: { id, disputeStatus, disputeDeadline },
   } = useContext(InfractionContext);
   const styles = useInfractionDetailsStylesheet();
 
@@ -23,9 +24,8 @@ const Dispute: React.FC<Pick<BaseProps, "className" | "style">> = ({
       title={ci18n("card title", "Dispute")}
       ctaButtons={
         <Button
-          onClick={() => {
-            alert("dispute clicked"); // TODO
-          }}
+          // TODO: add logic for gating this by dispute status state
+          href={`/dispute-infraction/${id}`}
         >
           Dispute Infraction
         </Button>
@@ -37,7 +37,7 @@ const Dispute: React.FC<Pick<BaseProps, "className" | "style">> = ({
       />
       <Markdown
         style={styles.cardMarginLarge}
-        text={i`Dispute status: ${disputeStatus}`}
+        text={i`Dispute status: ${DisputeStatusDisplayText[disputeStatus]}`}
       />
       <Markdown
         style={styles.cardMarginSmall}

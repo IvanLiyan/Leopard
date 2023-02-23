@@ -6,13 +6,13 @@ import { Button } from "@ContextLogic/atlas-ui";
 import ActionCard from "./ActionCard";
 import { merchFeURL } from "@core/toolkit/router";
 import { InfractionContext } from "@infractions/InfractionContext";
-import { useInfractionDetailsStylesheet } from "@infractions/toolkit";
+import { useInfractionDetailsStylesheet } from "@infractions/styles";
 
 const ProvideProofOfAuthenticity: React.FC<
   Pick<BaseProps, "className" | "style">
 > = ({ className, style }) => {
   const {
-    infraction: { brandName },
+    infraction: { brand },
   } = useContext(InfractionContext);
   const styles = useInfractionDetailsStylesheet();
 
@@ -25,14 +25,14 @@ const ProvideProofOfAuthenticity: React.FC<
           <Button
             secondary
             onClick={() => {
-              alert("submit new proof of authenticity clicked"); // TODO
+              alert("submit new proof of authenticity clicked"); // TODO: waiting for GQL
             }}
           >
             Submit New Proof of Authenticity
           </Button>
           <Button
             onClick={() => {
-              alert("use existing proof of authenticity clicked"); // TODO
+              alert("use existing proof of authenticity clicked"); // TODO: waiting for GQL
             }}
           >
             Use Existing Proof of Authenticity
@@ -44,7 +44,9 @@ const ProvideProofOfAuthenticity: React.FC<
         style={styles.cardMargin}
         text={`* ${[
           i`Contact the brand owner to receive authorization.`,
-          i`Provide proof of authenticity to sell ${brandName} products on Wish.`,
+          brand?.brandName
+            ? i`Provide proof of authenticity to sell ${brand.brandName} products on Wish.`
+            : i`Provide proof of authenticity to sell this brand's products on Wish.`,
         ].join("\n\n* ")}`}
       />
       <Markdown

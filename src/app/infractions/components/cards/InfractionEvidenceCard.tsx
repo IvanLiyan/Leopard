@@ -1,80 +1,70 @@
-import React, { useContext, useMemo } from "react";
-import { StyleSheet } from "aphrodite";
+import React, { useContext } from "react";
 import { observer } from "mobx-react";
 import Markdown from "@infractions/components/Markdown";
 import Card from "./Card";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import { useTheme } from "@core/stores/ThemeStore";
-import { css } from "@core/toolkit/styling";
 import { InfractionContext } from "@infractions/InfractionContext";
 import { ci18n } from "@core/toolkit/i18n";
+import { MerchantWarningProofType } from "@schema";
+import { wishProductURL } from "@core/toolkit/url";
+import { CellInfo, Table } from "@ContextLogic/lego";
+import { MerchantWarningProofTypeDisplayText } from "@infractions/toolkit";
+
+const getIdLink: {
+  readonly [type in MerchantWarningProofType]: (id: string) => string;
+} = {
+  MERCHANT: (id) => `[${id}](${"#TODO"})`,
+  PRODUCT: (id) => `[${id}](${wishProductURL(id)})`,
+  VARIATION: (id) => `[${id}](${"#TODO"})`,
+  PRODUCT_RATING: (id) => `[${id}](${"#TODO"})`,
+  TICKET: (id) => `[${id}](${`/ticket/${id}`})`,
+  ORDER: (id) => `[${id}](${`/order/${id}`})`,
+};
 
 const InfractionEvidenceCard: React.FC<
   Pick<BaseProps, "className" | "style">
 > = ({ className, style }) => {
-  const styles = useStylesheet();
   const {
     infraction: { infractionEvidence },
   } = useContext(InfractionContext);
+
+  if (infractionEvidence.length < 1) {
+    return null;
+  }
 
   return (
     <Card
       title={ci18n("card title", "Infraction Evidence")}
       style={[className, style]}
     >
-      <div className={css(styles.tableContainer)}>
-        <table className={css({ all: "unset" })}>
-          <tr className={css(styles.tableRow)}>
-            <th className={css(styles.tableCell)}>Type</th>
-            <th className={css(styles.tableCell)}>ID</th>
-            <th className={css(styles.tableCell)}>Note</th>
-          </tr>
-          {infractionEvidence.map(({ type, id, note }) => (
-            <tr key={id} className={css(styles.tableRow)}>
-              <td className={css(styles.tableCell)}>
-                <Markdown text={type} />
-              </td>
-              <td className={css(styles.tableCell)}>
-                <Markdown text={id} />
-              </td>
-              <td className={css(styles.tableCell)}>
-                <Markdown text={note} />
-              </td>
-            </tr>
-          ))}
-        </table>
-      </div>
+      <Table data={infractionEvidence}>
+        <Table.Column
+          title={ci18n("type of a piece of evidence", "Type")}
+          _key="type"
+          columnKey="type"
+        >
+          {({ row }: CellInfo<unknown, typeof infractionEvidence[0]>) => {
+            return (
+              <Markdown text={MerchantWarningProofTypeDisplayText[row.type]} />
+            );
+          }}
+        </Table.Column>
+        <Table.Column
+          title={ci18n("id for a piece of evidence", "ID")}
+          _key="id"
+          columnKey="id"
+        >
+          {({ row }: CellInfo<unknown, typeof infractionEvidence[0]>) => {
+            return <Markdown text={getIdLink[row.type](row.id)} />;
+          }}
+        </Table.Column>
+        <Table.Column
+          title={ci18n("note for a piece of evidence", "Note")}
+          _key="note"
+          columnKey="note"
+        />
+      </Table>
     </Card>
-  );
-};
-
-export const useStylesheet = () => {
-  const { borderPrimary, surfaceLight } = useTheme();
-  return useMemo(
-    () =>
-      StyleSheet.create({
-        tableContainer: {
-          width: "100%",
-          border: `1px solid ${borderPrimary}`,
-          borderRadius: 4,
-          overflow: "hidden",
-        },
-        tableRow: {
-          ":first-child": {
-            backgroundColor: surfaceLight,
-          },
-          ":not(:last-child)": {
-            borderBottom: `1px solid ${borderPrimary}`,
-          },
-        },
-        tableCell: {
-          textAlign: "initial",
-
-          padding: 8,
-          minWidth: 58,
-        },
-      }),
-    [borderPrimary, surfaceLight],
   );
 };
 

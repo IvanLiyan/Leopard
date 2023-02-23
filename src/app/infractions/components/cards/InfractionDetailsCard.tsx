@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { observer } from "mobx-react";
 import Markdown from "@infractions/components/Markdown";
-import { useInfractionDetailsStylesheet } from "@infractions/toolkit";
+import { useInfractionDetailsStylesheet } from "@infractions/styles";
 import Card from "./Card";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { InfractionContext } from "@infractions/InfractionContext";
@@ -17,8 +17,15 @@ const InfractionDetailsCard: React.FC<
   return (
     <Card title={title} style={[className, style]}>
       <Markdown text={body} style={[styles.bodyText, styles.cardMargin]} />
-      <Markdown text={i`Related policy: ${policy}`} style={styles.cardMargin} />
-      <Markdown text={i`Related FAQ: ${faq}`} style={styles.cardMargin} />
+      {policy && (
+        <Markdown
+          text={i`Related policy: ${policy}`}
+          style={styles.cardMargin}
+        />
+      )}
+      {faq && (
+        <Markdown text={i`Related FAQ: ${faq}`} style={styles.cardMargin} />
+      )}
       <Markdown text={i`Infraction ID: ${id}`} style={styles.cardMargin} />
       <Markdown
         text={i`Infraction state: ${state}`}

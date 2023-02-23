@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { observer } from "mobx-react";
 import Markdown from "@infractions/components/Markdown";
-import { useInfractionDetailsStylesheet } from "@infractions/toolkit";
+import { useInfractionDetailsStylesheet } from "@infractions/styles";
 import Card from "./Card";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { InfractionContext } from "@infractions/InfractionContext";
@@ -13,32 +13,39 @@ const OrderDetailsCard: React.FC<Pick<BaseProps, "className" | "style">> = ({
 }) => {
   const styles = useInfractionDetailsStylesheet();
   const {
-    infraction: {
-      orderCancellationReason,
-      orderId: orderID,
-      orderStatus,
-      orderTotal,
-      wishLogisticsProgram,
-      availableForFulfillmentDate,
-      confirmedFulfillmentDate,
-      confirmedDeliveryDate,
-      autoRefundedDate,
-      trackingStatus,
-      trackingId: trackingID,
-      carrier,
-    },
+    infraction: { order },
   } = useContext(InfractionContext);
+
+  if (order == null) {
+    return null;
+  }
+
+  const {
+    orderCancellationReason,
+    orderId,
+    orderStatus,
+    orderTotal,
+    availableForFulfillmentDate,
+    confirmedFulfillmentDate,
+    confirmedDeliveryDate,
+    autoRefundedDate,
+    trackingStatus,
+    trackingId,
+    carrier,
+  } = order;
 
   return (
     <Card
       title={ci18n("card title", "Order Details")}
       style={[className, style]}
     >
-      <Markdown
-        text={i`Cancellation reason: ${orderCancellationReason}`}
-        style={styles.cardMargin}
-      />
-      <Markdown text={i`Order ID: ${orderID}`} style={styles.cardMargin} />
+      {orderCancellationReason && (
+        <Markdown
+          text={i`Cancellation reason: ${orderCancellationReason}`}
+          style={styles.cardMargin}
+        />
+      )}
+      <Markdown text={i`Order ID: ${orderId}`} style={styles.cardMargin} />
       <Markdown
         text={i`Order status: ${orderStatus}`}
         style={styles.cardMargin}
@@ -47,35 +54,45 @@ const OrderDetailsCard: React.FC<Pick<BaseProps, "className" | "style">> = ({
         text={i`Order total: ${orderTotal}`}
         style={styles.cardMargin}
       />
-      <Markdown
-        text={i`Wish logistics program: ${wishLogisticsProgram}`}
-        style={styles.cardMargin}
-      />
-      <Markdown
-        text={i`Available for fulfillment: ${availableForFulfillmentDate}`}
-        style={styles.cardMargin}
-      />
-      <Markdown
-        text={i`Confirmed fulfillment date: ${confirmedFulfillmentDate}`}
-        style={styles.cardMargin}
-      />
-      <Markdown
-        text={i`Confirmed delivery date: ${confirmedDeliveryDate}`}
-        style={styles.cardMargin}
-      />
-      <Markdown
-        text={i`Auto-refunded date: ${autoRefundedDate}`}
-        style={styles.cardMargin}
-      />
-      <Markdown
-        text={i`Tracking status: ${trackingStatus}`}
-        style={styles.cardMargin}
-      />
-      <Markdown
-        text={i`Tracking ID: ${trackingID}`}
-        style={styles.cardMargin}
-      />
-      <Markdown text={i`Carrier: ${carrier}`} style={styles.cardMargin} />
+      {availableForFulfillmentDate != null && (
+        <Markdown
+          text={i`Available for fulfillment: ${availableForFulfillmentDate}`}
+          style={styles.cardMargin}
+        />
+      )}
+      {confirmedFulfillmentDate != null && (
+        <Markdown
+          text={i`Confirmed fulfillment date: ${confirmedFulfillmentDate}`}
+          style={styles.cardMargin}
+        />
+      )}
+      {confirmedDeliveryDate != null && (
+        <Markdown
+          text={i`Confirmed delivery date: ${confirmedDeliveryDate}`}
+          style={styles.cardMargin}
+        />
+      )}
+      {autoRefundedDate != null && (
+        <Markdown
+          text={i`Auto-refunded date: ${autoRefundedDate}`}
+          style={styles.cardMargin}
+        />
+      )}
+      {trackingStatus != null && (
+        <Markdown
+          text={i`Tracking status: ${trackingStatus}`}
+          style={styles.cardMargin}
+        />
+      )}
+      {trackingId != null && (
+        <Markdown
+          text={i`Tracking ID: ${trackingId}`}
+          style={styles.cardMargin}
+        />
+      )}
+      {carrier != null && (
+        <Markdown text={i`Carrier: ${carrier}`} style={styles.cardMargin} />
+      )}
     </Card>
   );
 };

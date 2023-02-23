@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import React, { useContext, useState } from "react";
 import { observer } from "mobx-react";
-import { useMessages } from "@infractions/toolkit";
+import { useMessages } from "@infractions/queries/messages";
 import Card from "./Card";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import Conversation, {

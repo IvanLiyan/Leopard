@@ -1,10 +1,16 @@
 import { useCallback, useMemo } from "react";
 import moment from "moment/moment";
-import { isStaging, isTesting, isSandbox } from "@core/stores/EnvironmentStore";
+import {
+  isDev,
+  isStaging,
+  isTesting,
+  isSandbox,
+} from "@core/stores/EnvironmentStore";
 import NavigationStore from "@core/stores/NavigationStore";
 import isEqual from "lodash/isEqual";
 import { useRouter } from "next/router";
 import { ParsedUrlQueryInput } from "querystring";
+// import LocalizationStore from "@core/stores/LocalizationStore";
 
 export const absURL = (path: string, hostname?: string): string => {
   let port = location.port;
@@ -66,7 +72,7 @@ export const absExtURL = (url: string): string => {
 
 export const wishURL = (path: string): string => {
   const domain = (() => {
-    if (isStaging) {
+    if (isDev || isStaging) {
       return "staging.wish.com";
     } else if (isTesting) {
       return "testing.wish.com";
@@ -78,6 +84,10 @@ export const wishURL = (path: string): string => {
   })();
 
   return `${location.protocol}//${domain}${path}`;
+};
+
+export const wishProductURL = (pid: string): string => {
+  return wishURL(`/c/${pid}`);
 };
 
 export const contestImageURL = (
@@ -159,10 +169,14 @@ export const zendeskSectionURL = (
   return absExtURL(zendeskUrl);
 };
 
+// will fix this in https://jira.wish.site/browse/MAL-291
+// export const getZendeskLocale = (localeProp?: string): string => {
+//   // const { locale } = LocalizationStore.instance();
+//   const zendeskLocale = "en"; // localeProp || locale || "en";
 export const getZendeskLocale = (locale?: string): string => {
-  // @ts-expect-error: need to add locale_info to GQL (https://jira.wish.site/browse/MKL-54838)
+  // @ ts-expect-error: need to add locale_info to GQL (https://jira.wish.site/browse/MKL-54838)
   // TODO [lliepert, yzhang]: check to make sure this still works for Chinese merchants
-  const zendeskLocale = locale || window?.locale_info?.locale || "en";
+  const zendeskLocale = locale || "en"; // window?.locale_info?.locale || "en";
 
   if (zendeskLocale === "en") {
     return "en-us";

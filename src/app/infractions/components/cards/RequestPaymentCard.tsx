@@ -1,17 +1,25 @@
-import React from "react";
+import React, { useContext } from "react";
 import { observer } from "mobx-react";
 import Markdown from "@infractions/components/Markdown";
 import { Layout } from "@ContextLogic/lego";
 import Card from "./Card";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import { useInfractionDetailsStylesheet } from "@infractions/toolkit";
+import { useInfractionDetailsStylesheet } from "@infractions/styles";
 import { Button } from "@ContextLogic/atlas-ui";
+import { InfractionContext } from "@infractions/InfractionContext";
 
 const RequestPaymentCard: React.FC<Pick<BaseProps, "className" | "style">> = ({
   className,
   style,
 }) => {
   const styles = useInfractionDetailsStylesheet();
+  const {
+    infraction: { actions },
+  } = useContext(InfractionContext);
+
+  if (!actions.includes("REQUEST_PAYMENT_RELEASE")) {
+    return null;
+  }
 
   return (
     <Card
@@ -31,8 +39,11 @@ const RequestPaymentCard: React.FC<Pick<BaseProps, "className" | "style">> = ({
       />
       <Layout.FlexColumn alignItems="flex-end">
         <Button
+          style={{
+            marginTop: 16,
+          }}
           onClick={() => {
-            alert("payment request clicked"); // TODO
+            alert("payment request clicked"); // TODO: https://jira.wish.site/browse/MAL-258
           }}
         >
           Start a Request

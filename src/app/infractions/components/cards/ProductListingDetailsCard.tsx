@@ -2,25 +2,32 @@ import React, { useContext } from "react";
 import { observer } from "mobx-react";
 import Markdown from "@infractions/components/Markdown";
 import { Layout } from "@ContextLogic/lego";
-import { useInfractionDetailsStylesheet } from "@infractions/toolkit";
+import { useInfractionDetailsStylesheet } from "@infractions/styles";
 import Card from "./Card";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import Image from "@core/components/Image";
 import { InfractionContext } from "@infractions/InfractionContext";
+import { wishProductURL } from "@core/toolkit/url";
 
 const ProductListingDetailsCard: React.FC<
   Pick<BaseProps, "className" | "style">
 > = ({ className, style }) => {
   const styles = useInfractionDetailsStylesheet();
   const {
-    infraction: {
-      productImageUrl,
-      productName,
-      productId,
-      sku,
-      productDescription,
-    },
+    infraction: { product },
   } = useContext(InfractionContext);
+
+  if (product == null) {
+    return null;
+  }
+
+  const {
+    productImageUrl,
+    productName,
+    productId,
+    productSku,
+    productDescription,
+  } = product;
 
   return (
     <Card title={i`Product Listing Details`} style={[className, style]}>
@@ -36,14 +43,18 @@ const ProductListingDetailsCard: React.FC<
             style={styles.cardMargin}
           />
           <Markdown
-            text={i`Product ID: ${productId}`}
+            text={i`Product ID: [${productId}](${wishProductURL(productId)})`}
             style={styles.cardMargin}
           />
-          <Markdown text={i`SKU: ${sku}`} style={styles.cardMargin} />
-          <Markdown
-            text={i`Description: ${productDescription}`}
-            style={styles.cardMargin}
-          />
+          {productSku && (
+            <Markdown text={i`SKU: ${productSku}`} style={styles.cardMargin} />
+          )}
+          {productDescription && (
+            <Markdown
+              text={i`Description: ${productDescription}`}
+              style={styles.cardMargin}
+            />
+          )}
         </Layout.FlexColumn>
       </Layout.FlexRow>
     </Card>

@@ -1,18 +1,15 @@
-import React, { useContext } from "react";
+import React from "react";
 import { observer } from "mobx-react";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import Markdown from "@infractions/components/Markdown";
 import { Button } from "@ContextLogic/atlas-ui";
 import ActionCard from "./ActionCard";
-import { InfractionContext } from "@infractions/InfractionContext";
-import { useInfractionDetailsStylesheet } from "@infractions/toolkit";
+import { useInfractionDetailsStylesheet } from "@infractions/styles";
 
 const GetProductAuthorization: React.FC<
   Pick<BaseProps, "className" | "style">
 > = ({ className, style }) => {
-  const {
-    infraction: { brandName },
-  } = useContext(InfractionContext);
+  const brandName = "TODO"; // removing this card and replacing with updated copy in the description
   const styles = useInfractionDetailsStylesheet();
 
   return (
