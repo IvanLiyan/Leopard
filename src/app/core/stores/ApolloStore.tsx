@@ -160,6 +160,8 @@ const ApolloContext = createContext<ApolloStore>({
 // ApolloStore outside of React
 const ApolloStoreRef = createRef<ApolloStore>();
 
+const GQL_NON_BATCHING_COOKIE = "use_non_batching_gql_client";
+
 export const ApolloProvider: React.FC = ({ children }) => {
   const [adminUpdatesAllowed, setAdminUpdatesAllowed] = useState(false);
 
@@ -199,8 +201,10 @@ export const ApolloProvider: React.FC = ({ children }) => {
     setAdminUpdatesAllowed(false);
   };
 
+  const shouldDisableBatching = Cookies.get(GQL_NON_BATCHING_COOKIE) === "true";
+
   const apolloStore = {
-    client,
+    client: shouldDisableBatching ? nonBatchingClient : client,
     nonBatchingClient,
     fileUploadClient,
     adminUpdatesAllowed,
@@ -211,7 +215,11 @@ export const ApolloProvider: React.FC = ({ children }) => {
 
   return (
     <ApolloContext.Provider value={apolloStore}>
-      <_ApolloProvider client={client}>{children}</_ApolloProvider>
+      <_ApolloProvider
+        client={shouldDisableBatching ? nonBatchingClient : client}
+      >
+        {children}
+      </_ApolloProvider>
     </ApolloContext.Provider>
   );
 };
