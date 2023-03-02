@@ -617,10 +617,10 @@ type ExportCsvVariationColumn = ExtractStrict<
   | "WAREHOUSE"
   | "CONDITION"
   | "CUSTOMS_HS_CODE"
-  | "LENGTH"
-  | "HEIGHT"
-  | "WIDTH"
-  | "WEIGHT"
+  | "PACKAGE_LENGTH"
+  | "PACKAGE_HEIGHT"
+  | "PACKAGE_WIDTH"
+  | "PACKAGE_WEIGHT"
   | "CUSTOMS_DECLARED_VALUE"
   | "COUNTRY_OF_ORIGIN"
   | "DECLARED_LOCAL_NAME"
@@ -1073,7 +1073,7 @@ export const generateCsvExport = (
       product.variations.length == 0
         ? undefined
         : product.variations[0].customsHsCode,
-    LENGTH: (product) => {
+    PACKAGE_LENGTH: (product) => {
       const length =
         product.variations.length == 0
           ? undefined
@@ -1082,7 +1082,7 @@ export const generateCsvExport = (
         ? undefined
         : `${length.value} ${unitDisplayName(length.unit).symbol}`;
     },
-    HEIGHT: (product) => {
+    PACKAGE_HEIGHT: (product) => {
       const height =
         product.variations.length == 0
           ? undefined
@@ -1091,7 +1091,7 @@ export const generateCsvExport = (
         ? undefined
         : `${height.value} ${unitDisplayName(height.unit).symbol}`;
     },
-    WIDTH: (product) => {
+    PACKAGE_WIDTH: (product) => {
       const width =
         product.variations.length == 0
           ? undefined
@@ -1100,7 +1100,7 @@ export const generateCsvExport = (
         ? undefined
         : `${width.value} ${unitDisplayName(width.unit).symbol}`;
     },
-    WEIGHT: (product) => {
+    PACKAGE_WEIGHT: (product) => {
       const weight =
         product.variations.length == 0
           ? undefined
@@ -1382,11 +1382,11 @@ export const generateCsvExport = (
     US_TTD: (product) => getTtd(product, "US"),
     VI_TTD: (product) => getTtd(product, "VI"),
     ZA_TTD: (product) => getTtd(product, "ZA"),
-    CALIFORNIA_PROP65_CHEMICAL_NAMES: (product) =>
+    CALIFORNIA_PROPOSITION_65_CHEMICAL_NAMES: (product) =>
       product.chemicalNames == null
         ? undefined
         : product.chemicalNames.join(" | "),
-    CALIFORNIA_PROP65_WARNING_TYPE: (product) =>
+    CALIFORNIA_PROPOSITION_65_WARNING_TYPE: (product) =>
       product.warningType == null
         ? undefined
         : ContestWarningDisplayNames[product.warningType],
@@ -1488,7 +1488,7 @@ export const generateCsvExport = (
       product.variations.length < variationIndex + 1
         ? undefined
         : product.variations[variationIndex].customsHsCode,
-    LENGTH: (product, variationIndex) => {
+    PACKAGE_LENGTH: (product, variationIndex) => {
       const length =
         product.variations.length < variationIndex + 1
           ? undefined
@@ -1497,7 +1497,7 @@ export const generateCsvExport = (
         ? undefined
         : `${length.value} ${unitDisplayName(length.unit).symbol}`;
     },
-    HEIGHT: (product, variationIndex) => {
+    PACKAGE_HEIGHT: (product, variationIndex) => {
       const height =
         product.variations.length < variationIndex + 1
           ? undefined
@@ -1506,7 +1506,7 @@ export const generateCsvExport = (
         ? undefined
         : `${height.value} ${unitDisplayName(height.unit).symbol}`;
     },
-    WIDTH: (product, variationIndex) => {
+    PACKAGE_WIDTH: (product, variationIndex) => {
       const width =
         product.variations.length < variationIndex + 1
           ? undefined
@@ -1515,7 +1515,7 @@ export const generateCsvExport = (
         ? undefined
         : `${width.value} ${unitDisplayName(width.unit).symbol}`;
     },
-    WEIGHT: (product, variationIndex) => {
+    PACKAGE_WEIGHT: (product, variationIndex) => {
       const weight =
         product.variations.length < variationIndex + 1
           ? undefined
@@ -1766,8 +1766,8 @@ export const generateCsvExport = (
     VI_TTD: undefined,
     ZA_TTD: undefined,
     COST: undefined,
-    CALIFORNIA_PROP65_CHEMICAL_NAMES: undefined,
-    CALIFORNIA_PROP65_WARNING_TYPE: undefined,
+    CALIFORNIA_PROPOSITION_65_CHEMICAL_NAMES: undefined,
+    CALIFORNIA_PROPOSITION_65_WARNING_TYPE: undefined,
     WISH_EXPRESS_ENABLED_COUNTRIES: undefined,
     WISH_EXPRESS_DISABLED_COUNTRIES: undefined,
     IS_LTL: undefined,
@@ -1936,10 +1936,22 @@ export const ExportCsvColumnDisplayNames: {
     "Column title in a spreadsheet containing products",
     "Customs HS Code",
   ),
-  LENGTH: ci18n("Column title in a spreadsheet containing products", "Length"),
-  HEIGHT: ci18n("Column title in a spreadsheet containing products", "Height"),
-  WIDTH: ci18n("Column title in a spreadsheet containing products", "Width"),
-  WEIGHT: ci18n("Column title in a spreadsheet containing products", "Weight"),
+  PACKAGE_LENGTH: ci18n(
+    "Column title in a spreadsheet containing products",
+    "Package Length",
+  ),
+  PACKAGE_HEIGHT: ci18n(
+    "Column title in a spreadsheet containing products",
+    "Package Height",
+  ),
+  PACKAGE_WIDTH: ci18n(
+    "Column title in a spreadsheet containing products",
+    "Package Width",
+  ),
+  PACKAGE_WEIGHT: ci18n(
+    "Column title in a spreadsheet containing products",
+    "Package Weight",
+  ),
   CUSTOMS_DECLARED_VALUE: ci18n(
     "Column title in a spreadsheet containing products",
     "Customs Declared Value",
@@ -2115,13 +2127,13 @@ export const ExportCsvColumnDisplayNames: {
   US_TTD: ci18n("Column title in a spreadsheet containing products", "US"),
   VI_TTD: ci18n("Column title in a spreadsheet containing products", "VI"),
   ZA_TTD: ci18n("Column title in a spreadsheet containing products", "ZA"),
-  CALIFORNIA_PROP65_CHEMICAL_NAMES: ci18n(
+  CALIFORNIA_PROPOSITION_65_CHEMICAL_NAMES: ci18n(
     "Column title in a spreadsheet containing products",
-    "California Prop 65 Chemical Names",
+    "California Proposition 65 Chemical Names",
   ),
-  CALIFORNIA_PROP65_WARNING_TYPE: ci18n(
+  CALIFORNIA_PROPOSITION_65_WARNING_TYPE: ci18n(
     "Column title in a spreadsheet containing products",
-    "California Prop 65 Warning Type",
+    "California Proposition 65 Warning Type",
   ),
   WISH_EXPRESS_ENABLED_COUNTRIES: ci18n(
     "Column title in a spreadsheet containing products",

@@ -22,9 +22,9 @@ export type Scalars = {
   Int: number;
   Float: number;
   ObjectIdType: string;
-  JSONString: string;
   DateTime: unknown;
   BigInt: number;
+  JSONString: string;
   GenericScalar: unknown;
 };
 
@@ -533,6 +533,20 @@ export type AreaInput = {
 
 export type AreaUnit = "SQUARE_METER" | "SQUARE_FOOT";
 
+export type AttributeConfigEntryMode =
+  | "SINGLE_SELECTION"
+  | "FREE_TEXT"
+  | "MULTI_SELECTION";
+
+export type AttributeConfigSchema = {
+  readonly __typename?: "AttributeConfigSchema";
+  readonly attributeField: Scalars["String"];
+  readonly attributeValues?: Maybe<ReadonlyArray<Scalars["String"]>>;
+  readonly maxMultiSelect?: Maybe<Scalars["Int"]>;
+  readonly description: Scalars["String"];
+  readonly entryMode: AttributeConfigEntryMode;
+};
+
 export type AttributeDataType =
   | "ATTRIBUTE_DATA_TYPE_UNSPECIFIED"
   | "ATTRIBUTE_DATA_TYPE_DATE"
@@ -547,6 +561,20 @@ export type AttributeDataTypeFormat =
   | "ATTRIBUTE_DATA_TYPE_FORMAT_DATE_YYYY_MM_DD"
   | "ATTRIBUTE_DATA_TYPE_FORMAT_NUMBER_INT32"
   | "ATTRIBUTE_DATA_TYPE_FORMAT_NUMBER_DOUBLE";
+
+export type AttributeExtractionTaggerJobSchema = {
+  readonly __typename?: "AttributeExtractionTaggerJobSchema";
+  readonly jobId: Scalars["ObjectIdType"];
+  readonly jobType: AttributeExtractionTaggerJobType;
+  readonly attributeConfigs: ReadonlyArray<AttributeConfigSchema>;
+  readonly productId?: Maybe<Scalars["ObjectIdType"]>;
+  readonly productTitle?: Maybe<Scalars["String"]>;
+  readonly productDescription?: Maybe<Scalars["String"]>;
+  readonly productImageUrls?: Maybe<ReadonlyArray<Scalars["String"]>>;
+  readonly query?: Maybe<Scalars["String"]>;
+};
+
+export type AttributeExtractionTaggerJobType = "QUERY" | "PRODUCT";
 
 export type AttributeInput = {
   readonly id?: Maybe<Scalars["Int"]>;
@@ -845,6 +873,23 @@ export type BonusBudgetSchema = {
   readonly bonusBudgetType: MarketingBonusBudgetType;
   readonly eligibleBonusBudgetType: MarketingBonusBudgetType;
 };
+
+export type BrandAuthorizationSchema = {
+  readonly __typename?: "BrandAuthorizationSchema";
+  readonly id: Scalars["ObjectIdType"];
+  readonly merchantId: Scalars["ObjectIdType"];
+  readonly brand: BrandSchema;
+  readonly state: BrandAuthorizationState;
+};
+
+export type BrandAuthorizationState =
+  | "EXPIRED"
+  | "NOT_APPROVED"
+  | "PENDING_MERCHANT"
+  | "CLOSED"
+  | "PENDING_ADMIN"
+  | "APPROVED"
+  | "PENDING";
 
 export type BrandCategoryCode =
   | "FASHION"
@@ -1296,6 +1341,30 @@ export type BrandPartnerUserMutationsChangeUserInfoArgs = {
   input: BrandPartnerChangeUserInfoInput;
 };
 
+export type BrandProtection = {
+  readonly __typename?: "BrandProtection";
+  readonly injunctionMerchantFreezes: ReadonlyArray<InjunctionMerchantFreezeSchema>;
+  readonly numInjunctionMerchantFreezes: Scalars["Int"];
+};
+
+export type BrandProtectionInjunctionMerchantFreezesArgs = {
+  imfIds?: Maybe<ReadonlyArray<Scalars["ObjectIdType"]>>;
+  merchantIds?: Maybe<ReadonlyArray<Scalars["ObjectIdType"]>>;
+  troNumbers?: Maybe<ReadonlyArray<Scalars["Int"]>>;
+  state?: Maybe<ReadonlyArray<InjunctionMerchantFreezeState>>;
+  freezeTypes?: Maybe<ReadonlyArray<InjunctionMerchantFreezeType>>;
+  offset?: Maybe<Scalars["Int"]>;
+  count?: Maybe<Scalars["Int"]>;
+};
+
+export type BrandProtectionNumInjunctionMerchantFreezesArgs = {
+  imfIds?: Maybe<ReadonlyArray<Scalars["ObjectIdType"]>>;
+  merchantIds?: Maybe<ReadonlyArray<Scalars["ObjectIdType"]>>;
+  troNumbers?: Maybe<ReadonlyArray<Scalars["Int"]>>;
+  state?: Maybe<ReadonlyArray<InjunctionMerchantFreezeState>>;
+  freezeTypes?: Maybe<ReadonlyArray<InjunctionMerchantFreezeType>>;
+};
+
 export type BrandProtectionConstants = {
   readonly __typename?: "BrandProtectionConstants";
   readonly holidayMessage: Scalars["String"];
@@ -1341,6 +1410,8 @@ export type BrandServiceSchema = {
   readonly acceptedTrademarkCountries: ReadonlyArray<TrademarkCountryCode>;
   readonly brandPartnerTrademarkLocations: ReadonlyArray<BrandPartnerCountryAndRegion>;
   readonly brandPartnerAdmin?: Maybe<BrandPartnerAdmin>;
+  readonly brandAuthorizations?: Maybe<ReadonlyArray<BrandAuthorizationSchema>>;
+  readonly brandProtection?: Maybe<BrandProtection>;
 };
 
 export type BrandServiceSchemaTrueBrandsArgs = {
@@ -1354,6 +1425,14 @@ export type BrandServiceSchemaTrueBrandsArgs = {
 
 export type BrandServiceSchemaAcceptedTrademarkCountriesArgs = {
   usePriorityOrdering?: Maybe<Scalars["Boolean"]>;
+};
+
+export type BrandServiceSchemaBrandAuthorizationsArgs = {
+  offset?: Maybe<Scalars["Int"]>;
+  limit?: Maybe<Scalars["Int"]>;
+  merchantId?: Maybe<Scalars["ObjectIdType"]>;
+  id?: Maybe<Scalars["ObjectIdType"]>;
+  states?: Maybe<ReadonlyArray<BrandAuthorizationState>>;
 };
 
 export type BrandSeverity = "HIGH" | "MEDIUM" | "LOW";
@@ -1618,10 +1697,11 @@ export type CaTaxConstants = {
 };
 
 export type CategorizationSource =
-  | "INFERENCE_MODEL"
-  | "MONGO_BACK_FILL"
   | "MANUAL_OVERRIDE_TOOL"
   | "HUMAN_LABELED"
+  | "INFERENCE_MODEL"
+  | "MERCHANT_SPECIFIED"
+  | "MONGO_BACK_FILL"
   | "DISPUTE";
 
 export type CategoryClassificationTaggerJobSchema = {
@@ -3336,6 +3416,22 @@ export type DisbursementScheduleInfo = {
   readonly merchantFileLink?: Maybe<Scalars["String"]>;
 };
 
+export type DisputeInfractionInput = {
+  readonly category?: Maybe<Scalars["String"]>;
+  readonly subcategory?: Maybe<Scalars["String"]>;
+  readonly productName?: Maybe<Scalars["String"]>;
+  readonly description?: Maybe<Scalars["String"]>;
+  readonly explanation?: Maybe<Scalars["String"]>;
+  readonly photo?: Maybe<ReadonlyArray<FileInput>>;
+  readonly variationCount?: Maybe<Scalars["Int"]>;
+  readonly variationsSameProduct?: Maybe<Scalars["Boolean"]>;
+  readonly variationsSamePrice?: Maybe<Scalars["Boolean"]>;
+  readonly cost?: Maybe<CurrencyInput>;
+  readonly retailPrice?: Maybe<CurrencyInput>;
+  readonly vendorAddress?: Maybe<AddressInput>;
+  readonly disputeProof?: Maybe<ReadonlyArray<FileInput>>;
+};
+
 export type DisputeMessageSchema = {
   readonly __typename?: "DisputeMessageSchema";
   readonly senderType: DisputeMessageSenderType;
@@ -3753,6 +3849,11 @@ export type ExternalBoostChargingMethod = "CPA" | "CPC";
 
 export type ExtraCountryDataInput = {
   readonly swedenDeliveredCarrierTypes: ReadonlyArray<SwedenDeliveredCarrierType>;
+};
+
+export type ExtractionResultInput = {
+  readonly name: Scalars["String"];
+  readonly values: ReadonlyArray<Scalars["String"]>;
 };
 
 export type FactoryMerchantConversionInput = {
@@ -4656,6 +4757,26 @@ export type InitiateUploadMutation = {
   readonly uploadHeaders?: Maybe<Scalars["JSONString"]>;
   readonly downloadUrl?: Maybe<Scalars["String"]>;
 };
+
+export type InjunctionMerchantFreezeSchema = {
+  readonly __typename?: "InjunctionMerchantFreezeSchema";
+  readonly id: Scalars["ObjectIdType"];
+  readonly merchantId: Scalars["ObjectIdType"];
+  readonly freezeType?: Maybe<InjunctionMerchantFreezeType>;
+  readonly troNumber: Scalars["Int"];
+  readonly fineIds: ReadonlyArray<Scalars["ObjectIdType"]>;
+  readonly fines: ReadonlyArray<MerchantFineSchema>;
+  readonly legalCounselCreationTs: Datetime;
+  readonly sumOfFineAmounts: CurrencyValue;
+  readonly tentativeFreezeAmount?: Maybe<CurrencyValue>;
+  readonly state: InjunctionMerchantFreezeState;
+};
+
+export type InjunctionMerchantFreezeState = "ACTIVE" | "RESOLVED";
+
+export type InjunctionMerchantFreezeType =
+  | "FULL_ASSET_FREEZE"
+  | "ONE_TIME_FREEZE";
 
 export type InventoryInput = {
   readonly warehouseId: Scalars["ObjectIdType"];
@@ -5842,6 +5963,8 @@ export type MerchantFineSchema = {
   readonly amount?: Maybe<Scalars["Float"]>;
   readonly timestamp?: Maybe<Datetime>;
   readonly reversals?: Maybe<ReadonlyArray<Reversal>>;
+  readonly phabTicketId?: Maybe<Scalars["String"]>;
+  readonly creator?: Maybe<UserSchema>;
 };
 
 export type MerchantGamingReviewFieldTicketType = "lastSourceUpsertDate";
@@ -6642,6 +6765,8 @@ export type MerchantSchema = {
   readonly showFeedProcessing: Scalars["Boolean"];
   readonly disableWarningId?: Maybe<Scalars["ObjectIdType"]>;
   readonly disableReasonCategory?: Maybe<Scalars["String"]>;
+  readonly isFlatRateShippingOptedIn?: Maybe<Scalars["Boolean"]>;
+  readonly canAccessFlatRateShippingOptInOptOut?: Maybe<Scalars["Boolean"]>;
 };
 
 export type MerchantSchemaShippingSettingsArgs = {
@@ -7184,7 +7309,11 @@ export type MerchantWarehouseWeekStatsSort = {
 
 export type MerchantWarehouseWeekStatsSortFieldType = "START_DATE";
 
-export type MerchantWarningAction = "REPLY";
+export type MerchantWarningAction =
+  | "REPLY"
+  | "MERCHANT_LEVEL_DISPUTE"
+  | "REQUEST_PAYMENT_RELEASE"
+  | "LISTING_LEVEL_DISPUTE";
 
 export type MerchantWarningAuditAction =
   | "CLAIM"
@@ -7211,11 +7340,11 @@ export type MerchantWarningClaimStatus =
 export type MerchantWarningCorrespondenceStatus = "NEW" | "HOLD" | "OPEN";
 
 export type MerchantWarningFixAction =
-  | "GET_PRODUCT_AUTHORIZATION"
   | "PROVE_AUTHENTICITY"
   | "EDIT_PRODUCT_LISTING"
   | "UPDATE_MAX_DELIVERY_DAYS"
   | "REQUEST_PAYMENT_RELEASE"
+  | "PRODUCT_AUTHORIZATION"
   | "ADDRESS_UNDERLYING_INFRACTION"
   | "MESSAGE"
   | "PAY_WISHPOST_BALANCE"
@@ -7267,6 +7396,7 @@ export type MerchantWarningProofSchema = {
   readonly product?: Maybe<ProductSchema>;
   readonly order?: Maybe<OrderSchema>;
   readonly message?: Maybe<Scalars["String"]>;
+  readonly brandAuthorization?: Maybe<BrandAuthorizationSchema>;
 };
 
 export type MerchantWarningProofType =
@@ -7367,6 +7497,43 @@ export type MerchantWarningReasonSchema = {
   readonly text: Scalars["String"];
 };
 
+export type MerchantWarningReplySchema = {
+  readonly __typename?: "MerchantWarningReplySchema";
+  readonly senderType?: Maybe<MerchantWarningReplySenderType>;
+  readonly senderName?: Maybe<Scalars["String"]>;
+  readonly displayName?: Maybe<Scalars["String"]>;
+  readonly date?: Maybe<Datetime>;
+  readonly message?: Maybe<Scalars["String"]>;
+  readonly translatedMessage?: Maybe<Scalars["String"]>;
+  readonly type?: Maybe<MerchantWarningReplyType>;
+  readonly files?: Maybe<ReadonlyArray<MerchantFileSchema>>;
+  readonly images?: Maybe<ReadonlyArray<Scalars["String"]>>;
+};
+
+export type MerchantWarningReplySenderType =
+  | "ADMIN"
+  | "MERCHANT"
+  | "ADMIN_BAN"
+  | "ADMIN_UNBAN"
+  | "ADMIN_UNBAN_PENDING";
+
+export type MerchantWarningReplyType =
+  | "ADMIN_COMMENT"
+  | "APPROVE_PAYMENT_RELEASE"
+  | "UNBAN_EXPLANATION"
+  | "REGULAR_REPLY"
+  | "AUTOBOT_REPLY"
+  | "WITHHOLD_FUNDS_EXPLANATION"
+  | "SEND_PB_INCENTIVE"
+  | "CLOSE_REPLY"
+  | "REQUEST_PAYMENT_RELEASE"
+  | "BAN_EXPLANATION"
+  | "REJECT_PAYMENT_RELEASE"
+  | "BD_APPROVE_PAYMENT_RELEASE"
+  | "REMOVE_WITHHOLD_FUNDS_EXPLANATION"
+  | "REOPEN_REPLY"
+  | "RESET_PAYMENT_RELEASE";
+
 export type MerchantWarningSchema = {
   readonly __typename?: "MerchantWarningSchema";
   readonly id: Scalars["ObjectIdType"];
@@ -7401,7 +7568,7 @@ export type MerchantWarningSchema = {
   >;
   readonly productTrueTagInfo?: Maybe<ProductTrueTagInfoSchema>;
   readonly takedownRequest?: Maybe<TakedownRequestSchema>;
-  readonly message?: Maybe<Scalars["String"]>;
+  readonly replies?: Maybe<ReadonlyArray<MerchantWarningReplySchema>>;
 };
 
 export type MerchantWarningSchemaFineAmountArgs = {
@@ -7448,6 +7615,7 @@ export type MerchantWeeklyStats = {
 export type MerchantWishSellerStandardDetails = {
   readonly __typename?: "MerchantWishSellerStandardDetails";
   readonly stats?: Maybe<WishSellerStandardStats>;
+  readonly thingsToWatchBoard?: Maybe<WssThingsToWatchBoard>;
   readonly monthlyUpdateStats?: Maybe<WishSellerStandardStats>;
   readonly complianceUpdateStats?: Maybe<WishSellerStandardStats>;
   readonly level?: Maybe<WssMerchantLevelType>;
@@ -7808,7 +7976,11 @@ export type MfpVariationUnqualifiedReason =
   | "MERCHANT_ELIGIBILITY"
   | "NOT_OWNED_BY_MERCHANT"
   | "UNITY_PRODUCT"
-  | "INVALID_ID";
+  | "INVALID_ID"
+  | "FRS_LOW_DISCOUNT"
+  | "FRS_HIGH_DISCOUNT"
+  | "FRS_DISCOUNT_PRICE"
+  | "FRS_NEGATIVE_PRICE";
 
 export type MfpWhitelistProductSortBy = "START_TIME" | "END_TIME";
 
@@ -9143,6 +9315,7 @@ export type PermissionType =
   | "CREATE_HIGH_GAMING_GMV_HOLD"
   | "SUPPLY_CHAIN_PREVALID_TABLE_MAINTAINER"
   | "CAN_LOGIN_WITH_CREDENTIALS"
+  | "CREATE_FAILED_IDENTITY_REVERIFICATION_HOLD"
   | "VALIDATE_COLLECTIONBOOST_COLLECTIONS"
   | "EDIT_MERCHANT_SUPPORT_PERMISSIONS"
   | "VIEW_ONEOFF_PAYMENT_DETAIL"
@@ -9244,6 +9417,7 @@ export type PermissionType =
   | "SHOW_TAGGING_TEST_HISTORY"
   | "REVIEW_PRODUCT_EDIT_REQUESTS"
   | "CAN_LOGIN_AS_ADMIN"
+  | "VIEW_FAILED_IDENTITY_REVERIFICATION_HOLD"
   | "API_ACCESS"
   | "TRIGGER_EARLY_SELLER_VERIFICATION"
   | "REPORTED_WISH_LOCAL_DETAIL_TAG"
@@ -10155,10 +10329,10 @@ export type ProductCsvColumnName =
   | "BRAND_STATUS"
   | "CONDITION"
   | "CUSTOMS_HS_CODE"
-  | "LENGTH"
-  | "HEIGHT"
-  | "WIDTH"
-  | "WEIGHT"
+  | "PACKAGE_LENGTH"
+  | "PACKAGE_HEIGHT"
+  | "PACKAGE_WIDTH"
+  | "PACKAGE_WEIGHT"
   | "CUSTOMS_DECLARED_VALUE"
   | "COUNTRY_OF_ORIGIN"
   | "DECLARED_LOCAL_NAME"
@@ -10177,8 +10351,8 @@ export type ProductCsvColumnName =
   | "FIRST_MILE_SHIPPING_PRICE_D_DISABLED"
   | "EFFECTIVE_DATE"
   | "CALCULATED_SHIPPING"
-  | "CALIFORNIA_PROP65_WARNING_TYPE"
-  | "CALIFORNIA_PROP65_CHEMICAL_NAMES"
+  | "CALIFORNIA_PROPOSITION_65_WARNING_TYPE"
+  | "CALIFORNIA_PROPOSITION_65_CHEMICAL_NAMES"
   | "CATEGORY_EXPERIENCE_ELIGIBILITY"
   | "SUBCATEGORY_ID"
   | "AD"
@@ -10820,6 +10994,7 @@ export type ProductTrueTagInfoSchema = {
   readonly counterfeitLastTagged?: Maybe<Datetime>;
   readonly inappropriateViolation: InappropriateViolationSchema;
   readonly inappropriateLastTagged?: Maybe<Datetime>;
+  readonly subreason?: Maybe<TaggingViolationSubcategory>;
 };
 
 export type ProductUpsertInput = {
@@ -11498,8 +11673,7 @@ export type RemoveVideoInput = {
   readonly productId: Scalars["ObjectIdType"];
 };
 
-export type ReplyMerchantWarningInput = {
-  readonly warningId: Scalars["ObjectIdType"];
+export type ReplyInfractionInput = {
   readonly message: Scalars["String"];
   readonly uploadFiles?: Maybe<ReadonlyArray<FileInput>>;
 };
@@ -11545,6 +11719,11 @@ export type ReportOrderReasons =
   | "OTHER"
   | "SUSPICIOUS_ORDER"
   | "SUSPECTED_ILLEGAL_ACTIVITY";
+
+export type RequestPaymentInput = {
+  readonly idFiles?: Maybe<ReadonlyArray<FileInput>>;
+  readonly agreementFiles?: Maybe<ReadonlyArray<FileInput>>;
+};
 
 export type ResetPasswordMutation = {
   readonly __typename?: "ResetPasswordMutation";
@@ -12592,11 +12771,12 @@ export type SellerProfileVerificationDocType =
   | "recent_business_returns";
 
 export type SellerProfileVerificationStatus =
-  | "REVIEWING"
+  | "COMPLETE"
+  | "REQUEST_INFO"
   | "REJECTED"
+  | "REVIEWING"
   | "APPROVED"
-  | "INCOMPLETE"
-  | "COMPLETE";
+  | "INCOMPLETE";
 
 export type SellerVerificationAdminFeedback = {
   readonly __typename?: "SellerVerificationAdminFeedback";
@@ -13029,6 +13209,7 @@ export type ShippingSettingMutations = {
 
 export type ShippingSettingMutationsUpdateShippingSettingArgs = {
   useShopifyShippingRate?: Maybe<Scalars["Boolean"]>;
+  flatRateShippingOptInStatus?: Maybe<Scalars["Boolean"]>;
   countryShipping?: Maybe<ReadonlyArray<CountryShippingSetting>>;
   otherCountriesShipping?: Maybe<OtherCountriesShippingSetting>;
   isUpsert?: Maybe<Scalars["Boolean"]>;
@@ -13152,6 +13333,17 @@ export type StoreReviewSummarySchema = {
   readonly __typename?: "StoreReviewSummarySchema";
   readonly count: Scalars["Int"];
   readonly averageRating: Scalars["Float"];
+};
+
+export type SubmitAttributeExtraction = {
+  readonly __typename?: "SubmitAttributeExtraction";
+  readonly ok: Scalars["Boolean"];
+  readonly message?: Maybe<Scalars["String"]>;
+};
+
+export type SubmitAttributeExtractionInput = {
+  readonly jobId: Scalars["ObjectIdType"];
+  readonly attributeExtractionResult: ReadonlyArray<ExtractionResultInput>;
 };
 
 export type SubmitCategoryClassification = {
@@ -13283,6 +13475,7 @@ export type TaggingMutations = {
   readonly markProductTaxonomyCategoryDisputeUpdated?: Maybe<MarkProductTaxonomyCategoryDisputeUpdated>;
   readonly markProductTaxonomyCategoryDisputeUnchanged?: Maybe<MarkProductTaxonomyCategoryDisputeUnchanged>;
   readonly getAndClaimProductTaxonomyCategoryDispute?: Maybe<GetAndClaimProductTaxonomyCategoryDisputeForReview>;
+  readonly submitAttributeExtraction?: Maybe<SubmitAttributeExtraction>;
 };
 
 export type TaggingMutationsSubmitCategoryClassificationArgs = {
@@ -13309,6 +13502,10 @@ export type TaggingMutationsGetAndClaimProductTaxonomyCategoryDisputeArgs = {
   input?: Maybe<GetAndClaimProductTaxonomyCategoryDisputeForReviewInput>;
 };
 
+export type TaggingMutationsSubmitAttributeExtractionArgs = {
+  input: SubmitAttributeExtractionInput;
+};
+
 export type TaggingServiceSchema = {
   readonly __typename?: "TaggingServiceSchema";
   readonly ipViolationTaggingManagement?: Maybe<IpViolationTaggingManagement>;
@@ -13318,6 +13515,7 @@ export type TaggingServiceSchema = {
   readonly categoryClassificationTaggerJob?: Maybe<CategoryClassificationTaggerJobSchema>;
   readonly productTaggingStatus?: Maybe<ProductTaggingStatusSchema>;
   readonly productTaxonomyCategoryDisputeHub?: Maybe<ProductTaxonomyCategoryDisputeHub>;
+  readonly attributeExtractionTaggerJob?: Maybe<AttributeExtractionTaggerJobSchema>;
 };
 
 export type TaggingServiceSchemaProductTaggingStatusArgs = {
@@ -13364,6 +13562,7 @@ export type TaggingViolationSubReasonCode =
   | "SIZE_MISREPRESENTATION_MAIN_IMAGE"
   | "SIZE_NOT_AS_ADVERTISED"
   | "SEXUALLY_SUGGESTIVE_CONTENT"
+  | "LISTING_PROMOTES_HIDING_PROHIBITED_SUBSTANCE"
   | "PENICILLIN"
   | "VHS_TAPE"
   | "VIDEO_GAME"
@@ -13428,6 +13627,7 @@ export type TaggingViolationSubReasonCode =
   | "ANTI_GAY"
   | "UNVERFIED_PRICE_INFORMATION"
   | "TOBACCO_SEEDS"
+  | "PROHIBITED_SUBSTANCE_PIPE"
   | "BLURRED_WATERMARKS"
   | "COMPETITOR_WATERMARK"
   | "ODOMETER_CORRECTION_TOOLS"
@@ -14813,7 +15013,10 @@ export type UpsertMerchantWarning = {
 
 export type UpsertMerchantWarningInput = {
   readonly action: MerchantWarningAction;
-  readonly messageInput?: Maybe<ReplyMerchantWarningInput>;
+  readonly warningId?: Maybe<Scalars["ObjectIdType"]>;
+  readonly messageInput?: Maybe<ReplyInfractionInput>;
+  readonly disputeInput?: Maybe<DisputeInfractionInput>;
+  readonly requestPaymentInput?: Maybe<RequestPaymentInput>;
 };
 
 export type UpsertOrderInfractionDispute = {
@@ -16022,6 +16225,26 @@ export type WssMerchantLevelType =
   | "SILVER"
   | "BRONZE";
 
+export type WssMetricTrend =
+  | "UNSPECIFIED"
+  | "INCREASING"
+  | "DECREASING"
+  | "SAME";
+
+export type WssMetricType =
+  | "ORDER_FULFILLMENT_RATE"
+  | "ORDER_FULFILLMENT_SPEED"
+  | "VALID_TRACKING_RATE"
+  | "AVERAGE_USER_RATING"
+  | "PRODUCT_QUALITY_REFUND"
+  | "LOGISTICS_REFUND"
+  | "PROHIBITED_PRODUCT"
+  | "MISLEADING_LISTING"
+  | "MISLEADING_TRACKING"
+  | "ORDER_CANCELLATION"
+  | "UNFULFILLED_ORDER"
+  | "LATE_CONFIRMED_FULFILLMENT";
+
 export type WssOrderFulfillment = {
   readonly __typename?: "WSSOrderFulfillment";
   readonly orderId?: Maybe<Scalars["ObjectIdType"]>;
@@ -16066,12 +16289,12 @@ export type WssPerformanceDeepDiveHub = {
   readonly productQualityRefund: WssProductRefundPage;
   readonly productRating: WssProductRatingPage;
   readonly qualityRefundBreakdown: ReadonlyArray<WssRefundBreakdown>;
-  readonly fulfillmentRateDenominator: Scalars["Int"];
-  readonly validTrackingRateDenominator: Scalars["Int"];
-  readonly hasFulfillmentSpeedOrderCount: Scalars["Int"];
+  readonly fulfillmentRateDenominator?: Maybe<Scalars["Int"]>;
+  readonly validTrackingRateDenominator?: Maybe<Scalars["Int"]>;
+  readonly hasFulfillmentSpeedOrderCount?: Maybe<Scalars["Int"]>;
   readonly refundRateDenominator?: Maybe<Scalars["Int"]>;
   readonly qualityRefundCount?: Maybe<Scalars["Int"]>;
-  readonly totalRatingsReceived: Scalars["Int"];
+  readonly totalRatingsReceived?: Maybe<Scalars["Int"]>;
   readonly carriersInFulfillment?: Maybe<ReadonlyArray<Scalars["String"]>>;
   readonly carriersInRefund?: Maybe<ReadonlyArray<Scalars["String"]>>;
   readonly destinationsInFulfillment?: Maybe<ReadonlyArray<Scalars["String"]>>;
@@ -16229,6 +16452,19 @@ export type WsssUnfulfilledReasons =
   | "ORDER_EXPIRED"
   | "ORDER_REFUNDED"
   | "ORDER_TRACKING_CANCELLED";
+
+export type WssThingsToWatch = {
+  readonly __typename?: "WSSThingsToWatch";
+  readonly metricType?: Maybe<WssMetricType>;
+  readonly metricTrend?: Maybe<WssMetricTrend>;
+  readonly metricValue?: Maybe<Scalars["Float"]>;
+  readonly recordTime?: Maybe<Datetime>;
+};
+
+export type WssThingsToWatchBoard = {
+  readonly __typename?: "WSSThingsToWatchBoard";
+  readonly dataSlice: ReadonlyArray<WssThingsToWatch>;
+};
 
 export type WssTier =
   | "PLATINUM"
