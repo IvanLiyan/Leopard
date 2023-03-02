@@ -5,7 +5,7 @@ import PageRoot from "@core/components/PageRoot";
 import PageGuide from "@core/components/PageGuide";
 import PageHeader from "@core/components/PageHeader";
 import { Layout } from "@ContextLogic/lego";
-import { useStringQueryParam } from "@core/toolkit/url";
+import { useStringQueryParam, zendeskURL } from "@core/toolkit/url";
 import { useInfractionDetailsStylesheet } from "@infractions/styles";
 import InfractionDetailsCard from "@infractions/components/cards/InfractionDetailsCard";
 import InfractionImpactCard from "@infractions/components/cards/InfractionImpactCard";
@@ -26,14 +26,15 @@ import {
   InfractionQueryVariables,
   INFRACTION_QUERY,
 } from "@infractions/queries/infraction";
-import MuiSkeleton, { SkeletonProps } from "@mui/material/Skeleton";
 import { Text } from "@ContextLogic/atlas-ui";
 import {
   CommerceTransactionStateDisplayText,
   MerchantWarningImpactTypeDisplayText,
-  MerchantWarningReasonData,
   MerchantWarningStateDisplayText,
+  getInfractionData,
 } from "@infractions/toolkit";
+import { useUserStore } from "@core/stores/UserStore";
+import Skeleton from "@core/components/Skeleton";
 
 const PageLayout = ({
   columns,
@@ -58,20 +59,19 @@ const PageLayout = ({
   );
 };
 
-const Skeleton = (props: Omit<SkeletonProps, "sx">) => {
-  const sx = { transform: "none", bgcolor: "#DCE5E9" };
-  return <MuiSkeleton {...props} sx={sx} />;
-};
-
 const InfractionsPage: NextPage<Record<string, never>> = () => {
-  const [id] = useStringQueryParam("id");
+  const [infractionId] = useStringQueryParam("id");
+  const { merchantId } = useUserStore();
+
   const { data, loading, error } = useQuery<
     InfractionQueryResponse,
     InfractionQueryVariables
   >(INFRACTION_QUERY, {
     variables: {
-      id,
+      infractionId,
+      merchantId: merchantId ?? "", // query is skipped in this case
     },
+    skip: merchantId == null,
   });
 
   if (loading) {
@@ -106,13 +106,25 @@ const InfractionsPage: NextPage<Record<string, never>> = () => {
     );
   }
 
+  const infractionDisplayText = getInfractionData(
+    infraction.reason.reason,
+    infraction.productTrueTagInfo?.counterfeitViolation?.reason ??
+      infraction.productTrueTagInfo?.inappropriateViolation?.reason ??
+      undefined,
+    infraction.productTrueTagInfo?.subreason?.subcategory,
+  );
+
   const infractionContext: InfractionContextType = {
     infraction: {
-      id,
-      title: MerchantWarningReasonData[infraction.reason.reason].title,
-      body: MerchantWarningReasonData[infraction.reason.reason].body,
-      policy: MerchantWarningReasonData[infraction.reason.reason].policy,
-      faq: MerchantWarningReasonData[infraction.reason.reason].faq,
+      id: infractionId,
+      title: infractionDisplayText.title,
+      body: (infraction.merchantActions ?? []).includes("PRODUCT_AUTHORIZATION")
+        ? i`[Learn more](${zendeskURL(
+            "mu360055998653",
+          )}) about the requirements needed to offer this category of product on Wish.`
+        : infractionDisplayText.body,
+      policy: infractionDisplayText.policy,
+      faq: infractionDisplayText.faq,
       state: MerchantWarningStateDisplayText[infraction.state],
       issuedDate: infraction.createdTime.datetime,
       disputeDeadline: infraction.effectiveDisputeDeadlineDate.datetime,
@@ -141,7 +153,8 @@ const InfractionsPage: NextPage<Record<string, never>> = () => {
       order: infraction.order
         ? {
             orderCancellationReason:
-              infraction.order && infraction.order.refundItems.length > 0
+              infraction.order?.refundItems &&
+              infraction.order.refundItems.length > 0
                 ? infraction.order.refundItems
                     .map(({ reasonInfo: { text } }) => text)
                     .join(", ")
@@ -194,6 +207,11 @@ const InfractionsPage: NextPage<Record<string, never>> = () => {
         note: proof.message ?? "--",
       })),
       actions: infraction.merchantActions ?? [],
+      brandAuthorizations:
+        data?.brand?.brandAuthorizations?.map((authorization) => ({
+          id: authorization.id,
+          name: authorization.brand.name,
+        })) ?? [],
     },
   };
 

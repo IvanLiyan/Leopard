@@ -48,6 +48,10 @@ export type InfractionContextType = {
       readonly note: string;
     }>;
     readonly actions: ReadonlyArray<MerchantWarningFixAction>;
+    readonly brandAuthorizations: ReadonlyArray<{
+      readonly id: string;
+      readonly name: string;
+    }>;
   };
 };
 
@@ -70,5 +74,6 @@ export const InfractionContext = createContext<InfractionContextType>({
     brand: undefined,
     infractionEvidence: [],
     actions: [],
+    brandAuthorizations: [],
   },
 });

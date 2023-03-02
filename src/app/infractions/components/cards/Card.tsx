@@ -4,7 +4,7 @@ import { Card as LegoCard, H5, H5Props, Divider } from "@ContextLogic/lego";
 import { useInfractionDetailsStylesheet } from "@infractions/styles";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
-type Props = Pick<BaseProps, "children" | "className" | "style"> & {
+export type Props = Pick<BaseProps, "children" | "className" | "style"> & {
   readonly title: H5Props["children"];
 };
 

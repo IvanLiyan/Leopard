@@ -146,7 +146,7 @@ export const resizedContestImageURL = (
 };
 
 export const zendeskURL = (articleId: string): string => {
-  const zendeskLocale = getZendeskLocale();
+  const zendeskLocale = getZendeskLocaleDEPRECATED();
   const zendeskUrl = `https://merchantfaq.wish.com/hc/${zendeskLocale}/articles/${articleId}`;
   return absExtURL(zendeskUrl);
 };
@@ -155,7 +155,7 @@ export const zendeskCategoryURL = (
   categoryId: string,
   locale?: string,
 ): string => {
-  const zendeskLocale = getZendeskLocale(locale);
+  const zendeskLocale = getZendeskLocaleDEPRECATED(locale);
   const zendeskCategoryUrl = `https://merchantfaq.wish.com/hc/${zendeskLocale}/categories/${categoryId}`;
   return absExtURL(zendeskCategoryUrl);
 };
@@ -164,19 +164,17 @@ export const zendeskSectionURL = (
   section_id: string,
   locale?: string,
 ): string => {
-  const zendeskLocale = getZendeskLocale(locale);
+  const zendeskLocale = getZendeskLocaleDEPRECATED(locale);
   const zendeskUrl = `https://merchantfaq.wish.com/hc/${zendeskLocale}/sections/${section_id}`;
   return absExtURL(zendeskUrl);
 };
 
-// will fix this in https://jira.wish.site/browse/MAL-291
-// export const getZendeskLocale = (localeProp?: string): string => {
-//   // const { locale } = LocalizationStore.instance();
-//   const zendeskLocale = "en"; // localeProp || locale || "en";
-export const getZendeskLocale = (locale?: string): string => {
-  // @ ts-expect-error: need to add locale_info to GQL (https://jira.wish.site/browse/MKL-54838)
-  // TODO [lliepert, yzhang]: check to make sure this still works for Chinese merchants
-  const zendeskLocale = locale || "en"; // window?.locale_info?.locale || "en";
+// zendesk has been deprecated; new salesforce help desk remembers locale via
+// cookies. this function will be re-evaluated when migrating the codebase from
+// zendesk to salesforce, but until then we can rely on the cookies to handle
+// locale on all loads but first ever load of the help desk
+export const getZendeskLocaleDEPRECATED = (locale?: string): string => {
+  const zendeskLocale = locale || "en";
 
   if (zendeskLocale === "en") {
     return "en-us";

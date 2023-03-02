@@ -6,13 +6,21 @@ import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { Text } from "@ContextLogic/atlas-ui";
 import { useTheme } from "@core/stores/ThemeStore";
 import { css } from "@core/toolkit/styling";
+import Link from "@core/components/Link";
+import Icon from "@core/components/Icon";
+import { merchFeURL } from "@core/toolkit/router";
+
+export type File = {
+  readonly displayFilename: string;
+  readonly fileUrl: string;
+};
 
 export type Message = {
-  type: "RECEIVED" | "SENT";
-  author: string;
-  dateSent: string;
-  message: string;
-  files: ReadonlyArray<unknown>;
+  readonly type: "RECEIVED" | "SENT";
+  readonly author: string | undefined;
+  readonly dateSent: string | undefined;
+  readonly message: string | undefined;
+  readonly files: ReadonlyArray<File>;
 };
 
 type Props = Pick<BaseProps, "className" | "style"> & Message;
@@ -26,7 +34,6 @@ const Message: React.FC<Props> = ({
   message,
   files,
 }) => {
-  void files; // TODO
   const styles = useStylesheet();
 
   return (
@@ -38,19 +45,37 @@ const Message: React.FC<Props> = ({
         className,
       ]}
     >
-      <Text>{message}</Text>
+      {files.map(({ displayFilename, fileUrl }, i) => (
+        <Link
+          key={i}
+          href={merchFeURL(fileUrl)}
+          download
+          openInNewTab
+          style={{ marginBottom: i == files.length ? 16 : 8 }}
+        >
+          <Icon name="file" style={styles.icon} />
+          <Text variant="bodyS">{displayFilename}</Text>
+        </Link>
+      ))}
+      {message != undefined && <Text>{message}</Text>}
       <div className={css(styles.metadataContainer)}>
-        <Text variant="bodyS" className={css(styles.metadata)}>
-          From
-        </Text>
-        &nbsp;
-        <Text variant="bodySStrong" className={css(styles.metadata)}>
-          {author}
-        </Text>
+        {author != undefined && (
+          <>
+            <Text variant="bodyS" className={css(styles.metadata)}>
+              From
+            </Text>
+            &nbsp;
+            <Text variant="bodySStrong" className={css(styles.metadata)}>
+              {author}
+            </Text>
+          </>
+        )}
       </div>
-      <Text variant="bodyS" className={css(styles.metadata)}>
-        {dateSent}
-      </Text>
+      {dateSent != undefined && (
+        <Text variant="bodyS" className={css(styles.metadata)}>
+          {dateSent}
+        </Text>
+      )}
     </Layout.FlexColumn>
   );
 };
@@ -79,6 +104,11 @@ const useStylesheet = () => {
       },
       metadata: {
         color: textLight,
+      },
+      icon: {
+        height: 16,
+        width: 16,
+        paddingRight: 4,
       },
     });
   }, [secondaryLightest, surfaceLighter, textLight]);

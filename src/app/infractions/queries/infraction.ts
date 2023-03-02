@@ -1,8 +1,12 @@
 import { gql } from "@apollo/client";
 import {
+  BrandAuthorizationSchema,
+  BrandSchema,
+  CounterfeitViolationSchema,
   CurrencyValue,
   Datetime,
   ImageSchema,
+  InappropriateViolationSchema,
   MerchantWarningImpactSchema,
   MerchantWarningProofSchema,
   MerchantWarningReasonSchema,
@@ -12,20 +16,46 @@ import {
   ProductSchema,
   ShippingDetailsSchema,
   ShippingProviderSchema,
+  TaggingViolationSubcategory,
   TakedownRequestSchema,
   TrackingCheckpointResultingStateSchema,
   TrackingDisputeSchema,
 } from "@schema";
+import {
+  ReplyFields,
+  REPLY_FIELDS,
+  TrackingMessageFields,
+  TRACKING_MESSAGE_FIELDS,
+} from "./messages";
 
+// note: we pre-fetch the initial messages to prime the
+// cache for subsequent query. this reduces the time the
+// messages component will be in the loading state
 export const INFRACTION_QUERY = gql`
-  query InfractionQuery($id: ObjectIdType) {
+  ${REPLY_FIELDS}
+  ${TRACKING_MESSAGE_FIELDS}
+  query InfractionQuery(
+    $infractionId: ObjectIdType
+    $merchantId: ObjectIdType
+  ) {
     policy {
-      merchantWarning(id: $id) {
+      merchantWarning(id: $infractionId) {
         state
         wssImpact
         merchantActions
         reason {
           reason
+        }
+        productTrueTagInfo {
+          counterfeitViolation {
+            reason
+          }
+          inappropriateViolation {
+            reason
+          }
+          subreason {
+            subcategory
+          }
         }
         createdTime {
           datetime
@@ -100,12 +130,26 @@ export const INFRACTION_QUERY = gql`
         }
         trackingDispute {
           state
+          messages {
+            ...TrackingMessageFields
+          }
         }
         takedownRequest {
           name
           contact
           email
           phoneNumber
+        }
+        replies {
+          ...ReplyFields
+        }
+      }
+    }
+    brand {
+      brandAuthorizations(merchantId: $merchantId) {
+        id
+        brand {
+          name
         }
       }
     }
@@ -119,6 +163,17 @@ export type InfractionQueryResponse = {
       "state" | "wssImpact" | "merchantActions"
     > & {
       readonly reason: Pick<MerchantWarningReasonSchema, "reason">;
+      readonly productTrueTagInfo?: {
+        readonly counterfeitViolation: Pick<
+          CounterfeitViolationSchema,
+          "reason"
+        >;
+        readonly inappropriateViolation: Pick<
+          InappropriateViolationSchema,
+          "reason"
+        >;
+        readonly subreason?: Pick<TaggingViolationSubcategory, "subcategory">;
+      };
       readonly createdTime: Pick<Datetime, "datetime">;
       readonly effectiveDisputeDeadlineDate: Pick<
         Datetime,
@@ -160,19 +215,30 @@ export type InfractionQueryResponse = {
         readonly shippingDetails?: Pick<ShippingDetailsSchema, "trackingId"> & {
           readonly provider?: Pick<ShippingProviderSchema, "name">;
         };
-        readonly refundItems: ReadonlyArray<{
+        readonly refundItems?: ReadonlyArray<{
           readonly reasonInfo: Pick<OrderRefundReasonSchema, "text">;
         }>;
       };
-      readonly trackingDispute?: Pick<TrackingDisputeSchema, "state">;
+      readonly trackingDispute?: Pick<TrackingDisputeSchema, "state"> & {
+        readonly messages: ReadonlyArray<TrackingMessageFields>;
+      };
       readonly takedownRequest?: Pick<
         TakedownRequestSchema,
         "name" | "contact" | "email" | "phoneNumber"
       >;
+      readonly replies: ReadonlyArray<ReplyFields>;
     };
+  };
+  readonly brand?: {
+    readonly brandAuthorizations?: ReadonlyArray<
+      Pick<BrandAuthorizationSchema, "id"> & {
+        readonly brand: Pick<BrandSchema, "name">;
+      }
+    >;
   };
 };
 
 export type InfractionQueryVariables = {
-  readonly id: string;
+  readonly infractionId: string;
+  readonly merchantId: string;
 };

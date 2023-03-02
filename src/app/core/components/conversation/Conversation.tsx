@@ -7,7 +7,10 @@ import { useMountEffect } from "@ContextLogic/lego/toolkit/hooks";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { Button } from "@ContextLogic/atlas-ui";
 import { css } from "@core/toolkit/styling";
-import MessageComponent, { Message as MessageType } from "./Message";
+import MessageComponent, {
+  Message as MessageType,
+  File as FileType,
+} from "./Message";
 import Divider from "./Divider";
 import UploadFileModal, {
   Props as FileUploadModalProps,
@@ -17,6 +20,7 @@ import { ci18n } from "@core/toolkit/i18n";
 
 // re-exported types for ease of use
 export type Attachment = AttachmentType;
+export type File = FileType;
 export type Message = MessageType;
 export type MessageGroup = {
   readonly title?: string;

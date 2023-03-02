@@ -7,7 +7,6 @@ import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { css } from "@core/toolkit/styling";
 import { InfractionContext } from "@infractions/InfractionContext";
 import ReviewInfractionDetails from "./actionCards/ReviewInfractionDetails";
-import GetProductAuthorization from "./actionCards/GetProductAuthorization";
 import ProvideProofOfAuthenticity from "./actionCards/ProvideProofOfAuthenticity";
 import EditYourProductListing from "./actionCards/EditYourProductListing";
 import UpdateMaxDeliveryDays from "./actionCards/UpdateMaxDeliveryDays";
@@ -19,9 +18,10 @@ import Dispute from "./actionCards/Dispute";
 Following MerchantWarningFixAction are not fixes, instead addressed elsewhere in UI
   | "REQUEST_PAYMENT_RELEASE"
   | "MESSAGE"
+
+Fix GET_PRODUCT_AUTHORIZATION is handled in description.
 */
 const Fixes = [
-  "GET_PRODUCT_AUTHORIZATION",
   "PROVE_AUTHENTICITY",
   "EDIT_PRODUCT_LISTING",
   "UPDATE_MAX_DELIVERY_DAYS",
@@ -33,7 +33,6 @@ const Fixes = [
 type Fix = typeof Fixes[number];
 
 const FixComponent: { readonly [fix in Fix]: React.ReactFragment } = {
-  GET_PRODUCT_AUTHORIZATION: <GetProductAuthorization />,
   PROVE_AUTHENTICITY: <ProvideProofOfAuthenticity />,
   EDIT_PRODUCT_LISTING: <EditYourProductListing />,
   UPDATE_MAX_DELIVERY_DAYS: <UpdateMaxDeliveryDays />,
