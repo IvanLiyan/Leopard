@@ -1,6 +1,5 @@
 import { isValidURL } from "@core/components/Link";
 import { NextRouter, useRouter as useNextRouter } from "next/router";
-import { isDev } from "@core/stores/EnvironmentStore";
 
 /**
  * Return the corresponding MD url. Note that the resulting link should only be used with
@@ -10,11 +9,6 @@ import { isDev } from "@core/stores/EnvironmentStore";
 export const merchFeURL = (link: string): string => {
   if (typeof window == "undefined") {
     return `https://merchant.wish.com${link}`;
-  }
-
-  if (isDev) {
-    const MD_URL = process.env.NEXT_PUBLIC_MD_URL || ""; // used only in dev
-    return `${MD_URL}${link}`;
   }
 
   return `${window.location.origin}${link}`;
