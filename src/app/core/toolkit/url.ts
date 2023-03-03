@@ -1,11 +1,11 @@
 import { useCallback, useMemo } from "react";
 import moment from "moment/moment";
-import {
-  isDev,
-  isStaging,
-  isTesting,
-  isSandbox,
-} from "@core/stores/EnvironmentStore";
+// import {
+//   isDev,
+//   isStaging,
+//   isTesting,
+//   isSandbox,
+// } from "@core/stores/EnvironmentStore";
 import NavigationStore from "@core/stores/NavigationStore";
 import isEqual from "lodash/isEqual";
 import { useRouter } from "next/router";
@@ -72,6 +72,10 @@ export const absExtURL = (url: string): string => {
 
 export const wishURL = (path: string): string => {
   const domain = (() => {
+    return "wish.com";
+
+    // TODO: bring back other envs for wish URLs
+    /*
     if (isDev || isStaging) {
       return "staging.wish.com";
     } else if (isTesting) {
@@ -81,6 +85,7 @@ export const wishURL = (path: string): string => {
     } else {
       return "wish.com";
     }
+    */
   })();
 
   return `${location.protocol}//${domain}${path}`;
