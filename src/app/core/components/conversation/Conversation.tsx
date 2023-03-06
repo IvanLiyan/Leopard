@@ -162,10 +162,15 @@ const Conversation: React.FC<Props> = ({
               }}
               className={css(styles.button)}
             >
-              {ci18n(
+              {`${ci18n(
                 "button text, allows a merchant to upload a file",
                 "Upload File",
-              )}
+              )}${
+                fileUploadProps.attachments &&
+                fileUploadProps.attachments.length > 0
+                  ? ` (${fileUploadProps.attachments.length})`
+                  : ""
+              }`}
             </Button>
             <UploadFileModal
               isOpen={uploadFileModalOpen}

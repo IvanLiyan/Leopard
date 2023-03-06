@@ -3,29 +3,26 @@ import { StyleSheet } from "aphrodite";
 import { observer } from "mobx-react";
 
 import { Text } from "@ContextLogic/atlas-ui";
-import { AttachmentInfo } from "@ContextLogic/lego";
 import SecureFileInput, {
   SecureFileInputProps,
+  Attachment as AttachmentType,
 } from "@core/components/SecureFileInput";
 import { css } from "@core/toolkit/styling";
 import Modal from "@core/components/modal/Modal";
 import ModalTitle from "@core/components/modal/ModalTitle";
-import ModalFooter from "@core/components/modal/ModalFooter";
 import { useLocalizationStore } from "@core/stores/LocalizationStore";
 
 // re-exported types for ease of use
-export type Attachment = AttachmentInfo;
+export type Attachment = AttachmentType;
 
 export type Props = Omit<SecureFileInputProps, "style"> & {
   readonly isOpen: boolean;
   readonly onClose: () => unknown;
-  readonly onSend: () => unknown;
 };
 
 const FileUploadModal: React.FC<Props> = ({
   isOpen,
   onClose,
-  onSend,
   ...secureFileInputProps
 }) => {
   const styles = useStylesheet();
@@ -49,14 +46,6 @@ const FileUploadModal: React.FC<Props> = ({
       <Text variant="bodyS" className={css(styles.text)}>
         Select a {acceptsString} smaller than {maxSizeMB}MB.
       </Text>
-      <ModalFooter
-        action={{
-          text: i`Send`,
-          onClick: () => {
-            onSend();
-          },
-        }}
-      />
     </Modal>
   );
 };

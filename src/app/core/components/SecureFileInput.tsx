@@ -6,7 +6,11 @@ import {
   FileInputProps,
   FileUploadOptions,
   FileUploadResponse,
+  AttachmentInfo,
 } from "@ContextLogic/lego";
+
+// re-exported types for ease of use
+export type Attachment = AttachmentInfo;
 
 export type SecureFileInputProps = Omit<
   FileInputProps,

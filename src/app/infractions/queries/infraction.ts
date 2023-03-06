@@ -129,6 +129,7 @@ export const INFRACTION_QUERY = gql`
           }
         }
         trackingDispute {
+          id
           state
           messages {
             ...TrackingMessageFields
@@ -219,7 +220,7 @@ export type InfractionQueryResponse = {
           readonly reasonInfo: Pick<OrderRefundReasonSchema, "text">;
         }>;
       };
-      readonly trackingDispute?: Pick<TrackingDisputeSchema, "state"> & {
+      readonly trackingDispute?: Pick<TrackingDisputeSchema, "id" | "state"> & {
         readonly messages: ReadonlyArray<TrackingMessageFields>;
       };
       readonly takedownRequest?: Pick<

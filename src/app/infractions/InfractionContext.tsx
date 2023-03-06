@@ -25,6 +25,7 @@ export type InfractionContextType = {
       readonly confirmedFulfillmentDate: string | undefined;
       readonly confirmedDeliveryDate: string | undefined;
       readonly autoRefundedDate: string | undefined;
+      readonly trackingDisputeId: string | undefined;
       readonly trackingStatus: string | undefined;
       readonly trackingId: string | undefined;
       readonly carrier: string | undefined;

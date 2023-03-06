@@ -8,27 +8,39 @@ import { InfractionContext } from "@infractions/InfractionContext";
 import { useInfractionDetailsStylesheet } from "@infractions/styles";
 import { ci18n } from "@core/toolkit/i18n";
 import { DisputeStatusDisplayText } from "@infractions/toolkit";
+import Tooltip from "@mui/material/Tooltip";
 
 const Dispute: React.FC<Pick<BaseProps, "className" | "style">> = ({
   className,
   style,
 }) => {
   const {
-    infraction: { id, disputeStatus, disputeDeadline },
+    infraction: { id, disputeStatus, disputeDeadline, disputeDeadlineUnix },
   } = useContext(InfractionContext);
   const styles = useInfractionDetailsStylesheet();
+
+  const now = Date.now() / 1000;
+
+  const DisputeButton = ({ disabled }: { disabled?: boolean }) => (
+    <Button href={`/dispute-infraction/${id}`} disabled={disabled}>
+      Dispute Infraction
+    </Button>
+  );
 
   return (
     <ActionCard
       style={[className, style]}
       title={ci18n("card title", "Dispute")}
       ctaButtons={
-        <Button
-          // TODO: add logic for gating this by dispute status state
-          href={`/dispute-infraction/${id}`}
-        >
-          Dispute Infraction
-        </Button>
+        now > disputeDeadlineUnix ? (
+          <Tooltip
+            title={i`You cannot take this action because the dispute deadline has passed.`}
+          >
+            <DisputeButton disabled />
+          </Tooltip>
+        ) : (
+          <DisputeButton />
+        )
       }
     >
       <Markdown

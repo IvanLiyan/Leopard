@@ -11,21 +11,26 @@ import { CellInfo, Table } from "@ContextLogic/lego";
 import { MerchantWarningProofTypeDisplayText } from "@infractions/toolkit";
 
 const getIdLink: {
-  readonly [type in MerchantWarningProofType]: (id: string) => string;
+  readonly [type in MerchantWarningProofType]: (props: {
+    id: string;
+    productId?: string | undefined;
+  }) => string;
 } = {
-  MERCHANT: (id) => `[${id}](${"#TODO"})`,
-  PRODUCT: (id) => `[${id}](${wishProductURL(id)})`,
-  VARIATION: (id) => `[${id}](${"#TODO"})`,
-  PRODUCT_RATING: (id) => `[${id}](${"#TODO"})`,
-  TICKET: (id) => `[${id}](${`/ticket/${id}`})`,
-  ORDER: (id) => `[${id}](${`/order/${id}`})`,
+  MERCHANT: ({ id }) => id,
+  PRODUCT: ({ id }) => `[${id}](${wishProductURL(id)})`,
+  VARIATION: ({ id, productId }) =>
+    productId ? `[${id}](${wishProductURL(productId)})` : id,
+  PRODUCT_RATING: ({ id, productId }) =>
+    productId ? `[${id}](${wishProductURL(productId)})` : id,
+  TICKET: ({ id }) => `[${id}](${`/ticket/${id}`})`,
+  ORDER: ({ id }) => `[${id}](${`/order/${id}`})`,
 };
 
 const InfractionEvidenceCard: React.FC<
   Pick<BaseProps, "className" | "style">
 > = ({ className, style }) => {
   const {
-    infraction: { infractionEvidence },
+    infraction: { infractionEvidence, product },
   } = useContext(InfractionContext);
 
   if (infractionEvidence.length < 1) {
@@ -55,7 +60,14 @@ const InfractionEvidenceCard: React.FC<
           columnKey="id"
         >
           {({ row }: CellInfo<unknown, typeof infractionEvidence[0]>) => {
-            return <Markdown text={getIdLink[row.type](row.id)} />;
+            return (
+              <Markdown
+                text={getIdLink[row.type]({
+                  id: row.id,
+                  productId: product?.productId,
+                })}
+              />
+            );
           }}
         </Table.Column>
         <Table.Column

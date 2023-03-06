@@ -35,6 +35,7 @@ import {
 } from "@infractions/toolkit";
 import { useUserStore } from "@core/stores/UserStore";
 import Skeleton from "@core/components/Skeleton";
+import ErrorBoundary from "@core/components/ErrorBoundary";
 
 const PageLayout = ({
   columns,
@@ -72,6 +73,7 @@ const InfractionsPage: NextPage<Record<string, never>> = () => {
       merchantId: merchantId ?? "", // query is skipped in this case
     },
     skip: merchantId == null,
+    errorPolicy: "all", // temporarily allowing errors while BE fixes things
   });
 
   if (loading) {
@@ -94,12 +96,15 @@ const InfractionsPage: NextPage<Record<string, never>> = () => {
 
   const infraction = data?.policy?.merchantWarning;
 
-  if (error || infraction == null) {
+  // temporarily allowing errors while BE fixes things
+  // if (error || infraction == null) {
+  void error;
+  if (infraction == null) {
     return (
       <PageLayout
         columns={[
           <Text key={1} variant="bodyLStrong">
-            Something went wrong. Please try again later.
+            Something went wrong.
           </Text>,
         ]}
       />
@@ -170,6 +175,7 @@ const InfractionsPage: NextPage<Record<string, never>> = () => {
             confirmedDeliveryDate:
               infraction.order.tracking?.deliveredDate?.datetime,
             autoRefundedDate: infraction.order.refundedTime?.datetime,
+            trackingDisputeId: infraction.trackingDispute?.id,
             trackingStatus:
               infraction.order.tracking?.checkpoints &&
               infraction.order.tracking.checkpoints.length > 0
@@ -230,7 +236,9 @@ const InfractionsPage: NextPage<Record<string, never>> = () => {
           <>
             <FixesCard />
             <RequestPaymentCard />
-            <MessagesCard />
+            <ErrorBoundary>
+              <MessagesCard />
+            </ErrorBoundary>
           </>,
         ]}
       />

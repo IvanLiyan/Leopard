@@ -61,7 +61,7 @@ const UseExistingProofModal: React.FC<UseExistingProofModalContentProps> = ({
       </div>
       <ModalFooter
         action={{
-          text: ci18n("CTA button", "Submit"),
+          text: ci18n("CTA button", "Send"),
           onClick: () => {
             alert("TODO");
           },

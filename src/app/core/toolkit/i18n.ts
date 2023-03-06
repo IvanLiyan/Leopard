@@ -121,7 +121,7 @@ function _format(jedChain: any, args: any) {
   return result.replace(descPlaceholderRegex, replacer);
 }
 
-function _i18n(str: string, ...args: any[]) {
+function _i18n(str: string, ...args: any[]): string {
   let result = jedi18n.translate(str);
   result = _format(result, args);
 
@@ -148,7 +148,7 @@ function _ni18n(
   return str;
 }
 
-function _ci18n(context: string, message: string, ...args: any[]) {
+function _ci18n(context: string, message: string, ...args: any[]): string {
   context = context.toUpperCase();
 
   let result = jedi18n.translate(message).withContext(context);
@@ -167,7 +167,7 @@ function _cni18n(
   singular: string,
   plural: string,
   ...args: any
-) {
+): string {
   context = context.toUpperCase();
   const format_args = [num, ...args];
 
