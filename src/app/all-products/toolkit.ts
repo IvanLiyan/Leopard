@@ -36,6 +36,8 @@ import {
   MerchantWarehouseMutationsDeleteWarehouseArgs,
   DeleteMerchantWarehouseMutation,
   ProductSchemaVariationsArgs,
+  TaxonomyCategorySchema,
+  MerchantProvidedAttributeSchema,
 } from "@schema";
 import gql from "graphql-tag";
 import { ci18n } from "@core/toolkit/i18n";
@@ -171,6 +173,14 @@ export const GET_PRODUCTS_QUERY = gql`
         isWishExpress
         categoryExperienceEligibility
         subcategoryId
+        subcategory {
+          id
+          name
+          categoriesAlongPath {
+            id
+            name
+          }
+        }
         listingState {
           state
           reason
@@ -222,6 +232,10 @@ export const GET_PRODUCTS_QUERY = gql`
             warehouseId
             count
           }
+          options {
+            name
+            value
+          }
         }
       }
     }
@@ -230,6 +244,11 @@ export const GET_PRODUCTS_QUERY = gql`
 
 export type PickedInventory = Pick<InventorySchema, "count" | "warehouseId">;
 
+export type PickedVariationOption = Pick<
+  MerchantProvidedAttributeSchema,
+  "name" | "value"
+>;
+
 export type PickedVariation = Pick<
   VariationSchema,
   "id" | "size" | "color" | "enabled" | "sku" | "productId"
@@ -237,6 +256,7 @@ export type PickedVariation = Pick<
   readonly price: Pick<CurrencyValue, "amount" | "currencyCode" | "display">;
   readonly inventory: ReadonlyArray<PickedInventory>;
   readonly image?: Pick<ImageSchema, "wishUrl"> | null;
+  readonly options?: ReadonlyArray<PickedVariationOption> | null;
 };
 
 export type PickedProduct = Pick<
@@ -274,6 +294,13 @@ export type PickedProduct = Pick<
   readonly categories?: ReadonlyArray<Pick<TrueTagSchema, "name">> | null;
   readonly lastUpdateTime: Pick<Datetime, "formatted">;
   readonly createTime: Pick<Datetime, "formatted">;
+  readonly subcategory?:
+    | (Pick<TaxonomyCategorySchema, "id" | "name"> & {
+        readonly categoriesAlongPath: ReadonlyArray<
+          Pick<TaxonomyCategorySchema, "id" | "name">
+        >;
+      })
+    | null;
   readonly variations: ReadonlyArray<PickedVariation>;
 };
 
@@ -308,6 +335,10 @@ export const GET_PRODUCT_VARIATIONS_QUERY = gql`
           inventory {
             warehouseId
             count
+          }
+          options {
+            name
+            value
           }
         }
       }
@@ -580,7 +611,9 @@ export const productHasVariations = (
   const noVariations =
     product.variations.length == 1 &&
     product.variations[0].color == null &&
-    product.variations[0].size == null;
+    product.variations[0].size == null &&
+    (product.variations[0].options == null ||
+      product.variations[0].options.length === 0);
 
   return !noVariations;
 };
@@ -760,6 +793,10 @@ export const GET_PRODUCTS_FOR_EXPORT_QUERY = gql`
         }
         categoryExperienceEligibility
         subcategoryId
+        subcategory {
+          id
+          name
+        }
         variations {
           id
           sku
@@ -826,6 +863,10 @@ export const GET_PRODUCTS_FOR_EXPORT_QUERY = gql`
             unit
             value
           }
+          options {
+            name
+            value
+          }
         }
       }
     }
@@ -867,6 +908,7 @@ export type PickedVariationForExport = Pick<
   readonly quantityVolume?: Pick<Volume, "unit" | "value"> | null;
   readonly quantityArea?: Pick<Area, "unit" | "value"> | null;
   readonly quantityUnit?: Pick<Count, "unit" | "value"> | null;
+  readonly options?: ReadonlyArray<PickedVariationOption> | null;
 };
 
 export type PickedProductForExport = Pick<
@@ -920,6 +962,7 @@ export type PickedProductForExport = Pick<
   readonly referenceArea?: Pick<Area, "unit" | "value"> | null;
   readonly referenceUnit?: Pick<Count, "unit" | "value"> | null;
   readonly requestedBrand?: Pick<BrandSchema, "id" | "name"> | null;
+  readonly subcategory?: Pick<TaxonomyCategorySchema, "id" | "name"> | null;
   readonly variations: ReadonlyArray<PickedVariationForExport>;
 };
 

@@ -12,6 +12,7 @@ import {
   Checkbox,
   ObjectId,
   Spinner,
+  Popover,
 } from "@ContextLogic/lego";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import {
@@ -26,6 +27,7 @@ import {
   GetProductVariationsRequestType,
   GET_PRODUCT_VARIATIONS_QUERY,
   COLLAPSED_VARIATIONS_SHOWN,
+  PickedVariation,
 } from "@all-products/toolkit";
 import ProductStateLabel from "./ProductStateLabel";
 import ProductTableColumnHeader from "./ProductTableColumnHeader";
@@ -44,6 +46,7 @@ import ProductTableActions from "./ProductTableActions";
 import Image from "@core/components/Image";
 import { useSortBy, useSortOrder } from "@all-products/stateHooks";
 import { useQuery } from "@apollo/client";
+import { useDeciderKey } from "@core/stores/ExperimentStore";
 
 type Props = BaseProps & {
   readonly state: AllProductsState;
@@ -51,6 +54,8 @@ type Props = BaseProps & {
   readonly products: ReadonlyArray<PickedProduct>;
   readonly onRefetchProducts: () => unknown;
 };
+
+const NO_DATA_MESSAGE = "--";
 
 const ProductTable: React.FC<Props> = ({
   className,
@@ -74,6 +79,10 @@ const ProductTable: React.FC<Props> = ({
   const [variationCountQuery, setVariationCountQuery] = useState<
     number | undefined
   >();
+
+  const { decision: showVariationGroupingUI } = useDeciderKey(
+    "variation_grouping_ui",
+  );
 
   const {
     warehouse,
@@ -219,6 +228,38 @@ const ProductTable: React.FC<Props> = ({
   const fetchAllVariations = (productId: string, variationsCount: number) => {
     setProductIdQuery(productId);
     setVariationCountQuery(variationsCount);
+  };
+
+  const getVariationOptions = (
+    variation: PickedVariation,
+  ): ReadonlyArray<{ name: string; value: string }> => {
+    const options = [];
+
+    if (variation.color != null) {
+      options.push({
+        name: ci18n("As in the color of a product variation", "Color"),
+        value: variation.color,
+      });
+    }
+
+    if (variation.size != null) {
+      options.push({
+        name: ci18n("As in the size of a product variation", "Size"),
+        value: variation.size,
+      });
+    }
+
+    if (variation.options && variation.options.length > 0) {
+      variation.options.forEach((option) => {
+        options.push({
+          name: option.name,
+          value:
+            option.value.length > 0 ? option.value.join(",") : NO_DATA_MESSAGE,
+        });
+      });
+    }
+
+    return options;
   };
 
   return (
@@ -411,6 +452,26 @@ const ProductTable: React.FC<Props> = ({
           if (row.type == "VARIATION_EXPAND_ROW") {
             return null;
           }
+
+          if (row.type == "VARIATION" && showVariationGroupingUI) {
+            const options = getVariationOptions(row.variation);
+            return options.length > 0 ? (
+              <Layout.FlexColumn
+                alignItems="flex-start"
+                justifyContent="flex-start"
+              >
+                <Text style={[styles.tableText, styles.options]}>
+                  {options[0].name}
+                </Text>
+                <Text style={[styles.tableTextLight, styles.options]}>
+                  {options[0].value}
+                </Text>
+              </Layout.FlexColumn>
+            ) : (
+              <Text style={styles.tableText}>{NO_DATA_MESSAGE}</Text>
+            );
+          }
+
           if (row.type == "VARIATION") {
             return (
               <Layout.FlexColumn
@@ -421,16 +482,38 @@ const ProductTable: React.FC<Props> = ({
                   {ci18n("As in the color of a product variation", "Color")}
                 </Text>
                 <Text style={styles.tableTextLight}>
-                  {row.variation.color ?? `--`}
+                  {row.variation.color ?? NO_DATA_MESSAGE}
                 </Text>
               </Layout.FlexColumn>
             );
           }
+
+          if (showVariationGroupingUI && row.product.subcategory != null) {
+            const subcategory = row.product.subcategory;
+            const categoryNamesAlongPath = subcategory.categoriesAlongPath.map(
+              (category) => category.name,
+            );
+            return (
+              <Popover
+                popoverMaxWidth={320}
+                popoverContent={
+                  categoryNamesAlongPath.length > 0
+                    ? categoryNamesAlongPath.join(" > ")
+                    : undefined
+                }
+              >
+                <Text style={[styles.tableText, styles.categories]}>
+                  {subcategory.name}
+                </Text>
+              </Popover>
+            );
+          }
+
           return (
             <Text style={[styles.tableText, styles.categories]}>
               {row.product.categories == null ||
               row.product.categories.length == 0
-                ? `--`
+                ? NO_DATA_MESSAGE
                 : row.product.categories.map(({ name }) => name).join(", ")}
             </Text>
           );
@@ -464,6 +547,26 @@ const ProductTable: React.FC<Props> = ({
           if (row.type == "VARIATION_EXPAND_ROW") {
             return null;
           }
+
+          if (row.type == "VARIATION" && showVariationGroupingUI) {
+            const options = getVariationOptions(row.variation);
+            return options.length > 1 ? (
+              <Layout.FlexColumn
+                alignItems="flex-start"
+                justifyContent="flex-start"
+              >
+                <Text style={[styles.tableText, styles.options]}>
+                  {options[1].name}
+                </Text>
+                <Text style={[styles.tableTextLight, styles.options]}>
+                  {options[1].value}
+                </Text>
+              </Layout.FlexColumn>
+            ) : (
+              <Text style={styles.tableText}>{NO_DATA_MESSAGE}</Text>
+            );
+          }
+
           if (row.type == "VARIATION") {
             return (
               <Layout.FlexColumn
@@ -474,7 +577,7 @@ const ProductTable: React.FC<Props> = ({
                   {ci18n("As in the size of a product variation", "Size")}
                 </Text>
                 <Text style={styles.tableTextLight}>
-                  {row.variation.size ?? `--`}
+                  {row.variation.size ?? NO_DATA_MESSAGE}
                 </Text>
               </Layout.FlexColumn>
             );
@@ -1109,6 +1212,10 @@ const useStylesheet = () => {
           marginRight: 9,
           alignSelf: "stretch",
           textAlign: "right",
+        },
+        options: {
+          maxWidth: 150,
+          whiteSpace: "pre-wrap",
         },
       }),
     [textBlack, textLight, textDark, secondaryDark],
