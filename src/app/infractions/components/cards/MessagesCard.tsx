@@ -81,10 +81,10 @@ const MessagesCard: React.FC<Pick<BaseProps, "className" | "style">> = ({
                 senderType == "ADMIN"
                   ? i`Wish Merchant Service`
                   : senderName ?? undefined,
-              dateSent: dateSentFormatter.format(unix),
+              dateSent: dateSentFormatter.format(unix * 1000),
               message: message ?? undefined,
               files,
-              messageGroup: messageGroupFormatter.format(unix),
+              messageGroup: messageGroupFormatter.format(unix * 1000),
             }),
           )
         : infraction.replies.map(
@@ -98,7 +98,7 @@ const MessagesCard: React.FC<Pick<BaseProps, "className" | "style">> = ({
             }) => ({
               type: senderType == "ADMIN" ? "RECEIVED" : "SENT",
               author: displayName ?? undefined,
-              dateSent: dateSentFormatter.format(unix),
+              dateSent: dateSentFormatter.format(unix * 1000),
               message: translatedMessage ?? undefined,
               files: [
                 ...files,
@@ -107,7 +107,7 @@ const MessagesCard: React.FC<Pick<BaseProps, "className" | "style">> = ({
                   fileUrl: imageUrl,
                 })) ?? []),
               ],
-              messageGroup: messageGroupFormatter.format(unix),
+              messageGroup: messageGroupFormatter.format(unix * 1000),
             }),
           );
 

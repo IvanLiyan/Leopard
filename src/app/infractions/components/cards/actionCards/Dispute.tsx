@@ -2,13 +2,12 @@ import React, { useContext } from "react";
 import { observer } from "mobx-react";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import Markdown from "@infractions/components/Markdown";
-import { Button } from "@ContextLogic/atlas-ui";
+import { Button, Tooltip } from "@ContextLogic/atlas-ui";
 import ActionCard from "./ActionCard";
 import { InfractionContext } from "@infractions/InfractionContext";
 import { useInfractionDetailsStylesheet } from "@infractions/styles";
 import { ci18n } from "@core/toolkit/i18n";
 import { DisputeStatusDisplayText } from "@infractions/toolkit";
-import Tooltip from "@mui/material/Tooltip";
 
 const Dispute: React.FC<Pick<BaseProps, "className" | "style">> = ({
   className,
@@ -35,8 +34,12 @@ const Dispute: React.FC<Pick<BaseProps, "className" | "style">> = ({
         now > disputeDeadlineUnix ? (
           <Tooltip
             title={i`You cannot take this action because the dispute deadline has passed.`}
+            placement="bottom"
           >
-            <DisputeButton disabled />
+            {/* excess div required since Mui disables tooltips wrapping disabled buttons */}
+            <div>
+              <DisputeButton disabled />
+            </div>
           </Tooltip>
         ) : (
           <DisputeButton />
