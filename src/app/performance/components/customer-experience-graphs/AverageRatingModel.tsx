@@ -72,18 +72,20 @@ const AverageRatingModel: NextPage<Record<string, never>> = () => {
           <LoadingIndicator className={commonStyles.loading} />
         ) : (
           <SingleAxisLineChart
-            graphData={store.averageRating.data}
+            graphData={[...store.averageRating.data]}
             dataRange={averageRatingDataRange}
-            firstLineProps={{
-              name: i`Average Rating`,
-              dataKey: "averageRating30d",
-              stroke: primary,
-            }}
-            secondLineProps={{
-              name: i`Recommended`,
-              dataKey: "recommendedAverageRating",
-              stroke: cashDarkest,
-            }}
+            lineProps={[
+              {
+                name: i`Average Rating`,
+                dataKey: "averageRating30d",
+                stroke: primary,
+              },
+              {
+                name: i`Recommended`,
+                dataKey: "recommendedAverageRating",
+                stroke: cashDarkest,
+              },
+            ]}
           />
         )}
       </div>

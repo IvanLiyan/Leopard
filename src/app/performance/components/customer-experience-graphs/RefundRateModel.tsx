@@ -72,18 +72,20 @@ const RefundRateModel: NextPage<Record<string, never>> = () => {
           <LoadingIndicator className={commonStyles.loading} />
         ) : (
           <SingleAxisLineChart
-            graphData={store.refundRate.data}
+            graphData={[...store.refundRate.data]}
             dataRange={refundRateDataRange}
-            firstLineProps={{
-              name: i`Refund Rate`,
-              dataKey: "refundRate30d",
-              stroke: primary,
-            }}
-            secondLineProps={{
-              name: i`Recommended`,
-              dataKey: "recommendedRefundRate",
-              stroke: cashDarkest,
-            }}
+            lineProps={[
+              {
+                name: i`Refund Rate`,
+                dataKey: "refundRate30d",
+                stroke: primary,
+              },
+              {
+                name: i`Recommended`,
+                dataKey: "recommendedRefundRate",
+                stroke: cashDarkest,
+              },
+            ]}
           />
         )}
       </div>

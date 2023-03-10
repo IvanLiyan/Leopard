@@ -1,15 +1,11 @@
 import React, { useMemo } from "react";
 import { StyleSheet } from "aphrodite";
 import hash from "object-hash";
-
-import { H4, H5, Card, Info } from "@ContextLogic/lego";
-
+import { H5, Card } from "@ContextLogic/lego";
 /* Lego Toolkit */
 import { css } from "@core/toolkit/styling";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { useTheme } from "src/app/core/stores/ThemeStore";
-
-import { Props as LegendProps } from "recharts/types/component/DefaultLegendContent";
 import {
   CartesianGrid,
   Legend,
@@ -40,98 +36,22 @@ type LegendData = {
   readonly currencyCode?: string;
 };
 
-type Props = BaseProps & {
-  // legacy any usage copied from clroot
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  readonly graphData?: ReadonlyArray<any>;
-  readonly firstLineProps: LineProps;
-  readonly secondLineProps?: LineProps;
-  readonly firstLegendData?: LegendData;
-  readonly secondLegendData?: LegendData;
+type Props<dataType> = BaseProps & {
+  readonly graphData?: Array<dataType>;
+  readonly lineProps: ReadonlyArray<LineProps>;
+  readonly legendData?: ReadonlyArray<LegendData>;
   readonly dataRange?: [number, number];
 };
 
-const StoreChart = (props: Props) => {
-  const {
-    className,
-    style,
-    graphData,
-    firstLineProps,
-    secondLineProps,
-    firstLegendData,
-    secondLegendData,
-    dataRange,
-  } = props;
+const StoreChart = <dataType,>(props: Props<dataType>) => {
+  const { className, style, graphData, lineProps, dataRange } = props;
   const styles = useStylesheet();
-
-  const getLegendData = (index: number) => {
-    if (index === 0) {
-      return firstLegendData;
-    } else if (secondLineProps != null && index === 1) {
-      return secondLegendData;
-    }
-
-    return null;
-  };
-
-  const legendFormatter = (props: LegendProps) => {
-    const { payload } = props;
-
-    if (payload == null) {
-      return null;
-    }
-    return (
-      <div className={css(styles.legend)}>
-        {payload.map((entry, index) => {
-          const { value, color, payload } = entry;
-          const legendData = getLegendData(index);
-          const borderStyle = payload?.strokeDasharray ? "dashed" : "solid";
-
-          if (legendData == null) {
-            return null;
-          }
-
-          return (
-            <div
-              key={hash(`${index}-${value}`)}
-              className={css(styles.legendData)}
-            >
-              <div
-                className={css(styles.legendLine)}
-                style={{
-                  borderTop: `4px ${color} ${borderStyle}`,
-                }}
-              />
-              <div>
-                <div className={css(styles.legendValue)}>
-                  <span style={{ marginRight: 4 }}>{value}</span>
-                  {legendData.tooltip && (
-                    <Info
-                      text={legendData.tooltip}
-                      size={16}
-                      position="top center"
-                      sentiment="info"
-                    />
-                  )}
-                </div>
-                <H4>{legendData?.totalStat}</H4>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-    );
-  };
-
   const tooltipFormatter = (props: TooltipProps<ValueType, NameType>) => {
     const { payload } = props;
-
     if (payload == null || payload.length === 0) {
       return null;
     }
-
     const date = payload[0].payload.date;
-
     return (
       <Card className={css(styles.tooltip)}>
         <div className={css(styles.date)}>{date}</div>
@@ -168,52 +88,71 @@ const StoreChart = (props: Props) => {
     );
   };
 
+  const CustomizedAxisTick: React.ComponentProps<typeof XAxis>["tick"] = (
+    props,
+  ) => {
+    const { x, y, payload } = props;
+    return (
+      <g transform={`translate(${x},${y})`}>
+        <text x={32} y={0} dy={20} textAnchor="end" fill="#666" fontSize={12}>
+          {payload.value}
+        </text>
+      </g>
+    );
+  };
+
+  const CustomizedYxisTick: React.ComponentProps<typeof YAxis>["tick"] = (
+    props,
+  ) => {
+    const { x, y, payload } = props;
+
+    return (
+      <g transform={`translate(${x},${y})`}>
+        <text x={-4} y={-16} dy={20} textAnchor="end" fill="#666" fontSize={12}>
+          {payload.value}
+        </text>
+      </g>
+    );
+  };
+
   const { textDark } = useTheme();
   return (
     <div className={css(styles.chart, className, style)}>
       <ResponsiveContainer>
-        <LineChart data={Array.from(graphData ?? [])}>
+        <LineChart data={graphData}>
           <CartesianGrid vertical={false} strokeDasharray="4" horizontal />
-          <XAxis
-            xAxisId="x"
-            dataKey="date"
-            fontSize={12}
-            axisLine={false}
-            tickLine={false}
-          />
           <Legend
             verticalAlign="top"
             align="right"
             wrapperStyle={{ top: -30, width: "auto" }}
-            content={legendFormatter}
           />
           <Tooltip content={tooltipFormatter} />
+          <XAxis
+            dataKey="date"
+            axisLine={false}
+            tickLine={false}
+            height={60}
+            tick={CustomizedAxisTick}
+          />
           <YAxis
             yAxisId="left"
-            dataKey={firstLineProps.dataKey}
+            dataKey={lineProps[0].dataKey}
             stroke={textDark}
             tickCount={11}
             domain={dataRange || ["dataMin", "dataMax"]}
             type="number"
-            fontSize={12}
             axisLine={false}
             tickLine={false}
+            tick={CustomizedYxisTick}
           />
-          <Line
-            type={"monotone"}
-            xAxisId="x"
-            yAxisId="left"
-            strokeWidth={3}
-            {...firstLineProps}
-          />
-          {secondLineProps && (
+          {lineProps.map((lineProp) => (
             <Line
-              xAxisId="x"
               yAxisId="left"
+              key={lineProp.name}
               strokeWidth={3}
-              {...secondLineProps}
+              {...lineProp}
             />
-          )}
+          ))}
         </LineChart>
       </ResponsiveContainer>
     </div>

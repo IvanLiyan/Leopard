@@ -68,10 +68,9 @@ export const useRequest = <TResponse, TRequest = RestApiBody>(
     return url;
   }, [url]);
 
-  const fetcher: Fetcher<
-    TResponse | undefined,
-    RestApiConfig<TRequest>
-  > = async (params: RestApiConfig<TRequest>) => {
+  const fetcher: Fetcher<TResponse | undefined, RestApiConfig<TRequest>> = (
+    params: RestApiConfig<TRequest>,
+  ) => {
     const { url, method, body } = params;
 
     const bodyFormData = new FormData();

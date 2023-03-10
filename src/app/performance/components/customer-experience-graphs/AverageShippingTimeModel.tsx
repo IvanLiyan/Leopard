@@ -75,20 +75,22 @@ const AverageShippingTimeModel: NextPage<Record<string, never>> = () => {
           <LoadingIndicator className={commonStyles.loading} />
         ) : (
           <SingleAxisLineChart
-            graphData={store.averageShippingTime.data}
+            graphData={[...store.averageShippingTime.data]}
             dataRange={averageShippingTimeDataRange}
-            firstLineProps={{
-              name: i`Average Shipping Time`,
-              dataKey: "averageShippingTime",
-              stroke: primary,
-              unit: i`days`,
-            }}
-            secondLineProps={{
-              name: i`Recommended`,
-              dataKey: "recommendedAverageShippingTime",
-              stroke: cashDarkest,
-              unit: i`days`,
-            }}
+            lineProps={[
+              {
+                name: i`Average Shipping Time`,
+                dataKey: "averageShippingTime",
+                stroke: primary,
+                unit: i`days`,
+              },
+              {
+                name: i`Recommended`,
+                dataKey: "recommendedAverageShippingTime",
+                stroke: cashDarkest,
+                unit: i`days`,
+              },
+            ]}
           />
         )}
       </div>

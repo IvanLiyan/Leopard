@@ -75,20 +75,22 @@ const AverageFulfillmentTimeModel: NextPage<Record<string, never>> = () => {
           <LoadingIndicator className={commonStyles.loading} />
         ) : (
           <SingleAxisLineChart
-            graphData={store.averageFulfillmentTime.data}
+            graphData={[...store.averageFulfillmentTime.data]}
             dataRange={averageFulfillmentTimeDataRange}
-            firstLineProps={{
-              name: i`Average Fulfillment Time`,
-              dataKey: "averageFulfillmentTime",
-              stroke: primary,
-              unit: i`days`,
-            }}
-            secondLineProps={{
-              name: i`Recommended`,
-              dataKey: "recommendedAverageFulfillmentTime",
-              stroke: cashDarkest,
-              unit: i`day`,
-            }}
+            lineProps={[
+              {
+                name: i`Average Fulfillment Time`,
+                dataKey: "averageFulfillmentTime",
+                stroke: primary,
+                unit: i`days`,
+              },
+              {
+                name: i`Recommended`,
+                dataKey: "recommendedAverageFulfillmentTime",
+                stroke: cashDarkest,
+                unit: i`day`,
+              },
+            ]}
           />
         )}
       </div>
