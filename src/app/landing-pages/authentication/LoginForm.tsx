@@ -272,7 +272,7 @@ const LoginForm: React.FC<LoginFormProps> = (props: LoginFormProps) => {
       text={captchaCode}
       height={FieldHeight}
       refreshEmitter={refreshEmitter}
-      url="captcha_token"
+      url="/api/captcha_token"
     />
   );
 

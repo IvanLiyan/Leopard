@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useState } from "react";
 import { observer } from "mobx-react";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import Markdown from "@infractions/components/Markdown";
@@ -6,49 +6,57 @@ import { Button } from "@ContextLogic/atlas-ui";
 import ActionCard from "./ActionCard";
 import { merchFeURL } from "@core/toolkit/router";
 import { useInfractionDetailsStylesheet } from "@infractions/styles";
-import { InfractionContext } from "@infractions/InfractionContext";
+import EditYourProductListingModal from "./EditYourProductListingModal";
 
 const EditYouProductListing: React.FC<
   Pick<BaseProps, "className" | "style">
 > = ({ className, style }) => {
   const styles = useInfractionDetailsStylesheet();
-  const {
-    infraction: { id: infractionId, product },
-  } = useContext(InfractionContext);
-
-  const productId = product ? product.productId : undefined;
+  const [modalOpen, setModalOpen] = useState(false);
 
   return (
-    <ActionCard
-      style={[className, style]}
-      title={i`Edit Your Product Listing`}
-      ctaButtons={
-        productId ? (
+    <>
+      <EditYourProductListingModal
+        open={modalOpen}
+        onClose={() => {
+          setModalOpen(false);
+        }}
+      />
+      <ActionCard
+        style={[className, style]}
+        title={i`Edit Your Product Listing`}
+        ctaButtons={
           <Button
-            href={`/products/edit/${productId}?infractionId=${infractionId}`}
+            onClick={() => {
+              setModalOpen(true);
+            }}
           >
             Edit Listing
           </Button>
-        ) : undefined
-      }
-    >
-      <Markdown
-        style={styles.cardMargin}
-        text={`* ${[
-          i`Edit your product listing with compliant content.`,
-          i`Remove all unauthorized content.`,
-        ].join("\n\n* ")}`}
-      />
-      <Markdown
-        style={styles.cardMargin}
-        text={i`Editing the product listing will not reverse the infraction until Wish reviews and approves it.`}
-      />
-      <Markdown
-        style={styles.cardMargin}
-        openLinksInNewTab
-        text={i`[Read our Listings Policy](${merchFeURL("/policy#listing")})`}
-      />
-    </ActionCard>
+        }
+      >
+        <Markdown
+          style={styles.cardMargin}
+          text={`* ${[
+            i`Edit your product listing with compliant content.`,
+            i`Remove all unauthorized content.`,
+          ].join("\n\n* ")}`}
+        />
+        <Markdown
+          style={styles.cardMargin}
+          text={i`Editing the product listing will not reverse the infraction until Wish reviews and approves it.`}
+        />
+        <Markdown
+          style={styles.cardMargin}
+          text={i`Please note that you can only use this option to edit this listing a maximum of 4 times.`}
+        />
+        <Markdown
+          style={styles.cardMargin}
+          openLinksInNewTab
+          text={i`[Read our Listings Policy](${merchFeURL("/policy#listing")})`}
+        />
+      </ActionCard>
+    </>
   );
 };
 

@@ -26,7 +26,7 @@ import {
   REPLY_FIELDS,
   TrackingMessageFields,
   TRACKING_MESSAGE_FIELDS,
-} from "./messages";
+} from "./messagesQueries";
 
 // note: we pre-fetch the initial messages to prime the
 // cache for subsequent query. this reduces the time the

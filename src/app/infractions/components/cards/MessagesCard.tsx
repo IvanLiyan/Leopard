@@ -4,7 +4,7 @@ import {
   MessagesQueryResponse,
   MessagesQueryVariables,
   MESSAGES_QUERY,
-} from "@infractions/queries/messages";
+} from "@infractions/api/messagesQueries";
 import Card, { Props as CardProps } from "./Card";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import Conversation, {
@@ -26,7 +26,7 @@ import {
   SendOrderInfractionMessageMutationVariables,
   SEND_MESSAGE_MUTATION,
   SEND_ORDER_INFRACTION_MESSAGE_MUTATION,
-} from "@infractions/queries/sendMessage";
+} from "@infractions/api/sendMessageMutations";
 import { useToastStore } from "@core/stores/ToastStore";
 
 const MessagesCard: React.FC<Pick<BaseProps, "className" | "style">> = ({

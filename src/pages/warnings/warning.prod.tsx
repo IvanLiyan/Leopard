@@ -25,7 +25,7 @@ import {
   InfractionQueryResponse,
   InfractionQueryVariables,
   INFRACTION_QUERY,
-} from "@infractions/queries/infraction";
+} from "@infractions/api/infractionQuery";
 import { Text } from "@ContextLogic/atlas-ui";
 import {
   CommerceTransactionStateDisplayText,
@@ -64,7 +64,7 @@ const InfractionsPage: NextPage<Record<string, never>> = () => {
   const [infractionId] = useStringQueryParam("id");
   const { merchantId } = useUserStore();
 
-  const { data, loading, error } = useQuery<
+  const { data, loading, error, refetch } = useQuery<
     InfractionQueryResponse,
     InfractionQueryVariables
   >(INFRACTION_QUERY, {
@@ -219,6 +219,7 @@ const InfractionsPage: NextPage<Record<string, never>> = () => {
           name: authorization.brand.name,
         })) ?? [],
     },
+    refetchInfraction: refetch,
   };
 
   return (

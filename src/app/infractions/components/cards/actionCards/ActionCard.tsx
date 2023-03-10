@@ -30,6 +30,9 @@ const ActionCard: React.FC<Props> = ({
             ":nth-child(1n) > button": {
               marginTop: 16,
             },
+            ":nth-child(1n) > a": {
+              marginTop: 16,
+            },
           }}
         >
           {ctaButtons}

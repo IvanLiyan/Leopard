@@ -12,7 +12,7 @@ import {
   RequestPaymentReleaseMutationResponse,
   RequestPaymentReleaseMutationVariables,
   REQUEST_PAYMENT_RELEASE_MUTATION,
-} from "@infractions/queries/requestPaymentRelease";
+} from "@infractions/api/requestPaymentReleaseMutation";
 import { InfractionContext } from "@infractions/InfractionContext";
 import { useToastStore } from "@core/stores/ToastStore";
 

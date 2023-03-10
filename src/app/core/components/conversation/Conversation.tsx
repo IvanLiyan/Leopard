@@ -102,42 +102,43 @@ const Conversation: React.FC<Props> = ({
       messageContainerRef.current.scrollHeight;
   });
 
-  const Messages = () =>
-    messageGroups.length > 0 ? (
-      <Layout.FlexColumn
-        style={styles.messageContainer}
-        ref={messageContainerRef}
-      >
-        {messageGroups.map(({ title, messages }, i) => (
-          <>
-            {title && (
-              <Divider style={styles.conversationItem}>{title}</Divider>
-            )}
-            {messages.map((msg, j) => (
-              // using index as key since messages have no stable IDs
-              // (theoretically possible that entire message content could be
-              // identical between messages)
-              // when expanding to add support for new messages and/or infinite
-              // scrolling, we should look at replacing this with a package like
-              // https://github.com/ai/nanoid/
-              <MessageComponent
-                key={`${i}${j}`}
-                style={[styles.message, styles.conversationItem]}
-                {...msg}
-              />
-            ))}
-          </>
-        ))}
-      </Layout.FlexColumn>
-    ) : (
-      <Divider style={styles.noMessages}>No messages</Divider>
-    );
+  const messages = useMemo(
+    () =>
+      messageGroups.length > 0 ? (
+        <Layout.FlexColumn
+          style={styles.messageContainer}
+          ref={messageContainerRef}
+        >
+          {messageGroups.map(({ title, messages }, i) => (
+            <>
+              {title && (
+                <Divider style={styles.conversationItem}>{title}</Divider>
+              )}
+              {messages.map((msg, j) => (
+                // using index as key since messages have no stable IDs
+                // (theoretically possible that entire message content could be
+                // identical between messages)
+                // when expanding to add support for new messages and/or infinite
+                // scrolling, we should look at replacing this with a package like
+                // https://github.com/ai/nanoid/
+                <MessageComponent
+                  key={`${i}${j}`}
+                  style={[styles.message, styles.conversationItem]}
+                  {...msg}
+                />
+              ))}
+            </>
+          ))}
+        </Layout.FlexColumn>
+      ) : (
+        <Divider style={styles.noMessages}>No messages</Divider>
+      ),
+    [messageGroups, styles],
+  );
 
   return (
     <Layout.FlexColumn style={[style, className]}>
-      <Card style={{ boxShadow: "none" }}>
-        <Messages />
-      </Card>
+      <Card style={{ boxShadow: "none" }}>{messages}</Card>
       {onResponseChange && (
         <TextInput
           value={response}

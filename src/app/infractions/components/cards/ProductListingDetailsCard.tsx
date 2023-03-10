@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useState, useContext } from "react";
 import { observer } from "mobx-react";
 import Markdown from "@infractions/components/Markdown";
 import { Layout } from "@ContextLogic/lego";
@@ -16,6 +16,7 @@ const ProductListingDetailsCard: React.FC<
   const {
     infraction: { product },
   } = useContext(InfractionContext);
+  const [showFullDescription, setShowFullDescription] = useState(false);
 
   if (product == null) {
     return null;
@@ -26,8 +27,15 @@ const ProductListingDetailsCard: React.FC<
     productName,
     productId,
     productSku,
-    productDescription,
+    productDescription: productDescriptionRaw,
   } = product;
+
+  const productDescription =
+    !productDescriptionRaw || productDescriptionRaw.length < 300
+      ? productDescriptionRaw
+      : !showFullDescription
+      ? i`${productDescriptionRaw.slice(0, 250).trimEnd()}... [View More](#)`
+      : i`${productDescriptionRaw} [View Less](#)`;
 
   return (
     <Card title={i`Product Listing Details`} style={[className, style]}>
@@ -51,6 +59,9 @@ const ProductListingDetailsCard: React.FC<
           )}
           {productDescription && (
             <Markdown
+              onLinkClicked={() => {
+                setShowFullDescription((prev) => !prev);
+              }}
               text={i`Description: ${productDescription}`}
               style={styles.cardMargin}
             />

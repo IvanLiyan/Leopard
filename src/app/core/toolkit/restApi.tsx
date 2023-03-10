@@ -1,5 +1,6 @@
 import React, { useMemo } from "react";
-import useSWR, { Fetcher, SWRResponse } from "swr";
+import useSWR, { Fetcher, SWRConfiguration, SWRResponse } from "swr";
+import useSWRMutation, { SWRMutationResponse } from "swr/mutation";
 import axios, { Method } from "axios";
 import Cookies from "js-cookie";
 
@@ -35,44 +36,20 @@ export type SWRResponseWithSuffix<
   TSuffix extends string,
 > = addSuffixToObject<SWRResponse<TResponse>, TSuffix>;
 
-/**
- * Hook for handling REST API call
- * - Example: const { data, isLoading } = useRequest<GetCaptchaResponse>({ url: "captcha_token" });
- * @param queryParams api query params containing
- *  - url: server url for the request
- *  - method (optional): request method, default to POST
- *  - body (optional): request body (object type)
- * @param options options for SWR hook
- * @returns
- *  - data: response data
- *  - error: error
- *  - isLoading: if there's an ongoing request and no "loaded data"
- *  - isValidating: if there's a request or revalidation loading
- *  - mutate: function to mutate the cached data
- */
-export const useRequest = <TResponse, TRequest = RestApiBody>(
-  queryParams: RestApiConfig<TRequest>,
-  options?: {
-    revalidateOnFocus?: boolean;
-  },
-): SWRResponse<TResponse | undefined> => {
-  const { url, method, body } = queryParams;
-  const { revalidateOnFocus = false } = options ?? {};
+const useFetcher = <TResponse, TRequest>() => {
   const toastStore = useToastStore();
   const router = useRouter();
 
-  const formattedUrl = useMemo(() => {
-    if (!url.startsWith("/api/")) {
-      return "/api/" + url;
-    }
-    return url;
-  }, [url]);
-
-  const fetcher: Fetcher<TResponse | undefined, RestApiConfig<TRequest>> = (
-    params: RestApiConfig<TRequest>,
+  const fetcher: Fetcher<
+    TResponse | undefined,
+    RestApiConfig<TRequest>
+  > = async (
+    key: RestApiConfig<TRequest>,
+    arg?: { readonly arg: TRequest },
   ) => {
-    const { url, method, body } = params;
+    const { url, method, body: bodyFromKey } = key;
 
+    const body = arg ? arg.arg : bodyFromKey; // prioritize args if they exist
     const bodyFormData = new FormData();
     if (body != null) {
       Object.keys(body).forEach((key) => {
@@ -150,19 +127,39 @@ export const useRequest = <TResponse, TRequest = RestApiBody>(
       });
   };
 
-  const { data, error, isValidating, isLoading, mutate } = useSWR(
-    { url: formattedUrl, method, body },
-    fetcher,
-    { revalidateOnFocus },
-  );
+  return fetcher;
+};
 
-  return {
-    data,
-    error,
-    isValidating,
-    isLoading,
-    mutate,
-  };
+/**
+ * Hook for handling REST API call
+ * - Example: const { data, isLoading } = useRequest<GetCaptchaResponse>({ url: "/api/captcha_token" });
+ *
+ * @param restApiConfig configuration for the Axios API call; contains:
+ *  - url: server url for the request
+ *  - method (optional): request method, default to POST
+ *  - body (optional): request body (object type)
+ *
+ * pass null to skip the query
+ *
+ * @param options options for SWR hook (see https://swr.vercel.app/docs/api#options for more details)
+ *
+ * @returns an SWR object (see https://swr.vercel.app/docs/api#return-values for more details)
+ */
+export const useRequest = <TResponse, TRequest = RestApiBody>(
+  restApiConfig: RestApiConfig<TRequest> | null,
+  options?: SWRConfiguration,
+): SWRResponse<TResponse | undefined> => {
+  const fetcher = useFetcher<TResponse, TRequest>();
+  return useSWR(restApiConfig, fetcher, options);
+};
+
+// TODO [lliepert]: proper docs
+export const useMutation = <TResponse, TRequest = RestApiBody>(
+  restApiConfig: RestApiConfig<TRequest> | null,
+  // options?: SWRMutationConfiguration,
+): SWRMutationResponse<TResponse | undefined> => {
+  const fetcher = useFetcher<TResponse, TRequest>();
+  return useSWRMutation(restApiConfig, fetcher);
 };
 
 export type WithRestApiProps<

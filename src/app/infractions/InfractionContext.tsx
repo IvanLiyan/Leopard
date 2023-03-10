@@ -54,6 +54,7 @@ export type InfractionContextType = {
       readonly name: string;
     }>;
   };
+  refetchInfraction: () => unknown;
 };
 
 export const InfractionContext = createContext<InfractionContextType>({
@@ -76,5 +77,8 @@ export const InfractionContext = createContext<InfractionContextType>({
     infractionEvidence: [],
     actions: [],
     brandAuthorizations: [],
+  },
+  refetchInfraction: () => {
+    void null;
   },
 });
