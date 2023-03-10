@@ -40,6 +40,7 @@ datadogRum.init({
   sampleRate: 100,
   replaySampleRate: 25,
   trackInteractions: true,
+  actionNameAttribute: "data-cy",
 });
 
 type MerchantDashboardProviderProps = {
