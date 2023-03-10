@@ -17,7 +17,6 @@ import {
   VariationInput,
 } from "@schema";
 import uniqBy from "lodash/uniqBy";
-import { ni18n } from "@core/toolkit/i18n";
 
 export default class AllProductsState {
   @observable
@@ -353,12 +352,8 @@ export default class AllProductsState {
         ({ productId }) => productId,
       ).length;
       toastStore.negative(
-        uniquePidFailures > 0
-          ? ni18n(
-              uniquePidFailures,
-              "Failed to update {%1=number of products} product",
-              "Failed to update {%1=number of products} products",
-            )
+        uniquePidFailures > 0 && failures != null
+          ? failures[0].message
           : i`Something went wrong`,
       );
     } else {
