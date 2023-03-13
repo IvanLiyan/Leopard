@@ -181,6 +181,7 @@ export const GET_PRODUCTS_QUERY = gql`
             name
           }
         }
+        variationOptions
         listingState {
           state
           reason
@@ -666,6 +667,7 @@ type ExportCsvVariationColumn = ExtractStrict<
   | "QUANTITY_VALUE"
   | "CATEGORY_EXPERIENCE_ELIGIBILITY"
   | "SUBCATEGORY_ID"
+  | "VARIATION_OPTIONS"
 >;
 
 export const GET_PRODUCTS_FOR_EXPORT_QUERY = gql`
@@ -797,6 +799,7 @@ export const GET_PRODUCTS_FOR_EXPORT_QUERY = gql`
           id
           name
         }
+        variationOptions
         variations {
           id
           sku
@@ -929,6 +932,7 @@ export type PickedProductForExport = Pick<
   | "isLtl"
   | "categoryExperienceEligibility"
   | "subcategoryId"
+  | "variationOptions"
 > & {
   readonly lastUpdateTime: Pick<Datetime, "formatted">;
   readonly createTime: Pick<Datetime, "formatted">;
@@ -1031,6 +1035,10 @@ export const generateCsvExport = (
       product.categoryExperienceEligibility ? `TRUE` : `FALSE`,
     SUBCATEGORY_ID: (product) =>
       product.subcategoryId == null ? undefined : `${product.subcategoryId}`,
+    VARIATION_OPTIONS: (product) =>
+      product.variationOptions == null || product.variationOptions.length == 0
+        ? undefined
+        : `${product.variationOptions.join(",")}`,
     NAME: (product) => product.name,
     DESCRIPTION: (product) => product.description,
     NUM_OF_WISHES: (product) => `${product.wishes}`,
@@ -1488,6 +1496,18 @@ export const generateCsvExport = (
         ? undefined
         : subcategory_id;
     },
+    VARIATION_OPTIONS: (
+      product: PickedProductForExport,
+      variationIndex: number,
+    ) => {
+      const variation_options =
+        product.variationOptions == null || product.variationOptions.length == 0
+          ? undefined
+          : `${product.variationOptions.join(",")}`;
+      return product.variations.length < variationIndex + 1
+        ? undefined
+        : variation_options;
+    },
     SKU: (product, variationIndex) =>
       product.variations.length < variationIndex + 1
         ? undefined
@@ -1868,6 +1888,10 @@ export const ExportCsvColumnDisplayNames: {
   SUBCATEGORY_ID: ci18n(
     "Column title in a spreadsheet containing products",
     "Subcategory ID",
+  ),
+  VARIATION_OPTIONS: ci18n(
+    "Option names used to group variations within the product",
+    "Variation Options",
   ),
   NAME: ci18n("Column title in a spreadsheet containing products", "Name"),
   DESCRIPTION: ci18n(

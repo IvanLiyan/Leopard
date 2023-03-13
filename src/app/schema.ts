@@ -10353,6 +10353,7 @@ export type ProductCsvColumnName =
   | "CALCULATED_SHIPPING"
   | "CALIFORNIA_PROPOSITION_65_WARNING_TYPE"
   | "CALIFORNIA_PROPOSITION_65_CHEMICAL_NAMES"
+  | "VARIATION_OPTIONS"
   | "CATEGORY_EXPERIENCE_ELIGIBILITY"
   | "SUBCATEGORY_ID"
   | "AD"
@@ -10843,6 +10844,7 @@ export type ProductSchema = {
   readonly categoryExperienceEligibility?: Maybe<Scalars["Boolean"]>;
   readonly subcategoryId?: Maybe<Scalars["Int"]>;
   readonly subcategory?: Maybe<TaxonomyCategorySchema>;
+  readonly variationOptions?: Maybe<ReadonlyArray<Scalars["String"]>>;
   readonly isReturnsEnabled?: Maybe<Scalars["Boolean"]>;
   readonly isLtl?: Maybe<Scalars["Boolean"]>;
   readonly hasBrand?: Maybe<Scalars["Boolean"]>;
