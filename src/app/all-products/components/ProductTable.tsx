@@ -523,6 +523,7 @@ const ProductTable: React.FC<Props> = ({
         _key="sales"
         columnDataCy="column_sales_wishes"
         columnKey="id"
+        minWidth={110}
         title={() => (
           <ProductTableColumnHeader
             title={ci18n(
@@ -532,9 +533,9 @@ const ProductTable: React.FC<Props> = ({
             titleDescription={i`The number of times this product has been sold`}
             subtitle={ci18n(
               "Column name in product table. This column shows each product's number of wishes",
-              "Wishes",
+              "Add to wishlist",
             )}
-            subtitleDescription={i`The number of users who have wished on this product`}
+            subtitleDescription={i`The number of users who have added this product to a wishlist`}
           />
         )}
         sortOrder={sortBy == "SALES" ? sortOrder : "not-applied"}

@@ -85,11 +85,23 @@ const ProductsContainer: React.FC = () => {
           }}
           condenseMode
         >
-          {warehouses.map((warehouse) => (
+          {warehouses.map((warehouse, index) => (
             <Pager.Content
               key={warehouse.id}
               tabKey={warehouse.id}
-              titleValue={warehouse.unitId}
+              titleValue={
+                index === 0
+                  ? ci18n(
+                      "Indicates this warehouse name is the primary warehouse",
+                      "{%1=warehouse name} (Primary)",
+                      warehouse.unitId,
+                    )
+                  : ci18n(
+                      "Indicates this warehouse name is a secondary warehouse",
+                      "{%1=warehouse name} (Secondary)",
+                      warehouse.unitId,
+                    )
+              }
             >
               <PageGuide veryRelaxed>
                 {isLoadingInitialData || initialData == null ? null : (
