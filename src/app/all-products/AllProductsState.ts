@@ -108,7 +108,7 @@ export default class AllProductsState {
   @computed
   get hasPriceError(): boolean {
     return Array.from(this.newVariationPrices.values()).some(
-      ({ newPrice }) => newPrice == null || newPrice.amount <= 0,
+      ({ newPrice }) => newPrice == null || newPrice.amount < 0.01,
     );
   }
 

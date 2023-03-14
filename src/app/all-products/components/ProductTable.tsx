@@ -839,7 +839,7 @@ const ProductTable: React.FC<Props> = ({
 
           const hasError =
             hasLocalChange &&
-            (localChange?.amount == null || localChange.amount <= 0);
+            (localChange?.amount == null || localChange.amount < 0.01);
 
           const borderColor = (() => {
             if (localChange != null) {
@@ -1196,7 +1196,6 @@ const useStylesheet = () => {
           padding: 0,
         },
         priceInput: {
-          maxWidth: 136,
           minWidth: 90,
         },
         inventoryInput: {
