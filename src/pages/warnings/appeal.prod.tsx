@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useMemo } from "react";
 import { NextPage } from "next";
 import { observer } from "mobx-react";
 import PageRoot from "@core/components/PageRoot";
@@ -16,6 +16,10 @@ import InfractionEvidenceCard from "@infractions/components/cards/InfractionEvid
 import OrderDetailsCard from "@infractions/components/cards/OrderDetailsCard";
 import ProductListingDetailsCard from "@infractions/components/cards/ProductListingDetailsCard";
 import MerchantLevelDispute from "@infractions/components/disputes/MerchantLevelDispute";
+import { DisputeFlow } from "@infractions/toolkit";
+import { useNavigationStore } from "@core/stores/NavigationStore";
+import { merchFeURL } from "@core/toolkit/router";
+import BrandedProductGeoblockDispute from "@infractions/components/disputes/BrandedProductGeoblockDispute";
 
 const PageLayout = ({ children }: { children: React.ReactNode }) => {
   const styles = useInfractionDetailsStylesheet();
@@ -33,11 +37,33 @@ const PageLayout = ({ children }: { children: React.ReactNode }) => {
 const InfractionsPage: NextPage<Record<string, never>> = () => {
   const [infractionId] = useStringQueryParam("id");
   const { merchantId } = useUserStore();
+  const navigationStore = useNavigationStore();
 
-  const { InfractionProvider, loading, error } = useInfractionProvider({
-    infractionId,
-    merchantId,
-  });
+  const { InfractionProvider, loading, error, infractionContext } =
+    useInfractionProvider({
+      infractionId,
+      merchantId,
+    });
+
+  const disputeFlowComponent = useMemo(() => {
+    const disputeFlowToComponent: {
+      readonly [flow in DisputeFlow]: JSX.Element;
+    } = {
+      MERCHANT: <MerchantLevelDispute />,
+      BRANDED_PRODUCT_GEOBLOCK: <BrandedProductGeoblockDispute />,
+      LEGACY: <></>,
+    };
+
+    return disputeFlowToComponent[infractionContext?.disputeFlow || "LEGACY"];
+  }, [infractionContext?.disputeFlow]);
+
+  useEffect(() => {
+    if (infractionContext?.disputeFlow === "LEGACY") {
+      void navigationStore.navigate(
+        merchFeURL(`/dispute-infraction/${infractionId}`),
+      );
+    }
+  }, [navigationStore, infractionContext?.disputeFlow, infractionId]);
 
   if (loading) {
     return (
@@ -65,7 +91,7 @@ const InfractionsPage: NextPage<Record<string, never>> = () => {
         <ProductListingDetailsCard asAccordion />
         <BrandDetailsCard asAccordion />
         <InfractionEvidenceCard asAccordion />
-        <MerchantLevelDispute />
+        {disputeFlowComponent}
       </PageLayout>
     </InfractionProvider>
   );

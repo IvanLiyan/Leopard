@@ -1,8 +1,9 @@
 import { gql } from "@apollo/client";
 import { UpsertMerchantWarning, UpsertMerchantWarningInput } from "@schema";
 
-export const SUBMIT_MERCHANT_DISPUTE_MUTATION = gql`
-  mutation SubmitMerchantDisputeMutation(
+export const SUBMIT_DISPUTE_MUTATION = gql`
+  mutation SubmitDisputeMutation(
+    $action: MerchantWarningAction!
     $infractionId: ObjectIdType
     $disputeInput: DisputeInfractionInput!
   ) {
@@ -10,7 +11,7 @@ export const SUBMIT_MERCHANT_DISPUTE_MUTATION = gql`
       merchantWarning {
         upsertMerchantWarning(
           input: {
-            action: MERCHANT_LEVEL_DISPUTE
+            action: $action
             warningId: $infractionId
             disputeInput: $disputeInput
           }
@@ -23,7 +24,7 @@ export const SUBMIT_MERCHANT_DISPUTE_MUTATION = gql`
   }
 `;
 
-export type SubmitMerchantDisputeMutationResponse = {
+export type SubmitDisputeMutationResponse = {
   readonly policy?: {
     readonly merchantWarning?: {
       readonly upsertMerchantWarning?: Pick<
@@ -34,7 +35,11 @@ export type SubmitMerchantDisputeMutationResponse = {
   };
 };
 
-export type SubmitMerchantDisputeMutationVariables = {
+export type SubmitDisputeMutationVariables = {
+  readonly action: Extract<
+    UpsertMerchantWarningInput["action"],
+    "MERCHANT_LEVEL_DISPUTE" | "LISTING_LEVEL_DISPUTE"
+  >;
   readonly infractionId: NonNullable<UpsertMerchantWarningInput["warningId"]>;
   readonly disputeInput: NonNullable<
     UpsertMerchantWarningInput["disputeInput"]

@@ -2,7 +2,9 @@ import React, { createContext, useContext } from "react";
 import { MerchantWarningFixAction, MerchantWarningProofType } from "@schema";
 import {
   CommerceTransactionStateDisplayText,
+  DisputeFlow,
   DisputeStatus,
+  getDisputeFlow,
   getInfractionData,
   MerchantWarningImpactTypeDisplayText,
   MerchantWarningStateDisplayText,
@@ -67,7 +69,8 @@ type InfractionContextType = {
       readonly name: string;
     }>;
   };
-  refetchInfraction: () => unknown;
+  readonly refetchInfraction: () => unknown;
+  readonly disputeFlow: DisputeFlow;
 };
 
 const InfractionContext = createContext<InfractionContextType>({
@@ -94,6 +97,7 @@ const InfractionContext = createContext<InfractionContextType>({
   refetchInfraction: () => {
     void null;
   },
+  disputeFlow: "LEGACY",
 });
 
 export const useInfractionContext = () => {
@@ -110,6 +114,7 @@ export const useInfractionProvider = ({
   InfractionProvider: React.FC<{ children: React.ReactNode }>;
   loading: boolean;
   error: ApolloError | "INFRACTION_IS_NULL" | undefined;
+  infractionContext: InfractionContextType | undefined;
 } => {
   const { data, loading, error, refetch } = useQuery<
     InfractionQueryResponse,
@@ -130,6 +135,7 @@ export const useInfractionProvider = ({
       ),
       loading,
       error,
+      infractionContext: undefined,
     };
   }
 
@@ -142,6 +148,7 @@ export const useInfractionProvider = ({
       ),
       loading,
       error: error ?? "INFRACTION_IS_NULL",
+      infractionContext: undefined,
     };
   }
 
@@ -254,6 +261,13 @@ export const useInfractionProvider = ({
         })) ?? [],
     },
     refetchInfraction: refetch,
+    disputeFlow: getDisputeFlow(
+      infraction.reason.reason,
+      infraction.productTrueTagInfo?.counterfeitViolation?.reason ??
+        infraction.productTrueTagInfo?.inappropriateViolation?.reason ??
+        undefined,
+      infraction.productTrueTagInfo?.subreason?.subcategory,
+    ),
   };
 
   return {
@@ -264,5 +278,6 @@ export const useInfractionProvider = ({
     ),
     loading,
     error,
+    infractionContext,
   };
 };

@@ -16,16 +16,16 @@ const Dispute: React.FC<Pick<BaseProps, "className" | "style">> = ({
 }) => {
   const {
     infraction: { id, disputeStatus, disputeDeadline, disputeDeadlineUnix },
+    disputeFlow,
   } = useInfractionContext();
   const styles = useInfractionDetailsStylesheet();
 
   const now = Date.now() / 1000;
 
-  // fixing in follow PR where we add logic for handling dispute type
-  // eslint-disable-next-line no-constant-condition
-  const disputeUrl = true
-    ? `appeal?id=${id}`
-    : merchFeURL(`/dispute-infraction/${id}`);
+  const disputeUrl =
+    disputeFlow == "LEGACY"
+      ? merchFeURL(`/dispute-infraction/${id}`)
+      : `appeal?id=${id}`;
 
   const DisputeButton = ({ disabled }: { disabled?: boolean }) => (
     <Button href={disputeUrl} disabled={disabled}>

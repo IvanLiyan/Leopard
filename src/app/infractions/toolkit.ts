@@ -754,7 +754,7 @@ const TaggingViolationSubReasonCodeData: {
   PLANT_SEEDS: {
     parent: "PLANTS_AND_SEEDS",
     title: ci18n("name of warning", "Plant Seeds"),
-    body: i`Wish has detected prohibited content on this listing and has been flagged for violating Wish's Policies on "Plants and Plant Seeds."${"\n\n"}The sale of plant seeds is prohibited unless you are a pre-approved merchant within specific regions. If you are a pre-approved merchant, please provide authorization documentation to relist this product on Wish. [Learn more](${"https://merchant.wish.com/policy/inappropriate-reasons/44"}).`,
+    body: i`Wish has detected prohibited content on this listing and has been flagged for violating Wish's Policies on "Plants and Plant Seeds".${"\n\n"}The sale of plant seeds is prohibited unless you are a pre-approved merchant within specific regions. If you are a pre-approved merchant, please provide authorization documentation to relist this product on Wish. [Learn more](${"https://merchant.wish.com/policy/inappropriate-reasons/44"}).`,
     policy: i`[Plants and Plant Seeds Policy](${"https://merchant.wish.com/policy/inappropriate-reasons/44"})`,
     faq: i`[Prohibited Product Listings FAQ](${zendeskURL("205211777")})`,
   },
@@ -1222,45 +1222,45 @@ const CounterfeitReasonData: {
 } = {
   SAFETY_EQUIPMENT: {
     title: i`Safety Equipment`,
-    body: i`This listing has been flagged for violating Wish's Policies on "Safety Equipment." For more information regarding our "Safety Equipment" Policy, [click here](${"https://merchant.wish.com/policy/inappropriate-reasons/38"}).`,
+    body: i`This listing has been flagged for violating Wish's Policies on "Safety Equipment". For more information regarding our "Safety Equipment" Policy, [click here](${"https://merchant.wish.com/policy/inappropriate-reasons/38"}).`,
   },
   GRAPHIC_VIOLENCE: {
     title: i`Graphic Violence`,
-    body: i`This listing has been flagged for violating Wish's Policies on "Graphic Violence." For more information regarding our "Graphic Violence" Policy, [click here](${"https://merchant.wish.com/policy/inappropriate-reasons/48"}).${"\n\n"}At this time, Wish prohibits the sale of products that depict graphic violence. This listing may be reactivated if such images are removed.`,
+    body: i`This listing has been flagged for violating Wish's Policies on "Graphic Violence". For more information regarding our "Graphic Violence" Policy, [click here](${"https://merchant.wish.com/policy/inappropriate-reasons/48"}).${"\n\n"}At this time, Wish prohibits the sale of products that depict graphic violence. This listing may be reactivated if such images are removed.`,
     policy: i`[Graphic Violence Policy](${"https://merchant.wish.com/policy/inappropriate-reasons/48"})`,
     faq: i`[Prohibited Product Listings FAQ](${zendeskURL("205211777")})`,
   },
   ILLEGAL_ELECTRONICS: {
     title: i`Privacy and Technology Violations`,
-    body: i`This listing has been flagged for violating Wish's Policies on  "Privacy and Technology Violations." For more information regarding our "Privacy and Technology Violations" Policy, [click here](${"https://merchant.wish.com/policy/inappropriate-reasons/27"}).`,
+    body: i`This listing has been flagged for violating Wish's Policies on  "Privacy and Technology Violations". For more information regarding our "Privacy and Technology Violations" Policy, [click here](${"https://merchant.wish.com/policy/inappropriate-reasons/27"}).`,
   },
   ANIMAL_PRODUCTS: {
     title: i`Animal Products`,
-    body: i`This listing has been flagged for violating Wish's Policies on "Animal Products." For more information regarding our "Animal Products" Policy, [click here](${"https://merchant.wish.com/policy/inappropriate-reasons/41"}).`,
+    body: i`This listing has been flagged for violating Wish's Policies on "Animal Products". For more information regarding our "Animal Products" Policy, [click here](${"https://merchant.wish.com/policy/inappropriate-reasons/41"}).`,
   },
   FALSE_ADVERTISING: {
     title: i`False Advertising`,
-    body: i`This listing has been flagged for violating Wish's Policies on "False Advertising." For more information regarding our "False Advertising" Policy, [click here](${"https://merchant.wish.com/policy/inappropriate-reasons/25"}).`,
+    body: i`This listing has been flagged for violating Wish's Policies on "False Advertising". For more information regarding our "False Advertising" Policy, [click here](${"https://merchant.wish.com/policy/inappropriate-reasons/25"}).`,
   },
   RECALLED_TOYS: {
     title: i`Recalled Items`,
-    body: i`This listing has been flagged for violating Wish's Policies on "Recalled Items." For more information regarding our "Recalled Items" Policy, [click here](${"https://merchant.wish.com/policy/inappropriate-reasons/18"}).`,
+    body: i`This listing has been flagged for violating Wish's Policies on "Recalled Items". For more information regarding our "Recalled Items" Policy, [click here](${"https://merchant.wish.com/policy/inappropriate-reasons/18"}).`,
   },
   PLANTS_AND_SEEDS: {
     title: i`Plants and Plant Seeds`,
-    body: i`This listing has been flagged for violating Wish's Policies on "Plants and Plant Seeds." For more information regarding our "Plants and Plant Seeds" Policy, [click here](${"https://merchant.wish.com/policy/inappropriate-reasons/44"}).`,
+    body: i`This listing has been flagged for violating Wish's Policies on "Plants and Plant Seeds". For more information regarding our "Plants and Plant Seeds" Policy, [click here](${"https://merchant.wish.com/policy/inappropriate-reasons/44"}).`,
   },
   UNVERIFIED_MONEY: {
     title: i`Unverified and Counterfeit Currency`,
-    body: i`This listing has been flagged for violating Wish's Policies on "Unverified and Counterfeit Currency." For more information regarding our "Unverified and Counterfeit Currency" Policy, [click here](${"https://merchant.wish.com/policy/inappropriate-reasons/39"}).`,
+    body: i`This listing has been flagged for violating Wish's Policies on "Unverified and Counterfeit Currency". For more information regarding our "Unverified and Counterfeit Currency" Policy, [click here](${"https://merchant.wish.com/policy/inappropriate-reasons/39"}).`,
   },
   WEAPON: {
     title: i`Weapons`,
-    body: i`This listing has been flagged for violating Wish's Policies on "Weapons." For more information regarding our "Weapons" Policy, [click here](${"https://merchant.wish.com/policy/inappropriate-reasons/7"}).`,
+    body: i`This listing has been flagged for violating Wish's Policies on "Weapons". For more information regarding our "Weapons" Policy, [click here](${"https://merchant.wish.com/policy/inappropriate-reasons/7"}).`,
   },
   PRICE_GOUGING: {
     title: i`Price Gouging`,
-    body: i`This listing has been flagged for violating Wish's Policies on "Price Gouging." For more information regarding our "Price Gouging" Policy, [click here](${"https://merchant.wish.com/policy/inappropriate-reasons/40"}).${"\n\n"}Product listings that are priced significantly higher than reasonable market value are not permitted on Wish. Please create a new listing that accurately represents the value of the product being sold.`,
+    body: i`This listing has been flagged for violating Wish's Policies on "Price Gouging". For more information regarding our "Price Gouging" Policy, [click here](${"https://merchant.wish.com/policy/inappropriate-reasons/40"}).${"\n\n"}Product listings that are priced significantly higher than reasonable market value are not permitted on Wish. Please create a new listing that accurately represents the value of the product being sold.`,
     policy: i`[Price Gouging Policy](${"https://merchant.wish.com/policy/inappropriate-reasons/40"})`,
     faq: i`[Coronavirus / COVID-19 Pandemic Price Gouging Policy FAQ](${zendeskURL(
       "mu1260802749270",
@@ -1268,11 +1268,11 @@ const CounterfeitReasonData: {
   },
   SMOKING: {
     title: i`Drugs and Drug Paraphernalia`,
-    body: i`This listing has been flagged for violating Wish's Policies on "Drugs and Drug Paraphernalia." For more information regarding our "Drugs and Drug Paraphernalia" Policy, [click here]${"https://merchant.wish.com/policy/inappropriate-reasons/14"}.`,
+    body: i`This listing has been flagged for violating Wish's Policies on "Drugs and Drug Paraphernalia". For more information regarding our "Drugs and Drug Paraphernalia" Policy, [click here]${"https://merchant.wish.com/policy/inappropriate-reasons/14"}.`,
   },
   MISLEADING_LISTING: {
     title: i`Misleading Listing`,
-    body: i`This listing has been flagged for violating Wish's Policies on "Misleading Listings." For more information regarding our "Misleading Listings" Policy, [click here](${"https://merchant.wish.com/policy/inappropriate-reasons/33"}).`,
+    body: i`This listing has been flagged for violating Wish's Policies on "Misleading Listings". For more information regarding our "Misleading Listings" Policy, [click here](${"https://merchant.wish.com/policy/inappropriate-reasons/33"}).`,
   },
   REGIONAL_RESTRICTIONS: {
     title: i`Regional Restrictions`,
@@ -1282,35 +1282,35 @@ const CounterfeitReasonData: {
   },
   NUDITY: {
     title: ci18n("name of warning", "Graphic Sexual Content"),
-    body: i`This listing has been flagged for violating Wish's Policies on "Graphic Sexual Content." For more information regarding our "Graphic Sexual Content" Policy, [click here](${"https://merchant.wish.com/policy/inappropriate-reasons/46"}).`,
+    body: i`This listing has been flagged for violating Wish's Policies on "Graphic Sexual Content". For more information regarding our "Graphic Sexual Content" Policy, [click here](${"https://merchant.wish.com/policy/inappropriate-reasons/46"}).`,
   },
   HATE_CRIME: {
     title: i`Hateful Symbols & Messages`,
-    body: i`This listing has been flagged for violating Wish's Policies on "Hateful Symbols and Messages." For more information regarding our "Hateful Symbols and Messages" Policy, [click here](${"https://merchant.wish.com/policy/inappropriate-reasons/23"}).`,
+    body: i`This listing has been flagged for violating Wish's Policies on "Hateful Symbols and Messages". For more information regarding our "Hateful Symbols and Messages" Policy, [click here](${"https://merchant.wish.com/policy/inappropriate-reasons/23"}).`,
   },
   MEDICAL_MATERIALS: {
     title: i`Medically Regulated Materials`,
-    body: i`This listing has been flagged for violating Wish's Policies on "Medically Regulated Materials." For more information regarding our "Medically Regulated Materials" Policy, [click here](${"https://merchant.wish.com/policy/inappropriate-reasons/34"}).`,
+    body: i`This listing has been flagged for violating Wish's Policies on "Medically Regulated Materials". For more information regarding our "Medically Regulated Materials" Policy, [click here](${"https://merchant.wish.com/policy/inappropriate-reasons/34"}).`,
   },
   AMBIGUOUS_LISTING: {
     title: ci18n("title", "Ambiguous Listing"),
-    body: i`This listing has been flagged for violating Wish's Policies on "Ambiguous Listings." For more information regarding our "Ambiguous Listings" Policy, [click here](${"https://merchant.wish.com/policy/inappropriate-reasons/28"}).`,
+    body: i`This listing has been flagged for violating Wish's Policies on "Ambiguous Listings". For more information regarding our "Ambiguous Listings" Policy, [click here](${"https://merchant.wish.com/policy/inappropriate-reasons/28"}).`,
   },
   JEWELRY_AND_METALS: {
     title: i`Jewelry and Metals`,
-    body: i`This listing has been flagged for violating Wish's Policies on "Jewelry." For more information regarding our "Jewelry" Policy, [click here](${"https://merchant.wish.com/policy/inappropriate-reasons/49"}).`,
+    body: i`This listing has been flagged for violating Wish's Policies on "Jewelry". For more information regarding our "Jewelry" Policy, [click here](${"https://merchant.wish.com/policy/inappropriate-reasons/49"}).`,
   },
   CONSUMPTION_MATERIALS: {
     title: i`Materials for Consumption`,
-    body: i`This listing has been flagged for violating Wish's Policies on "Materials for Consumption." For more information regarding our "Materials for Consumption" Policy, [click here](${"https://merchant.wish.com/policy/inappropriate-reasons/22"}).`,
+    body: i`This listing has been flagged for violating Wish's Policies on "Materials for Consumption". For more information regarding our "Materials for Consumption" Policy, [click here](${"https://merchant.wish.com/policy/inappropriate-reasons/22"}).`,
   },
   HAZARDOUS_MATERIALS: {
     title: ci18n("title", "Hazardous Materials"),
-    body: i`This listing has been flagged for violating Wish's Policies on "Hazardous Materials." For more information regarding our "Hazardous Materials" Policy, [click here](${"https://merchant.wish.com/policy/inappropriate-reasons/35"}).`,
+    body: i`This listing has been flagged for violating Wish's Policies on "Hazardous Materials". For more information regarding our "Hazardous Materials" Policy, [click here](${"https://merchant.wish.com/policy/inappropriate-reasons/35"}).`,
   },
   DISTASTEFUL_CONTENT: {
     title: i`Distasteful Content`,
-    body: i`This listing has been flagged for violating Wish's Policies on "Distasteful Content." For more information regarding our "Distasteful Content" Policy, [click here](${"https://merchant.wish.com/policy/inappropriate-reasons/47"}).${"\n\n"}At this time, Wish prohibits the sale of products that depict distasteful imagery. This listing may be reactivated if such images are removed.`,
+    body: i`This listing has been flagged for violating Wish's Policies on "Distasteful Content". For more information regarding our "Distasteful Content" Policy, [click here](${"https://merchant.wish.com/policy/inappropriate-reasons/47"}).${"\n\n"}At this time, Wish prohibits the sale of products that depict distasteful imagery. This listing may be reactivated if such images are removed.`,
     policy: i`[Distasteful Content Policy](${"https://merchant.wish.com/policy/inappropriate-reasons/47"})`,
     faq: i`[Prohibited Product Listings FAQ](${zendeskURL("205211777")})`,
   },
@@ -1320,7 +1320,7 @@ const CounterfeitReasonData: {
   },
   VIRTUAL_GOODS: {
     title: i`Virtual Goods`,
-    body: i`This listing has been flagged for violating Wish's Policies on "Virtual Goods." For more information regarding our "Virtual Goods" Policy, [click here](${"https://merchant.wish.com/policy/inappropriate-reasons/21"}).`,
+    body: i`This listing has been flagged for violating Wish's Policies on "Virtual Goods". For more information regarding our "Virtual Goods" Policy, [click here](${"https://merchant.wish.com/policy/inappropriate-reasons/21"}).`,
   },
   UNLICENSED_MEDIA: {
     title: ci18n("name of warning", "Unlicensed Media"),
@@ -1388,7 +1388,7 @@ const CounterfeitReasonData: {
   },
   BLURRED_INFORMATION: {
     title: ci18n("name of warning", "Blurred Information"),
-    body: i`This listing has been flagged for violating Wish\'s policies on "Censored Information."`,
+    body: i`This listing has been flagged for violating Wish\'s policies on "Censored Information".`,
   },
   IS_MAJOR_BRAND: {
     title: ci18n("name of warning", "Counterfeit and/or IP Violation"),
@@ -1478,7 +1478,7 @@ const MerchantWarningReasonData: {
   },
   SUSPECTED_FRAUD: {
     title: i`Suspected Fraud`,
-    body: i`Wish has found that your account violated our Terms of Service](${"https://www.wish.com/en-terms"}) with deceptive, fraudulent, or illegal activity`,
+    body: i`Wish has found that your account violated our [Terms of Service](${"https://www.wish.com/en-terms"}) with deceptive, fraudulent, or illegal activity`,
     policy: i`[Terms of Service](${"https://merchant.wish.com/terms-of-service"})`,
     faq: undefined,
   },
@@ -1578,14 +1578,14 @@ const MerchantWarningReasonData: {
   },
   INACTIVE_ACCOUNT: {
     title: i`Inactive Account`,
-    body: i`Wish has detected that your account has been [inactive](${"https://merchantfaq.wish.com/hc/en-us/articles/9358114053787-Inactive-account-infractions"} for some time`,
+    body: i`Wish has detected that your account has been [inactive](${"https://merchantfaq.wish.com/hc/en-us/articles/9358114053787-Inactive-account-infractions"}) for some time`,
     policy: i`[Account Suspension Policy](${"https://merchant.wish.com/policy#account_suspension"})`,
     faq: i`[Inactive Account Infractions FAQ](${zendeskURL("9358114053787")})`,
   },
   ORDER_NOT_DELIVERED: {
     title: i`Order Not Delivered`,
-    body: i`"Based on confirmed tracking information, this order did not arrive before (max TTD + ${7} days).
-      Note: Wish will automatically reverse this infraction if the order is confirmed delivered or gets paid out."`,
+    body: i`Based on confirmed tracking information, this order did not arrive before (max TTD + ${7} days).
+      Note: Wish will automatically reverse this infraction if the order is confirmed delivered or gets paid out.`,
     policy: i`[Fulfillment Policy](${"https://merchant.wish.com/policy#fulfillment"})`,
     faq: undefined,
   },
@@ -1595,7 +1595,7 @@ const MerchantWarningReasonData: {
   //
   PRODUCT_IS_INAPPROPRIATE: {
     title: i`Prohibited Content`,
-    body: i`"This product listing contains [prohibited content](${zendeskURL(
+    body: i`This product listing contains [prohibited content](${zendeskURL(
       "205211777",
     )}) (e.g.: unacceptable images, titles, descriptions, etc.).`,
     policy: i`[Listing Products Policy](${"https://merchant.wish.com/policy#listing"})`,
@@ -1940,8 +1940,8 @@ export const MerchantWarningImpactTypeDisplayText: {
     i`You are responsible for 100% of the costs of refunds on all orders for the product going forward.`,
   PRODUCT_IMPRESSION_BLOCK: (startDate, endDate) =>
     endDate
-      ? i`Wish will block impressions for your account until ${endDate}.`
-      : i`Wish will block impressions for your account.`,
+      ? i`Wish will block impressions for this product until ${endDate}.`
+      : i`Wish will block impressions for this product.`,
   VARIATION_TAKEDOWN: (startDate, endDate) =>
     startDate
       ? i`Wish removed this variation on ${startDate}.`
@@ -2013,7 +2013,7 @@ export const MerchantWarningProofTypeDisplayText: {
   ORDER: ci18n("a type of evidence for an infraction", "Order"),
 };
 
-const getDatum = <T extends string | undefined>(
+const getTitle = <T extends string | undefined>(
   firstLevel: T,
   secondLevel: T | undefined,
   thirdLevel: T | undefined,
@@ -2029,6 +2029,30 @@ const getDatum = <T extends string | undefined>(
   return `${secondLevel} - ${thirdLevel}` as T;
 };
 
+const getBody = <T extends string | undefined>(
+  firstLevel: T,
+  secondLevel: T | undefined,
+  thirdLevel: T | undefined,
+): T => {
+  if (!secondLevel) {
+    return firstLevel;
+  }
+
+  if (!thirdLevel) {
+    return secondLevel;
+  }
+
+  return `${firstLevel}${"\n\n&nbsp;\n\n"}${secondLevel}${"\n\n&nbsp;\n\n"}${thirdLevel}` as T;
+};
+
+const getDatum = <T extends string | undefined>(
+  firstLevel: T,
+  secondLevel: T | undefined,
+  thirdLevel: T | undefined,
+): T => {
+  return thirdLevel ?? secondLevel ?? firstLevel;
+};
+
 export const getInfractionData = (
   reason: MerchantWarningReason,
   inappropriateReason: CounterfeitReason | undefined,
@@ -2037,14 +2061,14 @@ export const getInfractionData = (
   reason !== "PRODUCT_IS_INAPPROPRIATE"
     ? MerchantWarningReasonData[reason]
     : {
-        title: getDatum(
+        title: getTitle(
           MerchantWarningReasonData[reason].title,
           inappropriateReason &&
             CounterfeitReasonData[inappropriateReason].title,
           inappropriateSubreason &&
             TaggingViolationSubReasonCodeData[inappropriateSubreason].title,
         ),
-        body: getDatum(
+        body: getBody(
           MerchantWarningReasonData[reason].body,
           inappropriateReason &&
             CounterfeitReasonData[inappropriateReason].body,
@@ -2065,3 +2089,41 @@ export const getInfractionData = (
             TaggingViolationSubReasonCodeData[inappropriateSubreason].faq,
         ),
       };
+
+export type DisputeFlow = "LEGACY" | "MERCHANT" | "BRANDED_PRODUCT_GEOBLOCK";
+
+export const getDisputeFlow = (
+  reason: MerchantWarningReason,
+  inappropriateReason: CounterfeitReason | undefined,
+  inappropriateSubreason: TaggingViolationSubReasonCode | undefined,
+): DisputeFlow => {
+  // will be used in future dispute flows
+  void inappropriateReason;
+  void inappropriateSubreason;
+
+  if (reason === "BRANDED_PRODUCT_GEOBLOCK") {
+    return "BRANDED_PRODUCT_GEOBLOCK";
+  }
+
+  if (
+    reason === "REQUEST_USER_EMAIL" ||
+    reason === "REQUEST_MONEY" ||
+    reason === "BAD_CUSTOMER_SERVICE" ||
+    reason === "DISINGENUOUS_CUSTOMER_SERVICE" ||
+    reason === "TAKE_USER_OUTSIDE_WISH" ||
+    reason === "VIOLATE_POLICY" ||
+    reason === "SUSPECTED_FRAUD" ||
+    reason === "REPEAT_IP_INFRINGEMENT_ON_BRAND_OWNER" ||
+    reason === "MERCHANT_CONTACT_INFO_INVALID" ||
+    reason === "RESPOND_TO_ADMIN" ||
+    reason === "WISHPOST_NEGATIVE_BALANCE" ||
+    reason === "HIGH_IP_INFRINGEMENT" ||
+    reason === "VIOLATE_TS_POLICY" ||
+    reason === "BAN_EARLY_STAGE_MERCHANT" ||
+    reason === "INACTIVE_ACCOUNT"
+  ) {
+    return "MERCHANT";
+  }
+
+  return "LEGACY";
+};

@@ -19,8 +19,9 @@ import {
 } from "@infractions/api/submitDisputeMutation";
 import { useToastStore } from "@core/stores/ToastStore";
 import { useNavigationStore } from "@core/stores/NavigationStore";
+import { ci18n } from "@core/toolkit/i18n";
 
-const MerchantLevelDispute: React.FC = () => {
+const BrandedProductGeoblockDispute: React.FC = () => {
   const styles = useInfractionDetailsStylesheet();
   const {
     infraction: { id: infractionId, actions },
@@ -42,7 +43,7 @@ const MerchantLevelDispute: React.FC = () => {
     try {
       const resp = await submitDispute({
         variables: {
-          action: "MERCHANT_LEVEL_DISPUTE",
+          action: "LISTING_LEVEL_DISPUTE",
           infractionId,
           disputeInput: {
             explanation,
@@ -78,7 +79,7 @@ const MerchantLevelDispute: React.FC = () => {
   };
 
   const canDispute = actions.includes("DISPUTE");
-  const canSubmit = !!explanation;
+  const canSubmit = !!explanation && documentation.length > 0;
 
   return (
     <Accordion defaultExpanded title={i`Dispute Details`}>
@@ -89,7 +90,7 @@ const MerchantLevelDispute: React.FC = () => {
               Provide detailed information to support your dispute.
             </Heading>
             <HorizontalField
-              title={i`Explanation`}
+              title={ci18n("title for field", "Explanation")}
               info={i`Explain how wish made a mistake in issuing this infraction.`}
               {...hFieldProps}
             >
@@ -104,7 +105,10 @@ const MerchantLevelDispute: React.FC = () => {
               />
             </HorizontalField>
             <HorizontalField
-              title={i`Documentation (optional)`}
+              title={ci18n(
+                "title for field",
+                "Proof of brand authorization in select jurisdiction(s)",
+              )}
               info={i`Provide evidence to support your claims above.`}
               {...hFieldProps}
             >
@@ -146,4 +150,4 @@ const MerchantLevelDispute: React.FC = () => {
   );
 };
 
-export default observer(MerchantLevelDispute);
+export default observer(BrandedProductGeoblockDispute);
