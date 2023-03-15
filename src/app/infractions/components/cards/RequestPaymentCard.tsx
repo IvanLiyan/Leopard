@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { observer } from "mobx-react";
 import Markdown from "@infractions/components/Markdown";
 import { Layout } from "@ContextLogic/lego";
@@ -6,7 +6,7 @@ import Card from "./Card";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { useInfractionDetailsStylesheet } from "@infractions/styles";
 import { Button } from "@ContextLogic/atlas-ui";
-import { InfractionContext } from "@infractions/InfractionContext";
+import { useInfractionContext } from "@infractions/InfractionContext";
 import RequestPaymentModal from "./RequestPaymentModal";
 
 const RequestPaymentCard: React.FC<Pick<BaseProps, "className" | "style">> = ({
@@ -16,7 +16,7 @@ const RequestPaymentCard: React.FC<Pick<BaseProps, "className" | "style">> = ({
   const styles = useInfractionDetailsStylesheet();
   const {
     infraction: { actions },
-  } = useContext(InfractionContext);
+  } = useInfractionContext();
   const [modalOpen, setModalOpen] = useState(false);
 
   if (!actions.includes("REQUEST_PAYMENT_RELEASE")) {

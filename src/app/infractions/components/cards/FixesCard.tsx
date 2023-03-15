@@ -1,11 +1,11 @@
-import React, { useContext } from "react";
+import React from "react";
 import { observer } from "mobx-react";
 import Markdown from "@infractions/components/Markdown";
 import { useInfractionDetailsStylesheet } from "@infractions/styles";
 import Card from "./Card";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { css } from "@core/toolkit/styling";
-import { InfractionContext } from "@infractions/InfractionContext";
+import { useInfractionContext } from "@infractions/InfractionContext";
 import ReviewInfractionDetails from "./actionCards/ReviewInfractionDetails";
 import ProvideProofOfAuthenticity from "./actionCards/ProvideProofOfAuthenticity";
 import EditYourProductListing from "./actionCards/EditYourProductListing";
@@ -48,7 +48,7 @@ const FixesCard: React.FC<Pick<BaseProps, "className" | "style">> = ({
   const styles = useInfractionDetailsStylesheet();
   const {
     infraction: { disputeDeadline, actions },
-  } = useContext(InfractionContext);
+  } = useInfractionContext();
 
   const filteredActions: ReadonlyArray<Fix> = actions.filter((action) =>
     (Fixes as ReadonlyArray<string>).includes(action),

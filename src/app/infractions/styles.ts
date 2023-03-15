@@ -7,7 +7,16 @@ export const useInfractionDetailsStylesheet = () => {
   const { surfaceLight } = useTheme();
   return useMemo(() => {
     return StyleSheet.create({
-      content: {
+      disputeContent: {
+        // flex and grid don't play nicely with Mui accordion
+        marginTop: 24,
+        ":nth-child(1n) > div": {
+          ":not(:last-child)": {
+            marginBottom: 24,
+          },
+        },
+      },
+      detailsContent: {
         display: "grid",
         gridGap: 24,
         [`@media ${IS_SMALL_SCREEN}`]: {

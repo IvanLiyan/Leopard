@@ -1,21 +1,20 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { observer } from "mobx-react";
 import Markdown from "@infractions/components/Markdown";
 import { Layout } from "@ContextLogic/lego";
 import { useInfractionDetailsStylesheet } from "@infractions/styles";
-import Card from "./Card";
-import { BaseProps } from "@ContextLogic/lego/toolkit/react";
+import Card, { Props as CardProps } from "./Card";
 import Image from "@core/components/Image";
-import { InfractionContext } from "@infractions/InfractionContext";
+import { useInfractionContext } from "@infractions/InfractionContext";
 import { wishProductURL } from "@core/toolkit/url";
 
 const ProductListingDetailsCard: React.FC<
-  Pick<BaseProps, "className" | "style">
-> = ({ className, style }) => {
+  Omit<CardProps, "title" | "children">
+> = (props) => {
   const styles = useInfractionDetailsStylesheet();
   const {
     infraction: { product },
-  } = useContext(InfractionContext);
+  } = useInfractionContext();
   const [showFullDescription, setShowFullDescription] = useState(false);
 
   if (product == null) {
@@ -38,7 +37,7 @@ const ProductListingDetailsCard: React.FC<
       : i`${productDescriptionRaw} [View Less](#)`;
 
   return (
-    <Card title={i`Product Listing Details`} style={[className, style]}>
+    <Card title={i`Product Listing Details`} {...props}>
       <Layout.FlexRow>
         <Image
           src={productImageUrl}

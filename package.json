@@ -27,6 +27,7 @@
     "@fortawesome/react-fontawesome": "^0.0.18",
     "@loadable/component": "^5.13.1",
     "@mui/base": "^5.0.0-alpha.90",
+    "@mui/icons-material": "^5.11.11",
     "@mui/material": "^5.10.6",
     "@sentry/nextjs": "6.19.7",
     "@types/lodash": "^4.14.168",

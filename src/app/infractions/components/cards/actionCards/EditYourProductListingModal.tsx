@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useMemo, useReducer } from "react";
+import React, { useEffect, useMemo, useReducer } from "react";
 import { observer } from "mobx-react";
 import { StyleSheet } from "aphrodite";
 import Modal from "@core/components/modal/Modal";
@@ -7,7 +7,7 @@ import { ModalProps } from "@core/components/modal/Modal";
 import ModalTitle from "@core/components/modal/ModalTitle";
 import ModalFooter from "@core/components/modal/ModalFooter";
 import { ci18n } from "@core/toolkit/i18n";
-import { InfractionContext } from "@infractions/InfractionContext";
+import { useInfractionContext } from "@infractions/InfractionContext";
 import { useMutation, useRequest } from "@core/toolkit/restApi";
 import Skeleton from "@core/components/Skeleton";
 import { css } from "@core/toolkit/styling";
@@ -46,7 +46,7 @@ const EditYourProductListingModal: React.FC<
   const {
     infraction: { id: infractionId, product: productFromContext },
     refetchInfraction,
-  } = useContext(InfractionContext);
+  } = useInfractionContext();
   const [state, dispatch] = useReducer(perStateReducer, initialState);
 
   const { data, isLoading, error } =

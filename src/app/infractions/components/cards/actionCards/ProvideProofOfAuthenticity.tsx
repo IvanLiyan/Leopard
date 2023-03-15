@@ -1,11 +1,11 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { observer } from "mobx-react";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import Markdown from "@infractions/components/Markdown";
 import { Button } from "@ContextLogic/atlas-ui";
 import ActionCard from "./ActionCard";
 import { merchFeURL } from "@core/toolkit/router";
-import { InfractionContext } from "@infractions/InfractionContext";
+import { useInfractionContext } from "@infractions/InfractionContext";
 import { useInfractionDetailsStylesheet } from "@infractions/styles";
 import UseExistingProofModal from "./UseExistingProofModal";
 
@@ -14,7 +14,7 @@ const ProvideProofOfAuthenticity: React.FC<
 > = ({ className, style }) => {
   const {
     infraction: { id: infractionId, brand, brandAuthorizations },
-  } = useContext(InfractionContext);
+  } = useInfractionContext();
   const styles = useInfractionDetailsStylesheet();
   const [modalOpen, setModalOpen] = useState(false);
 

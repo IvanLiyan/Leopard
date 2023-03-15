@@ -1,9 +1,8 @@
-import React, { useContext } from "react";
+import React from "react";
 import { observer } from "mobx-react";
 import Markdown from "@infractions/components/Markdown";
-import Card from "./Card";
-import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import { InfractionContext } from "@infractions/InfractionContext";
+import Card, { Props as CardProps } from "./Card";
+import { useInfractionContext } from "@infractions/InfractionContext";
 import { ci18n } from "@core/toolkit/i18n";
 import { MerchantWarningProofType } from "@schema";
 import { wishProductURL } from "@core/toolkit/url";
@@ -27,21 +26,18 @@ const getIdLink: {
 };
 
 const InfractionEvidenceCard: React.FC<
-  Pick<BaseProps, "className" | "style">
-> = ({ className, style }) => {
+  Omit<CardProps, "title" | "children">
+> = (props) => {
   const {
     infraction: { infractionEvidence, product },
-  } = useContext(InfractionContext);
+  } = useInfractionContext();
 
   if (infractionEvidence.length < 1) {
     return null;
   }
 
   return (
-    <Card
-      title={ci18n("card title", "Infraction Evidence")}
-      style={[className, style]}
-    >
+    <Card title={ci18n("card title", "Infraction Evidence")} {...props}>
       <Table data={infractionEvidence}>
         <Table.Column
           title={ci18n("type of a piece of evidence", "Type")}

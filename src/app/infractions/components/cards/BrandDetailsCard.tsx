@@ -1,20 +1,18 @@
-import React, { useContext } from "react";
+import React from "react";
 import { observer } from "mobx-react";
 import Markdown from "@infractions/components/Markdown";
 import { useInfractionDetailsStylesheet } from "@infractions/styles";
-import Card from "./Card";
-import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import { InfractionContext } from "@infractions/InfractionContext";
+import Card, { Props as CardProps } from "./Card";
+import { useInfractionContext } from "@infractions/InfractionContext";
 import { ci18n } from "@core/toolkit/i18n";
 
-const BrandDetailsCard: React.FC<Pick<BaseProps, "className" | "style">> = ({
-  className,
-  style,
-}) => {
+const BrandDetailsCard: React.FC<Omit<CardProps, "title" | "children">> = (
+  props,
+) => {
   const styles = useInfractionDetailsStylesheet();
   const {
     infraction: { brand },
-  } = useContext(InfractionContext);
+  } = useInfractionContext();
 
   if (!brand) {
     return null;
@@ -27,10 +25,7 @@ const BrandDetailsCard: React.FC<Pick<BaseProps, "className" | "style">> = ({
   }
 
   return (
-    <Card
-      title={ci18n("card title", "Brand Details")}
-      style={[className, style]}
-    >
+    <Card title={ci18n("card title", "Brand Details")} {...props}>
       {brandName && (
         <Markdown text={i`Brand: ${brandName}`} style={styles.cardMargin} />
       )}

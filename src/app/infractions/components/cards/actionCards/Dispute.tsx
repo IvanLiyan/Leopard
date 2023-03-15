@@ -1,13 +1,14 @@
-import React, { useContext } from "react";
+import React from "react";
 import { observer } from "mobx-react";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import Markdown from "@infractions/components/Markdown";
 import { Button, Tooltip } from "@ContextLogic/atlas-ui";
 import ActionCard from "./ActionCard";
-import { InfractionContext } from "@infractions/InfractionContext";
+import { useInfractionContext } from "@infractions/InfractionContext";
 import { useInfractionDetailsStylesheet } from "@infractions/styles";
 import { ci18n } from "@core/toolkit/i18n";
 import { DisputeStatusDisplayText } from "@infractions/toolkit";
+import { merchFeURL } from "@core/toolkit/router";
 
 const Dispute: React.FC<Pick<BaseProps, "className" | "style">> = ({
   className,
@@ -15,13 +16,19 @@ const Dispute: React.FC<Pick<BaseProps, "className" | "style">> = ({
 }) => {
   const {
     infraction: { id, disputeStatus, disputeDeadline, disputeDeadlineUnix },
-  } = useContext(InfractionContext);
+  } = useInfractionContext();
   const styles = useInfractionDetailsStylesheet();
 
   const now = Date.now() / 1000;
 
+  // fixing in follow PR where we add logic for handling dispute type
+  // eslint-disable-next-line no-constant-condition
+  const disputeUrl = true
+    ? `appeal?id=${id}`
+    : merchFeURL(`/dispute-infraction/${id}`);
+
   const DisputeButton = ({ disabled }: { disabled?: boolean }) => (
-    <Button href={`/dispute-infraction/${id}`} disabled={disabled}>
+    <Button href={disputeUrl} disabled={disabled}>
       Dispute Infraction
     </Button>
   );

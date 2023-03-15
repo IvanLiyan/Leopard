@@ -1,4 +1,4 @@
-import React, { useContext, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { observer } from "mobx-react";
 import {
   MessagesQueryResponse,
@@ -12,7 +12,7 @@ import Conversation, {
   Message,
   MessageGroup,
 } from "@core/components/conversation/Conversation";
-import { InfractionContext } from "@infractions/InfractionContext";
+import { useInfractionContext } from "@infractions/InfractionContext";
 import { ci18n } from "@core/toolkit/i18n";
 import { useMutation, useQuery } from "@apollo/client";
 import { Text } from "@ContextLogic/atlas-ui";
@@ -33,14 +33,14 @@ const MessagesCard: React.FC<Pick<BaseProps, "className" | "style">> = ({
   className,
   style,
 }) => {
-  const cardProps: CardProps = {
+  const cardProps: Omit<CardProps, "children"> = {
     title: ci18n("card title", "Messages"),
     style: [className, style],
   };
 
   const {
     infraction: { id: infractionId, actions },
-  } = useContext(InfractionContext);
+  } = useInfractionContext();
 
   const [response, setResponse] = useState<string | undefined>();
   const [attachments, setAttachments] = useState<ReadonlyArray<Attachment>>([]);
@@ -128,13 +128,13 @@ const MessagesCard: React.FC<Pick<BaseProps, "className" | "style">> = ({
   >(SEND_MESSAGE_MUTATION);
 
   const [
-    senOrderInfractionMessage,
+    sendOrderInfractionMessage,
     { loading: sendOrderInfractionMessageMutationLoading },
   ] = useMutation<
     SendOrderInfractionMessageMutationResponse,
     SendOrderInfractionMessageMutationVariables
   >(SEND_ORDER_INFRACTION_MESSAGE_MUTATION);
-  void senOrderInfractionMessage;
+  void sendOrderInfractionMessage;
 
   const onSend = async () => {
     if (!response) {

@@ -1,10 +1,10 @@
-import React, { useContext } from "react";
+import React from "react";
 import { observer } from "mobx-react";
 import Markdown from "@infractions/components/Markdown";
 import { useInfractionDetailsStylesheet } from "@infractions/styles";
 import Card from "./Card";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import { InfractionContext } from "@infractions/InfractionContext";
+import { useInfractionContext } from "@infractions/InfractionContext";
 import { ci18n } from "@core/toolkit/i18n";
 
 const InfractionImpactCard: React.FC<
@@ -13,7 +13,7 @@ const InfractionImpactCard: React.FC<
   const styles = useInfractionDetailsStylesheet();
   const {
     infraction: { infractionImpacts, wssImpact },
-  } = useContext(InfractionContext);
+  } = useInfractionContext();
 
   const showInfractionImpacts =
     infractionImpacts && infractionImpacts.length > 0;

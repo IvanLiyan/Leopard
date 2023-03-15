@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { observer } from "mobx-react";
 import Modal from "@core/components/modal/Modal";
 import SecureFileInput, { Attachment } from "@core/components/SecureFileInput";
@@ -13,7 +13,7 @@ import {
   RequestPaymentReleaseMutationVariables,
   REQUEST_PAYMENT_RELEASE_MUTATION,
 } from "@infractions/api/requestPaymentReleaseMutation";
-import { InfractionContext } from "@infractions/InfractionContext";
+import { useInfractionContext } from "@infractions/InfractionContext";
 import { useToastStore } from "@core/stores/ToastStore";
 
 type RequestPaymentModalContentProps = Pick<ModalProps, "open" | "onClose">;
@@ -25,7 +25,7 @@ const RequestPaymentModal: React.FC<RequestPaymentModalContentProps> = ({
   const toastStore = useToastStore();
   const {
     infraction: { id: infractionId },
-  } = useContext(InfractionContext);
+  } = useInfractionContext();
   const [photoIds, setPhotoIds] = useState<ReadonlyArray<Attachment>>([]);
   const [agreements, setAgreements] = useState<ReadonlyArray<Attachment>>([]);
 
