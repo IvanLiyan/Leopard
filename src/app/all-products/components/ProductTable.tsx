@@ -28,6 +28,8 @@ import {
   GET_PRODUCT_VARIATIONS_QUERY,
   COLLAPSED_VARIATIONS_SHOWN,
   PickedVariation,
+  LEGACY_COLOR_DISPLAY_TEXT,
+  LEGACY_SIZE_DISPLAY_TEXT,
 } from "@all-products/toolkit";
 import ProductStateLabel from "./ProductStateLabel";
 import ProductTableColumnHeader from "./ProductTableColumnHeader";
@@ -237,14 +239,14 @@ const ProductTable: React.FC<Props> = ({
 
     if (variation.color != null) {
       options.push({
-        name: ci18n("As in the color of a product variation", "Color"),
+        name: LEGACY_COLOR_DISPLAY_TEXT,
         value: variation.color,
       });
     }
 
     if (variation.size != null) {
       options.push({
-        name: ci18n("As in the size of a product variation", "Size"),
+        name: LEGACY_SIZE_DISPLAY_TEXT,
         value: variation.size,
       });
     }

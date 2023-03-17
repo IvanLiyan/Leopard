@@ -2227,3 +2227,12 @@ export const ExportCsvColumnDisplayNames: {
     "Calculated Shipping",
   ),
 };
+
+export const LEGACY_COLOR_DISPLAY_TEXT = ci18n(
+  "Variation type, merchant customized color for a variation",
+  "Custom Color",
+);
+export const LEGACY_SIZE_DISPLAY_TEXT = ci18n(
+  "Custom variation type, custom value to distinguish a variation",
+  "Custom Variation",
+);
