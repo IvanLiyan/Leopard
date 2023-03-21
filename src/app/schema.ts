@@ -565,16 +565,34 @@ export type AttributeDataTypeFormat =
 export type AttributeExtractionTaggerJobSchema = {
   readonly __typename?: "AttributeExtractionTaggerJobSchema";
   readonly jobId: Scalars["ObjectIdType"];
+  readonly taskId: Scalars["String"];
   readonly jobType: AttributeExtractionTaggerJobType;
   readonly attributeConfigs: ReadonlyArray<AttributeConfigSchema>;
+  readonly text: Scalars["String"];
   readonly productId?: Maybe<Scalars["ObjectIdType"]>;
   readonly productTitle?: Maybe<Scalars["String"]>;
   readonly productDescription?: Maybe<Scalars["String"]>;
   readonly productImageUrls?: Maybe<ReadonlyArray<Scalars["String"]>>;
   readonly query?: Maybe<Scalars["String"]>;
+  readonly tagSubmissions?: Maybe<
+    ReadonlyArray<AttributeExtractionTagSubmissionSchema>
+  >;
 };
 
 export type AttributeExtractionTaggerJobType = "QUERY" | "PRODUCT";
+
+export type AttributeExtractionTagSubmissionSchema = {
+  readonly __typename?: "AttributeExtractionTagSubmissionSchema";
+  readonly tagger: UserSchema;
+  readonly submissionDatetime: Datetime;
+  readonly attributeExtractionResult: ReadonlyArray<AttributeFieldTagResultSchema>;
+};
+
+export type AttributeFieldTagResultSchema = {
+  readonly __typename?: "AttributeFieldTagResultSchema";
+  readonly attributeField: Scalars["String"];
+  readonly annotationResult: ReadonlyArray<Scalars["String"]>;
+};
 
 export type AttributeInput = {
   readonly id?: Maybe<Scalars["Int"]>;
@@ -969,6 +987,7 @@ export type BrandManagementNumBrandsArgs = {
 export type BrandMutations = {
   readonly __typename?: "BrandMutations";
   readonly everc?: Maybe<EverCBrandMutations>;
+  readonly injunctionMerchantFreeze?: Maybe<InjunctionMerchantFreezeMutations>;
 };
 
 export type BrandPartnerAdmin = {
@@ -1345,6 +1364,7 @@ export type BrandProtection = {
   readonly __typename?: "BrandProtection";
   readonly injunctionMerchantFreezes: ReadonlyArray<InjunctionMerchantFreezeSchema>;
   readonly numInjunctionMerchantFreezes: Scalars["Int"];
+  readonly canManageFreezes: Scalars["Boolean"];
 };
 
 export type BrandProtectionInjunctionMerchantFreezesArgs = {
@@ -3289,91 +3309,92 @@ export type DestinationShippingProfileSchema = {
 };
 
 export type DetailedMerchantWarningReason =
-  | "INVALID_TRACKING_NUMBERS"
-  | "HIGH_CHARGEBACK_RATIO"
-  | "REQUEST_MONEY"
-  | "PRODUCT_HIGH_REFUND_RATIO"
-  | "VIOLATE_TS_POLICY"
-  | "DUPLICATE_PRODUCTS"
-  | "INACTIVE_ACCOUNT"
-  | "HIGH_GMV_FROM_GAMING_AUDIT"
+  | "US_TAX_INFO_UNVALIDATED"
+  | "WISH_EXPRESS_POLICY_VIOLATION"
   | "VIOLATION_OF_TERMS"
-  | "INVALID_EU_RESPONSIBLE_PERSON"
+  | "EMPTY_PACKAGES"
+  | "VIOLATE_POLICY"
+  | "HIGH_CHARGEBACK_RATIO"
+  | "LEGAL_TRO_TAKEDOWN"
+  | "LATE_CONFIRMED_FULFILLMENT_VIOLATION"
+  | "FINE_FOR_COUNTERFEIT_GOODS"
+  | "UNCONFIRMED_TRACKING_NUMBERS"
+  | "HIGH_IP_INFRINGEMENT"
+  | "STORE_VALIDATION_INCOMPLETE"
+  | "VIOLATE_TS_POLICY"
+  | "SUSPECTED_FRAUD"
+  | "INVALID_TRACKING_NUMBERS"
+  | "PRODUCT_HIGH_CANCEL_ORDER_RATE"
+  | "PRODUCT_HIGH_REFUND_RATIO"
+  | "DUPLICATE_PRODUCTS"
+  | "EXTREMELY_HIGH_PRICE_SPREAD"
+  | "REUPLOADING_COUNTERFEITS"
+  | "RESPOND_TO_ADMIN"
+  | "HIGH_CHARGEBACK_AND_FRAUD_REFUND_RATIO"
+  | "PRODUCT_HIGH_REFUND_RATIO_NO_REMOVE"
+  | "DEP_FINE_DISABLE_PROMOTED_PRODUCT_FOR_COUNTRY"
+  | "UNFULFILLED_ORDER"
+  | "POLICY_TIER_DEMOTION"
+  | "REPEAT_IP_INFRINGEMENT_ON_BRAND_OWNER"
+  | "PROHIBITED_PRODUCT"
+  | "DECEPTIVE_FULFILLMENT"
+  | "MISLEADING_LISTING"
+  | "HIGH_AUTO_REFUND"
+  | "WISH_EXPRESS_POLICY_PRODUCT"
+  | "BAD_CUSTOMER_SERVICE"
+  | "RELATED_ACCOUNT_IS_BANNED"
+  | "MISLEADING_VARIATION"
+  | "PRODUCT_IS_INAPPROPRIATE"
+  | "DEP_FINE_DISABLE_PROMOTED_PRODUCT"
+  | "FINE_WISH_EXPRESS_POLICY_VIOLATION"
+  | "CONFIRMED_DELIVERY_POLICY"
+  | "BAN_EARLY_STAGE_MERCHANT"
+  | "TAKE_USER_OUTSIDE_WISH"
+  | "WISHPOST_ID_NOT_COMPLETE_FACE_RECOGNITION"
+  | "WISH_STANDARDS_BAN"
+  | "CS_LOW_CSAT_SCORE"
+  | "PRODUCT_LOW_RATING_NO_REMOVE"
+  | "ORDER_NOT_DELIVERED"
+  | "REQUEST_USER_EMAIL"
+  | "WISH_EXPRESS_POLICY_MERCHANT"
+  | "MERCHANT_CANCELLATION_VIOLATION"
   | "FAKE_RATING"
   | "DEP_BAIT_VARIABLE_PRICING"
   | "DUPLICATE_ACCOUNTS"
-  | "DISINGENUOUS_CUSTOMER_SERVICE"
-  | "REQUEST_USER_EMAIL"
-  | "EXTREMELY_HIGH_PRICE_SPREAD"
-  | "HIGH_IP_INFRINGEMENT"
-  | "HIGH_GMV_FROM_GAMING_BAN"
-  | "HIGH_CHARGEBACK_AND_FRAUD_REFUND_RATIO"
-  | "WISHPOST_NEGATIVE_BALANCE"
   | "CN_PROHIBITED_PRODUCTS"
-  | "VIOLATE_POLICY"
-  | "PRODUCT_LOW_RATING"
   | "FINE_UPDATE_TO_COUNTERFEIT"
-  | "RELATED_ACCOUNT_IS_BANNED"
-  | "HIGH_RISK_PROHIBITED_PRODUCT"
-  | "DEP_FINE_DISABLE_PROMOTED_PRODUCT_FOR_COUNTRY"
-  | "UNFULFILLED_ORDER"
-  | "HIGH_GMV_FROM_GAMING_FREEZE"
-  | "WISH_EXPRESS_POLICY_MERCHANT"
-  | "EMPTY_PACKAGES"
-  | "VIOLATION_OF_POLICY_TIER"
-  | "FAKE_TRACKING"
-  | "CS_LATE_RESPONSE_RATE"
-  | "LEGAL_TRO_TAKEDOWN"
-  | "WAREHOUSE_FULFILLMENT_POLICY_VIOLATION"
-  | "WISH_EXPRESS_POLICY_VIOLATION"
-  | "REPEAT_IP_INFRINGEMENT_ON_BRAND_OWNER"
-  | "MERCHANT_CONTACT_INFO_INVALID"
-  | "MISLEADING_LISTING"
-  | "HIGH_AUTO_REFUND"
-  | "MERCHANT_HIGH_CANCEL_ORDER_RATE"
-  | "LATE_CONFIRMED_FULFILLMENT_VIOLATION"
-  | "WISH_EXPRESS_POLICY_PRODUCT"
-  | "BAD_CUSTOMER_SERVICE"
-  | "PRODUCT_HIGH_QUALITY_REFUND_RATIO"
-  | "MISLEADING_VARIATION"
-  | "FINE_FOR_COUNTERFEIT_GOODS"
-  | "MERCHANT_HIGH_REFUND_EAT_COST"
-  | "PRODUCT_GEOBLOCK"
-  | "PRODUCT_IS_INAPPROPRIATE"
+  | "HIGH_GMV_FROM_GAMING_AUDIT"
   | "BRANDED_PRODUCT_GEOBLOCK"
-  | "DEP_FINE_DISABLE_PROMOTED_PRODUCT"
-  | "UNCONFIRMED_TRACKING_NUMBERS"
-  | "FINE_WISH_EXPRESS_POLICY_VIOLATION"
-  | "PRODUCT_HIGH_REFUND_RATIO_NO_REMOVE"
-  | "RESPOND_TO_ADMIN"
-  | "US_TAX_INFO_UNVALIDATED"
-  | "STRIKE_BASED_HIGH_RISK_PROHIBITED"
   | "PENALTY_FOR_AUTO_REFUND"
   | "FINAL_JUDGEMENT_ORDER"
-  | "CONFIRMED_DELIVERY_POLICY"
-  | "BAN_EARLY_STAGE_MERCHANT"
   | "HIGH_REFUND_RATIO"
-  | "TAKE_USER_OUTSIDE_WISH"
-  | "POLICY_TIER_DEMOTION"
-  | "MERCHANT_HIGH_QUALITY_REFUND_RATIO"
-  | "REPEAT_PRODUCT_SWAPPING"
-  | "MERCHANT_CANCELLATION_VIOLATION"
-  | "WISHPOST_ID_NOT_COMPLETE_FACE_RECOGNITION"
-  | "SUSPECTED_FRAUD"
-  | "HIGH_GMV_FROM_MISLEADING_PRODUCTS"
-  | "PRODUCT_HIGH_CANCEL_ORDER_RATE"
+  | "REQUEST_MONEY"
   | "COUNTERFEIT_GOODS"
-  | "CS_LOW_CSAT_SCORE"
+  | "WISHPOST_NEGATIVE_BALANCE"
+  | "DISINGENUOUS_CUSTOMER_SERVICE"
+  | "INACTIVE_ACCOUNT"
+  | "INVALID_EU_RESPONSIBLE_PERSON"
   | "LATE_FULFILLMENT_RATE"
-  | "FINE_PRODUCT_SWAPPED"
-  | "DECEPTIVE_FULFILLMENT"
-  | "PROHIBITED_PRODUCT"
-  | "STORE_VALIDATION_INCOMPLETE"
-  | "TAX_SETTING_NOT_UPDATED"
+  | "REPEAT_PRODUCT_SWAPPING"
+  | "PRODUCT_LOW_RATING"
+  | "HIGH_RISK_PROHIBITED_PRODUCT"
+  | "HIGH_GMV_FROM_GAMING_FREEZE"
   | "MERCHANT_HARASSMENT"
-  | "REUPLOADING_COUNTERFEITS"
-  | "PRODUCT_LOW_RATING_NO_REMOVE"
-  | "ORDER_NOT_DELIVERED";
+  | "VIOLATION_OF_POLICY_TIER"
+  | "MERCHANT_HIGH_CANCEL_ORDER_RATE"
+  | "MERCHANT_CONTACT_INFO_INVALID"
+  | "HIGH_GMV_FROM_GAMING_BAN"
+  | "PRODUCT_HIGH_QUALITY_REFUND_RATIO"
+  | "FAKE_TRACKING"
+  | "WAREHOUSE_FULFILLMENT_POLICY_VIOLATION"
+  | "MERCHANT_HIGH_REFUND_EAT_COST"
+  | "STRIKE_BASED_HIGH_RISK_PROHIBITED"
+  | "MERCHANT_HIGH_QUALITY_REFUND_RATIO"
+  | "HIGH_GMV_FROM_MISLEADING_PRODUCTS"
+  | "PRODUCT_GEOBLOCK"
+  | "FINE_PRODUCT_SWAPPED"
+  | "CS_LATE_RESPONSE_RATE"
+  | "TAX_SETTING_NOT_UPDATED";
 
 export type DetailedMerchantWarningReasonSchema = {
   readonly __typename?: "DetailedMerchantWarningReasonSchema";
@@ -3908,6 +3929,7 @@ export type FeedProcessingWorkflowSchema = {
   readonly reviewStatus: CommerceProductFpReviewStatus;
   readonly createdAt: Datetime;
   readonly blockingReason?: Maybe<Scalars["String"]>;
+  readonly isMainImageBlankError: Scalars["Boolean"];
   readonly originalState?: Maybe<FpProductStateSchema>;
   readonly upsertState?: Maybe<FpProductStateSchema>;
 };
@@ -4758,11 +4780,61 @@ export type InitiateUploadMutation = {
   readonly downloadUrl?: Maybe<Scalars["String"]>;
 };
 
+export type InjunctionMerchantFreezeBulkCreateFreezes = {
+  readonly __typename?: "InjunctionMerchantFreezeBulkCreateFreezes";
+  readonly ok: Scalars["Boolean"];
+  readonly message?: Maybe<Scalars["String"]>;
+};
+
+export type InjunctionMerchantFreezeBulkReverseFreezes = {
+  readonly __typename?: "InjunctionMerchantFreezeBulkReverseFreezes";
+  readonly ok: Scalars["Boolean"];
+  readonly message?: Maybe<Scalars["String"]>;
+};
+
+export type InjunctionMerchantFreezeBulkUploadInput = {
+  readonly file?: Maybe<FileInput>;
+};
+
+export type InjunctionMerchantFreezeMutations = {
+  readonly __typename?: "InjunctionMerchantFreezeMutations";
+  readonly resolveFreeze?: Maybe<InjunctionMerchantFreezeResolveFreeze>;
+  readonly updateLegalTimestamp?: Maybe<InjunctionMerchantFreezeUpdateLegalTimestamp>;
+  readonly bulkCreateFreezes?: Maybe<InjunctionMerchantFreezeBulkCreateFreezes>;
+  readonly bulkReverseFreezes?: Maybe<InjunctionMerchantFreezeBulkReverseFreezes>;
+};
+
+export type InjunctionMerchantFreezeMutationsResolveFreezeArgs = {
+  input: InjunctionMerchantFreezeResolveFreezeInput;
+};
+
+export type InjunctionMerchantFreezeMutationsUpdateLegalTimestampArgs = {
+  input: InjunctionMerchantFreezeUpdateLegalTimestampInput;
+};
+
+export type InjunctionMerchantFreezeMutationsBulkCreateFreezesArgs = {
+  input: InjunctionMerchantFreezeBulkUploadInput;
+};
+
+export type InjunctionMerchantFreezeMutationsBulkReverseFreezesArgs = {
+  input: InjunctionMerchantFreezeBulkUploadInput;
+};
+
+export type InjunctionMerchantFreezeResolveFreeze = {
+  readonly __typename?: "InjunctionMerchantFreezeResolveFreeze";
+  readonly ok: Scalars["Boolean"];
+  readonly message?: Maybe<Scalars["String"]>;
+};
+
+export type InjunctionMerchantFreezeResolveFreezeInput = {
+  readonly freezeId?: Maybe<Scalars["ObjectIdType"]>;
+};
+
 export type InjunctionMerchantFreezeSchema = {
   readonly __typename?: "InjunctionMerchantFreezeSchema";
   readonly id: Scalars["ObjectIdType"];
   readonly merchantId: Scalars["ObjectIdType"];
-  readonly freezeType?: Maybe<InjunctionMerchantFreezeType>;
+  readonly freezeType: InjunctionMerchantFreezeType;
   readonly troNumber: Scalars["Int"];
   readonly fineIds: ReadonlyArray<Scalars["ObjectIdType"]>;
   readonly fines: ReadonlyArray<MerchantFineSchema>;
@@ -4777,6 +4849,17 @@ export type InjunctionMerchantFreezeState = "ACTIVE" | "RESOLVED";
 export type InjunctionMerchantFreezeType =
   | "FULL_ASSET_FREEZE"
   | "ONE_TIME_FREEZE";
+
+export type InjunctionMerchantFreezeUpdateLegalTimestamp = {
+  readonly __typename?: "InjunctionMerchantFreezeUpdateLegalTimestamp";
+  readonly ok: Scalars["Boolean"];
+  readonly message?: Maybe<Scalars["String"]>;
+};
+
+export type InjunctionMerchantFreezeUpdateLegalTimestampInput = {
+  readonly freezeId?: Maybe<Scalars["ObjectIdType"]>;
+  readonly newTimestamp?: Maybe<DatetimeInput>;
+};
 
 export type InventoryInput = {
   readonly warehouseId: Scalars["ObjectIdType"];
@@ -7355,12 +7438,15 @@ export type MerchantWarningImpactSchema = {
   readonly type: MerchantWarningImpactType;
   readonly startDate?: Maybe<Datetime>;
   readonly endDate?: Maybe<Datetime>;
+  readonly countries?: Maybe<ReadonlyArray<Scalars["String"]>>;
 };
 
 export type MerchantWarningImpactType =
   | "PRODUCT_PAYMENT_HOLD"
   | "ORDER_PAYMENT_HOLD"
   | "AUTO_REFUND"
+  | "GEOBLOCK"
+  | "MERCHANT_BAN"
   | "MERCHANT_IMPRESSION_BLOCK"
   | "MERCHANT_PAYMENT_HOLD"
   | "PRODUCT_TAKEDOWN"
@@ -7430,6 +7516,7 @@ export type MerchantWarningReason =
   | "CN_PROHIBITED_PRODUCTS"
   | "PRODUCT_LOW_RATING"
   | "FINE_UPDATE_TO_COUNTERFEIT"
+  | "WISH_STANDARDS_BAN"
   | "RELATED_ACCOUNT_IS_BANNED"
   | "VIOLATE_POLICY"
   | "DEP_FINE_DISABLE_PROMOTED_PRODUCT_FOR_COUNTRY"
@@ -7833,6 +7920,7 @@ export type MfpServiceSchema = {
   readonly genericCampaigns?: Maybe<ReadonlyArray<Scalars["GenericScalar"]>>;
   readonly campaigns?: Maybe<ReadonlyArray<MfpCampaignSchema>>;
   readonly campaignsCount?: Maybe<Scalars["Int"]>;
+  readonly genericEligibleProducts?: Maybe<Scalars["GenericScalar"]>;
   readonly eligibleProducts?: Maybe<ReadonlyArray<EligibleProductInfo>>;
   readonly eligibleProductsCount?: Maybe<Scalars["Int"]>;
   readonly activeWhitelistProducts?: Maybe<ReadonlyArray<WhitelistProductInfo>>;
@@ -7883,6 +7971,17 @@ export type MfpServiceSchemaCampaignsCountArgs = {
   promotionTypes?: Maybe<ReadonlyArray<MfpCampaignPromotionType>>;
   eventIds?: Maybe<ReadonlyArray<Scalars["ObjectIdType"]>>;
   eventConfig?: Maybe<MfpCampaignEventConfig>;
+};
+
+export type MfpServiceSchemaGenericEligibleProductsArgs = {
+  currency: PaymentCurrencyCode;
+  promotionType?: Maybe<MfpCampaignPromotionType>;
+  searchQuery?: Maybe<Scalars["String"]>;
+  searchType?: Maybe<MfpProductSearchType>;
+  eventId?: Maybe<Scalars["ObjectIdType"]>;
+  offset?: Maybe<Scalars["Int"]>;
+  limit?: Maybe<Scalars["Int"]>;
+  sort?: Maybe<ProductSort>;
 };
 
 export type MfpServiceSchemaEligibleProductsArgs = {
@@ -9039,6 +9138,7 @@ export type PermissionType =
   | "COUNTERFEIT_TAG_AUDIT_IN_HOUSE"
   | "CREATE_ATO_HOLD"
   | "SHOW_DETAIL_TAGGER_TEST_SPEC"
+  | "CAN_ACCESS_CONFIRM_DELIVERED_CARRIER"
   | "SHOW_ORDER_PENALTIES"
   | "VIEW_LEGAL_INJUNCTION"
   | "VIEW_HIGH_IP_INFRINGEMENT_HOLD"
@@ -9135,6 +9235,7 @@ export type PermissionType =
   | "SHOW_ORDERS"
   | "CAN_USE_TFA_ADMIN_TOOL"
   | "CAN_DOWNLOAD_ENTIRE_ORDER_HISTORY"
+  | "DEP_BRAND_REVIEW_RESOLUTION_TAG"
   | "CAN_BE_VIEWED_BY_OUTSOURCE_MERCHANT"
   | "REQUEST_EARLY_PAYMENT"
   | "VIEW_BD_ANNOUNCEMENTS"
@@ -9210,7 +9311,9 @@ export type PermissionType =
   | "SEND_SYSTEM_UPDATE_TO_BD"
   | "COUNTERFEIT_HELP_TAG"
   | "CAN_LOGIN_AS_FACTORY_MANAGERS"
+  | "CAN_ACCESS_TRACKING_NUMBER_PAGE"
   | "CREATE_TRUE_TAG_ASSOCIATION"
+  | "CAN_ACCESS_REFRESHING_TRACKING"
   | "CAN_VIEW_PRODUCT_STATUS"
   | "CAN_ACCESS_AUTH_BRAND_AUDIT"
   | "UPLOAD_PRODUCTS_CSV"
@@ -9282,6 +9385,7 @@ export type PermissionType =
   | "FAST_QUEUE_TAGGING_JOBS_HIGHEST_PRIORITY"
   | "VIEW_CN_MERCHANTS"
   | "CREATE_ONEOFF_REQUEST_EMAIL_REPORT"
+  | "CAN_ACCESS_UPDATE_TRACKING"
   | "BRAND_REVIEW_TAG"
   | "CREATE_SHIP_FRAUD_HOLD"
   | "EDIT_CS_REPS"
@@ -9297,7 +9401,7 @@ export type PermissionType =
   | "INAPPROPRIATE_IN_HOUSE_TAG"
   | "CAN_ACCESS_V2_HOMEPAGE"
   | "MANAGE_SIZE_CHART"
-  | "BRAND_REVIEW_RESOLUTION_TAG"
+  | "VIEW_TRO_TOOLS"
   | "FULFILLED_BY_WISH"
   | "CAN_REVIEW_EU_MERCHANTS"
   | "WISH_BLUE_ADMIN"
@@ -9329,7 +9433,6 @@ export type PermissionType =
   | "UPDATE_PAYMENT_SETTINGS"
   | "EDIT_LEGAL_TEAM_PERMISSIONS"
   | "CREATE_RESPOND_TO_ADMIN_HOLD"
-  | "VIEW_TRO_TOOLS"
   | "DISPUTE_CURRENCY"
   | "VIEW_POLICY_VIOLATION_FINE"
   | "REVIEW_BULK_TRANSACTION_REVERSAL"
@@ -9373,6 +9476,7 @@ export type PermissionType =
   | "CAN_MANAGE_ROLES_FOR_ALL_USERS"
   | "IMAGE_CHANGE_TAG"
   | "REVIEW_ONEOFF_REQ_GIVE_BD_ACCESS"
+  | "CAN_ACCESS_UPDATE_CONFIRMED"
   | "CAN_REVERSE_FINE"
   | "VIEW_RESTRICTED_PRODUCT_REQUEST"
   | "IP_VIOLATION_AUDIT_TAG"
@@ -9388,6 +9492,7 @@ export type PermissionType =
   | "VIEW_RESPOND_TO_ADMIN_HOLD"
   | "CAN_VIEW_MERCHANT_GROUP"
   | "VIEW_AUTHENTIC_BRAND_SELLER_BADGE_APPLICATIONS"
+  | "CAN_ACCESS_SHIPPING_PROVIDER"
   | "CAN_HANDLE_LIVE_CHAT"
   | "CHANGE_EMAIL_SETTINGS"
   | "EDIT_PROMOTED_PRODUCTS"
@@ -10804,6 +10909,7 @@ export type ProductSchema = {
   readonly tags: ReadonlyArray<Scalars["String"]>;
   readonly reviewStatus: CommerceProductReviewStatus;
   readonly fpWorkflow?: Maybe<FeedProcessingWorkflowSchema>;
+  readonly invalidCategoryNote?: Maybe<Scalars["String"]>;
   readonly infractions: ReadonlyArray<InfractionSchema>;
   readonly productTrueTagInfo?: Maybe<ProductTrueTagInfoSchema>;
   readonly fpReviewStatus: CommerceProductFpReviewStatus;
@@ -10841,6 +10947,7 @@ export type ProductSchema = {
   readonly chemicalNames?: Maybe<ReadonlyArray<Scalars["String"]>>;
   readonly performance?: Maybe<ProductPerformanceSchema>;
   readonly taxonomyCategory?: Maybe<TaxonomyCategorySchema>;
+  readonly l1Category?: Maybe<TaxonomyCategorySchema>;
   readonly categoryExperienceEligibility?: Maybe<Scalars["Boolean"]>;
   readonly subcategoryId?: Maybe<Scalars["Int"]>;
   readonly subcategory?: Maybe<TaxonomyCategorySchema>;
@@ -12294,6 +12401,7 @@ export type RoleType =
   | "BRAND_PROTECTION_LEAD"
   | "TELEPERFORMANCE_BOGOTA_WORKER"
   | "CS_ADMIN"
+  | "CONTRACTOR"
   | "STORE_USER"
   | "CS_REP_EXTERNAL"
   | "TASKUS_DETAIL_LEAD"
@@ -13522,6 +13630,10 @@ export type TaggingServiceSchema = {
 
 export type TaggingServiceSchemaProductTaggingStatusArgs = {
   productId: Scalars["ObjectIdType"];
+};
+
+export type TaggingServiceSchemaAttributeExtractionTaggerJobArgs = {
+  taskId?: Maybe<Scalars["String"]>;
 };
 
 export type TaggingViolationReason = {

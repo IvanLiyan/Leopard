@@ -43,6 +43,7 @@ export const INFRACTION_QUERY = gql`
         state
         wssImpact
         merchantActions
+        outstandingMerchantActions
         reason {
           reason
         }
@@ -161,7 +162,7 @@ export type InfractionQueryResponse = {
   readonly policy?: {
     readonly merchantWarning?: Pick<
       MerchantWarningSchema,
-      "state" | "wssImpact" | "merchantActions"
+      "state" | "wssImpact" | "merchantActions" | "outstandingMerchantActions"
     > & {
       readonly reason: Pick<MerchantWarningReasonSchema, "reason">;
       readonly productTrueTagInfo?: {

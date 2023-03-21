@@ -20,17 +20,17 @@ export const useInfractionDetailsStylesheet = () => {
         display: "grid",
         gridGap: 24,
         [`@media ${IS_SMALL_SCREEN}`]: {
-          gridTemplateColumns: "1fr",
+          gridTemplateColumns: "100%",
         },
         [`@media ${IS_LARGE_SCREEN}`]: {
-          gridTemplateColumns: "1fr 1fr",
+          gridTemplateColumns: "50% 50%",
           alignItems: "start",
         },
         marginTop: 24,
       },
       column: {
         display: "grid",
-        gridTemplateColumns: "1fr",
+        gridTemplateColumns: "100%",
         gridGap: 16,
       },
       cardRoot: {

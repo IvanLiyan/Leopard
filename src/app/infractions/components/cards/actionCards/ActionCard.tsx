@@ -27,10 +27,7 @@ const ActionCard: React.FC<Props> = ({
         <Layout.FlexColumn
           alignItems="flex-end"
           style={{
-            ":nth-child(1n) > button": {
-              marginTop: 16,
-            },
-            ":nth-child(1n) > a": {
+            ":nth-child(1n) > *": {
               marginTop: 16,
             },
           }}

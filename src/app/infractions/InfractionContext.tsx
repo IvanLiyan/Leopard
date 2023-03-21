@@ -64,6 +64,7 @@ type InfractionContextType = {
       readonly note: string;
     }>;
     readonly actions: ReadonlyArray<MerchantWarningFixAction>;
+    readonly actionsTaken: ReadonlyArray<MerchantWarningFixAction>;
     readonly brandAuthorizations: ReadonlyArray<{
       readonly id: string;
       readonly name: string;
@@ -92,6 +93,7 @@ const InfractionContext = createContext<InfractionContextType>({
     brand: undefined,
     infractionEvidence: [],
     actions: [],
+    actionsTaken: [],
     brandAuthorizations: [],
   },
   refetchInfraction: () => {
@@ -254,6 +256,7 @@ export const useInfractionProvider = ({
         note: proof.message ?? "--",
       })),
       actions: infraction.merchantActions ?? [],
+      actionsTaken: infraction.outstandingMerchantActions ?? [],
       brandAuthorizations:
         data?.brand?.brandAuthorizations?.map((authorization) => ({
           id: authorization.id,

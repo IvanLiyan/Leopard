@@ -15,6 +15,7 @@ import {
   Divider,
   Snackbar,
   Alert,
+  TextField,
 } from "@mui/material";
 
 const useError = (
@@ -49,6 +50,7 @@ const DevLoginPage: NextPage<Record<string, never>> = () => {
   const [errorBody, errorOpen, setError, closeError] = useError(null);
   const [currentUser, setCurrentUser] = useState("none");
   const [currentMerchant, setCurrentMerchant] = useState("none");
+  const [mid, setMid] = useState<string | undefined>();
 
   const loginAsAdmin = async () => {
     setLoading((cur) => cur + 1);
@@ -73,7 +75,7 @@ const DevLoginPage: NextPage<Record<string, never>> = () => {
       if (currentUser === "none") {
         await loginAsAdmin();
       }
-      const resp = await fetch(`/go/${process.env.NEXT_PUBLIC_MID}`);
+      const resp = await fetch(`/go/${mid}`);
       if (!resp.ok && !resp.redirected) {
         setError(
           "An error occurred while logging you in. Please see the console for more details.",
@@ -201,6 +203,13 @@ const DevLoginPage: NextPage<Record<string, never>> = () => {
             )}
             placement="right"
           > */}
+          <TextField
+            value={mid}
+            onChange={(e) => {
+              setMid(e.target.value);
+            }}
+            placeholder="MID"
+          />
           <Button
             primary
             onClick={loginAsMerchant}

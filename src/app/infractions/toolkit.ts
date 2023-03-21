@@ -1601,6 +1601,12 @@ const MerchantWarningReasonData: {
     policy: i`[Listing Products Policy](${"https://merchant.wish.com/policy#listing"})`,
     faq: undefined,
   },
+  WISH_STANDARDS_BAN: {
+    title: ci18n("title of warning", "Wish Standards Ban"),
+    body: i`Due to your low Wish Standards rating, you have been banned from the platform.`,
+    policy: i`[Wish Standards Policy](${"https://merchant.wish.com/policy#wish_standards"})`,
+    faq: undefined,
+  },
   //
   // below infractions are deprecated, may be returned when viewing old infractions
   //
@@ -1893,7 +1899,7 @@ export const DisputeStatusDisplayText: {
   ),
   DISPUTE_FAILED: ci18n(
     "a label showing a merchant the status of a dispute",
-    "Dispute Failed",
+    "Dispute Rejected",
   ),
   NOT_DISPUTED: ci18n(
     "a label showing a merchant the status of a dispute",
@@ -1914,7 +1920,7 @@ export const MerchantWarningImpactTypeDisplayText: {
   /* eslint-disable @typescript-eslint/no-unused-vars */
   PRODUCT_PAYMENT_HOLD: (startDate, endDate) =>
     endDate
-      ? i`Wish has withheld payments for orders for the listing until ${startDate}.`
+      ? i`Wish has withheld payments for orders for the listing until ${endDate}.`
       : i`Wish has withheld payments for orders for this listing.`,
   ORDER_PAYMENT_HOLD: (startDate, endDate) =>
     endDate
@@ -1946,6 +1952,11 @@ export const MerchantWarningImpactTypeDisplayText: {
     startDate
       ? i`Wish removed this variation on ${startDate}.`
       : i`Wish removed this variation.`,
+  GEOBLOCK: (startDate, endDate) =>
+    startDate
+      ? i`Wish removed this variation on ${startDate}.`
+      : i`Wish removed this variation.`,
+  MERCHANT_BAN: (startDate, endDate) => i`Wish has banned your account.`,
   /* eslint-enable @typescript-eslint/no-unused-vars */
 };
 
@@ -2090,7 +2101,11 @@ export const getInfractionData = (
         ),
       };
 
-export type DisputeFlow = "LEGACY" | "MERCHANT" | "BRANDED_PRODUCT_GEOBLOCK";
+export type DisputeFlow =
+  | "LEGACY"
+  | "LEGACY_TRACKING_DISPUTE"
+  | "MERCHANT"
+  | "BRANDED_PRODUCT_GEOBLOCK";
 
 export const getDisputeFlow = (
   reason: MerchantWarningReason,
@@ -2103,6 +2118,13 @@ export const getDisputeFlow = (
 
   if (reason === "BRANDED_PRODUCT_GEOBLOCK") {
     return "BRANDED_PRODUCT_GEOBLOCK";
+  }
+
+  if (
+    reason === "FINE_FOR_COUNTERFEIT_GOODS" ||
+    reason === "PRODUCT_IS_INAPPROPRIATE"
+  ) {
+    return "LEGACY_TRACKING_DISPUTE";
   }
 
   if (

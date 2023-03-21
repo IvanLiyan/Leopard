@@ -52,6 +52,7 @@ const InfractionsPage: NextPage<Record<string, never>> = () => {
       MERCHANT: <MerchantLevelDispute />,
       BRANDED_PRODUCT_GEOBLOCK: <BrandedProductGeoblockDispute />,
       LEGACY: <></>,
+      LEGACY_TRACKING_DISPUTE: <></>,
     };
 
     return disputeFlowToComponent[infractionContext?.disputeFlow || "LEGACY"];

@@ -2,13 +2,13 @@ import React from "react";
 import { observer } from "mobx-react";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import Markdown from "@infractions/components/Markdown";
-import { Button, Tooltip } from "@ContextLogic/atlas-ui";
 import ActionCard from "./ActionCard";
 import { useInfractionContext } from "@infractions/InfractionContext";
 import { useInfractionDetailsStylesheet } from "@infractions/styles";
 import { ci18n } from "@core/toolkit/i18n";
 import { DisputeStatusDisplayText } from "@infractions/toolkit";
 import { merchFeURL } from "@core/toolkit/router";
+import Button from "./ActionCardButton";
 
 const Dispute: React.FC<Pick<BaseProps, "className" | "style">> = ({
   className,
@@ -25,32 +25,26 @@ const Dispute: React.FC<Pick<BaseProps, "className" | "style">> = ({
   const disputeUrl =
     disputeFlow == "LEGACY"
       ? merchFeURL(`/dispute-infraction/${id}`)
+      : disputeFlow == "LEGACY_TRACKING_DISPUTE"
+      ? merchFeURL(`/tagging-error-dispute/create/${id}`)
       : `appeal?id=${id}`;
-
-  const DisputeButton = ({ disabled }: { disabled?: boolean }) => (
-    <Button href={disputeUrl} disabled={disabled}>
-      Dispute Infraction
-    </Button>
-  );
 
   return (
     <ActionCard
       style={[className, style]}
       title={ci18n("card title", "Dispute")}
       ctaButtons={
-        now > disputeDeadlineUnix ? (
-          <Tooltip
-            title={i`You cannot take this action because the dispute deadline has passed.`}
-            placement="bottom"
-          >
-            {/* excess div required since Mui disables tooltips wrapping disabled buttons */}
-            <div>
-              <DisputeButton disabled />
-            </div>
-          </Tooltip>
-        ) : (
-          <DisputeButton />
-        )
+        <Button
+          href={disputeUrl}
+          disabled={now > disputeDeadlineUnix}
+          tooltipTitle={
+            now > disputeDeadlineUnix
+              ? i`You cannot take this action because the dispute deadline has passed.`
+              : undefined
+          }
+        >
+          Dispute Infraction
+        </Button>
       }
     >
       <Markdown

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { observer } from "mobx-react";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import Markdown from "@infractions/components/Markdown";
-import { Button } from "@ContextLogic/atlas-ui";
+import Button from "./ActionCardButton";
 import ActionCard from "./ActionCard";
 import { merchFeURL } from "@core/toolkit/router";
 import { useInfractionContext } from "@infractions/InfractionContext";

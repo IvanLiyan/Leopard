@@ -9,10 +9,12 @@ import { ModalProps } from "@core/components/modal/Modal";
 import ModalTitle from "@core/components/modal/ModalTitle";
 import ModalFooter from "@core/components/modal/ModalFooter";
 import { ci18n } from "@core/toolkit/i18n";
+import { useMutation } from "@core/toolkit/restApi";
+import { useInfractionContext } from "@infractions/InfractionContext";
+import { useToastStore } from "@core/stores/ToastStore";
 
-type UseExistingProofModalContentProps = Pick<
-  ModalProps,
-  "open" | "onClose"
+type UseExistingProofModalContentProps = Required<
+  Pick<ModalProps, "open" | "onClose">
 > & {
   readonly existingProofs: ReadonlyArray<{
     readonly id: string;
@@ -26,9 +28,39 @@ const UseExistingProofModal: React.FC<UseExistingProofModalContentProps> = ({
   existingProofs,
 }: UseExistingProofModalContentProps) => {
   const styles = useStyleSheet();
+  const toastStore = useToastStore();
   const [selectedAuthorization, setSelectedAuthorization] = useState<
     string | undefined
   >();
+  const {
+    infraction: { id: infractionId },
+    refetchInfraction,
+  } = useInfractionContext();
+
+  const { trigger: triggerDispute, isMutating } = useMutation({
+    url: "/api/warning/dispute-new",
+  });
+
+  const onSubmit = async () => {
+    try {
+      const response = await triggerDispute({
+        brand_auth_id: selectedAuthorization,
+        warning_id: infractionId,
+      });
+      // BE returns 400 if something went wrong, and response is undefined
+      if (response) {
+        onClose({}, "backdropClick");
+        toastStore.positive(
+          i`You have successfully submitted a proof of authorization for your product. Please wait for it to be reviewed.`,
+        );
+        refetchInfraction();
+      } else {
+        toastStore.negative(i`Something went wrong.`);
+      }
+    } catch (e) {
+      toastStore.negative(i`Something went wrong.`);
+    }
+  };
 
   return (
     <Modal open={open} onClose={onClose} fullWidth>
@@ -61,10 +93,9 @@ const UseExistingProofModal: React.FC<UseExistingProofModalContentProps> = ({
       </div>
       <ModalFooter
         action={{
-          text: ci18n("CTA button", "Send"),
-          onClick: () => {
-            alert("TODO");
-          },
+          text: ci18n("CTA button", "Submit"),
+          onClick: onSubmit,
+          isDisabled: isMutating,
         }}
       />
     </Modal>
