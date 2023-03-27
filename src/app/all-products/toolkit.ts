@@ -38,6 +38,8 @@ import {
   ProductSchemaVariationsArgs,
   TaxonomyCategorySchema,
   MerchantProvidedAttributeSchema,
+  UserGateSchema,
+  DeciderKeySchema,
 } from "@schema";
 import gql from "graphql-tag";
 import { ci18n } from "@core/toolkit/i18n";
@@ -72,6 +74,16 @@ export const PRODUCTS_CONTAINER_INITIAL_DATA_QUERY = gql`
         }
       }
     }
+    currentUser {
+      gating {
+        showVariationGroupingMUG: isAllowed(name: "variation_options")
+      }
+    }
+    platformConstants {
+      deciderKey {
+        showVariationGroupingDkey: decideForName(name: "variation_grouping_ui")
+      }
+    }
   }
 `;
 
@@ -81,6 +93,16 @@ export type ProductsContainerInitialData = {
         readonly warehouses?: ReadonlyArray<PickedWarehouse> | null;
       })
     | null;
+  readonly currentUser?: {
+    readonly gating: {
+      readonly showVariationGroupingMUG: UserGateSchema["isAllowed"];
+    };
+  } | null;
+  readonly platformConstants?: {
+    readonly deciderKey?: {
+      readonly showVariationGroupingDkey: DeciderKeySchema["decideForName"];
+    } | null;
+  } | null;
 };
 
 // Get product count query

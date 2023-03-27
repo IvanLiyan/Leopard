@@ -84,10 +84,6 @@ const ProductTable: React.FC<Props> = ({
   >();
 
   const {
-    decision: showVariationGroupingUI,
-    isLoading: isLoadingVariationGroupingDecision,
-  } = useDeciderKey("variation_grouping_ui");
-  const {
     decision: showCategoryUpdates,
     isLoading: isLoadingCategoryUpdatesDecision,
   } = useDeciderKey("taxonomy_category_updates_04_2023");
@@ -96,6 +92,7 @@ const ProductTable: React.FC<Props> = ({
     warehouse,
     isPrimaryWarehouse,
     initialData: { currentMerchant: merchant },
+    showVariationGroupingUI,
   } = state;
 
   const { data: allProductVariationsData, loading: loadingProductVariations } =
@@ -270,7 +267,7 @@ const ProductTable: React.FC<Props> = ({
     return options;
   };
 
-  if (isLoadingCategoryUpdatesDecision || isLoadingVariationGroupingDecision) {
+  if (isLoadingCategoryUpdatesDecision) {
     return <LoadingIndicator />;
   }
 

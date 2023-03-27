@@ -26,6 +26,9 @@ export default class AllProductsState {
   initialData: ProductsContainerInitialData;
 
   @observable
+  showVariationGroupingUI: boolean;
+
+  @observable
   newVariationPrices: Map<
     string, // variation ID
     {
@@ -78,6 +81,9 @@ export default class AllProductsState {
   }) {
     this.warehouse = warehouse;
     this.initialData = initialData;
+    this.showVariationGroupingUI =
+      !!initialData.currentUser?.gating.showVariationGroupingMUG ||
+      !!initialData.platformConstants?.deciderKey?.showVariationGroupingDkey;
   }
 
   @computed
