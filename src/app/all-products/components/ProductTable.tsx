@@ -13,6 +13,7 @@ import {
   ObjectId,
   Spinner,
   Popover,
+  LoadingIndicator,
 } from "@ContextLogic/lego";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import {
@@ -82,9 +83,14 @@ const ProductTable: React.FC<Props> = ({
     number | undefined
   >();
 
-  const { decision: showVariationGroupingUI } = useDeciderKey(
-    "variation_grouping_ui",
-  );
+  const {
+    decision: showVariationGroupingUI,
+    isLoading: isLoadingVariationGroupingDecision,
+  } = useDeciderKey("variation_grouping_ui");
+  const {
+    decision: showCategoryUpdates,
+    isLoading: isLoadingCategoryUpdatesDecision,
+  } = useDeciderKey("taxonomy_category_updates_04_2023");
 
   const {
     warehouse,
@@ -263,6 +269,10 @@ const ProductTable: React.FC<Props> = ({
 
     return options;
   };
+
+  if (isLoadingCategoryUpdatesDecision || isLoadingVariationGroupingDecision) {
+    return <LoadingIndicator />;
+  }
 
   return (
     <Table
@@ -490,7 +500,7 @@ const ProductTable: React.FC<Props> = ({
             );
           }
 
-          if (showVariationGroupingUI && row.product.subcategory != null) {
+          if (showCategoryUpdates && row.product.subcategory != null) {
             const subcategory = row.product.subcategory;
             const categoryNamesAlongPath = subcategory.categoriesAlongPath.map(
               (category) => category.name,
@@ -1117,6 +1127,7 @@ const ProductTable: React.FC<Props> = ({
               product={row.product}
               merchant={merchant}
               onRefetchProducts={onRefetchProducts}
+              showCategoryUpdates={showCategoryUpdates}
             />
           );
         }}

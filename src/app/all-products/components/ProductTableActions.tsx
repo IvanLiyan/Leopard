@@ -18,12 +18,14 @@ type Props = BaseProps & {
   readonly product: PickedProduct;
   readonly merchant: ProductsContainerInitialData["currentMerchant"];
   readonly onRefetchProducts: () => unknown;
+  readonly showCategoryUpdates?: boolean | null | undefined;
 };
 
 const ProductTableActions: React.FC<Props> = ({
   product,
   merchant,
   onRefetchProducts,
+  showCategoryUpdates,
 }) => {
   const navigationStore = useNavigationStore();
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
@@ -129,7 +131,13 @@ const ProductTableActions: React.FC<Props> = ({
             ),
             onClick: () =>
               void navigationStore.navigate(
-                merchFeURL(`/product/create-category-dispute/${product.id}`),
+                showCategoryUpdates
+                  ? merchFeURL(
+                      `/product-taxonomy-category-dispute/create/${product.id}`,
+                    )
+                  : merchFeURL(
+                      `/product/create-category-dispute/${product.id}`,
+                    ),
               ),
           },
           {
