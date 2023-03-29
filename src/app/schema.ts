@@ -3647,6 +3647,16 @@ export type EligibleProductInfo = {
 
 export type EntityTypes = "COMPANY" | "INDIVIDUAL";
 
+export type ErrorCode =
+  | "ERROR_CODE_UNSPECIFIED"
+  | "ERROR_CODE_MERCHANT_LISTING_INSIGHTS_UNAVAILABLE"
+  | "ERROR_CODE_MERCHANT_PERFORMANCE_UNAVAILABLE"
+  | "ERROR_CODE_INVALID_L1_CATEGORY"
+  | "ERROR_CODE_INVALID_MERCHANT_ID"
+  | "ERROR_CODE_INVALID_PRODUCT_ID"
+  | "ERROR_CODE_RATE_LIMIT"
+  | "ERROR_CODE_INTERNAL_SERVER_ERROR";
+
 export type EuComplianceAddressInput = {
   readonly name: Scalars["String"];
   readonly streetAddress1: Scalars["String"];
@@ -4228,6 +4238,11 @@ export type FranceProductUniqueIdentificationNumberUpsertInput = {
   readonly uniqueIdentificationNumber?: Maybe<Scalars["String"]>;
 };
 
+export type FreezeReversalType =
+  | "FINE_REVERSAL_ONLY"
+  | "FINE_PAYMENT_ONLY"
+  | "FINE_REVERSAL_AND_PAYMENT";
+
 export type FulfilledByWishMutations = {
   readonly __typename?: "FulfilledByWishMutations";
   readonly createShippingPlan?: Maybe<CreateShippingPlan>;
@@ -4793,7 +4808,41 @@ export type InjunctionMerchantFreezeBulkReverseFreezes = {
 };
 
 export type InjunctionMerchantFreezeBulkUploadInput = {
-  readonly file?: Maybe<FileInput>;
+  readonly file: FileInput;
+};
+
+export type InjunctionMerchantFreezeCreateFreeze = {
+  readonly __typename?: "InjunctionMerchantFreezeCreateFreeze";
+  readonly ok: Scalars["Boolean"];
+  readonly message?: Maybe<Scalars["String"]>;
+};
+
+export type InjunctionMerchantFreezeCreateFreezeInput = {
+  readonly merchantId: Scalars["ObjectIdType"];
+  readonly fine?: Maybe<CurrencyInput>;
+  readonly fineType: FineReason;
+  readonly notes: Scalars["String"];
+  readonly troNumber: Scalars["Int"];
+  readonly referenceTicketId: Scalars["String"];
+  readonly freezeType: InjunctionMerchantFreezeType;
+  readonly creationTimestamp: DatetimeInput;
+  readonly isCascading: Scalars["Boolean"];
+  readonly useFullAccountBalance: Scalars["Boolean"];
+};
+
+export type InjunctionMerchantFreezeFinePaymentInput = {
+  readonly amountInUsd: Scalars["Float"];
+  readonly fineType: FineReason;
+  readonly merchantId: Scalars["ObjectIdType"];
+  readonly troNumber: Scalars["Int"];
+};
+
+export type InjunctionMerchantFreezeFineReversalInput = {
+  readonly fineId: Scalars["ObjectIdType"];
+  readonly reversal: CurrencyInput;
+  readonly notes: Scalars["String"];
+  readonly referenceTicketId: Scalars["String"];
+  readonly shouldCascadeFunds: Scalars["Boolean"];
 };
 
 export type InjunctionMerchantFreezeMutations = {
@@ -4802,6 +4851,8 @@ export type InjunctionMerchantFreezeMutations = {
   readonly updateLegalTimestamp?: Maybe<InjunctionMerchantFreezeUpdateLegalTimestamp>;
   readonly bulkCreateFreezes?: Maybe<InjunctionMerchantFreezeBulkCreateFreezes>;
   readonly bulkReverseFreezes?: Maybe<InjunctionMerchantFreezeBulkReverseFreezes>;
+  readonly createFreeze?: Maybe<InjunctionMerchantFreezeCreateFreeze>;
+  readonly reverseFreeze?: Maybe<InjunctionMerchantFreezeReverseFreeze>;
 };
 
 export type InjunctionMerchantFreezeMutationsResolveFreezeArgs = {
@@ -4820,6 +4871,14 @@ export type InjunctionMerchantFreezeMutationsBulkReverseFreezesArgs = {
   input: InjunctionMerchantFreezeBulkUploadInput;
 };
 
+export type InjunctionMerchantFreezeMutationsCreateFreezeArgs = {
+  input: InjunctionMerchantFreezeCreateFreezeInput;
+};
+
+export type InjunctionMerchantFreezeMutationsReverseFreezeArgs = {
+  input: InjunctionMerchantFreezeReverseFreezeInput;
+};
+
 export type InjunctionMerchantFreezeResolveFreeze = {
   readonly __typename?: "InjunctionMerchantFreezeResolveFreeze";
   readonly ok: Scalars["Boolean"];
@@ -4827,7 +4886,19 @@ export type InjunctionMerchantFreezeResolveFreeze = {
 };
 
 export type InjunctionMerchantFreezeResolveFreezeInput = {
-  readonly freezeId?: Maybe<Scalars["ObjectIdType"]>;
+  readonly freezeId: Scalars["ObjectIdType"];
+};
+
+export type InjunctionMerchantFreezeReverseFreeze = {
+  readonly __typename?: "InjunctionMerchantFreezeReverseFreeze";
+  readonly ok: Scalars["Boolean"];
+  readonly message?: Maybe<Scalars["String"]>;
+};
+
+export type InjunctionMerchantFreezeReverseFreezeInput = {
+  readonly reversalType: FreezeReversalType;
+  readonly reversalInput?: Maybe<InjunctionMerchantFreezeFineReversalInput>;
+  readonly paymentInput?: Maybe<InjunctionMerchantFreezeFinePaymentInput>;
 };
 
 export type InjunctionMerchantFreezeSchema = {
@@ -4857,8 +4928,8 @@ export type InjunctionMerchantFreezeUpdateLegalTimestamp = {
 };
 
 export type InjunctionMerchantFreezeUpdateLegalTimestampInput = {
-  readonly freezeId?: Maybe<Scalars["ObjectIdType"]>;
-  readonly newTimestamp?: Maybe<DatetimeInput>;
+  readonly freezeId: Scalars["ObjectIdType"];
+  readonly newTimestamp: DatetimeInput;
 };
 
 export type InventoryInput = {
@@ -5239,6 +5310,18 @@ export type LinkShippingProfile = {
   readonly __typename?: "LinkShippingProfile";
   readonly ok: Scalars["Boolean"];
   readonly message?: Maybe<Scalars["String"]>;
+};
+
+export type ListingQualityInsightsReportSchema = {
+  readonly __typename?: "ListingQualityInsightsReportSchema";
+  readonly presignedS3Url?: Maybe<Scalars["String"]>;
+  readonly reportName?: Maybe<Scalars["String"]>;
+  readonly errorCode?: Maybe<ErrorCode>;
+};
+
+export type ListingQualityInsightsSchema = {
+  readonly __typename?: "ListingQualityInsightsSchema";
+  readonly report?: Maybe<ListingQualityInsightsReportSchema>;
 };
 
 export type ListingStateSchema = {
@@ -7438,7 +7521,7 @@ export type MerchantWarningImpactSchema = {
   readonly type: MerchantWarningImpactType;
   readonly startDate?: Maybe<Datetime>;
   readonly endDate?: Maybe<Datetime>;
-  readonly countries?: Maybe<ReadonlyArray<Scalars["String"]>>;
+  readonly countries?: Maybe<ReadonlyArray<Country>>;
 };
 
 export type MerchantWarningImpactType =
@@ -7483,6 +7566,8 @@ export type MerchantWarningProofSchema = {
   readonly order?: Maybe<OrderSchema>;
   readonly message?: Maybe<Scalars["String"]>;
   readonly brandAuthorization?: Maybe<BrandAuthorizationSchema>;
+  readonly warningId?: Maybe<Scalars["ObjectIdType"]>;
+  readonly note?: Maybe<Scalars["String"]>;
 };
 
 export type MerchantWarningProofType =
@@ -7656,6 +7741,7 @@ export type MerchantWarningSchema = {
   readonly productTrueTagInfo?: Maybe<ProductTrueTagInfoSchema>;
   readonly takedownRequest?: Maybe<TakedownRequestSchema>;
   readonly replies?: Maybe<ReadonlyArray<MerchantWarningReplySchema>>;
+  readonly resolved?: Maybe<Scalars["Boolean"]>;
 };
 
 export type MerchantWarningSchemaFineAmountArgs = {
@@ -9148,10 +9234,10 @@ export type PermissionType =
   | "PROMO_TAG"
   | "TRIGGER_SELLER_PROFILE_REVERIFICATION"
   | "MANAGE_LEGAL_INJUNCTION"
+  | "DEP_TRUE_BRAND_RESOLUTION_TAG"
   | "REVIEW_ONEOFF_REQ_ISSUE_PB_CREDITS_TO_SELF_INVENTORY_MERCHANTS"
   | "EDIT_MERCHANT_PERMISSIONS"
   | "CAN_SEND_SMS"
-  | "IP_VIOLATION_TAG_RESOLUTION"
   | "MANAGE_TAX_ENROLLMENT"
   | "CREATE_DECEPTIVE_FULFILLMENT_FINE"
   | "CAN_CREATE_WECHAT_OFFICIAL_ACCOUNT_MENU"
@@ -9186,6 +9272,7 @@ export type PermissionType =
   | "GET_PAYMENTS"
   | "CREATE_VARIATION"
   | "CAN_REVIEW_DISPUTES"
+  | "DEP_IP_VIOLATION_TAG_RESOLUTION"
   | "CREATE_TAKEDOWN_REQUESTS"
   | "CAN_ACCESS_MANUAL_REVIEW_ONLY_TOOL"
   | "CREATE_PENDING_SANCTION_SCREENING_HOLD"
@@ -9337,7 +9424,7 @@ export type PermissionType =
   | "VIEW_LEGAL_SETTLEMENT_FINE"
   | "SUPPLY_CHAIN_SOURCING"
   | "EDIT_QA_PERMISSIONS"
-  | "GENDER_AUDIT_TAG"
+  | "REVIEW_ONEOFF_REQ_BAN_MERCHANTS"
   | "CAN_LOGIN_TO_GENERAL_MERCHANT_SUPPORT_SG"
   | "EDIT_ACCOUNT_NAME"
   | "CAN_GET_EARLY_PAYMENT_AMOUNT_AVAILABLE"
@@ -9480,7 +9567,7 @@ export type PermissionType =
   | "CAN_REVERSE_FINE"
   | "VIEW_RESTRICTED_PRODUCT_REQUEST"
   | "IP_VIOLATION_AUDIT_TAG"
-  | "REVIEW_ONEOFF_REQ_BAN_MERCHANTS"
+  | "GENDER_AUDIT_TAG"
   | "CAN_ISSUE_PB_CREDITS"
   | "CAN_ACCESS_ONEOFF_API_GET_FIELDS_INFO"
   | "CAN_VIEW_SHIP_TO_STORE_PACKAGE"
@@ -9599,7 +9686,6 @@ export type PermissionType =
   | "CAN_HANDLE_VIOLATION_REPORT"
   | "CAN_TRANSFER_MERCHANTS"
   | "CAN_VIEW_WISH_USER_INFO"
-  | "TRUE_BRAND_RESOLUTION_TAG"
   | "SUPPLY_CHAIN_WAREHOUSE"
   | "CAN_BLOCK_USER_ON_USER_REVIEW"
   | "UPDATE_ACTION_RULE"
@@ -12533,6 +12619,7 @@ export type RootQuery = {
   readonly merchantSafetyInfo?: Maybe<MerchantSafetySchema>;
   readonly merchantEntity?: Maybe<MerchantEntitySchema>;
   readonly taxonomy?: Maybe<TaxonomySchema>;
+  readonly listingQualityInsights?: Maybe<ListingQualityInsightsSchema>;
 };
 
 export type RootQueryMerchantEntityArgs = {
@@ -13647,7 +13734,7 @@ export type TaggingViolationReason = {
 
 export type TaggingViolationSubcategory = {
   readonly __typename?: "TaggingViolationSubcategory";
-  readonly subcategory: TaggingViolationSubReasonCode;
+  readonly subcategory?: Maybe<TaggingViolationSubReasonCode>;
   readonly internalDisplayName: Scalars["String"];
   readonly displayName?: Maybe<Scalars["String"]>;
 };
@@ -14043,6 +14130,7 @@ export type TaxonomyAttributeSchema = {
   readonly level: AttributeLevel;
   readonly isVariationAttribute: Scalars["Boolean"];
   readonly enabledForVariations: Scalars["Boolean"];
+  readonly maxMultiSelect: Scalars["Int"];
 };
 
 export type TaxonomyAttributeValueSchema = {

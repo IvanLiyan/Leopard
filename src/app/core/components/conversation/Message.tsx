@@ -57,7 +57,9 @@ const Message: React.FC<Props> = ({
           <Text variant="bodyS">{displayFilename}</Text>
         </Link>
       ))}
-      {message != undefined && <Text>{message}</Text>}
+      {message != undefined && (
+        <Text sx={{ overflowWrap: "break-word" }}>{message}</Text>
+      )}
       <div className={css(styles.metadataContainer)}>
         {author != undefined && (
           <>

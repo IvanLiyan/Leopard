@@ -3,10 +3,12 @@ import {
   BrandAuthorizationSchema,
   BrandSchema,
   CounterfeitViolationSchema,
+  Country,
   CurrencyValue,
   Datetime,
   ImageSchema,
   InappropriateViolationSchema,
+  MerchantSchema,
   MerchantWarningImpactSchema,
   MerchantWarningProofSchema,
   MerchantWarningReasonSchema,
@@ -40,6 +42,9 @@ export const INFRACTION_QUERY = gql`
   ) {
     policy {
       merchantWarning(id: $infractionId) {
+        merchant {
+          primaryCurrency
+        }
         state
         wssImpact
         merchantActions
@@ -65,7 +70,7 @@ export const INFRACTION_QUERY = gql`
           datetime
           unix
         }
-        product {
+        products {
           name
           id
           sku
@@ -87,6 +92,9 @@ export const INFRACTION_QUERY = gql`
           }
           endDate {
             datetime
+          }
+          countries {
+            name
           }
         }
         order {
@@ -164,6 +172,7 @@ export type InfractionQueryResponse = {
       MerchantWarningSchema,
       "state" | "wssImpact" | "merchantActions" | "outstandingMerchantActions"
     > & {
+      readonly merchant: Pick<MerchantSchema, "primaryCurrency">;
       readonly reason: Pick<MerchantWarningReasonSchema, "reason">;
       readonly productTrueTagInfo?: {
         readonly counterfeitViolation: Pick<
@@ -181,12 +190,11 @@ export type InfractionQueryResponse = {
         Datetime,
         "datetime" | "unix"
       >;
-      readonly product?: Pick<
-        ProductSchema,
-        "name" | "id" | "sku" | "description"
-      > & {
-        readonly mainImage: Pick<ImageSchema, "wishUrl">;
-      };
+      readonly products?: ReadonlyArray<
+        Pick<ProductSchema, "name" | "id" | "sku" | "description"> & {
+          readonly mainImage: Pick<ImageSchema, "wishUrl">;
+        }
+      >;
       readonly proofs: ReadonlyArray<
         Pick<
           MerchantWarningProofSchema,
@@ -197,6 +205,7 @@ export type InfractionQueryResponse = {
         Pick<MerchantWarningImpactSchema, "type"> & {
           readonly startDate?: Pick<Datetime, "datetime">;
           readonly endDate?: Pick<Datetime, "datetime">;
+          readonly countries: ReadonlyArray<Pick<Country, "name">>;
         }
       >;
       readonly order?: Pick<OrderSchema, "id" | "state"> & {

@@ -13,11 +13,15 @@ const ProductListingDetailsCard: React.FC<
 > = (props) => {
   const styles = useInfractionDetailsStylesheet();
   const {
-    infraction: { product },
+    infraction: { product, type },
   } = useInfractionContext();
   const [showFullDescription, setShowFullDescription] = useState(false);
 
-  if (product == null) {
+  if (
+    product == null ||
+    type === "REPEAT_IP_INFRINGEMENT_ON_BRAND_OWNER" ||
+    type === "VIOLATE_POLICY"
+  ) {
     return null;
   }
 

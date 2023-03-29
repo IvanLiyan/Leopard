@@ -53,18 +53,21 @@ const FixesCard: React.FC<Pick<BaseProps, "className" | "style">> = ({
   const filteredActions: ReadonlyArray<Fix> = actions.filter((action) =>
     (Fixes as ReadonlyArray<string>).includes(action),
   ) as ReadonlyArray<Fix>;
+  const orderedActions: ReadonlyArray<Fix> = Fixes.filter((action) =>
+    filteredActions.includes(action),
+  );
 
   return (
     <Card title={i`Fix This Issue`} style={[className, style]}>
       <div className={css(styles.column)}>
-        {filteredActions.length < 1 ? (
+        {orderedActions.length < 1 ? (
           <ReviewInfractionDetails />
         ) : (
           <>
             <Markdown
               text={i`Please take **one of the following** actions by **${disputeDeadline}**`}
             />
-            {filteredActions.map((action) => FixComponent[action])}
+            {orderedActions.map((action) => FixComponent[action])}
           </>
         )}
       </div>

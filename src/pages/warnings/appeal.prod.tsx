@@ -20,6 +20,9 @@ import { DisputeFlow } from "@infractions/toolkit";
 import { useNavigationStore } from "@core/stores/NavigationStore";
 import { merchFeURL } from "@core/toolkit/router";
 import BrandedProductGeoblockDispute from "@infractions/components/disputes/BrandedProductGeoblockDispute";
+import CounterfeitDispute from "@infractions/components/disputes/CounterfeitDispute";
+import InappropriateContentDispute from "@infractions/components/disputes/InappropriateContentDispute";
+import MisleadingListingDispute from "@infractions/components/disputes/MisleadingListingDispute";
 
 const PageLayout = ({ children }: { children: React.ReactNode }) => {
   const styles = useInfractionDetailsStylesheet();
@@ -51,8 +54,10 @@ const InfractionsPage: NextPage<Record<string, never>> = () => {
     } = {
       MERCHANT: <MerchantLevelDispute />,
       BRANDED_PRODUCT_GEOBLOCK: <BrandedProductGeoblockDispute />,
+      COUNTERFEIT: <CounterfeitDispute />,
+      INAPPROPRIATE_CONTENT: <InappropriateContentDispute />,
+      MISLEADING_LISTING: <MisleadingListingDispute />,
       LEGACY: <></>,
-      LEGACY_TRACKING_DISPUTE: <></>,
     };
 
     return disputeFlowToComponent[infractionContext?.disputeFlow || "LEGACY"];
@@ -69,6 +74,7 @@ const InfractionsPage: NextPage<Record<string, never>> = () => {
   if (loading) {
     return (
       <PageLayout>
+        <Skeleton height={48} sx={{ marginBottom: "24px" }} />
         <Skeleton height={48} sx={{ marginBottom: "24px" }} />
         <Skeleton height={48} sx={{ marginBottom: "24px" }} />
         <Skeleton height={460} />

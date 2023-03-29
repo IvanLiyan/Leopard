@@ -122,7 +122,8 @@ const perStateReducer = (state: State, action: Action): State => {
         mainImages: action.images,
         submissionJson: {
           ...state.submissionJson,
-          "image-main": action.images[0].url,
+          "image-main":
+            action.images.length > 0 ? action.images[0].url : undefined,
         },
       };
     }

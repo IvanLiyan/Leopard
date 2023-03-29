@@ -19,14 +19,18 @@ const ActionCardButton: React.FC<
   }
 > = ({ tooltipTitle: titleProp, disabled: disabledProp, ...rest }) => {
   const {
-    infraction: { actionsTaken },
+    infraction: { actionsTaken, disputeDeadlineUnix },
   } = useInfractionContext();
 
   const hasTakenAction = actionsTaken.length > 0;
+  const nowUnix = Date.now() / 1000;
+  const disputeDeadlinePassed = nowUnix > disputeDeadlineUnix;
   const title = hasTakenAction
     ? i`You have already taken action on this infraction.`
+    : disputeDeadlinePassed
+    ? i`You cannot take this action because the dispute deadline has passed.`
     : titleProp;
-  const disabled = disabledProp || hasTakenAction;
+  const disabled = disabledProp || hasTakenAction || disputeDeadlinePassed;
 
   const Button = () => <AtlasButton disabled={disabled} {...rest} />;
 

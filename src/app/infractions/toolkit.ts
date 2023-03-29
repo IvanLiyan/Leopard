@@ -1452,7 +1452,7 @@ const MerchantWarningReasonData: {
   },
   VIOLATE_POLICY: {
     title: i`Policy Violation`,
-    body: i`You have violated [Wish Merchant Policies](${"https://merchant.wish.com/policy"})`,
+    body: i`You have violated a [Wish Merchant Policy](${"https://merchant.wish.com/policy"})`,
     policy: undefined,
     faq: undefined,
   },
@@ -1478,7 +1478,7 @@ const MerchantWarningReasonData: {
   },
   SUSPECTED_FRAUD: {
     title: i`Suspected Fraud`,
-    body: i`Wish has found that your account violated our [Terms of Service](${"https://www.wish.com/en-terms"}) with deceptive, fraudulent, or illegal activity`,
+    body: i`Wish has found that your account violated our [Terms of Service](${"https://merchant.wish.com/terms-of-service"}) with deceptive, fraudulent, or illegal activity`,
     policy: i`[Terms of Service](${"https://merchant.wish.com/terms-of-service"})`,
     faq: undefined,
   },
@@ -1899,7 +1899,7 @@ export const DisputeStatusDisplayText: {
   ),
   DISPUTE_FAILED: ci18n(
     "a label showing a merchant the status of a dispute",
-    "Dispute Rejected",
+    "Declined",
   ),
   NOT_DISPUTED: ci18n(
     "a label showing a merchant the status of a dispute",
@@ -1907,7 +1907,7 @@ export const DisputeStatusDisplayText: {
   ),
   DISPUTE_SUCCESS: ci18n(
     "a label showing a merchant the status of a dispute",
-    "Dispute Success",
+    "Approved",
   ),
 };
 
@@ -1915,48 +1915,52 @@ export const MerchantWarningImpactTypeDisplayText: {
   readonly [impact in MerchantWarningImpactType]: (
     startDate: string | undefined,
     endDate: string | undefined,
+    countries: ReadonlyArray<string>,
   ) => string;
 } = {
   /* eslint-disable @typescript-eslint/no-unused-vars */
-  PRODUCT_PAYMENT_HOLD: (startDate, endDate) =>
+  PRODUCT_PAYMENT_HOLD: (startDate, endDate, countries) =>
     endDate
-      ? i`Wish has withheld payments for orders for the listing until ${endDate}.`
-      : i`Wish has withheld payments for orders for this listing.`,
-  ORDER_PAYMENT_HOLD: (startDate, endDate) =>
+      ? i`Wish has withheld payments for orders for the listing until ${endDate}`
+      : i`Wish has withheld payments for orders for this listing`,
+  ORDER_PAYMENT_HOLD: (startDate, endDate, countries) =>
     endDate
-      ? i`Wish will withhold payment for this order until ${endDate}.`
-      : i`Wish has withheld payment for this order.`,
-  AUTO_REFUND: (startDate, endDate) =>
+      ? i`Wish will withhold payment for this order until ${endDate}`
+      : i`Wish has withheld payment for this order`,
+  AUTO_REFUND: (startDate, endDate, countries) =>
     startDate
-      ? i`Wish refunded this order on ${startDate}.`
-      : i`Wish will auto-refund this order.`,
-  MERCHANT_IMPRESSION_BLOCK: (startDate, endDate) =>
+      ? i`Wish refunded this order on ${startDate}`
+      : i`Wish will auto-refund this order`,
+  MERCHANT_IMPRESSION_BLOCK: (startDate, endDate, countries) =>
     endDate
-      ? i`Wish will block impressions for your account until ${endDate}.`
-      : i`Wish will block impressions for your account.`,
-  MERCHANT_PAYMENT_HOLD: (startDate, endDate) =>
+      ? i`Wish will block impressions for your account until ${endDate}`
+      : i`Wish will block impressions for your account`,
+  MERCHANT_PAYMENT_HOLD: (startDate, endDate, countries) =>
     endDate
-      ? i`Wish will withhold your payments until ${endDate}.`
-      : i`Wish will withhold your payments.`,
-  PRODUCT_TAKEDOWN: (startDate, endDate) =>
+      ? i`Wish will withhold your payments until ${endDate}`
+      : i`Wish will withhold your payments`,
+  PRODUCT_TAKEDOWN: (startDate, endDate, countries) =>
     startDate
-      ? i`Wish removed this product listing on ${startDate}.`
-      : i`Wish removed this product listing.`,
-  EAT_COST_FOR_PRODUCT: (startDate, endDate) =>
-    i`You are responsible for 100% of the costs of refunds on all orders for the product going forward.`,
-  PRODUCT_IMPRESSION_BLOCK: (startDate, endDate) =>
+      ? i`Wish removed this product listing on ${startDate}`
+      : i`Wish removed this product listing`,
+  EAT_COST_FOR_PRODUCT: (startDate, endDate, countries) =>
+    i`You are responsible for 100% of the costs of refunds on all orders for the product going forward`,
+  PRODUCT_IMPRESSION_BLOCK: (startDate, endDate, countries) =>
     endDate
-      ? i`Wish will block impressions for this product until ${endDate}.`
-      : i`Wish will block impressions for this product.`,
-  VARIATION_TAKEDOWN: (startDate, endDate) =>
+      ? i`Wish will block impressions for this product until ${endDate}`
+      : i`Wish will block impressions for this product`,
+  VARIATION_TAKEDOWN: (startDate, endDate, countries) =>
     startDate
-      ? i`Wish removed this variation on ${startDate}.`
-      : i`Wish removed this variation.`,
-  GEOBLOCK: (startDate, endDate) =>
-    startDate
-      ? i`Wish removed this variation on ${startDate}.`
-      : i`Wish removed this variation.`,
-  MERCHANT_BAN: (startDate, endDate) => i`Wish has banned your account.`,
+      ? i`Wish removed this variation on ${startDate}`
+      : i`Wish removed this variation`,
+  GEOBLOCK: (startDate, endDate, countries) =>
+    countries.length > 0
+      ? i`This product will no longer appear in countries/regions that restrict its sale. It is now geoblocked in ${countries.join(
+          ", ",
+        )}`
+      : i`This product will no longer appear in countries/regions that restrict its sale`,
+  MERCHANT_BAN: (startDate, endDate, countries) =>
+    i`Wish has banned your account`,
   /* eslint-enable @typescript-eslint/no-unused-vars */
 };
 
@@ -2103,9 +2107,11 @@ export const getInfractionData = (
 
 export type DisputeFlow =
   | "LEGACY"
-  | "LEGACY_TRACKING_DISPUTE"
   | "MERCHANT"
-  | "BRANDED_PRODUCT_GEOBLOCK";
+  | "BRANDED_PRODUCT_GEOBLOCK"
+  | "COUNTERFEIT"
+  | "INAPPROPRIATE_CONTENT"
+  | "MISLEADING_LISTING";
 
 export const getDisputeFlow = (
   reason: MerchantWarningReason,
@@ -2113,19 +2119,7 @@ export const getDisputeFlow = (
   inappropriateSubreason: TaggingViolationSubReasonCode | undefined,
 ): DisputeFlow => {
   // will be used in future dispute flows
-  void inappropriateReason;
   void inappropriateSubreason;
-
-  if (reason === "BRANDED_PRODUCT_GEOBLOCK") {
-    return "BRANDED_PRODUCT_GEOBLOCK";
-  }
-
-  if (
-    reason === "FINE_FOR_COUNTERFEIT_GOODS" ||
-    reason === "PRODUCT_IS_INAPPROPRIATE"
-  ) {
-    return "LEGACY_TRACKING_DISPUTE";
-  }
 
   if (
     reason === "REQUEST_USER_EMAIL" ||
@@ -2142,9 +2136,35 @@ export const getDisputeFlow = (
     reason === "HIGH_IP_INFRINGEMENT" ||
     reason === "VIOLATE_TS_POLICY" ||
     reason === "BAN_EARLY_STAGE_MERCHANT" ||
-    reason === "INACTIVE_ACCOUNT"
+    reason === "INACTIVE_ACCOUNT" ||
+    reason === "FINE_PRODUCT_SWAPPED"
   ) {
     return "MERCHANT";
+  }
+
+  if (
+    reason === "FINE_FOR_COUNTERFEIT_GOODS" ||
+    reason === "LEGAL_TRO_TAKEDOWN"
+  ) {
+    return "COUNTERFEIT";
+  }
+
+  if (
+    reason === "PRODUCT_IS_INAPPROPRIATE" &&
+    inappropriateReason === "MISLEADING_LISTING"
+  ) {
+    return "MISLEADING_LISTING";
+  }
+
+  if (
+    reason === "PRODUCT_IS_INAPPROPRIATE" ||
+    reason === "CN_PROHIBITED_PRODUCTS"
+  ) {
+    return "INAPPROPRIATE_CONTENT";
+  }
+
+  if (reason === "BRANDED_PRODUCT_GEOBLOCK") {
+    return "BRANDED_PRODUCT_GEOBLOCK";
   }
 
   return "LEGACY";

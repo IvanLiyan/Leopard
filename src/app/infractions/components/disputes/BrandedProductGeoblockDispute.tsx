@@ -91,7 +91,7 @@ const BrandedProductGeoblockDispute: React.FC = () => {
             </Heading>
             <HorizontalField
               title={ci18n("title for field", "Explanation")}
-              info={i`Explain how wish made a mistake in issuing this infraction.`}
+              info={i`Explain how Wish made a mistake in issuing this infraction.`}
               {...hFieldProps}
             >
               <TextInput

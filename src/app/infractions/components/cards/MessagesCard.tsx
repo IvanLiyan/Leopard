@@ -92,6 +92,7 @@ const MessagesCard: React.FC<Pick<BaseProps, "className" | "style">> = ({
               senderType,
               displayName,
               date: { unix },
+              message,
               translatedMessage,
               files,
               images,
@@ -99,7 +100,8 @@ const MessagesCard: React.FC<Pick<BaseProps, "className" | "style">> = ({
               type: senderType == "ADMIN" ? "RECEIVED" : "SENT",
               author: displayName ?? undefined,
               dateSent: dateSentFormatter.format(unix * 1000),
-              message: translatedMessage ?? undefined,
+              message:
+                (locale == "zh" ? translatedMessage : message) ?? undefined,
               files: [
                 ...files,
                 ...(images?.map((imageUrl) => ({

@@ -1,5 +1,10 @@
 import React, { createContext, useContext } from "react";
-import { MerchantWarningFixAction, MerchantWarningProofType } from "@schema";
+import {
+  MerchantWarningFixAction,
+  MerchantWarningProofType,
+  MerchantWarningReason,
+  PaymentCurrencyCode,
+} from "@schema";
 import {
   CommerceTransactionStateDisplayText,
   DisputeFlow,
@@ -19,6 +24,7 @@ import {
 
 type InfractionContextType = {
   readonly infraction: {
+    readonly type: MerchantWarningReason;
     readonly id: string;
     readonly title: string;
     readonly body: string;
@@ -72,10 +78,12 @@ type InfractionContextType = {
   };
   readonly refetchInfraction: () => unknown;
   readonly disputeFlow: DisputeFlow;
+  readonly merchantCurrency: PaymentCurrencyCode;
 };
 
 const InfractionContext = createContext<InfractionContextType>({
   infraction: {
+    type: "BAD_CUSTOMER_SERVICE",
     id: "",
     title: "",
     body: "",
@@ -100,6 +108,7 @@ const InfractionContext = createContext<InfractionContextType>({
     void null;
   },
   disputeFlow: "LEGACY",
+  merchantCurrency: "USD",
 });
 
 export const useInfractionContext = () => {
@@ -159,11 +168,14 @@ export const useInfractionProvider = ({
     infraction.productTrueTagInfo?.counterfeitViolation?.reason ??
       infraction.productTrueTagInfo?.inappropriateViolation?.reason ??
       undefined,
-    infraction.productTrueTagInfo?.subreason?.subcategory,
+    infraction.productTrueTagInfo?.subreason?.subcategory ?? undefined,
   );
+
+  const product = infraction.products?.[0];
 
   const infractionContext: InfractionContextType = {
     infraction: {
+      type: infraction.reason.reason,
       id: infractionId,
       title: infractionDisplayText.title,
       body: (infraction.merchantActions ?? []).includes("PRODUCT_AUTHORIZATION")
@@ -185,10 +197,11 @@ export const useInfractionProvider = ({
           : "NOT_DISPUTED",
       infractionImpacts:
         infraction.impacts != null
-          ? infraction.impacts.map(({ type, startDate, endDate }) =>
+          ? infraction.impacts.map(({ type, startDate, endDate, countries }) =>
               MerchantWarningImpactTypeDisplayText[type](
                 startDate?.datetime,
                 endDate?.datetime,
+                countries.map(({ name }) => name),
               ),
             )
           : [],
@@ -224,7 +237,7 @@ export const useInfractionProvider = ({
               infraction.order.tracking.checkpoints.length > 0
                 ? [...infraction.order.tracking.checkpoints].sort(
                     ({ date: { unix: unixA } }, { date: { unix: unixB } }) =>
-                      unixA - unixB,
+                      unixB - unixA,
                   )[0].resultingTracking.text ?? undefined
                 : undefined,
             trackingId:
@@ -232,13 +245,13 @@ export const useInfractionProvider = ({
             carrier: infraction.order.shippingDetails?.provider?.name,
           }
         : undefined,
-      product: infraction.product
+      product: product
         ? {
-            productImageUrl: infraction.product.mainImage.wishUrl,
-            productName: infraction.product.name,
-            productId: infraction.product.id,
-            productSku: infraction.product.sku,
-            productDescription: infraction.product.description,
+            productImageUrl: product.mainImage.wishUrl,
+            productName: product.name,
+            productId: product.id,
+            productSku: product.sku,
+            productDescription: product.description,
           }
         : undefined,
       brand: infraction.takedownRequest
@@ -269,8 +282,9 @@ export const useInfractionProvider = ({
       infraction.productTrueTagInfo?.counterfeitViolation?.reason ??
         infraction.productTrueTagInfo?.inappropriateViolation?.reason ??
         undefined,
-      infraction.productTrueTagInfo?.subreason?.subcategory,
+      infraction.productTrueTagInfo?.subreason?.subcategory ?? undefined,
     ),
+    merchantCurrency: infraction.merchant.primaryCurrency,
   };
 
   return {

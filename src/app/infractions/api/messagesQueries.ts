@@ -11,10 +11,12 @@ import {
 // them; reconciliation is handled inside MessagesCard
 // please don't repeat this pattern
 
+// note: `message` is in EN, `translatedMessage` is in CN
 export const REPLY_FIELDS = gql`
   fragment ReplyFields on MerchantWarningReplySchema {
     senderType
     displayName
+    message
     translatedMessage
     images
     date {
@@ -29,7 +31,7 @@ export const REPLY_FIELDS = gql`
 
 export type ReplyFields = Pick<
   MerchantWarningReplySchema,
-  "senderType" | "displayName" | "translatedMessage" | "images"
+  "senderType" | "displayName" | "message" | "translatedMessage" | "images"
 > & {
   readonly date: Pick<Datetime, "unix">;
   readonly files: ReadonlyArray<

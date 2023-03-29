@@ -15,37 +15,21 @@ const Dispute: React.FC<Pick<BaseProps, "className" | "style">> = ({
   style,
 }) => {
   const {
-    infraction: { id, disputeStatus, disputeDeadline, disputeDeadlineUnix },
+    infraction: { id, disputeStatus, disputeDeadline },
     disputeFlow,
   } = useInfractionContext();
   const styles = useInfractionDetailsStylesheet();
 
-  const now = Date.now() / 1000;
-
   const disputeUrl =
     disputeFlow == "LEGACY"
       ? merchFeURL(`/dispute-infraction/${id}`)
-      : disputeFlow == "LEGACY_TRACKING_DISPUTE"
-      ? merchFeURL(`/tagging-error-dispute/create/${id}`)
-      : `appeal?id=${id}`;
+      : `/warnings/appeal?id=${id}`;
 
   return (
     <ActionCard
       style={[className, style]}
       title={ci18n("card title", "Dispute")}
-      ctaButtons={
-        <Button
-          href={disputeUrl}
-          disabled={now > disputeDeadlineUnix}
-          tooltipTitle={
-            now > disputeDeadlineUnix
-              ? i`You cannot take this action because the dispute deadline has passed.`
-              : undefined
-          }
-        >
-          Dispute Infraction
-        </Button>
-      }
+      ctaButtons={<Button href={disputeUrl}>Dispute Infraction</Button>}
     >
       <Markdown
         style={styles.cardMargin}

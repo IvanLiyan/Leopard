@@ -11,10 +11,10 @@ const OrderDetailsCard: React.FC<Omit<CardProps, "title" | "children">> = (
 ) => {
   const styles = useInfractionDetailsStylesheet();
   const {
-    infraction: { order },
+    infraction: { order, type },
   } = useInfractionContext();
 
-  if (order == null) {
+  if (order == null || type === "PRODUCT_HIGH_REFUND_RATIO") {
     return null;
   }
 

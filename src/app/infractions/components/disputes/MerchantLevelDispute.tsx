@@ -90,7 +90,7 @@ const MerchantLevelDispute: React.FC = () => {
             </Heading>
             <HorizontalField
               title={i`Explanation`}
-              info={i`Explain how wish made a mistake in issuing this infraction.`}
+              info={i`Explain how Wish made a mistake in issuing this infraction.`}
               {...hFieldProps}
             >
               <TextInput

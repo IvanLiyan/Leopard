@@ -6,6 +6,7 @@ import Card from "./Card";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { useInfractionContext } from "@infractions/InfractionContext";
 import { ci18n } from "@core/toolkit/i18n";
+import { zendeskURL } from "@core/toolkit/url";
 
 const InfractionImpactCard: React.FC<
   Pick<BaseProps, "className" | "style">
@@ -15,11 +16,14 @@ const InfractionImpactCard: React.FC<
     infraction: { infractionImpacts, wssImpact },
   } = useInfractionContext();
 
-  const showInfractionImpacts =
-    infractionImpacts && infractionImpacts.length > 0;
-  const showWssImpact = wssImpact != null;
+  const combinedInfractionImpacts = [
+    ...infractionImpacts,
+    i`[Wish Standards](${zendeskURL("4408084779547")}) tier impact: ${
+      wssImpact ? "Yes" : "No"
+    }`,
+  ];
 
-  if (!showInfractionImpacts && !showWssImpact) {
+  if (combinedInfractionImpacts.length === 0) {
     return null;
   }
 
@@ -28,18 +32,10 @@ const InfractionImpactCard: React.FC<
       title={ci18n("card title", "Infraction Impact")}
       style={[className, style]}
     >
-      {showInfractionImpacts && (
-        <Markdown
-          text={`* ${infractionImpacts.join("\n\n* ")}`}
-          style={styles.cardMargin}
-        />
-      )}
-      {showWssImpact && (
-        <Markdown
-          text={i`Wish Standards tier impact: ${wssImpact ? "Yes" : "No"}`}
-          style={styles.cardMargin}
-        />
-      )}
+      <Markdown
+        text={`* ${combinedInfractionImpacts.join("\n\n* ")}`}
+        style={styles.cardMargin}
+      />
     </Card>
   );
 };

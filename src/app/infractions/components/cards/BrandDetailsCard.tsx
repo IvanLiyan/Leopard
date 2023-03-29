@@ -11,10 +11,10 @@ const BrandDetailsCard: React.FC<Omit<CardProps, "title" | "children">> = (
 ) => {
   const styles = useInfractionDetailsStylesheet();
   const {
-    infraction: { brand },
+    infraction: { brand, type },
   } = useInfractionContext();
 
-  if (!brand) {
+  if (!brand || type === "REPEAT_IP_INFRINGEMENT_ON_BRAND_OWNER") {
     return null;
   }
 
