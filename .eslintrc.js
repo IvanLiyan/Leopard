@@ -45,5 +45,6 @@ module.exports = {
     "out",
     "eslint-local-rules-OLD.js",
     "lighthouse", // if linting lighthouse is desired, we should give it it's own eslintrc
+    "tests/*",
   ],
 };

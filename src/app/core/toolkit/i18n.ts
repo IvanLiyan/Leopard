@@ -16,7 +16,7 @@ import trTranslations from "@ContextLogic/merchantstrings/tr_TR.jed.json";
 import viTranslations from "@ContextLogic/merchantstrings/vi_VN.jed.json";
 import zhTranslations from "@ContextLogic/merchantstrings/zh_CN.jed.json";
 import { Locale } from "@schema";
-import { getBrowserLocale } from "../stores/LocalizationStore";
+import { getBrowserLocale } from "@core/stores/LocalizationStore";
 
 type SupportedLocale = ExcludeStrict<
   Locale,

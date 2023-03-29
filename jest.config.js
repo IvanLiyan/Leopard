@@ -1,42 +1,32 @@
-module.exports = {
-  collectCoverageFrom: [
-    "**/*.{js,jsx,ts,tsx}",
-    "!**/*.d.ts",
-    "!**/node_modules/**",
+const nextJest = require('next/jest')
+const createJestConfig = nextJest({ dir: './' })
+const customJestConfig = {
+  modulePaths: ["<rootDir>"],
+  moduleDirectories: [
+    "node_modules",
+    "src"
   ],
+  roots: ["<rootDir>/src/"],
   moduleNameMapper: {
-    // Handle CSS imports (with CSS modules)
-    // https://jestjs.io/docs/webpack#mocking-css-modules
     "^.+\\.module\\.(css|sass|scss)$": "identity-obj-proxy",
-
-    // Handle CSS imports (without CSS modules)
     "^.+\\.(css|sass|scss)$": "<rootDir>/__mocks__/styleMock.js",
-
-    // Handle image imports
-    // https://jestjs.io/docs/webpack#handling-static-assets
-    "^.+\\.(jpg|jpeg|png|gif|webp|avif|svg)$": `<rootDir>/__mocks__/fileMock.js`,
-
+    "^.+\\.(png|jpg|jpeg|gif|webp|avif|ico|bmp|svg)$/i": `<rootDir>/__mocks__/fileMock.js`,
     // Handle module aliases
-    "^@deprecated/pkg/assets/(.*)$": "<rootDir>/src/pkg/assets/$1",
-    "^@legacy/(.*)$": "<rootDir>/src/pkg/legacy/$1",
-    "^@merchant/(.*)$": "<rootDir>/src/pkg/merchant/$1",
-    "^@plus/(.*)$": "<rootDir>/src/pkg/plus/$1",
-    "^@schema/(.*)$": "<rootDir>/src/pkg/schema/$1",
-    "^@core/stores/(.*)$": "<rootDir>/src/pkg/stores/$1",
-    "^@toolkit/(.*)$": "<rootDir>/src/pkg/toolkit/$1",
-    "^@next-toolkit/(.*)$": "<rootDir>/src/toolkit/$1",
+    "@add-edit-product/(.*)": "<rootDir>/src/app/add-edit-product/$1",
+    "@all-products/(.*)": "<rootDir>/src/app/all-products/$1",
+    "@chrome/(.*)": "<rootDir>/src/app/chrome/$1",
+    "@core/(.*)": "<rootDir>/src/app/core/$1",
+    "@core-builder/(.*)": "<rootDir>/src/app/core-builder/$1",
+    "@infractions/(.*)": "<rootDir>/src/app/infractions/$1",
+    "@landing-pages/(.*)": "<rootDir>/src/app/landing-pages/$1",
+    "@performance/(.*)": "<rootDir>/src/app/performance/$1",
+    "@schema": "<rootDir>/src/app/schema",
+    "@deprecated/(.*)": "<rootDir>/src/deprecated/$1",
+    "@public/(.*)": "<rootDir>/public/$1",
   },
-  setupFilesAfterEnv: ["<rootDir>/jest.setup.js"],
-  testPathIgnorePatterns: ["<rootDir>/node_modules/", "<rootDir>/.next/"],
-  testEnvironment: "jsdom",
-  transform: {
-    // Use babel-jest to transpile tests with the next/babel preset
-    // https://jestjs.io/docs/configuration#transform-objectstring-pathtotransformer--pathtotransformer-object
-    "^.+\\.(js|jsx|ts|tsx)$": ["babel-jest", { presets: ["next/babel"] }],
-  },
-  transformIgnorePatterns: [
-    "/node_modules/",
-    "^.+\\.module\\.(css|sass|scss)$",
-  ],
-  testEnvironment: "jest-environment-jsdom",
-};
+  // Add more setup options before each test is run
+  testPathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/.next/'],
+  testEnvironment: 'jsdom',
+}
+
+module.exports = createJestConfig(customJestConfig)

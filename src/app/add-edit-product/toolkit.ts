@@ -1,4 +1,4 @@
-import { ci18n } from "@core/toolkit/i18n";
+import { ci18n, i18n } from "@core/toolkit/i18n";
 import {
   ContestWarningType,
   VolumeUnit,
@@ -11,16 +11,18 @@ import {
 export const ContestWarningDisplayNames: {
   readonly [T in ContestWarningType]: string;
 } = {
-  CHEMICAL: i`Chemical`,
-  FOOD: i`Food`,
-  FURNITURE: i`Furniture`,
-  ON_PRODUCT_CANCER: i`On Product Cancer`,
-  ON_PRODUCT_COMBINED_CANCER_REPRODUCTIVE: i`On Product Combined Cancer Reproductive`,
-  ON_PRODUCT_REPRODUCTIVE: i`On Product Reproductive`,
-  RAW_WOOD: i`Raw Wood`,
-  DEP_PASSENGER_OFF_ROAD_VEHICLE: i`Passenger or Off-road Vehicle`,
-  DEP_RECREATIONAL_VESSEL: i`Recreational Vessel`,
-  DIESEL_ENGINE: i`Diesel Engine`,
+  CHEMICAL: i18n("Chemical"),
+  FOOD: i18n("Food"),
+  FURNITURE: i18n("Furniture"),
+  ON_PRODUCT_CANCER: i18n("On Product Cancer"),
+  ON_PRODUCT_COMBINED_CANCER_REPRODUCTIVE: i18n(
+    "On Product Combined Cancer Reproductive",
+  ),
+  ON_PRODUCT_REPRODUCTIVE: i18n("On Product Reproductive"),
+  RAW_WOOD: i18n("Raw Wood"),
+  DEP_PASSENGER_OFF_ROAD_VEHICLE: i18n("Passenger or Off-road Vehicle"),
+  DEP_RECREATIONAL_VESSEL: i18n("Recreational Vessel"),
+  DIESEL_ENGINE: i18n("Diesel Engine"),
 };
 
 export type Unit = VolumeUnit | AreaUnit | CountUnit | LengthUnit | WeightUnit;
