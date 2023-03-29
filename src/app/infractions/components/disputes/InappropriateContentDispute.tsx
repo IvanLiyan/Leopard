@@ -80,7 +80,7 @@ const InappropriateContentDispute: React.FC = () => {
       if (!resp.data?.policy?.merchantWarning?.upsertMerchantWarning?.ok) {
         toastStore.negative(
           resp.data?.policy?.merchantWarning?.upsertMerchantWarning?.message ??
-            i`Something went wrong.`,
+            ci18n("error message", "Something went wrong."),
         );
       } else {
         toastStore.positive(i`Your dispute was successfully submitted.`, {
@@ -89,7 +89,7 @@ const InappropriateContentDispute: React.FC = () => {
         await navigationStore.navigate(`/warnings/warning?id=${infractionId}`);
       }
     } catch {
-      toastStore.negative(i`Something went wrong.`);
+      toastStore.negative(ci18n("error message", "Something went wrong."));
     }
   };
 
@@ -109,7 +109,10 @@ const InappropriateContentDispute: React.FC = () => {
     photos.length > 0;
 
   return (
-    <Accordion defaultExpanded title={i`Dispute Details`}>
+    <Accordion
+      defaultExpanded
+      title={ci18n("section header", "Dispute Details")}
+    >
       <div className={css(styles.column, { padding: 16 })}>
         {canDispute ? (
           <>
@@ -166,7 +169,7 @@ const InappropriateContentDispute: React.FC = () => {
                   value: id,
                   text: name,
                 }))}
-                placeholder={i`Product category`}
+                placeholder={ci18n("placeholder for input", "Product category")}
                 disabled={queryLoading}
               />
             </HorizontalField>
@@ -179,7 +182,10 @@ const InappropriateContentDispute: React.FC = () => {
                 onChange={({ text }) => {
                   setSubcategory(text);
                 }}
-                placeholder={i`Product subcategory`}
+                placeholder={ci18n(
+                  "placeholder for input",
+                  "Product subcategory",
+                )}
               />
             </HorizontalField>
             <HorizontalField
@@ -194,7 +200,7 @@ const InappropriateContentDispute: React.FC = () => {
                 onChange={({ text }) => {
                   setProductName(text);
                 }}
-                placeholder={i`Product name`}
+                placeholder={ci18n("placeholder for input", "Product name")}
               />
             </HorizontalField>
             <HorizontalField
@@ -211,7 +217,7 @@ const InappropriateContentDispute: React.FC = () => {
                 onChange={({ text }) => {
                   setDescription(text);
                 }}
-                placeholder={i`Describe reason`}
+                placeholder={ci18n("placeholder for input", "Describe reason")}
               />
             </HorizontalField>
             <HorizontalField
@@ -228,7 +234,7 @@ const InappropriateContentDispute: React.FC = () => {
                 onChange={({ text }) => {
                   setExplanation(text);
                 }}
-                placeholder={i`Describe`}
+                placeholder={ci18n("placeholder for input", "Describe")}
               />
             </HorizontalField>
             <HorizontalField
@@ -259,14 +265,14 @@ const InappropriateContentDispute: React.FC = () => {
         action={
           canDispute
             ? {
-                text: i`Submit`,
+                text: ci18n("CTA on button", "Submit"),
                 onClick: onSubmit,
                 isDisabled: mutationLoading || !canSubmit,
               }
             : undefined
         }
         cancel={{
-          text: i`Cancel`,
+          text: ci18n("CTA on button", "Cancel"),
           href: `/warnings/warning?id=${infractionId}`,
           disabled: mutationLoading,
         }}

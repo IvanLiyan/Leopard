@@ -156,7 +156,7 @@ const MisleadingListingDispute: React.FC = () => {
       if (!resp.data?.policy?.merchantWarning?.upsertMerchantWarning?.ok) {
         toastStore.negative(
           resp.data?.policy?.merchantWarning?.upsertMerchantWarning?.message ??
-            i`Something went wrong.`,
+            ci18n("error message", "Something went wrong."),
         );
       } else {
         toastStore.positive(i`Your dispute was successfully submitted.`, {
@@ -165,7 +165,7 @@ const MisleadingListingDispute: React.FC = () => {
         await navigationStore.navigate(`/warnings/warning?id=${infractionId}`);
       }
     } catch {
-      toastStore.negative(i`Something went wrong.`);
+      toastStore.negative(ci18n("error message", "Something went wrong."));
     }
   };
 
@@ -199,7 +199,10 @@ const MisleadingListingDispute: React.FC = () => {
     proofOfPurchase.length > 0;
 
   return (
-    <Accordion defaultExpanded title={i`Dispute Details`}>
+    <Accordion
+      defaultExpanded
+      title={ci18n("section header", "Dispute Details")}
+    >
       <div className={css(infractionStyles.column, { padding: 16 })}>
         {canDispute ? (
           <>
@@ -258,7 +261,7 @@ const MisleadingListingDispute: React.FC = () => {
                   value: id,
                   text: name,
                 }))}
-                placeholder={i`Product category`}
+                placeholder={ci18n("placeholder for input", "Product category")}
                 disabled={queryLoading}
               />
             </HorizontalField>
@@ -271,7 +274,10 @@ const MisleadingListingDispute: React.FC = () => {
                 onChange={({ text }) => {
                   setSubcategory(text);
                 }}
-                placeholder={i`Product subcategory`}
+                placeholder={ci18n(
+                  "placeholder for input",
+                  "Product subcategory",
+                )}
               />
             </HorizontalField>
             <HorizontalField
@@ -286,7 +292,7 @@ const MisleadingListingDispute: React.FC = () => {
                 onChange={({ text }) => {
                   setProductName(text);
                 }}
-                placeholder={i`Product name`}
+                placeholder={ci18n("placeholder for input", "Product name")}
               />
             </HorizontalField>
             <HorizontalField
@@ -303,7 +309,7 @@ const MisleadingListingDispute: React.FC = () => {
                 onChange={({ text }) => {
                   setDescription(text);
                 }}
-                placeholder={i`Describe reason`}
+                placeholder={ci18n("placeholder for input", "Describe reason")}
               />
             </HorizontalField>
             <HorizontalField
@@ -320,7 +326,7 @@ const MisleadingListingDispute: React.FC = () => {
                 onChange={({ text }) => {
                   setExplanation(text);
                 }}
-                placeholder={i`Describe`}
+                placeholder={ci18n("placeholder for input", "Describe")}
               />
             </HorizontalField>
             <HorizontalField
@@ -353,7 +359,10 @@ const MisleadingListingDispute: React.FC = () => {
                 onChange={({ text }) => {
                   setVariationCount(parseInt(text));
                 }}
-                placeholder={i`Total number of variations`}
+                placeholder={ci18n(
+                  "placeholder for input",
+                  "Total number of variations",
+                )}
               />
             </HorizontalField>
             <HorizontalField
@@ -421,7 +430,7 @@ const MisleadingListingDispute: React.FC = () => {
                 onChange={({ textAsNumber }) => {
                   setActualCost(textAsNumber ?? undefined);
                 }}
-                placeholder={i`Unit cost`}
+                placeholder={ci18n("placeholder for input", "Unit cost")}
                 hideCheckmarkWhenValid
               />
             </HorizontalField>
@@ -438,7 +447,7 @@ const MisleadingListingDispute: React.FC = () => {
                 onChange={({ textAsNumber }) => {
                   setProductPrice(textAsNumber ?? undefined);
                 }}
-                placeholder={i`Selling price`}
+                placeholder={ci18n("placeholder for input", "Selling price")}
                 hideCheckmarkWhenValid
               />
             </HorizontalField>
@@ -454,7 +463,10 @@ const MisleadingListingDispute: React.FC = () => {
                 onChange={({ text }) => {
                   setVendorName(text);
                 }}
-                placeholder={i`Manufacturer name`}
+                placeholder={ci18n(
+                  "placeholder for input",
+                  "Manufacturer name",
+                )}
               />
             </HorizontalField>
             <HorizontalField
@@ -467,7 +479,7 @@ const MisleadingListingDispute: React.FC = () => {
                   onChange={({ text }) => {
                     setVendorStreetAddress(text);
                   }}
-                  placeholder={i`Street address`}
+                  placeholder={ci18n("placeholder for input", "Street address")}
                 />
                 <TextInput
                   style={{ marginTop: "6px" }}
@@ -475,7 +487,10 @@ const MisleadingListingDispute: React.FC = () => {
                   onChange={({ text }) => {
                     setVendorStreetAddress2(text);
                   }}
-                  placeholder={i`Street address 2`}
+                  placeholder={ci18n(
+                    "placeholder for input",
+                    "Street address 2",
+                  )}
                 />
                 <TextInput
                   style={{ marginTop: "6px", marginBottom: "6px" }}
@@ -483,7 +498,10 @@ const MisleadingListingDispute: React.FC = () => {
                   onChange={({ text }) => {
                     setVendorStreetAddress3(text);
                   }}
-                  placeholder={i`Street address 3`}
+                  placeholder={ci18n(
+                    "placeholder for input",
+                    "Street address 3",
+                  )}
                 />
                 <Layout.FlexRow>
                   <TextInput
@@ -492,7 +510,7 @@ const MisleadingListingDispute: React.FC = () => {
                     onChange={({ text }) => {
                       setVendorCity(text);
                     }}
-                    placeholder={i`City`}
+                    placeholder={ci18n("placeholder for input", "City")}
                   />
                   <TextInput
                     style={{ marginRight: "6px", flex: 1 }}
@@ -500,7 +518,10 @@ const MisleadingListingDispute: React.FC = () => {
                     onChange={({ text }) => {
                       setVendorState(text);
                     }}
-                    placeholder={i`State / Province`}
+                    placeholder={ci18n(
+                      "placeholder for input",
+                      "State / Province",
+                    )}
                   />
                   <TextInput
                     style={{ marginRight: "6px", maxWidth: "140px" }}
@@ -508,7 +529,10 @@ const MisleadingListingDispute: React.FC = () => {
                     onChange={({ text }) => {
                       setVendorZip(text);
                     }}
-                    placeholder={i`ZIP / Postal code`}
+                    placeholder={ci18n(
+                      "placeholder for input",
+                      "ZIP / Postal code",
+                    )}
                   />
                   <FormSelect
                     style={{
@@ -531,7 +555,7 @@ const MisleadingListingDispute: React.FC = () => {
                         value: countryCode as CountryCode,
                         text: country,
                       }))}
-                    placeholder={i`Country`}
+                    placeholder={ci18n("placeholder for input", "Country")}
                   />
                 </Layout.FlexRow>
               </Layout.FlexColumn>
@@ -551,7 +575,7 @@ const MisleadingListingDispute: React.FC = () => {
                   onChange={({ text }) => {
                     setVendorAreaCode(text);
                   }}
-                  placeholder={i`Area code`}
+                  placeholder={ci18n("placeholder for input", "Area code")}
                 />
                 <TextInput
                   type="number"
@@ -560,7 +584,7 @@ const MisleadingListingDispute: React.FC = () => {
                   onChange={({ text }) => {
                     setVendorPhoneNumber(text);
                   }}
-                  placeholder={i`Phone number`}
+                  placeholder={ci18n("placeholder for input", "Phone number")}
                 />
               </Layout.FlexRow>
             </HorizontalField>
@@ -589,14 +613,14 @@ const MisleadingListingDispute: React.FC = () => {
         action={
           canDispute
             ? {
-                text: i`Submit`,
+                text: ci18n("CTA for button", "Submit"),
                 onClick: onSubmit,
                 isDisabled: mutationLoading || !canSubmit,
               }
             : undefined
         }
         cancel={{
-          text: i`Cancel`,
+          text: ci18n("CTA for button", "Cancel"),
           href: `/warnings/warning?id=${infractionId}`,
           disabled: mutationLoading,
         }}
