@@ -93,9 +93,9 @@ const devLogin = async (
   // set xsrf token for staging
   let respXSRF;
   try {
-    respXSRF = await fetch(`${MD_URL}/`);
+    respXSRF = await fetch(`${MD_URL}/policy`);
   } catch (e) {
-    console.log(`error fetching${MD_URL}/`, "resp", respXSRF, "e", e);
+    console.log(`error fetching ${MD_URL}/`, "resp", respXSRF, "e", e);
     return;
   }
 

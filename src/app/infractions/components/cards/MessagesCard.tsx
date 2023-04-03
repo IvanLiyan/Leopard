@@ -76,9 +76,9 @@ const MessagesCard: React.FC<Pick<BaseProps, "className" | "style">> = ({
       isOrderInfraction
         ? infraction.order.trackingDispute.messages.map(
             ({ senderType, senderName, date: { unix }, message, files }) => ({
-              type: senderType == "ADMIN" ? "RECEIVED" : "SENT",
+              type: senderType !== "MERCHANT" ? "RECEIVED" : "SENT",
               author:
-                senderType == "ADMIN"
+                senderType !== "MERCHANT"
                   ? i`Wish Merchant Service`
                   : senderName ?? undefined,
               dateSent: dateSentFormatter.format(unix * 1000),
@@ -90,23 +90,29 @@ const MessagesCard: React.FC<Pick<BaseProps, "className" | "style">> = ({
         : infraction.replies.map(
             ({
               senderType,
-              displayName,
+              senderName,
               date: { unix },
               message,
               translatedMessage,
               files,
+              idFiles,
               images,
             }) => ({
-              type: senderType == "ADMIN" ? "RECEIVED" : "SENT",
-              author: displayName ?? undefined,
+              type: senderType !== "MERCHANT" ? "RECEIVED" : "SENT",
+              author:
+                senderType !== "MERCHANT"
+                  ? i`Wish Merchant Service`
+                  : senderName ?? undefined,
               dateSent: dateSentFormatter.format(unix * 1000),
               message:
                 (locale == "zh" ? translatedMessage : message) ?? undefined,
               files: [
                 ...files,
+                ...idFiles,
                 ...(images?.map((imageUrl) => ({
                   displayFilename: ci18n("a filename", "image"),
                   fileUrl: imageUrl,
+                  isImageFile: true,
                 })) ?? []),
               ],
               messageGroup: messageGroupFormatter.format(unix * 1000),

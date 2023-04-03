@@ -5,7 +5,7 @@ import { Layout } from "@ContextLogic/lego";
 import Card from "./Card";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { useInfractionDetailsStylesheet } from "@infractions/styles";
-import { Button } from "@ContextLogic/atlas-ui";
+import { Button, Tooltip } from "@ContextLogic/atlas-ui";
 import { useInfractionContext } from "@infractions/InfractionContext";
 import RequestPaymentModal from "./RequestPaymentModal";
 
@@ -15,13 +15,18 @@ const RequestPaymentCard: React.FC<Pick<BaseProps, "className" | "style">> = ({
 }) => {
   const styles = useInfractionDetailsStylesheet();
   const {
-    infraction: { actions },
+    infraction: { actions, actionsTaken },
   } = useInfractionContext();
   const [modalOpen, setModalOpen] = useState(false);
 
   if (!actions.includes("REQUEST_PAYMENT_RELEASE")) {
     return null;
   }
+
+  const hasAlreadyRequested = actionsTaken.includes("REQUEST_PAYMENT_RELEASE");
+  const buttonStyle = {
+    marginTop: 16,
+  };
 
   return (
     <>
@@ -47,16 +52,28 @@ const RequestPaymentCard: React.FC<Pick<BaseProps, "className" | "style">> = ({
           ].join("\n\n* ")}`}
         />
         <Layout.FlexColumn alignItems="flex-end">
-          <Button
-            style={{
-              marginTop: 16,
-            }}
-            onClick={() => {
-              setModalOpen(true);
-            }}
-          >
-            Start a Request
-          </Button>
+          {hasAlreadyRequested ? (
+            <Tooltip
+              title={i`You have already requested payment.`}
+              placement="bottom"
+            >
+              {/* excess div required since Mui disables tooltips wrapping disabled buttons */}
+              <div>
+                <Button style={buttonStyle} disabled>
+                  Start a Request
+                </Button>
+              </div>
+            </Tooltip>
+          ) : (
+            <Button
+              style={buttonStyle}
+              onClick={() => {
+                setModalOpen(true);
+              }}
+            >
+              Start a Request
+            </Button>
+          )}
         </Layout.FlexColumn>
       </Card>
     </>

@@ -1,19 +1,17 @@
 import React, { createContext, useContext } from "react";
 import {
   MerchantWarningFixAction,
-  MerchantWarningProofType,
   MerchantWarningReason,
   PaymentCurrencyCode,
 } from "@schema";
 import {
   CommerceTransactionStateDisplayText,
-  DisputeFlow,
   DisputeStatus,
-  getDisputeFlow,
-  getInfractionData,
+  getInfractionCopy,
   MerchantWarningImpactTypeDisplayText,
   MerchantWarningStateDisplayText,
-} from "./toolkit";
+} from "./copy";
+import { DisputeFlow, getDisputeFlow, getDisputeStatus } from "./toolkit";
 import { ApolloError, useQuery } from "@apollo/client";
 import { zendeskURL } from "@core/toolkit/url";
 import {
@@ -21,6 +19,7 @@ import {
   InfractionQueryVariables,
   INFRACTION_QUERY,
 } from "./api/infractionQuery";
+import { InfractionEvidenceType } from "./components/cards/InfractionEvidenceCard";
 
 type InfractionContextType = {
   readonly infraction: {
@@ -65,7 +64,7 @@ type InfractionContextType = {
       readonly brandEmail: string | undefined;
     };
     readonly infractionEvidence: ReadonlyArray<{
-      readonly type: MerchantWarningProofType;
+      readonly type: InfractionEvidenceType;
       readonly id: string;
       readonly note: string;
     }>;
@@ -163,7 +162,7 @@ export const useInfractionProvider = ({
     };
   }
 
-  const infractionDisplayText = getInfractionData(
+  const infractionCopy = getInfractionCopy(
     infraction.reason.reason,
     infraction.productTrueTagInfo?.counterfeitViolation?.reason ??
       infraction.productTrueTagInfo?.inappropriateViolation?.reason ??
@@ -177,24 +176,19 @@ export const useInfractionProvider = ({
     infraction: {
       type: infraction.reason.reason,
       id: infractionId,
-      title: infractionDisplayText.title,
+      title: infractionCopy.title,
       body: (infraction.merchantActions ?? []).includes("PRODUCT_AUTHORIZATION")
         ? i`[Learn more](${zendeskURL(
             "mu360055998653",
           )}) about the requirements needed to offer this category of product on Wish.`
-        : infractionDisplayText.body,
-      policy: infractionDisplayText.policy,
-      faq: infractionDisplayText.faq,
+        : infractionCopy.body,
+      policy: infractionCopy.policy,
+      faq: infractionCopy.faq,
       state: MerchantWarningStateDisplayText[infraction.state],
       issuedDate: infraction.createdTime.datetime,
       disputeDeadline: infraction.effectiveDisputeDeadlineDate.datetime,
       disputeDeadlineUnix: infraction.effectiveDisputeDeadlineDate.unix,
-      disputeStatus:
-        infraction.trackingDispute != null
-          ? infraction.trackingDispute.state
-          : infraction.proofs.length > 0
-          ? infraction.proofs[0].disputeStatus
-          : "NOT_DISPUTED",
+      disputeStatus: getDisputeStatus(infraction),
       infractionImpacts:
         infraction.impacts != null
           ? infraction.impacts.map(({ type, startDate, endDate, countries }) =>
@@ -263,11 +257,20 @@ export const useInfractionProvider = ({
             brandEmail: infraction.takedownRequest.email ?? undefined,
           }
         : undefined,
-      infractionEvidence: infraction.proofs.map((proof) => ({
-        type: proof.type,
-        id: proof.id,
-        note: proof.message ?? "--",
-      })),
+      infractionEvidence: infraction.proofs.map((proof) =>
+        infraction.reason.reason == "REPEAT_IP_INFRINGEMENT_ON_BRAND_OWNER" &&
+        proof.warningId
+          ? {
+              type: "INFRACTION",
+              id: proof.warningId,
+              note: proof.note ?? "--",
+            }
+          : {
+              type: proof.type,
+              id: proof.id,
+              note: proof.note ?? "--",
+            },
+      ),
       actions: infraction.merchantActions ?? [],
       actionsTaken: infraction.outstandingMerchantActions ?? [],
       brandAuthorizations:

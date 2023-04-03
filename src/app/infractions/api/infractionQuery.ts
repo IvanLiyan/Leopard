@@ -46,6 +46,7 @@ export const INFRACTION_QUERY = gql`
           primaryCurrency
         }
         state
+        resolved
         wssImpact
         merchantActions
         outstandingMerchantActions
@@ -82,8 +83,9 @@ export const INFRACTION_QUERY = gql`
         proofs {
           type
           id
-          message
+          note
           disputeStatus
+          warningId
         }
         impacts {
           type
@@ -170,7 +172,11 @@ export type InfractionQueryResponse = {
   readonly policy?: {
     readonly merchantWarning?: Pick<
       MerchantWarningSchema,
-      "state" | "wssImpact" | "merchantActions" | "outstandingMerchantActions"
+      | "state"
+      | "resolved"
+      | "wssImpact"
+      | "merchantActions"
+      | "outstandingMerchantActions"
     > & {
       readonly merchant: Pick<MerchantSchema, "primaryCurrency">;
       readonly reason: Pick<MerchantWarningReasonSchema, "reason">;
@@ -198,7 +204,7 @@ export type InfractionQueryResponse = {
       readonly proofs: ReadonlyArray<
         Pick<
           MerchantWarningProofSchema,
-          "type" | "id" | "message" | "disputeStatus"
+          "type" | "id" | "note" | "disputeStatus" | "warningId"
         >
       >;
       readonly impacts?: ReadonlyArray<

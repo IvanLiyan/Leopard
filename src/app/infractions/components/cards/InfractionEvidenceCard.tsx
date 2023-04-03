@@ -7,11 +7,13 @@ import { ci18n } from "@core/toolkit/i18n";
 import { MerchantWarningProofType } from "@schema";
 import { wishProductURL } from "@core/toolkit/url";
 import { CellInfo, Layout, PageIndicator, Table } from "@ContextLogic/lego";
-import { MerchantWarningProofTypeDisplayText } from "@infractions/toolkit";
+import { InfractionEvidenceTypeDisplayText } from "@infractions/copy";
 import { merchFeURL } from "@core/toolkit/router";
 
+export type InfractionEvidenceType = MerchantWarningProofType | "INFRACTION";
+
 const getIdLink: {
-  readonly [type in MerchantWarningProofType]: (props: {
+  readonly [type in InfractionEvidenceType]: (props: {
     id: string;
     productId?: string | undefined;
   }) => string;
@@ -24,6 +26,7 @@ const getIdLink: {
     productId ? `[${id}](${wishProductURL(productId)})` : id,
   TICKET: ({ id }) => `[${id}](${merchFeURL(`/ticket/${id}`)})`,
   ORDER: ({ id }) => `[${id}](${merchFeURL(`/order/${id}`)})`,
+  INFRACTION: ({ id }) => `[${id}](/warnings/warning?id=${id})`,
 };
 
 const PAGE_SIZE = 10;
@@ -56,9 +59,7 @@ const InfractionEvidenceCard: React.FC<
           >
             {({ row }: CellInfo<unknown, typeof infractionEvidence[0]>) => {
               return (
-                <Markdown
-                  text={MerchantWarningProofTypeDisplayText[row.type]}
-                />
+                <Markdown text={InfractionEvidenceTypeDisplayText[row.type]} />
               );
             }}
           </Table.Column>

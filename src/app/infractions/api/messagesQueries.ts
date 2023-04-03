@@ -12,10 +12,13 @@ import {
 // please don't repeat this pattern
 
 // note: `message` is in EN, `translatedMessage` is in CN
+// TODO: BE will be deprecating the images and idFiles resolvers and moving
+// those responses to files. no changes will be required by FE at the time but
+// once that is done we can remove them from our query here and elsewhere
 export const REPLY_FIELDS = gql`
   fragment ReplyFields on MerchantWarningReplySchema {
     senderType
-    displayName
+    senderName
     message
     translatedMessage
     images
@@ -25,17 +28,26 @@ export const REPLY_FIELDS = gql`
     files {
       displayFilename
       fileUrl
+      isImageFile
+    }
+    idFiles {
+      displayFilename
+      fileUrl
+      isImageFile
     }
   }
 `;
 
 export type ReplyFields = Pick<
   MerchantWarningReplySchema,
-  "senderType" | "displayName" | "message" | "translatedMessage" | "images"
+  "senderType" | "senderName" | "message" | "translatedMessage" | "images"
 > & {
   readonly date: Pick<Datetime, "unix">;
   readonly files: ReadonlyArray<
-    Pick<MerchantFileSchema, "displayFilename" | "fileUrl">
+    Pick<MerchantFileSchema, "displayFilename" | "fileUrl" | "isImageFile">
+  >;
+  readonly idFiles: ReadonlyArray<
+    Pick<MerchantFileSchema, "displayFilename" | "fileUrl" | "isImageFile">
   >;
 };
 
@@ -50,6 +62,7 @@ export const TRACKING_MESSAGE_FIELDS = gql`
     files {
       displayFilename
       fileUrl
+      isImageFile
     }
   }
 `;
@@ -60,7 +73,7 @@ export type TrackingMessageFields = Pick<
 > & {
   readonly date: Pick<Datetime, "unix">;
   readonly files: ReadonlyArray<
-    Pick<MerchantFileSchema, "displayFilename" | "fileUrl">
+    Pick<MerchantFileSchema, "displayFilename" | "fileUrl" | "isImageFile">
   >;
 };
 

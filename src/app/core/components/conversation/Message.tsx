@@ -8,11 +8,13 @@ import { useTheme } from "@core/stores/ThemeStore";
 import { css } from "@core/toolkit/styling";
 import Link from "@core/components/Link";
 import Icon from "@core/components/Icon";
+import Image from "@core/components/Image";
 import { merchFeURL } from "@core/toolkit/router";
 
 export type File = {
   readonly displayFilename: string;
   readonly fileUrl: string;
+  readonly isImageFile: boolean;
 };
 
 export type Message = {
@@ -35,6 +37,7 @@ const Message: React.FC<Props> = ({
   files,
 }) => {
   const styles = useStylesheet();
+  const { borderPrimary } = useTheme();
 
   return (
     <Layout.FlexColumn
@@ -45,7 +48,7 @@ const Message: React.FC<Props> = ({
         className,
       ]}
     >
-      {files.map(({ displayFilename, fileUrl }, i) => (
+      {files.map(({ displayFilename, fileUrl, isImageFile }, i) => (
         <Link
           key={i}
           href={merchFeURL(fileUrl)}
@@ -53,8 +56,23 @@ const Message: React.FC<Props> = ({
           openInNewTab
           style={{ marginBottom: i == files.length ? 16 : 8 }}
         >
-          <Icon name="file" style={styles.icon} />
-          <Text variant="bodyS">{displayFilename}</Text>
+          {isImageFile ? (
+            <Image
+              src={merchFeURL(fileUrl)}
+              alt={displayFilename}
+              style={{
+                maxWidth: "175px",
+                maxHeight: "175px",
+                border: `solid 2px ${borderPrimary}`,
+                borderRadius: "12px",
+              }}
+            />
+          ) : (
+            <>
+              <Icon name="file" style={styles.icon} />
+              <Text variant="bodyS">{displayFilename}</Text>
+            </>
+          )}
         </Link>
       ))}
       {message != undefined && (

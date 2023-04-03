@@ -6,9 +6,10 @@ import ActionCard from "./ActionCard";
 import { useInfractionContext } from "@infractions/InfractionContext";
 import { useInfractionDetailsStylesheet } from "@infractions/styles";
 import { ci18n } from "@core/toolkit/i18n";
-import { DisputeStatusDisplayText } from "@infractions/toolkit";
+import { DisputeStatusDisplayText } from "@infractions/copy";
 import { merchFeURL } from "@core/toolkit/router";
 import Button from "./ActionCardButton";
+import NextLink from "next/link";
 
 const Dispute: React.FC<Pick<BaseProps, "className" | "style">> = ({
   className,
@@ -29,7 +30,11 @@ const Dispute: React.FC<Pick<BaseProps, "className" | "style">> = ({
     <ActionCard
       style={[className, style]}
       title={ci18n("card title", "Dispute")}
-      ctaButtons={<Button href={disputeUrl}>Dispute Infraction</Button>}
+      ctaButtons={
+        <NextLink href={disputeUrl} passHref>
+          <Button href={disputeUrl}>Dispute Infraction</Button>
+        </NextLink>
+      }
     >
       <Markdown
         style={styles.cardMargin}
