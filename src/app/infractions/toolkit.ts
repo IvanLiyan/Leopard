@@ -7,7 +7,7 @@ import { InfractionQueryResponse } from "./api/infractionQuery";
 import { DisputeStatus } from "./copy";
 
 export type DisputeFlow =
-  | "LEGACY"
+  | "ORDER"
   | "MERCHANT"
   | "BRANDED_PRODUCT_GEOBLOCK"
   | "COUNTERFEIT"
@@ -77,7 +77,7 @@ export const getDisputeFlow = (
     return "BRANDED_PRODUCT_GEOBLOCK";
   }
 
-  return "LEGACY";
+  return "ORDER";
 };
 
 /**

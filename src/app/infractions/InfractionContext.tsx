@@ -1,6 +1,8 @@
 import React, { createContext, useContext } from "react";
 import {
+  Country,
   MerchantWarningFixAction,
+  MerchantWarningProofSchema,
   MerchantWarningReason,
   PaymentCurrencyCode,
 } from "@schema";
@@ -78,6 +80,12 @@ type InfractionContextType = {
   readonly refetchInfraction: () => unknown;
   readonly disputeFlow: DisputeFlow;
   readonly merchantCurrency: PaymentCurrencyCode;
+  readonly ordersDisputeAdapter: {
+    readonly countriesWeShipTo: ReadonlyArray<Pick<Country, "name" | "code">>;
+    readonly proofs: ReadonlyArray<
+      Pick<MerchantWarningProofSchema, "id" | "type" | "disputeStatus">
+    >;
+  };
 };
 
 const InfractionContext = createContext<InfractionContextType>({
@@ -106,8 +114,12 @@ const InfractionContext = createContext<InfractionContextType>({
   refetchInfraction: () => {
     void null;
   },
-  disputeFlow: "LEGACY",
+  disputeFlow: "MERCHANT",
   merchantCurrency: "USD",
+  ordersDisputeAdapter: {
+    countriesWeShipTo: [],
+    proofs: [],
+  },
 });
 
 export const useInfractionContext = () => {
@@ -288,6 +300,14 @@ export const useInfractionProvider = ({
       infraction.productTrueTagInfo?.subreason?.subcategory ?? undefined,
     ),
     merchantCurrency: infraction.merchant.primaryCurrency,
+    ordersDisputeAdapter: {
+      countriesWeShipTo: data?.platformConstants.countriesWeShipTo ?? [],
+      proofs: infraction.proofs.map(({ id, type, disputeStatus }) => ({
+        id,
+        type,
+        disputeStatus,
+      })),
+    },
   };
 
   return {

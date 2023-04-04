@@ -7,7 +7,6 @@ import { useInfractionContext } from "@infractions/InfractionContext";
 import { useInfractionDetailsStylesheet } from "@infractions/styles";
 import { ci18n } from "@core/toolkit/i18n";
 import { DisputeStatusDisplayText } from "@infractions/copy";
-import { merchFeURL } from "@core/toolkit/router";
 import Button from "./ActionCardButton";
 import NextLink from "next/link";
 
@@ -17,14 +16,10 @@ const Dispute: React.FC<Pick<BaseProps, "className" | "style">> = ({
 }) => {
   const {
     infraction: { id, disputeStatus, disputeDeadline },
-    disputeFlow,
   } = useInfractionContext();
   const styles = useInfractionDetailsStylesheet();
 
-  const disputeUrl =
-    disputeFlow == "LEGACY"
-      ? merchFeURL(`/dispute-infraction/${id}`)
-      : `/warnings/appeal?id=${id}`;
+  const disputeUrl = `/warnings/appeal?id=${id}`;
 
   return (
     <ActionCard
@@ -38,7 +33,7 @@ const Dispute: React.FC<Pick<BaseProps, "className" | "style">> = ({
     >
       <Markdown
         style={styles.cardMargin}
-        text={i`You can dispute this infraction within ${90} calendar days of its creation. Successfully disputing will reverse any consequences caused by this infraction, but it won't impact any other disputes.`}
+        text={i`You can dispute this infraction within 90 calendar days of its creation. Successfully disputing will reverse any consequences caused by this infraction, but it won't impact any other disputes.`}
       />
       <Markdown
         style={styles.cardMarginLarge}

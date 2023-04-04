@@ -165,6 +165,12 @@ export const INFRACTION_QUERY = gql`
         }
       }
     }
+    platformConstants {
+      countriesWeShipTo {
+        name
+        code
+      }
+    }
   }
 `;
 
@@ -252,6 +258,9 @@ export type InfractionQueryResponse = {
         readonly brand: Pick<BrandSchema, "name">;
       }
     >;
+  };
+  readonly platformConstants: {
+    readonly countriesWeShipTo: ReadonlyArray<Pick<Country, "name" | "code">>;
   };
 };
 
