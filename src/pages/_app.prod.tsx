@@ -13,10 +13,11 @@ const MerchantDashboard = ({
   pageProps,
   router,
 }: AppProps): JSX.Element => {
-  const independentSubpaths = ["/dev-login", "/hello-world", "/go"];
+  const independentSubpaths = ["/dev-login", "/hello-world", "/go", "/data"];
   const foundIndependentSubpath = independentSubpaths.some((element) =>
     router.pathname.includes(element),
   );
+  if (foundIndependentSubpath) return <Component {...pageProps} />;
 
   // if a page is in this array, any queries made for setting up stores that
   // require a logged in user (e.g. navigation graph) will be skipped
@@ -24,8 +25,6 @@ const MerchantDashboard = ({
   const isPublic = publicSubpaths.some((element) => {
     return router.asPath.includes(element);
   });
-
-  if (foundIndependentSubpath) return <Component {...pageProps} />;
 
   return (
     <MerchantDashboardProvider isPublic={isPublic}>
