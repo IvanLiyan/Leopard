@@ -142,6 +142,7 @@ const EditYourProductListingModal: React.FC<
                   <TextInput
                     value={state.description}
                     isTextArea
+                    canResize
                     height={100}
                     onChange={({ text }) => {
                       dispatch({

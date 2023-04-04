@@ -61,7 +61,7 @@ const InfractionsPage: NextPage<Record<string, never>> = () => {
     return infractionContext?.disputeFlow ? (
       disputeFlowToComponent[infractionContext.disputeFlow]
     ) : (
-      <></>
+      <Text variant="bodyLStrong">Something went wrong.</Text>
     );
   }, [infractionContext?.disputeFlow]);
 

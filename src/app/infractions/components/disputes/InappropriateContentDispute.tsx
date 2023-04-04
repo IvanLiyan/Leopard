@@ -113,7 +113,7 @@ const InappropriateContentDispute: React.FC = () => {
       defaultExpanded
       title={ci18n("section header", "Dispute Details")}
     >
-      <div className={css(styles.column, { padding: 16 })}>
+      <div className={css(styles.column, { padding: 20 })}>
         {canDispute ? (
           <>
             <Heading variant="h5" sx={{ paddingTop: "6px" }}>
@@ -212,6 +212,7 @@ const InappropriateContentDispute: React.FC = () => {
             >
               <TextInput
                 isTextArea
+                canResize
                 height={91}
                 value={description}
                 onChange={({ text }) => {
@@ -229,6 +230,7 @@ const InappropriateContentDispute: React.FC = () => {
             >
               <TextInput
                 isTextArea
+                canResize
                 height={91}
                 value={explanation}
                 onChange={({ text }) => {

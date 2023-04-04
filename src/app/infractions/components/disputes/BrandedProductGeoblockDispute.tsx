@@ -83,7 +83,7 @@ const BrandedProductGeoblockDispute: React.FC = () => {
 
   return (
     <Accordion defaultExpanded title={i`Dispute Details`}>
-      <div className={css(styles.column, { padding: 16 })}>
+      <div className={css(styles.column, { padding: 20 })}>
         {canDispute ? (
           <>
             <Heading variant="h5" sx={{ padding: "6px 0px" }}>
@@ -96,6 +96,7 @@ const BrandedProductGeoblockDispute: React.FC = () => {
             >
               <TextInput
                 isTextArea
+                canResize
                 height={91}
                 value={explanation}
                 onChange={({ text }) => {

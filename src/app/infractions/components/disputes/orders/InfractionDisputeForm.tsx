@@ -1,5 +1,4 @@
 import React, { useMemo, useState } from "react";
-import { StyleSheet } from "aphrodite";
 import { observer } from "mobx-react";
 import { useQuery } from "@apollo/client";
 
@@ -11,9 +10,6 @@ import {
   Layout,
   LoadingIndicator,
   FormSelect,
-  H6,
-  SecondaryButton,
-  PrimaryButton,
   TextInput,
   Text,
   AttachmentInfo,
@@ -21,7 +17,6 @@ import {
 
 import SecureFileInput from "@core/components/SecureFileInput";
 import Row from "./Row";
-import Section from "./Section";
 import CountrySelect from "./CountrySelect";
 import ShippingCarrierSelector from "./ShippingCarrierSelector";
 
@@ -57,8 +52,12 @@ import {
 import InfractionDisputeState from "./InfractionDisputeState";
 
 /* Merchant Store */
-import { useTheme } from "@core/stores/ThemeStore";
-import { useNavigationStore } from "@core/stores/NavigationStore";
+import Accordion from "@infractions/components/Accordion";
+import ModalFooter from "@core/components/modal/ModalFooter";
+import { useInfractionContext } from "@infractions/InfractionContext";
+import { Heading } from "@ContextLogic/atlas-ui";
+import { useInfractionDetailsStylesheet } from "@infractions/styles";
+import { css } from "@core/toolkit/styling";
 
 type Props = BaseProps & {
   readonly orderId: string;
@@ -153,14 +152,17 @@ const countryCodes = () => {
 
 const InfractionDisputeForm = (props: Props) => {
   const {
+    infraction: { id: infractionId },
+  } = useInfractionContext();
+  const styles = useInfractionDetailsStylesheet();
+
+  const {
     className,
     style,
     orderId,
     countries: countriesShippedTo,
     infraction,
   } = props;
-  const styles = useStylesheet();
-  const navigation = useNavigationStore();
   const state = useMemo(
     () => new InfractionDisputeState({ infraction, orderId }),
     [infraction, orderId],
@@ -304,29 +306,17 @@ const InfractionDisputeForm = (props: Props) => {
     return (
       <>
         {showAddress && (
-          <Row
-            title={ci18n("Customer address", "Customer address")}
-            underline={false}
-            style={styles.row}
-          >
+          <Row title={ci18n("Customer address", "Customer address")}>
             {renderShippingAddress()}
           </Row>
         )}
         {showTrackingCarrier && shippingDetails && (
           <>
-            <Row
-              title={ci18n("Tracking ID", "Tracking ID")}
-              underline={false}
-              style={styles.row}
-            >
+            <Row title={ci18n("Tracking ID", "Tracking ID")}>
               {shippingDetails.trackingId}
             </Row>
             {shippingDetails.provider && (
-              <Row
-                title={ci18n("Shipping carrier", "Shipping carrier")}
-                underline={false}
-                style={styles.row}
-              >
+              <Row title={ci18n("Shipping carrier", "Shipping carrier")}>
                 {shippingDetails.provider.name}
               </Row>
             )}
@@ -335,20 +325,12 @@ const InfractionDisputeForm = (props: Props) => {
         {showConfirmedFulfillDate && tracking && (
           <>
             {tracking.confirmedFulfillmentDate && (
-              <Row
-                title={i`Confirmed fulfillment date`}
-                underline={false}
-                style={styles.row}
-              >
+              <Row title={i`Confirmed fulfillment date`}>
                 {tracking.confirmedFulfillmentDate.formatted}
               </Row>
             )}
             {tracking.deliveredDate && (
-              <Row
-                title={i`Confirmed delivered date`}
-                underline={false}
-                style={styles.row}
-              >
+              <Row title={i`Confirmed delivered date`}>
                 {tracking.deliveredDate.formatted}
               </Row>
             )}
@@ -362,15 +344,9 @@ const InfractionDisputeForm = (props: Props) => {
     return (
       <>
         {showFulfillDateField && (
-          <Row
-            title={i`Confirmed fulfillment date from shipping carrier`}
-            underline={false}
-            style={styles.row}
-            contentStyles={styles.field}
-          >
+          <Row title={i`Confirmed fulfillment date from shipping carrier`}>
             <TextInput
               placeholder={ci18n("date format", "mm/dd/yy")}
-              style={styles.smallField}
               validators={[requiredValidator, dateValidator]}
               hideCheckmarkWhenValid
               value={state.reportedFulfillmentDate}
@@ -382,13 +358,9 @@ const InfractionDisputeForm = (props: Props) => {
         {showDeliveredDateFieldOptional && (
           <Row
             title={i`Confirmed delivered date from shipping carrier (optional)`}
-            underline={false}
-            style={styles.row}
-            contentStyles={styles.field}
           >
             <TextInput
               placeholder={ci18n("date format", "mm/dd/yy")}
-              style={styles.smallField}
               validators={[dateValidator]}
               hideCheckmarkWhenValid
               value={state.reportedDeliveredDate}
@@ -398,15 +370,9 @@ const InfractionDisputeForm = (props: Props) => {
           </Row>
         )}
         {showDeliveredDateField && (
-          <Row
-            title={i`Confirmed delivered date from shipping carrier`}
-            underline={false}
-            style={styles.row}
-            contentStyles={styles.field}
-          >
+          <Row title={i`Confirmed delivered date from shipping carrier`}>
             <TextInput
               placeholder={ci18n("date format", "mm/dd/yy")}
-              style={styles.smallField}
               validators={[requiredValidator, dateValidator]}
               hideCheckmarkWhenValid
               value={state.reportedDeliveredDate}
@@ -417,14 +383,8 @@ const InfractionDisputeForm = (props: Props) => {
         )}
         {showDestinationCountry && (
           <>
-            <Row
-              title={i`Destination country for delivery`}
-              underline={false}
-              style={styles.row}
-              contentStyles={styles.field}
-            >
+            <Row title={i`Destination country for delivery`}>
               <CountrySelect
-                placeholder={i`Select a country/region`}
                 onCountry={(countryCode: CountryCode | undefined) => {
                   state.reportedDestinationCountryCode = countryCode;
                   state.showFormErrors = true;
@@ -438,16 +398,10 @@ const InfractionDisputeForm = (props: Props) => {
                   state.reportedDestinationCountryCode == null
                 }
                 currentCountryCode={state.reportedDestinationCountryCode}
-                style={[styles.fullField, styles.select]}
               />
             </Row>
             {state.reportedDestinationCountryCode === "US" && (
-              <Row
-                title={i`Select a state/province for delivery (optional)`}
-                underline={false}
-                style={styles.row}
-                contentStyles={styles.field}
-              >
+              <Row title={i`Select a state/province for delivery (optional)`}>
                 <FormSelect
                   placeholder={i`Select a state`}
                   options={Object.keys(states.US).map((state) => ({
@@ -458,7 +412,6 @@ const InfractionDisputeForm = (props: Props) => {
                   onSelected={(value: UsStateCode) => {
                     state.reportedDestinationStateCode = value;
                   }}
-                  style={[styles.fullField, styles.select]}
                 />
               </Row>
             )}
@@ -467,12 +420,7 @@ const InfractionDisputeForm = (props: Props) => {
 
         {showUpdateTrackingFields && (
           <>
-            <Row
-              title={i`Correct tracking number`}
-              underline={false}
-              style={styles.row}
-              contentStyles={styles.field}
-            >
+            <Row title={i`Correct tracking number`}>
               <TextInput
                 placeholder={i`Enter tracking number`}
                 value={state.newTrackingNumber}
@@ -480,17 +428,10 @@ const InfractionDisputeForm = (props: Props) => {
                 validators={[requiredValidator]}
                 hideCheckmarkWhenValid
                 showErrorMessages={false}
-                style={styles.fullField}
               />
             </Row>
-            <Row
-              title={i`Shipped from country/region`}
-              underline={false}
-              style={styles.row}
-              contentStyles={styles.field}
-            >
+            <Row title={i`Shipped from country/region`}>
               <CountrySelect
-                placeholder={i`Select a country/region`}
                 onCountry={(countryCode: CountryCode | undefined) => {
                   state.shippedFromCountryCode = countryCode;
                   state.showFormErrors = true;
@@ -503,20 +444,13 @@ const InfractionDisputeForm = (props: Props) => {
                   state.showFormErrors && state.shippedFromCountryCode == null
                 }
                 currentCountryCode={state.shippedFromCountryCode}
-                style={[styles.fullField, styles.select]}
               />
             </Row>
-            <Row
-              title={ci18n("Shipping carrier", "Shipping carrier")}
-              underline={false}
-              style={styles.row}
-              contentStyles={styles.field}
-            >
+            <Row title={ci18n("Shipping carrier", "Shipping carrier")}>
               <ShippingCarrierSelector
                 state={state}
                 orderId={orderId}
                 countryCode={state.shippedFromCountryCode}
-                style={[styles.fullField, styles.select]}
               />
             </Row>
           </>
@@ -524,9 +458,6 @@ const InfractionDisputeForm = (props: Props) => {
         {showCarrierLinkField && (
           <Row
             title={i`Link to the carrier's site that includes tracking information`}
-            underline={false}
-            style={styles.row}
-            contentStyles={styles.field}
           >
             <TextInput
               placeholder={i`Enter carrier site URL`}
@@ -535,16 +466,12 @@ const InfractionDisputeForm = (props: Props) => {
               validators={[requiredValidator, urlValidator]}
               hideCheckmarkWhenValid
               showErrorMessages={false}
-              style={styles.fullField}
             />
           </Row>
         )}
         {showGenericField && (
           <Row
             title={ci18n("Supporting explanation", "Supporting explanation")}
-            underline={false}
-            style={styles.row}
-            contentStyles={styles.field}
             popoverContent={supportingExplanationPopover(disputeReason)}
           >
             <TextInput
@@ -557,7 +484,6 @@ const InfractionDisputeForm = (props: Props) => {
               validators={[requiredValidator]}
               hideCheckmarkWhenValid
               showErrorMessages={false}
-              style={styles.fullField}
             />
           </Row>
         )}
@@ -565,9 +491,6 @@ const InfractionDisputeForm = (props: Props) => {
           <>
             <Row
               title={i`Screenshot of customer's listed address`}
-              underline={false}
-              style={styles.row}
-              contentStyles={styles.field}
               popoverContent={i`Go to Orders > History > Ship To, or Order Status page`}
             >
               <SecureFileInput
@@ -583,14 +506,10 @@ const InfractionDisputeForm = (props: Props) => {
                   setCustomerAddressProof(attachments);
                   state.customerAddressProof = fileInput;
                 }}
-                style={styles.fullField}
               />
             </Row>
             <Row
               title={i`Attach proof that the carrier can't ship to the customer's address`}
-              underline={false}
-              style={styles.row}
-              contentStyles={styles.field}
               popoverContent={
                 i`e.g. Screenshot of the error message from the shipping provider or screenshot ` +
                 i`showing address cannot be found on map providers`
@@ -609,7 +528,6 @@ const InfractionDisputeForm = (props: Props) => {
                   setInvalidAddressProof(attachments);
                   state.invalidAddressProof = fileInput;
                 }}
-                style={styles.fullField}
               />
             </Row>
           </>
@@ -617,13 +535,9 @@ const InfractionDisputeForm = (props: Props) => {
         {showWarehouseCountryField && (
           <Row
             title={i`Warehouse country impacted`}
-            underline={false}
-            style={styles.row}
-            contentStyles={styles.field}
             popoverContent={warehouseImpactedPopover(disputeReason)}
           >
             <CountrySelect
-              placeholder={i`Select a country/region`}
               onCountry={(countryCode: CountryCode | undefined) => {
                 state.warehouseCountryCode = countryCode;
                 state.showFormErrors = true;
@@ -634,16 +548,12 @@ const InfractionDisputeForm = (props: Props) => {
               }))}
               currentCountryCode={state.warehouseCountryCode}
               error={state.showFormErrors && state.warehouseCountryCode == null}
-              style={[styles.fullField, styles.select]}
             />
           </Row>
         )}
         {showGenericUploadField && (
           <Row
             title={i`Supporting document (optional)`}
-            underline={false}
-            style={styles.row}
-            contentStyles={styles.field}
             popoverContent={supportingDocumentPopover(disputeReason)}
           >
             <SecureFileInput
@@ -659,7 +569,6 @@ const InfractionDisputeForm = (props: Props) => {
                 setUploadFiles(attachments);
                 state.uploadFiles = fileInput;
               }}
-              style={styles.fullField}
             />
           </Row>
         )}
@@ -669,52 +578,47 @@ const InfractionDisputeForm = (props: Props) => {
 
   const renderDisputeForm = () => {
     return (
-      <Section
+      <Accordion
         title={ci18n("Dispute details", "Dispute details")}
-        style={styles.card}
+        defaultExpanded
       >
-        <Row
-          title={ci18n("Dispute reason", "Dispute reason")}
-          underline={false}
-          style={styles.row}
-          contentStyles={styles.field}
-        >
-          <FormSelect
-            placeholder={ci18n("Please select", "Please select")}
-            options={reasonOptions}
-            selectedValue={state.disputeSubreason}
-            onSelected={onDisputeReasonChange}
-            style={[styles.fullField, styles.select]}
-          />
-        </Row>
-        {state.disputeSubreason && (
-          <>
-            {showOrderDetails && (
-              <Layout.FlexRow style={styles.subtitle}>
-                <H6>Review order information received by Wish</H6>
-              </Layout.FlexRow>
-            )}
-            {renderOrderDetails()}
-            <Layout.FlexRow style={styles.subtitle}>
-              <H6>
+        <div className={css(styles.column, { padding: 20 })}>
+          <Row title={ci18n("Dispute reason", "Dispute reason")}>
+            <FormSelect
+              placeholder={ci18n("Please select", "Please select")}
+              options={reasonOptions}
+              selectedValue={state.disputeSubreason}
+              onSelected={onDisputeReasonChange}
+            />
+          </Row>
+          {state.disputeSubreason && (
+            <>
+              {showOrderDetails && (
+                <Heading variant="h5" sx={{ padding: "6px 0px" }}>
+                  Review order information received by Wish
+                </Heading>
+              )}
+              {renderOrderDetails()}
+              <Heading variant="h5" sx={{ padding: "6px 0px" }}>
                 Provide required order information that supports your dispute
-              </H6>
-            </Layout.FlexRow>
-            {renderDisputeSupportFields()}
-          </>
-        )}
-        <Layout.FlexRow justifyContent="space-between" style={styles.submit}>
-          <SecondaryButton padding="5px 25px" onClick={() => navigation.back()}>
-            {ci18n("Cancel dispute", "Cancel dispute")}
-          </SecondaryButton>
-          <PrimaryButton
-            onClick={async () => await state.createDispute()}
-            isDisabled={!state.isValid || state.isSubmitting}
-          >
-            {ci18n("Submit", "Submit")}
-          </PrimaryButton>
-        </Layout.FlexRow>
-      </Section>
+              </Heading>
+              {renderDisputeSupportFields()}
+            </>
+          )}
+        </div>
+        <ModalFooter
+          action={{
+            text: ci18n("CTA for button", "Submit"),
+            onClick: async () => await state.createDispute(),
+            isDisabled: !state.isValid || state.isSubmitting,
+          }}
+          cancel={{
+            text: ci18n("CTA for button", "Cancel"),
+            href: `/warnings/warning?id=${infractionId}`,
+            disabled: state.isSubmitting,
+          }}
+        />
+      </Accordion>
     );
   };
 
@@ -722,46 +626,6 @@ const InfractionDisputeForm = (props: Props) => {
     <Layout.FlexColumn style={[className, style]}>
       {renderDisputeForm()}
     </Layout.FlexColumn>
-  );
-};
-
-const useStylesheet = () => {
-  const { borderPrimary } = useTheme();
-  return useMemo(
-    () =>
-      StyleSheet.create({
-        card: {
-          ":not(:first-child)": {
-            marginTop: 32,
-          },
-        },
-        row: {
-          padding: "14px 24px",
-        },
-        subtitle: {
-          padding: "14px 24px",
-          borderTop: `1px solid ${borderPrimary}`,
-          borderBottom: `1px solid ${borderPrimary}`,
-          margin: "8px 0px",
-        },
-        submit: {
-          padding: "34px 24px",
-          borderTop: `1px solid ${borderPrimary}`,
-        },
-        field: {
-          flex: 1,
-        },
-        smallField: {
-          width: "50%",
-        },
-        fullField: {
-          width: "100%",
-        },
-        select: {
-          paddingLeft: 0,
-        },
-      }),
-    [borderPrimary],
   );
 };
 

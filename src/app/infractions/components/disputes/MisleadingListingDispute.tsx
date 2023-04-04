@@ -35,7 +35,7 @@ import { CountryCode } from "@schema";
 import countries from "@core/toolkit/countries";
 
 const MisleadingListingDispute: React.FC = () => {
-  const infractionStyles = useInfractionDetailsStylesheet();
+  const styles = useInfractionDetailsStylesheet();
   const {
     infraction: { id: infractionId, actions },
     merchantCurrency,
@@ -203,7 +203,7 @@ const MisleadingListingDispute: React.FC = () => {
       defaultExpanded
       title={ci18n("section header", "Dispute Details")}
     >
-      <div className={css(infractionStyles.column, { padding: 16 })}>
+      <div className={css(styles.column, { padding: 20 })}>
         {canDispute ? (
           <>
             <Heading variant="h5" sx={{ paddingTop: "6px" }}>
@@ -304,6 +304,7 @@ const MisleadingListingDispute: React.FC = () => {
             >
               <TextInput
                 isTextArea
+                canResize
                 height={91}
                 value={description}
                 onChange={({ text }) => {
@@ -321,6 +322,7 @@ const MisleadingListingDispute: React.FC = () => {
             >
               <TextInput
                 isTextArea
+                canResize
                 height={91}
                 value={explanation}
                 onChange={({ text }) => {

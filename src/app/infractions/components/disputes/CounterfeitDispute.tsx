@@ -116,7 +116,7 @@ const CounterfeitDispute: React.FC = () => {
       defaultExpanded
       title={ci18n("section heading", "Dispute Details")}
     >
-      <div className={css(styles.column, { padding: 16 })}>
+      <div className={css(styles.column, { padding: 20 })}>
         {canDispute ? (
           <>
             <Heading variant="h5" sx={{ paddingTop: "6px" }}>
@@ -219,6 +219,7 @@ const CounterfeitDispute: React.FC = () => {
             >
               <TextInput
                 isTextArea
+                canResize
                 height={91}
                 value={description}
                 onChange={({ text }) => {
@@ -236,6 +237,7 @@ const CounterfeitDispute: React.FC = () => {
             >
               <TextInput
                 isTextArea
+                canResize
                 height={91}
                 value={explanation}
                 onChange={({ text }) => {

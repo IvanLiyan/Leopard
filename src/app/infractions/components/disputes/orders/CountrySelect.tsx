@@ -3,9 +3,6 @@ import React, { useMemo } from "react";
 /* Lego Components */
 import { FormSelect, Option } from "@ContextLogic/lego";
 
-/* Lego Toolkit */
-// import { Flags4x3 } from "@core/toolkit/countries";
-
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { CountryCode } from "@core/toolkit/countries";
 
@@ -47,7 +44,6 @@ const CountrySelect: React.FC<CountrySelectProps> = ({
       return {
         value: countryInfo.cc,
         text: countryInfo.name,
-        // img: Flags4x3[countryInfo.cc.toLowerCase()],
       };
     });
     return unsortedCountries.sort((a, b) => a.text.localeCompare(b.text));
