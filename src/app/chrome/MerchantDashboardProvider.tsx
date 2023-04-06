@@ -146,7 +146,7 @@ const MerchantDashboardProvider: React.FC<MerchantDashboardProviderProps> = ({
       const currentPath = router.pathname;
       if (currentPath != null && currentPath.length > 0) {
         // eslint-disable-next-line @typescript-eslint/no-floating-promises
-        router.push(`/login?next=${encodeURIComponent(currentPath)}`);
+        router.push(`/login?next=${encodeURIComponent(`/md${currentPath}`)}`);
       } else {
         // eslint-disable-next-line @typescript-eslint/no-floating-promises
         router.push(`/login`);
