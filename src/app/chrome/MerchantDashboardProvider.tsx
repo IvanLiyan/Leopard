@@ -28,6 +28,7 @@ import { datadogRum } from "@datadog/browser-rum";
 import FullPageError from "@core/components/FullPageError";
 import SalesforceWidget from "@chrome/components/SalesforceWidget";
 import { AtlasThemeProvider } from "@ContextLogic/atlas-ui";
+import { useRouter } from "next/router";
 
 datadogRum.init({
   applicationId: "901bc1fd-28d9-4542-88ca-f109e88b2a43",
@@ -53,6 +54,7 @@ const MerchantDashboardProvider: React.FC<MerchantDashboardProviderProps> = ({
 }) => {
   const [xsrfCheckLoading, setXsrfCheckLoading] = useState(true);
   const [xsrfCheckError, setXsrfCheckError] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     const effect = async () => {
@@ -136,6 +138,21 @@ const MerchantDashboardProvider: React.FC<MerchantDashboardProviderProps> = ({
     (!isPublic && (chromeStoreInitialData == null || chromeStoreError)) ||
     xsrfCheckError
   ) {
+    const isLoggedOutError =
+      userStoreInitialData == null &&
+      userStoreError?.message.includes("HTTP 403");
+
+    if (!isPublic && isLoggedOutError) {
+      const currentPath = router.pathname;
+      if (currentPath != null && currentPath.length > 0) {
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
+        router.push(`/login?next=${encodeURIComponent(currentPath)}`);
+      } else {
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
+        router.push(`/login`);
+      }
+      return null;
+    }
     return <FullPageError error="500" />;
   }
 
