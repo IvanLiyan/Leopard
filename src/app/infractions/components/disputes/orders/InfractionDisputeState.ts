@@ -379,7 +379,7 @@ export default class InfractionDisputeState {
       return;
     }
 
-    await navigationStore.navigate(`/warning-v2/view/${warningId}`, {
+    await navigationStore.navigate(`/warnings/warning?id=${warningId}`, {
       fullReload: true,
     });
 

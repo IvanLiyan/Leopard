@@ -4,6 +4,7 @@ import {
   MerchantWarningFixAction,
   MerchantWarningProofSchema,
   MerchantWarningReason,
+  MerchantWarningState,
   PaymentCurrencyCode,
 } from "@schema";
 import {
@@ -11,7 +12,6 @@ import {
   DisputeStatus,
   getInfractionCopy,
   MerchantWarningImpactTypeDisplayText,
-  MerchantWarningStateDisplayText,
 } from "./copy";
 import { DisputeFlow, getDisputeFlow, getDisputeStatus } from "./toolkit";
 import { ApolloError, useQuery } from "@apollo/client";
@@ -31,7 +31,7 @@ type InfractionContextType = {
     readonly body: string;
     readonly policy: string | undefined;
     readonly faq: string | undefined;
-    readonly state: string;
+    readonly state: MerchantWarningState;
     readonly issuedDate: string;
     readonly disputeDeadline: string;
     readonly disputeDeadlineUnix: number;
@@ -96,7 +96,7 @@ const InfractionContext = createContext<InfractionContextType>({
     body: "",
     policy: "",
     faq: "",
-    state: "",
+    state: "NEW",
     issuedDate: "",
     disputeDeadline: "",
     disputeDeadlineUnix: 0,
@@ -196,7 +196,7 @@ export const useInfractionProvider = ({
         : infractionCopy.body,
       policy: infractionCopy.policy,
       faq: infractionCopy.faq,
-      state: MerchantWarningStateDisplayText[infraction.state],
+      state: infraction.state,
       issuedDate: infraction.createdTime.datetime,
       disputeDeadline: infraction.effectiveDisputeDeadlineDate.datetime,
       disputeDeadlineUnix: infraction.effectiveDisputeDeadlineDate.unix,

@@ -1,7 +1,7 @@
 export type ProductEditRequestGetPreviousResponse = {
   readonly result?: {
     readonly small_picture?: Maybe<string>;
-    readonly extra_photos?: ReadonlyArray<string>;
+    readonly extra_photos?: ReadonlyArray<number>;
     readonly human_readable_url?: Maybe<string>;
     readonly meta_keywords?: Maybe<unknown>;
     readonly share_message?: Maybe<string>;

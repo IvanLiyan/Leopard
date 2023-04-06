@@ -35,11 +35,26 @@ const InfractionEvidenceCard: React.FC<
   Omit<CardProps, "title" | "children">
 > = (props) => {
   const {
-    infraction: { infractionEvidence, product },
+    infraction: { infractionEvidence, product, type },
   } = useInfractionContext();
   const [page, setPage] = useState(0);
 
-  if (infractionEvidence.length < 1) {
+  if (
+    infractionEvidence.length < 1 ||
+    type === "WAREHOUSE_FULFILLMENT_POLICY_VIOLATION" ||
+    type === "FAKE_TRACKING" ||
+    type === "MERCHANT_CANCELLATION_VIOLATION" ||
+    type === "LATE_CONFIRMED_FULFILLMENT_VIOLATION" ||
+    type === "UNFULFILLED_ORDER" ||
+    type === "ORDER_NOT_DELIVERED" ||
+    type === "PRODUCT_IS_INAPPROPRIATE" ||
+    type === "FINE_FOR_COUNTERFEIT_GOODS" ||
+    type === "CN_PROHIBITED_PRODUCTS" ||
+    type === "PRODUCT_GEOBLOCK" ||
+    type === "BRANDED_PRODUCT_GEOBLOCK" ||
+    type === "MISLEADING_VARIATION" ||
+    type === "LEGAL_TRO_TAKEDOWN"
+  ) {
     return null;
   }
 

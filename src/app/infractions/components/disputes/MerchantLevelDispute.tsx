@@ -24,6 +24,7 @@ const MerchantLevelDispute: React.FC = () => {
   const styles = useInfractionDetailsStylesheet();
   const {
     infraction: { id: infractionId, actions },
+    refetchInfraction,
   } = useInfractionContext();
   const toastStore = useToastStore();
   const navigationStore = useNavigationStore();
@@ -66,6 +67,7 @@ const MerchantLevelDispute: React.FC = () => {
         toastStore.positive(i`Your dispute was successfully submitted.`, {
           deferred: true,
         });
+        refetchInfraction();
         await navigationStore.navigate(`/warnings/warning?id=${infractionId}`);
       }
     } catch {
@@ -110,9 +112,9 @@ const MerchantLevelDispute: React.FC = () => {
               {...hFieldProps}
             >
               <SecureFileInput
-                accepts=".pdf,.jpeg,.png"
+                accepts=".pdf,.jpeg,.jpg,.png"
                 maxSizeMB={5}
-                maxAttachments={1}
+                maxAttachments={5}
                 attachments={documentation}
                 onAttachmentsChanged={(attachments) => {
                   setDocumentation(attachments);

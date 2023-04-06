@@ -181,7 +181,7 @@ const InfractionDisputeForm = (props: Props) => {
   const dateValidator = new RegexBasedValidator({
     pattern:
       /^(?:(0[1-9]|1[012])[/.](0[1-9]|[12][0-9]|3[01])[/.](19|20)[0-9]{2})$/,
-    customMessage: i`Enter date in mm/dd/yyyy format`,
+    customMessage: i`Enter date in mm/dd/yy format`,
   });
   const requiredValidator = new RequiredValidator({
     customMessage: null,
@@ -494,7 +494,7 @@ const InfractionDisputeForm = (props: Props) => {
               popoverContent={i`Go to Orders > History > Ship To, or Order Status page`}
             >
               <SecureFileInput
-                accepts=".jpeg,.png,.pdf"
+                accepts=".jpeg,.jpg,.png,.pdf"
                 bucket="TEMP_UPLOADS_V2"
                 maxAttachments={1}
                 maxSizeMB={5}
@@ -516,7 +516,7 @@ const InfractionDisputeForm = (props: Props) => {
               }
             >
               <SecureFileInput
-                accepts=".jpeg,.png,.pdf"
+                accepts=".jpeg,.jpg,.png,.pdf"
                 bucket="TEMP_UPLOADS_V2"
                 maxAttachments={1}
                 maxSizeMB={5}
@@ -557,7 +557,7 @@ const InfractionDisputeForm = (props: Props) => {
             popoverContent={supportingDocumentPopover(disputeReason)}
           >
             <SecureFileInput
-              accepts=".jpeg,.png,.pdf"
+              accepts=".jpeg,.jpg,.png,.pdf"
               bucket="TEMP_UPLOADS_V2"
               maxAttachments={1}
               maxSizeMB={5}

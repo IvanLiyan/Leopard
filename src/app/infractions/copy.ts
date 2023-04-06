@@ -1542,7 +1542,7 @@ const MerchantWarningReasonData: {
   },
   WAREHOUSE_FULFILLMENT_POLICY_VIOLATION: {
     title: i`Order Delivered Later Than Set Max Delivery Days`,
-    body: i`This order is confirmed delivered late per your max delivery days setting`,
+    body: i`This order is confirmed delivered late per your Max Delivery Days setting`,
     policy: i`[Warehouse Fulfillment Policy](${"https://merchant.wish.com/policy#warehouse_fulfillment"})`,
     faq: undefined,
   },

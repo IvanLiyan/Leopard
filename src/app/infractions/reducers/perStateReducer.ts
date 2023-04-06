@@ -1,7 +1,8 @@
 import { Attachment } from "@core/components/SecureFileInput";
+import { contestImageURL } from "@core/toolkit/url";
 import { ProductEditRequestGetPreviousResponse } from "@infractions/api/productEditRequestGetPreviousResponseRequest";
 
-type State = {
+export type State = {
   readonly name: string | undefined;
   readonly description: string | undefined;
   readonly mainImages: ReadonlyArray<Partial<Attachment>>;
@@ -15,7 +16,10 @@ type State = {
     readonly color: string | undefined;
     readonly size: string | undefined;
   }>;
-  readonly submissionJson: Record<string, string | undefined>;
+  readonly submissionJson: Record<string, string | boolean | undefined>; // submissionJson contains the body for the PER submission request EXCEPT FOR fields related to additional images; these are added in getDataJson
+  readonly currentProduct:
+    | ProductEditRequestGetPreviousResponse["result"]
+    | undefined;
 };
 
 type Action =
@@ -56,6 +60,7 @@ export const initialState: State = {
   additionalImages: [],
   variations: [],
   submissionJson: {},
+  currentProduct: undefined,
 };
 
 const perStateReducer = (state: State, action: Action): State => {
@@ -71,15 +76,19 @@ const perStateReducer = (state: State, action: Action): State => {
         mainImages: action.currentProduct.small_picture
           ? [
               {
-                fileName: "mainImage",
+                fileName: undefined,
                 url: action.currentProduct.small_picture,
               },
             ]
           : [],
         additionalImages: action.currentProduct.extra_photos
-          ? action.currentProduct.extra_photos.map((url, i) => ({
-              fileName: `additionalImage${i}`,
-              url: url,
+          ? action.currentProduct.extra_photos.map((n) => ({
+              fileName: n.toString(),
+              url: contestImageURL(
+                action.currentProduct?.id ?? "",
+                "small",
+                String(n),
+              ),
             }))
           : [],
         variations: action.currentProduct.variations
@@ -94,6 +103,7 @@ const perStateReducer = (state: State, action: Action): State => {
             }))
           : [],
         submissionJson: {},
+        currentProduct: action.currentProduct,
       };
     }
     case "UPDATE_PRODUCT_NAME": {
@@ -128,8 +138,10 @@ const perStateReducer = (state: State, action: Action): State => {
       };
     }
     case "UPDATE_ADDITIONAL_IMAGES": {
-      // TODO: find example of legacy API handling existing additional images
-      return state;
+      return {
+        ...state,
+        additionalImages: action.images,
+      };
     }
     case "UPDATE_VARIATION_PRICE": {
       return {

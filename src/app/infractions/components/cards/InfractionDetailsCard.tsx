@@ -4,6 +4,7 @@ import Markdown from "@infractions/components/Markdown";
 import { useInfractionDetailsStylesheet } from "@infractions/styles";
 import Card, { Props as CardProps } from "./Card";
 import { useInfractionContext } from "@infractions/InfractionContext";
+import { MerchantWarningStateDisplayText } from "@infractions/copy";
 
 const InfractionDetailsCard: React.FC<Omit<CardProps, "title" | "children">> = (
   props,
@@ -27,7 +28,7 @@ const InfractionDetailsCard: React.FC<Omit<CardProps, "title" | "children">> = (
       )}
       <Markdown text={i`Infraction ID: ${id}`} style={styles.cardMargin} />
       <Markdown
-        text={i`Infraction state: ${state}`}
+        text={i`Infraction state: ${MerchantWarningStateDisplayText[state]}`}
         style={styles.cardMargin}
       />
       <Markdown

@@ -12,27 +12,44 @@ import {
   TooltipProps,
 } from "@ContextLogic/atlas-ui";
 import { useInfractionContext } from "@infractions/InfractionContext";
+import { useTheme } from "@core/stores/ThemeStore";
 
 const ActionCardButton: React.FC<
   ButtonProps & {
     readonly tooltipTitle?: TooltipProps["title"];
   }
-> = ({ tooltipTitle: titleProp, disabled: disabledProp, ...rest }) => {
+> = ({ tooltipTitle: titleProp, disabled: disabledProp, sx, ...rest }) => {
   const {
-    infraction: { actionsTaken, disputeDeadlineUnix },
+    infraction: { actionsTaken, disputeDeadlineUnix, state },
   } = useInfractionContext();
+  const { primary, textWhite } = useTheme();
 
+  const isClosed = state === "CANCELLED" || state === "CLOSED";
   const hasTakenAction = actionsTaken.length > 0;
   const nowUnix = Date.now() / 1000;
   const disputeDeadlinePassed = nowUnix > disputeDeadlineUnix;
-  const title = hasTakenAction
+  const title = isClosed
+    ? i`You cannot take this action because the infraction is closed.`
+    : hasTakenAction
     ? i`You have already taken action on this infraction.`
     : disputeDeadlinePassed
     ? i`You cannot take this action because the dispute deadline has passed.`
     : titleProp;
-  const disabled = disabledProp || hasTakenAction || disputeDeadlinePassed;
+  const disabled =
+    disabledProp || isClosed || hasTakenAction || disputeDeadlinePassed;
 
-  const Button = () => <AtlasButton disabled={disabled} {...rest} />;
+  const Button = () => (
+    <AtlasButton
+      disabled={disabled}
+      sx={{
+        ...sx,
+        ":visited": {
+          color: rest.secondary ? primary : textWhite,
+        },
+      }}
+      {...rest}
+    />
+  );
 
   return title ? (
     <Tooltip title={title} placement="bottom">

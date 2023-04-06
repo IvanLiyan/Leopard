@@ -22,8 +22,56 @@ import SecureFileInput from "@core/components/SecureFileInput";
 import { ProductEditRequestGetPreviousResponse } from "@infractions/api/productEditRequestGetPreviousResponseRequest";
 import perStateReducer, {
   initialState,
+  State,
 } from "@infractions/reducers/perStateReducer";
 import { useToastStore } from "@core/stores/ToastStore";
+
+const getDataJson = (state: State) => {
+  let removedImageCounter = -1;
+
+  const addedImages = state.additionalImages.reduce(
+    (acc, { fileName, url }) => {
+      const alreadyAdded = state.currentProduct?.extra_photos?.includes(
+        Number(fileName),
+      );
+      if (fileName == null || alreadyAdded) {
+        return acc;
+      }
+
+      removedImageCounter += 1;
+      return {
+        ...acc,
+        [`image-new-extra-${removedImageCounter}`]: url,
+      };
+    },
+    {},
+  );
+
+  const existingFilenames = state.additionalImages.map(
+    ({ fileName }) => fileName,
+  );
+
+  const removedImages = state.currentProduct?.extra_photos?.reduce(
+    (acc, fileId) => {
+      const fileExists = existingFilenames.includes(String(fileId));
+      if (fileExists) {
+        return acc;
+      }
+
+      return {
+        ...acc,
+        [`image-rm-extra-${fileId}`]: true,
+      };
+    },
+    {},
+  );
+
+  return JSON.stringify({
+    ...state.submissionJson,
+    ...addedImages,
+    ...removedImages,
+  });
+};
 
 type EditYourProductListingModalContentProps = Required<
   Pick<ModalProps, "open" | "onClose">
@@ -81,7 +129,7 @@ const EditYourProductListingModal: React.FC<
     try {
       const response = await triggerEditRequest({
         cid: productFromContext?.productId,
-        data_json: JSON.stringify(state.submissionJson),
+        data_json: getDataJson(state),
         infraction_id: infractionId,
       });
       // BE returns 400 if something went wrong, and response is undefined
@@ -155,7 +203,7 @@ const EditYourProductListingModal: React.FC<
                 </HorizontalField>
                 <HorizontalField title={ci18n("field title", "Main Image")}>
                   <SecureFileInput
-                    accepts=".jpeg,.png"
+                    accepts=".jpeg,.jpg,.png"
                     maxSizeMB={5}
                     maxAttachments={1}
                     attachments={state.mainImages}
@@ -173,7 +221,7 @@ const EditYourProductListingModal: React.FC<
                   title={ci18n("field title", "Additional Image(s)")}
                 >
                   <SecureFileInput
-                    accepts=".jpeg,.png"
+                    accepts=".jpeg,.jpg,.png"
                     maxSizeMB={5}
                     attachments={state.additionalImages}
                     onAttachmentsChanged={(attachments) => {

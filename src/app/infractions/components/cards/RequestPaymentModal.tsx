@@ -25,6 +25,7 @@ const RequestPaymentModal: React.FC<RequestPaymentModalContentProps> = ({
   const toastStore = useToastStore();
   const {
     infraction: { id: infractionId },
+    refetchInfraction,
   } = useInfractionContext();
   const [photoIds, setPhotoIds] = useState<ReadonlyArray<Attachment>>([]);
   const [agreements, setAgreements] = useState<ReadonlyArray<Attachment>>([]);
@@ -54,12 +55,13 @@ const RequestPaymentModal: React.FC<RequestPaymentModalContentProps> = ({
         resp?.data?.policy?.merchantWarning?.upsertMerchantWarning?.ok ?? false;
       const message =
         resp?.data?.policy?.merchantWarning?.upsertMerchantWarning?.message;
+      refetchInfraction();
 
       if (!ok) {
         toastStore.negative(message ?? i`Something went wrong.`);
+      } else {
+        onClose && onClose({}, "backdropClick");
       }
-
-      onClose && onClose({}, "backdropClick");
     } catch {
       toastStore.negative(i`Something went wrong.`);
     }
@@ -85,7 +87,7 @@ const RequestPaymentModal: React.FC<RequestPaymentModalContentProps> = ({
         payment information on your account.
       </Text>
       <SecureFileInput
-        accepts=".pdf,.jpeg,.png"
+        accepts=".pdf,.jpeg,.jpg,.png"
         maxSizeMB={5}
         maxAttachments={5}
         attachments={photoIds}
@@ -108,7 +110,7 @@ const RequestPaymentModal: React.FC<RequestPaymentModalContentProps> = ({
         payment.
       </Text>
       <SecureFileInput
-        accepts=".pdf,.jpeg,.png"
+        accepts=".pdf,.jpeg,.jpg,.png"
         maxSizeMB={5}
         maxAttachments={5}
         attachments={agreements}

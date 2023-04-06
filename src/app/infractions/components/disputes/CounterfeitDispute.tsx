@@ -31,6 +31,7 @@ const CounterfeitDispute: React.FC = () => {
   const styles = useInfractionDetailsStylesheet();
   const {
     infraction: { id: infractionId, actions },
+    refetchInfraction,
   } = useInfractionContext();
   const toastStore = useToastStore();
   const navigationStore = useNavigationStore();
@@ -89,6 +90,7 @@ const CounterfeitDispute: React.FC = () => {
         toastStore.positive(i`Your dispute was successfully submitted.`, {
           deferred: true,
         });
+        refetchInfraction();
         await navigationStore.navigate(`/warnings/warning?id=${infractionId}`);
       }
     } catch {
@@ -172,8 +174,8 @@ const CounterfeitDispute: React.FC = () => {
                 onSelected={(value: string) => {
                   setCategory(value);
                 }}
-                options={tags.map(({ id, name }) => ({
-                  value: id,
+                options={tags.map(({ name }) => ({
+                  value: name,
                   text: name,
                 }))}
                 placeholder={ci18n("placeholder for input", "Product category")}
@@ -254,9 +256,9 @@ const CounterfeitDispute: React.FC = () => {
               text={i`Please upload additional documentation to support why your product or product listing complies with Wish's policies.${"\n\n"}Documentation may include a [DCMA counter-notice form](${"https://merchant.wish.com/static/assets/docs/DMCA_Counter_Notice_Form.pdf"}), proof of purchase, or proof of intellectual property rights. [Learn more](${"https://www.wish.com/intellectual-property#copyright-policy"})`}
             />
             <SecureFileInput
-              accepts=".pdf,.jpeg,.png"
+              accepts=".pdf,.jpeg,.jpg,.png"
               maxSizeMB={5}
-              maxAttachments={1}
+              maxAttachments={5}
               attachments={documentation}
               onAttachmentsChanged={(attachments) => {
                 setDocumentation(attachments);

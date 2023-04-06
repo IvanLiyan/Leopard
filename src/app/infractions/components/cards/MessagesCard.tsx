@@ -251,7 +251,7 @@ const MessagesCard: React.FC<Pick<BaseProps, "className" | "style">> = ({
         fileUploadProps={
           canMessage
             ? {
-                accepts: ".pdf,.jpeg,.png",
+                accepts: ".pdf,.jpeg,.jpg,.png",
                 maxSizeMB: 5,
                 attachments,
                 onAttachmentsChanged: (attachments) => {

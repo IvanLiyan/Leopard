@@ -34,11 +34,19 @@ import {
 import { CountryCode } from "@schema";
 import countries from "@core/toolkit/countries";
 
+/*
+  NOTE: street address 2, 3, and state are temporarily disabled.
+  BE will support them soon, and then we can re-enable them.
+  Leaving the code for expediency in bringing them back (already tested,
+    works with GQL).
+*/
+
 const MisleadingListingDispute: React.FC = () => {
   const styles = useInfractionDetailsStylesheet();
   const {
     infraction: { id: infractionId, actions },
     merchantCurrency,
+    refetchInfraction,
   } = useInfractionContext();
   const toastStore = useToastStore();
   const navigationStore = useNavigationStore();
@@ -70,13 +78,16 @@ const MisleadingListingDispute: React.FC = () => {
   const [vendorStreetAddress, setVendorStreetAddress] = useState<
     string | undefined
   >(undefined);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [vendorStreetAddress2, setVendorStreetAddress2] = useState<
     string | undefined
   >(undefined);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [vendorStreetAddress3, setVendorStreetAddress3] = useState<
     string | undefined
   >(undefined);
   const [vendorCity, setVendorCity] = useState<string | undefined>(undefined);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [vendorState, setVendorState] = useState<string | undefined>(undefined);
   const [vendorZip, setVendorZip] = useState<string | undefined>(undefined);
   const [vendorCountry, setVendorCountry] = useState<CountryCode | undefined>(
@@ -162,6 +173,7 @@ const MisleadingListingDispute: React.FC = () => {
         toastStore.positive(i`Your dispute was successfully submitted.`, {
           deferred: true,
         });
+        refetchInfraction();
         await navigationStore.navigate(`/warnings/warning?id=${infractionId}`);
       }
     } catch {
@@ -192,7 +204,7 @@ const MisleadingListingDispute: React.FC = () => {
     vendorName != undefined &&
     vendorStreetAddress != undefined &&
     vendorCity != undefined &&
-    vendorState != undefined &&
+    vendorZip != undefined &&
     vendorCountry != undefined &&
     vendorAreaCode != undefined &&
     vendorPhoneNumber != undefined &&
@@ -257,8 +269,8 @@ const MisleadingListingDispute: React.FC = () => {
                 onSelected={(value: string) => {
                   setCategory(value);
                 }}
-                options={tags.map(({ id, name }) => ({
-                  value: id,
+                options={tags.map(({ name }) => ({
+                  value: name,
                   text: name,
                 }))}
                 placeholder={ci18n("placeholder for input", "Product category")}
@@ -339,8 +351,9 @@ const MisleadingListingDispute: React.FC = () => {
               {...hFieldProps}
             >
               <SecureFileInput
-                accepts=".pdf,.jpeg,.png"
+                accepts=".pdf,.jpeg,.jpg,.png"
                 maxSizeMB={5}
+                maxAttachments={5}
                 attachments={photos}
                 onAttachmentsChanged={(attachments) => {
                   setPhotos(attachments);
@@ -482,8 +495,9 @@ const MisleadingListingDispute: React.FC = () => {
                     setVendorStreetAddress(text);
                   }}
                   placeholder={ci18n("placeholder for input", "Street address")}
+                  style={{ marginBottom: "6px" }}
                 />
-                <TextInput
+                {/* <TextInput
                   style={{ marginTop: "6px" }}
                   value={vendorStreetAddress2}
                   onChange={({ text }) => {
@@ -504,7 +518,7 @@ const MisleadingListingDispute: React.FC = () => {
                     "placeholder for input",
                     "Street address 3",
                   )}
-                />
+                /> */}
                 <Layout.FlexRow>
                   <TextInput
                     style={{ marginRight: "6px", flex: 1 }}
@@ -514,7 +528,7 @@ const MisleadingListingDispute: React.FC = () => {
                     }}
                     placeholder={ci18n("placeholder for input", "City")}
                   />
-                  <TextInput
+                  {/* <TextInput
                     style={{ marginRight: "6px", flex: 1 }}
                     value={vendorState}
                     onChange={({ text }) => {
@@ -524,7 +538,7 @@ const MisleadingListingDispute: React.FC = () => {
                       "placeholder for input",
                       "State / Province",
                     )}
-                  />
+                  /> */}
                   <TextInput
                     style={{ marginRight: "6px", maxWidth: "140px" }}
                     value={vendorZip}
@@ -595,7 +609,7 @@ const MisleadingListingDispute: React.FC = () => {
               {...hFieldProps}
             >
               <SecureFileInput
-                accepts=".pdf,.jpeg,.png"
+                accepts=".pdf,.jpeg,.jpg,.png"
                 maxSizeMB={5}
                 attachments={proofOfPurchase}
                 onAttachmentsChanged={(attachments) => {

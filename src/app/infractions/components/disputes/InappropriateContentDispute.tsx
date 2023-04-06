@@ -30,6 +30,7 @@ const InappropriateContentDispute: React.FC = () => {
   const styles = useInfractionDetailsStylesheet();
   const {
     infraction: { id: infractionId, title, actions },
+    refetchInfraction,
   } = useInfractionContext();
   const toastStore = useToastStore();
   const navigationStore = useNavigationStore();
@@ -86,6 +87,7 @@ const InappropriateContentDispute: React.FC = () => {
         toastStore.positive(i`Your dispute was successfully submitted.`, {
           deferred: true,
         });
+        refetchInfraction();
         await navigationStore.navigate(`/warnings/warning?id=${infractionId}`);
       }
     } catch {
@@ -165,8 +167,8 @@ const InappropriateContentDispute: React.FC = () => {
                 onSelected={(value: string) => {
                   setCategory(value);
                 }}
-                options={tags.map(({ id, name }) => ({
-                  value: id,
+                options={tags.map(({ name }) => ({
+                  value: name,
                   text: name,
                 }))}
                 placeholder={ci18n("placeholder for input", "Product category")}
@@ -247,8 +249,9 @@ const InappropriateContentDispute: React.FC = () => {
               {...hFieldProps}
             >
               <SecureFileInput
-                accepts=".pdf,.jpeg,.png"
+                accepts=".pdf,.jpeg,.jpg,.png"
                 maxSizeMB={5}
+                maxAttachments={5}
                 attachments={photos}
                 onAttachmentsChanged={(attachments) => {
                   setPhotos(attachments);
