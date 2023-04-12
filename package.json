@@ -15,7 +15,7 @@
     "test-ci": "jest --coverage"
   },
   "dependencies": {
-    "@ContextLogic/atlas-ui": "^0.0.1-1680727893",
+    "@ContextLogic/atlas-ui": "^0.0.1-1681326806",
     "@ContextLogic/lego": "^0.0.1-1675370998",
     "@ContextLogic/merchantstrings": "0.0.1665981415",
     "@ContextLogic/zeus": "0.0.1-1643061651",

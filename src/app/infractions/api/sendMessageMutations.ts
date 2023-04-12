@@ -1,10 +1,5 @@
 import { gql } from "@apollo/client";
-import {
-  UpsertMerchantWarning,
-  UpsertMerchantWarningInput,
-  UpsertOrderInfractionDispute,
-  UpsertOrderInfractionDisputeInput,
-} from "@schema";
+import { UpsertMerchantWarning, UpsertMerchantWarningInput } from "@schema";
 
 export const SEND_MESSAGE_MUTATION = gql`
   mutation SendMessageMutation(
@@ -44,45 +39,4 @@ export type SendMessageMutationVariables = {
   readonly messageInput: NonNullable<
     UpsertMerchantWarningInput["messageInput"]
   >;
-};
-
-export const SEND_ORDER_INFRACTION_MESSAGE_MUTATION = gql`
-  mutation InfractionDisputeState_OrderInfractionDisputeMutation(
-    $infractionId: ObjectIdType
-    $disputeId: ObjectIdType
-    $message: String!
-  ) {
-    policy {
-      orderInfractionDispute {
-        upsertOrderInfractionDispute(
-          input: {
-            action: REPLY
-            warningId: $infractionId
-            message: $message
-            id: $disputeId
-          }
-        ) {
-          ok
-          message
-        }
-      }
-    }
-  }
-`;
-
-export type SendOrderInfractionMessageMutationResponse = {
-  readonly policy?: {
-    readonly orderInfractionDispute?: {
-      readonly upsertOrderInfractionDispute?: Pick<
-        UpsertOrderInfractionDispute,
-        "ok" | "message"
-      >;
-    };
-  };
-};
-
-export type SendOrderInfractionMessageMutationVariables = {
-  readonly infractionId: UpsertOrderInfractionDisputeInput["warningId"];
-  readonly disputeId: UpsertOrderInfractionDisputeInput["id"];
-  readonly message: UpsertOrderInfractionDisputeInput["message"];
 };

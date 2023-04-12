@@ -22,12 +22,11 @@ import { arrayGroup } from "@core/toolkit/array";
 import {
   SendMessageMutationResponse,
   SendMessageMutationVariables,
-  SendOrderInfractionMessageMutationResponse,
-  SendOrderInfractionMessageMutationVariables,
   SEND_MESSAGE_MUTATION,
-  SEND_ORDER_INFRACTION_MESSAGE_MUTATION,
 } from "@infractions/api/sendMessageMutations";
 import { useToastStore } from "@core/stores/ToastStore";
+import Chip from "@mui/material/Chip";
+import styles from "@infractions/styles/messagesCard.module.css";
 
 const MessagesCard: React.FC<Pick<BaseProps, "className" | "style">> = ({
   className,
@@ -42,6 +41,8 @@ const MessagesCard: React.FC<Pick<BaseProps, "className" | "style">> = ({
     infraction: { id: infractionId, actions },
   } = useInfractionContext();
 
+  const [viewingTranslatedMessages, setViewingTranslatedMessages] =
+    useState(false);
   const [response, setResponse] = useState<string | undefined>();
   const [attachments, setAttachments] = useState<ReadonlyArray<Attachment>>([]);
   const { locale } = useLocalizationStore();
@@ -105,7 +106,8 @@ const MessagesCard: React.FC<Pick<BaseProps, "className" | "style">> = ({
                   : senderName ?? undefined,
               dateSent: dateSentFormatter.format(unix * 1000),
               message:
-                (locale == "zh" ? translatedMessage : message) ?? undefined,
+                (viewingTranslatedMessages ? translatedMessage : message) ??
+                undefined,
               files: [
                 ...files,
                 ...idFiles,
@@ -128,21 +130,12 @@ const MessagesCard: React.FC<Pick<BaseProps, "className" | "style">> = ({
       title: key,
       messages: groupedMessages[key],
     }));
-  }, [infraction, locale, isOrderInfraction]);
+  }, [infraction, locale, isOrderInfraction, viewingTranslatedMessages]);
 
   const [sendMessage, { loading: sendMessageMutationLoading }] = useMutation<
     SendMessageMutationResponse,
     SendMessageMutationVariables
   >(SEND_MESSAGE_MUTATION);
-
-  const [
-    sendOrderInfractionMessage,
-    { loading: sendOrderInfractionMessageMutationLoading },
-  ] = useMutation<
-    SendOrderInfractionMessageMutationResponse,
-    SendOrderInfractionMessageMutationVariables
-  >(SEND_ORDER_INFRACTION_MESSAGE_MUTATION);
-  void sendOrderInfractionMessage;
 
   const onSend = async () => {
     if (!response) {
@@ -150,29 +143,6 @@ const MessagesCard: React.FC<Pick<BaseProps, "className" | "style">> = ({
     }
 
     try {
-      // note: can only test file upload on staging; leaving this code present
-      // in case it's needed, will remove (along with cleaning up the mutations
-      // file) after testing in follow up PR
-      // if (isOrderInfraction) {
-      //   const resp = await senOrderInfractionMessage({
-      //     variables: {
-      //       infractionId,
-      //       disputeId: order?.trackingDisputeId,
-      //       message: response,
-      //     },
-      //   });
-
-      //   const ok =
-      //     resp?.data?.policy?.orderInfractionDispute
-      //       ?.upsertOrderInfractionDispute?.ok ?? false;
-      //   const message =
-      //     resp?.data?.policy?.orderInfractionDispute
-      //       ?.upsertOrderInfractionDispute?.message;
-
-      //   if (!ok) {
-      //     toastStore.negative(message ?? i`Something went wrong.`);
-      //   }
-      // } else {
       const resp = await sendMessage({
         variables: {
           infractionId,
@@ -197,7 +167,6 @@ const MessagesCard: React.FC<Pick<BaseProps, "className" | "style">> = ({
       if (!ok) {
         toastStore.negative(message ?? i`Something went wrong.`);
       }
-      // }
 
       await refetch();
       setResponse(""); // undefined doesn't properly clear the text input
@@ -224,44 +193,58 @@ const MessagesCard: React.FC<Pick<BaseProps, "className" | "style">> = ({
   }
 
   const canMessage = actions.includes("MESSAGE");
-  const disabled =
-    queryLoading ||
-    sendMessageMutationLoading ||
-    sendOrderInfractionMessageMutationLoading;
+  const disabled = queryLoading || sendMessageMutationLoading;
 
   return (
     <Card {...cardProps}>
-      <Conversation
-        messageGroups={messageGroups}
-        response={canMessage ? response : undefined}
-        onResponseChange={
-          canMessage
-            ? ({ text }) => {
-                setResponse(text);
-              }
-            : undefined
-        }
-        responseProps={{
-          disabled,
-        }}
-        sendProps={{
-          disabled,
-        }}
-        onSend={onSend}
-        fileUploadProps={
-          canMessage
-            ? {
-                accepts: ".pdf,.jpeg,.jpg,.png",
-                maxSizeMB: 5,
-                attachments,
-                onAttachmentsChanged: (attachments) => {
-                  setAttachments(attachments);
-                },
-                bucket: "TEMP_UPLOADS_V2",
-              }
-            : undefined
-        }
-      />
+      <div className={styles.conversation}>
+        <div className={styles.chip}>
+          {/* @ts-expect-error MUI TS typing is broken on chip with disable ripple */}
+          <Chip
+            onClick={() => {
+              setViewingTranslatedMessages((cur) => !cur);
+            }}
+            label={i`View Translated Message(s)`}
+            color="primary"
+            variant={viewingTranslatedMessages ? "filled" : "outlined"}
+            disableRipple
+            sx={{
+              fontFamily: "Proxima",
+            }}
+          />
+        </div>
+        <Conversation
+          messageGroups={messageGroups}
+          response={canMessage ? response : undefined}
+          onResponseChange={
+            canMessage
+              ? ({ text }) => {
+                  setResponse(text);
+                }
+              : undefined
+          }
+          responseProps={{
+            disabled,
+          }}
+          sendProps={{
+            disabled,
+          }}
+          onSend={onSend}
+          fileUploadProps={
+            canMessage
+              ? {
+                  accepts: ".pdf,.jpeg,.jpg,.png",
+                  maxSizeMB: 5,
+                  attachments,
+                  onAttachmentsChanged: (attachments) => {
+                    setAttachments(attachments);
+                  },
+                  bucket: "TEMP_UPLOADS_V2",
+                }
+              : undefined
+          }
+        />
+      </div>
     </Card>
   );
 };

@@ -2,12 +2,11 @@
 # yarn lockfile v1
 
 
-"@ContextLogic/atlas-ui@^0.0.1-1680727893":
-  version "0.0.1-1680727893"
-  resolved "https://npm.infra.wish.com/@ContextLogic%2fatlas-ui/-/atlas-ui-0.0.1-1680727893.tgz#0d83dd34d86518064d705b685882725f2dd3bd58"
-  integrity sha512-+ZARqCUKvLLebnkdmpuUn9GqlJvKzs6bCX1UO81Baly8yidoSz7u4uMre+Uhc4djmYovfTAbZzH3QQrCTK0/ng==
+"@ContextLogic/atlas-ui@^0.0.1-1681326806":
+  version "0.0.1-1681326806"
+  resolved "https://npm.infra.wish.com/@ContextLogic%2fatlas-ui/-/atlas-ui-0.0.1-1681326806.tgz#2415ddf2d5f47a5f6dab2473d6ca7d8891df67a0"
+  integrity sha512-et1ZMZqMdGne4zPcqMx3bB6iL56AzAMWvVEF9D3AW9nCXwOafI6SjpSVE2GFQupFOgcQ0Pen22lM0BYFZEPRtA==
   dependencies:
-    "@ContextLogic/zeus" "^0.0.1-1669324295"
     "@emotion/react" "^11.10.4"
     "@emotion/styled" "^11.10.4"
     "@mui/material" "5.11.10"
@@ -67,7 +66,7 @@
     lodash "^4.17.21"
     react "^17.0.2"
 
-"@ContextLogic/zeus@0.0.1-1669324295", "@ContextLogic/zeus@^0.0.1-1669324295":
+"@ContextLogic/zeus@0.0.1-1669324295":
   version "0.0.1-1669324295"
   resolved "https://npm.infra.wish.com/@ContextLogic%2fzeus/-/zeus-0.0.1-1669324295.tgz#a109fd888b10f5dab00632f08420a882e3ff1068"
   integrity sha512-1YfqUVW6NnDDcHfUZF+NV0Oh4XlfaKAEv5U4Wp1yDyRvfviQBKEUyKQN/jpplusV947PIDFtQQpSpM4l8mh6vA==

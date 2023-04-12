@@ -1,0 +1,22 @@
+.conversation {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.conversation div[class*="messageContainer"] {
+  padding-top: 50px !important;
+}
+
+.conversation :global(.MuiChip-outlinedPrimary) {
+  background-color: white;
+}
+
+.conversation :global(.MuiChip-outlinedPrimary):hover {
+  background-color: #e5ecff !important; /* COBALT 200 */
+}
+
+.chip {
+  position: absolute;
+  top: 12px;
+}
