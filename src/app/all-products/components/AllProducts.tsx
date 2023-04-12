@@ -358,6 +358,7 @@ const AllProducts: React.FC<Props> = ({
                 text: SelectOptionsDisplay[option],
               })),
               style: { width: "unset", paddingRight: 9 },
+              "data-cy": "select-table-search-type",
             }}
             textInputProps={{
               icon: "search",
@@ -367,6 +368,7 @@ const AllProducts: React.FC<Props> = ({
               onChange: async ({ text }: OnTextChangeEvent) => {
                 await setSearchTerm(text);
               },
+              "data-cy": "input-table-search-value",
             }}
           />
           <Layout.FlexRow>

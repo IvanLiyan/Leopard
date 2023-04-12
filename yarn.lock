@@ -11,10 +11,10 @@
     "@emotion/styled" "^11.10.4"
     "@mui/material" "5.11.10"
 
-"@ContextLogic/lego@^0.0.1-1675370998":
-  version "0.0.1-1675443632"
-  resolved "https://npm.infra.wish.com/@ContextLogic%2flego/-/lego-0.0.1-1675443632.tgz#e59e4ab80a7e9494b87cc8cc9a1f040d1c6d23c5"
-  integrity sha512-zRbXfWA0Tn0eeB4qf6wlTU/A1dJehOBd6aWV22ynylyTXvq5QyN9p4qCi32lJg3ucF14Msccy1X5cRgYk4DWvA==
+"@ContextLogic/lego@^0.0.1-1681318856":
+  version "0.0.1-1681318856"
+  resolved "https://npm.infra.wish.com/@ContextLogic%2flego/-/lego-0.0.1-1681318856.tgz#f5d5ce11b3b889776a735cc3e0f0b6e6cc3ac21d"
+  integrity sha512-1aJM9IVvgq4b9gH+5mvnM6p+A6IMyZiqaOTCD86uUDxt/6WrFATS10XrsoVgSg75ZznGDanz1wUTP3lLNe2tIg==
   dependencies:
     "@ContextLogic/legostrings" "0.0.1664165201"
     "@ContextLogic/zeus" "0.0.1-1669324295"

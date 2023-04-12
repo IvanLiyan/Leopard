@@ -50,6 +50,7 @@ const ProductTableActions: React.FC<Props> = ({
         dropDownPosition="bottom right"
         dropDownContentWidth={300}
         dropdownButtonBorders={false}
+        data-cy="action"
         actions={[
           {
             text: ci18n(
