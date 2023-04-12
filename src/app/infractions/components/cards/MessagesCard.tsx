@@ -198,22 +198,25 @@ const MessagesCard: React.FC<Pick<BaseProps, "className" | "style">> = ({
   return (
     <Card {...cardProps}>
       <div className={styles.conversation}>
-        <div className={styles.chip}>
-          {/* @ts-expect-error MUI TS typing is broken on chip with disable ripple */}
-          <Chip
-            onClick={() => {
-              setViewingTranslatedMessages((cur) => !cur);
-            }}
-            label={i`View Translated Message(s)`}
-            color="primary"
-            variant={viewingTranslatedMessages ? "filled" : "outlined"}
-            disableRipple
-            sx={{
-              fontFamily: "Proxima",
-            }}
-          />
-        </div>
+        {messageGroups.length > 0 && (
+          <div className={styles.chip}>
+            {/* @ts-expect-error MUI TS typing is broken on chip with disable ripple */}
+            <Chip
+              onClick={() => {
+                setViewingTranslatedMessages((cur) => !cur);
+              }}
+              label={i`View Translated Message(s)`}
+              color="primary"
+              variant={viewingTranslatedMessages ? "filled" : "outlined"}
+              disableRipple
+              sx={{
+                fontFamily: "Proxima",
+              }}
+            />
+          </div>
+        )}
         <Conversation
+          style={{ flex: 1 }}
           messageGroups={messageGroups}
           response={canMessage ? response : undefined}
           onResponseChange={
