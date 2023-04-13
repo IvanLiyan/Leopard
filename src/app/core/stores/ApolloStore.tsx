@@ -29,6 +29,7 @@ import { createUploadLink } from "apollo-upload-client";
 
 import { isProd } from "@core/stores/EnvironmentStore";
 import { ToastStoreRef } from "@core/stores/ToastStore";
+import { useDeciderKey } from "@core/stores/ExperimentStore";
 
 const apolloClientFactory = (
   terminatingLink: ApolloLink,
@@ -164,7 +165,9 @@ const GQL_NON_BATCHING_COOKIE = "use_non_batching_gql_client";
 
 export const ApolloProvider: React.FC = ({ children }) => {
   const [adminUpdatesAllowed, setAdminUpdatesAllowed] = useState(false);
-
+  const { decision: useNonBatching } = useDeciderKey(
+    "apollo_nonbatching_client",
+  );
   const expirationTime = Cookies.get(
     "admin_merchant_prod_gql_mutation_override",
   );
@@ -204,7 +207,8 @@ export const ApolloProvider: React.FC = ({ children }) => {
   const shouldDisableBatching = Cookies.get(GQL_NON_BATCHING_COOKIE) === "true";
 
   const apolloStore = {
-    client: shouldDisableBatching ? nonBatchingClient : client,
+    client:
+      useNonBatching || shouldDisableBatching ? nonBatchingClient : client,
     nonBatchingClient,
     fileUploadClient,
     adminUpdatesAllowed,
@@ -216,7 +220,9 @@ export const ApolloProvider: React.FC = ({ children }) => {
   return (
     <ApolloContext.Provider value={apolloStore}>
       <_ApolloProvider
-        client={shouldDisableBatching ? nonBatchingClient : client}
+        client={
+          useNonBatching || shouldDisableBatching ? nonBatchingClient : client
+        }
       >
         {children}
       </_ApolloProvider>
