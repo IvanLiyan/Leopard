@@ -106,7 +106,8 @@ const Conversation: React.FC<Props> = ({
     () =>
       messageGroups.length > 0 ? (
         <Layout.FlexColumn
-          style={styles.messageContainer}
+          // 'messageContainer' class allows parents to target this component with CSS
+          style={[styles.messageContainer, "messageContainer"]}
           ref={messageContainerRef}
         >
           {messageGroups.map(({ title, messages }, i) => (
