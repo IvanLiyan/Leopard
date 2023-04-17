@@ -611,6 +611,7 @@ const MisleadingListingDispute: React.FC = () => {
               <SecureFileInput
                 accepts=".pdf,.jpeg,.jpg,.png"
                 maxSizeMB={5}
+                maxAttachments={5}
                 attachments={proofOfPurchase}
                 onAttachmentsChanged={(attachments) => {
                   setProofOfPurchase(attachments);

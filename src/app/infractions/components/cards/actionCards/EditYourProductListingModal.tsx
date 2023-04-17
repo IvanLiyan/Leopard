@@ -223,6 +223,7 @@ const EditYourProductListingModal: React.FC<
                   <SecureFileInput
                     accepts=".jpeg,.jpg,.png"
                     maxSizeMB={5}
+                    maxAttachments={20}
                     attachments={state.additionalImages}
                     onAttachmentsChanged={(attachments) => {
                       dispatch({
