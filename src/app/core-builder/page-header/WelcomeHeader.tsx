@@ -96,7 +96,12 @@ const WelcomeHeader: React.FC<WelcomeHeaderProps> = (props) => {
               ) : (
                 <H4Markdown text={title} />
               )}
-              {body}
+              {body && (
+                <>
+                  <div style={{ marginTop: "8px" }} />
+                  {body}
+                </>
+              )}
             </div>
           )}
           {actions}
