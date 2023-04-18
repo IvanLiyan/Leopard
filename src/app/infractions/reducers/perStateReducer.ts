@@ -78,6 +78,7 @@ const perStateReducer = (state: State, action: Action): State => {
               {
                 fileName: undefined,
                 url: action.currentProduct.small_picture,
+                isImage: true,
               },
             ]
           : [],
@@ -89,6 +90,7 @@ const perStateReducer = (state: State, action: Action): State => {
                 "small",
                 String(n),
               ),
+              isImage: true,
             }))
           : [],
         variations: action.currentProduct.variations
