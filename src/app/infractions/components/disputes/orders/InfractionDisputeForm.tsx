@@ -181,7 +181,7 @@ const InfractionDisputeForm = (props: Props) => {
   const dateValidator = new RegexBasedValidator({
     pattern:
       /^(?:(0[1-9]|1[012])[/.](0[1-9]|[12][0-9]|3[01])[/.](19|20)[0-9]{2})$/,
-    customMessage: i`Enter date in mm/dd/yy format`,
+    customMessage: i`Enter date in mm/dd/yyyy format`,
   });
   const requiredValidator = new RequiredValidator({
     customMessage: null,
@@ -346,7 +346,7 @@ const InfractionDisputeForm = (props: Props) => {
         {showFulfillDateField && (
           <Row title={i`Confirmed fulfillment date from shipping carrier`}>
             <TextInput
-              placeholder={ci18n("date format", "mm/dd/yy")}
+              placeholder={ci18n("date format", "mm/dd/yyyy")}
               validators={[requiredValidator, dateValidator]}
               hideCheckmarkWhenValid
               value={state.reportedFulfillmentDate}
@@ -360,7 +360,7 @@ const InfractionDisputeForm = (props: Props) => {
             title={i`Confirmed delivered date from shipping carrier (optional)`}
           >
             <TextInput
-              placeholder={ci18n("date format", "mm/dd/yy")}
+              placeholder={ci18n("date format", "mm/dd/yyyy")}
               validators={[dateValidator]}
               hideCheckmarkWhenValid
               value={state.reportedDeliveredDate}

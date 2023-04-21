@@ -6,7 +6,7 @@ stages:
 
 install dependencies:
   stage: install
-  image: node:18
+  image: registry-gitlab.i.wish.com/contextlogic/leopard/node:18
   script:
     - yarn install --frozen-lockfile
   artifacts:
@@ -17,7 +17,7 @@ install dependencies:
 
 test:
   stage: test
-  image: node:18
+  image: registry-gitlab.i.wish.com/contextlogic/leopard/node:18
   script:
     - yarn test-ci
   dependencies:
@@ -25,7 +25,7 @@ test:
 
 lint:
   stage: test
-  image: node:18
+  image: registry-gitlab.i.wish.com/contextlogic/leopard/node:18
   script:
     - yarn lint
   dependencies:
@@ -33,7 +33,7 @@ lint:
 
 build staging:
   stage: test
-  image: node:18
+  image: registry-gitlab.i.wish.com/contextlogic/leopard/node:18
   script:
     # we want the `development` configs on staging, even though we are optimizing the build for prod
     - cp .env.development .env.production
@@ -47,7 +47,7 @@ build staging:
 
 build prod:
   stage: test
-  image: node:18
+  image: registry-gitlab.i.wish.com/contextlogic/leopard/node:18
   script:
     - yarn build
   artifacts:
