@@ -26,8 +26,11 @@ import {
   TaggingQueryResponse,
   TAGGING_QUERY,
 } from "@infractions/api/taggingQuery";
+import { useDeciderKey } from "@core/stores/ExperimentStore";
 
 const CounterfeitDispute: React.FC = () => {
+  const { decision: submitTagIds, isLoading: tagsDeciderKeyLoading } =
+    useDeciderKey("use_category_id_MERSUP-254");
   const styles = useInfractionDetailsStylesheet();
   const {
     infraction: { id: infractionId, actions },
@@ -49,7 +52,7 @@ const CounterfeitDispute: React.FC = () => {
     [],
   );
 
-  const { data, loading: queryLoading } =
+  const { data, loading: tagsQueryLoading } =
     useQuery<TaggingQueryResponse>(TAGGING_QUERY);
   const tags = data?.platformConstants.topLevelTags ?? [];
 
@@ -174,12 +177,12 @@ const CounterfeitDispute: React.FC = () => {
                 onSelected={(value: string) => {
                   setCategory(value);
                 }}
-                options={tags.map(({ name }) => ({
-                  value: name,
+                options={tags.map(({ id, name }) => ({
+                  value: submitTagIds ? id : name,
                   text: name,
                 }))}
                 placeholder={ci18n("placeholder for input", "Product category")}
-                disabled={queryLoading}
+                disabled={tagsQueryLoading || tagsDeciderKeyLoading}
               />
             </HorizontalField>
             <HorizontalField
