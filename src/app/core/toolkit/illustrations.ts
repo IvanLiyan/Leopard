@@ -84,6 +84,12 @@ import error403URL from "public/images/error-403.svg";
 import error404URL from "public/images/error-404.svg";
 import error500URL from "public/images/error-500.svg";
 
+import topSellerURL from "public/images/top-seller.svg";
+import wishExpressTruckURL from "public/images/wish-express.svg";
+import emptyImageURL from "public/images/emptyimage.svg";
+import authenticBrandSellerBadgeURL from "public/images/authentic_brand_seller_badge.svg";
+import mockMobileHeaderURL from "public/images/mock-mobile-header.png";
+
 export const wishLogoInk = wishLogoInkURL;
 export const wishLogoWhite = wishLogoWhiteURL;
 export const merchantLogoWhiteCN = merchantLogoWhiteCNURL;
@@ -165,3 +171,8 @@ export const clockCircleArrow = clockCircleArrowURL;
 export const error403 = error403URL;
 export const error404 = error404URL;
 export const error500 = error500URL;
+export const topSeller = topSellerURL;
+export const wishExpressTruck = wishExpressTruckURL;
+export const emptyImage = emptyImageURL;
+export const authenticBrandSellerBadge = authenticBrandSellerBadgeURL;
+export const mockMobileHeader = mockMobileHeaderURL;

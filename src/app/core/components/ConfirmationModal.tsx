@@ -10,12 +10,16 @@ import { useTheme } from "@core/stores/ThemeStore";
 import { css } from "@core/toolkit/styling";
 import Illustration, { IllustrationName } from "@core/components/Illustration";
 import ModalTitle from "@core/components/modal/ModalTitle";
+import ModalFooter, {
+  ModalFooterProps,
+} from "@core/components/modal/ModalFooter";
 
 export type ConfirmationModalProps = BaseProps &
-  Pick<ModalProps, "open" | "onClose"> & {
+  Pick<ModalProps, "open" | "onClose"> &
+  Pick<ModalFooterProps, "action" | "cancel" | "layout"> & {
     readonly title?: string;
     readonly text?: string;
-    readonly illustration: IllustrationName | undefined | null;
+    readonly illustration?: IllustrationName | undefined | null;
     readonly renderContent?: () => React.ReactNode;
   };
 
@@ -32,6 +36,9 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
   renderContent: renderContentProp,
   title,
   text,
+  action,
+  cancel,
+  layout: footerLayout,
 }) => {
   const styles = useStylesheet();
 
@@ -72,6 +79,9 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
         )}
         {renderContent()}
       </div>
+      {(action != null || cancel != null) && (
+        <ModalFooter action={action} cancel={cancel} layout={footerLayout} />
+      )}
     </Modal>
   );
 };

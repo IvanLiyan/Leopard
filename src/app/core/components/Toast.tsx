@@ -4,6 +4,7 @@ import { observer } from "mobx-react";
 import { Banner, BannerProps } from "@ContextLogic/lego";
 import { css } from "@core/toolkit/styling";
 import { useToastStore } from "@core/stores/ToastStore";
+import { useTheme as useAtlasTheme } from "@ContextLogic/atlas-ui";
 
 export type ToastProps = Omit<BannerProps, "text" | "sentiment" | "link">;
 
@@ -29,6 +30,7 @@ const Toast = (props: ToastProps) => {
 
 const useStylesheet = () => {
   const { willClose } = useToastStore();
+  const { zIndex } = useAtlasTheme();
 
   return useMemo(() => {
     let keyframes = {};
@@ -60,7 +62,7 @@ const useStylesheet = () => {
 
     return StyleSheet.create({
       root: {
-        zIndex: 1100,
+        zIndex: zIndex.appBar,
         animationName: [keyframes],
         animationDuration: "250ms",
         animationFillMode: "forwards",
@@ -71,7 +73,7 @@ const useStylesheet = () => {
         right: 0,
       },
     });
-  }, [willClose]);
+  }, [willClose, zIndex.appBar]);
 };
 
 export default observer(Toast);

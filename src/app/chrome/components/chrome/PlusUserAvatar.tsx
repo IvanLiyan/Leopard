@@ -253,7 +253,6 @@ const useStylesheet = () => {
           // Need the width @ 170
           // eslint-disable-next-line local-rules/no-frozen-width
           width: 170,
-          zIndex: 999999,
         },
         dropdownMain: {
           top: 65,

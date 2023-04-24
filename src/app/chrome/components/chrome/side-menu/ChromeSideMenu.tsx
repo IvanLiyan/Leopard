@@ -39,6 +39,7 @@ import {
   ChromeNavigationNode,
   useChromeContext,
 } from "@core/stores/ChromeStore";
+import { useTheme as useAtlasTheme } from "@ContextLogic/atlas-ui";
 
 type Props = BaseProps & {
   readonly tree: ChromeNavigationNode | null | undefined;
@@ -239,6 +240,8 @@ const useStylesheet = ({
   readonly drawerOpen: boolean;
 }) => {
   const { borderPrimary, surfaceLightest, modalBackground } = useTheme();
+  const { zIndex } = useAtlasTheme();
+
   return useMemo(
     () =>
       StyleSheet.create({
@@ -250,7 +253,7 @@ const useStylesheet = ({
           position: "fixed",
           overflowX: "hidden",
           pointerEvents: "none",
-          zIndex: 999999,
+          zIndex: zIndex.appBar,
           display: "flex",
           alignItems: "stretch",
           // Reason: Overlay has to take up the whole page width.
@@ -295,7 +298,7 @@ const useStylesheet = ({
           right: 0,
           backgroundColor: modalBackground,
           pointerEvents: "auto",
-          zIndex: 999999,
+          zIndex: zIndex.appBar,
         },
       }),
     [
@@ -303,9 +306,10 @@ const useStylesheet = ({
       backgroundColor,
       isRightToLeft,
       borderPrimary,
+      sideMenuWidth,
       surfaceLightest,
       modalBackground,
-      sideMenuWidth,
+      zIndex.appBar,
     ],
   );
 };

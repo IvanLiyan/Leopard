@@ -1,11 +1,8 @@
-const nextJest = require('next/jest')
-const createJestConfig = nextJest({ dir: './' })
+const nextJest = require("next/jest");
+const createJestConfig = nextJest({ dir: "./" });
 const customJestConfig = {
   modulePaths: ["<rootDir>"],
-  moduleDirectories: [
-    "node_modules",
-    "src"
-  ],
+  moduleDirectories: ["node_modules", "src"],
   roots: ["<rootDir>/src/"],
   moduleNameMapper: {
     "^.+\\.module\\.(css|sass|scss)$": "identity-obj-proxy",
@@ -25,8 +22,8 @@ const customJestConfig = {
     "@public/(.*)": "<rootDir>/public/$1",
   },
   // Add more setup options before each test is run
-  testPathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/.next/'],
-  testEnvironment: 'jsdom',
-}
+  testPathIgnorePatterns: ["<rootDir>/node_modules/", "<rootDir>/.next/"],
+  testEnvironment: "jsdom",
+};
 
-module.exports = createJestConfig(customJestConfig)
+module.exports = createJestConfig(customJestConfig);

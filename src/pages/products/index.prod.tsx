@@ -1,6 +1,7 @@
 import React, { useMemo } from "react";
 import { StyleSheet } from "aphrodite";
 import { observer } from "mobx-react";
+import { NextPage } from "next";
 
 import AllProducts from "@all-products/components/AllProducts";
 import { LoadingIndicator, Pager } from "@ContextLogic/lego";
@@ -20,7 +21,7 @@ import FullPageError from "@core/components/FullPageError";
 
 const AddWarehouseTabKey = "ADD_WAREHOUSE";
 
-const ProductsContainer: React.FC = () => {
+const ProductsContainer: NextPage<Record<string, never>> = () => {
   const styles = useStylesheet();
   const navigationStore = useNavigationStore();
   const upsertQueryParams = useUpsertQueryParams();

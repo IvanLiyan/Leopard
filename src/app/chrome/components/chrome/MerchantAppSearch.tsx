@@ -41,6 +41,7 @@ import {
   NavigationSearchResult,
   useSearchStore,
 } from "@chrome/search/searchStore";
+import { useTheme as useAtlasTheme } from "@ContextLogic/atlas-ui";
 
 const SEARCH_WIDTH = 600;
 const SEARCH_HEIGHT = TopBarHeight * 0.65;
@@ -267,6 +268,7 @@ export default observer(MerchantAppSearch);
 
 const useStylesheet = () => {
   const { surfaceLightest, modalBackground } = useTheme();
+  const { zIndex } = useAtlasTheme();
   return useMemo(
     () =>
       StyleSheet.create({
@@ -276,7 +278,7 @@ const useStylesheet = () => {
           height: SEARCH_HEIGHT,
         },
         input: {
-          zIndex: 999998,
+          zIndex: zIndex.appBar - 1,
         },
         dropdown: {
           position: "absolute",
@@ -293,7 +295,7 @@ const useStylesheet = () => {
           borderBottom: "solid 1px rgba(175, 199, 209, 0.5)",
           overflowY: "auto",
           overflowX: "hidden",
-          zIndex: 999998,
+          zIndex: zIndex.appBar - 1,
         },
         backdrop: {
           backgroundColor: modalBackground,
@@ -302,9 +304,9 @@ const useStylesheet = () => {
           right: 0,
           width: "100vw",
           height: "100vh",
-          zIndex: 999997,
+          zIndex: zIndex.appBar - 2,
         },
       }),
-    [surfaceLightest, modalBackground],
+    [zIndex.appBar, surfaceLightest, modalBackground],
   );
 };

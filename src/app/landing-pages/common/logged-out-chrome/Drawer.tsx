@@ -18,6 +18,7 @@ import Icon from "@core/components/Icon";
 import { SideMenu } from "@ContextLogic/lego";
 import AppLocaleSelector from "@chrome/components/AppLocaleSelector";
 import { useNavigationStore } from "@core/stores/NavigationStore";
+import { useTheme as useAtlasTheme } from "@ContextLogic/atlas-ui";
 
 const DrawerContentContainer = posed.nav({
   open: { right: "0%", staggerChildren: 100 },
@@ -109,6 +110,8 @@ const Drawer: React.FC<DrawerProps> = ({ children, onClickCta, ctaText }) => {
 export default observer(Drawer);
 
 const useStylesheet = () => {
+  const { zIndex } = useAtlasTheme();
+
   return useMemo(
     () =>
       StyleSheet.create({
@@ -118,7 +121,7 @@ const useStylesheet = () => {
           bottom: 0,
           right: 0,
           left: 0,
-          zIndex: 9999,
+          zIndex: zIndex.drawer,
           backgroundColor: modalBackdrop,
         },
         header: {
@@ -140,7 +143,7 @@ const useStylesheet = () => {
           backgroundColor: palettes.textColors.White,
           // eslint-disable-next-line local-rules/no-frozen-width
           width: "60%",
-          zIndex: 9999,
+          zIndex: zIndex.drawer,
           boxShadow:
             "-2px 0 4px 0 rgba(175, 199, 209, 0.2), inset 1px 0 0 0 rgba(175, 199, 209, 0.5)",
         },
@@ -158,6 +161,6 @@ const useStylesheet = () => {
         },
       }),
 
-    [],
+    [zIndex.drawer],
   );
 };

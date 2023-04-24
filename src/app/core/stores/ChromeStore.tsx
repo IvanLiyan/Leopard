@@ -35,6 +35,7 @@ import { useTheme } from "@core/stores/ThemeStore";
 import { useUserStore } from "@core/stores/UserStore";
 import { useLocalizationStore } from "@core/stores/LocalizationStore";
 import { ChromeBadgeSchema, ChromeNodeSchema, Datetime } from "@schema";
+import { useTheme as useAtlasTheme } from "@ContextLogic/atlas-ui";
 
 type ChromeContext = {
   isDrawerOpen: boolean;
@@ -274,6 +275,7 @@ export const ChromeProvider: React.FC<{
 
 const useStylesheet = () => {
   const { pageBackground } = useTheme();
+  const { zIndex } = useAtlasTheme();
 
   return useMemo(
     () =>
@@ -302,7 +304,7 @@ const useStylesheet = () => {
           display: "flex",
           flexDirection: "column",
           alignItems: "stretch",
-          zIndex: 999999,
+          zIndex: zIndex.appBar,
         },
         toastContainerWithoutChrome: {
           position: "fixed",
@@ -311,10 +313,10 @@ const useStylesheet = () => {
           display: "flex",
           flexDirection: "column",
           alignItems: "stretch",
-          zIndex: 999999,
+          zIndex: zIndex.appBar,
         },
       }),
-    [pageBackground],
+    [pageBackground, zIndex.appBar],
   );
 };
 

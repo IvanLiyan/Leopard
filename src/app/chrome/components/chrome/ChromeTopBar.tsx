@@ -8,6 +8,7 @@
 import React, { useMemo, ReactNode } from "react";
 import { StyleSheet } from "aphrodite";
 import { observer } from "mobx-react";
+import { useTheme as useAtlasTheme } from "@ContextLogic/atlas-ui";
 
 /* Lego Toolkit */
 import { css } from "@core/toolkit/styling";
@@ -25,8 +26,6 @@ type Props = BaseProps & {
   backgroundColor?: string;
 };
 
-const ProgressBarHeight = 0;
-
 export default observer((props: Props) => {
   const { children, className, style, renderLogo, renderSearch } = props;
   const styles = useStylesheet(props);
@@ -42,6 +41,7 @@ export default observer((props: Props) => {
 
 const useStylesheet = ({ backgroundColor: backgroundColorProp }: Props) => {
   const { primaryDark } = useTheme();
+  const { zIndex } = useAtlasTheme();
   const backgroundColor = backgroundColorProp ?? primaryDark;
 
   return useMemo(
@@ -59,16 +59,9 @@ const useStylesheet = ({ backgroundColor: backgroundColorProp }: Props) => {
           alignItems: "center",
           padding: `${Padding}px 20px`,
           justifyContent: "space-between",
-          zIndex: 999999,
-        },
-        loadingBar: {
-          position: "absolute",
-          bottom: -ProgressBarHeight,
-          left: 0,
-          right: 0,
-          zIndex: 99999999,
+          zIndex: zIndex.appBar,
         },
       }),
-    [backgroundColor],
+    [backgroundColor, zIndex.appBar],
   );
 };
