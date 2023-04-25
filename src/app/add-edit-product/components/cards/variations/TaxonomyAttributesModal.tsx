@@ -176,9 +176,13 @@ const TaxonomyAttributesModal: React.FC<Props> = ({
               });
               onClose();
             },
+            "data-cy": "attributes-footer-button-action",
           }}
-          cancel={{ text: ci18n("CTA text", "Cancel"), onClick: onClose }}
-          data-cy="attributes-footer"
+          cancel={{
+            text: ci18n("CTA text", "Cancel"),
+            onClick: onClose,
+            "data-cy": "attributes-footer-button-cancel",
+          }}
         />
       </Layout.FlexColumn>
     </Modal>

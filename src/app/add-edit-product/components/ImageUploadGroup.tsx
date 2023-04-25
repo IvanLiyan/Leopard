@@ -7,6 +7,8 @@
 import React, { useMemo, useState } from "react";
 import { StyleSheet } from "aphrodite";
 import { observer } from "mobx-react";
+import { runInAction } from "mobx";
+import Dropzone, { DropzoneRenderArgs } from "react-dropzone";
 
 /* Lego */
 import {
@@ -18,9 +20,11 @@ import {
   Info,
   Ul,
   Link,
-  AttachmentInfo,
+  Button,
+  LoadingIndicator,
 } from "@ContextLogic/lego";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
+import { getImageSize } from "@ContextLogic/lego/toolkit/image";
 
 /* Toolkit */
 import { css } from "@core/toolkit/styling";
@@ -30,11 +34,21 @@ import { zendeskURL } from "@core/toolkit/url";
 import { useTheme } from "@core/stores/ThemeStore";
 import { useToastStore } from "@core/stores/ToastStore";
 import Image from "@core/components/Image";
-import SecureFileInput from "@core/components/SecureFileInput";
+import Icon from "@core/components/Icon";
+import { upload } from "@core/toolkit/uploads";
 
-export type ImageInfo = Partial<Omit<AttachmentInfo, "url">> & {
+export type ImageInfo = {
   readonly url: string;
+  readonly ext?: string | null | undefined;
+  readonly fileName?: string;
   readonly isClean?: boolean;
+  readonly serverParams?: { url: string; original_filename: string };
+};
+
+type PendingImage = {
+  readonly ext: string | null | undefined;
+  readonly id: number;
+  readonly fileName: string;
 };
 
 type ImageUploadGroupProps = BaseProps & {
@@ -65,24 +79,67 @@ const ImageUploadGroup = (props: ImageUploadGroupProps) => {
   const toastStore = useToastStore();
 
   const [hoveredImageUrl, setHoveredImageUrl] = useState<string | undefined>();
+  const [pendingImages, setPendingImages] = useState<
+    ReadonlyArray<PendingImage>
+  >([]);
 
   const accepts = ".jpeg,.jpg,.png";
-
-  const imageCount = images.length;
+  const imageCount = pendingImages.length + images.length;
   const showImages = imageCount > 0;
-  const showDropZone = maxImages > imageCount;
+  const showDropZone = maxImages !== imageCount;
 
   const cleanImageLink = zendeskURL("360033668153");
 
-  const attachments = useMemo(() => {
-    return images.map((image) => {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { isClean, ...attachmentProps } = image;
-      return {
-        ...attachmentProps,
-      } as AttachmentInfo;
-    });
-  }, [images]);
+  const removePendingImage = (pendingImage: PendingImage) => {
+    setPendingImages(pendingImages.filter((img) => img.id !== pendingImage.id));
+  };
+
+  const onImageRejected = () => {
+    const formats = accepts.replace(",", ", ").replace(".", "");
+    toastStore.error(
+      i`Image file is not valid. Please upload a ${formats} file ` +
+        i`less than ${maxSizeMB}MB`,
+    );
+  };
+
+  const renderDropzoneContent = ({ isDragActive }: DropzoneRenderArgs) => {
+    return (
+      <Layout.FlexColumn
+        style={[styles.dropzoneContent, { opacity: isDragActive ? 0.3 : 1 }]}
+        alignItems="center"
+      >
+        <Text style={styles.title}>Drop images here to upload</Text>
+        <Button>
+          <Layout.FlexRow alignItems="center">
+            <Icon
+              className={css(styles.uploadIcon)}
+              name="uploadCloud"
+              size={16}
+            />
+            <Text>Upload new</Text>
+          </Layout.FlexRow>
+        </Button>
+      </Layout.FlexColumn>
+    );
+  };
+
+  const renderPendingImage = (image: PendingImage) => {
+    return (
+      <Layout.FlexColumn
+        style={styles.cell}
+        key={`pending_image_${image.fileName}`}
+        alignItems="center"
+        justifyContent="center"
+      >
+        <LoadingIndicator type="spinner" size={36} />
+        <DeleteButton
+          style={[styles.deleteButton, styles.disableRipple]}
+          popoverContent={i`Remove`}
+          onClick={() => removePendingImage(image)}
+        />
+      </Layout.FlexColumn>
+    );
+  };
 
   const renderImage = (image: ImageInfo) => {
     const isHovered = hoveredImageUrl == image.url;
@@ -180,14 +237,81 @@ const ImageUploadGroup = (props: ImageUploadGroupProps) => {
     );
   };
 
-  const onAttachmentsChanged = (attachments: ReadonlyArray<AttachmentInfo>) => {
-    const totalNumFiles = imageCount + attachments.length;
+  const onUploadImage = async (acceptedFiles: ReadonlyArray<File>) => {
+    const totalNumFiles = imageCount + acceptedFiles.length;
     if (totalNumFiles > maxImages) {
       toastStore.negative(i`Too many files attached. Maximum is ${maxImages}`);
       return;
     }
 
-    onImagesChanged([...images, ...attachments]);
+    let newPendingImages = pendingImages;
+    let newImages = [...images];
+    for (const file of acceptedFiles) {
+      const ext = file.name.split(".").pop()?.toLowerCase();
+
+      if (minDimensions) {
+        const [minImageWidth, minImageHeight] = minDimensions;
+        const [width, height] = await getImageSize(file);
+        if (width < minImageWidth || height < minImageHeight) {
+          toastStore.negative(
+            i`Image resolution too low. Minimum is ${minImageWidth}x${minImageHeight}`,
+          );
+          return;
+        }
+      }
+
+      const pendingImage: PendingImage = {
+        ext,
+        id: new Date().getTime(),
+        fileName: file.name,
+      };
+
+      newPendingImages = [...newPendingImages, pendingImage];
+      setPendingImages(newPendingImages);
+
+      const response = await upload(file, {
+        bucket: "TEMP_UPLOADS_V2",
+        filename: file.name,
+        contentType: file.type,
+      });
+      const downloadUrl = response?.downloadUrl;
+      if (downloadUrl == null) {
+        newPendingImages = newPendingImages.filter(
+          (i) => i.id !== pendingImage.id,
+        );
+        removePendingImage(pendingImage);
+        return;
+      }
+
+      const stillWantImage = newPendingImages.some(
+        (pi) => pi.id === pendingImage.id,
+      );
+      if (!stillWantImage) {
+        return;
+      }
+
+      runInAction(() => {
+        newImages = [
+          ...newImages,
+          {
+            ext,
+            url: downloadUrl || "",
+            fileName: file.name,
+            isClean: false,
+            serverParams: {
+              url: downloadUrl || "",
+              original_filename: file.name,
+            },
+          },
+        ];
+        onImagesChanged(newImages);
+
+        newPendingImages = newPendingImages.filter(
+          (i) => i.id !== pendingImage.id,
+        );
+        removePendingImage(pendingImage);
+      });
+    }
   };
 
   const onReorder = (from: number, to: number) => {
@@ -213,23 +337,34 @@ const ImageUploadGroup = (props: ImageUploadGroupProps) => {
                 {renderImage(img)}
               </DraggableList.Item>
             )),
+            ...pendingImages.map((img) => (
+              <DraggableList.Item
+                key={`${img.id}`}
+                style={styles.pendingContainer}
+                containerStyle={styles.imagePreviewContainer}
+              >
+                {renderPendingImage(img)}
+              </DraggableList.Item>
+            )),
           ]}
         </DraggableList>
       )}
       {showImages && !allowReorder && images.map((img) => renderImage(img))}
+      {showImages &&
+        !allowReorder &&
+        pendingImages.map((img) => renderPendingImage(img))}
       {showDropZone && (
-        <SecureFileInput
-          style={styles.dropzone}
-          accepts={accepts}
-          maxSizeMB={maxSizeMB}
-          maxAttachments={maxImages}
-          attachments={attachments}
-          onAttachmentsChanged={onAttachmentsChanged}
-          minDimensions={minDimensions}
-          bucket="TEMP_UPLOADS_V2"
+        <Dropzone
+          accept={accepts}
+          onDropRejected={onImageRejected}
+          onDropAccepted={(acceptedFiles) => void onUploadImage(acceptedFiles)}
+          maxSize={maxSizeMB * 1048576} // convert to bytes
+          multiple={imageCount < maxImages - 1}
+          className={css(styles.dropzone)}
           data-cy={`${dataCy}-upload`}
-          hideAttachments
-        />
+        >
+          {renderDropzoneContent}
+        </Dropzone>
       )}
     </Layout.FlexColumn>
   );
@@ -239,7 +374,7 @@ export default observer(ImageUploadGroup);
 
 const useStylesheet = (props: ImageUploadGroupProps) => {
   const { imageWidth } = props;
-  const { surfaceLightest, textDark, borderPrimary } = useTheme();
+  const { surfaceLight, surfaceLightest, textDark, borderPrimary } = useTheme();
 
   return useMemo(
     () =>
@@ -255,6 +390,11 @@ const useStylesheet = (props: ImageUploadGroupProps) => {
           display: "flex",
           flexDirection: "column",
           alignItems: "stretch",
+          margin: "8px 8px 0px 8px",
+          padding: 43,
+          borderRadius: 4,
+          backgroundColor: surfaceLight,
+          border: `solid 1px ${borderPrimary}`,
         },
         dropzoneContent: {
           transition: "opacity 0.3s linear",
@@ -326,6 +466,6 @@ const useStylesheet = (props: ImageUploadGroupProps) => {
           borderRadius: 2,
         },
       }),
-    [imageWidth, surfaceLightest, textDark, borderPrimary],
+    [imageWidth, surfaceLight, surfaceLightest, textDark, borderPrimary],
   );
 };

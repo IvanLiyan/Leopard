@@ -2921,7 +2921,7 @@ export default class AddEditProductState {
     }
 
     navigationStore.releaseNavigationLock();
-    await navigationStore.navigate("/plus/products/list");
+    await navigationStore.navigate(merchFeURL("/plus/products/list"));
     toastStore.info(
       ci18n(
         "popup telling the merchant a product has been removed to their store",
@@ -2972,7 +2972,7 @@ export default class AddEditProductState {
     }
 
     navigationStore.releaseNavigationLock();
-    await navigationStore.navigate("/product");
+    await navigationStore.navigate("/products");
     // Lint doesn't see that the arg is a binary expression of string literals
     /* eslint-disable local-rules/only-literals-in-i18n,local-rules/unwrapped-i18n */
     if (isNewProduct) {
@@ -2982,7 +2982,7 @@ export default class AddEditProductState {
             "The product name is placed in a link that leads to a page where they merchant can view the product",
           "[%1$s](%2$s) has been added to your store",
           name,
-          merchFeURL(`/products/edit/${productId}`),
+          `/products/edit?pid=${productId}`,
         ),
         {
           timeoutMs: 7000,
@@ -2995,7 +2995,7 @@ export default class AddEditProductState {
             "The product name is placed in a link that leads to a page where they merchant can view the product",
           "[%1$s](%2$s) has been updated",
           name,
-          merchFeURL(`/products/edit/${productId}`),
+          `/products/edit?pid=${productId}`,
         ),
         {
           timeoutMs: 7000,
