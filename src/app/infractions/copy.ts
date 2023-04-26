@@ -36,7 +36,7 @@ const TaggingViolationSubReasonCodeData: {
     title: ci18n("name of warning", "Brand Discrepancy"),
     body: i`Wish received written feedback indicating the product received was not the brand of the item being advertised in the listing. Listings which misrepresent products or set false expectations for customers are considered misleading and is in direct violation of Wish's policies. Please create a new listing that accurately represents the product being sold. [Learn more](${"https://merchant.wish.com/policy/inappropriate-reasons/33"}).`,
     policy: i`[Misleading Listing Policy](${"https://merchant.wish.com/policy/inappropriate-reasons/33"})`,
-    faq: i`[Misleading Listing FAQ](${zendeskURL("mu360003237193")})`,
+    faq: i`[Misleading Listing FAQ](${zendeskURL("360003237193")})`,
   },
   CONFEDERATE_FLAG: {
     parent: "HATE_CRIME",
@@ -75,7 +75,7 @@ const TaggingViolationSubReasonCodeData: {
     body: i`Wish does not allow realistic sexual wellness products such as (but not limited to) life-like or flesh-like sex dolls and/or body parts. This product may not be relisted.`,
     policy: i`[Graphic Sexual Content Policy](${"https://merchant.wish.com/policy/inappropriate-reasons/22"})`,
     faq: i`[Graphic Sexual Content Guidelines](${zendeskURL(
-      "mu360037656554",
+      "360037656554",
     )}), [Prohibited Product Listings FAQ](${zendeskURL("205211777")})`,
   },
   PLANT_SEED_WITH_IMPOSSIBLE_CLAIM: {
@@ -114,7 +114,7 @@ const TaggingViolationSubReasonCodeData: {
     ),
     body: i`The first image in this listing does not clearly show the product being sold.  The product being sold occupies 25% or less of the main image and is utilized in relation to another product that is not for sale. Listings which misrepresent products or set false expectations for customers are considered misleading and is in direct violation of Wish's policies. Please create a new listing that accurately represents the product being sold.`,
     policy: i`[Misleading Listing Policy](${"https://merchant.wish.com/policy/inappropriate-reasons/33"})`,
-    faq: i`[Misleading Listing FAQ](${zendeskURL("mu360003237193")})`,
+    faq: i`[Misleading Listing FAQ](${zendeskURL("360003237193")})`,
   },
   REVIEW_SHOW_WRONG_PRODUCT: {
     parent: "MISLEADING_LISTING",
@@ -124,7 +124,7 @@ const TaggingViolationSubReasonCodeData: {
     ),
     body: i`The product reviews from our customers indicate the product received was fundamentally different (e.g., serves a different function, product is an entirely different category of product or looks completely different) than the item being advertised. Listings which misrepresent products or set false expectations for customers are considered misleading and is in direct violation of Wish's policies. Please create a new listing that accurately represents the product being sold.`,
     policy: i`[Misleading Listing Policy](${"https://merchant.wish.com/policy/inappropriate-reasons/33"})`,
-    faq: i`[Misleading Listing FAQ](${zendeskURL("mu360003237193")})`,
+    faq: i`[Misleading Listing FAQ](${zendeskURL("360003237193")})`,
   },
   SPY_CAMERAS: {
     parent: "ILLEGAL_ELECTRONICS",
@@ -165,14 +165,14 @@ const TaggingViolationSubReasonCodeData: {
     ),
     body: i`The images showcase the product size to be much larger than what is actually being sold in this listing. Please make sure all photos of this listing represent the product actually being sold and do not create a false impression or confusion for your customers. Listings which misrepresent products or set false expectations for customers are considered misleading and is in direct violation of Wish's policies. Please create a new listing that accurately represents the product being sold.`,
     policy: i`[Misleading Listing Policy](${"https://merchant.wish.com/policy/inappropriate-reasons/33"})`,
-    faq: i`[Misleading Listing FAQ](${zendeskURL("mu360003237193")})`,
+    faq: i`[Misleading Listing FAQ](${zendeskURL("360003237193")})`,
   },
   SIZE_NOT_AS_ADVERTISED: {
     parent: "MISLEADING_LISTING",
     title: ci18n("name of warning", "Description & Size Not as Advertised"),
     body: i`The description and/or package size does not reflect the same product as the title and/or images. Please update the title and/or images and create a new listing that accurately represents the product being sold.`,
     policy: i`[Misleading Listing Policy](${"https://merchant.wish.com/policy/inappropriate-reasons/33"})`,
-    faq: i`[Misleading Listing FAQ](${zendeskURL("mu360003237193")})`,
+    faq: i`[Misleading Listing FAQ](${zendeskURL("360003237193")})`,
   },
   SEXUALLY_SUGGESTIVE_CONTENT: {
     parent: "NUDITY",
@@ -180,7 +180,7 @@ const TaggingViolationSubReasonCodeData: {
     body: i`Wish does not allow listings that include sexually suggestive content in the title, images, and/or description. If such content is removed, the listing may be reactivated.`,
     policy: i`[Graphic Sexual Content Policy](${"https://merchant.wish.com/policy/inappropriate-reasons/22"})`,
     faq: i`[Graphic Sexual Content Guidelines](${zendeskURL(
-      "mu360037656554",
+      "360037656554",
     )}), [Prohibited Product Listings FAQ](${zendeskURL("205211777")})`,
   },
   LISTING_PROMOTES_HIDING_PROHIBITED_SUBSTANCE: {
@@ -205,14 +205,14 @@ const TaggingViolationSubReasonCodeData: {
     title: ci18n("name of warning", "Customer Images Show Different Product"),
     body: i`The product review images from our customers indicate the product received was fundamentally different (e.g., serves a different function, product is an entirely different category of product, or looks completely different) than the item being advertised. Listings which misrepresent products or set false expectations for customers are considered misleading and is in direct violation of Wish's policies. Please create a new listing that accurately represents the product being sold.`,
     policy: i`[Misleading Listing Policy](${"https://merchant.wish.com/policy/inappropriate-reasons/33"})`,
-    faq: i`[Misleading Listing FAQ](${zendeskURL("mu360003237193")})`,
+    faq: i`[Misleading Listing FAQ](${zendeskURL("360003237193")})`,
   },
   UNREASONABLE_SPEC: {
     parent: "MISLEADING_LISTING",
     title: ci18n("name of warning", "Unreasonable or Exaggerated Spec"),
     body: i`Listings and/or product variations advertising devices with false, exaggerated, unreasonable, or impossible capacities/specifications are prohibited on Wish. Please create a new listing that accurately represents the product being sold.`,
     policy: i`[Misleading Listing Policy](${"https://merchant.wish.com/policy/inappropriate-reasons/33"})`,
-    faq: i`[Misleading Listing FAQ](${zendeskURL("mu360003237193")})`,
+    faq: i`[Misleading Listing FAQ](${zendeskURL("360003237193")})`,
   },
   HUMAN_GROWTH_HORMONE: {
     parent: "MEDICAL_MATERIALS",
@@ -255,7 +255,7 @@ const TaggingViolationSubReasonCodeData: {
     body: i`At this time, Wish prohibits listings containing unverified warranties or guarantees. The sale of verified warranties is prohibited unless you are a pre-approved merchant within specific regions. If you are a pre-approved merchant, please provide authorization documentation to relist this product on Wish.`,
     policy: i`[False Advertising Policy](${"https://merchant.wish.com/policy/inappropriate-reasons/25"})`,
     faq: i`[False Advertising FAQ](${zendeskURL(
-      "mu360005950894",
+      "360005950894",
     )}), [Prohibited Product Listings FAQ](${zendeskURL("205211777")})`,
   },
   ALCOHOL: {
@@ -280,7 +280,7 @@ const TaggingViolationSubReasonCodeData: {
     ),
     body: i`The images showcase the product size to be much larger than what is actually being sold in this listing. Please make sure all photos of this listing represent the product actually being sold and do not create a false impression or confusion for your customers. Listings which misrepresent products or set false expectations for customers are considered misleading and is in direct violation of Wish's policies. Please create a new listing that accurately represents the product being sold.`,
     policy: i`[Misleading Listing Policy](${"https://merchant.wish.com/policy/inappropriate-reasons/33"})`,
-    faq: i`[Misleading Listing FAQ](${zendeskURL("mu360003237193")})`,
+    faq: i`[Misleading Listing FAQ](${zendeskURL("360003237193")})`,
   },
   POPPERS_AND_MUSCLE_RELAXANTS: {
     parent: "SMOKING",
@@ -302,7 +302,7 @@ const TaggingViolationSubReasonCodeData: {
     body: i`Products or listings which advertise, promote, allude to, and/or depict any results for health and health-related, or personal care products without adequate substantiation are not permitted on Wish. If such content is removed, the listing may be reactivated.`,
     policy: i`[False Advertising Policy](${"https://merchant.wish.com/policy/inappropriate-reasons/25"})`,
     faq: i`[False Advertising FAQ](${zendeskURL(
-      "mu360005950894",
+      "360005950894",
     )}), [Prohibited Product Listings FAQ](${zendeskURL("205211777")})`,
   },
   GUN_SILENCER_MISUSE: {
@@ -346,7 +346,7 @@ const TaggingViolationSubReasonCodeData: {
     body: i`At this time, Wish prohibits listings containing unverified logos from credible agencies. This listing may be reactivated if such images or references are removed.`,
     policy: i`[False Advertising Policy](${"https://merchant.wish.com/policy/inappropriate-reasons/25"})`,
     faq: i`[False Advertising FAQ](${zendeskURL(
-      "mu360005950894",
+      "360005950894",
     )}), [Prohibited Product Listings FAQ](${zendeskURL("205211777")})`,
   },
   RANDOM_PRODUCT: {
@@ -362,7 +362,7 @@ const TaggingViolationSubReasonCodeData: {
     body: i`Listings which contain images of a nude minor (including partial nudity) are not permitted on Wish. The listing may be reactivated if such images are removed.`,
     policy: i`[Graphic Sexual Content Policy](${"https://merchant.wish.com/policy/inappropriate-reasons/22"})`,
     faq: i`[Graphic Sexual Content Guidelines](${zendeskURL(
-      "mu360037656554",
+      "360037656554",
     )}), [Prohibited Product Listings FAQ](${zendeskURL("205211777")})`,
   },
   MERCAHNT_CONTACT_OR_REFERAL: {
@@ -371,7 +371,7 @@ const TaggingViolationSubReasonCodeData: {
     body: i`At this time, Wish prohibits listings containing merchant contact or referral information. If such content is removed, the listing may be reactivated.`,
     policy: i`[False Advertising Policy](${"https://merchant.wish.com/policy/inappropriate-reasons/25"})`,
     faq: i`[False Advertising FAQ](${zendeskURL(
-      "mu360005950894",
+      "360005950894",
     )}), [Prohibited Product Listings FAQ](${zendeskURL("205211777")})`,
   },
   RACIAL_CLEANSING: {
@@ -408,7 +408,7 @@ const TaggingViolationSubReasonCodeData: {
     body: i`Wish does not allow sexual wellness product listings where the product is not the primary focus of the image. Sexual wellness product listings must include images that clearly depict the product for sale against a white or transparent backdrop and/or be free of blurring or censoring. To reactivate this listing, ensure all images comply with Wish Policies.`,
     policy: i`[Graphic Sexual Content Policy](${"https://merchant.wish.com/policy/inappropriate-reasons/22"})`,
     faq: i`[Graphic Sexual Content Guidelines](${zendeskURL(
-      "mu360037656554",
+      "360037656554",
     )}), [Prohibited Product Listings FAQ](${zendeskURL("205211777")})`,
   },
   ENDANGERED_SPECIES: {
@@ -430,7 +430,7 @@ const TaggingViolationSubReasonCodeData: {
     title: ci18n("name of warning", "Unsupported Medical Claims"),
     body: i`The listing advertises the use of unsupported medical claims and/or images that set false expectations for customers are considered misleading and is in direct violation of Wish's policies. Please create a new listing that accurately represents the product being sold.`,
     policy: i`[Misleading Listing Policy](${"https://merchant.wish.com/policy/inappropriate-reasons/33"})`,
-    faq: i`[Misleading Listing FAQ](${zendeskURL("mu360003237193")})`,
+    faq: i`[Misleading Listing FAQ](${zendeskURL("360003237193")})`,
   },
   BULLYING: {
     parent: "HATE_CRIME",
@@ -445,7 +445,7 @@ const TaggingViolationSubReasonCodeData: {
     body: i`Wish does not allow listings that include sexually explicit content in the title, images, and/or description. If such content is removed, the listing may be reactivated.`,
     policy: i`[Graphic Sexual Content Policy](${"https://merchant.wish.com/policy/inappropriate-reasons/22"})`,
     faq: i`[Graphic Sexual Content Guidelines](${zendeskURL(
-      "mu360037656554",
+      "360037656554",
     )}), [Prohibited Product Listings FAQ](${zendeskURL("205211777")})`,
   },
   OTC_MEDICATION: {
@@ -537,7 +537,7 @@ const TaggingViolationSubReasonCodeData: {
     title: ci18n("name of warning", "Unverified Price Information"),
     body: i`This listing contains inconsistencies in the product price and falls outside verifiable market rates. If such content is removed, the listing may be reactivated.`,
     policy: i`[False Advertising Policy](${"https://merchant.wish.com/policy/inappropriate-reasons/25"})`,
-    faq: i`[False Advertising FAQ](${zendeskURL("mu360005950894")})`,
+    faq: i`[False Advertising FAQ](${zendeskURL("360005950894")})`,
   },
   TOBACCO_SEEDS: {
     parent: "SMOKING",
@@ -562,7 +562,7 @@ const TaggingViolationSubReasonCodeData: {
     body: i`At this time, the use of watermarks, logos, images, and links belonging to other marketplaces is not permitted. Referring users off of Wish is a direct violation of Wish's merchant policies. If such content is removed, the listing may be reactivated.`,
     policy: i`[False Advertising Policy](${"https://merchant.wish.com/policy/inappropriate-reasons/25"})`,
     faq: i`[False Advertising FAQ](${zendeskURL(
-      "mu360005950894",
+      "360005950894",
     )}), [Prohibited Product Listings FAQ](${zendeskURL("205211777")})`,
   },
   ODOMETER_CORRECTION_TOOLS: {
@@ -627,7 +627,7 @@ const TaggingViolationSubReasonCodeData: {
     body: i`At this time, Wish prohibits listings containing "Verified by Wish" or "Wish Express" without authorization. If such content is removed, the listing may be reactivated.`,
     policy: i`[False Advertising Policy](${"https://merchant.wish.com/policy/inappropriate-reasons/25"})`,
     faq: i`[False Advertising FAQ](${zendeskURL(
-      "mu360005950894",
+      "360005950894",
     )}), [Prohibited Product Listings FAQ](${zendeskURL("205211777")})`,
   },
   NAZI_MEMORABILIA: {
@@ -684,7 +684,7 @@ const TaggingViolationSubReasonCodeData: {
     title: ci18n("name of warning", "Price Point Unreasonable"),
     body: i`The price of this item is unreasonably low for the product being sold and is in direct violation of Wish's policies. Please create a new listing that accurately represents the value of the product being sold.`,
     policy: i`[Misleading Listing Policy](${"https://merchant.wish.com/policy/inappropriate-reasons/33"})`,
-    faq: i`[Misleading Listing FAQ](${zendeskURL("mu360003237193")})`,
+    faq: i`[Misleading Listing FAQ](${zendeskURL("360003237193")})`,
   },
   CONTACT_LENS_SOLUTION: {
     parent: "MEDICAL_MATERIALS",
@@ -727,7 +727,7 @@ const TaggingViolationSubReasonCodeData: {
     body: i`At this time, Wish prohibits listings containing unverified shipping time frame information. If such content is removed, the listing may be reactivated.`,
     policy: i`[False Advertising Policy](${"https://merchant.wish.com/policy/inappropriate-reasons/25"})`,
     faq: i`[False Advertising FAQ](${zendeskURL(
-      "mu360005950894",
+      "360005950894",
     )}), [Prohibited Product Listings FAQ](${zendeskURL("205211777")})`,
   },
   MISLEADING_CLAIMS: {
@@ -764,7 +764,7 @@ const TaggingViolationSubReasonCodeData: {
     body: i`Providing shipping time frame information in the images, title, or description of a product is prohibited on WIsh. If such content is removed, the listing may be reactivated.`,
     policy: i`[False Advertising Policy](${"https://merchant.wish.com/policy/inappropriate-reasons/25"})`,
     faq: i`[False Advertising FAQ](${zendeskURL(
-      "mu360005950894",
+      "360005950894",
     )}), [Prohibited Product Listings FAQ](${zendeskURL("205211777")})`,
   },
   STANDALONE_LITHIUM_BATTERY: {
@@ -797,7 +797,7 @@ const TaggingViolationSubReasonCodeData: {
     body: i`Compliant listings of health and sensuality products must use images that clearly display the product for sale without the use of gratuitous nudity or obscenity. The listing may be reactivated if such images are removed.`,
     policy: i`[Graphic Sexual Content Policy](${"https://merchant.wish.com/policy/inappropriate-reasons/22"})`,
     faq: i`[Graphic Sexual Content Guidelines](${zendeskURL(
-      "mu360037656554",
+      "360037656554",
     )}), [Prohibited Product Listings FAQ](${zendeskURL("205211777")})`,
   },
   BULLION: {
@@ -834,7 +834,7 @@ const TaggingViolationSubReasonCodeData: {
     body: i`Products and listings which promote, allude, and/or depict sexual engagement with a minor are not permitted on Wish. This product may not be relisted.`,
     policy: i`[Graphic Sexual Content Policy](${"https://merchant.wish.com/policy/inappropriate-reasons/22"})`,
     faq: i`[Graphic Sexual Content Guidelines](${zendeskURL(
-      "mu360037656554",
+      "360037656554",
     )}), [Prohibited Product Listings FAQ](${zendeskURL("205211777")})`,
   },
   GUN_BUILDING_KITS: {
@@ -859,7 +859,7 @@ const TaggingViolationSubReasonCodeData: {
     ),
     body: i`All images should accurately include the product that is being sold. Additionally, the main image must always show the product being sold. Please update all images and create a new listing that accurately represents the product being sold.`,
     policy: i`[Misleading Listing Policy](${"https://merchant.wish.com/policy/inappropriate-reasons/33"})`,
-    faq: i`[Misleading Listing FAQ](${zendeskURL("mu360003237193")})`,
+    faq: i`[Misleading Listing FAQ](${zendeskURL("360003237193")})`,
   },
   EYELASH_GROWTH_SERUM: {
     parent: "MEDICAL_MATERIALS",
@@ -876,7 +876,7 @@ const TaggingViolationSubReasonCodeData: {
     ),
     body: i`The product reviews or image evidence from our customers indicate that many did not receive the product, indicating false tracking, receiving a letter/gift, or receiving an empty package. Listings which misrepresent products or set false expectations for customers are considered misleading and is in direct violation of Wish's policies. Please create a new listing that accurately represents the product being sold.`,
     policy: i`[Misleading Listing Policy](${"https://merchant.wish.com/policy/inappropriate-reasons/33"})`,
-    faq: i`[Misleading Listing FAQ](${zendeskURL("mu360003237193")})`,
+    faq: i`[Misleading Listing FAQ](${zendeskURL("360003237193")})`,
   },
   CIGARETTE: {
     parent: "SMOKING",
@@ -949,7 +949,7 @@ const TaggingViolationSubReasonCodeData: {
     title: ci18n("name of warning", "Customer Feedback About False Spec"),
     body: i`Listings and/or product variations advertising devices with false, exaggerated, unreasonable, or impossible capacities/specifications (e.g., the sale of storage devices with false or impossible capacities) are prohibited on Wish. Listings which misrepresent products or set false expectations for customers are considered misleading and is in direct violation of Wish's policies. Please create a new listing that accurately represents the product being sold.`,
     policy: i`[Misleading Listing Policy](${"https://merchant.wish.com/policy/inappropriate-reasons/33"})`,
-    faq: i`[Misleading Listing FAQ](${zendeskURL("mu360003237193")})`,
+    faq: i`[Misleading Listing FAQ](${zendeskURL("360003237193")})`,
   },
   BUTANE: {
     parent: "HAZARDOUS_MATERIALS",
@@ -991,7 +991,7 @@ const TaggingViolationSubReasonCodeData: {
     title: ci18n("name of warning", "Title and Main Image Discrepancy"),
     body: i`The title and/or main image of this listing does not accurately represent the product being sold. There is conflicting information between the title and main Image. Listings which misrepresent products or set false expectations for customers are considered misleading and is in direct violation of Wish's policies. Please correct both the title and main image and create a new listing that accurately represents the product being sold.`,
     policy: i`[Misleading Listing Policy](${"https://merchant.wish.com/policy/inappropriate-reasons/33"})`,
-    faq: i`[Misleading Listing FAQ](${zendeskURL("mu360003237193")})`,
+    faq: i`[Misleading Listing FAQ](${zendeskURL("360003237193")})`,
   },
   COCKROACH_CHALK: {
     parent: "HAZARDOUS_MATERIALS",
@@ -1033,7 +1033,7 @@ const TaggingViolationSubReasonCodeData: {
     title: ci18n("name of warning", "Missing Key Feature"),
     body: i`Wish received written feedback indicating the product received was missing a key feature that the item was originally advertised with. Listings which misrepresent products or set false expectations for customers are considered misleading and is in direct violation of Wish's policies. Please create a new listing that accurately represents the product being sold.`,
     policy: i`[Misleading Listing Policy](${"https://merchant.wish.com/policy/inappropriate-reasons/33"})`,
-    faq: i`[Misleading Listing FAQ](${zendeskURL("mu360003237193")})`,
+    faq: i`[Misleading Listing FAQ](${zendeskURL("360003237193")})`,
   },
   UNCENSORED_EROTIC_ANIME: {
     parent: "NUDITY",
@@ -1041,7 +1041,7 @@ const TaggingViolationSubReasonCodeData: {
     body: i`Pornographic material such as uncensored depictions of erotic anime products are not permitted. Compliant listings sexualized anime products must use images that clearly display the product for sale without the use of gratuitous nudity or obscenity. The listing may be reactivated if such images are removed or appropriately censored.`,
     policy: i`[Graphic Sexual Content Policy](${"https://merchant.wish.com/policy/inappropriate-reasons/22"})`,
     faq: i`[Graphic Sexual Content Guidelines](${zendeskURL(
-      "mu360037656554",
+      "360037656554",
     )}), [Prohibited Product Listings FAQ](${zendeskURL("205211777")})`,
   },
   VHS_TAPE: {
@@ -1263,7 +1263,7 @@ const CounterfeitReasonData: {
     body: i`This listing has been flagged for violating Wish's Policies on "Price Gouging". For more information regarding our "Price Gouging" Policy, [click here](${"https://merchant.wish.com/policy/inappropriate-reasons/40"}).${"\n\n"}Product listings that are priced significantly higher than reasonable market value are not permitted on Wish. Please create a new listing that accurately represents the value of the product being sold.`,
     policy: i`[Price Gouging Policy](${"https://merchant.wish.com/policy/inappropriate-reasons/40"})`,
     faq: i`[Coronavirus / COVID-19 Pandemic Price Gouging Policy FAQ](${zendeskURL(
-      "mu1260802749270",
+      "1260802749270",
     )})`,
   },
   SMOKING: {

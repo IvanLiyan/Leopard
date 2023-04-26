@@ -190,8 +190,8 @@ export const useInfractionProvider = ({
       id: infractionId,
       title: infractionCopy.title,
       body: (infraction.merchantActions ?? []).includes("PRODUCT_AUTHORIZATION")
-        ? i`[Learn more](${zendeskURL(
-            "mu360055998653",
+        ? i`${infractionCopy.body}${"\n\n&nbsp;\n\n"}[Learn more](${zendeskURL(
+            "360055998653",
           )}) about the requirements needed to offer this category of product on Wish.`
         : infractionCopy.body,
       policy: infractionCopy.policy,
