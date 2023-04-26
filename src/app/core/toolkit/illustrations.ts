@@ -102,11 +102,12 @@ import announcementBadgeVideosURL from "public/images/home/announcement-icons/vi
 import announcementBadgeWishExpressBlueBoxURL from "public/images/home/announcement-icons/wish-express-blue-box.svg";
 import announcementBadgeWishPostURL from "public/images/home/announcement-icons/wish-post.svg";
 import announcementBadgeWishStandardsURL from "public/images/home/announcement-icons/wish-standards.svg";
-import homePbModalBudgetURL from "public/images/home/product-boost-announcement/home-pb-modal-budget.svg";
-import homePbModalFbwDiscountURL from "public/images/home/product-boost-announcement/home-pb-modal-fbw-discount.svg";
-import homePbModalLogoURL from "public/images/home/product-boost-announcement/home-pb-modal-logo.svg";
-import homePbModalRefundAssuranceURL from "public/images/home/product-boost-announcement/home-pb-modal-refund-assurance.svg";
-import homePbModalRocketURL from "public/images/home/product-boost-announcement/home-pb-modal-rocket.png";
+import homePbModalBudgetURL from "public/images/home/announcement-modal/product-boost-announcement/home-pb-modal-budget.svg";
+import homePbModalFbwDiscountURL from "public/images/home/announcement-modal/product-boost-announcement/home-pb-modal-fbw-discount.svg";
+import homePbModalLogoURL from "public/images/home/announcement-modal/product-boost-announcement/home-pb-modal-logo.svg";
+import homePbModalRefundAssuranceURL from "public/images/home/announcement-modal/product-boost-announcement/home-pb-modal-refund-assurance.svg";
+import homePbModalRocketURL from "public/images/home/announcement-modal/product-boost-announcement/home-pb-modal-rocket.png";
+import homeFrsOptInModalURL from "public/images/home/announcement-modal/home-frs-opt-in-modal.svg";
 
 import bannerBackToOnboardingURL from "public/images/home/banner-images/banner-back-to-onboarding.svg";
 import bannerCustomerSupportURL from "public/images/home/banner-images/banner-customer-support.svg";
@@ -279,3 +280,4 @@ export const wishExpressTruck = wishExpressTruckURL;
 export const emptyImage = emptyImageURL;
 export const authenticBrandSellerBadge = authenticBrandSellerBadgeURL;
 export const mockMobileHeader = mockMobileHeaderURL;
+export const homeFrsOptInModal = homeFrsOptInModalURL;

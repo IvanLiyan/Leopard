@@ -6,6 +6,7 @@ import {
   AnnouncementType,
   Datetime,
   MerchantAnnouncementV2Schema,
+  MerchantSchema,
 } from "@schema";
 import gql from "graphql-tag";
 
@@ -125,3 +126,18 @@ export const ProgramIdToIllustrationName: {
   PROGRAM_VIDEOS: "announcementBadgeVideos",
   PROGRAM_WISH_STANDARDS: "announcementBadgeWishStandards",
 };
+
+export type OptInStatusResponseType = {
+  readonly currentMerchant?: Pick<
+    MerchantSchema,
+    "isFlatRateShippingOptedIn" | "canAccessFlatRateShippingOptInOptOut"
+  > | null;
+};
+export const GET_OPT_IN_STATUS = gql`
+  query FlatRateShippingSettings_GetOptInStatus {
+    currentMerchant {
+      isFlatRateShippingOptedIn
+      canAccessFlatRateShippingOptInOptOut
+    }
+  }
+`;

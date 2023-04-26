@@ -1,4 +1,5 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { observer } from "mobx-react";
 import RefundAssuranceSplashModal from "./product-boost/RefundAssuranceSplashModal";
 import { useRequest } from "@core/toolkit/restApi";
 import {
@@ -6,6 +7,16 @@ import {
   GetHomePageModalResult,
   PB_GET_HOME_PAGE_PARAMS_ENDPOINT,
 } from "@home/toolkit/product-boost";
+import { useQuery } from "@apollo/client";
+import {
+  AnnouncementTypeConstants,
+  GET_OPT_IN_STATUS,
+  GET_USER_ANNOUNCEMENTS_V2_MODAL,
+  GetUserAnnouncementsV2ModalResponseType,
+  OptInStatusResponseType,
+} from "@home/toolkit/announcements";
+import { AnnouncementsForUsersV2SchemaListArgs } from "@schema";
+import { useApolloStore } from "@core/stores/ApolloStore";
 import BulkEnableFBWCampaignModal from "./product-boost/BulkEnableFBWCampaignModal";
 import BulkDuplicateAutomatedModal from "./product-boost/BulkDuplicateAutomatedModal";
 import BulkIncreaseBudgetModal from "./product-boost/BulkIncreaseBudgetModal";
@@ -13,16 +24,8 @@ import BulkResumeCampaignModal from "./product-boost/BulkResumeCampaignModal";
 import FreePromotionModal from "./product-boost/FreePromotionModal";
 import PromoMessageModal from "./product-boost/PromoMessageModal";
 import FreeCreditModal from "./product-boost/FreeCreditModal";
-import { useQuery } from "@apollo/client";
-import {
-  AnnouncementTypeConstants,
-  GET_USER_ANNOUNCEMENTS_V2_MODAL,
-  GetUserAnnouncementsV2ModalResponseType,
-} from "@home/toolkit/announcements";
-import { AnnouncementsForUsersV2SchemaListArgs } from "@schema";
-import { useApolloStore } from "@core/stores/ApolloStore";
 import AnnouncementModal from "./AnnouncementModal";
-import { observer } from "mobx-react";
+import FrsOptInModal from "./FrsOptInModal";
 
 type ModalState = "OPEN" | "DISMISSED" | "QUEUED";
 
@@ -36,6 +39,8 @@ const AnnouncementModals: React.FC = () => {
   // - "QUEUED": data has loaded and this modal has yet to be shown
   // - "OPEN": data has loaded and this modal is currently being shown (max one can be open at a time)
   // - "DISMISSED": data has loaded and this modal has already been shown
+  const [frsOptInAnnouncementModalState, setFrsOptInAnnouncementModalState] =
+    useState<ModalState | undefined>();
   const [announcementModalState, setAnnouncementModalState] = useState<
     ModalState | undefined
   >();
@@ -90,6 +95,9 @@ const AnnouncementModals: React.FC = () => {
     },
   });
 
+  const { data: dataFrsOptInStatus, loading: isLoadingFrsOptInStatus } =
+    useQuery<OptInStatusResponseType, Record<string, never>>(GET_OPT_IN_STATUS);
+
   // Once per lifecycle, once data has loaded, set modal states to "QUEUED" for
   // all modals that need to be shown. Set the first modal that would be "QUEUED"
   // to "OPEN"
@@ -101,7 +109,8 @@ const AnnouncementModals: React.FC = () => {
       errorPbData != null ||
       dataAnnouncements == null ||
       isLoadingAnnouncements ||
-      errorAnnouncements != null
+      errorAnnouncements != null ||
+      isLoadingFrsOptInStatus
     ) {
       return;
     }
@@ -123,6 +132,13 @@ const AnnouncementModals: React.FC = () => {
       can_view_refund_assurance_credit_modal: canViewRefundAssuranceCreditModal,
     } = dataPb;
 
+    const optedIntoFrs =
+      dataFrsOptInStatus?.currentMerchant?.isFlatRateShippingOptedIn ?? false;
+    const canSeeFrsOptIn =
+      dataFrsOptInStatus?.currentMerchant
+        ?.canAccessFlatRateShippingOptInOptOut ?? false;
+    const showFrsOptInAnnouncementModal = canSeeFrsOptIn && !optedIntoFrs;
+
     let firstModalSet = false;
     const enqueue = (
       setStateAction: (value: SetStateAction<ModalState | undefined>) => void,
@@ -135,6 +151,10 @@ const AnnouncementModals: React.FC = () => {
 
       setStateAction("QUEUED");
     };
+
+    if (showFrsOptInAnnouncementModal) {
+      enqueue(setFrsOptInAnnouncementModalState);
+    }
 
     if (announcement !== undefined) {
       enqueue(setAnnouncementModalState);
@@ -178,6 +198,8 @@ const AnnouncementModals: React.FC = () => {
     dataAnnouncements,
     isLoadingAnnouncements,
     errorAnnouncements,
+    dataFrsOptInStatus,
+    isLoadingFrsOptInStatus,
   ]);
 
   // When called, set the currently modal whose state is "OPEN" to "DISMISSED"
@@ -186,6 +208,7 @@ const AnnouncementModals: React.FC = () => {
     const stateActionPairs: ReadonlyArray<
       [ModalState | undefined, Dispatch<SetStateAction<ModalState | undefined>>]
     > = [
+      [frsOptInAnnouncementModalState, setFrsOptInAnnouncementModalState],
       [announcementModalState, setAnnouncementModalState],
       [refundAssuranceSplashModalState, setRefundAssuranceSplashModalState],
       [bulkEnableFbwCampaignModalState, setBulkEnableFBWCampaignModalState],
@@ -254,6 +277,10 @@ const AnnouncementModals: React.FC = () => {
 
   return (
     <>
+      <FrsOptInModal
+        open={frsOptInAnnouncementModalState === "OPEN"}
+        onClose={() => advanceModal()}
+      />
       <AnnouncementModal
         open={announcementModalState === "OPEN"}
         onClose={() => advanceModal()}
