@@ -23,6 +23,7 @@
       "@chrome/*": ["src/app/chrome/*"],
       "@core/*": ["src/app/core/*"],
       "@core-builder/*": ["src/app/core-builder/*"],
+      "@home/*": ["src/app/home/*"],
       "@infractions/*": ["src/app/infractions/*"],
       "@landing-pages/*": ["src/app/landing-pages/*"],
       "@performance/*": ["src/app/performance/*"],

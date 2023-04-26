@@ -157,7 +157,7 @@ export const useRequest = <TResponse, TRequest = RestApiBody>(
 export const useMutation = <TResponse, TRequest = RestApiBody>(
   restApiConfig: RestApiConfig<TRequest> | null,
   // options?: SWRMutationConfiguration,
-): SWRMutationResponse<TResponse | undefined> => {
+): SWRMutationResponse<TResponse | undefined, unknown, TRequest> => {
   const fetcher = useFetcher<TResponse, TRequest>();
   return useSWRMutation(restApiConfig, fetcher);
 };
