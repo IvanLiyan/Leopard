@@ -102,7 +102,7 @@ const Categorization: React.FC<Props> = (props: Props) => {
           <Markdown
             style={styles.brandError}
             text={i`This brand does not exist in the Brand Directory. [View Brand Directory](${merchFeURL(
-              "branded-products/brand-directory",
+              "/branded-products/brand-directory",
             )})`}
             openLinksInNewTab
           />

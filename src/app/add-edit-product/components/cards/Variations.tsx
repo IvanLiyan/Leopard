@@ -78,6 +78,7 @@ const Variations: React.FC<Props> = (props: Props) => {
               ),
               onClick: () => {
                 uncheckHasVariations();
+                setIsDiscardModalOpen(false);
               },
             }}
           />

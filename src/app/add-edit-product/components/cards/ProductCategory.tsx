@@ -325,6 +325,7 @@ const ProductCategory: React.FC<Props> = (props: Props) => {
           text: ci18n("Modal CTA", "Yes"),
           onClick: () => {
             updateSubcategory(selectedSubcategory);
+            setIsConfirmModalOpen(false);
           },
         }}
       ></ConfirmationModal>

@@ -268,7 +268,9 @@ const VariationsTable: React.FC<Props> = (props: Props) => {
               placeholder={ci18n("Select a dropdown option", "Select")}
             />
           ) : (
-            values.join(", ") || NO_DATA_MSG
+            <Text style={styles.tableText}>
+              {values.join(", ") || NO_DATA_MSG}
+            </Text>
           );
         }}
       </Table.Column>
@@ -332,7 +334,7 @@ const VariationsTable: React.FC<Props> = (props: Props) => {
             style={[styles.modalButtonsColumn, styles.modalButtons]}
             alignItems="flex-start"
           >
-            <Text style={styles.text}>
+            <Text style={styles.textDark}>
               View and update required category specific variation attributes
             </Text>
             <PrimaryButton
@@ -633,7 +635,7 @@ const VariationsTable: React.FC<Props> = (props: Props) => {
                     style={styles.quantityValueInput}
                   />
                   {unitPriceUnit != null && (
-                    <Text style={{ marginLeft: 8 }}>
+                    <Text style={[styles.tableText, { marginLeft: 8 }]}>
                       {unitDisplayName(unitPriceUnit).symbol}
                     </Text>
                   )}
@@ -716,8 +718,11 @@ const useStylesheet = () => {
         modalButtonsColumn: {
           gap: 16,
         },
-        text: {
+        textDark: {
           color: textDark,
+        },
+        tableText: {
+          fontSize: 15,
         },
       }),
     [textDark],
