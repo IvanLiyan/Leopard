@@ -14,6 +14,7 @@ import React, {
   useImperativeHandle,
   useEffect,
   useMemo,
+  useRef,
 } from "react";
 import { useRouter } from "next/router";
 
@@ -77,6 +78,10 @@ type NavigationStore = {
   readonly back: () => void;
   readonly download: (path: string) => void;
   readonly navigate: (path: string, options?: NavigateOptions) => Promise<void>;
+  readonly useExitConfirmation: (params: {
+    message?: string;
+    enable: boolean;
+  }) => { bypassExitConfirmation: (value?: boolean) => void };
 };
 
 const NavigationContext = createContext<NavigationStore>({
@@ -109,6 +114,9 @@ const NavigationContext = createContext<NavigationStore>({
     throw "Hit Default NavigationContext";
   },
   navigate: () => {
+    throw "Hit Default NavigationContext";
+  },
+  useExitConfirmation: () => {
     throw "Hit Default NavigationContext";
   },
 });
@@ -228,6 +236,56 @@ export const NavigationProvider: React.FC = ({ children }) => {
       }
     };
 
+    /**
+     * Show confirmation message on page exit
+     * Referenced discussion thread: https://github.com/vercel/next.js/discussions/32231
+     */
+    const useExitConfirmation = ({
+      message,
+      enable,
+    }: {
+      message?: string;
+      enable: boolean;
+    }) => {
+      const router = useRouter();
+      const bypassConfirmationRef = useRef(false);
+
+      const displayMessage =
+        message ?? i`You have unsaved changes. Are you sure you want to leave?`;
+
+      useEffect(() => {
+        const shouldBypassConfimation = () =>
+          !enable || bypassConfirmationRef.current;
+
+        const handleWindowClose = (e: BeforeUnloadEvent) => {
+          if (shouldBypassConfimation()) return;
+          e.preventDefault();
+          return (e.returnValue = displayMessage);
+        };
+
+        const handleBrowseAway = () => {
+          if (shouldBypassConfimation()) return;
+          if (window.confirm(displayMessage)) return;
+          router.events.emit("routeChangeError");
+          throw "routeChange aborted by user. Triggered by useExitConfirmation. Please ignore this error.";
+        };
+
+        window.addEventListener("beforeunload", handleWindowClose);
+        router.events.on("routeChangeStart", handleBrowseAway);
+
+        return () => {
+          window.removeEventListener("beforeunload", handleWindowClose);
+          router.events.off("routeChangeStart", handleBrowseAway);
+        };
+      }, [enable, router.events, displayMessage]);
+
+      return {
+        bypassExitConfirmation: (value = true) => {
+          bypassConfirmationRef.current = value;
+        },
+      };
+    };
+
     return {
       currentPath,
       currentSearch,
@@ -242,6 +300,7 @@ export const NavigationProvider: React.FC = ({ children }) => {
       back,
       download,
       navigate,
+      useExitConfirmation,
     };
   }, [currentHash, currentPath, currentSearch, navigationLock, router]);
 

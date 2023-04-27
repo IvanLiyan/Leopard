@@ -884,6 +884,9 @@ export default class AddEditProductState {
   @observable
   showVariationGroupingUI: boolean;
 
+  @observable
+  saved = false;
+
   constructor({
     initialState,
     isCloning = false,
@@ -2936,7 +2939,6 @@ export default class AddEditProductState {
     const { errorMessage, name, asInput: input, isNewProduct } = this;
     this.forceValidation = true;
     const toastStore = ToastStore.instance();
-    const navigationStore = NavigationStore.instance();
     const { client } = ApolloStore.instance();
     if (errorMessage != null) {
       toastStore.negative(errorMessage, {
@@ -2970,9 +2972,8 @@ export default class AddEditProductState {
       toastStore.negative(message || i`Something went wrong`);
       return;
     }
+    this.saved = true;
 
-    navigationStore.releaseNavigationLock();
-    await navigationStore.navigate("/products");
     // Lint doesn't see that the arg is a binary expression of string literals
     /* eslint-disable local-rules/only-literals-in-i18n,local-rules/unwrapped-i18n */
     if (isNewProduct) {
@@ -2982,7 +2983,7 @@ export default class AddEditProductState {
             "The product name is placed in a link that leads to a page where they merchant can view the product",
           "[%1$s](%2$s) has been added to your store",
           name,
-          `/products/edit?pid=${productId}`,
+          `/md/products/edit?pid=${productId}`,
         ),
         {
           timeoutMs: 7000,
@@ -2995,7 +2996,7 @@ export default class AddEditProductState {
             "The product name is placed in a link that leads to a page where they merchant can view the product",
           "[%1$s](%2$s) has been updated",
           name,
-          `/products/edit?pid=${productId}`,
+          `/md/products/edit?pid=${productId}`,
         ),
         {
           timeoutMs: 7000,

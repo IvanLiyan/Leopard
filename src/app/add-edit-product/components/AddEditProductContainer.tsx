@@ -73,17 +73,19 @@ const AddEditProductContainer: React.FC<Props> = ({ initialData }: Props) => {
     }),
   );
 
+  const { bypassExitConfirmation } = navigationStore.useExitConfirmation({
+    enable: state.hasChanged,
+    message: i`You have unsaved changes. Are you sure you want to leave?`,
+  });
+
   useEffect(() => {
-    if (state.hasChanged) {
-      navigationStore.placeNavigationLock(
-        i`You have unsaved changed. Are you sure want to leave?`,
-      );
-    } else {
-      navigationStore.releaseNavigationLock();
+    if (state.saved) {
+      bypassExitConfirmation(true);
+      void navigationStore.navigate("/products");
     }
-    // navigationStore is not a dependency, adding it in will lead to infinite loop
+    // navigationStore is not a dependency
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state.hasChanged]);
+  }, [state.saved, bypassExitConfirmation]);
 
   const backLink = "/products";
 
