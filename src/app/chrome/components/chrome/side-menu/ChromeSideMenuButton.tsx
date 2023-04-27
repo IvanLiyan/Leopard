@@ -130,6 +130,7 @@ const ChromeSideMenuButton: React.FC<Props> = (props: Props) => {
           }
           onMouseEnter={() => setIsHovering(true)}
           onMouseLeave={() => setIsHovering(false)}
+          data-cy={`menu-node-${node.label}`}
         >
           <Layout.FlexRow alignItems="center">
             {icon && (

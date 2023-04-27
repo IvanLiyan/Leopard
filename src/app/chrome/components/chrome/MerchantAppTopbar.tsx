@@ -93,6 +93,7 @@ const MerchantAppTopbar: React.FC<MerchantAppTopbarProps> = ({
                   "Description of a button that toggles the nav",
                   "Toggle navigation",
                 )}
+                data-cy="hamburger-icon"
               >
                 <Icon
                   style={styles.burger}
