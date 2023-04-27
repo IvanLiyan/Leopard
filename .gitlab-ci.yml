@@ -54,6 +54,8 @@ build prod:
     when: always
     paths:
       - out
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   dependencies:
     - install dependencies
 
@@ -64,7 +66,11 @@ deploy staging:
     - sh scripts/deploy.sh -s=leopard-staging
   environment:
     name: staging
-  when: manual
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      when: on_success
+    - when: manual
+      allow_failure: true
   tags: [leopard-staging]
   dependencies:
     - build staging
