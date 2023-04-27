@@ -132,6 +132,7 @@ const InappropriateContentDispute: React.FC = () => {
                   onChange={(event) => {
                     setCheckA(event.target.checked);
                   }}
+                  data-cy="product-incorrectly-taken-down-check"
                 />
                 <Text>The product was incorrectly taken down for {title}</Text>
               </Layout.FlexRow>
@@ -141,6 +142,7 @@ const InappropriateContentDispute: React.FC = () => {
                   onChange={(event) => {
                     setCheckB(event.target.checked);
                   }}
+                  data-cy="product-is-authentic-check"
                 />
                 <Text>
                   The product in this listing is authentic and/or authorized and
@@ -153,6 +155,7 @@ const InappropriateContentDispute: React.FC = () => {
                   onChange={(event) => {
                     setCheckC(event.target.checked);
                   }}
+                  data-cy="complies-with-policies-check"
                 />
                 <Text>
                   The product in this listing complies with Wish&apos;s polices
@@ -177,6 +180,7 @@ const InappropriateContentDispute: React.FC = () => {
                 }))}
                 placeholder={ci18n("placeholder for input", "Product category")}
                 disabled={tagsQueryLoading || tagsDeciderKeyLoading}
+                data-cy="product-category"
               />
             </HorizontalField>
             <HorizontalField
@@ -192,6 +196,7 @@ const InappropriateContentDispute: React.FC = () => {
                   "placeholder for input",
                   "Product subcategory",
                 )}
+                data-cy="product-subcategory"
               />
             </HorizontalField>
             <HorizontalField
@@ -207,6 +212,7 @@ const InappropriateContentDispute: React.FC = () => {
                   setProductName(text);
                 }}
                 placeholder={ci18n("placeholder for input", "Product name")}
+                data-cy="product-name"
               />
             </HorizontalField>
             <HorizontalField
@@ -224,7 +230,8 @@ const InappropriateContentDispute: React.FC = () => {
                 onChange={({ text }) => {
                   setDescription(text);
                 }}
-                placeholder={ci18n("placeholder for input", "Describe reason")}
+                placeholder={ci18n("placeholder for input", "Describe product")}
+                data-cy="product-description"
               />
             </HorizontalField>
             <HorizontalField
@@ -243,6 +250,7 @@ const InappropriateContentDispute: React.FC = () => {
                   setExplanation(text);
                 }}
                 placeholder={ci18n("placeholder for input", "Describe")}
+                data-cy="explanation"
               />
             </HorizontalField>
             <HorizontalField
@@ -261,6 +269,7 @@ const InappropriateContentDispute: React.FC = () => {
                   setPhotos(attachments);
                 }}
                 bucket="TEMP_UPLOADS_V2"
+                data-cy="original-photos-upload"
               />
             </HorizontalField>
           </>
@@ -277,6 +286,7 @@ const InappropriateContentDispute: React.FC = () => {
                 text: ci18n("CTA on button", "Submit"),
                 onClick: onSubmit,
                 isDisabled: mutationLoading || !canSubmit,
+                "data-cy": "submit-button",
               }
             : undefined
         }
@@ -284,6 +294,7 @@ const InappropriateContentDispute: React.FC = () => {
           text: ci18n("CTA on button", "Cancel"),
           href: `/warnings/warning?id=${infractionId}`,
           disabled: mutationLoading,
+          "data-cy": "cancel-button",
         }}
       />
     </Accordion>

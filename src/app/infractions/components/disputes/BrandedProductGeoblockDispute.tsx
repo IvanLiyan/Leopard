@@ -105,6 +105,7 @@ const BrandedProductGeoblockDispute: React.FC = () => {
                   setExplanation(text);
                 }}
                 placeholder={i`Explain how you have not committed this infraction.`}
+                data-cy="explanation"
               />
             </HorizontalField>
             <HorizontalField
@@ -124,6 +125,7 @@ const BrandedProductGeoblockDispute: React.FC = () => {
                   setDocumentation(attachments);
                 }}
                 bucket="TEMP_UPLOADS_V2"
+                data-cy="documentation-upload"
               />
             </HorizontalField>
           </>
@@ -140,6 +142,7 @@ const BrandedProductGeoblockDispute: React.FC = () => {
                 text: i`Submit`,
                 onClick: onSubmit,
                 isDisabled: loading || !canSubmit,
+                "data-cy": "submit-button",
               }
             : undefined
         }
@@ -147,6 +150,7 @@ const BrandedProductGeoblockDispute: React.FC = () => {
           text: i`Cancel`,
           href: `/warnings/warning?id=${infractionId}`,
           disabled: loading,
+          "data-cy": "cancel-button",
         }}
       />
     </Accordion>

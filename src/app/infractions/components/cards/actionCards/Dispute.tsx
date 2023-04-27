@@ -27,7 +27,9 @@ const Dispute: React.FC<Pick<BaseProps, "className" | "style">> = ({
       title={ci18n("card title", "Dispute")}
       ctaButtons={
         <NextLink href={disputeUrl} passHref>
-          <Button href={disputeUrl}>Dispute Infraction</Button>
+          <Button href={disputeUrl} data-cy="dispute-button">
+            Dispute Infraction
+          </Button>
         </NextLink>
       }
     >

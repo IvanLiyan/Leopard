@@ -134,6 +134,7 @@ const CounterfeitDispute: React.FC = () => {
                   onChange={(event) => {
                     setCheckA(event.target.checked);
                   }}
+                  data-cy="product-incorrectly-taken-down-check"
                 />
                 <Text>
                   The product as shown in the listing was incorrectly taken down
@@ -146,6 +147,7 @@ const CounterfeitDispute: React.FC = () => {
                   onChange={(event) => {
                     setCheckB(event.target.checked);
                   }}
+                  data-cy="product-is-authentic-check"
                 />
                 <Text>
                   The product in this listing is authentic and/or authorized and
@@ -158,6 +160,7 @@ const CounterfeitDispute: React.FC = () => {
                   onChange={(event) => {
                     setCheckC(event.target.checked);
                   }}
+                  data-cy="not-infringing-check"
                 />
                 <Text>
                   The listing does not infringe on one&apos;s Intellectual
@@ -183,6 +186,7 @@ const CounterfeitDispute: React.FC = () => {
                 }))}
                 placeholder={ci18n("placeholder for input", "Product category")}
                 disabled={tagsQueryLoading || tagsDeciderKeyLoading}
+                data-cy="product-category"
               />
             </HorizontalField>
             <HorizontalField
@@ -198,6 +202,7 @@ const CounterfeitDispute: React.FC = () => {
                   "placeholder for input",
                   "Product subcategory",
                 )}
+                data-cy="product-subcategory"
               />
             </HorizontalField>
             <HorizontalField
@@ -213,6 +218,7 @@ const CounterfeitDispute: React.FC = () => {
                   setProductName(text);
                 }}
                 placeholder={ci18n("placeholder for input", "Product name")}
+                data-cy="product-name"
               />
             </HorizontalField>
             <HorizontalField
@@ -230,7 +236,8 @@ const CounterfeitDispute: React.FC = () => {
                 onChange={({ text }) => {
                   setDescription(text);
                 }}
-                placeholder={ci18n("placeholder for input", "Describe reason")}
+                placeholder={ci18n("placeholder for input", "Describe product")}
+                data-cy="product-description"
               />
             </HorizontalField>
             <HorizontalField
@@ -249,6 +256,7 @@ const CounterfeitDispute: React.FC = () => {
                   setExplanation(text);
                 }}
                 placeholder={ci18n("placeholder for input", "Describe")}
+                data-cy="explanation"
               />
             </HorizontalField>
             <Heading variant="h5" sx={{ padding: "6px 0px" }}>
@@ -267,6 +275,7 @@ const CounterfeitDispute: React.FC = () => {
                 setDocumentation(attachments);
               }}
               bucket="TEMP_UPLOADS_V2"
+              data-cy="documentation-upload"
             />
           </>
         ) : (
@@ -282,6 +291,7 @@ const CounterfeitDispute: React.FC = () => {
                 text: ci18n("CTA for button", "Submit"),
                 onClick: onSubmit,
                 isDisabled: mutationLoading || !canSubmit,
+                "data-cy": "submit-button",
               }
             : undefined
         }
@@ -289,6 +299,7 @@ const CounterfeitDispute: React.FC = () => {
           text: ci18n("CTA for button", "Cancel"),
           href: `/warnings/warning?id=${infractionId}`,
           disabled: mutationLoading,
+          "data-cy": "cancel-button",
         }}
       />
     </Accordion>

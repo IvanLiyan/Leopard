@@ -231,6 +231,7 @@ const MisleadingListingDispute: React.FC = () => {
                   onChange={(event) => {
                     setCheckA(event.target.checked);
                   }}
+                  data-cy="product-incorrectly-taken-down-check"
                 />
                 <Text>
                   The product was incorrectly taken down for Misleading Listing
@@ -242,6 +243,7 @@ const MisleadingListingDispute: React.FC = () => {
                   onChange={(event) => {
                     setCheckB(event.target.checked);
                   }}
+                  data-cy="product-is-authentic-check"
                 />
                 <Text>
                   The product in this listing is authentic and/or authorized and
@@ -254,6 +256,7 @@ const MisleadingListingDispute: React.FC = () => {
                   onChange={(event) => {
                     setCheckC(event.target.checked);
                   }}
+                  data-cy="listing-is-accurate-check"
                 />
                 <Text>
                   The listing accurately represents the product being sold
@@ -278,6 +281,7 @@ const MisleadingListingDispute: React.FC = () => {
                 }))}
                 placeholder={ci18n("placeholder for input", "Product category")}
                 disabled={tagsQueryLoading || tagsDeciderKeyLoading}
+                data-cy="product-category"
               />
             </HorizontalField>
             <HorizontalField
@@ -293,6 +297,7 @@ const MisleadingListingDispute: React.FC = () => {
                   "placeholder for input",
                   "Product subcategory",
                 )}
+                data-cy="product-subcategory"
               />
             </HorizontalField>
             <HorizontalField
@@ -308,6 +313,7 @@ const MisleadingListingDispute: React.FC = () => {
                   setProductName(text);
                 }}
                 placeholder={ci18n("placeholder for input", "Product name")}
+                data-cy="product-name"
               />
             </HorizontalField>
             <HorizontalField
@@ -325,7 +331,8 @@ const MisleadingListingDispute: React.FC = () => {
                 onChange={({ text }) => {
                   setDescription(text);
                 }}
-                placeholder={ci18n("placeholder for input", "Describe reason")}
+                placeholder={ci18n("placeholder for input", "Describe product")}
+                data-cy="product-description"
               />
             </HorizontalField>
             <HorizontalField
@@ -344,6 +351,7 @@ const MisleadingListingDispute: React.FC = () => {
                   setExplanation(text);
                 }}
                 placeholder={ci18n("placeholder for input", "Describe")}
+                data-cy="explanation"
               />
             </HorizontalField>
             <HorizontalField
@@ -362,6 +370,7 @@ const MisleadingListingDispute: React.FC = () => {
                   setPhotos(attachments);
                 }}
                 bucket="TEMP_UPLOADS_V2"
+                data-cy="original-photos-upload"
               />
             </HorizontalField>
             <HorizontalField
@@ -381,6 +390,7 @@ const MisleadingListingDispute: React.FC = () => {
                   "placeholder for input",
                   "Total number of variations",
                 )}
+                data-cy="variation-count"
               />
             </HorizontalField>
             <HorizontalField
@@ -396,6 +406,7 @@ const MisleadingListingDispute: React.FC = () => {
                   onChange={() => {
                     setVariationsSameProduct(true);
                   }}
+                  data-cy="variations-same-product"
                 />
                 <Text variant="bodyL" sx={{ marginRight: "24px" }}>
                   Yes
@@ -405,6 +416,7 @@ const MisleadingListingDispute: React.FC = () => {
                   onChange={() => {
                     setVariationsSameProduct(false);
                   }}
+                  data-cy="variations-not-same-product"
                 />
                 <Text variant="bodyL">No</Text>
               </Layout.FlexRow>
@@ -422,6 +434,7 @@ const MisleadingListingDispute: React.FC = () => {
                   onChange={() => {
                     setVariationsSamePrice(true);
                   }}
+                  data-cy="variations-same-price"
                 />
                 <Text variant="bodyL" sx={{ marginRight: "24px" }}>
                   Yes
@@ -431,6 +444,7 @@ const MisleadingListingDispute: React.FC = () => {
                   onChange={() => {
                     setVariationsSamePrice(false);
                   }}
+                  data-cy="variations-not-same-price"
                 />
                 <Text variant="bodyL">No</Text>
               </Layout.FlexRow>
@@ -450,6 +464,7 @@ const MisleadingListingDispute: React.FC = () => {
                 }}
                 placeholder={ci18n("placeholder for input", "Unit cost")}
                 hideCheckmarkWhenValid
+                data-cy="actual-cost"
               />
             </HorizontalField>
             <HorizontalField
@@ -467,6 +482,7 @@ const MisleadingListingDispute: React.FC = () => {
                 }}
                 placeholder={ci18n("placeholder for input", "Selling price")}
                 hideCheckmarkWhenValid
+                data-cy="product-price"
               />
             </HorizontalField>
             <Heading variant="h5" sx={{ paddingTop: "6px" }}>
@@ -485,6 +501,7 @@ const MisleadingListingDispute: React.FC = () => {
                   "placeholder for input",
                   "Manufacturer name",
                 )}
+                data-cy="vendor-name"
               />
             </HorizontalField>
             <HorizontalField
@@ -499,6 +516,7 @@ const MisleadingListingDispute: React.FC = () => {
                   }}
                   placeholder={ci18n("placeholder for input", "Street address")}
                   style={{ marginBottom: "6px" }}
+                  data-cy="vendor-street-address"
                 />
                 {/* <TextInput
                   style={{ marginTop: "6px" }}
@@ -530,6 +548,7 @@ const MisleadingListingDispute: React.FC = () => {
                       setVendorCity(text);
                     }}
                     placeholder={ci18n("placeholder for input", "City")}
+                    data-cy="vendor-city"
                   />
                   {/* <TextInput
                     style={{ marginRight: "6px", flex: 1 }}
@@ -552,6 +571,7 @@ const MisleadingListingDispute: React.FC = () => {
                       "placeholder for input",
                       "ZIP / Postal code",
                     )}
+                    data-cy="vendor-zip"
                   />
                   <FormSelect
                     style={{
@@ -575,6 +595,7 @@ const MisleadingListingDispute: React.FC = () => {
                         text: country,
                       }))}
                     placeholder={ci18n("placeholder for input", "Country")}
+                    data-cy="vendor-country"
                   />
                 </Layout.FlexRow>
               </Layout.FlexColumn>
@@ -595,6 +616,7 @@ const MisleadingListingDispute: React.FC = () => {
                     setVendorAreaCode(text);
                   }}
                   placeholder={ci18n("placeholder for input", "Area code")}
+                  data-cy="vendor-area-code"
                 />
                 <TextInput
                   type="number"
@@ -604,6 +626,7 @@ const MisleadingListingDispute: React.FC = () => {
                     setVendorPhoneNumber(text);
                   }}
                   placeholder={ci18n("placeholder for input", "Phone number")}
+                  data-cy="vendor-phone-number"
                 />
               </Layout.FlexRow>
             </HorizontalField>
@@ -620,6 +643,7 @@ const MisleadingListingDispute: React.FC = () => {
                   setProofOfPurchase(attachments);
                 }}
                 bucket="TEMP_UPLOADS_V2"
+                data-cy="proof-of-purchase-upload"
               />
             </HorizontalField>
           </>
@@ -636,6 +660,7 @@ const MisleadingListingDispute: React.FC = () => {
                 text: ci18n("CTA for button", "Submit"),
                 onClick: onSubmit,
                 isDisabled: mutationLoading || !canSubmit,
+                "data-cy": "submit-button",
               }
             : undefined
         }
@@ -643,6 +668,7 @@ const MisleadingListingDispute: React.FC = () => {
           text: ci18n("CTA for button", "Cancel"),
           href: `/warnings/warning?id=${infractionId}`,
           disabled: mutationLoading,
+          "data-cy": "cancel-button",
         }}
       />
     </Accordion>
