@@ -44,7 +44,7 @@ import { useDeciderKey } from "@core/stores/ExperimentStore";
 
 const MisleadingListingDispute: React.FC = () => {
   const { decision: submitTagIds, isLoading: tagsDeciderKeyLoading } =
-    useDeciderKey("use_category_id_MERSUP-254");
+    useDeciderKey("use_category_id_mersup_254");
   const styles = useInfractionDetailsStylesheet();
   const {
     infraction: { id: infractionId, actions },
