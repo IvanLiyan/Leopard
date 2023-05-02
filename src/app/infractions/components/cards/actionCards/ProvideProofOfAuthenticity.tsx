@@ -1,17 +1,14 @@
 import React, { useState } from "react";
 import { observer } from "mobx-react";
-import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import Markdown from "@infractions/components/Markdown";
 import Button from "./ActionCardButton";
-import ActionCard from "./ActionCard";
+import ActionCard from "@core/components/ActionCard";
 import { merchFeURL } from "@core/toolkit/router";
 import { useInfractionContext } from "@infractions/InfractionContext";
 import { useInfractionDetailsStylesheet } from "@infractions/styles";
 import UseExistingProofModal from "./UseExistingProofModal";
 
-const ProvideProofOfAuthenticity: React.FC<
-  Pick<BaseProps, "className" | "style">
-> = ({ className, style }) => {
+const ProvideProofOfAuthenticity: React.FC = () => {
   const {
     infraction: { id: infractionId, brand, brandAuthorizations },
   } = useInfractionContext();
@@ -30,7 +27,6 @@ const ProvideProofOfAuthenticity: React.FC<
         existingProofs={brandAuthorizations}
       />
       <ActionCard
-        style={[className, style]}
         title={i`Provide Proof of Authenticity`}
         ctaButtons={
           <>
@@ -54,6 +50,7 @@ const ProvideProofOfAuthenticity: React.FC<
             )}
           </>
         }
+        ctaButtonLayout="COLUMN"
       >
         <Markdown
           style={styles.cardMargin}

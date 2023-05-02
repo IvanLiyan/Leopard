@@ -5,21 +5,26 @@ import PageRoot from "@core/components/PageRoot";
 import PageGuide from "@core/components/PageGuide";
 import PageHeader from "@core/components/PageHeader";
 import Skeleton from "@core/components/Skeleton";
+import { Text } from "@ContextLogic/atlas-ui";
+import { dataMock } from "@product-compliance-center/api/pccQuery";
+import EuResponsiblePersonsCards from "@product-compliance-center/components/home-page/EuResponsiblePersonsCard";
+import EprCard from "@product-compliance-center/components/home-page/EprCard";
 
 const PageLayout = ({ cards }: { cards: ReadonlyArray<React.ReactNode> }) => {
   return (
     <PageRoot>
       <PageHeader relaxed title={i`Product Compliance Center`}>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla lectus
-        mauris, tempor sed eros in, vestibulum aliquet mauris. Sed bibendum
-        accumsan mi sed efficitur. Aenean in nulla non nibh malesuada imperdiet.
+        Please make sure your product compliance information is correct and up
+        to date. Missing or inaccurate product compliance information may result
+        in lower product impressions, products blocked in certain regions, or
+        fines.
       </PageHeader>
       <PageGuide relaxed>
         <style jsx>{`
           div {
             display: grid;
             grid-gap: 24px;
-            grid-template-columns: repeat(auto-fill, 364px);
+            grid-template-columns: repeat(auto-fit, minmax(364px, 1fr));
             margin-top: 24px;
           }
         `}</style>
@@ -37,6 +42,7 @@ const ProductComplianceCenterPage: NextPage<Record<string, never>> = () => {
     }, 1000);
     return () => clearTimeout(timer);
   });
+  const data = dataMock;
 
   if (loading) {
     return (
@@ -53,35 +59,34 @@ const ProductComplianceCenterPage: NextPage<Record<string, never>> = () => {
     );
   }
 
+  if (data.policy?.productCompliance == null) {
+    return <Text variant="bodyLStrong">Something went wrong.</Text>;
+  }
+
   return (
     <PageLayout
       cards={[
-        <div key={"1"} style={{ backgroundColor: "white" }}>
-          test
-        </div>,
-        <div key={"2"} style={{ backgroundColor: "white" }}>
-          Aliquam vel orci eu nulla rutrum vestibulum et a mi. Pellentesque
-          condimentum a sem aliquam posuere. Vestibulum ut convallis lorem.
-          Quisque a malesuada neque, vel maximus sapien. Duis molestie iaculis
-          dolor, ac fringilla quam. Pellentesque at ex sit amet ligula efficitur
-          aliquet. Aliquam mollis elit vitae rhoncus aliquet. Mauris
-          sollicitudin, nisi id feugiat tincidunt, urna mauris tincidunt est, at
-          volutpat sem metus sit amet justo. Pellentesque a ullamcorper ex.
-          Mauris dolor purus, ultricies consequat venenatis quis, porta eget
-          lectus. Curabitur at eros scelerisque, volutpat quam in, fringilla
-          nisl. Donec in tellus vel est posuere ullamcorper. Interdum et
-          malesuada fames ac ante ipsum primis in faucibus.
-        </div>,
-        <div key={"3"} style={{ backgroundColor: "white" }}>
-          test
-        </div>,
-        <div key={"4"} style={{ backgroundColor: "white" }}>
-          test
-        </div>,
-        <div key={"5"} style={{ backgroundColor: "white" }}>
-          Aliquam interdum vel felis at ultricies. Donec ligula risus, luctus
-          vitae orci vitae, ultrices aliquet tellus.
-        </div>,
+        <EuResponsiblePersonsCards
+          key={-1}
+          productsWithResponsiblePerson={
+            data.policy.productCompliance.productsWithEuResponsiblePerson
+          }
+          productsWithoutResponsiblePerson={
+            data.policy.productCompliance.productsWithoutEuResponsiblePerson
+          }
+        />,
+        data.policy.productCompliance.extendedProducerResponsibility.countries.map(
+          (config, i) => (
+            <EprCard
+              key={i}
+              countryName={config.country.name}
+              countryCode={config.country.code}
+              isMerchantAuthorized={config.isMerchantAuthorized}
+              categoriesWithEpr={config.categoriesWithEpr}
+              categoriesWithoutEpr={config.categoriesWithoutEpr}
+            />
+          ),
+        ),
       ]}
     />
   );

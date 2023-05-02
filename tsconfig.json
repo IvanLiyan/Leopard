@@ -27,6 +27,7 @@
       "@infractions/*": ["src/app/infractions/*"],
       "@landing-pages/*": ["src/app/landing-pages/*"],
       "@performance/*": ["src/app/performance/*"],
+      "@product-compliance-center/*": ["src/app/product-compliance-center/*"],
       "@schema": ["src/app/schema"],
       "@deprecated/*": ["src/deprecated/*"],
       "@public/*": ["public/index", "public/*"]

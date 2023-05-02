@@ -1,8 +1,7 @@
 import React from "react";
 import { observer } from "mobx-react";
-import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import Markdown from "@infractions/components/Markdown";
-import ActionCard from "./ActionCard";
+import ActionCard from "@core/components/ActionCard";
 import { useInfractionContext } from "@infractions/InfractionContext";
 import { useInfractionDetailsStylesheet } from "@infractions/styles";
 import { ci18n } from "@core/toolkit/i18n";
@@ -10,10 +9,7 @@ import { DisputeStatusDisplayText } from "@infractions/copy";
 import Button from "./ActionCardButton";
 import NextLink from "next/link";
 
-const Dispute: React.FC<Pick<BaseProps, "className" | "style">> = ({
-  className,
-  style,
-}) => {
+const Dispute: React.FC = () => {
   const {
     infraction: { id, disputeStatus, disputeDeadline },
   } = useInfractionContext();
@@ -23,7 +19,6 @@ const Dispute: React.FC<Pick<BaseProps, "className" | "style">> = ({
 
   return (
     <ActionCard
-      style={[className, style]}
       title={ci18n("card title", "Dispute")}
       ctaButtons={
         <NextLink href={disputeUrl} passHref>

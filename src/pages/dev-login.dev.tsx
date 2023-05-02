@@ -75,7 +75,7 @@ const DevLoginPage: NextPage<Record<string, never>> = () => {
       if (currentUser === "none") {
         await loginAsAdmin();
       }
-      const resp = await fetch(`/go/${mid}`);
+      const resp = await fetch(`/go/${mid || process.env.NEXT_PUBLIC_MID}`);
       if (!resp.ok && !resp.redirected) {
         setError(
           "An error occurred while logging you in. Please see the console for more details.",

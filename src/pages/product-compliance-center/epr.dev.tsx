@@ -27,6 +27,16 @@ const PageLayout = ({
       <PageHeader
         relaxed
         title={i`Extended Producer Responsibility - ${countries[country]}`}
+        breadcrumbs={[
+          {
+            name: i`Product Compliance Center`,
+            href: "/product-compliance-center",
+          },
+          {
+            name: i`Extended Producer Responsibility - ${countries[country]}`,
+            href: window.location.href,
+          },
+        ]}
       >
         <>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla lectus

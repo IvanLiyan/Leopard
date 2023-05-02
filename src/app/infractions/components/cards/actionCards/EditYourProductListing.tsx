@@ -1,16 +1,13 @@
 import React, { useState } from "react";
 import { observer } from "mobx-react";
-import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import Markdown from "@infractions/components/Markdown";
 import Button from "./ActionCardButton";
-import ActionCard from "./ActionCard";
+import ActionCard from "@core/components/ActionCard";
 import { merchFeURL } from "@core/toolkit/router";
 import { useInfractionDetailsStylesheet } from "@infractions/styles";
 import EditYourProductListingModal from "./EditYourProductListingModal";
 
-const EditYouProductListing: React.FC<
-  Pick<BaseProps, "className" | "style">
-> = ({ className, style }) => {
+const EditYouProductListing: React.FC = () => {
   const styles = useInfractionDetailsStylesheet();
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -23,7 +20,6 @@ const EditYouProductListing: React.FC<
         }}
       />
       <ActionCard
-        style={[className, style]}
         title={i`Edit Your Product Listing`}
         ctaButtons={
           <Button
