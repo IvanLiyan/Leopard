@@ -28,8 +28,8 @@ import { merchFeURL } from "@core/toolkit/router";
 
 export type BulkResumeCampaignModalProps = BaseProps &
   Pick<ModalProps, "open"> & {
-    readonly campaignsToResume: ReadonlyArray<BulkResumeCampaign>;
-    readonly maxAllowedSpending: number;
+    readonly campaignsToResume?: ReadonlyArray<BulkResumeCampaign>;
+    readonly maxAllowedSpending?: number;
     readonly onClose: () => unknown;
     readonly currencyCode: PaymentCurrencyCode;
   };
@@ -45,14 +45,14 @@ const BulkResumeCampaignModal: React.FC<BulkResumeCampaignModalProps> = ({
 
   const toastStore = useToastStore();
 
-  const initalCampaignIds = campaignsToResume.map(
+  const initalCampaignIds = (campaignsToResume ?? []).map(
     (campaign) => campaign.campaign_id,
   );
 
   const [selectedCampaignIds, setSelectedCampaignIds] =
     useState(initalCampaignIds);
 
-  const selectedRows = campaignsToResume.reduce(
+  const selectedRows = (campaignsToResume ?? []).reduce(
     //disabled to satisfy the callback requirement on .reduce
     //eslint-disable-next-line local-rules/no-large-method-params
     (accumulator: number[], row: BulkResumeCampaign, index: number) => {
@@ -249,14 +249,16 @@ const BulkResumeCampaignModal: React.FC<BulkResumeCampaignModalProps> = ({
               currencyCode={currencyCode}
             />
           </Table>
-          <div className={css(styles.balance)}>
-            <Text className={css(styles.balanceHeader)} variant="bodyLStrong">
-              Available balance:
-            </Text>
-            <Text className={css(styles.balanceValue)} variant="bodyL">
-              {formatCurrency(maxAllowedSpending, currencyCode)}
-            </Text>
-          </div>
+          {maxAllowedSpending != null && (
+            <div className={css(styles.balance)}>
+              <Text className={css(styles.balanceHeader)} variant="bodyLStrong">
+                Available balance:
+              </Text>
+              <Text className={css(styles.balanceValue)} variant="bodyL">
+                {formatCurrency(maxAllowedSpending, currencyCode)}
+              </Text>
+            </div>
+          )}
         </Layout.FlexColumn>
         <ModalFooter
           layout="horizontal-centered"

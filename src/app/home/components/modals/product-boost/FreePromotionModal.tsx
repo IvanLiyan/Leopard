@@ -16,13 +16,13 @@ import { merchFeURL } from "@core/toolkit/router";
 type FreePromotionModalProps = BaseProps &
   Pick<ModalProps, "open"> & {
     readonly onClose: () => unknown;
-    readonly productNames: ReadonlyArray<string>;
+    readonly productNames?: ReadonlyArray<string>;
   };
 
 const FreePromotionModal: React.FC<FreePromotionModalProps> = ({
   open,
   onClose,
-  productNames,
+  productNames = [],
 }) => {
   const styles = useStylesheet();
   const navigationStore = useNavigationStore();

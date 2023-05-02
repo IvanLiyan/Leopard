@@ -27,14 +27,14 @@ import { merchFeURL } from "@core/toolkit/router";
 
 export type BulkEnableFBWCampaignModalProps = BaseProps &
   Pick<ModalProps, "open"> & {
-    readonly fbwCampaignsToEnable: ReadonlyArray<BulkResumeCampaign>;
-    readonly maxAllowedSpending: number;
+    readonly fbwCampaignsToEnable?: ReadonlyArray<BulkResumeCampaign>;
+    readonly maxAllowedSpending?: number;
     readonly onClose: () => unknown;
     readonly currencyCode: PaymentCurrencyCode;
   };
 
 const BulkEnableFBWCampaignModal: React.FC<BulkEnableFBWCampaignModalProps> = ({
-  fbwCampaignsToEnable,
+  fbwCampaignsToEnable = [],
   maxAllowedSpending,
   onClose,
   open,
@@ -189,14 +189,16 @@ const BulkEnableFBWCampaignModal: React.FC<BulkEnableFBWCampaignModalProps> = ({
             Your products have arrived at the FBW warehouse, and earned 50%
             ProductBoost discounts
           </Text>
-          <div className={css(styles.balance)}>
-            <Text className={css(styles.balanceHeader)} variant="bodyLStrong">
-              Available balance:
-            </Text>
-            <Text className={css(styles.balanceValue)} variant="bodyL">
-              {formatCurrency(maxAllowedSpending, currencyCode)}
-            </Text>
-          </div>
+          {maxAllowedSpending != null && (
+            <div className={css(styles.balance)}>
+              <Text className={css(styles.balanceHeader)} variant="bodyLStrong">
+                Available balance:
+              </Text>
+              <Text className={css(styles.balanceValue)} variant="bodyL">
+                {formatCurrency(maxAllowedSpending, currencyCode)}
+              </Text>
+            </div>
+          )}
           <Table
             className={css(styles.campaignsTable)}
             data={fbwCampaignsToEnable}

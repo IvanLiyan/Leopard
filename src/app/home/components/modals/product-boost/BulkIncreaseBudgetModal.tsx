@@ -35,14 +35,14 @@ import { merchFeURL } from "@core/toolkit/router";
 
 export type BulkIncreaseBudgetModalProps = BaseProps &
   Pick<ModalProps, "open"> & {
-    readonly campaignsToIncreaseBudget: ReadonlyArray<BulkIncreaseBudgetCampaign>;
-    readonly maxAllowedSpending: number;
+    readonly campaignsToIncreaseBudget?: ReadonlyArray<BulkIncreaseBudgetCampaign>;
+    readonly maxAllowedSpending?: number;
     readonly onClose: () => unknown;
     readonly currencyCode: PaymentCurrencyCode;
   };
 
 const BulkIncreaseBudgetModal: React.FC<BulkIncreaseBudgetModalProps> = ({
-  campaignsToIncreaseBudget,
+  campaignsToIncreaseBudget = [],
   maxAllowedSpending,
   onClose,
   open,
@@ -141,7 +141,7 @@ const BulkIncreaseBudgetModal: React.FC<BulkIncreaseBudgetModalProps> = ({
   };
 
   const validateBudget = () => {
-    if (maxAllowedSpending < totalBudgetToAdd || totalBudgetToAdd <= 0) {
+    if ((maxAllowedSpending ?? 0) < totalBudgetToAdd || totalBudgetToAdd <= 0) {
       toastStore.error(i`Total budget to add cannot exceed Available balance`);
       return false;
     }
@@ -186,6 +186,9 @@ const BulkIncreaseBudgetModal: React.FC<BulkIncreaseBudgetModalProps> = ({
   const confirmationSecondaryButtonProps = {
     text: i`Confirm`,
     onClick: async () => {
+      if (maxAllowedSpending == null) {
+        return;
+      }
       const params = {
         add_budget_data: JSON.stringify(increaseCampaigns),
         max_spending_displayed: maxAllowedSpending,
@@ -392,15 +395,19 @@ const BulkIncreaseBudgetModal: React.FC<BulkIncreaseBudgetModalProps> = ({
               </Table.Column>
             </Table>
             <div className={css(styles.balance)}>
-              <Text weight="bold" className={css(styles.balanceHeader)}>
-                Remaining available balance:
-              </Text>
-              <Text weight="regular" className={css(styles.balanceValue)}>
-                {formatCurrency(
-                  maxAllowedSpending - totalBudgetToAdd,
-                  currencyCode,
-                )}
-              </Text>
+              {maxAllowedSpending && (
+                <>
+                  <Text weight="bold" className={css(styles.balanceHeader)}>
+                    Remaining available balance:
+                  </Text>
+                  <Text weight="regular" className={css(styles.balanceValue)}>
+                    {formatCurrency(
+                      maxAllowedSpending - totalBudgetToAdd,
+                      currencyCode,
+                    )}
+                  </Text>
+                </>
+              )}
               <Text weight="bold" className={css(styles.balanceHeader)}>
                 Total budget added:
               </Text>
@@ -490,20 +497,22 @@ const BulkIncreaseBudgetModal: React.FC<BulkIncreaseBudgetModalProps> = ({
               }
             </Table.Column>
           </Table>
-          <div className={css(styles.balance)}>
-            <Text weight="bold" className={css(styles.balanceHeader)}>
-              Available balance:
-            </Text>
-            <Text weight="regular" className={css(styles.balanceValue)}>
-              {formatCurrency(maxAllowedSpending, currencyCode)}
-            </Text>
-            <Text weight="bold" className={css(styles.balanceHeader)}>
-              Total budget to add:
-            </Text>
-            <Text weight="regular" className={css(styles.balanceValue)}>
-              {formatCurrency(totalBudgetToAdd, currencyCode)}
-            </Text>
-          </div>
+          {maxAllowedSpending != null && (
+            <div className={css(styles.balance)}>
+              <Text weight="bold" className={css(styles.balanceHeader)}>
+                Available balance:
+              </Text>
+              <Text weight="regular" className={css(styles.balanceValue)}>
+                {formatCurrency(maxAllowedSpending, currencyCode)}
+              </Text>
+              <Text weight="bold" className={css(styles.balanceHeader)}>
+                Total budget to add:
+              </Text>
+              <Text weight="regular" className={css(styles.balanceValue)}>
+                {formatCurrency(totalBudgetToAdd, currencyCode)}
+              </Text>
+            </div>
+          )}
         </Layout.FlexColumn>
         <ModalFooter
           layout="horizontal-centered"

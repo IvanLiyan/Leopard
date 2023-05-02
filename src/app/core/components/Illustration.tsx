@@ -5,7 +5,7 @@
 //  Created by Sola Ogunsakin on 6/1/19.
 //  Copyright © 2019-present ContextLogic Inc. All rights reserved.
 //
-import React from "react";
+import React, { CSSProperties } from "react";
 import { observer } from "mobx-react";
 
 /* Lego Components */
@@ -29,6 +29,7 @@ export type IllustrationProps = BaseProps &
     readonly name: IllustrationName;
     readonly alt: string;
     readonly animate?: boolean;
+    readonly styleImg?: CSSProperties;
   };
 
 const Illustration: React.FC<IllustrationProps> = observer(
@@ -39,6 +40,7 @@ const Illustration: React.FC<IllustrationProps> = observer(
       animate = false,
       className,
       style,
+      styleImg,
       ...otherProps
     } = props;
 
@@ -54,7 +56,7 @@ const Illustration: React.FC<IllustrationProps> = observer(
         src={illustrationSrc.src}
         alt={alt}
         draggable={false}
-        style={{ width: "100%", height: "100%" }}
+        style={styleImg ?? { width: "100%", height: "100%" }}
         {...otherProps}
       />
     );

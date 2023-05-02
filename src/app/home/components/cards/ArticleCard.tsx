@@ -5,7 +5,7 @@ import { observer } from "mobx-react";
 import { Card, Markdown, H4Markdown } from "@ContextLogic/lego";
 
 import { css } from "@core/toolkit/styling";
-import { IllustrationName } from "@core/components/Illustration";
+import Illustration, { IllustrationName } from "@core/components/Illustration";
 import { useTheme } from "@core/stores/ThemeStore";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
@@ -16,11 +16,20 @@ export type ArticleCardProps = BaseProps & {
 };
 
 const ArticleCard = (props: ArticleCardProps) => {
-  const { titleText, contentText, className } = props;
-  const styles = useStylesheet(props);
+  const { titleText, contentText, className, style, bannerUrl } = props;
+  const styles = useStylesheet();
   return (
-    <Card className={className} contentContainerStyle={css(styles.root)}>
-      <div className={css(styles.bannerBackground)} />
+    <Card className={className} style={style}>
+      <Illustration
+        style={styles.bannerWrapper}
+        styleImg={{
+          position: "absolute",
+          height: 120,
+          width: "unset",
+        }}
+        name={bannerUrl}
+        alt={titleText}
+      />
       <div className={css(styles.contentContainer)}>
         <Markdown
           className={css(styles.subheading)}
@@ -39,21 +48,19 @@ const ArticleCard = (props: ArticleCardProps) => {
 };
 export default observer(ArticleCard);
 
-const useStylesheet = ({ bannerUrl }: ArticleCardProps) => {
+const useStylesheet = () => {
   const { textDark } = useTheme();
   return useMemo(
     () =>
       StyleSheet.create({
-        root: {
-          height: "90%",
+        bannerWrapper: {
           position: "relative",
-        },
-        bannerBackground: {
-          backgroundImage: `url(${bannerUrl})`,
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "cover",
           height: 120,
+          overflow: "hidden",
           width: "100%",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "stretch",
         },
         contentContainer: {
           padding: 24,
@@ -85,6 +92,6 @@ const useStylesheet = ({ bannerUrl }: ArticleCardProps) => {
           maxWidth: 200,
         },
       }),
-    [textDark, bannerUrl],
+    [textDark],
   );
 };

@@ -56,19 +56,19 @@ export type BulkDuplicateCampaign = {
 };
 
 export type GetHomePageModalResult = {
-  readonly max_allowed_spending: number;
-  readonly campaigns_near_budget_depletion: ReadonlyArray<BulkIncreaseBudgetCampaign>;
-  readonly campaigns_to_duplicate: ReadonlyArray<BulkDuplicateCampaign>;
-  readonly free_promo_products: ReadonlyArray<string>;
+  readonly max_allowed_spending?: number;
+  readonly campaigns_near_budget_depletion?: ReadonlyArray<BulkIncreaseBudgetCampaign>;
+  readonly campaigns_to_duplicate?: ReadonlyArray<BulkDuplicateCampaign>;
+  readonly free_promo_products?: ReadonlyArray<string>;
   readonly promo_message: PromoModalFields | null | undefined;
-  readonly campaigns_to_enable: ReadonlyArray<BulkResumeCampaign>;
+  readonly campaigns_to_enable?: ReadonlyArray<BulkResumeCampaign>;
   readonly currency: PaymentCurrencyCode;
   readonly free_pb_credit_modal_info:
     | FreePBCreditModalFields
     | null
     | undefined;
-  readonly fbw_campaigns_to_enable: ReadonlyArray<BulkResumeCampaign>;
-  readonly can_view_refund_assurance_credit_modal: boolean;
+  readonly fbw_campaigns_to_enable?: ReadonlyArray<BulkResumeCampaign>;
+  readonly can_view_refund_assurance_credit_modal?: boolean;
 };
 
 export type AutomatedCampaign = {

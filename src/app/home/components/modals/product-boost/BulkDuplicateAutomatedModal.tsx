@@ -28,8 +28,8 @@ import { merchFeURL } from "@core/toolkit/router";
 
 export type BulkDuplicateAutomatedModalProps = BaseProps &
   Pick<ModalProps, "open"> & {
-    readonly campaignsToDuplicate: ReadonlyArray<BulkDuplicateCampaign>;
-    readonly maxAllowedSpending: number;
+    readonly campaignsToDuplicate?: ReadonlyArray<BulkDuplicateCampaign>;
+    readonly maxAllowedSpending?: number;
     readonly onClose: () => unknown;
     readonly currencyCode: PaymentCurrencyCode;
   };
@@ -37,7 +37,7 @@ export type BulkDuplicateAutomatedModalProps = BaseProps &
 const BulkDuplicateAutomatedModal: React.FC<
   BulkDuplicateAutomatedModalProps
 > = ({
-  campaignsToDuplicate,
+  campaignsToDuplicate = [],
   maxAllowedSpending,
   onClose,
   open,
@@ -247,14 +247,16 @@ const BulkDuplicateAutomatedModal: React.FC<
               }
             </Table.Column>
           </Table>
-          <div className={css(styles.balance)}>
-            <Text className={css(styles.balanceHeader)} variant="bodyLStrong">
-              Available balance:
-            </Text>
-            <Text className={css(styles.balanceValue)} variant="bodyL">
-              {formatCurrency(maxAllowedSpending, currencyCode)}
-            </Text>
-          </div>
+          {maxAllowedSpending != null && (
+            <div className={css(styles.balance)}>
+              <Text className={css(styles.balanceHeader)} variant="bodyLStrong">
+                Available balance:
+              </Text>
+              <Text className={css(styles.balanceValue)} variant="bodyL">
+                {formatCurrency(maxAllowedSpending, currencyCode)}
+              </Text>
+            </div>
+          )}
         </Layout.FlexColumn>
         <ModalFooter
           layout="horizontal-centered"

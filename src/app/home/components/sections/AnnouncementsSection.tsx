@@ -64,9 +64,6 @@ const AnnouncementsSection: React.FC<Props> = ({ style, className }: Props) => {
   const announcementsV2 = announcementV2Data?.announcements.forUsersV2.list;
 
   if (announcementsV2 == null) {
-    toastStore.negative(
-      announcementV2Error?.message ?? i`Something went wrong`,
-    );
     return null;
   }
 

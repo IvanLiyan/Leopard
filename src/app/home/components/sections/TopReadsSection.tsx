@@ -36,6 +36,7 @@ const TopReadsSection: React.FC<Props> = ({ style, className }: Props) => {
             "No products means no sales. You can add products manually (as opposed to uploading them using a product feed) through the Merchant Dashboard Add Products Manual page. [Learn more]({%1=url})",
             uploadProductsArticle,
           )}
+          style={{ maxWidth: 450 }}
         />
         <ArticleCard
           titleText={i`Adding product images and variations`}
@@ -45,6 +46,7 @@ const TopReadsSection: React.FC<Props> = ({ style, className }: Props) => {
             i`of product variations for providing a better shopping experience on Wish. ` +
             i`[${i`Learn more`}](${productVariationsArticle})`
           }
+          style={{ maxWidth: 450 }}
         />
       </div>
     </HomeSection>
@@ -65,7 +67,7 @@ const useStylesheet = () =>
             gridTemplateColumns: "100%",
           },
           "@media (min-width: 900px)": {
-            gridTemplateColumns: "1fr 1fr",
+            gridTemplateColumns: "max-content max-content",
           },
         },
       }),
