@@ -10,7 +10,6 @@ import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import Illustration, { IllustrationName } from "@core/components/Illustration";
 import { css } from "@core/toolkit/styling";
 import { useTheme } from "@core/stores/ThemeStore";
-import { merchFeURL } from "@core/toolkit/router";
 
 export type SupportCardProps = BaseProps & {
   readonly titleText: string;
@@ -45,10 +44,7 @@ const SupportCard = ({
           text={contentText}
           openLinksInNewTab
         />
-        <SecondaryButton
-          href={merchFeURL(buttonLink)}
-          className={css(styles.button)}
-        >
+        <SecondaryButton href={buttonLink} className={css(styles.button)}>
           {buttonText}
         </SecondaryButton>
       </div>

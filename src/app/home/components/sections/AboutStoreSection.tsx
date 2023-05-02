@@ -162,9 +162,7 @@ const AboutStoreSection: React.FC<Props> = ({
                 text={confirmedAccountBalanceDisplay}
               />
             </Layout.FlexColumn>
-            <Link href={merchFeURL(accountBalanceLink)}>
-              View account balance
-            </Link>
+            <Link href={accountBalanceLink}>View account balance</Link>
           </Card>
         )}
         {pendingAccountBalanceDisplay && pendingAccountBalanceAmount != null && (
@@ -183,9 +181,7 @@ const AboutStoreSection: React.FC<Props> = ({
                 }
               />
             </Layout.FlexColumn>
-            <Link href={merchFeURL(accountBalanceLink)}>
-              View account balance
-            </Link>
+            <Link href={accountBalanceLink}>View account balance</Link>
           </Card>
         )}
       </Layout.GridRow>

@@ -9,13 +9,13 @@ import { IllustrationName } from "@core/components/Illustration";
 import { useTheme } from "@core/stores/ThemeStore";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
-export type SupportCardProps = BaseProps & {
+export type ArticleCardProps = BaseProps & {
   readonly titleText: string;
   readonly contentText: string;
   readonly bannerUrl: IllustrationName;
 };
 
-const SupportCard = (props: SupportCardProps) => {
+const ArticleCard = (props: ArticleCardProps) => {
   const { titleText, contentText, className } = props;
   const styles = useStylesheet(props);
   return (
@@ -37,9 +37,9 @@ const SupportCard = (props: SupportCardProps) => {
     </Card>
   );
 };
-export default observer(SupportCard);
+export default observer(ArticleCard);
 
-const useStylesheet = ({ bannerUrl }: SupportCardProps) => {
+const useStylesheet = ({ bannerUrl }: ArticleCardProps) => {
   const { textDark } = useTheme();
   return useMemo(
     () =>
