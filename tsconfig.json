@@ -20,6 +20,7 @@
     "paths": {
       "@add-edit-product/*": ["src/app/add-edit-product/*"],
       "@all-products/*": ["src/app/all-products/*"],
+      "@products-csv/*": ["src/app/products-csv/*"],
       "@chrome/*": ["src/app/chrome/*"],
       "@core/*": ["src/app/core/*"],
       "@core-builder/*": ["src/app/core-builder/*"],

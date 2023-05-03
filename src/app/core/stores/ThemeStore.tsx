@@ -164,7 +164,11 @@ const COMMON_THEME = {
   metricPurple: PALETTES.PURPLE["400"],
 };
 
-const MERCHANT_THEME = {
+/**
+ * accessing MERCHANT_THEME directly should be minimized whenever possible,
+ * as such access will not be compatible if we add dynamic theming in the future
+ */
+export const MERCHANT_THEME = {
   ...COMMON_THEME,
   primaryLight: PALETTES.COBALT["100"],
   primary: PALETTES.COBALT["600"],

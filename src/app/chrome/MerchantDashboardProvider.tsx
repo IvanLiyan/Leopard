@@ -27,8 +27,12 @@ import { env } from "@core/stores/EnvironmentStore";
 import { datadogRum } from "@datadog/browser-rum";
 import FullPageError from "@core/components/FullPageError";
 import SalesforceWidget from "@chrome/components/SalesforceWidget";
-import { AtlasThemeProvider } from "@ContextLogic/atlas-ui";
+import { AtlasMuiTheme, AtlasThemeProvider } from "@ContextLogic/atlas-ui";
 import { useRouter } from "next/router";
+import { ThemeOptions, createTheme } from "@mui/material";
+import { StepperTheme } from "@core/components/Stepper/Stepper";
+import { StepLabelTheme } from "@core/components/Stepper/StepLabel";
+import { ThemeProviderProps } from "@mui/material/styles/ThemeProvider";
 
 datadogRum.init({
   applicationId: "901bc1fd-28d9-4542-88ca-f109e88b2a43",
@@ -47,6 +51,18 @@ datadogRum.init({
 type MerchantDashboardProviderProps = {
   readonly isPublic?: boolean;
 };
+
+const LeopardTheme = createTheme(AtlasMuiTheme as ThemeOptions, {
+  components: {
+    MuiStepLabel: StepLabelTheme,
+    MuiStepper: StepperTheme,
+  },
+  typography: {
+    caption: {
+      fontSize: "14px",
+    }, // avoid undefined fontSize error when rendering StepLabel
+  },
+}) as ThemeProviderProps<typeof AtlasMuiTheme>["theme"];
 
 const MerchantDashboardProvider: React.FC<MerchantDashboardProviderProps> = ({
   children,
@@ -159,7 +175,7 @@ const MerchantDashboardProvider: React.FC<MerchantDashboardProviderProps> = ({
   // TODO [lliepert]: clean up userStore file now that we aren't using it here
 
   return (
-    <AtlasThemeProvider>
+    <AtlasThemeProvider theme={LeopardTheme}>
       <NavigationProvider>
         <UserStoreProvider initialData={userStoreInitialData}>
           <ApolloProvider>
