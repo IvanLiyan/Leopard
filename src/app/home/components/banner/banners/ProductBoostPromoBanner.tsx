@@ -124,7 +124,7 @@ const ProductBoostPromoBanner: React.FC<ProductBoostPromoBannerProps> = ({
       i`ProductBoost drove a 50% increase in revenue for our key merchants. ` +
         i`Time to boost your products!`,
     ],
-    button_link: merchFeURL(`/product-boost/create`),
+    button_link: `/product-boost/create`,
     button_text: i`Create Campaign`,
     background_color: surfaceLightest,
     text_color: textDark,
