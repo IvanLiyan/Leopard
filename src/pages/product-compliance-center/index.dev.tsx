@@ -9,11 +9,27 @@ import { Text } from "@ContextLogic/atlas-ui";
 import { dataMock } from "@product-compliance-center/api/pccQuery";
 import EuResponsiblePersonsCards from "@product-compliance-center/components/home-page/EuResponsiblePersonsCard";
 import EprCard from "@product-compliance-center/components/home-page/EprCard";
+import Image from "@core/components/Image";
+import { ci18n } from "@core/toolkit/i18n";
 
 const PageLayout = ({ cards }: { cards: ReadonlyArray<React.ReactNode> }) => {
   return (
     <PageRoot>
-      <PageHeader relaxed title={i`Product Compliance Center`}>
+      <PageHeader
+        relaxed
+        title={i`Product Compliance Center`}
+        illustration={() => (
+          <Image
+            src="/md/images/product-compliance-center/header-image.svg"
+            alt={ci18n(
+              "alt text for an image",
+              "product compliance center icon",
+            )}
+            width={288}
+            height={160}
+          />
+        )}
+      >
         Please make sure your product compliance information is correct and up
         to date. Missing or inaccurate product compliance information may result
         in lower product impressions, products blocked in certain regions, or

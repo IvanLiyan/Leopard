@@ -10,8 +10,13 @@ import { useStringQueryParam } from "@core/toolkit/url";
 import FullPageError from "@core/components/FullPageError";
 import Icon from "@core/components/Icon";
 import { useTheme } from "@core/stores/ThemeStore";
-import { Card } from "@ContextLogic/lego";
-import { Heading } from "@ContextLogic/atlas-ui";
+import { Card, Markdown } from "@ContextLogic/lego";
+import { Heading, Text } from "@ContextLogic/atlas-ui";
+import { zendeskURL } from "@core/toolkit/url";
+import { dataMock } from "@product-compliance-center/api/eprQuery";
+import EprCategoryCard from "@product-compliance-center/components/epr-page/EprCategoryCard";
+import Image from "@core/components/Image";
+import { ci18n } from "@core/toolkit/i18n";
 
 const PageLayout = ({
   country,
@@ -37,12 +42,24 @@ const PageLayout = ({
             href: window.location.href,
           },
         ]}
+        illustration={() => (
+          <Image
+            src="/md/images/product-compliance-center/header-image.svg"
+            alt={ci18n(
+              "alt text for an image",
+              "product compliance center icon",
+            )}
+            width={288}
+            height={160}
+          />
+        )}
       >
         <>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla lectus
-          mauris, tempor sed eros in, vestibulum aliquet mauris. Sed bibendum
-          accumsan mi sed efficitur. Aenean in nulla non nibh malesuada
-          imperdiet.
+          <Markdown
+            text={i`Please review our [EPR program](${zendeskURL(
+              "4411082731931",
+            )}) requirements for more information.`}
+          />
           <style jsx>{`
             .outer {
               margin-top: 16px;
@@ -59,9 +76,9 @@ const PageLayout = ({
           <div className="outer">
             <Icon name="warning" />
             <div className="inner">
-              Integer metus dui, volutpat vel elit id, pellentesque consequat
-              ante. Suspendisse eu accumsan augue. Duis justo neque, blandit ac
-              placerat et, vulputate eget dolor.
+              Wish will block your product listings and/or impressions if you
+              don&apos;t provide accurate EPR registration numbers. This may
+              impact your sales in {countries[country]}.
             </div>
           </div>
         </>
@@ -79,7 +96,7 @@ const PageLayout = ({
               margin-top: 16px;
               display: grid;
               grid-gap: 24px;
-              grid-template-columns: repeat(auto-fill, 310px);
+              grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
             }
           `}</style>
           <div>{cards}</div>
@@ -100,11 +117,16 @@ const ProductComplianceCenterPage: NextPage<Record<string, never>> = () => {
     }, 1000);
     return () => clearTimeout(timer);
   });
+  const data = dataMock;
 
   if (!(countryIntermediary in countries)) {
     return <FullPageError error={"404"} />;
   }
   const country = countryIntermediary as keyof typeof countries; // guaranteed by above check
+
+  if (data.policy?.productCompliance == null) {
+    return <Text variant="bodyLStrong">Something went wrong.</Text>;
+  }
 
   if (loading) {
     return (
@@ -139,46 +161,20 @@ const ProductComplianceCenterPage: NextPage<Record<string, never>> = () => {
   return (
     <PageLayout
       country={country}
-      cards={[
-        <div key={"1"} style={{ backgroundColor: "#EFF4F6" }}>
-          test
-        </div>,
-        <div key={"2"} style={{ backgroundColor: "#EFF4F6" }}>
-          Aliquam vel orci eu nulla rutrum vestibulum et a mi. Pellentesque
-          condimentum a sem aliquam posuere. Vestibulum ut convallis lorem.
-          Quisque a malesuada neque, vel maximus sapien. Duis molestie iaculis
-          dolor, ac fringilla quam. Pellentesque at ex sit amet ligula efficitur
-          aliquet. Aliquam mollis elit vitae rhoncus aliquet.
-        </div>,
-        <div key={"3"} style={{ backgroundColor: "#EFF4F6" }}>
-          test
-        </div>,
-        <div key={"4"} style={{ backgroundColor: "#EFF4F6" }}>
-          test
-        </div>,
-        <div key={"5"} style={{ backgroundColor: "#EFF4F6" }}>
-          Aliquam interdum vel felis at ultricies. Donec ligula risus, luctus
-          vitae orci vitae, ultrices aliquet tellus.
-        </div>,
-        <div key={"6"} style={{ backgroundColor: "#EFF4F6" }}>
-          test
-        </div>,
-        <div key={"7"} style={{ backgroundColor: "#EFF4F6" }}>
-          test
-        </div>,
-        <div key={"8"} style={{ backgroundColor: "#EFF4F6" }}>
-          test
-        </div>,
-        <div key={"9"} style={{ backgroundColor: "#EFF4F6" }}>
-          test
-        </div>,
-        <div key={"10"} style={{ backgroundColor: "#EFF4F6" }}>
-          test
-        </div>,
-        <div key={"11"} style={{ backgroundColor: "#EFF4F6" }}>
-          test
-        </div>,
-      ]}
+      cards={data.policy?.productCompliance?.extendedProducerResponsibility.country.categories.map(
+        (config, i) => (
+          <EprCategoryCard
+            key={i}
+            id={config.id}
+            category={config.category}
+            categoryName={config.categoryName}
+            uin={config.uin}
+            responsibleEntityName={config.responsibleEntityName}
+            status={config.status}
+            country={country}
+          />
+        ),
+      )}
     />
   );
 };
