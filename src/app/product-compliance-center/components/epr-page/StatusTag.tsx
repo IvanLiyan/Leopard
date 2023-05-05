@@ -1,6 +1,6 @@
 import React from "react";
 import { observer } from "mobx-react";
-import { EprStatus } from "@product-compliance-center/api/eprQuery";
+import { EprStatus } from "@schema";
 import { useTheme } from "@core/stores/ThemeStore";
 import { ci18n } from "@core/toolkit/i18n";
 import { Text } from "@ContextLogic/atlas-ui";

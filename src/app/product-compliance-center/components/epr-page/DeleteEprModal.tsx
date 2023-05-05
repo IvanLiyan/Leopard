@@ -1,10 +1,18 @@
-import React from "react";
+import React, { useContext } from "react";
 import { observer } from "mobx-react";
 import { Text } from "@ContextLogic/atlas-ui";
 import Modal, { ModalProps } from "@core/components/modal/Modal";
 import ModalTitle from "@core/components/modal/ModalTitle";
 import ModalFooter from "@core/components/modal/ModalFooter";
 import { ci18n } from "@core/toolkit/i18n";
+import { useMutation } from "@apollo/client";
+import { useToastStore } from "@core/stores/ToastStore";
+import {
+  DeleteEprMutationResponse,
+  DeleteEprMutationVariables,
+  DELETE_EPR_MUTATION,
+} from "@product-compliance-center/api/eprMutations";
+import { RefetchEprQueryContext } from "@product-compliance-center/toolkit/RefetchEprQueryContext";
 
 export type Props = Required<Pick<ModalProps, "open" | "onClose">> & {
   readonly id: string;
@@ -17,8 +25,40 @@ const DeleteEprModal: React.FC<Props> = ({
   id,
   categoryName,
 }) => {
-  const onConfirm = () => {
-    alert(`deleting ${id}`);
+  const toastStore = useToastStore();
+  const refetchEprQuery = useContext(RefetchEprQueryContext);
+  const [deleteEpr, { loading }] = useMutation<
+    DeleteEprMutationResponse,
+    DeleteEprMutationVariables
+  >(DELETE_EPR_MUTATION);
+
+  const onConfirm = async () => {
+    try {
+      const resp = await deleteEpr({
+        variables: {
+          input: {
+            id,
+          },
+        },
+      });
+
+      if (
+        !resp.data?.policy?.productCompliance?.extendedProducerResponsibility
+          .deleteUin.ok
+      ) {
+        toastStore.negative(
+          resp.data?.policy?.productCompliance?.extendedProducerResponsibility
+            .deleteUin.message ??
+            ci18n("error message", "Something went wrong"),
+        );
+      } else {
+        toastStore.positive(i`Your change has been submitted successfully`);
+        void refetchEprQuery();
+      }
+    } catch {
+      toastStore.negative(ci18n("error message", "Something went wrong"));
+    }
+
     onClose({}, "backdropClick");
   };
 
@@ -45,10 +85,12 @@ const DeleteEprModal: React.FC<Props> = ({
           onClick: () => {
             onClose({}, "backdropClick");
           },
+          disabled: loading,
         }}
         action={{
           text: ci18n("CTA button", "Confirm"),
           onClick: onConfirm,
+          isDisabled: loading,
         }}
       />
     </Modal>

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { observer } from "mobx-react";
 import ActionCard from "@core/components/ActionCard";
 import { Button, Text } from "@ContextLogic/atlas-ui";
-import { EprStatus } from "@product-compliance-center/api/eprQuery";
+import { EprStatus } from "@schema";
 import { Divider } from "@ContextLogic/lego";
 import css from "styled-jsx/css";
 import { useTheme } from "@core/stores/ThemeStore";

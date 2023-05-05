@@ -40,7 +40,7 @@ const EprCard: React.FC<Props> = ({
         <Text variant="bodyMStrong">{categoriesWithEpr}</Text>
       </Text>
       <Text component="div">
-        Products without EPR Registration Number:{" "}
+        Categories without EPR Registration Number:{" "}
         <Text variant="bodyMStrong">{categoriesWithoutEpr}</Text>
       </Text>
     </ActionCard>

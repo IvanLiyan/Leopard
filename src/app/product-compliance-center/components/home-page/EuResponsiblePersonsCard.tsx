@@ -21,13 +21,13 @@ const EuResponsiblePersonsCard: React.FC<Props> = ({
         </Button>
       }
     >
-      {productsWithResponsiblePerson && (
+      {productsWithResponsiblePerson != null && (
         <Text component="div">
           Products with Responsible Person:{" "}
           <Text variant="bodyMStrong">{productsWithResponsiblePerson}</Text>
         </Text>
       )}
-      {productsWithoutResponsiblePerson && (
+      {productsWithoutResponsiblePerson != null && (
         <Text component="div">
           Products without Responsible Person:{" "}
           <Text variant="bodyMStrong">{productsWithoutResponsiblePerson}</Text>

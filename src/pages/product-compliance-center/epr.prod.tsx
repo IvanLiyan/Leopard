@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { NextPage } from "next";
 import { observer } from "mobx-react";
 import PageRoot from "@core/components/PageRoot";
@@ -13,10 +13,16 @@ import { useTheme } from "@core/stores/ThemeStore";
 import { Card, Markdown } from "@ContextLogic/lego";
 import { Heading, Text } from "@ContextLogic/atlas-ui";
 import { zendeskURL } from "@core/toolkit/url";
-import { dataMock } from "@product-compliance-center/api/eprQuery";
+import {
+  EPR_QUERY,
+  EprQueryResponse,
+  EprQueryVariables,
+} from "@product-compliance-center/api/eprQuery";
 import EprCategoryCard from "@product-compliance-center/components/epr-page/EprCategoryCard";
 import Image from "@core/components/Image";
 import { ci18n } from "@core/toolkit/i18n";
+import { useQuery } from "@apollo/client";
+import { RefetchEprQueryContext } from "@product-compliance-center/toolkit/RefetchEprQueryContext";
 
 const PageLayout = ({
   country,
@@ -66,11 +72,11 @@ const PageLayout = ({
               display: flex;
               align-items: center;
               background-color: ${surfaceLighter};
-              padding: 8px 8px 8px 16px;
+              padding: 16px 24px 16px 16px;
               max-width: fit-content;
             }
             .inner {
-              padding: 8px;
+              margin-left: 16px;
             }
           `}</style>
           <div className="outer">
@@ -109,23 +115,21 @@ const PageLayout = ({
 const ProductComplianceCenterPage: NextPage<Record<string, never>> = () => {
   const [countryParam] = useStringQueryParam("country");
   const countryIntermediary = countryParam.toUpperCase();
-
-  const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 1000);
-    return () => clearTimeout(timer);
-  });
-  const data = dataMock;
-
-  if (!(countryIntermediary in countries)) {
-    return <FullPageError error={"404"} />;
-  }
+  const countryOk = countryIntermediary in countries;
   const country = countryIntermediary as keyof typeof countries; // guaranteed by above check
 
-  if (data.policy?.productCompliance == null) {
-    return <Text variant="bodyLStrong">Something went wrong.</Text>;
+  const { data, loading, error, refetch } = useQuery<
+    EprQueryResponse,
+    EprQueryVariables
+  >(EPR_QUERY, {
+    variables: {
+      countryCode: country,
+    },
+    skip: !countryOk,
+  });
+
+  if (!countryOk) {
+    return <FullPageError error={"404"} />;
   }
 
   if (loading) {
@@ -133,49 +137,43 @@ const ProductComplianceCenterPage: NextPage<Record<string, never>> = () => {
       <PageLayout
         country={country}
         cards={[
-          <Skeleton key={"0"} height={408} />,
-          <Skeleton key={"1"} height={408} />,
-          <Skeleton key={"2"} height={408} />,
-          <Skeleton key={"3"} height={408} />,
-          <Skeleton key={"4"} height={408} />,
-          <Skeleton key={"5"} height={408} />,
-          <Skeleton key={"6"} height={408} />,
-          <Skeleton key={"7"} height={408} />,
-          <Skeleton key={"8"} height={408} />,
-          <Skeleton key={"9"} height={408} />,
-          <Skeleton key={"10"} height={408} />,
-          <Skeleton key={"11"} height={408} />,
-          <Skeleton key={"12"} height={408} />,
-          <Skeleton key={"13"} height={408} />,
-          <Skeleton key={"14"} height={408} />,
-          <Skeleton key={"15"} height={408} />,
-          <Skeleton key={"16"} height={408} />,
-          <Skeleton key={"17"} height={408} />,
-          <Skeleton key={"18"} height={408} />,
-          <Skeleton key={"19"} height={408} />,
+          <Skeleton key={"0"} height={381.5} />,
+          <Skeleton key={"1"} height={381.5} />,
+          <Skeleton key={"2"} height={381.5} />,
+          <Skeleton key={"3"} height={381.5} />,
+          <Skeleton key={"4"} height={381.5} />,
+          <Skeleton key={"5"} height={381.5} />,
+          <Skeleton key={"6"} height={381.5} />,
+          <Skeleton key={"7"} height={381.5} />,
         ]}
       />
     );
   }
 
+  if (error || data?.policy?.productCompliance == null) {
+    return <Text variant="bodyLStrong">Something went wrong.</Text>;
+  }
+
   return (
-    <PageLayout
-      country={country}
-      cards={data.policy?.productCompliance?.extendedProducerResponsibility.country.categories.map(
-        (config, i) => (
-          <EprCategoryCard
-            key={i}
-            id={config.id}
-            category={config.category}
-            categoryName={config.categoryName}
-            uin={config.uin}
-            responsibleEntityName={config.responsibleEntityName}
-            status={config.status}
-            country={country}
-          />
-        ),
-      )}
-    />
+    <RefetchEprQueryContext.Provider value={refetch}>
+      <PageLayout
+        country={country}
+        cards={data.policy?.productCompliance?.extendedProducerResponsibility.country.categories.map(
+          (config, i) => (
+            <EprCategoryCard
+              key={i}
+              id={config.eprId}
+              category={config.category}
+              categoryName={config.categoryName}
+              uin={config.uin}
+              responsibleEntityName={config.responsibleEntityName}
+              status={config.status}
+              country={country}
+            />
+          ),
+        )}
+      />
+    </RefetchEprQueryContext.Provider>
   );
 };
 

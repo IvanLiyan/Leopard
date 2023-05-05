@@ -1215,6 +1215,27 @@ const TaggingViolationSubReasonCodeData: {
     title: ci18n("name of warning", "Imitation Firearms"),
     body: i`Product listing is prohibited in your region`,
   },
+  CLAIM_FREE_PRODUCT_OFFERS: {
+    parent: "MISLEADING_LISTING",
+    title: ci18n("name of warning", "Claim Free Product Offers"),
+    body: i`At this time, listings with claim free product offers are prohibited on Wish. Violations of this policy include (but not limited to), displaying "Buy One Get One Free" or its variants in the listing (e.g. title, images, description, and/or size/color options). Listings containing such content may not be relisted.`,
+  },
+  CATHETERS: {
+    parent: "MEDICAL_MATERIALS",
+    title: ci18n(
+      "name of warning - refers to a flexible tube used to deliver fluids into or withdraw fluids from body",
+      "Catheters",
+    ),
+    body: i`At this time, Wish prohibits the sale of catheters. This product may not be relisted.`,
+  },
+  OXIMETERS: {
+    parent: "MEDICAL_MATERIALS",
+    title: ci18n(
+      "name of warning - refers to an electronic device that measures oxygen saturation of the blood",
+      "Oximeters",
+    ),
+    body: i`At this time, Wish prohibits the sale of pulse oximeters. This product may not be relisted.`,
+  },
 };
 
 const CounterfeitReasonData: {
