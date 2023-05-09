@@ -292,12 +292,10 @@ export const useInfractionProvider = ({
         })) ?? [],
     },
     refetchInfraction: refetch,
-    disputeFlow: getDisputeFlow(
-      infraction.reason.reason,
-      infraction.productTrueTagInfo?.counterfeitViolation?.reason ??
-        infraction.productTrueTagInfo?.inappropriateViolation?.reason ??
+    disputeFlow: getDisputeFlow[infraction.reason.reason](
+      infraction.productTrueTagInfo?.counterfeitViolation?.reason ?? undefined,
+      infraction.productTrueTagInfo?.inappropriateViolation?.reason ??
         undefined,
-      infraction.productTrueTagInfo?.subreason?.subcategory ?? undefined,
     ),
     merchantCurrency: infraction.merchant.primaryCurrency,
     ordersDisputeAdapter: {
