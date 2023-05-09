@@ -15,6 +15,7 @@ export type State = {
     readonly price: string | undefined;
     readonly color: string | undefined;
     readonly size: string | undefined;
+    readonly images: ReadonlyArray<Partial<Attachment>>;
   }>;
   readonly submissionJson: Record<string, string | boolean | undefined>; // submissionJson contains the body for the PER submission request EXCEPT FOR fields related to additional images; these are added in getDataJson
   readonly currentProduct:
@@ -51,6 +52,11 @@ type Action =
       readonly type: "UPDATE_VARIATION_SIZE";
       readonly variationId: string;
       readonly size: string;
+    }
+  | {
+      readonly type: "UPDATE_VARIATION_IMAGE";
+      readonly variationId: string;
+      readonly images: ReadonlyArray<Partial<Attachment>>;
     };
 
 export const initialState: State = {
@@ -102,6 +108,15 @@ const perStateReducer = (state: State, action: Action): State => {
               price: e.price ?? undefined,
               color: e.color ?? undefined,
               size: e.size ?? undefined,
+              images: e.img_url
+                ? [
+                    {
+                      fileName: undefined,
+                      url: e.img_url,
+                      isImage: true,
+                    },
+                  ]
+                : [],
             }))
           : [],
         submissionJson: {},
@@ -193,6 +208,24 @@ const perStateReducer = (state: State, action: Action): State => {
         submissionJson: {
           ...state.submissionJson,
           [`variation-size-${action.variationId}`]: action.size,
+        },
+      };
+    }
+    case "UPDATE_VARIATION_IMAGE": {
+      return {
+        ...state,
+        variations: state.variations.map((v) =>
+          v.id == action.variationId
+            ? {
+                ...v,
+                images: action.images,
+              }
+            : v,
+        ),
+        submissionJson: {
+          ...state.submissionJson,
+          [`variation-img-${action.variationId}`]:
+            action.images.length > 0 ? action.images[0].url : undefined,
         },
       };
     }

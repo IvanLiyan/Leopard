@@ -25,6 +25,19 @@ import perStateReducer, {
   State,
 } from "@infractions/reducers/perStateReducer";
 import { useToastStore } from "@core/stores/ToastStore";
+import sjsxCss from "styled-jsx/css";
+
+const { className: sjsxClassName, styles: sjsxStyles } = sjsxCss.resolve`
+  div :global(div:nth-child(1)) {
+    margin-bottom: 0px !important;
+  }
+  div > :global(div:nth-child(2)) {
+    margin-left: 8px;
+    position: static !important;
+    width: 50%;
+    overflow-x: scroll;
+  }
+`;
 
 const getDataJson = (state: State) => {
   let removedImageCounter = -1;
@@ -77,9 +90,7 @@ type EditYourProductListingModalContentProps = Required<
   Pick<ModalProps, "open" | "onClose">
 >;
 
-const HorizontalField: React.FC<
-  Omit<HorizontalFieldProps, "titleWidth" | "centerTitleVertically">
-> = (props) => (
+const HorizontalField: React.FC<HorizontalFieldProps> = (props) => (
   <LegoHorizontalField titleWidth={100} centerTitleVertically {...props} />
 );
 
@@ -126,6 +137,12 @@ const EditYourProductListingModal: React.FC<
   });
 
   const onSubmit = async () => {
+    if (state.variations.some(({ images }) => images.length === 0)) {
+      toastStore.negative(
+        i`Please provide a variation image for each variation.`,
+      );
+      return;
+    }
     try {
       const response = await triggerEditRequest({
         cid: productFromContext?.productId,
@@ -149,6 +166,7 @@ const EditYourProductListingModal: React.FC<
 
   return (
     <Modal open={open} onClose={onClose} fullWidth>
+      {sjsxStyles}
       <ModalTitle
         title={ci18n("modal header", "Edit Product Request")}
         onClose={(e) => {
@@ -203,6 +221,10 @@ const EditYourProductListingModal: React.FC<
                 </HorizontalField>
                 <HorizontalField title={ci18n("field title", "Main Image")}>
                   <SecureFileInput
+                    className={sjsxClassName}
+                    style={{
+                      flexDirection: "row",
+                    }}
                     accepts=".jpeg,.jpg,.png"
                     maxSizeMB={5}
                     maxAttachments={1}
@@ -219,6 +241,7 @@ const EditYourProductListingModal: React.FC<
                 </HorizontalField>
                 <HorizontalField
                   title={ci18n("field title", "Additional Image(s)")}
+                  centerTitleVertically={false}
                 >
                   <SecureFileInput
                     accepts=".jpeg,.jpg,.png"
@@ -244,6 +267,7 @@ const EditYourProductListingModal: React.FC<
                     price,
                     color,
                     size,
+                    images,
                   }) => (
                     <div key={id} className={css(styles.column)}>
                       <Heading variant="h4" sx={{ marginTop: "12px" }}>
@@ -292,6 +316,27 @@ const EditYourProductListingModal: React.FC<
                               size: text,
                             });
                           }}
+                          disabled={isMutating}
+                        />
+                      </HorizontalField>
+                      <HorizontalField title={ci18n("field title", "Image")}>
+                        <SecureFileInput
+                          className={sjsxClassName}
+                          style={{
+                            flexDirection: "row",
+                          }}
+                          accepts=".jpeg,.jpg,.png"
+                          maxSizeMB={5}
+                          maxAttachments={1}
+                          attachments={images}
+                          onAttachmentsChanged={(attachments) => {
+                            dispatch({
+                              type: "UPDATE_VARIATION_IMAGE",
+                              variationId: id,
+                              images: attachments,
+                            });
+                          }}
+                          bucket="TEMP_UPLOADS_V2"
                           disabled={isMutating}
                         />
                       </HorizontalField>
