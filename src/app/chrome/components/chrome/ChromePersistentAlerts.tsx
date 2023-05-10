@@ -16,6 +16,7 @@ import { Banner, Layout, Markdown } from "@ContextLogic/lego";
 /* Type Imports */
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { AlertSentimentMap, PickedUserAlert } from "@chrome/toolkit";
+import { merchFeURL } from "@core/toolkit/router";
 
 type Props = BaseProps & {
   readonly alerts: ReadonlyArray<PickedUserAlert>;
@@ -32,29 +33,39 @@ const ChromePersistentAlerts: React.FC<Props> = ({
     <Layout.FlexColumn style={[className, style]}>
       {[...alerts]
         .sort(({ sentiment }) => (sentiment === "NEGATIVE" ? -1 : 0))
-        .map(({ date, link, description, sentiment }) => (
-          <Banner
-            sentiment={
-              sentiment == null ? "warning" : AlertSentimentMap[sentiment]
-            }
-            showTopBorder
-            key={`${date != null && date.formatted}-${link}-${description}`}
-            contentAlignment="left"
-          >
-            <Markdown
-              onLinkClicked={
-                void (async () => {
-                  if (link) {
-                    await navigationStore.navigate(link);
-                  }
-                })
+        .map(({ date, link: linkProp, description, sentiment }) => {
+          // handle the case that Leopard links coming from the API will start
+          // with md
+          const link = !linkProp
+            ? linkProp
+            : linkProp.startsWith("/md")
+            ? linkProp.substring(3)
+            : merchFeURL(linkProp);
+
+          return (
+            <Banner
+              sentiment={
+                sentiment == null ? "warning" : AlertSentimentMap[sentiment]
               }
-              text={i`${date == null ? "" : `${date.formatted} UTC - `}${
-                link == null ? description : `[${description}](${link})`
-              }`}
-            />
-          </Banner>
-        ))}
+              showTopBorder
+              key={`${date != null && date.formatted}-${link}-${description}`}
+              contentAlignment="left"
+            >
+              <Markdown
+                onLinkClicked={
+                  void (async () => {
+                    if (link) {
+                      await navigationStore.navigate(link);
+                    }
+                  })
+                }
+                text={i`${date == null ? "" : `${date.formatted} UTC - `}${
+                  link == null ? description : `[${description}](${link})`
+                }`}
+              />
+            </Banner>
+          );
+        })}
     </Layout.FlexColumn>
   );
 };
