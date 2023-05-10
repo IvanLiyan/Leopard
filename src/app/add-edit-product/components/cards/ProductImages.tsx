@@ -20,6 +20,7 @@ import ImageUploadGroup, {
 import Section, { SectionProps } from "./Section";
 import { useTheme } from "@core/stores/ThemeStore";
 import AddEditProductState from "@add-edit-product/AddEditProductState";
+import { zendeskURL } from "@core/toolkit/url";
 
 type Props = Omit<SectionProps, "title"> & {
   readonly state: AddEditProductState;
@@ -56,6 +57,16 @@ const ProductImages: React.FC<Props> = (props: Props) => {
       <Markdown
         style={styles.body}
         text={i`After uploading, you can drag and drop to re-order your images.`}
+      />
+      <Markdown
+        style={[styles.body, { marginBottom: "24px" }]}
+        text={
+          i`If you will be selling the product into a region in which the ` +
+          i`product is required to have a conformity marking (e.g., CE ` +
+          i`marking in the European Union or UKCA in the UK), you must ` +
+          i`upload an image of the product with that marking clearly visible. ` +
+          i`[Learn more](${zendeskURL("115001731533")})`
+        }
         openLinksInNewTab
       />
       {images != null && images.length > 0 && (
@@ -104,7 +115,7 @@ const useStylesheet = () => {
         },
         body: {
           color: textDark,
-          marginBottom: 24,
+          marginBottom: 4,
         },
         imageTypeTextRow: {
           marginBottom: 8,
