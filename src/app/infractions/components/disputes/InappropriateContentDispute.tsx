@@ -25,12 +25,8 @@ import {
   TaggingQueryResponse,
   TAGGING_QUERY,
 } from "@infractions/api/taggingQuery";
-import { useDeciderKey } from "@core/stores/ExperimentStore";
 
 const InappropriateContentDispute: React.FC = () => {
-  const { decision: submitTagIds, isLoading: tagsDeciderKeyLoading } =
-    useDeciderKey("use_category_id_mersup_254");
-
   const styles = useInfractionDetailsStylesheet();
   const {
     infraction: { id: infractionId, title, actions },
@@ -175,11 +171,11 @@ const InappropriateContentDispute: React.FC = () => {
                   setCategory(value);
                 }}
                 options={tags.map(({ id, name }) => ({
-                  value: submitTagIds ? id : name,
+                  value: id,
                   text: name,
                 }))}
                 placeholder={ci18n("placeholder for input", "Product category")}
-                disabled={tagsQueryLoading || tagsDeciderKeyLoading}
+                disabled={tagsQueryLoading}
                 data-cy="product-category"
               />
             </HorizontalField>

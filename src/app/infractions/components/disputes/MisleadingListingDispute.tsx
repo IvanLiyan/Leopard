@@ -33,7 +33,6 @@ import {
 } from "@infractions/api/taggingQuery";
 import { CountryCode } from "@schema";
 import countries from "@core/toolkit/countries";
-import { useDeciderKey } from "@core/stores/ExperimentStore";
 
 /*
   NOTE: street address 2, 3, and state are temporarily disabled.
@@ -43,8 +42,6 @@ import { useDeciderKey } from "@core/stores/ExperimentStore";
 */
 
 const MisleadingListingDispute: React.FC = () => {
-  const { decision: submitTagIds, isLoading: tagsDeciderKeyLoading } =
-    useDeciderKey("use_category_id_mersup_254");
   const styles = useInfractionDetailsStylesheet();
   const {
     infraction: { id: infractionId, actions },
@@ -276,11 +273,11 @@ const MisleadingListingDispute: React.FC = () => {
                   setCategory(value);
                 }}
                 options={tags.map(({ id, name }) => ({
-                  value: submitTagIds ? id : name,
+                  value: id,
                   text: name,
                 }))}
                 placeholder={ci18n("placeholder for input", "Product category")}
-                disabled={tagsQueryLoading || tagsDeciderKeyLoading}
+                disabled={tagsQueryLoading}
                 data-cy="product-category"
               />
             </HorizontalField>

@@ -19,7 +19,7 @@ const InfractionImpactCard: React.FC<
   const combinedInfractionImpacts = [
     ...infractionImpacts,
     i`[Wish Standards](${zendeskURL("4408084779547")}) tier impact: ${
-      wssImpact ? "Yes" : "No"
+      wssImpact ? i`Yes` : i`No`
     }`,
   ];
 
