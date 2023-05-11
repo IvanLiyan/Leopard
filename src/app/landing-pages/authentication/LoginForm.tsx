@@ -110,7 +110,14 @@ const LoginForm: React.FC<LoginFormProps> = (props: LoginFormProps) => {
     TwoFactorGenTokenRequestType
   >(TWO_FACTOR_GEN_TOKEN_MUTATION);
 
-  const [nextUrl] = useStringQueryParam("next");
+  const [nextUrlRaw] = useStringQueryParam("next");
+  const safePrefixes = ["https://", "http://", "/"];
+  // prepend a forward slash; this handles situations like `?next=product`
+  // if nextUrlRaw contains a XSS exploit, the exploit will turn into a link to a non-existent page and will
+  // result in a 404 instead of a vulnerability
+  const nextUrl = safePrefixes.some((prefix) => nextUrlRaw.startsWith(prefix))
+    ? nextUrlRaw
+    : `/${nextUrlRaw}`;
 
   const handleLogin = async (qrTicket?: string) => {
     setIsLoading(true);
@@ -208,6 +215,7 @@ const LoginForm: React.FC<LoginFormProps> = (props: LoginFormProps) => {
       if (rememberMe && sessionKey != null) {
         Cookies.set("remember_me", username);
       }
+
       await router.push(merchFeURL(nextUrl || "/"));
     }
   };
