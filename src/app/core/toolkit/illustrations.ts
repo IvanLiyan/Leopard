@@ -141,6 +141,7 @@ import wishExpressTruckURL from "public/images/wish-express.svg";
 import emptyImageURL from "public/images/emptyimage.svg";
 import authenticBrandSellerBadgeURL from "public/images/authentic_brand_seller_badge.svg";
 import mockMobileHeaderURL from "public/images/mock-mobile-header.png";
+import magnifierURL from "public/images/product-csv/magnifier.svg";
 
 export const wishLogoInk = wishLogoInkURL;
 export const wishLogoWhite = wishLogoWhiteURL;
@@ -281,3 +282,4 @@ export const emptyImage = emptyImageURL;
 export const authenticBrandSellerBadge = authenticBrandSellerBadgeURL;
 export const mockMobileHeader = mockMobileHeaderURL;
 export const homeFrsOptInModal = homeFrsOptInModalURL;
+export const magnifier = magnifierURL;

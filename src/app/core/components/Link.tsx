@@ -16,6 +16,7 @@ export type LinkProps = Omit<SimpleLinkProps, "href"> & {
   readonly onMouseOver?: (() => unknown) | null | undefined;
   readonly onMouseLeave?: (() => unknown) | null | undefined;
   readonly fadeOnHover?: boolean | null | undefined;
+  readonly underline?: boolean;
 } & ({ readonly light: true } | { readonly light?: never }); // this functionality should be moved to the Atlas link when built
 
 export const isValidURL = (s: string): boolean => {
@@ -37,6 +38,7 @@ const Link = (_props: LinkProps) => {
     openInNewTab,
     onClick,
     light,
+    underline,
     ...otherProps
   } = _props;
   const { corePrimaryLight, primary } = useTheme();
@@ -45,7 +47,26 @@ const Link = (_props: LinkProps) => {
   const href = hrefProp === null ? undefined : hrefProp;
 
   const propsWithoutHref = {
-    style: [{ color: light ? corePrimaryLight : primary }, style, className],
+    style: [
+      { color: light ? corePrimaryLight : primary },
+      underline && {
+        textDecoration: "underline",
+        ":link": {
+          textDecoration: "underline",
+        },
+        ":visited": {
+          textDecoration: "underline",
+        },
+        ":hover": {
+          textDecoration: "underline",
+        },
+        ":active": {
+          textDecoration: "underline",
+        },
+      },
+      style,
+      className,
+    ],
     rel: openInNewTab || onClick ? "noopener noreferrer" : undefined,
     target: openInNewTab ? "_blank" : undefined,
     onClick,
