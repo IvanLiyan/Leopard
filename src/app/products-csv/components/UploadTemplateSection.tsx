@@ -33,13 +33,14 @@ const UploadTemplateSection: React.FC = () => {
         Remove listings with no changes for quicker upload times.
       </Text>
       <FormSelect
-        style={{ marginTop: 16 }}
+        style={{ marginTop: 16, width: 400, boxSizing: "border-box" }}
         options={uploadTypeOptions}
         selectedValue={uploadType}
-        placeholder={ci18n("Dropdown placeholder text", "Make a Selection")}
+        placeholder={ci18n("Dropdown placeholder text", "Select a template")}
         onSelected={(value: UploadTemplateType | undefined) =>
           setUploadType(value)
         }
+        showArrow
       />
       <SecureFileInput
         bucket="TEMP_UPLOADS_V2"

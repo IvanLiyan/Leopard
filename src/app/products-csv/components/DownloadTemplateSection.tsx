@@ -5,13 +5,15 @@ import { Layout } from "@ContextLogic/lego";
 import { IS_LARGE_SCREEN, IS_SMALL_SCREEN } from "@core/toolkit/styling";
 import { useTheme } from "@core/stores/ThemeStore";
 import { ci18n } from "@core/toolkit/i18n";
-import { Button } from "@ContextLogic/atlas-ui";
+import { Button, Text } from "@ContextLogic/atlas-ui";
 import Icon from "@core/components/Icon";
-import { DownloadTemplateType } from "@products-csv/toolkit";
+import { DownloadTemplateType, UpdateActionType } from "@products-csv/toolkit";
+import EditTemplateSelect from "./EditTemplateSelect";
 
 const DownloadTemplateSection: React.FC = () => {
-  const [downloadType, setDownloadType] = useState<DownloadTemplateType>();
-  const { textWhite } = useTheme();
+  const [updateActionType, setUpdateActionType] = useState<UpdateActionType>();
+  const [templateType, setTemplateType] = useState<DownloadTemplateType>();
+  const { textWhite, primary, textDark } = useTheme();
 
   return (
     <Layout.FlexColumn
@@ -21,23 +23,25 @@ const DownloadTemplateSection: React.FC = () => {
     >
       <div className="update-buttons-container">
         <RadioButtonCard
-          checked={downloadType === "ADD"}
+          checked={updateActionType === "ADD"}
           text={ci18n("Bulk csv add/edit action type", "Add new products")}
           onCheck={() => {
-            if (downloadType !== "ADD") {
-              setDownloadType("ADD");
+            if (updateActionType !== "ADD") {
+              setUpdateActionType("ADD");
+              setTemplateType("ADD_PRODUCT");
             }
           }}
         />
         <RadioButtonCard
-          checked={downloadType === "EDIT"}
+          checked={updateActionType === "EDIT"}
           text={ci18n(
             "Bulk csv add/edit action type",
             "Edit existing products",
           )}
           onCheck={() => {
-            if (downloadType !== "EDIT") {
-              setDownloadType("EDIT");
+            if (updateActionType !== "EDIT") {
+              setUpdateActionType("EDIT");
+              setTemplateType("EDIT_PRICE_INVENTORY");
             }
           }}
         />
@@ -59,11 +63,44 @@ const DownloadTemplateSection: React.FC = () => {
           }
         `}</style>
       </div>
-      {downloadType === "ADD" && (
-        <Button
-          primary
-          startIcon={<Icon name="uploadCloud" color={textWhite} />}
-        >
+      {updateActionType === "EDIT" && (
+        <>
+          <EditTemplateSelect
+            selectedType={
+              templateType === "ADD_PRODUCT" ? undefined : templateType
+            }
+            onSelect={setTemplateType}
+          />
+          <Layout.FlexColumn style={{ gap: 8 }}>
+            <Layout.FlexRow style={{ gap: 16 }}>
+              <Button
+                primary
+                startIcon={<Icon name="download" color={textWhite} />}
+              >
+                {ci18n(
+                  "Button text, download bulk add/edit product csv template with product catalog data",
+                  "Download catalog",
+                )}
+              </Button>
+              <Button
+                secondary
+                startIcon={<Icon name="download" color={primary} />}
+              >
+                {ci18n(
+                  "Button text, download bulk add/edit product csv template",
+                  "Download template",
+                )}
+              </Button>
+            </Layout.FlexRow>
+            <Text variant="bodyM" style={{ color: textDark }}>
+              If your catalog exceeds 150 products, you may receive it via
+              email.
+            </Text>
+          </Layout.FlexColumn>
+        </>
+      )}
+      {updateActionType === "ADD" && (
+        <Button primary startIcon={<Icon name="download" color={textWhite} />}>
           {ci18n(
             "Button text, download bulk add/edit product csv template",
             "Download template",

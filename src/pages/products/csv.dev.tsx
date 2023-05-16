@@ -16,7 +16,7 @@ const ProductsCsvPage: NextPage<Record<string, never>> = () => {
 
   return (
     <PageRoot>
-      <PageHeader title={i`Add/edit products with CSV`} relaxed />
+      <PageHeader title={i`Add or edit products with CSV`} relaxed />
       <PageGuide style={styles.content} relaxed hideFooter>
         {isAlertOpen && (
           <Alert

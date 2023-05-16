@@ -27,6 +27,7 @@ const RadioButtonCard: React.FC<RadioButtonCardProps> = ({
         padding: "16px",
         borderColor: checked ? secondaryDark : undefined,
         cursor: "pointer",
+        boxSizing: "border-box",
       }}
       // @ts-ignore mui typing issue, component prop is not being recognized
       component="button"

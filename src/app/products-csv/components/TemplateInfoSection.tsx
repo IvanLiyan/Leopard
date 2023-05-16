@@ -24,7 +24,10 @@ const TemplateInfoSection: React.FC = () => {
         Please fill in all required sections and save your document as a CSV
         file.
       </Text>
-      <Card style={{ padding: "24px", width: "400px" }}>
+      <Card
+        style={{ padding: "24px", width: "400px", boxSizing: "border-box" }}
+        borderRadius="md"
+      >
         <Layout.FlexRow justifyContent="space-between">
           <Layout.FlexColumn style={{ gap: "16px" }}>
             <Heading variant="h4">
