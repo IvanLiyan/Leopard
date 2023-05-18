@@ -23,6 +23,7 @@ import Image from "@core/components/Image";
 import { ci18n } from "@core/toolkit/i18n";
 import { useQuery } from "@apollo/client";
 import { RefetchEprQueryContext } from "@product-compliance-center/toolkit/RefetchEprQueryContext";
+import EprTosModal from "@product-compliance-center/components/EprTosModal";
 
 const PageLayout = ({
   country,
@@ -154,26 +155,41 @@ const ProductComplianceCenterPage: NextPage<Record<string, never>> = () => {
     return <Text variant="bodyLStrong">Something went wrong.</Text>;
   }
 
+  const hasNotAcceptedTos =
+    !data.policy?.productCompliance?.extendedProducerResponsibility.country
+      .hasAcceptedTos;
+
   return (
-    <RefetchEprQueryContext.Provider value={refetch}>
-      <PageLayout
+    <>
+      <EprTosModal
+        open={hasNotAcceptedTos}
+        onAccept={() => {
+          void refetch();
+        }}
         country={country}
-        cards={data.policy?.productCompliance?.extendedProducerResponsibility.country.categories.map(
-          (config, i) => (
-            <EprCategoryCard
-              key={i}
-              id={config.eprId}
-              category={config.category}
-              categoryName={config.categoryName}
-              uin={config.uin}
-              responsibleEntityName={config.responsibleEntityName}
-              status={config.status}
-              country={country}
-            />
-          ),
-        )}
+        blocking
       />
-    </RefetchEprQueryContext.Provider>
+      <RefetchEprQueryContext.Provider value={refetch}>
+        <PageLayout
+          country={country}
+          cards={data.policy?.productCompliance?.extendedProducerResponsibility.country.categories.map(
+            (config, i) => (
+              <EprCategoryCard
+                key={i}
+                id={config.eprId}
+                category={config.category}
+                categoryName={config.categoryName}
+                uin={config.uin}
+                responsibleEntityName={config.responsibleEntityName}
+                status={config.status}
+                country={country}
+                inScopePidCount={config.inScopePidCount}
+              />
+            ),
+          )}
+        />
+      </RefetchEprQueryContext.Provider>
+    </>
   );
 };
 

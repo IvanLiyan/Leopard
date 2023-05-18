@@ -57,6 +57,10 @@ export type AcceptMerchantPolicyInput = {
   readonly source: MerchantPolicyAgreementSource;
 };
 
+export type AccepTosInput = {
+  readonly country: CountryCode;
+};
+
 export type AcceptTermsOfService = {
   readonly __typename?: "AcceptTermsOfService";
   readonly ok: Scalars["Boolean"];
@@ -66,6 +70,12 @@ export type AcceptTermsOfService = {
 export type AcceptTermsOfServiceInput = {
   readonly tosVersion: Scalars["Int"];
   readonly tosRegion?: Maybe<TermsOfServiceRegionType>;
+};
+
+export type AcceptTos = {
+  readonly __typename?: "AcceptTos";
+  readonly ok: Scalars["Boolean"];
+  readonly message?: Maybe<Scalars["String"]>;
 };
 
 export type AccountBalanceType = "CONFIRMED" | "PENDING";
@@ -847,6 +857,58 @@ export type BalanceUpdateReason =
   | "PAYMENT_BY_CREDITS"
   | "ISSUING_CREDITS";
 
+export type BankAccountDocumentSchema = {
+  readonly __typename?: "BankAccountDocumentSchema";
+  readonly id: Scalars["ObjectIdType"];
+  readonly documentFile?: Maybe<MerchantFileSchema>;
+  readonly uploadedAt: Datetime;
+  readonly state: BankAccountVerificationStatus;
+  readonly comment?: Maybe<Scalars["String"]>;
+  readonly documentType?: Maybe<BankAccountDocumentType>;
+  readonly reviewedAt?: Maybe<Datetime>;
+  readonly reviewer?: Maybe<UserSchema>;
+};
+
+export type BankAccountDocumentType =
+  | "GOVERNMENT_DOCUMENT"
+  | "UNIDENTIFIED"
+  | "BANK_DOCUMENT";
+
+export type BankAccountVerificationMerchantMutations = {
+  readonly __typename?: "BankAccountVerificationMerchantMutations";
+  readonly uploadDocument: UploadBankAccountDocument;
+};
+
+export type BankAccountVerificationMerchantMutationsUploadDocumentArgs = {
+  input: UploadBankAccountDocumentInput;
+};
+
+export type BankAccountVerificationReviewerMutations = {
+  readonly __typename?: "BankAccountVerificationReviewerMutations";
+  readonly reviewDocument?: Maybe<ReviewBankAccountDocument>;
+};
+
+export type BankAccountVerificationReviewerMutationsReviewDocumentArgs = {
+  input: ReviewBankAccountDocumentInput;
+};
+
+export type BankAccountVerificationSchema = {
+  readonly __typename?: "BankAccountVerificationSchema";
+  readonly id: Scalars["ObjectIdType"];
+  readonly state: BankAccountVerificationStatus;
+  readonly lastReviewedAt?: Maybe<Datetime>;
+  readonly lastUploadedAt?: Maybe<Datetime>;
+  readonly bankAccountDocuments?: Maybe<
+    ReadonlyArray<BankAccountDocumentSchema>
+  >;
+};
+
+export type BankAccountVerificationStatus =
+  | "SUBMITTED"
+  | "REJECTED"
+  | "APPROVED"
+  | "PENDING";
+
 export type BdAudienceInput = "ALL" | "MERCHANT_IDS";
 
 export type BdBaseAnnouncementInput = {
@@ -1376,6 +1438,11 @@ export type BrandProtectionInjunctionMerchantFreezesArgs = {
   troNumbers?: Maybe<ReadonlyArray<Scalars["Int"]>>;
   state?: Maybe<ReadonlyArray<InjunctionMerchantFreezeState>>;
   freezeTypes?: Maybe<ReadonlyArray<InjunctionMerchantFreezeType>>;
+  fineIds?: Maybe<ReadonlyArray<Scalars["ObjectIdType"]>>;
+  legalStartDateUnix?: Maybe<Scalars["Int"]>;
+  legalEndDateUnix?: Maybe<Scalars["Int"]>;
+  updatedStartDateUnix?: Maybe<Scalars["Int"]>;
+  updatedEndDateUnix?: Maybe<Scalars["Int"]>;
   offset?: Maybe<Scalars["Int"]>;
   count?: Maybe<Scalars["Int"]>;
 };
@@ -1386,6 +1453,11 @@ export type BrandProtectionNumInjunctionMerchantFreezesArgs = {
   troNumbers?: Maybe<ReadonlyArray<Scalars["Int"]>>;
   state?: Maybe<ReadonlyArray<InjunctionMerchantFreezeState>>;
   freezeTypes?: Maybe<ReadonlyArray<InjunctionMerchantFreezeType>>;
+  fineIds?: Maybe<ReadonlyArray<Scalars["ObjectIdType"]>>;
+  legalStartDateUnix?: Maybe<Scalars["Int"]>;
+  legalEndDateUnix?: Maybe<Scalars["Int"]>;
+  updatedStartDateUnix?: Maybe<Scalars["Int"]>;
+  updatedEndDateUnix?: Maybe<Scalars["Int"]>;
 };
 
 export type BrandProtectionConstants = {
@@ -1480,6 +1552,14 @@ export type BrandTypeCode =
   | "COPYRIGHT_IMAGE"
   | "BRAND_OF_INTEREST";
 
+export type BulkMerchantWarningAction =
+  | "DECLINE"
+  | "REVERSE"
+  | "CONFIRM"
+  | "DECLINE_AND_CLOSE"
+  | "APPROVE"
+  | "DELETE";
+
 export type BulkReviewInput = {
   readonly merchantIds: ReadonlyArray<Scalars["ObjectIdType"]>;
   readonly reviewState: SanctionScreeningHitStateType;
@@ -1494,6 +1574,19 @@ export type BulkReviewMutation = {
   readonly totalToUpdate: Scalars["Int"];
   readonly successfullyUpdated: Scalars["Int"];
   readonly errorMessage?: Maybe<Scalars["String"]>;
+};
+
+export type BulkUpsertMerchantWarning = {
+  readonly __typename?: "BulkUpsertMerchantWarning";
+  readonly ok: Scalars["Boolean"];
+  readonly message?: Maybe<Scalars["String"]>;
+};
+
+export type BulkUpsertMerchantWarningInput = {
+  readonly action: BulkMerchantWarningAction;
+  readonly warningIds: ReadonlyArray<Scalars["ObjectIdType"]>;
+  readonly message?: Maybe<Scalars["String"]>;
+  readonly comment?: Maybe<Scalars["String"]>;
 };
 
 export type BusinessDocTypes =
@@ -1524,6 +1617,11 @@ export type ByUserIdMutation = {
   readonly error?: Maybe<Scalars["String"]>;
   readonly sessionKey?: Maybe<Scalars["String"]>;
 };
+
+export type CalculatedShippingAccountConfigType =
+  | "ACCOUNT_LEVEL_OFF"
+  | "ACCOUNT_LEVEL_ON"
+  | "USE_PRODUCT_LEVEL_CONFIG";
 
 export type CampaignEventInfo = {
   readonly __typename?: "CampaignEventInfo";
@@ -1583,6 +1681,10 @@ export type CancelChargeTransactionMutation = {
   readonly message?: Maybe<Scalars["String"]>;
 };
 
+export type CancelInfractionInput = {
+  readonly reason: CancelReason;
+};
+
 export type CancelMfpCampaign = {
   readonly __typename?: "CancelMFPCampaign";
   readonly ok: Scalars["Boolean"];
@@ -1594,6 +1696,16 @@ export type CancelMfpCampaignInput = {
   readonly cancelReason: MfpCampaignCancelReason;
   readonly comment?: Maybe<Scalars["String"]>;
 };
+
+export type CancelReason =
+  | "ALREADY_DELETED"
+  | "POLICY_UPDATE"
+  | "WHITE_GLOVE_WISH_X_STRAT_MERCH"
+  | "AGENT_ERROR"
+  | "INCORRECT_DATA"
+  | "OFFENDING_CONTENT_REMOVED"
+  | "EXPIRED"
+  | "PASSED_AUTHORIZATION_TAGGING";
 
 export type CancelReturn = {
   readonly __typename?: "CancelReturn";
@@ -1746,6 +1858,7 @@ export type CategoryEprSchema = {
   readonly uin?: Maybe<Scalars["String"]>;
   readonly responsibleEntityName?: Maybe<Scalars["String"]>;
   readonly status?: Maybe<EprStatus>;
+  readonly inScopePidCount: Scalars["Int"];
 };
 
 export type ChangeDisplayNameInput = {
@@ -1982,6 +2095,10 @@ export type ChromeSchema = {
 export type ChromeSchemaObjectSearchArgs = {
   objectId: Scalars["ObjectIdType"];
   currentPath?: Maybe<Scalars["String"]>;
+};
+
+export type ClaimInfractionInput = {
+  readonly warningIds?: Maybe<ReadonlyArray<Scalars["ObjectIdType"]>>;
 };
 
 export type ClearAllUiState = {
@@ -2599,7 +2716,8 @@ export type CountryEprSchema = {
   readonly categoriesWithoutEpr: Scalars["Int"];
   readonly categoriesWithEpr: Scalars["Int"];
   readonly categories: ReadonlyArray<CategoryEprSchema>;
-  readonly isMerchantAuthorized: Scalars["Boolean"];
+  readonly tos: Scalars["String"];
+  readonly hasAcceptedTos: Scalars["Boolean"];
 };
 
 export type CountryShippingInput = {
@@ -3698,6 +3816,7 @@ export type EprMutations = {
   readonly createUin?: Maybe<CreateUin>;
   readonly updateUin?: Maybe<UpdateUin>;
   readonly deleteUin?: Maybe<DeleteUin>;
+  readonly acceptTos?: Maybe<AcceptTos>;
 };
 
 export type EprMutationsCreateUinArgs = {
@@ -3710,6 +3829,10 @@ export type EprMutationsUpdateUinArgs = {
 
 export type EprMutationsDeleteUinArgs = {
   input: DeleteUinInput;
+};
+
+export type EprMutationsAcceptTosArgs = {
+  input: AccepTosInput;
 };
 
 export type EprStatus =
@@ -4935,6 +5058,11 @@ export type InjunctionMerchantFreezeFilterInput = {
   readonly troNumbers?: Maybe<ReadonlyArray<Scalars["Int"]>>;
   readonly states?: Maybe<ReadonlyArray<InjunctionMerchantFreezeState>>;
   readonly freezeTypes?: Maybe<ReadonlyArray<InjunctionMerchantFreezeType>>;
+  readonly fineIds?: Maybe<ReadonlyArray<Scalars["ObjectIdType"]>>;
+  readonly legalStartDateUnix?: Maybe<Scalars["Int"]>;
+  readonly legalEndDateUnix?: Maybe<Scalars["Int"]>;
+  readonly updatedStartDateUnix?: Maybe<Scalars["Int"]>;
+  readonly updatedEndDateUnix?: Maybe<Scalars["Int"]>;
 };
 
 export type InjunctionMerchantFreezeFinePaymentInput = {
@@ -5046,6 +5174,7 @@ export type InjunctionMerchantFreezeSchema = {
   readonly sumOfFineAmounts: CurrencyValue;
   readonly tentativeFreezeAmount?: Maybe<CurrencyValue>;
   readonly state: InjunctionMerchantFreezeState;
+  readonly lastUpdatedAt: Datetime;
 };
 
 export type InjunctionMerchantFreezeState = "ACTIVE" | "RESOLVED";
@@ -5162,6 +5291,48 @@ export type LedgerAccountBalance = {
 
 export type LedgerAccountBalanceType = "CONFIRMED" | "PENDING";
 
+export type LedgerEvent = {
+  readonly __typename?: "LedgerEvent";
+  readonly id: Scalars["String"];
+  readonly eventType: LedgerEventType;
+  readonly documentId?: Maybe<Scalars["String"]>;
+  readonly eventTime: Datetime;
+  readonly data: Scalars["String"];
+};
+
+export type LedgerEventType =
+  | "FINE_ELIGIBILITY_UPDATE"
+  | "ARRIVE_AT_EPC_WAREHOUSE"
+  | "USER_CONFIRMED_DELIVERED"
+  | "FEE_CREATION"
+  | "TRACKING_CANCELLED"
+  | "CONFIRMED_DELIVERED"
+  | "LEDGER_ITEM_FETCH"
+  | "TAX_UPDATE"
+  | "REBATE_CREATE"
+  | "FEE_ELIGIBILITY_UPDATE"
+  | "CONFIRMED_SHIPPED"
+  | "ONEOFF_PAYMENT_CREATION"
+  | "RECEIVE_WP_SHIPPING_ADJUSTMENT"
+  | "RECEIVE_INITIAL_WP_SHIPPING"
+  | "REMOVED_FROM_A_PLUS"
+  | "LEDGER_ITEM_STATE_BATCH_UPDATE"
+  | "FINE_REVERSAL"
+  | "PAYMENT_AMOUNT_AMENDMENT"
+  | "FINE_CREATION"
+  | "MARKED_SHIPPED"
+  | "ORDER_RELEASED"
+  | "ONEOFF_PAYMENT_CANCEL"
+  | "DISPUTE_SUCCESS"
+  | "ORDER_WITHHOLD_CANCEL"
+  | "REBATE_CANCEL"
+  | "ORDER_REFUND"
+  | "ACCOUNT_BALANCES_FETCH"
+  | "FEE_REVERSAL"
+  | "ORDER_WITHHOLD"
+  | "TAX_ADJUSTMENT"
+  | "TRACKING_AMENDMENT";
+
 export type LedgerItem = {
   readonly __typename?: "LedgerItem";
   readonly id?: Maybe<Scalars["String"]>;
@@ -5246,6 +5417,7 @@ export type LedgerOrderInfo = {
 export type LedgerPayableInfo = {
   readonly __typename?: "LedgerPayableInfo";
   readonly ledgerItems?: Maybe<ReadonlyArray<LedgerItem>>;
+  readonly ledgerEvents?: Maybe<ReadonlyArray<LedgerEvent>>;
 };
 
 export type LedgerPayableState = "LIMBO" | "NEW" | "SETTLED" | "PAID_IN_CLROOT";
@@ -6389,6 +6561,25 @@ export type MerchantGamingReviewUpdateInput = {
   readonly infractionIds?: Maybe<Scalars["String"]>;
 };
 
+export type MerchantIdentityMutations = {
+  readonly __typename?: "MerchantIdentityMutations";
+  readonly bankAccountVerification: BankAccountVerificationReviewerMutations;
+};
+
+export type MerchantIdentityServiceSchema = {
+  readonly __typename?: "MerchantIdentityServiceSchema";
+  readonly bankAccountVerifications?: Maybe<
+    ReadonlyArray<BankAccountVerificationSchema>
+  >;
+};
+
+export type MerchantIdentityServiceSchemaBankAccountVerificationsArgs = {
+  offset?: Maybe<Scalars["Int"]>;
+  limit?: Maybe<Scalars["Int"]>;
+  merchantId?: Maybe<Scalars["ObjectIdType"]>;
+  state?: Maybe<BankAccountVerificationStatus>;
+};
+
 export type MerchantInviteInfo = {
   readonly __typename?: "MerchantInviteInfo";
   readonly valid: Scalars["Boolean"];
@@ -6484,6 +6675,7 @@ export type MerchantMutation = {
   readonly merchantTaxIdentification: MerchantTaxIdentificationMutations;
   readonly sellerIdentityVerification: SellerIdentityVerificationMutations;
   readonly sellerIdentityCnVerification: SellerIdentityCnVerificationMutations;
+  readonly bankAccountVerification: BankAccountVerificationMerchantMutations;
   readonly returnSettings: MerchantReturnSettingsMutations;
   readonly returnWarehouseSettings?: Maybe<MerchantReturnWarehouseMutations>;
 };
@@ -6822,6 +7014,7 @@ export type MerchantPaymentsServiceLedgerOrderInfoArgs = {
 export type MerchantPaymentsServiceLedgerPayableInfoArgs = {
   payableId: Scalars["String"];
   payableType: Scalars["String"];
+  includeEvents?: Maybe<Scalars["Boolean"]>;
 };
 
 export type MerchantPaymentsServiceDisbursementScheduleInfoArgs = {
@@ -7048,6 +7241,7 @@ export type MerchantSchema = {
   readonly isWishBlueSelfInventory: Scalars["Boolean"];
   readonly isFactory: Scalars["Boolean"];
   readonly taxIdentification?: Maybe<MerchantTaxIdentificationSchema>;
+  readonly bankAccountVerification?: Maybe<BankAccountVerificationSchema>;
   readonly email: Scalars["String"];
   readonly isIdentifiedUsTax?: Maybe<Scalars["Boolean"]>;
   readonly eligibleForExpeditedPaymentPolicy?: Maybe<Scalars["Boolean"]>;
@@ -7067,6 +7261,8 @@ export type MerchantSchema = {
   readonly disableReasonCategory?: Maybe<Scalars["String"]>;
   readonly isFlatRateShippingOptedIn?: Maybe<Scalars["Boolean"]>;
   readonly canAccessFlatRateShippingOptInOptOut?: Maybe<Scalars["Boolean"]>;
+  readonly calculatedShippingAccountConfig?: Maybe<CalculatedShippingAccountConfigType>;
+  readonly canAccessCalculatedShippingAccountConfig?: Maybe<Scalars["Boolean"]>;
 };
 
 export type MerchantSchemaShippingSettingsArgs = {
@@ -7610,10 +7806,14 @@ export type MerchantWarehouseWeekStatsSort = {
 export type MerchantWarehouseWeekStatsSortFieldType = "START_DATE";
 
 export type MerchantWarningAction =
-  | "REPLY"
+  | "CLAIM"
+  | "LISTING_LEVEL_DISPUTE"
+  | "UNCLAIM"
+  | "CONFIRM"
   | "MERCHANT_LEVEL_DISPUTE"
   | "REQUEST_PAYMENT_RELEASE"
-  | "LISTING_LEVEL_DISPUTE";
+  | "CANCEL"
+  | "REPLY";
 
 export type MerchantWarningAuditAction =
   | "CLAIM"
@@ -7675,6 +7875,7 @@ export type MerchantWarningMutations = {
   readonly __typename?: "MerchantWarningMutations";
   readonly updateAuditQueueWarning?: Maybe<UpdateAuditQueueWarning>;
   readonly upsertMerchantWarning?: Maybe<UpsertMerchantWarning>;
+  readonly bulkUpsertMerchantWarning?: Maybe<BulkUpsertMerchantWarning>;
 };
 
 export type MerchantWarningMutationsUpdateAuditQueueWarningArgs = {
@@ -7683,6 +7884,10 @@ export type MerchantWarningMutationsUpdateAuditQueueWarningArgs = {
 
 export type MerchantWarningMutationsUpsertMerchantWarningArgs = {
   input?: Maybe<UpsertMerchantWarningInput>;
+};
+
+export type MerchantWarningMutationsBulkUpsertMerchantWarningArgs = {
+  input?: Maybe<BulkUpsertMerchantWarningInput>;
 };
 
 export type MerchantWarningProofDisputeStatus =
@@ -7826,6 +8031,7 @@ export type MerchantWarningReplySenderType =
 
 export type MerchantWarningReplyType =
   | "ADMIN_COMMENT"
+  | "REOPEN_REPLY"
   | "APPROVE_PAYMENT_RELEASE"
   | "UNBAN_EXPLANATION"
   | "REGULAR_REPLY"
@@ -7838,7 +8044,7 @@ export type MerchantWarningReplyType =
   | "REJECT_PAYMENT_RELEASE"
   | "BD_APPROVE_PAYMENT_RELEASE"
   | "REMOVE_WITHHOLD_FUNDS_EXPLANATION"
-  | "REOPEN_REPLY"
+  | "CLOSE_EXPLANATION"
   | "RESET_PAYMENT_RELEASE";
 
 export type MerchantWarningSchema = {
@@ -7877,6 +8083,7 @@ export type MerchantWarningSchema = {
   readonly takedownRequest?: Maybe<TakedownRequestSchema>;
   readonly replies?: Maybe<ReadonlyArray<MerchantWarningReplySchema>>;
   readonly resolved: Scalars["Boolean"];
+  readonly bulkProcessing?: Maybe<Scalars["Boolean"]>;
 };
 
 export type MerchantWarningSchemaFineAmountArgs = {
@@ -9335,7 +9542,7 @@ export type PermissionType =
   | "CAN_CHECK_EXTERNAL_TRACKING"
   | "SHOW_SHIPPING_PROVIDERS"
   | "CAN_VIEW_ALL_INTERNAL_USERS"
-  | "VIEW_TERM_OF_SERVICE_EPC_BILL_HOLD"
+  | "CAN_REVIEW_MERCHANT_KYC"
   | "REVIEW_ONEOFF_REQ_DISABLE_DYNAMIC_PRICING"
   | "EDIT_TAGGING_PERMISSIONS"
   | "CAN_ACT_ON_KR_MERCHANT"
@@ -9369,6 +9576,7 @@ export type PermissionType =
   | "CAN_GROUP_MERCHANTS"
   | "PROMO_TAG"
   | "TRIGGER_SELLER_PROFILE_REVERIFICATION"
+  | "CAN_UPLOAD_BANK_ACCOUNT_DOCUMENT"
   | "MANAGE_LEGAL_INJUNCTION"
   | "DEP_TRUE_BRAND_RESOLUTION_TAG"
   | "REVIEW_ONEOFF_REQ_ISSUE_PB_CREDITS_TO_SELF_INVENTORY_MERCHANTS"
@@ -9542,6 +9750,7 @@ export type PermissionType =
   | "UPLOAD_PRODUCTS_CSV"
   | "CREATE_WISHPOST_ID_NOT_COMPLETE_FACE_RECOGNITION"
   | "EXPORT_PRODUCT_DATA"
+  | "VIEW_TERM_OF_SERVICE_EPC_BILL_HOLD"
   | "CAN_EDIT_CANNED_RESPONSES"
   | "CAN_VIEW_EARLY_PAYMENT_RISK_CONTROL"
   | "CAN_REVIEW_TRACKING_DISPUTES"
@@ -9598,6 +9807,7 @@ export type PermissionType =
   | "SHOW_MERCHANT_ASSETS"
   | "REVIEW_ONEOFF_REQ_REMOVE_MAX_TTD_ENTENSION"
   | "TRIGGER_KYC_REVERIFICATION"
+  | "CAN_REVIEW_BANK_ACCOUNT_DOCUMENT"
   | "EXPORT_ORDERS"
   | "SHOW_MERCHANT_STATS"
   | "VIEW_WARNING_BAN_HOLD"
@@ -10266,6 +10476,11 @@ export type ProductCatalogSchema = {
   readonly csvProductImportJobsCount: Scalars["Int"];
   readonly csvProductColumnNames: ReadonlyArray<Scalars["String"]>;
   readonly csvProductColumnEnums: ReadonlyArray<ProductCsvColumnName>;
+  readonly csvShippingHeaderNames: ReadonlyArray<Scalars["String"]>;
+  readonly csvPriceInventoryHeaderNames: ReadonlyArray<Scalars["String"]>;
+  readonly csvTitleImagesDescriptionHeaderNames: ReadonlyArray<
+    Scalars["String"]
+  >;
   readonly gtinProductService: GtinProductServiceSchema;
   readonly videoService: ProductVideoServiceSchema;
   readonly csvProductTemplateWithTaxonomyColumnNames?: Maybe<
@@ -10848,14 +11063,14 @@ export type ProductCsvImportSchemaOptionalColumnsArgs = {
 };
 
 export type ProductCsvJobType =
-  | "EDIT_PRICE_AND_INVENTORY"
+  | "NEW_ADD_PRODUCTS"
   | "ADD_PRODUCTS"
   | "CREATE_PRESALE_PRODUCT"
+  | "NEW_UPDATE_PRODUCTS"
   | "EDIT_WISH_EXPRESS_COUNTRIES"
   | "SHOPIFY_CREATE_PRODUCTS"
-  | "EDIT_CONTENT"
   | "UPSERT_PRODUCTS"
-  | "EDIT_BY_CATEGORY"
+  | "NEW_ADD_SIZE_COLOR"
   | "EDIT_FBW_SHIPPING"
   | "EDIT_SHIPPING"
   | "ADD_SIZE_COLOR"
@@ -12546,6 +12761,20 @@ export type Reversal = {
   readonly amount: CurrencyValue;
 };
 
+export type ReviewBankAccountDocument = {
+  readonly __typename?: "ReviewBankAccountDocument";
+  readonly ok: Scalars["Boolean"];
+  readonly message?: Maybe<Scalars["String"]>;
+};
+
+export type ReviewBankAccountDocumentInput = {
+  readonly merchantId: Scalars["ObjectIdType"];
+  readonly documentId: Scalars["ObjectIdType"];
+  readonly documentType: BankAccountDocumentType;
+  readonly state: BankAccountVerificationStatus;
+  readonly comment?: Maybe<Scalars["String"]>;
+};
+
 export type ReviewMerchantTaxIdentificationInput = {
   readonly merchantTaxIdentificationId: Scalars["ObjectIdType"];
   readonly reviewAction: MerchantTaxIdentificationReviewAction;
@@ -12727,6 +12956,7 @@ export type RootMutation = {
   readonly customerSupportTickets?: Maybe<CustomerSupportTicketMutations>;
   readonly locale?: Maybe<LocaleMutations>;
   readonly sanctionScreening?: Maybe<SanctionScreeningMutations>;
+  readonly merchantIdentity?: Maybe<MerchantIdentityMutations>;
 };
 
 export type RootQuery = {
@@ -12769,6 +12999,7 @@ export type RootQuery = {
   readonly merchantEntity?: Maybe<MerchantEntitySchema>;
   readonly taxonomy?: Maybe<TaxonomySchema>;
   readonly listingQualityInsights?: Maybe<ListingQualityInsightsSchema>;
+  readonly merchantIdentity?: Maybe<MerchantIdentityServiceSchema>;
 };
 
 export type RootQueryMerchantEntityArgs = {
@@ -13555,8 +13786,9 @@ export type ShippingSettingMutations = {
 
 export type ShippingSettingMutationsUpdateShippingSettingArgs = {
   useShopifyShippingRate?: Maybe<Scalars["Boolean"]>;
-  flatRateShippingOptInStatus?: Maybe<Scalars["Boolean"]>;
   countryShipping?: Maybe<ReadonlyArray<CountryShippingSetting>>;
+  calculatedShippingAccountConfig?: Maybe<Scalars["Int"]>;
+  flatRateShippingOptInStatus?: Maybe<Scalars["Boolean"]>;
   otherCountriesShipping?: Maybe<OtherCountriesShippingSetting>;
   isUpsert?: Maybe<Scalars["Boolean"]>;
 };
@@ -14313,6 +14545,9 @@ export type TaxonomySchema = {
   readonly taxonomyTreeCsv?: Maybe<
     ReadonlyArray<ReadonlyArray<Scalars["String"]>>
   >;
+  readonly categoryAttributesCsv?: Maybe<
+    ReadonlyArray<ReadonlyArray<Scalars["String"]>>
+  >;
 };
 
 export type TaxonomySchemaCategoryArgs = {
@@ -14342,6 +14577,10 @@ export type TaxonomySchemaVariationOptionsArgs = {
 
 export type TaxonomySchemaTaxonomyTreeCsvArgs = {
   treeVersion?: Maybe<Scalars["String"]>;
+};
+
+export type TaxonomySchemaCategoryAttributesCsvArgs = {
+  categoryId: Scalars["Int"];
 };
 
 export type TaxSetting = {
@@ -15209,6 +15448,16 @@ export type UpdateUserQueuesMutation = {
   readonly error?: Maybe<Scalars["String"]>;
 };
 
+export type UploadBankAccountDocument = {
+  readonly __typename?: "UploadBankAccountDocument";
+  readonly ok: Scalars["Boolean"];
+  readonly message?: Maybe<Scalars["String"]>;
+};
+
+export type UploadBankAccountDocumentInput = {
+  readonly url: Scalars["String"];
+};
+
 export type UploadEuvatTaxQuestionnaire = {
   readonly __typename?: "UploadEUVATTaxQuestionnaire";
   readonly ok: Scalars["Boolean"];
@@ -15391,6 +15640,8 @@ export type UpsertMerchantWarningInput = {
   readonly messageInput?: Maybe<ReplyInfractionInput>;
   readonly disputeInput?: Maybe<DisputeInfractionInput>;
   readonly requestPaymentInput?: Maybe<RequestPaymentInput>;
+  readonly cancelWarningInput?: Maybe<CancelInfractionInput>;
+  readonly claimWarningInput?: Maybe<ClaimInfractionInput>;
 };
 
 export type UpsertOrderInfractionDispute = {
@@ -16455,6 +16706,10 @@ export type WishSellerStandardStats = {
   readonly repeatIpInfractionCount: Scalars["Int"];
   readonly materialListingChangeCount: Scalars["Int"];
   readonly date: Datetime;
+  readonly productWithOrdersCount?: Maybe<Scalars["Int"]>;
+  readonly badProductCount?: Maybe<Scalars["Int"]>;
+  readonly badProductRate?: Maybe<Scalars["Float"]>;
+  readonly levelPreview?: Maybe<WssMerchantLevelType>;
 };
 
 export type WishUserSchema = {
@@ -16736,6 +16991,7 @@ export type WssPerformanceDeepDiveHubProductQualityRefundArgs = {
   sortField?: Maybe<SortProductQualityRefundField>;
   sortOrder?: Maybe<SortByOrder>;
   productIds?: Maybe<ReadonlyArray<Scalars["ObjectIdType"]>>;
+  isBadByRefund?: Maybe<Scalars["Boolean"]>;
 };
 
 export type WssPerformanceDeepDiveHubProductRatingArgs = {
@@ -16744,6 +17000,7 @@ export type WssPerformanceDeepDiveHubProductRatingArgs = {
   sortField?: Maybe<SortProductRatingField>;
   sortOrder?: Maybe<SortByOrder>;
   productIds?: Maybe<ReadonlyArray<Scalars["ObjectIdType"]>>;
+  isBadByRating?: Maybe<Scalars["Boolean"]>;
 };
 
 export type WssPerformanceDeepDiveHubQualityRefundBreakdownArgs = {

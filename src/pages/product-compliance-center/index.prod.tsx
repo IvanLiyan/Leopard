@@ -91,9 +91,9 @@ const ProductComplianceCenterPage: NextPage<Record<string, never>> = () => {
               key={i}
               countryName={config.country.name}
               countryCode={config.country.code}
-              isMerchantAuthorized={config.isMerchantAuthorized}
               categoriesWithEpr={config.categoriesWithEpr}
               categoriesWithoutEpr={config.categoriesWithoutEpr}
+              hasAcceptedTos={config.hasAcceptedTos}
             />
           ),
         ),

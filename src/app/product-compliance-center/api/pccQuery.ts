@@ -19,9 +19,9 @@ export const PCC_QUERY = gql`
               name
               code
             }
-            isMerchantAuthorized
             categoriesWithEpr
             categoriesWithoutEpr
+            hasAcceptedTos
           }
         }
       }
@@ -40,9 +40,7 @@ export type PccQueryResponse = {
             readonly country: Pick<Country, "name" | "code">;
           } & Pick<
             CountryEprSchema,
-            | "isMerchantAuthorized"
-            | "categoriesWithEpr"
-            | "categoriesWithoutEpr"
+            "categoriesWithEpr" | "categoriesWithoutEpr" | "hasAcceptedTos"
           >
         >;
       };

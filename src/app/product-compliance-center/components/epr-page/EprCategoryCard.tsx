@@ -28,6 +28,7 @@ export type Props = {
   readonly responsibleEntityName: Maybe<string>;
   readonly status: Maybe<EprStatus>;
   readonly country: CountryCode;
+  readonly inScopePidCount: number;
 };
 
 const EprCategoryCard: React.FC<Props> = ({
@@ -38,6 +39,7 @@ const EprCategoryCard: React.FC<Props> = ({
   responsibleEntityName,
   status,
   country,
+  inScopePidCount,
 }) => {
   const { surfaceLighter } = useTheme();
   const [addModalOpen, setAddModalOpen] = useState(false);
@@ -114,6 +116,10 @@ const EprCategoryCard: React.FC<Props> = ({
       >
         {styles}
         <Divider />
+        <Text component="div" variant="bodyMStrong" sx={{ marginTop: "16px" }}>
+          Number of In-Scope Products
+        </Text>
+        <Text component="div">{inScopePidCount}</Text>
         <Text component="div" variant="bodyMStrong" sx={{ marginTop: "16px" }}>
           EPR Registration Number
         </Text>

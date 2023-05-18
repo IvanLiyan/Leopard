@@ -11,7 +11,7 @@ export const EPR_QUERY = gql`
       productCompliance {
         extendedProducerResponsibility {
           country(countryCode: $countryCode) {
-            isMerchantAuthorized
+            hasAcceptedTos
             categories {
               eprId: id # using id as a name breaks Apollo's caching
               category
@@ -19,6 +19,7 @@ export const EPR_QUERY = gql`
               uin
               responsibleEntityName
               status
+              inScopePidCount
             }
           }
         }
@@ -31,7 +32,7 @@ export type EprQueryResponse = {
   readonly policy?: {
     readonly productCompliance?: {
       readonly extendedProducerResponsibility: {
-        readonly country: Pick<CountryEprSchema, "isMerchantAuthorized"> & {
+        readonly country: Pick<CountryEprSchema, "hasAcceptedTos"> & {
           readonly categories: ReadonlyArray<
             Pick<
               CategoryEprSchema,
@@ -40,6 +41,7 @@ export type EprQueryResponse = {
               | "uin"
               | "responsibleEntityName"
               | "status"
+              | "inScopePidCount"
             > & {
               readonly eprId: CategoryEprSchema["id"];
             }

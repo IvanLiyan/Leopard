@@ -18,7 +18,7 @@ export const merchFeURL = (link: string): string => {
  * Override nextjs useRouter to properly handle transitions to leopard and merch FE urls
  * - push: a function for navigating to a given url (both leopard and Merch-FE urls are acceptable)
  */
-export const useRouter = (): {
+export const useRouter = (): Omit<NextRouter, "push"> & {
   push: (...args: Parameters<NextRouter["push"]>) => Promise<void>;
 } => {
   const nextRouter = useNextRouter();
@@ -34,5 +34,5 @@ export const useRouter = (): {
     }
   };
 
-  return { push };
+  return { ...nextRouter, push };
 };
