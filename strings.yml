@@ -247,3 +247,12 @@ features:
       performance across Wish, such as how well their products are selling,
       how well they are fulfilling orders, and other performance related
       metrics.
+
+  # TODO [yifzhang] add src/app/home/* in a way that won't cause existing strings to be re-translated
+  - name: Home Page
+    owners:
+      - jdlin@wish.com
+    files:
+      - src/app/home/components/modals/FrsOptInModal.tsx
+    description: >
+      This feature contains content that appears on a merchant's home page
