@@ -39,22 +39,19 @@ const FrsOptInModal: React.FC<FrsOptInModalProps> = ({ open, onClose }) => {
           <Illustration
             style={styles.illustration}
             name="homeFrsOptInModal"
-            alt={i`Introducing WishPost 2.0`}
+            alt={i`Enroll in Flat Rate Shipping`}
           />
           <Heading variant="h2" className={css(styles.header)}>
-            Introducing WishPost 2.0
-          </Heading>
-          <Heading variant="h4" className={css(styles.subheader)}>
-            A new shipping model designed to help you sell more
+            Enroll in Flat Rate Shipping
           </Heading>
           <Text className={css(styles.body, styles.bodyBottomMargin)}>
-            WishPost 2.0 will use a new and improved WishPost rate card and
-            payout policy. Customers will receive more shipping incentives, and
-            your store&#39;s impressions and sales will grow—at no additional
-            cost to you.
+            To improve Wish customer and merchant experiences, and to grow store
+            performances, we&apos;re enhancing flat rate shipping. With these
+            updates, we&apos;re giving you more control over pricing while
+            strengthening customer incentives—all to help you drive more sales.
           </Text>
           <Text className={css(styles.body)}>
-            Ready to get started? We&#39;ve made it easy to opt in.
+            Ready to get started? We&apos;ve made it easy to enroll.
           </Text>
         </Layout.FlexColumn>
         <ModalFooter
