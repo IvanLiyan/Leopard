@@ -52,10 +52,10 @@
   resolved "https://npm.infra.wish.com/@ContextLogic%2flegostrings/-/legostrings-0.0.1664165201.tgz#b31cb7457fe931c7471fb956bf03b560219fd2f9"
   integrity sha512-GsxxS3heScUVxpDinLJsYcQ0x4lILolSIeQRKpe+UH+Vn9nDjVg2RUqQ43DEiZIWG6GnRIht6Dqbhk57QuyjHw==
 
-"@ContextLogic/merchantstrings@^0.0.1682310985":
-  version "0.0.1682310985"
-  resolved "https://npm.infra.wish.com/@ContextLogic%2fmerchantstrings/-/merchantstrings-0.0.1682310985.tgz#c1628f9a92e09f6ea5cc5295454fe0670bcdfe60"
-  integrity sha512-jw/ddyRiegiyDsAkZj3ymAGt53pxIexqi3XfH/SdtjVh9CJcMJ2hrjxmIMsRQgjX9Lo5GY9JVbg2RSTNm4KZrg==
+"@ContextLogic/merchantstrings@^0.0.1684470986":
+  version "0.0.1684470986"
+  resolved "https://npm.infra.wish.com/@ContextLogic%2fmerchantstrings/-/merchantstrings-0.0.1684470986.tgz#0de9e70dada56b513da9e3306a64cdda27e121e1"
+  integrity sha512-4jQd4fmkdLpR5sCquDlGgd00y8n0ytLklO7WbLdcbYq2b5P6Gpz9PSl4zNPj5KliRObBkE6eC5TqqfyX9cnnPw==
 
 "@ContextLogic/zeus@0.0.1-1643061651":
   version "0.0.1-1643061651"

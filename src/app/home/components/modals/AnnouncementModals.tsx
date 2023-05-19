@@ -137,9 +137,7 @@ const AnnouncementModals: React.FC = () => {
     const canSeeFrsOptIn =
       dataFrsOptInStatus?.currentMerchant
         ?.canAccessFlatRateShippingOptInOptOut ?? false;
-    const showFrsOptInAnnouncementModal =
-      // temporarily disabling FRS modal until i18n is ready
-      false && canSeeFrsOptIn && !optedIntoFrs;
+    const showFrsOptInAnnouncementModal = canSeeFrsOptIn && !optedIntoFrs;
 
     let firstModalSet = false;
     const enqueue = (
