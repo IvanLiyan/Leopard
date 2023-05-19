@@ -20,7 +20,6 @@
     "paths": {
       "@add-edit-product/*": ["src/app/add-edit-product/*"],
       "@all-products/*": ["src/app/all-products/*"],
-      "@products-csv/*": ["src/app/products-csv/*"],
       "@chrome/*": ["src/app/chrome/*"],
       "@core/*": ["src/app/core/*"],
       "@core-builder/*": ["src/app/core-builder/*"],
@@ -29,6 +28,8 @@
       "@landing-pages/*": ["src/app/landing-pages/*"],
       "@performance/*": ["src/app/performance/*"],
       "@product-compliance-center/*": ["src/app/product-compliance-center/*"],
+      "@products-csv/*": ["src/app/products-csv/*"],
+      "@promotions/*": ["src/app/promotions/*"],
       "@schema": ["src/app/schema"],
       "@deprecated/*": ["src/deprecated/*"],
       "@public/*": ["public/index", "public/*"]

@@ -9,7 +9,7 @@ import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { useNavigationStore } from "@core/stores/NavigationStore";
 import { ci18n } from "@core/toolkit/i18n";
 import { wishURL } from "@core/toolkit/url";
-import { merchFeURL } from "@core/toolkit/router";
+import { merchFeUrl } from "@core/toolkit/router";
 import { observer } from "mobx-react";
 import { useState } from "react";
 import DeleteProductConfirmModal from "./DeleteProductConfirmModal";
@@ -59,7 +59,7 @@ const ProductTableActions: React.FC<Props> = ({
             ),
             onClick: () =>
               void navigationStore.navigate(
-                merchFeURL(`/products/edit/${product.id}`),
+                merchFeUrl(`/products/edit/${product.id}`),
               ),
           },
           ...(!product.isLtl && !product.isReturnsEnabled
@@ -71,7 +71,7 @@ const ProductTableActions: React.FC<Props> = ({
                   ),
                   onClick: () =>
                     void navigationStore.navigate(
-                      merchFeURL(
+                      merchFeUrl(
                         `/product/return-setting/${product.id}#tab=product`,
                       ),
                       { openInNewTab: true },
@@ -88,7 +88,7 @@ const ProductTableActions: React.FC<Props> = ({
                   ),
                   onClick: () =>
                     void navigationStore.navigate(
-                      merchFeURL(
+                      merchFeUrl(
                         `/product/return-setting/${product.id}#tab=product`,
                       ),
                       { openInNewTab: true },
@@ -108,7 +108,7 @@ const ProductTableActions: React.FC<Props> = ({
                   ),
                   onClick: () =>
                     void navigationStore.navigate(
-                      merchFeURL(
+                      merchFeUrl(
                         `/product-boost/v2/create?product_id=${product.id}`,
                       ),
                       { openInNewTab: true },
@@ -133,10 +133,10 @@ const ProductTableActions: React.FC<Props> = ({
             onClick: () =>
               void navigationStore.navigate(
                 showCategoryUpdates
-                  ? merchFeURL(
+                  ? merchFeUrl(
                       `/product-taxonomy-category-dispute/create/${product.id}`,
                     )
-                  : merchFeURL(
+                  : merchFeUrl(
                       `/product/create-category-dispute/${product.id}`,
                     ),
               ),
@@ -158,7 +158,7 @@ const ProductTableActions: React.FC<Props> = ({
             ),
             onClick: () =>
               void navigationStore.navigate(
-                merchFeURL(`/product/profile/${product.id}`),
+                merchFeUrl(`/product/profile/${product.id}`),
               ),
           },
           {
@@ -168,7 +168,7 @@ const ProductTableActions: React.FC<Props> = ({
             ),
             onClick: () =>
               void navigationStore.navigate(
-                merchFeURL(`/products/listing-status/${product.id}`),
+                merchFeUrl(`/products/listing-status/${product.id}`),
                 {
                   openInNewTab: true,
                 },

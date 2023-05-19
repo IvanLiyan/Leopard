@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { observer } from "mobx-react";
-import RadioButtonCard from "./RadioButtonCard";
+import RadioCard from "@core/components/RadioCard";
 import { Layout } from "@ContextLogic/lego";
 import { IS_LARGE_SCREEN, IS_SMALL_SCREEN } from "@core/toolkit/styling";
 import { useTheme } from "@core/stores/ThemeStore";
@@ -22,28 +22,30 @@ const DownloadTemplateSection: React.FC = () => {
       justifyContent="flex-start"
     >
       <div className="update-buttons-container">
-        <RadioButtonCard
+        <RadioCard
           checked={updateActionType === "ADD"}
           text={ci18n("Bulk csv add/edit action type", "Add new products")}
-          onCheck={() => {
+          onChange={() => {
             if (updateActionType !== "ADD") {
               setUpdateActionType("ADD");
               setTemplateType("ADD_PRODUCT");
             }
           }}
+          sx={{ width: "400px" }}
         />
-        <RadioButtonCard
+        <RadioCard
           checked={updateActionType === "EDIT"}
           text={ci18n(
             "Bulk csv add/edit action type",
             "Edit existing products",
           )}
-          onCheck={() => {
+          onChange={() => {
             if (updateActionType !== "EDIT") {
               setUpdateActionType("EDIT");
               setTemplateType("EDIT_PRICE_INVENTORY");
             }
           }}
+          sx={{ width: "400px" }}
         />
         <style jsx>{`
           @media ${IS_LARGE_SCREEN} {

@@ -7,7 +7,7 @@ import AllProducts from "@all-products/components/AllProducts";
 import { LoadingIndicator, Pager } from "@ContextLogic/lego";
 import { useNavigationStore } from "@core/stores/NavigationStore";
 import { useStringQueryParam, useUpsertQueryParams } from "@core/toolkit/url";
-import { merchFeURL } from "@core/toolkit/router";
+import { merchFeUrl } from "@core/toolkit/router";
 import PageRoot from "@core/components/PageRoot";
 import PageHeader from "@core/components/PageHeader";
 import PageGuide, { VeryRelaxedSidePadding } from "@core/components/PageGuide";
@@ -74,7 +74,7 @@ const ProductsContainer: NextPage<Record<string, never>> = () => {
           onTabChange={(tab: string) =>
             tab == AddWarehouseTabKey
               ? navigationStore.navigate(
-                  merchFeURL("/product/create-warehouse"),
+                  merchFeUrl("/product/create-warehouse"),
                   {
                     openInNewTab: true,
                   },

@@ -31,7 +31,7 @@ import { PaymentCurrencyCode } from "@schema";
 import { useToastStore } from "@core/stores/ToastStore";
 import { useMutation } from "@core/toolkit/restApi";
 import ModalTitle from "@core/components/modal/ModalTitle";
-import { merchFeURL } from "@core/toolkit/router";
+import { merchFeUrl } from "@core/toolkit/router";
 
 export type BulkIncreaseBudgetModalProps = BaseProps &
   Pick<ModalProps, "open"> & {
@@ -210,7 +210,7 @@ const BulkIncreaseBudgetModal: React.FC<BulkIncreaseBudgetModalProps> = ({
           timeoutMs: 5000,
           link: {
             title: i`View campaigns`,
-            url: merchFeURL(`/product-boost/history/list`),
+            url: merchFeUrl(`/product-boost/history/list`),
           },
         });
         onClose();
@@ -275,7 +275,7 @@ const BulkIncreaseBudgetModal: React.FC<BulkIncreaseBudgetModalProps> = ({
   const renderCampaignName = (campaign: BulkIncreaseBudgetCampaign) => {
     // If campaign name is empty, showing default text.
     let campaignName = i`(Campaign Name Not Set)`;
-    const url = merchFeURL(`/product-boost/detail/${campaign.campaign_id}`);
+    const url = merchFeUrl(`/product-boost/detail/${campaign.campaign_id}`);
 
     if (campaign.campaign_name) {
       campaignName = campaign.campaign_name;
@@ -290,7 +290,7 @@ const BulkIncreaseBudgetModal: React.FC<BulkIncreaseBudgetModalProps> = ({
         <Link
           className={css(styles.campaignName)}
           openInNewTab
-          href={merchFeURL(url)}
+          href={merchFeUrl(url)}
         >
           {campaignName}
         </Link>

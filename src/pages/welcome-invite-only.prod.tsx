@@ -14,7 +14,7 @@ import LoggedOutChrome from "src/app/landing-pages/common/logged-out-chrome/Logg
 import { NextPage } from "next";
 import { useDeviceStore } from "@core/stores/DeviceStore";
 import { useBoolQueryParam } from "@core/toolkit/url";
-import { merchFeURL, useRouter } from "@core/toolkit/router";
+import { merchFeUrl, useRouter } from "@core/toolkit/router";
 import SiteFooter from "@landing-pages/common/logged-out-chrome/SiteFooter";
 import { useTheme } from "@core/stores/ThemeStore";
 import SignupQuestionnaireModal from "src/app/landing-pages/welcome-invite-only/questionnaire/SignupQuestionnaireModal";
@@ -40,7 +40,7 @@ const WelcomeInviteOnlyContainer: NextPage<Record<string, never>> = () => {
   }, [firstLoad, renderForm]);
 
   if (loggedInMerchantUser != null) {
-    void router.push(merchFeURL("/"));
+    void router.push(merchFeUrl("/"));
     return <LoadingIndicator style={styles.loadingIndicator} />;
   }
 

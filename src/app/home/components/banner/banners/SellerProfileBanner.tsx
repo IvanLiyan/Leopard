@@ -3,7 +3,7 @@ import React from "react";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import Banner from "../Banner";
 import { useTheme } from "@core/stores/ThemeStore";
-import { merchFeURL } from "@core/toolkit/router";
+import { merchFeUrl } from "@core/toolkit/router";
 
 export type SellerProfileBannerProps = BaseProps & {
   readonly title: string;
@@ -27,7 +27,7 @@ const SellerProfileBanner: React.FC<SellerProfileBannerProps> = ({
       bannerImg="bannerSellerProfile"
       cta={{
         text: i`Validate my store`,
-        href: merchFeURL("/settings#seller-profile"),
+        href: merchFeUrl("/settings#seller-profile"),
         style: {
           backgroundColor: primary,
         },

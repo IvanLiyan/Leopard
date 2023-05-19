@@ -26,7 +26,7 @@ import { useNavigationStore } from "@core/stores/NavigationStore";
 import { useDeviceStore } from "@core/stores/DeviceStore";
 import { useUserStore } from "@core/stores/UserStore";
 import AppLocaleSelector from "@chrome/components/AppLocaleSelector";
-import { merchFeURL } from "@core/toolkit/router";
+import { merchFeUrl } from "@core/toolkit/router";
 import Link from "@core/components/Link";
 
 type NavigationProps = BaseProps & {
@@ -70,7 +70,7 @@ const Navigation = (props: NavigationProps) => {
         href={
           navigationStore.currentPath === "/open-express"
             ? "#"
-            : merchFeURL("/")
+            : merchFeUrl("/")
         }
       >
         <WishForMerchants mode="default" />
@@ -84,10 +84,10 @@ const Navigation = (props: NavigationProps) => {
                 style={[styles.link, { color: textDark }]}
                 href={
                   navigationStore.queryParams.next
-                    ? merchFeURL(
+                    ? merchFeUrl(
                         `/login?next=${navigationStore.queryParams.next}`,
                       )
-                    : merchFeURL("/login")
+                    : merchFeUrl("/login")
                 }
               >
                 Login

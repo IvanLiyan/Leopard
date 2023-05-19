@@ -18,7 +18,7 @@ import {
 } from "@core/stores/ChromeStore";
 import { ci18n } from "@core/toolkit/i18n";
 import { css } from "@core/toolkit/styling";
-import { merchFeURL } from "@core/toolkit/router";
+import { merchFeUrl } from "@core/toolkit/router";
 
 import { useAppTopBarData } from "@chrome/toolkit";
 import { SearchStoreProvider } from "@chrome/search/searchStore";
@@ -104,7 +104,7 @@ const MerchantAppTopbar: React.FC<MerchantAppTopbarProps> = ({
                 {showMenuDot && <div className={css(styles.dot)} />}
               </Layout.FlexColumn>
             )}
-            <Link href={merchFeURL("/home")}>
+            <Link href={merchFeUrl("/home")}>
               <WishLogo mode={appIconTheme} style={styles.logo} />
             </Link>
           </Layout.FlexRow>

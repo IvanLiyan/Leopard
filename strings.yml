@@ -256,3 +256,23 @@ features:
       - src/pages/home.prod.tsx
     description: >
       This feature contains content that appears on a merchant's home page
+
+  - name: Promotions - Leopard
+    owners:
+      - lliepert@wish.com
+    files:
+      - src/app/promotions/*
+      - src/pages/promotions/*
+    description: >
+      This feature contains pages that allow merchants to create and interact
+      with promotions on Wish.
+
+ - name: Product Compliance Center - Leopard
+  owners:
+    - lliepert@wish.com
+  files:
+    - src/app/product-compliance-center/*
+    - src/pages/product-compliance-center/*
+  description: >
+    This feature contains pages that allow merchants to monitor and maintain
+    their products' compliance with Wish policies and laws.

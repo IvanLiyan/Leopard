@@ -2,7 +2,7 @@ import React from "react";
 import { observer } from "mobx-react";
 import { Card, CardProps, Heading, HeadingProps } from "@ContextLogic/atlas-ui";
 
-type Props = CardProps & {
+export type Props = CardProps & {
   readonly title?: HeadingProps["children"];
   readonly ctaButtons?: React.ReactFragment;
   readonly ctaButtonLayout?: "ROW" | "COLUMN";

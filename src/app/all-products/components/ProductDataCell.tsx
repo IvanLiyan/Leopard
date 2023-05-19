@@ -21,7 +21,7 @@ import Illustration from "@core/components/Illustration";
 import { ProductBadge, BadgeTitle, BadgeIcon } from "@all-products/toolkit";
 import ProductDetailModal from "@core/components/products/ProductDetailModal";
 import { zendeskURL } from "@core/toolkit/url";
-import { merchFeURL } from "@core/toolkit/router";
+import { merchFeUrl } from "@core/toolkit/router";
 import { ci18n } from "@core/toolkit/i18n";
 
 type Props = BaseProps & {
@@ -57,7 +57,7 @@ const ProductDataCell: React.FC<Props> = ({
             openLinksInNewTab
             text={
               i`This is a branded product listing. You can view and improve your ` +
-              i`performance on [Branded Products](${merchFeURL(
+              i`performance on [Branded Products](${merchFeUrl(
                 "/branded-products",
               )}). Make ` +
               i`your authentic branded products stand out by properly tagging ` +

@@ -8,7 +8,7 @@ import { MerchantWarningProofType } from "@schema";
 import { wishProductURL } from "@core/toolkit/url";
 import { CellInfo, Layout, PageIndicator, Table } from "@ContextLogic/lego";
 import { InfractionEvidenceTypeDisplayText } from "@infractions/copy";
-import { merchFeURL } from "@core/toolkit/router";
+import { merchFeUrl } from "@core/toolkit/router";
 
 export type InfractionEvidenceType = MerchantWarningProofType | "INFRACTION";
 
@@ -24,8 +24,8 @@ const getIdLink: {
     productId ? `[${id}](${wishProductURL(productId)})` : id,
   PRODUCT_RATING: ({ id, productId }) =>
     productId ? `[${id}](${wishProductURL(productId)})` : id,
-  TICKET: ({ id }) => `[${id}](${merchFeURL(`/ticket/${id}`)})`,
-  ORDER: ({ id }) => `[${id}](${merchFeURL(`/order/${id}`)})`,
+  TICKET: ({ id }) => `[${id}](${merchFeUrl(`/ticket/${id}`)})`,
+  ORDER: ({ id }) => `[${id}](${merchFeUrl(`/order/${id}`)})`,
   INFRACTION: ({ id }) => `[${id}](/warnings/warning?id=${id})`,
 };
 

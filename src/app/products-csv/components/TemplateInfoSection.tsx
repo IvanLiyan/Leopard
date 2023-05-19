@@ -4,7 +4,7 @@ import { Layout } from "@ContextLogic/lego";
 import { StyleSheet } from "aphrodite";
 import { Card, Heading, Text } from "@ContextLogic/atlas-ui";
 import Link from "@core/components/Link";
-import { merchFeURL } from "@core/toolkit/router";
+import { merchFeUrl } from "@core/toolkit/router";
 import { zendeskURL } from "@core/toolkit/url";
 import { useTheme } from "@core/stores/ThemeStore";
 import Illustration from "@core/components/Illustration";
@@ -40,7 +40,7 @@ const TemplateInfoSection: React.FC = () => {
               Find category ID
             </Link>
             <Link
-              href={merchFeURL("/product/categories")}
+              href={merchFeUrl("/product/categories")}
               style={styles.link}
               underline
             >

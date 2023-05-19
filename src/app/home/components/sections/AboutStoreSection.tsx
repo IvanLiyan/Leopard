@@ -31,7 +31,7 @@ import { ci18n } from "@core/toolkit/i18n";
 import { css } from "@core/toolkit/styling";
 import Icon from "@core/components/Icon";
 import StarRating from "@home/components/StarRating";
-import { merchFeURL } from "@core/toolkit/router";
+import { merchFeUrl } from "@core/toolkit/router";
 
 type Props = BaseProps & {
   readonly primaryCurrency: PaymentCurrencyCode;
@@ -96,8 +96,8 @@ const AboutStoreSection: React.FC<Props> = ({
       : data?.payments?.currentMerchant?.pendingAccountBalance?.amount;
 
   const accountBalanceLink = showLedgerUi
-    ? merchFeURL("/account-balance-v2")
-    : merchFeURL("/account-balance");
+    ? merchFeUrl("/account-balance-v2")
+    : merchFeUrl("/account-balance");
 
   if (storeStats.rating == null) {
     return null;
@@ -106,7 +106,7 @@ const AboutStoreSection: React.FC<Props> = ({
   const { averageProductRating, startDate, endDate } = storeStats.rating;
 
   const renderRight = () => (
-    <Link href={merchFeURL("/performance-overview")}>
+    <Link href={merchFeUrl("/performance-overview")}>
       <Layout.FlexRow>
         {i`View sales performance`}
         <Icon name="arrowRight" color={primary} />
@@ -146,7 +146,7 @@ const AboutStoreSection: React.FC<Props> = ({
               text={`Week of ${startDate.formatted} to ${endDate.formatted}`}
             />
           </Layout.FlexColumn>
-          <Link href={merchFeURL("/performance-overview/wish-standards")}>
+          <Link href={merchFeUrl("/performance-overview/wish-standards")}>
             {ci18n("Refers to store metrics", "View Wish Standards")}
           </Link>
         </Card>

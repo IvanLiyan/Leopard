@@ -24,7 +24,7 @@ import {
   useExportCSV,
 } from "@performance/toolkit/utils";
 import commonStyles from "@performance/styles/common.module.css";
-import { merchFeURL } from "@core/toolkit/router";
+import { merchFeUrl } from "@core/toolkit/router";
 import PageGuide from "@core/components/PageGuide";
 import PageHeader from "@core/components/PageHeader";
 import { useTheme } from "@core/stores/ThemeStore";
@@ -487,8 +487,8 @@ const CustomerServiceAggregateModule: React.FC = () => {
       <PageHeader
         relaxed
         breadcrumbs={[
-          { name: i`Home`, href: merchFeURL("/home") },
-          { name: i`Performance`, href: merchFeURL("/performance-overview") },
+          { name: i`Home`, href: merchFeUrl("/home") },
+          { name: i`Performance`, href: merchFeUrl("/performance-overview") },
           { name: i`Customer Service Performance`, href: window.location.href },
         ]}
         title={i`Customer Service Performance`}

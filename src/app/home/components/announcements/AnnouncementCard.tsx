@@ -10,7 +10,7 @@ import { css } from "@core/toolkit/styling";
 import { useTheme } from "@core/stores/ThemeStore";
 import { PickedAnnouncementV2 } from "@home/toolkit/announcements";
 import AnnouncementTags from "./AnnouncementTags";
-import { merchFeURL } from "@core/toolkit/router";
+import { merchFeUrl } from "@core/toolkit/router";
 
 type AnnouncementCardProps = BaseProps & {
   readonly announcement: PickedAnnouncementV2;
@@ -54,7 +54,7 @@ const AnnouncementCard = (props: AnnouncementCardProps) => {
       </Layout.FlexRow>
       <Layout.FlexRow style={styles.titleContainer}>
         <Link
-          href={merchFeURL(`/announcement/${announcement.id}`)}
+          href={merchFeUrl(`/announcement/${announcement.id}`)}
           openInNewTab
           style={styles.titleLink}
         >

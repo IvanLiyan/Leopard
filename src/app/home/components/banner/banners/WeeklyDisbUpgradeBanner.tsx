@@ -4,7 +4,7 @@ import { observer } from "mobx-react";
 /* Type Imports */
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import Banner from "../Banner";
-import { merchFeURL } from "@core/toolkit/router";
+import { merchFeUrl } from "@core/toolkit/router";
 
 export type WeeklyDisbUpgradeBannerProps = BaseProps;
 
@@ -25,7 +25,7 @@ const WeeklyDisbUpgradeBanner: React.FC<WeeklyDisbUpgradeBannerProps> = ({
       bannerImg="bannerWeeklyDisbUpgrade"
       cta={{
         text: i`Visit Wish Standards`,
-        href: merchFeURL("/performance-overview/wish-standards"),
+        href: merchFeUrl("/performance-overview/wish-standards"),
         style: {},
       }}
     />

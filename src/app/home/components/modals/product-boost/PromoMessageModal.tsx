@@ -12,7 +12,7 @@ import ModalFooter from "@core/components/modal/ModalFooter";
 import { Heading, Text } from "@ContextLogic/atlas-ui";
 import { PromoModalFields } from "@home/toolkit/product-boost";
 import Image from "@core/components/Image";
-import { merchFeURL } from "@core/toolkit/router";
+import { merchFeUrl } from "@core/toolkit/router";
 
 type PromoMessageModalProps = BaseProps &
   Pick<ModalProps, "open"> & {
@@ -70,7 +70,7 @@ const PromoMessageModal: React.FC<PromoMessageModalProps> = ({
             onClick: async () => {
               if (buttonLink != null) {
                 await navigationStore.navigate(
-                  merchFeURL("/product-boost/history/list?automated=0"),
+                  merchFeUrl("/product-boost/history/list?automated=0"),
                 );
               }
 

@@ -57,10 +57,6 @@ export type AcceptMerchantPolicyInput = {
   readonly source: MerchantPolicyAgreementSource;
 };
 
-export type AccepTosInput = {
-  readonly country: CountryCode;
-};
-
 export type AcceptTermsOfService = {
   readonly __typename?: "AcceptTermsOfService";
   readonly ok: Scalars["Boolean"];
@@ -76,6 +72,10 @@ export type AcceptTos = {
   readonly __typename?: "AcceptTos";
   readonly ok: Scalars["Boolean"];
   readonly message?: Maybe<Scalars["String"]>;
+};
+
+export type AcceptTosInput = {
+  readonly country: CountryCode;
 };
 
 export type AccountBalanceType = "CONFIRMED" | "PENDING";
@@ -2829,6 +2829,18 @@ export type CreateLqdCampaign = {
   readonly message?: Maybe<Scalars["String"]>;
 };
 
+export type CreateProductsDownloadJobInput = {
+  readonly promotionType: MfpCampaignPromotionType;
+  readonly eventId?: Maybe<Scalars["ObjectIdType"]>;
+};
+
+export type CreateProductsDownloadJobMutation = {
+  readonly __typename?: "CreateProductsDownloadJobMutation";
+  readonly jobId?: Maybe<Scalars["ObjectIdType"]>;
+  readonly ok: Scalars["Boolean"];
+  readonly message?: Maybe<Scalars["String"]>;
+};
+
 export type CreateProductTaxonomyCategoryDispute = {
   readonly __typename?: "CreateProductTaxonomyCategoryDispute";
   readonly ok: Scalars["Boolean"];
@@ -3832,7 +3844,7 @@ export type EprMutationsDeleteUinArgs = {
 };
 
 export type EprMutationsAcceptTosArgs = {
-  input: AccepTosInput;
+  input: AcceptTosInput;
 };
 
 export type EprStatus =
@@ -7631,6 +7643,7 @@ export type MerchantTodoItemType =
   | "BIND_WECHAT"
   | "WE_REAPPLICATION_ELIGIBLE"
   | "PRICE_DROP_VIEW_ONGOING_CAMPAIGNS"
+  | "BANK_ACCOUNT_VERIFICATION"
   | "TAX_VERIFICATION_FAILED"
   | "UPLOAD_NEW_PRODUCTS"
   | "ENROLL_PRODUCTS_IN_RETURNS"
@@ -8329,6 +8342,7 @@ export type MfpServiceMutations = {
   readonly upsertDiscountCampaign: UpsertDiscountCampaignMutation;
   readonly upsertFlashSaleCampaign: UpsertFlashSaleCampaignMutation;
   readonly cancelMfpCampaign: CancelMfpCampaign;
+  readonly createProductsDownloadJob: CreateProductsDownloadJobMutation;
   readonly admin?: Maybe<MfpServiceAdminMutations>;
 };
 
@@ -8342,6 +8356,10 @@ export type MfpServiceMutationsUpsertFlashSaleCampaignArgs = {
 
 export type MfpServiceMutationsCancelMfpCampaignArgs = {
   input: CancelMfpCampaignInput;
+};
+
+export type MfpServiceMutationsCreateProductsDownloadJobArgs = {
+  input: CreateProductsDownloadJobInput;
 };
 
 export type MfpServiceSchema = {
@@ -11068,10 +11086,10 @@ export type ProductCsvJobType =
   | "CREATE_PRESALE_PRODUCT"
   | "NEW_UPDATE_PRODUCTS"
   | "EDIT_WISH_EXPRESS_COUNTRIES"
-  | "SHOPIFY_CREATE_PRODUCTS"
   | "UPSERT_PRODUCTS"
-  | "NEW_ADD_SIZE_COLOR"
+  | "NEW_ADD_VARIATION"
   | "EDIT_FBW_SHIPPING"
+  | "SHOPIFY_CREATE_PRODUCTS"
   | "EDIT_SHIPPING"
   | "ADD_SIZE_COLOR"
   | "UPDATE_PRODUCTS";

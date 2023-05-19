@@ -28,7 +28,7 @@ import { RequiredValidator } from "@core/toolkit/validators";
 
 /* Toolkit */
 import { GetCaptchaResponse } from "@landing-pages/authentication/toolkit/authentication";
-import { merchFeURL } from "@core/toolkit/router";
+import { merchFeUrl } from "@core/toolkit/router";
 
 /* Components */
 import Icon from "@core/components/Icon";
@@ -163,7 +163,7 @@ class CaptchaInput extends Component<CaptchaInputProps> {
           />
           {captchaToken && (
             <NextImage
-              src={merchFeURL(`/captcha/${captchaToken}`)}
+              src={merchFeUrl(`/captcha/${captchaToken}`)}
               className={css(this.styles.image)}
               draggable={false}
               alt="captcha"

@@ -72,7 +72,7 @@ import {
 } from "@core/taxonomy/toolkit";
 import { Constants } from "@add-edit-product/constants";
 import numeral from "numeral";
-import { merchFeURL } from "@core/toolkit/router";
+import { merchFeUrl } from "@core/toolkit/router";
 import {
   PickedImage,
   InitialProductState,
@@ -1997,7 +1997,7 @@ export default class AddEditProductState {
     Exception: attribute is "Size Chart Image"
       Requirement: use {name: "Size Chart Image", value: [{value: <image-url>}]} as upsert input
 
-    We will maintain {name: "", value: [{value: ""}]} information for each attribute throughout frontend, 
+    We will maintain {name: "", value: [{value: ""}]} information for each attribute throughout frontend,
     and only convert them to IDs, if appropriate, upon calling GQL
   */
   private attributesAsInput = (
@@ -2924,7 +2924,7 @@ export default class AddEditProductState {
     }
 
     navigationStore.releaseNavigationLock();
-    await navigationStore.navigate(merchFeURL("/plus/products/list"));
+    await navigationStore.navigate(merchFeUrl("/plus/products/list"));
     toastStore.info(
       ci18n(
         "popup telling the merchant a product has been removed to their store",

@@ -11,7 +11,7 @@ import WeeklyProductRating from "@performance/components/rating/WeeklyProductRat
 import StoreRatingsBreakdown from "@performance/components/rating/StoreRatingsBreakdown";
 import ProductRatingsBreakdown from "@performance/components/rating/ProductRatingsBreakdown";
 import PageRoot from "@core/components/PageRoot";
-import { merchFeURL } from "@core/toolkit/router";
+import { merchFeUrl } from "@core/toolkit/router";
 import PageGuide from "@core/components/PageGuide";
 import PageHeader from "@core/components/PageHeader";
 import { RATING_TAB_TYPE } from "@performance/toolkit/enums";
@@ -29,8 +29,8 @@ const RatingPerformance: NextPage<Record<string, never>> = () => {
       <PageHeader
         relaxed
         breadcrumbs={[
-          { name: i`Home`, href: merchFeURL("/home") },
-          { name: i`Performance`, href: merchFeURL("/performance-overview") },
+          { name: i`Home`, href: merchFeUrl("/home") },
+          { name: i`Performance`, href: merchFeUrl("/performance-overview") },
           { name: i`Rating Performance`, href: window.location.href },
         ]}
         title={i`Rating Performance`}

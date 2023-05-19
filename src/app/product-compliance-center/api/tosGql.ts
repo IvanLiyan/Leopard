@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 import {
   AcceptTos,
-  AccepTosInput,
+  AcceptTosInput,
   CountryEprSchema,
   ExtendedProducerResponsibilitySchemaCountryArgs,
 } from "@schema";
@@ -33,7 +33,7 @@ export type TosQueryResponse = {
 export type TosQueryVariables = ExtendedProducerResponsibilitySchemaCountryArgs;
 
 export const ACCEPT_TOS_MUTATION = gql`
-  mutation AcceptTosMutation($input: AccepTosInput!) {
+  mutation AcceptTosMutation($input: AcceptTosInput!) {
     policy {
       productCompliance {
         extendedProducerResponsibility {
@@ -57,4 +57,4 @@ export type AcceptTosMutationResponse = {
   };
 };
 
-export type AcceptTosMutationVariables = { input: AccepTosInput };
+export type AcceptTosMutationVariables = { input: AcceptTosInput };

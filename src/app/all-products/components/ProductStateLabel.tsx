@@ -18,7 +18,7 @@ import { useTheme } from "@core/stores/ThemeStore";
 import { css } from "@core/toolkit/styling";
 import Icon from "@core/components/Icon";
 import { PickedProduct } from "@all-products/toolkit";
-import { merchFeURL } from "@core/toolkit/router";
+import { merchFeUrl } from "@core/toolkit/router";
 
 const LabelTitle: { readonly [T in CommerceProductListingState]: string } = {
   ACTIVE: ci18n(
@@ -59,7 +59,7 @@ const ReasonText: {
   NEW_LISTING_BLOCKED: () =>
     i`New listing was blocked and is not available for sale.`,
   LISTING_BLOCKED: (product) =>
-    i`Listing was blocked and is not available for sale. [View blocked reason](${merchFeURL(
+    i`Listing was blocked and is not available for sale. [View blocked reason](${merchFeUrl(
       `/products/listing-status/${product.id}`,
     )})`,
   REMOVED_BY_WISH: () => i`Wish has removed the listing.`,
@@ -79,7 +79,7 @@ const ReasonText: {
     i`The listing is available for sale, but some edits may still be under review.`,
   AVAILABLE_AND_BLOCKED_EDIT: (product) =>
     i`The listing is available for sale, but the last listing edit was ` +
-    i`blocked. [View blocked reason](${merchFeURL(
+    i`blocked. [View blocked reason](${merchFeUrl(
       `/products/listing-status/${product.id}`,
     )})`,
   /* eslint-enable @typescript-eslint/naming-convention */

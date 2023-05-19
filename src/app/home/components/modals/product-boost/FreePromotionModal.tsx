@@ -11,7 +11,7 @@ import Modal, { ModalProps } from "@core/components/modal/Modal";
 import { useTheme } from "@core/stores/ThemeStore";
 import ModalFooter from "@core/components/modal/ModalFooter";
 import { Heading, Text } from "@ContextLogic/atlas-ui";
-import { merchFeURL } from "@core/toolkit/router";
+import { merchFeUrl } from "@core/toolkit/router";
 
 type FreePromotionModalProps = BaseProps &
   Pick<ModalProps, "open"> & {
@@ -74,7 +74,7 @@ const FreePromotionModal: React.FC<FreePromotionModalProps> = ({
             text: i`View Campaigns`,
             onClick: async () => {
               await navigationStore.navigate(
-                merchFeURL("/product-boost/history/list?automated=0"),
+                merchFeUrl("/product-boost/history/list?automated=0"),
               );
             },
           }}

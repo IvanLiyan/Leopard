@@ -6,7 +6,7 @@ import Cookies from "js-cookie";
 
 import { isProd } from "@core/stores/EnvironmentStore";
 import { useToastStore } from "@core/stores/ToastStore";
-import { merchFeURL, useRouter } from "@core/toolkit/router";
+import { merchFeUrl, useRouter } from "@core/toolkit/router";
 
 const REST_ERROR_CODES = {
   SESSION_EXPIRED: 2,
@@ -83,7 +83,7 @@ const useFetcher = <TResponse, TRequest>() => {
               : i`Something went wrong`,
           );
           // shli TODO: remove merchFeURL after login page live
-          void router.push(merchFeURL(loginUrl));
+          void router.push(merchFeUrl(loginUrl));
 
           return undefined;
         }
@@ -100,7 +100,7 @@ const useFetcher = <TResponse, TRequest>() => {
               ? String(error.response.data.msg)
               : i`Something went wrong`,
           );
-          void router.push(merchFeURL(reloginUrl));
+          void router.push(merchFeUrl(reloginUrl));
 
           return undefined;
         }

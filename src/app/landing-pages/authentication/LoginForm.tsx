@@ -51,7 +51,7 @@ import {
   TwoFactorGenTokenRequestType,
 } from "@landing-pages/authentication/toolkit/gen-token";
 import { useStringQueryParam } from "@core/toolkit/url";
-import { merchFeURL, useRouter } from "@core/toolkit/router";
+import { merchFeUrl, useRouter } from "@core/toolkit/router";
 
 type LoginFormProps = BaseProps;
 
@@ -216,7 +216,7 @@ const LoginForm: React.FC<LoginFormProps> = (props: LoginFormProps) => {
         Cookies.set("remember_me", username);
       }
 
-      await router.push(merchFeURL(nextUrl || "/"));
+      await router.push(merchFeUrl(nextUrl || "/"));
     }
   };
 
@@ -472,7 +472,7 @@ const LoginForm: React.FC<LoginFormProps> = (props: LoginFormProps) => {
           fontSize={14}
         />
         <Link
-          href={merchFeURL("/forget_password")}
+          href={merchFeUrl("/forget_password")}
           style={styles.forgetPassword}
         >
           Forgot password?

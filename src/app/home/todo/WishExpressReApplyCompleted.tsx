@@ -12,7 +12,7 @@ import { zendeskURL } from "@core/toolkit/url";
 import Illustration from "@core/components/Illustration";
 import Icon from "@core/components/Icon";
 import { Heading } from "@ContextLogic/atlas-ui";
-import { merchFeURL } from "@core/toolkit/router";
+import { merchFeUrl } from "@core/toolkit/router";
 
 export type WishCompletedProps = BaseProps & {
   readonly closeModal: () => unknown;
@@ -52,7 +52,7 @@ const WishExpressReApplyCompleted = (props: WishCompletedProps) => {
           <div className={css(styles.actionButtonContainer)}>
             <PrimaryButton
               className={css(styles.actionButton)}
-              href={merchFeURL("/product#show_add_warehouse_modal=1")}
+              href={merchFeUrl("/product#show_add_warehouse_modal=1")}
             >
               Add a Wish Express warehouse
             </PrimaryButton>

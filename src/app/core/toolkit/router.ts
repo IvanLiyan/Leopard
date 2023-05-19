@@ -6,7 +6,7 @@ import { NextRouter, useRouter as useNextRouter } from "next/router";
  * core/router or core/Link. Using it with nextjs router or link will cause the
  * basePath "md" to automatically prefix to the destination url
  */
-export const merchFeURL = (link: string): string => {
+export const merchFeUrl = (link: string): string => {
   if (typeof window == "undefined") {
     return `https://merchant.wish.com${link}`;
   }

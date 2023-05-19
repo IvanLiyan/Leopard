@@ -9,7 +9,7 @@ import ModalFooter from "@core/components/modal/ModalFooter";
 import { useNavigationStore } from "@core/stores/NavigationStore";
 import { observer } from "mobx-react";
 import { css } from "@core/toolkit/styling";
-import { merchFeURL } from "@core/toolkit/router";
+import { merchFeUrl } from "@core/toolkit/router";
 import { ci18n } from "@core/toolkit/i18n";
 import Icon from "@core/components/Icon";
 import { useTheme } from "@core/stores/ThemeStore";
@@ -59,7 +59,7 @@ const FrsOptInModal: React.FC<FrsOptInModalProps> = ({ open, onClose }) => {
             text: ci18n("Call to action on a modal", "Get started"),
             onClick: async () => {
               await navigationStore.navigate(
-                merchFeURL("/shipping-settings#wishpost-settings"),
+                merchFeUrl("/shipping-settings#wishpost-settings"),
               );
             },
           }}

@@ -12,7 +12,7 @@ import { useTheme } from "@core/stores/ThemeStore";
 import { ci18n } from "@core/toolkit/i18n";
 import ModalFooter from "@core/components/modal/ModalFooter";
 import { zendeskURL } from "@core/toolkit/url";
-import { merchFeURL } from "@core/toolkit/router";
+import { merchFeUrl } from "@core/toolkit/router";
 
 type RefundAssuranceSplashModalProps = BaseProps &
   Pick<ModalProps, "open"> & {
@@ -52,7 +52,7 @@ const RefundAssuranceSplashModal = ({
             text={
               i`You have been awarded ProductBoost Credit through ProductBoost ` +
               i`Refund Assurance based on recent order refunds caused by the ` +
-              i`Advanced Logistics Program. See details [here](${merchFeURL(
+              i`Advanced Logistics Program. See details [here](${merchFeUrl(
                 "/product-boost/refund-assurance",
               )}).`
             }
@@ -73,7 +73,7 @@ const RefundAssuranceSplashModal = ({
             text: i`Create ProductBoost campaign`,
             onClick: async () => {
               await navigationStore.navigate(
-                merchFeURL("/product-boost/create"),
+                merchFeUrl("/product-boost/create"),
               );
             },
           }}

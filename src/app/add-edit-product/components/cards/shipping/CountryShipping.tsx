@@ -40,7 +40,7 @@ import TopSellerBadge from "./TopSellerBadge";
 import WeBadge from "./WeBadge";
 import { MinMaxValueValidator } from "@core/toolkit/validators";
 import numeral from "numeral";
-import { merchFeURL } from "@core/toolkit/router";
+import { merchFeUrl } from "@core/toolkit/router";
 
 type Props = BaseProps & {
   readonly state: AddEditProductState;
@@ -100,7 +100,7 @@ const CountryShipping: React.FC<Props> = ({
         text={
           i`You can customize shipping prices for each country or ` +
           i`region listed below. You can add more countries by editing ` +
-          i`your [Shipping Settings](${merchFeURL("/plus/settings/shipping")}).`
+          i`your [Shipping Settings](${merchFeUrl("/plus/settings/shipping")}).`
         }
         style={styles.text}
         openLinksInNewTab

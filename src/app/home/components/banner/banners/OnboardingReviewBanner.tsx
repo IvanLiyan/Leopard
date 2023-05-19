@@ -6,7 +6,7 @@ import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import Banner from "../Banner";
 import { css } from "@core/toolkit/styling";
 import { useTheme } from "@core/stores/ThemeStore";
-import { merchFeURL } from "@core/toolkit/router";
+import { merchFeUrl } from "@core/toolkit/router";
 
 type OnboardingReviewBannerProps = BaseProps;
 
@@ -16,7 +16,7 @@ const OnboardingReviewBanner: React.FC<OnboardingReviewBannerProps> = ({
 }) => {
   const styles = useStyleSheet();
   const appStoreURL = "https://wish-partner.com";
-  const policyURL = merchFeURL("/policy/home");
+  const policyURL = merchFeUrl("/policy/home");
   return (
     <Banner
       className={className}

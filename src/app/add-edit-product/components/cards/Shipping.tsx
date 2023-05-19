@@ -23,7 +23,7 @@ import CountryShipping from "./shipping/CountryShipping";
 import Section, { SectionProps } from "./Section";
 import AddEditProductState from "@add-edit-product/AddEditProductState";
 import { RequiredValidator } from "@core/toolkit/validators";
-import { merchFeURL } from "@core/toolkit/router";
+import { merchFeUrl } from "@core/toolkit/router";
 
 type Props = Omit<SectionProps, "title"> & {
   readonly state: AddEditProductState;
@@ -68,7 +68,7 @@ const Shipping: React.FC<Props> = (props: Props) => {
             i`product to all destinations enabled for your merchant account. You may also ` +
             i`customize the value for each destination below. However, the Default Shipping ` +
             i`Price will apply to any new destination added to your shipping settings. [Edit ` +
-            i`shipping settings](${merchFeURL("/shipping-settings")})`
+            i`shipping settings](${merchFeUrl("/shipping-settings")})`
           }
           openLinksInNewTab
         />

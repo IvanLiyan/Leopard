@@ -19,7 +19,7 @@ import {
   GetUserAnnouncementsV2ResponseType,
 } from "@home/toolkit/announcements";
 import { AnnouncementsForUsersV2SchemaListArgs } from "@schema";
-import { merchFeURL } from "@core/toolkit/router";
+import { merchFeUrl } from "@core/toolkit/router";
 
 type Props = BaseProps;
 
@@ -68,7 +68,7 @@ const AnnouncementsSection: React.FC<Props> = ({ style, className }: Props) => {
   }
 
   const renderRight = () => (
-    <Link href={merchFeURL("/announcements/system-update")}>
+    <Link href={merchFeUrl("/announcements/system-update")}>
       <Layout.FlexRow>
         {i`View all`}
         <Icon name="arrowRight" color={primary} />

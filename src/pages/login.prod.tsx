@@ -4,7 +4,7 @@ import { NextPage } from "next";
 import { StyleSheet } from "aphrodite";
 
 import { LoadingIndicator } from "@ContextLogic/lego";
-import { merchFeURL, useRouter } from "@core/toolkit/router";
+import { merchFeUrl, useRouter } from "@core/toolkit/router";
 import { useUserStore } from "@core/stores/UserStore";
 import LoginContainer from "@landing-pages/authentication/LoginContainer";
 
@@ -14,7 +14,7 @@ const LoginPage: NextPage<Record<string, never>> = () => {
   const router = useRouter();
 
   if (loggedInMerchantUser != null) {
-    void router.push(merchFeURL("/"));
+    void router.push(merchFeUrl("/"));
 
     return <LoadingIndicator style={styles.loadingIndicator} />;
   }

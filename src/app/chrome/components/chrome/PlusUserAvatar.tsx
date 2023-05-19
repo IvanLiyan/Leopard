@@ -39,7 +39,7 @@ import { ByUserIdInput } from "@schema";
 import { useAppTopBarData } from "@chrome/toolkit";
 
 import Link from "@core/components/Link";
-import { merchFeURL } from "@core/toolkit/router";
+import { merchFeUrl } from "@core/toolkit/router";
 
 const PlusUserAvatar: React.FC<BaseProps> = ({
   style,
@@ -76,7 +76,7 @@ const PlusUserAvatar: React.FC<BaseProps> = ({
 
   const onQuickLoginClick = async (id: string) => {
     if (id == "me") {
-      await navigationStore.navigate(merchFeURL("/switchsu"));
+      await navigationStore.navigate(merchFeUrl("/switchsu"));
     } else {
       const input: ByUserIdInput = {
         id,
@@ -88,7 +88,7 @@ const PlusUserAvatar: React.FC<BaseProps> = ({
       }
       const { ok, error } = data.authentication.loginAs.user;
       if (ok) {
-        await navigationStore.navigate(merchFeURL("/"), { fullReload: true });
+        await navigationStore.navigate(merchFeUrl("/"), { fullReload: true });
       } else {
         toastStore.error(error || i`Something went wrong`);
       }
@@ -127,7 +127,7 @@ const PlusUserAvatar: React.FC<BaseProps> = ({
         >
           <div className={css(styles.item)}>
             <Link
-              href={merchFeURL("/settings")}
+              href={merchFeUrl("/settings")}
               fadeOnHover={false}
               style={{ color: textDark }}
             >
@@ -136,7 +136,7 @@ const PlusUserAvatar: React.FC<BaseProps> = ({
           </div>
           <div className={css(styles.item)}>
             <Link
-              href={merchFeURL("/faq")}
+              href={merchFeUrl("/faq")}
               fadeOnHover={false}
               style={{ color: textDark }}
             >
@@ -172,7 +172,7 @@ const PlusUserAvatar: React.FC<BaseProps> = ({
           )}
           <div className={css(styles.item, styles.divider)}>
             <Link
-              href={merchFeURL("/logout")}
+              href={merchFeUrl("/logout")}
               fadeOnHover={false}
               style={{ fontWeight: weightSemibold, color: negative }}
             >

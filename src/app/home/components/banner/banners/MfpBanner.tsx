@@ -5,7 +5,7 @@ import { Markdown } from "@ContextLogic/lego";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import Banner from "../Banner";
 import { useTheme } from "@core/stores/ThemeStore";
-import { merchFeURL } from "@core/toolkit/router";
+import { merchFeUrl } from "@core/toolkit/router";
 
 export type MfpBannerProps = BaseProps;
 
@@ -32,7 +32,7 @@ const MfpBanner: React.FC<MfpBannerProps> = ({
       bannerImg="bannerMfp"
       cta={{
         text: i`Get started`,
-        href: merchFeURL("/merchant-promotions"),
+        href: merchFeUrl("/merchant-promotions"),
         style: {
           backgroundColor: primary,
         },

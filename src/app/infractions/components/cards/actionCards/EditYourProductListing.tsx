@@ -3,7 +3,7 @@ import { observer } from "mobx-react";
 import Markdown from "@infractions/components/Markdown";
 import Button from "./ActionCardButton";
 import ActionCard from "@core/components/ActionCard";
-import { merchFeURL } from "@core/toolkit/router";
+import { merchFeUrl } from "@core/toolkit/router";
 import { useInfractionDetailsStylesheet } from "@infractions/styles";
 import EditYourProductListingModal from "./EditYourProductListingModal";
 
@@ -49,7 +49,7 @@ const EditYouProductListing: React.FC = () => {
         <Markdown
           style={styles.cardMargin}
           openLinksInNewTab
-          text={i`[Read our Listings Policy](${merchFeURL("/policy#listing")})`}
+          text={i`[Read our Listings Policy](${merchFeUrl("/policy#listing")})`}
         />
       </ActionCard>
     </>

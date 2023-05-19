@@ -10,7 +10,7 @@ import Image from "@core/components/Image";
 import { Table, Icon } from "@performance/components";
 import PageRoot from "@core/components/PageRoot";
 import { wishURL, contestImageURL, zendeskURL } from "@core/toolkit/url";
-import { merchFeURL } from "@core/toolkit/router";
+import { merchFeUrl } from "@core/toolkit/router";
 import { useToastStore } from "@core/stores/ToastStore";
 import {
   useDecodedProductBreakdownURI,
@@ -154,7 +154,7 @@ const ProductBreakdownPage = () => {
                   style={{ paddingLeft: "4px", paddingRight: "6px" }}
                 />
                 <Link
-                  href={merchFeURL(
+                  href={merchFeUrl(
                     `/product/return-setting/${row.id}#tab=product`,
                   )}
                   className={commonStyles.linkStyle}
@@ -182,7 +182,7 @@ const ProductBreakdownPage = () => {
                   style={{ paddingLeft: "4px", paddingRight: "6px" }}
                 />
                 <Link
-                  href={merchFeURL(
+                  href={merchFeUrl(
                     `/product/return-setting/${row.id}#tab=product`,
                   )}
                   className={commonStyles.linkStyle}
@@ -207,8 +207,8 @@ const ProductBreakdownPage = () => {
       <PageHeader
         relaxed
         breadcrumbs={[
-          { name: i`Home`, href: merchFeURL("/home") },
-          { name: i`Performance`, href: merchFeURL("/performance-overview") },
+          { name: i`Home`, href: merchFeUrl("/home") },
+          { name: i`Performance`, href: merchFeUrl("/performance-overview") },
           {
             name: i`Refund Performance`,
             href: "/performance/refund",

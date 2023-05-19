@@ -6,7 +6,7 @@ import { useQuery } from "@apollo/client";
 import { TableColumn } from "@performance/components/Table";
 import { Table, Title } from "@performance/components/index";
 import { LoadingIndicator } from "@ContextLogic/lego";
-import { merchFeURL } from "@core/toolkit/router";
+import { merchFeUrl } from "@core/toolkit/router";
 import {
   STORE_RATING_LISTING_DATA_QUERY,
   PickedStoreRatingListing,
@@ -75,7 +75,7 @@ const StoreRating: React.FC = () => {
                 }}
                 key={id}
               >
-                <Link href={merchFeURL(`/order/${id}`)} openInNewTab>
+                <Link href={merchFeUrl(`/order/${id}`)} openInNewTab>
                   {id}
                 </Link>
               </div>

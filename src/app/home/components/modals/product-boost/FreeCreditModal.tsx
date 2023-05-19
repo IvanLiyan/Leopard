@@ -11,7 +11,7 @@ import { useTheme } from "@core/stores/ThemeStore";
 import ModalFooter from "@core/components/modal/ModalFooter";
 import { Heading, Text } from "@ContextLogic/atlas-ui";
 import { FreePBCreditModalFields } from "@home/toolkit/product-boost";
-import { merchFeURL } from "@core/toolkit/router";
+import { merchFeUrl } from "@core/toolkit/router";
 
 type FreeCreditModalProps = BaseProps &
   Pick<ModalProps, "open"> & {
@@ -68,7 +68,7 @@ const FreeCreditModal: React.FC<FreeCreditModalProps> = ({
             text: i`Create a campaign`,
             onClick: async () => {
               await navigationStore.navigate(
-                merchFeURL("/product-boost/v2/create"),
+                merchFeUrl("/product-boost/v2/create"),
               );
             },
           }}

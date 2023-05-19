@@ -30,7 +30,7 @@ import Section from "./Section";
 import BrandCardItem from "@add-edit-product/components/brand/BrandCard";
 import BrandSearch from "@add-edit-product/components/brand/BrandSearch";
 import { zendeskURL } from "@core/toolkit/url";
-import { merchFeURL } from "@core/toolkit/router";
+import { merchFeUrl } from "@core/toolkit/router";
 
 type Props = BaseProps & {
   readonly state: AddEditProductState;
@@ -67,7 +67,7 @@ const Categorization: React.FC<Props> = (props: Props) => {
           i`authentic and directly manufactured by the brand owner. For example, Apple is ` +
           i`the Brand of iPhone or iPad but Apple is not the Brand of an iPhone case not ` +
           i`manufactured by Apple. Visit [Brand ` +
-          i`Directory](${merchFeURL(
+          i`Directory](${merchFeUrl(
             "/branded-products/brand-directory",
           )}) to view a list of brands ` +
           i`and brand IDs to select from or request a new brand to be added.`
@@ -101,7 +101,7 @@ const Categorization: React.FC<Props> = (props: Props) => {
         {numBrands === 0 && (
           <Markdown
             style={styles.brandError}
-            text={i`This brand does not exist in the Brand Directory. [View Brand Directory](${merchFeURL(
+            text={i`This brand does not exist in the Brand Directory. [View Brand Directory](${merchFeUrl(
               "/branded-products/brand-directory",
             )})`}
             openLinksInNewTab

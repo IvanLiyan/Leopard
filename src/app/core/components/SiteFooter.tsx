@@ -3,7 +3,7 @@ import { StyleSheet } from "aphrodite";
 import { observer } from "mobx-react";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import Link, { LinkProps } from "@core/components/Link";
-import { merchFeURL } from "@core/toolkit/router";
+import { merchFeUrl } from "@core/toolkit/router";
 import { css } from "@core/toolkit/styling";
 import * as fonts from "@core/toolkit/fonts";
 import { useTheme } from "@core/stores/ThemeStore";
@@ -51,23 +51,23 @@ const SiteFooter = (props: SiteFooterProps) => {
 
   return (
     <div className={css(styles.root, className, style)}>
-      <FooterLink href={merchFeURL("/terms-of-service")}>
+      <FooterLink href={merchFeUrl("/terms-of-service")}>
         Terms of Service
       </FooterLink>
       <FooterDivider />
-      <FooterLink href={merchFeURL("/privacy-policy")}>
+      <FooterLink href={merchFeUrl("/privacy-policy")}>
         Privacy Policy
       </FooterLink>
       {ssoUrl && (
         <>
           <FooterDivider />
-          <FooterLink href={merchFeURL(ssoUrl)}>Sign in with SSO</FooterLink>
+          <FooterLink href={merchFeUrl(ssoUrl)}>Sign in with SSO</FooterLink>
         </>
       )}
       {!hideSitemap && (
         <>
           <FooterDivider />
-          <FooterLink href={merchFeURL("/plus/overview")}>Sitemap</FooterLink>
+          <FooterLink href={merchFeUrl("/plus/overview")}>Sitemap</FooterLink>
         </>
       )}
       {showCopyright && (

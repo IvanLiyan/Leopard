@@ -10,7 +10,7 @@ import ModalFooter from "@core/components/modal/ModalFooter";
 import { useNavigationStore } from "@core/stores/NavigationStore";
 import { observer } from "mobx-react";
 import { css } from "@core/toolkit/styling";
-import { merchFeURL } from "@core/toolkit/router";
+import { merchFeUrl } from "@core/toolkit/router";
 
 type AnnouncementModalProps = BaseProps &
   Pick<ModalProps, "open"> & {
@@ -51,7 +51,7 @@ const AnnouncementModal: React.FC<AnnouncementModalProps> = ({
                   text: ctaText,
                   onClick: async () => {
                     if (ctaLink != null) {
-                      await navigationStore.navigate(merchFeURL(ctaLink));
+                      await navigationStore.navigate(merchFeUrl(ctaLink));
                     } else {
                       onClose();
                     }

@@ -3,7 +3,7 @@ import { observer } from "mobx-react";
 import Banner from "../Banner";
 import { useTheme } from "@core/stores/ThemeStore";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import { merchFeURL } from "@core/toolkit/router";
+import { merchFeUrl } from "@core/toolkit/router";
 
 export type CustomerServiceProgramBannerProps = BaseProps;
 
@@ -24,7 +24,7 @@ const CustomerServiceProgramBanner: React.FC<
       bannerImg="bannerCustomerSupport"
       cta={{
         text: i`Join the waitlist`,
-        href: merchFeURL("/customer-service"),
+        href: merchFeUrl("/customer-service"),
         style: {
           backgroundColor: primary,
         },

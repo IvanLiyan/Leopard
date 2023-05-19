@@ -3,7 +3,7 @@ import { observer } from "mobx-react";
 import Markdown from "@infractions/components/Markdown";
 import Button from "./ActionCardButton";
 import ActionCard from "@core/components/ActionCard";
-import { merchFeURL } from "@core/toolkit/router";
+import { merchFeUrl } from "@core/toolkit/router";
 import { useInfractionContext } from "@infractions/InfractionContext";
 import { useInfractionDetailsStylesheet } from "@infractions/styles";
 import UseExistingProofModal from "./UseExistingProofModal";
@@ -33,7 +33,7 @@ const ProvideProofOfAuthenticity: React.FC = () => {
             {/* @ts-expect-error PR coming to allow below secondary usage */}
             <Button
               secondary={showUseExistingProofs ? true : undefined}
-              href={merchFeURL(
+              href={merchFeUrl(
                 `/brand-authorization/create/new?infractionId=${infractionId}`,
               )}
             >

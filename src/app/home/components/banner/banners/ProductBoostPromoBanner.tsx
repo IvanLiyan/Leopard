@@ -8,7 +8,7 @@ import { useLocalizationStore } from "@core/stores/LocalizationStore";
 import { useTheme } from "@core/stores/ThemeStore";
 import { formatCurrency } from "@core/toolkit/currency";
 import { PbBannerImage, PromoBannerMessage } from "@home/toolkit/product-boost";
-import { merchFeURL } from "@core/toolkit/router";
+import { merchFeUrl } from "@core/toolkit/router";
 
 export type ProductBoostPromoBannerProps = BaseProps & {
   readonly promoMessage: PromoBannerMessage | null | undefined;
@@ -161,7 +161,7 @@ const ProductBoostPromoBanner: React.FC<ProductBoostPromoBannerProps> = ({
       bannerImg={bannerImg}
       cta={{
         text: buttonText,
-        href: merchFeURL(buttonLink),
+        href: merchFeUrl(buttonLink),
         style: {
           backgroundColor: wishBlue,
         },

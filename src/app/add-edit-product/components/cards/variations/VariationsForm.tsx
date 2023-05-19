@@ -28,7 +28,7 @@ import AddVariationModal from "./AddVariationModal";
 import { css } from "@core/toolkit/styling";
 import VariationOptionsInput from "./VariationOptionsInput";
 import AddVariationModalV2 from "./AddVariationModalV2";
-import { merchFeURL } from "@core/toolkit/router";
+import { merchFeUrl } from "@core/toolkit/router";
 
 type Props = BaseProps & {
   readonly state: AddEditProductState;
@@ -83,7 +83,7 @@ const VariationsForm: React.FC<Props> = (props: Props) => {
                   i`'black and red'), simply separate the colors by "&" (eg "black & red"). Please ` +
                   i`note that showing two colors here should not be confused with products ` +
                   i`having two different colored variations. The name of the color must be in the ` +
-                  i`list of [currently accepted colors](${merchFeURL(
+                  i`list of [currently accepted colors](${merchFeUrl(
                     "/documentation/colors",
                   )}).`
                 }

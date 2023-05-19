@@ -24,7 +24,7 @@ import { css } from "@core/toolkit/styling";
 import ModalFooter from "@core/components/modal/ModalFooter";
 import { Heading, Text } from "@ContextLogic/atlas-ui";
 import { useMutation } from "@core/toolkit/restApi";
-import { merchFeURL } from "@core/toolkit/router";
+import { merchFeUrl } from "@core/toolkit/router";
 
 export type BulkResumeCampaignModalProps = BaseProps &
   Pick<ModalProps, "open"> & {
@@ -128,7 +128,7 @@ const BulkResumeCampaignModal: React.FC<BulkResumeCampaignModalProps> = ({
           timeoutMs: 5000,
           link: {
             title: i`View campaigns`,
-            url: merchFeURL(`/product-boost/history/list`),
+            url: merchFeUrl(`/product-boost/history/list`),
           },
         });
         onClose();
@@ -146,7 +146,7 @@ const BulkResumeCampaignModal: React.FC<BulkResumeCampaignModalProps> = ({
   const renderCampaignName = (campaign: BulkResumeCampaign) => {
     // If campaign name is empty, showing default text.
     let campaignName = i`(Campaign Name Not Set)`;
-    const url = merchFeURL(`/product-boost/detail/${campaign.campaign_id}`);
+    const url = merchFeUrl(`/product-boost/detail/${campaign.campaign_id}`);
 
     if (campaign.campaign_name) {
       campaignName = campaign.campaign_name;
@@ -161,7 +161,7 @@ const BulkResumeCampaignModal: React.FC<BulkResumeCampaignModalProps> = ({
         <Link
           className={css(styles.campaignName)}
           openInNewTab
-          href={merchFeURL(url)}
+          href={merchFeUrl(url)}
         >
           {campaignName}
         </Link>

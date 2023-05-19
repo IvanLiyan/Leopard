@@ -20,7 +20,7 @@ import {
 import { ci18n } from "@core/toolkit/i18n";
 import { useMutation } from "@apollo/client";
 import { useToastStore } from "@core/stores/ToastStore";
-import { merchFeURL } from "@core/toolkit/router";
+import { merchFeUrl } from "@core/toolkit/router";
 import ModalTitle from "@core/components/modal/ModalTitle";
 
 type DeleteWarehouseConfirmModalProps = BaseProps &
@@ -46,7 +46,7 @@ const DeleteWarehouseConfirmModal: React.FC<
     DeleteWarehouseInputType
   >(DELETE_WAREHOUSE);
 
-  const policyLink = merchFeURL("/policy#warehouse_fulfillment");
+  const policyLink = merchFeUrl("/policy#warehouse_fulfillment");
 
   return (
     <Modal open={open} onClose={() => onClose({ removed: false })}>

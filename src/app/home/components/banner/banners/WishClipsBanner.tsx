@@ -5,7 +5,7 @@ import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { useTheme } from "@core/stores/ThemeStore";
 import { ci18n } from "@core/toolkit/i18n";
 import Banner from "../Banner";
-import { merchFeURL } from "@core/toolkit/router";
+import { merchFeUrl } from "@core/toolkit/router";
 
 export type WishClipsBannerProps = BaseProps;
 
@@ -31,7 +31,7 @@ const WishClipsBanner: React.FC<WishClipsBannerProps> = ({
           "Text on a button, to encourage merchants to start using a feature",
           "Get started",
         ),
-        href: merchFeURL("/videos/management-hub"),
+        href: merchFeUrl("/videos/management-hub"),
         style: {
           backgroundColor: primary,
         },

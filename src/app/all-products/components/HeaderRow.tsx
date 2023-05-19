@@ -35,7 +35,7 @@ import moment from "moment/moment";
 import { createFileAndDownload } from "@core/toolkit/file";
 import { formatDatetimeLocalized } from "@core/toolkit/datetime";
 import ConfirmDownloadModal from "./ConfirmDownloadModal";
-import { merchFeURL } from "@core/toolkit/router";
+import { merchFeUrl } from "@core/toolkit/router";
 
 type Props = BaseProps & {
   readonly count?: number | null;
@@ -228,7 +228,7 @@ const HeaderRow: React.FC<Props> = ({
         )}
         <PrimaryButton
           style={styles.button}
-          onClick={() => navigationStore.navigate(merchFeURL("/products/add"))}
+          onClick={() => navigationStore.navigate(merchFeUrl("/products/add"))}
         >
           <Text weight="semibold" style={styles.buttonText}>
             {ci18n(

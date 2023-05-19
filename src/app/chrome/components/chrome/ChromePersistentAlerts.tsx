@@ -16,7 +16,7 @@ import { Banner, Layout, Markdown } from "@ContextLogic/lego";
 /* Type Imports */
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { AlertSentimentMap, PickedUserAlert } from "@chrome/toolkit";
-import { merchFeURL } from "@core/toolkit/router";
+import { merchFeUrl } from "@core/toolkit/router";
 
 type Props = BaseProps & {
   readonly alerts: ReadonlyArray<PickedUserAlert>;
@@ -40,7 +40,7 @@ const ChromePersistentAlerts: React.FC<Props> = ({
             ? linkProp
             : linkProp.startsWith("/md")
             ? linkProp.substring(3)
-            : merchFeURL(linkProp);
+            : merchFeUrl(linkProp);
 
           return (
             <Banner

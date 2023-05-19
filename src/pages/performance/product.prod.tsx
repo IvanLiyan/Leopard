@@ -25,7 +25,7 @@ import {
 import { useExportCSV } from "@performance/toolkit/utils";
 import commonStyles from "@performance/styles/common.module.css";
 import PageHeader from "@core/components/PageHeader";
-import { merchFeURL } from "@core/toolkit/router";
+import { merchFeUrl } from "@core/toolkit/router";
 import { useTheme } from "@core/stores/ThemeStore";
 
 const PerformanceProductPage: NextPage<Record<string, never>> = () => {
@@ -278,8 +278,8 @@ const PerformanceProductPage: NextPage<Record<string, never>> = () => {
       <PageHeader
         relaxed
         breadcrumbs={[
-          { name: i`Home`, href: merchFeURL("/home") },
-          { name: i`Performance`, href: merchFeURL("/performance-overview") },
+          { name: i`Home`, href: merchFeUrl("/home") },
+          { name: i`Performance`, href: merchFeUrl("/performance-overview") },
           { name: i`Product Performance`, href: window.location.href },
         ]}
         title={i`Product Performance`}

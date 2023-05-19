@@ -17,7 +17,7 @@ import { zendeskURL } from "@core/toolkit/url";
 
 import Section, { SectionProps } from "./Section";
 import AddEditProductState from "@add-edit-product/AddEditProductState";
-import { merchFeURL } from "@core/toolkit/router";
+import { merchFeUrl } from "@core/toolkit/router";
 
 type Props = Omit<SectionProps, "title" | "rightCard"> & {
   readonly state: AddEditProductState;
@@ -68,7 +68,7 @@ const Price: React.FC<Props> = ({
           i`The local currency price of your product. The customer will pay this amount ` +
           i`for the product after the prices have been converted to your currency. The ` +
           i`local currency price is based off the local currency code that can be found ` +
-          i`under [Currency Settings](${merchFeURL(
+          i`under [Currency Settings](${merchFeUrl(
             "/settings#currency-settings",
           )}). [Learn ` +
           i`more](${attributesLearnMoreLink})`

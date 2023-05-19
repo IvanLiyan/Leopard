@@ -41,7 +41,7 @@ import minBy from "lodash/minBy";
 import maxBy from "lodash/maxBy";
 import { PaymentCurrencyCode } from "@schema";
 import { zendeskURL } from "@core/toolkit/url";
-import { merchFeURL } from "@core/toolkit/router";
+import { merchFeUrl } from "@core/toolkit/router";
 import ClickableProductImage from "./ClickableProductImage";
 import AllProductsState from "@all-products/AllProductsState";
 import Icon from "@core/components/Icon";
@@ -1022,7 +1022,7 @@ const ProductTable: React.FC<Props> = ({
           ).some(({ countryShipping }) => (countryShipping || []).length > 0);
           return (
             <Link
-              href={merchFeURL(
+              href={merchFeUrl(
                 `/product-shipping/${row.product.id}/${warehouse.id}`,
               )}
               openInNewTab

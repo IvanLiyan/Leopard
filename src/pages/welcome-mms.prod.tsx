@@ -4,7 +4,7 @@ import { observer } from "mobx-react";
 
 import { TopBottomButton, Layout, LoadingIndicator } from "@ContextLogic/lego";
 import { useBoolQueryParam } from "@core/toolkit/url";
-import { merchFeURL, useRouter } from "@core/toolkit/router";
+import { merchFeUrl, useRouter } from "@core/toolkit/router";
 import QuestionnaireModal from "@landing-pages/welcome-mms/QuestionnaireModal";
 import { useDeviceStore } from "@core/stores/DeviceStore";
 import HeroBanner from "@landing-pages/welcome-mms/HeroBanner";
@@ -38,7 +38,7 @@ const MmsWelcomeContainer: NextPage<Record<string, never>> = () => {
   }, [firstLoad, renderForm]);
 
   if (loggedInMerchantUser != null) {
-    void router.push(merchFeURL("/"));
+    void router.push(merchFeUrl("/"));
     return <LoadingIndicator style={styles.loadingIndicator} />;
   }
 

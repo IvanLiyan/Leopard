@@ -26,7 +26,7 @@ import { useTheme } from "@core/stores/ThemeStore";
 import { zendeskURL } from "@core/toolkit/url";
 import AddEditProductState from "@add-edit-product/AddEditProductState";
 import Section from "./Section";
-import { merchFeURL } from "@core/toolkit/router";
+import { merchFeUrl } from "@core/toolkit/router";
 
 export type Props = BaseProps & {
   readonly state: AddEditProductState;
@@ -49,13 +49,13 @@ const BasicInfo: React.FC<Props> = (props: Props) => {
   }
 
   const categoryLearnMoreLink = zendeskURL("4403535077403");
-  const disputeCategoryLink = merchFeURL(
+  const disputeCategoryLink = merchFeUrl(
     `/product/create-category-dispute/${id}`,
   );
   const categoryDisputesListLink =
     disputeId == null
       ? ""
-      : merchFeURL(`/product-category-dispute/${disputeId}`);
+      : merchFeUrl(`/product-category-dispute/${disputeId}`);
 
   const disableDispute = eligibleForCategoryDispute != "ELIGIBLE";
 

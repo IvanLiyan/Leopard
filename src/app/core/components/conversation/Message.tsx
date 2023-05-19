@@ -9,7 +9,7 @@ import { css } from "@core/toolkit/styling";
 import Link from "@core/components/Link";
 import Icon from "@core/components/Icon";
 import Image from "@core/components/Image";
-import { merchFeURL } from "@core/toolkit/router";
+import { merchFeUrl } from "@core/toolkit/router";
 
 export type File = {
   readonly displayFilename: string;
@@ -51,14 +51,14 @@ const Message: React.FC<Props> = ({
       {files.map(({ displayFilename, fileUrl, isImageFile }, i) => (
         <Link
           key={i}
-          href={merchFeURL(fileUrl)}
+          href={merchFeUrl(fileUrl)}
           download
           openInNewTab
           style={{ marginBottom: i == files.length ? 16 : 8 }}
         >
           {isImageFile ? (
             <Image
-              src={merchFeURL(fileUrl)}
+              src={merchFeUrl(fileUrl)}
               alt={displayFilename}
               style={{
                 maxWidth: "175px",

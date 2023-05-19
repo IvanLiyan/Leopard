@@ -25,7 +25,7 @@ import { useLogger } from "@core/toolkit/logger";
 import ConfirmationModal from "@core/components/ConfirmationModal";
 import { useUserStore } from "@core/stores/UserStore";
 import SpvStatusLabel from "./SpvStatusLabel";
-import { merchFeURL } from "@core/toolkit/router";
+import { merchFeUrl } from "@core/toolkit/router";
 
 // This is a deprecated way of doing actions, do not repeat this in the future
 const SpecialActionRoutes = [
@@ -120,7 +120,7 @@ const TodoListItem: React.FC<TodoListItemProps> = ({
         if (specialActionRoute !== undefined) {
           SpecialActionRouteActions[specialActionRoute]();
         } else {
-          await navigationStore.navigate(merchFeURL(action.url));
+          await navigationStore.navigate(merchFeUrl(action.url));
         }
 
         if (action.complete_on_click) {

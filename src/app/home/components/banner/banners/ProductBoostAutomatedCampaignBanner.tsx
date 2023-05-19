@@ -8,7 +8,7 @@ import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import Banner from "../Banner";
 import { useTheme } from "@core/stores/ThemeStore";
 import { AutomatedCampaign } from "@home/toolkit/product-boost";
-import { merchFeURL } from "@core/toolkit/router";
+import { merchFeUrl } from "@core/toolkit/router";
 
 export type ProductBoostAutomatedCampaignBannerProps = BaseProps & {
   readonly campaign: AutomatedCampaign;
@@ -21,7 +21,7 @@ const ProductBoostAutomatedCampaignBanner: React.FC<
   ProductBoostAutomatedCampaignBannerProps
 > = ({ campaign, className, style }) => {
   const { wishBlue } = useTheme();
-  const promoButtonLink = merchFeURL(
+  const promoButtonLink = merchFeUrl(
     `/product-boost/detail/${campaign.campaign_id}`,
   );
   const discountStr = numeral(campaign.discount).format("0%");
@@ -42,7 +42,7 @@ const ProductBoostAutomatedCampaignBanner: React.FC<
       bannerImg={() => <ProductBoostCampaignBannerImg campaign={campaign} />}
       cta={{
         text: defaultPromoButtonText,
-        href: merchFeURL(promoButtonLink),
+        href: merchFeUrl(promoButtonLink),
         style: {
           backgroundColor: wishBlue,
         },
