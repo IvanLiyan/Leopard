@@ -6,12 +6,32 @@ export const PCC_QUERY = gql`
     policy {
       productCompliance {
         productsWithEuResponsiblePerson: linkCount(
-          complianceTypes: [EU_COMPLIANCE]
+          categories: [TOYS, ELECTRICAL_PRODUCTS, PPE, ELECTRONICS]
+          euComplianceCategories: [
+            FOOD
+            EEE
+            ENVIRONMENT
+            OTHER
+            CHEMICAL
+            COSMETICS
+            TOYS
+          ]
           states: [HAS_RP]
+          complianceTypes: [EU_COMPLIANCE]
         )
         productsWithoutEuResponsiblePerson: linkCount(
-          complianceTypes: [EU_COMPLIANCE]
+          categories: [TOYS, ELECTRICAL_PRODUCTS, PPE, ELECTRONICS]
+          euComplianceCategories: [
+            FOOD
+            EEE
+            ENVIRONMENT
+            OTHER
+            CHEMICAL
+            COSMETICS
+            TOYS
+          ]
           states: [NO_RP]
+          complianceTypes: [EU_COMPLIANCE]
         )
         extendedProducerResponsibility {
           countries {
