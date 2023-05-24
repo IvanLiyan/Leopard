@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { observer } from "mobx-react";
 import RadioCard from "@core/components/RadioCard";
-import { Layout } from "@ContextLogic/lego";
 import { IS_LARGE_SCREEN, IS_SMALL_SCREEN } from "@core/toolkit/styling";
 import { useTheme } from "@core/stores/ThemeStore";
 import { ci18n } from "@core/toolkit/i18n";
@@ -9,18 +8,99 @@ import { Button, Text } from "@ContextLogic/atlas-ui";
 import Icon from "@core/components/Icon";
 import { DownloadTemplateType, UpdateActionType } from "@products-csv/toolkit";
 import EditTemplateSelect from "./EditTemplateSelect";
+import {
+  CategoryTreeNode,
+  parseJsonTree,
+  buildMapFromTree,
+} from "@core/taxonomy/toolkit";
+import TaxonomyCategorySelectSection from "@core/taxonomy/v2/TaxonomyCategorySelectSection";
+import { jsonTree } from "../mock-tree-json"; // csv TODO: remove mock
+import { LoadingIndicator } from "@ContextLogic/lego";
 
 const DownloadTemplateSection: React.FC = () => {
   const [updateActionType, setUpdateActionType] = useState<UpdateActionType>();
   const [templateType, setTemplateType] = useState<DownloadTemplateType>();
+  // csv TODO use selectedCategories in download api
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [selectedCategories, setSelectedCategories] = useState<
+    ReadonlyArray<number>
+  >([]);
   const { textWhite, primary, textDark } = useTheme();
+  const [categoryMap, setCategoryMap] = useState<Map<number, CategoryTreeNode>>(
+    new Map(),
+  );
+  const [isLoadingTree, setIsLoadingTree] = useState<boolean>(false);
+  const maxCategory = 5;
+
+  useEffect(() => {
+    setIsLoadingTree(true);
+    const tree = parseJsonTree(jsonTree);
+    const treeMap = buildMapFromTree({
+      parentId: undefined,
+      currentNode: tree,
+      currentPath: "",
+      currentMap: categoryMap,
+    });
+    setIsLoadingTree(false);
+    setCategoryMap(treeMap);
+    // csv TODO: update mock
+    // map only depends on tree data, categoryMap is not a dependency
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [jsonTree]);
+
+  const renderCategorySelectSection = () => {
+    if (isLoadingTree) {
+      return <LoadingIndicator />;
+    }
+
+    return (
+      <TaxonomyCategorySelectSection
+        categoryTreeMap={categoryMap}
+        onSelectionsChange={setSelectedCategories}
+        maxSelection={maxCategory}
+        showHeader
+      />
+    );
+  };
 
   return (
-    <Layout.FlexColumn
-      style={{ gap: 24 }}
-      alignItems="flex-start"
-      justifyContent="flex-start"
-    >
+    <div className="download-template-root">
+      <style jsx>{`
+        .download-template-root {
+          display: flex;
+          flex-direction: column;
+          gap: 24px;
+          align-items: flex-start;
+          justify-content: flex-start;
+        }
+
+        @media ${IS_LARGE_SCREEN} {
+          .update-buttons-container {
+            display: flex;
+            flex-direction: row;
+            gap: 24px;
+          }
+        }
+
+        @media ${IS_SMALL_SCREEN} {
+          .update-buttons-container {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+          }
+        }
+
+        .download-buttons-container {
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+        }
+
+        .download-buttons {
+          display: flex;
+          gap: 16px;
+        }
+      `}</style>
       <div className="update-buttons-container">
         <RadioCard
           checked={updateActionType === "ADD"}
@@ -47,23 +127,6 @@ const DownloadTemplateSection: React.FC = () => {
           }}
           sx={{ width: "400px" }}
         />
-        <style jsx>{`
-          @media ${IS_LARGE_SCREEN} {
-            .update-buttons-container {
-              display: flex;
-              flex-direction: row;
-              gap: 24px;
-            }
-          }
-
-          @media ${IS_SMALL_SCREEN} {
-            .update-buttons-container {
-              display: flex;
-              flex-direction: column;
-              gap: 24px;
-            }
-          }
-        `}</style>
       </div>
       {updateActionType === "EDIT" && (
         <>
@@ -73,8 +136,11 @@ const DownloadTemplateSection: React.FC = () => {
             }
             onSelect={setTemplateType}
           />
-          <Layout.FlexColumn style={{ gap: 8 }}>
-            <Layout.FlexRow style={{ gap: 16 }}>
+          {(templateType === "EDIT_ALL" ||
+            templateType === "EDIT_BY_CATEGORY") &&
+            renderCategorySelectSection()}
+          <div className="download-buttons-container">
+            <div className="download-buttons">
               <Button
                 primary
                 startIcon={<Icon name="download" color={textWhite} />}
@@ -93,23 +159,29 @@ const DownloadTemplateSection: React.FC = () => {
                   "Download template",
                 )}
               </Button>
-            </Layout.FlexRow>
-            <Text variant="bodyM" style={{ color: textDark }}>
+            </div>
+            <Text variant="bodyM" sx={{ color: textDark }}>
               If your catalog exceeds 150 products, you may receive it via
               email.
             </Text>
-          </Layout.FlexColumn>
+          </div>
         </>
       )}
       {updateActionType === "ADD" && (
-        <Button primary startIcon={<Icon name="download" color={textWhite} />}>
-          {ci18n(
-            "Button text, download bulk add/edit product csv template",
-            "Download template",
-          )}
-        </Button>
+        <>
+          {renderCategorySelectSection()}
+          <Button
+            primary
+            startIcon={<Icon name="download" color={textWhite} />}
+          >
+            {ci18n(
+              "Button text, download bulk add/edit product csv template",
+              "Download template",
+            )}
+          </Button>
+        </>
       )}
-    </Layout.FlexColumn>
+    </div>
   );
 };
 

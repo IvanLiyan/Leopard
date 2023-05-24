@@ -1,6 +1,5 @@
 import React, { useMemo } from "react";
 import { observer } from "mobx-react";
-import { Layout } from "@ContextLogic/lego";
 import { StyleSheet } from "aphrodite";
 import { Card, Heading, Text } from "@ContextLogic/atlas-ui";
 import Link from "@core/components/Link";
@@ -15,21 +14,35 @@ const TemplateInfoSection: React.FC = () => {
   const { textDark } = useTheme();
 
   return (
-    <Layout.FlexColumn
-      style={{ gap: "24px" }}
-      alignItems="flex-start"
-      justifyContent="flex-start"
-    >
-      <Text variant="bodyM" style={{ color: textDark }}>
+    <div className="template-info-root">
+      <style jsx>{`
+        .template-info-root {
+          display: flex;
+          flex-direction: column;
+          gap: 24px;
+          align-items: flex-start;
+          justify-content: flex-start;
+        }
+        .template-info-card {
+          display: flex;
+          justify-content: space-between;
+        }
+        .template-info-content {
+          display: flex;
+          flex-direction: column;
+          gap: 16px;
+        }
+      `}</style>
+      <Text variant="bodyM" sx={{ color: textDark }}>
         Please fill in all required sections and save your document as a CSV
         file.
       </Text>
       <Card
-        style={{ padding: "24px", width: "400px", boxSizing: "border-box" }}
+        sx={{ padding: "24px", width: "400px", boxSizing: "border-box" }}
         borderRadius="md"
       >
-        <Layout.FlexRow justifyContent="space-between">
-          <Layout.FlexColumn style={{ gap: "16px" }}>
+        <div className="template-info-card">
+          <div className="template-info-content">
             <Heading variant="h4">
               {ci18n(
                 "Section header, the section contains links to useful documentation",
@@ -53,14 +66,15 @@ const TemplateInfoSection: React.FC = () => {
             >
               See all other attributes
             </Link>
-          </Layout.FlexColumn>
+          </div>
+
           <Illustration
             name="magnifier"
             alt={ci18n("Image description", "magnifier image")}
           />
-        </Layout.FlexRow>
+        </div>
       </Card>
-    </Layout.FlexColumn>
+    </div>
   );
 };
 

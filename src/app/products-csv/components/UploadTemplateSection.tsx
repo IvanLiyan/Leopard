@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { observer } from "mobx-react";
-import { AttachmentInfo, FormSelect, Layout } from "@ContextLogic/lego";
+import { AttachmentInfo, FormSelect } from "@ContextLogic/lego";
 import { Text, Button } from "@ContextLogic/atlas-ui";
 import SecureFileInput from "@core/components/SecureFileInput";
 import { useTheme } from "@core/stores/ThemeStore";
@@ -28,8 +28,16 @@ const UploadTemplateSection: React.FC = () => {
   );
 
   return (
-    <Layout.FlexColumn alignItems="flex-start" justifyContent="flex-start">
-      <Text variant="bodyM" style={{ color: textDark }}>
+    <div className="upload-template-root">
+      <style jsx>{`
+        .upload-template-root {
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-start;
+          align-items: flex-start;
+        }
+      `}</style>
+      <Text variant="bodyM" sx={{ color: textDark }}>
         Remove listings with no changes for quicker upload times.
       </Text>
       <FormSelect
@@ -60,14 +68,14 @@ const UploadTemplateSection: React.FC = () => {
       <Button
         primary
         disabled={!uploadType || attachments.length === 0}
-        style={{
-          marginTop: 24,
+        sx={{
+          marginTop: "24px",
         }}
         startIcon={<Icon name="uploadCloud" color={textWhite} />}
       >
         {ci18n("Button text", "Upload file")}
       </Button>
-    </Layout.FlexColumn>
+    </div>
   );
 };
 

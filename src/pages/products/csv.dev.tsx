@@ -24,7 +24,7 @@ const ProductsCsvPage: NextPage<Record<string, never>> = () => {
             onClose={() => {
               setIsAlertOpen(false);
             }}
-            style={{ marginBottom: "40px" }}
+            sx={{ marginBottom: "40px" }}
           >
             <AlertTitle>Introducing the new product add/edit flow</AlertTitle>
             We have retired our old bulk add/edit CSV templates. Create

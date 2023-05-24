@@ -16,6 +16,72 @@ import {
 import { gql } from "@apollo/client";
 import { Constants } from "@add-edit-product/constants";
 
+export type CategoryTreeNode = {
+  readonly childrenIds: ReadonlyArray<number>;
+  readonly parentId?: number;
+  readonly id: number;
+  readonly name: string;
+  readonly path: string;
+};
+
+// csv TODO: need to update to BE type
+export type Tree = {
+  nodeId: number;
+  nodeName: string;
+  children: ReadonlyArray<Tree>;
+};
+
+export const parseJsonTree = (treeJson: string) => {
+  const tree: Tree = JSON.parse(treeJson); // csv TODO: investigate library for FE type parsing
+  return tree;
+};
+
+export const buildMapFromTree = ({
+  parentId,
+  currentNode,
+  currentPath,
+  currentMap,
+}: {
+  parentId: number | undefined;
+  currentNode: Tree;
+  currentPath: string;
+  currentMap: Map<number, CategoryTreeNode>;
+}): Map<number, CategoryTreeNode> => {
+  if (currentNode.children.length === 0) {
+    return currentMap.set(currentNode.nodeId, {
+      name: currentNode.nodeName,
+      id: currentNode.nodeId,
+      path: currentPath,
+      parentId: parentId,
+      childrenIds: [],
+    });
+  }
+
+  const newMap = currentMap.set(currentNode.nodeId, {
+    name: currentNode.nodeName,
+    id: currentNode.nodeId,
+    path: currentPath,
+    parentId: parentId,
+    childrenIds: currentNode.children.map((child) => child.nodeId),
+  });
+
+  for (let i = 0; i < currentNode.children.length; i++) {
+    const currentChild = currentNode.children[i];
+
+    buildMapFromTree({
+      parentId: currentNode.nodeId,
+      currentNode: currentChild,
+      currentPath:
+        currentPath.trim().length > 0
+          ? `${currentPath} > ${currentNode.nodeName}`
+          : currentNode.nodeName,
+      currentMap: currentMap,
+    });
+  }
+
+  return newMap;
+};
+
 export const AttributeLevelLabel: { readonly [f in AttributeLevel]: string } = {
   ATTRIBUTE_LEVEL_PRODUCT: ci18n(
     "attribute level label, means attribute is on product-level",

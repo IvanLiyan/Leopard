@@ -9,16 +9,13 @@ import {
   DownloadTemplateType,
   EditDownloadTemplateType,
 } from "@products-csv/toolkit";
-import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
-type EditTemplateSelectProps = BaseProps & {
+type EditTemplateSelectProps = {
   readonly selectedType: EditDownloadTemplateType | undefined;
   readonly onSelect: (type: DownloadTemplateType) => unknown;
 };
 
 const EditTemplateSelect: React.FC<EditTemplateSelectProps> = ({
-  className,
-  style,
   selectedType,
   onSelect,
 }: EditTemplateSelectProps) => {
@@ -34,11 +31,17 @@ const EditTemplateSelect: React.FC<EditTemplateSelectProps> = ({
     : undefined;
 
   return (
-    <Layout.FlexColumn
-      style={[{ gap: 16, width: "400px" }, className, style]}
-      alignItems="stretch"
-      justifyContent="flex-start"
-    >
+    <div className="edit-template-select-root">
+      <style jsx>{`
+        .edit-template-select-root {
+          display: flex;
+          flex-direction: column;
+          gap: 16px;
+          justify-content: flex-start;
+          align-items: stretch;
+          width: 400px;
+        }
+      `}</style>
       <Text variant="bodyMStrong">Select a template</Text>
       <FormSelect
         options={downloadTypeOptions}
@@ -47,7 +50,7 @@ const EditTemplateSelect: React.FC<EditTemplateSelectProps> = ({
         showArrow
       />
       {templateInfos && (
-        <Card style={{ padding: 24 }} borderRadius="md">
+        <Card sx={{ padding: "24px" }} borderRadius="md">
           <Layout.FlexColumn style={{ gap: 10 }}>
             <Heading variant="h4">{templateInfos.title}</Heading>
             <Text style={{ color: textDark }}>{templateInfos.description}</Text>
@@ -63,7 +66,7 @@ const EditTemplateSelect: React.FC<EditTemplateSelectProps> = ({
           </Layout.FlexColumn>
         </Card>
       )}
-    </Layout.FlexColumn>
+    </div>
   );
 };
 
