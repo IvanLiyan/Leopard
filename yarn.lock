@@ -2,14 +2,16 @@
 # yarn lockfile v1
 
 
-"@ContextLogic/atlas-ui@^0.0.1-1684164532":
-  version "0.0.1-1684164532"
-  resolved "https://npm.infra.wish.com/@ContextLogic%2fatlas-ui/-/atlas-ui-0.0.1-1684164532.tgz#a86e5091a1805997cfa632b0953716485435c3b6"
-  integrity sha512-64ocrPqBSRrdGEcVtJMaHGD3jShv4JQF8ONrpQLh+fDpEFknyiHMAxF5OXOPF6iikAj9TTnhwYC2HY9syAABrQ==
+"@ContextLogic/atlas-ui@^0.0.1-1684949713":
+  version "0.0.1-1684949713"
+  resolved "https://npm.infra.wish.com/@ContextLogic%2fatlas-ui/-/atlas-ui-0.0.1-1684949713.tgz#8857df178e0af500e8a305dd78c7e4bee0901a64"
+  integrity sha512-XqO61X+0YzX52f4XDcZke2DU8SWRo+NOFHXnpneT01F2nWXuXY3HuekQkaVFNNI7q7Hv964W9Q4D5ZycQj1CrQ==
   dependencies:
     "@emotion/react" "^11.10.4"
     "@emotion/styled" "^11.10.4"
     "@mui/material" "5.11.10"
+    date-fns "^2.30.0"
+    react-day-picker "^8.7.1"
 
 "@ContextLogic/lego@^0.0.1-1682456286":
   version "0.0.1-1682456286"
@@ -6907,6 +6909,13 @@ date-fns@^1.27.2:
   version "1.30.1"
   resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-1.30.1.tgz#2e71bf0b119153dbb4cc4e88d9ea5acfb50dc05c"
 
+date-fns@^2.30.0:
+  version "2.30.0"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.30.0.tgz#f367e644839ff57894ec6ac480de40cae4b0f4d0"
+  integrity sha512-fnULvOpxnC5/Vg3NCiWelDsLiUc9bRwAPs/+LfTLNvetFCtCTN+yQz15C/fs4AwX1R9K5GLtLfn8QW+dWisaAw==
+  dependencies:
+    "@babel/runtime" "^7.21.0"
+
 debounce@^1.1.0, debounce@^1.2.0:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/debounce/-/debounce-1.2.1.tgz#38881d8f4166a5c5848020c11827b834bcb3e0a5"
@@ -13301,6 +13310,11 @@ react-day-picker@*, react-day-picker@^7.2.4:
   resolved "https://registry.yarnpkg.com/react-day-picker/-/react-day-picker-7.4.10.tgz#d3928fa65c04379ad28c76de22aa85374a8361e1"
   dependencies:
     prop-types "^15.6.2"
+
+react-day-picker@^8.7.1:
+  version "8.7.1"
+  resolved "https://registry.yarnpkg.com/react-day-picker/-/react-day-picker-8.7.1.tgz#b8388c2afa69d4a6da4c5fde5323fae884acfe2f"
+  integrity sha512-Gv426AW8b151CZfh3aP5RUGztLwHB/EyJgWZ5iMgtzbFBkjHfG6Y66CIQFMWGLnYjsQ9DYSJRmJ5S0Pg5HWKjA==
 
 react-dnd-html5-backend@*:
   version "14.1.0"
