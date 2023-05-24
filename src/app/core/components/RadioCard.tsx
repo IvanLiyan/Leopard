@@ -7,7 +7,7 @@ import { useTheme } from "@core/stores/ThemeStore";
 export type RadioButtonCardProps = Omit<CardProps, "onClick"> & {
   readonly checked: RadioProps["checked"];
   readonly onChange: CardProps["onChange"];
-  readonly text: TextProps["children"];
+  readonly text?: TextProps["children"];
 };
 
 const RadioCard: React.FC<RadioButtonCardProps> = ({

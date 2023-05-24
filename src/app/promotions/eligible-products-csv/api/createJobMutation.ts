@@ -6,7 +6,7 @@ import {
 
 export const CREATE_JOB_MUTATION = gql`
   mutation CreateProductDownloadsJobForMerchantPromotionsMutation(
-    $input: CreateProductsDownloadJobInput
+    $input: CreateProductsDownloadJobInput!
   ) {
     mfp {
       createProductsDownloadJob(input: $input) {
