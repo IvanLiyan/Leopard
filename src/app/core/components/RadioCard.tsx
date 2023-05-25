@@ -34,7 +34,7 @@ const RadioCard: React.FC<RadioButtonCardProps> = ({
         boxSizing: "border-box",
         cursor: disabled ? undefined : "pointer",
         padding: checked ? "6px 15px 6px 6px" : "7px 16px 7px 7px",
-        borderColor: checked ? secondaryDark : undefined,
+        borderColor: checked && !disabled ? secondaryDark : undefined,
         borderWidth: checked ? "2px" : undefined,
         ":hover": {
           borderColor: checked || disabled ? undefined : surfaceDarkest,
