@@ -11,7 +11,7 @@ type Props = BaseProps & {
   readonly onSelectionsChange?: (categories: ReadonlyArray<number>) => void;
   readonly maxSelection?: number;
   readonly showHeader?: boolean;
-  readonly categoryTreeMap: Map<number, CategoryTreeNode>; // key: categroy id; value: category data including parent and children
+  readonly categoryTreeMap: Map<number, CategoryTreeNode>; // key: category id; value: category data including parent and children
 };
 
 const TaxonomyCategorySelectSection: React.FC<Props> = ({

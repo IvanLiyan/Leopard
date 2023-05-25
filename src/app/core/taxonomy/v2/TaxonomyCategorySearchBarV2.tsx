@@ -24,7 +24,7 @@ type Props = {
   readonly onSelect?: (category: number | undefined) => unknown;
   readonly disabled?: boolean;
   readonly placeholder?: string;
-  readonly categoryTreeMap: Map<number, CategoryTreeNode>; // key: categroy id; value: category data including parent and children
+  readonly categoryTreeMap: Map<number, CategoryTreeNode>; // key: category id; value: category data including parent and children
 };
 
 const TaxonomyCategorySearchBarV2: React.FC<Props> = ({

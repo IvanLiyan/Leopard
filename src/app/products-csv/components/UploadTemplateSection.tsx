@@ -37,9 +37,6 @@ const UploadTemplateSection: React.FC = () => {
           align-items: flex-start;
         }
       `}</style>
-      <Text variant="bodyM" sx={{ color: textDark }}>
-        Remove listings with no changes for quicker upload times.
-      </Text>
       <FormSelect
         style={{ marginTop: 16, width: 400, boxSizing: "border-box" }}
         options={uploadTypeOptions}
@@ -50,6 +47,13 @@ const UploadTemplateSection: React.FC = () => {
         }
         showArrow
       />
+      <Text variant="bodyM" sx={{ color: textDark, marginTop: "16px" }}>
+        Deleting unchanged rows will help your products go live faster.
+      </Text>
+      <Text variant="bodyM" sx={{ color: textDark }}>
+        Make sure the file is the CSV format, is less than 50 MB in size, and
+        your template has 30k rows or less.
+      </Text>
       <SecureFileInput
         bucket="TEMP_UPLOADS_V2"
         accepts=".csv"
@@ -58,12 +62,12 @@ const UploadTemplateSection: React.FC = () => {
         attachments={attachments}
         onAttachmentsChanged={(attachments) => setAttachments(attachments)}
         backgroundColor={textWhite}
-        prompt={i`Drag a file to upload (max file size ${50}MB)`}
         style={{
           marginTop: 16,
           width: 400,
           height: 240,
         }}
+        maxRows={30000}
       />
       <Button
         primary

@@ -8,7 +8,7 @@ import Icon from "@core/components/Icon";
 
 type Props = {
   readonly index: number;
-  readonly categoryTreeMap: Map<number, CategoryTreeNode>; // key: categroy id; value: category data including parent and children
+  readonly categoryTreeMap: Map<number, CategoryTreeNode>; // key: category id; value: category data including parent and children
   readonly columnItems: ReadonlyArray<number>;
   readonly highlightedNodes?: ReadonlyArray<number>;
   readonly selectedNodes?: ReadonlyArray<number>;

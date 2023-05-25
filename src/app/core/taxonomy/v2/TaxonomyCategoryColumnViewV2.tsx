@@ -11,7 +11,7 @@ type Props = {
   readonly onSelectionsChange?: (categories: ReadonlyArray<number>) => void;
   readonly maxSelection?: number;
   readonly hideToken?: boolean;
-  readonly categoryTreeMap: Map<number, CategoryTreeNode>; // key: categroy id; value: category data including parent and children
+  readonly categoryTreeMap: Map<number, CategoryTreeNode>; // key: category id; value: category data including parent and children
 };
 
 const TaxonomyCategoryColumnViewV2: React.FC<Props> = ({

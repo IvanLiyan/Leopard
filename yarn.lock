@@ -13,10 +13,10 @@
     date-fns "^2.30.0"
     react-day-picker "^8.7.1"
 
-"@ContextLogic/lego@^0.0.1-1682456286":
-  version "0.0.1-1682456286"
-  resolved "https://npm.infra.wish.com/@ContextLogic%2flego/-/lego-0.0.1-1682456286.tgz#348106fecbc51bff339e1e834612ad36cd96e207"
-  integrity sha512-YptSAfqSAfAyiUbFRE5St3otx18KxULTixMq7ORx3GbGRSPWUgfSR+94ndqjqEz/EAXH/tDqk7OLGyhpF+fLfQ==
+"@ContextLogic/lego@^0.0.1-1684349368":
+  version "0.0.1-1684349368"
+  resolved "https://npm.infra.wish.com/@ContextLogic%2flego/-/lego-0.0.1-1684349368.tgz#ab43b1938f4bdf57faf506f53afd89ac889a69e4"
+  integrity sha512-3nVMSoIR1vjddSdhd3x26DDzdXxRl6La7CeeBXjcUtd7E9UdfemywZjtem60OHraQtsI2v1NLHOSQTxooS8GPw==
   dependencies:
     "@ContextLogic/legostrings" "0.0.1664165201"
     "@ContextLogic/zeus" "0.0.1-1669324295"
@@ -3672,6 +3672,13 @@
 "@types/object-hash@^1.3.1":
   version "1.3.4"
   resolved "https://registry.yarnpkg.com/@types/object-hash/-/object-hash-1.3.4.tgz#079ba142be65833293673254831b5e3e847fe58b"
+
+"@types/papaparse@^5.3.7":
+  version "5.3.7"
+  resolved "https://registry.yarnpkg.com/@types/papaparse/-/papaparse-5.3.7.tgz#8d3bf9e62ac2897df596f49d9ca59a15451aa247"
+  integrity sha512-f2HKmlnPdCvS0WI33WtCs5GD7X1cxzzS/aduaxSu3I7TbhWlENjSPs6z5TaB9K0J+BH1jbmqTaM+ja5puis4wg==
+  dependencies:
+    "@types/node" "*"
 
 "@types/parse-json@^4.0.0":
   version "4.0.0"
