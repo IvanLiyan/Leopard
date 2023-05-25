@@ -15,8 +15,8 @@
 4. Run `yarn install`.
 5. Run `yarn dev`.
    > **Note** `dev` starts a Next.JS development server running on port 8080.
-6. Navigate to `https://leopard.wish.com:3000/md/dev-login` and follow the instructions there to log in via the credentials in your `.env.local` file.
-7. Navigate to `https://leopard.wish.com:3000/md/<page>`.
+6. Navigate to `https://leopard.corp.contextlogic.com:3000/md/dev-login` and follow the instructions there to log in via the credentials in your `.env.local` file.
+7. Navigate to `https://leopard.corp.contextlogic.com:3000/md/<page>`.
 
 ## Project Tour
 
@@ -24,8 +24,8 @@
 
   Next.JS uses a file-system based router that maps routes to pages via the formula
 
-  - `leopard.wish.com/my-page` -> `src/pages/my-page`
-  - `leopard.wish.com/subdir/my-page` -> `src/pages/subdir/my-page`
+  - `leopard.corp.contextlogic.com/my-page` -> `src/pages/my-page`
+  - `leopard.corp.contextlogic.com/subdir/my-page` -> `src/pages/subdir/my-page`
   - etc.
 
   Thus, all the pages in Leopard are stored in `src/pages`. Each file exports a React Component of type `NextPage<Record<string, never>>`, and they import from the various apps in `src/app` to build the complete page.

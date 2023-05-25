@@ -30,6 +30,7 @@
       "@product-compliance-center/*": ["src/app/product-compliance-center/*"],
       "@products-csv/*": ["src/app/products-csv/*"],
       "@promotions/*": ["src/app/promotions/*"],
+      "@seller-identity/*": ["src/app/seller-identity/*"],
       "@schema": ["src/app/schema"],
       "@deprecated/*": ["src/deprecated/*"],
       "@public/*": ["public/index", "public/*"]
