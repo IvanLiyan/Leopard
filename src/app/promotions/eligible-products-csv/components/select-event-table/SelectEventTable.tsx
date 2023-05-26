@@ -40,7 +40,7 @@ import Skeleton from "@core/components/Skeleton";
 import { Card, Text as AtlasText } from "@ContextLogic/atlas-ui";
 
 type Props = BaseProps & {
-  readonly eventTypes: ReadonlyArray<MfpCampaignPromotionType>;
+  readonly eventType: MfpCampaignPromotionType;
 };
 
 const now = new Date().getTime() / 1000;
@@ -51,7 +51,11 @@ const SelectEventTable = (props: Props) => {
   const dispatch = useDispatch();
   const currentEventId = state.eventId;
   const onSelectRow = (event: EventTableData) => {
-    dispatch({ type: "SET_EVENT_ID", eventId: event.eventId });
+    dispatch({
+      type: "SET_EVENT_ID",
+      eventId: event.eventId,
+      promotionType: props.eventType,
+    });
   };
 
   const {
@@ -71,9 +75,9 @@ const SelectEventTable = (props: Props) => {
           name,
         }))) || [];
   const eligibleCountries = countriesShippedTo.map((country) => country.code);
+  const eventTypes = [props.eventType];
   /* end logic to adapt to Leopard logic handling */
 
-  const { eventTypes } = props;
   const styles = useStylesheet();
 
   const [offset, setOffset] = useState(0);

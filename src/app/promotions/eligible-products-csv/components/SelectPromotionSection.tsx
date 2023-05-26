@@ -28,21 +28,21 @@ const SelectPromotionSection: React.FC = () => {
       `}</style>
       <div className="radio-container">
         <RadioCard
-          checked={state.promotionType === "PRICE_DISCOUNT"}
+          checked={state.selectedPromotion === "DISCOUNT"}
           text={ci18n("a type of promotion", "Discount")}
           onChange={() => {
             dispatch({ type: "SELECT_DISCOUNT" });
           }}
         />
         <RadioCard
-          checked={state.promotionType === "FLASH_SALE"}
+          checked={state.selectedPromotion === "FLASH_SALE"}
           text={ci18n("a type of promotion", "Flash Sale")}
           onChange={() => {
             dispatch({ type: "SELECT_FLASH_SALE" });
           }}
         />
         <RadioCard
-          checked={state.promotionType === "SPEND_MORE_AND_SAVE_MORE"}
+          checked={state.selectedPromotion === "EVENT"}
           text={ci18n("a type of promotion", "Event")}
           onChange={() => {
             dispatch({ type: "SELECT_EVENT" });

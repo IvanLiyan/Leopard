@@ -8,7 +8,7 @@ import SelectEventTable from "./select-event-table/SelectEventTable";
 const SelectEventSection: React.FC = () => {
   const state = usePageState();
 
-  return state.promotionType !== "SPEND_MORE_AND_SAVE_MORE" ? null : (
+  return state.selectedPromotion !== "EVENT" ? null : (
     <>
       <style jsx>{`
         div :global(table div) {
@@ -27,11 +27,11 @@ const SelectEventSection: React.FC = () => {
         <Heading variant="h5" sx={{ marginTop: "16px", marginBottom: "12px" }}>
           {ci18n("title for a table", "Sunday Wish")}
         </Heading>
-        <SelectEventTable eventTypes={["FLASH_SALE"]} />
+        <SelectEventTable eventType={"FLASH_SALE"} />
         <Heading variant="h5" sx={{ marginTop: "16px", marginBottom: "12px" }}>
           {ci18n("title for a table", "Seasonal Events")}
         </Heading>
-        <SelectEventTable eventTypes={["PRICE_DISCOUNT"]} />
+        <SelectEventTable eventType={"PRICE_DISCOUNT"} />
       </div>
     </>
   );

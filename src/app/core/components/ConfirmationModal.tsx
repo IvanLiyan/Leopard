@@ -21,6 +21,7 @@ export type ConfirmationModalProps = BaseProps &
     readonly text?: string;
     readonly illustration?: IllustrationName | undefined | null;
     readonly renderContent?: () => React.ReactNode;
+    readonly modalProps?: Omit<ModalProps, "open" | "onClose">;
   };
 
 export type FooterStyles = {
@@ -39,6 +40,8 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
   action,
   cancel,
   layout: footerLayout,
+  modalProps,
+  children,
 }) => {
   const styles = useStylesheet();
 
@@ -58,7 +61,7 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
   };
 
   return (
-    <Modal open={open} onClose={onClose}>
+    <Modal open={open} onClose={onClose} {...modalProps}>
       {title !== undefined && (
         <ModalTitle
           title={title}
@@ -78,6 +81,7 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
           />
         )}
         {renderContent()}
+        {children}
       </div>
       {(action != null || cancel != null) && (
         <ModalFooter action={action} cancel={cancel} layout={footerLayout} />

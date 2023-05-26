@@ -12,6 +12,7 @@ export const CREATE_JOB_MUTATION = gql`
       createProductsDownloadJob(input: $input) {
         ok
         message
+        jobId
       }
     }
   }
@@ -21,7 +22,7 @@ export type CreateJobMutationResponse = {
   readonly mfp?: {
     createProductsDownloadJob: Pick<
       CreateProductsDownloadJobMutation,
-      "ok" | "message"
+      "ok" | "message" | "jobId"
     >;
   };
 };

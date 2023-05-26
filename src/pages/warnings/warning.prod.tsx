@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { NextPage } from "next";
 import { observer } from "mobx-react";
 import PageRoot from "@core/components/PageRoot";
@@ -21,6 +21,8 @@ import { Text } from "@ContextLogic/atlas-ui";
 import { useUserStore } from "@core/stores/UserStore";
 import Skeleton from "@core/components/Skeleton";
 import ErrorBoundary from "@core/components/ErrorBoundary";
+import { useRouter } from "@core/toolkit/router";
+import { merchFeUrl } from "@core/toolkit/router";
 
 const PageLayout = ({
   columns,
@@ -48,6 +50,13 @@ const PageLayout = ({
 const InfractionDetailsPage: NextPage<Record<string, never>> = () => {
   const [infractionId] = useStringQueryParam("id");
   const { merchantId } = useUserStore();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (merchantId == null) {
+      void router.push(merchFeUrl(`/warning/view/${infractionId}`));
+    }
+  });
 
   const { InfractionProvider, loading, error } = useInfractionProvider({
     infractionId,
