@@ -90,7 +90,10 @@ const BankDocumentsPage: NextPage<Record<string, never>> = () => {
                     if (attachments.length == 0) {
                       return;
                     }
-                    setAttachment(attachments[0]);
+                    setAttachment({
+                      fileName: attachments[0].fileName,
+                      url: attachments[0].url,
+                    });
                   }}
                   data-cy="bank-document-file-input"
                   maxAttachments={1}
