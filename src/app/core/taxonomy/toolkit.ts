@@ -16,12 +16,17 @@ import {
 import { gql } from "@apollo/client";
 import { Constants } from "@add-edit-product/constants";
 
+export type CategoryId = number;
+
 export type CategoryTreeNode = {
-  readonly childrenIds: ReadonlyArray<number>;
-  readonly parentId?: number;
-  readonly id: number;
+  readonly childrenIds: ReadonlyArray<CategoryId>;
+  readonly parentId?: CategoryId;
+  readonly id: CategoryId;
   readonly name: string;
   readonly path: string;
+  readonly highlighted: boolean;
+  readonly checked: boolean;
+  readonly disabled: boolean;
 };
 
 // csv TODO: need to update to BE type
@@ -42,11 +47,11 @@ export const buildMapFromTree = ({
   currentPath,
   currentMap,
 }: {
-  parentId: number | undefined;
+  parentId: CategoryId | undefined;
   currentNode: Tree;
   currentPath: string;
-  currentMap: Map<number, CategoryTreeNode>;
-}): Map<number, CategoryTreeNode> => {
+  currentMap: Map<CategoryId, CategoryTreeNode>;
+}): Map<CategoryId, CategoryTreeNode> => {
   if (currentNode.children.length === 0) {
     return currentMap.set(currentNode.nodeId, {
       name: currentNode.nodeName,
@@ -54,6 +59,9 @@ export const buildMapFromTree = ({
       path: currentPath,
       parentId: parentId,
       childrenIds: [],
+      highlighted: false,
+      checked: false,
+      disabled: false,
     });
   }
 
@@ -63,6 +71,9 @@ export const buildMapFromTree = ({
     path: currentPath,
     parentId: parentId,
     childrenIds: currentNode.children.map((child) => child.nodeId),
+    highlighted: false,
+    checked: false,
+    disabled: false,
   });
 
   for (let i = 0; i < currentNode.children.length; i++) {

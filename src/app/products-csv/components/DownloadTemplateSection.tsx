@@ -12,6 +12,7 @@ import {
   CategoryTreeNode,
   parseJsonTree,
   buildMapFromTree,
+  CategoryId,
 } from "@core/taxonomy/toolkit";
 import TaxonomyCategorySelectSection from "@core/taxonomy/v2/TaxonomyCategorySelectSection";
 import { jsonTree } from "../mock-tree-json"; // csv TODO: remove mock
@@ -23,12 +24,12 @@ const DownloadTemplateSection: React.FC = () => {
   // csv TODO use selectedCategories in download api
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [selectedCategories, setSelectedCategories] = useState<
-    ReadonlyArray<number>
+    ReadonlyArray<CategoryId>
   >([]);
   const { textWhite, primary, textDark } = useTheme();
-  const [categoryMap, setCategoryMap] = useState<Map<number, CategoryTreeNode>>(
-    new Map(),
-  );
+  const [categoryMap, setCategoryMap] = useState<
+    Map<CategoryId, CategoryTreeNode>
+  >(new Map());
   const [isLoadingTree, setIsLoadingTree] = useState<boolean>(false);
   const maxCategory = 5;
 
@@ -55,7 +56,7 @@ const DownloadTemplateSection: React.FC = () => {
 
     return (
       <TaxonomyCategorySelectSection
-        categoryTreeMap={categoryMap}
+        initialCategoryTreeMap={categoryMap}
         onSelectionsChange={setSelectedCategories}
         maxSelection={maxCategory}
         showHeader

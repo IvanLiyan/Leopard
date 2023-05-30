@@ -2,7 +2,6 @@ import React, { CSSProperties, useMemo, useRef, useState } from "react";
 import Fuse from "fuse.js";
 import { OnTextChangeEvent, TextInput } from "@ContextLogic/lego";
 import { useTheme } from "@core/stores/ThemeStore";
-import { CategoryTreeNode } from "@core/taxonomy/toolkit";
 import { observer } from "mobx-react";
 import { useDebouncer } from "@ContextLogic/lego/toolkit/hooks";
 import {
@@ -12,27 +11,29 @@ import {
 import { Text } from "@ContextLogic/atlas-ui";
 import Popper from "@mui/material/Popper";
 import ClickAwayListener from "@mui/material/ClickAwayListener";
+import { TaxonomyAction, TaxonomyState } from "@core/taxonomy/v2/reducer";
+import { CategoryId } from "@core/taxonomy/toolkit";
 
 export type DropdownOption = {
-  readonly id: number;
+  readonly id: CategoryId;
   readonly name: string;
   readonly path: string;
 };
 
 type Props = {
   readonly style?: CSSProperties;
-  readonly onSelect?: (category: number | undefined) => unknown;
   readonly disabled?: boolean;
   readonly placeholder?: string;
-  readonly categoryTreeMap: Map<number, CategoryTreeNode>; // key: category id; value: category data including parent and children
+  readonly state: TaxonomyState;
+  readonly dispatch: React.Dispatch<TaxonomyAction>;
 };
 
 const TaxonomyCategorySearchBarV2: React.FC<Props> = ({
   style,
-  onSelect,
-  categoryTreeMap,
   disabled,
   placeholder,
+  dispatch,
+  state,
 }) => {
   const { surface, surfaceLightest, textBlack, textDark, corePrimaryLightest } =
     useTheme();
@@ -48,7 +49,7 @@ const TaxonomyCategorySearchBarV2: React.FC<Props> = ({
 
   const dropdownOptions: ReadonlyArray<DropdownOption> = useMemo(() => {
     let options: ReadonlyArray<DropdownOption> = [];
-    const categoryNodes = [...categoryTreeMap.values()];
+    const categoryNodes = [...state.categoryTreeMap.values()];
 
     categoryNodes.forEach((node) => {
       options = [
@@ -62,7 +63,7 @@ const TaxonomyCategorySearchBarV2: React.FC<Props> = ({
     });
 
     return options;
-  }, [categoryTreeMap]);
+  }, [state.categoryTreeMap]);
 
   const fuse = useFuse(dropdownOptions);
   const searchResult = useMemo(() => {
@@ -79,7 +80,7 @@ const TaxonomyCategorySearchBarV2: React.FC<Props> = ({
 
   const onSelectOption = (option: DropdownOption) => {
     setSelectedOption(option);
-    onSelect && onSelect(option?.id);
+    dispatch({ type: "HIGHLIGHT_NODE", id: option.id });
     setShowDropdown(false);
   };
 

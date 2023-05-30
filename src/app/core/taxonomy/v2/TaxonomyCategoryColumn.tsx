@@ -2,32 +2,25 @@ import React from "react";
 import { Checkbox } from "@mui/material";
 import { useTheme } from "@core/stores/ThemeStore";
 import { observer } from "mobx-react";
-import { CategoryTreeNode } from "../toolkit";
 import { Text } from "@ContextLogic/atlas-ui";
 import Icon from "@core/components/Icon";
+import { TaxonomyAction, TaxonomyState } from "@core/taxonomy/v2/reducer";
+import { CategoryId } from "@core/taxonomy/toolkit";
 
 type Props = {
-  readonly index: number;
-  readonly categoryTreeMap: Map<number, CategoryTreeNode>; // key: category id; value: category data including parent and children
-  readonly columnItems: ReadonlyArray<number>;
-  readonly highlightedNodes?: ReadonlyArray<number>;
-  readonly selectedNodes?: ReadonlyArray<number>;
-  readonly disableAll?: boolean; // when parent is selected or max selection is reached
-  readonly selectAll?: boolean; // when parent node is selected
-  readonly onSelectionChange?: (id: number, selected: boolean) => void;
-  readonly onClick?: (id: number) => void;
+  readonly level: number;
+  readonly columnItems: ReadonlyArray<CategoryId>;
+  readonly dispatch: React.Dispatch<TaxonomyAction>;
+  readonly state: TaxonomyState;
+  readonly disableAll: boolean;
 };
 
 const TaxonomyCategoryColumnItem: React.FC<Props> = ({
-  index,
-  categoryTreeMap,
+  level,
   columnItems,
-  highlightedNodes,
-  selectedNodes,
-  selectAll,
+  state,
+  dispatch,
   disableAll,
-  onSelectionChange,
-  onClick,
 }: Props) => {
   const {
     textDark,
@@ -77,12 +70,7 @@ const TaxonomyCategoryColumnItem: React.FC<Props> = ({
         }
       `}</style>
       {columnItems.map((id) => {
-        const treeItem = categoryTreeMap.get(id);
-        const highlight = highlightedNodes?.some(
-          (highlightId) => highlightId === id,
-        );
-        const selected =
-          selectedNodes?.some((selectedId) => selectedId === id) ?? false;
+        const treeItem = state.categoryTreeMap.get(id);
 
         return (
           treeItem && (
@@ -90,27 +78,33 @@ const TaxonomyCategoryColumnItem: React.FC<Props> = ({
               key={id}
               className="category-column-node"
               style={{
-                backgroundColor: highlight ? surfaceLight : undefined,
+                backgroundColor: treeItem.highlighted
+                  ? surfaceLight
+                  : undefined,
               }}
-              data-cy={`column-${index + 1}-item-${id}`}
+              data-cy={`column-${level}-item-${id}`}
               onClick={() => {
-                onClick && onClick(id);
+                dispatch({ type: "HIGHLIGHT_NODE", id });
               }}
             >
               <div className="category-column-node-content">
                 <Checkbox
-                  checked={selected || selectAll}
+                  checked={treeItem.checked}
                   onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                    onSelectionChange &&
-                      onSelectionChange(id, event.target.checked);
+                    dispatch({
+                      type: event.target.checked
+                        ? "CHECK_NODE"
+                        : "UNCHECK_NODE",
+                      id,
+                    });
                   }}
-                  disabled={disableAll}
+                  disabled={disableAll || treeItem.disabled}
                   size="medium"
                   style={{ marginRight: "20px" }}
                 />
                 <Text
                   variant="bodyM"
-                  sx={{ color: highlight ? textBlack : textDark }}
+                  sx={{ color: treeItem.highlighted ? textBlack : textDark }}
                 >
                   {`${treeItem.name} (${treeItem.id})`}
                 </Text>
