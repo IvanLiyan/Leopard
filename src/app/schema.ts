@@ -1216,7 +1216,6 @@ export type BrandPartnerCountryAndRegionCode =
   | "HU"
   | "MK"
   | "BR"
-  | "JE"
   | "FI"
   | "DK"
   | "PR"
@@ -2128,6 +2127,10 @@ export type ClientWritableBucket =
   | "TEMP_UPLOADS_V2"
   | "PUBLIC_APP_LOGO"
   | "TAX_SETTING_FILE_UPLOADS";
+
+export type CloseInfractionInput = {
+  readonly warningIds?: Maybe<ReadonlyArray<Scalars["ObjectIdType"]>>;
+};
 
 export type ColumnCategoryId =
   | "LOGISTICS"
@@ -3388,6 +3391,7 @@ export type DedupImageSchema = {
   readonly counterfeitSubcategory?: Maybe<TaggingViolationSubReasonCode>;
   readonly brand?: Maybe<BrandSchema>;
   readonly sampleImageUrl?: Maybe<Scalars["String"]>;
+  readonly createdTime: Datetime;
   readonly updateTime: Datetime;
   readonly source?: Maybe<DedupSource>;
 };
@@ -3404,7 +3408,11 @@ export type DedupImageSortFieldType =
 
 export type DedupImageType = "IP_VIOLATION" | "INAPPROPRIATE";
 
-export type DedupSource = "MANUALLY_ADDED" | "AUDIT_FEEDBACK";
+export type DedupSource =
+  | "TAKEDOWN_REQUEST"
+  | "MANUAL_TAG"
+  | "MANUALLY_ADDED"
+  | "AUDIT_FEEDBACK";
 
 export type DefaultShippingInput = {
   readonly warehouseId: Scalars["ObjectIdType"];
@@ -3913,6 +3921,43 @@ export type EprMutationsAcceptTosArgs = {
   input: AcceptTosInput;
 };
 
+export type EprNonCompliantSummaryRecordSchema = {
+  readonly __typename?: "EPRNonCompliantSummaryRecordSchema";
+  readonly country: Country;
+  readonly eprCategoryName: Scalars["String"];
+  readonly nonCompliantProductCount: Scalars["Int"];
+};
+
+export type EprNonCompliantSummarySchema = {
+  readonly __typename?: "EPRNonCompliantSummarySchema";
+  readonly summaryRecords: ReadonlyArray<EprNonCompliantSummaryRecordSchema>;
+  readonly productRecordTotal: Scalars["Int"];
+  readonly productRecords: ReadonlyArray<EprProductRecordSchema>;
+};
+
+export type EprNonCompliantSummarySchemaProductRecordTotalArgs = {
+  countryCode: CountryCode;
+  eprCategories?: Maybe<ReadonlyArray<Scalars["Int"]>>;
+  productId?: Maybe<Scalars["String"]>;
+};
+
+export type EprNonCompliantSummarySchemaProductRecordsArgs = {
+  countryCode: CountryCode;
+  eprCategories?: Maybe<ReadonlyArray<Scalars["Int"]>>;
+  productId?: Maybe<Scalars["String"]>;
+  offset?: Maybe<Scalars["Int"]>;
+  limit?: Maybe<Scalars["Int"]>;
+  sortDesc?: Maybe<Scalars["Boolean"]>;
+};
+
+export type EprProductRecordSchema = {
+  readonly __typename?: "EPRProductRecordSchema";
+  readonly productId: Scalars["ObjectIdType"];
+  readonly country: Country;
+  readonly taxonomyCategoryNames: ReadonlyArray<Scalars["String"]>;
+  readonly eprCategoryNames: ReadonlyArray<Scalars["String"]>;
+};
+
 export type EprStatus =
   | "DELETED"
   | "ADMIN_APPROVED"
@@ -4149,6 +4194,7 @@ export type ExtendedProducerResponsibilitySchema = {
   readonly __typename?: "ExtendedProducerResponsibilitySchema";
   readonly country: CountryEprSchema;
   readonly countries: ReadonlyArray<CountryEprSchema>;
+  readonly eprNonCompliantSummary: EprNonCompliantSummarySchema;
 };
 
 export type ExtendedProducerResponsibilitySchemaCountryArgs = {
@@ -6646,9 +6692,15 @@ export type MerchantIdentityMutations = {
 
 export type MerchantIdentityServiceSchema = {
   readonly __typename?: "MerchantIdentityServiceSchema";
+  readonly bankAccountVerificationsCount?: Maybe<Scalars["Int"]>;
   readonly bankAccountVerifications?: Maybe<
     ReadonlyArray<BankAccountVerificationSchema>
   >;
+};
+
+export type MerchantIdentityServiceSchemaBankAccountVerificationsCountArgs = {
+  merchantId?: Maybe<Scalars["ObjectIdType"]>;
+  state?: Maybe<BankAccountVerificationStatus>;
 };
 
 export type MerchantIdentityServiceSchemaBankAccountVerificationsArgs = {
@@ -7886,13 +7938,14 @@ export type MerchantWarehouseWeekStatsSortFieldType = "START_DATE";
 
 export type MerchantWarningAction =
   | "CLAIM"
-  | "LISTING_LEVEL_DISPUTE"
-  | "UNCLAIM"
   | "CONFIRM"
+  | "UNCLAIM"
+  | "LISTING_LEVEL_DISPUTE"
   | "MERCHANT_LEVEL_DISPUTE"
   | "REQUEST_PAYMENT_RELEASE"
+  | "REPLY"
   | "CANCEL"
-  | "REPLY";
+  | "CLOSE";
 
 export type MerchantWarningAuditAction =
   | "CLAIM"
@@ -8581,6 +8634,7 @@ export type MfpVariationDiscountData = {
   readonly variation: VariationSchema;
   readonly maxQuantity?: Maybe<Scalars["Int"]>;
   readonly discountPercentage: Scalars["Float"];
+  readonly discountAmount?: Maybe<CurrencyValue>;
   readonly scheduledStartTime?: Maybe<Datetime>;
   readonly scheduledEndTime?: Maybe<Datetime>;
 };
@@ -8604,7 +8658,11 @@ export type MfpVariationUnqualifiedReason =
   | "FRS_LOW_DISCOUNT"
   | "FRS_HIGH_DISCOUNT"
   | "FRS_DISCOUNT_PRICE"
-  | "FRS_NEGATIVE_PRICE";
+  | "FRS_NEGATIVE_PRICE"
+  | "DISCOUNT_PRICE_HISTORY"
+  | "FLASH_SALE_MINIMUM_VARIATION_INVENTORY"
+  | "COMPETING_PROMOTION"
+  | "PROMOTION_HISTORY";
 
 export type MfpWhitelistProductSortBy = "START_TIME" | "END_TIME";
 
@@ -10595,6 +10653,7 @@ export type ProductCatalogSchema = {
   readonly csvProductImportJobsCount: Scalars["Int"];
   readonly csvProductColumnNames: ReadonlyArray<Scalars["String"]>;
   readonly csvProductColumnEnums: ReadonlyArray<ProductCsvColumnName>;
+  readonly csvAllHeaderNames: ReadonlyArray<Scalars["String"]>;
   readonly csvShippingHeaderNames: ReadonlyArray<Scalars["String"]>;
   readonly csvPriceInventoryHeaderNames: ReadonlyArray<Scalars["String"]>;
   readonly csvTitleImagesDescriptionHeaderNames: ReadonlyArray<
@@ -11057,7 +11116,6 @@ export type ProductCsvColumnName =
   | "IL"
   | "IS"
   | "IT"
-  | "JE"
   | "JP"
   | "KR"
   | "LI"
@@ -11118,7 +11176,6 @@ export type ProductCsvColumnName =
   | "IL_TTD"
   | "IS_TTD"
   | "IT_TTD"
-  | "JE_TTD"
   | "JP_TTD"
   | "KR_TTD"
   | "LI_TTD"
@@ -11189,11 +11246,10 @@ export type ProductCsvJobType =
   | "CREATE_PRESALE_PRODUCT"
   | "NEW_UPDATE_PRODUCTS"
   | "EDIT_WISH_EXPRESS_COUNTRIES"
-  | "NEW_EDIT_SHIPPING"
+  | "SHOPIFY_CREATE_PRODUCTS"
   | "UPSERT_PRODUCTS"
   | "NEW_ADD_VARIATION"
   | "EDIT_FBW_SHIPPING"
-  | "SHOPIFY_CREATE_PRODUCTS"
   | "EDIT_SHIPPING"
   | "ADD_SIZE_COLOR"
   | "UPDATE_PRODUCTS";
@@ -12998,6 +13054,7 @@ export type RoleType =
   | "CONTRACTOR"
   | "STORE_USER"
   | "CS_REP_EXTERNAL"
+  | "SYSTEM_ACCOUNT"
   | "TASKUS_DETAIL_LEAD"
   | "WAREHOUSE_OPERATOR"
   | "BD_LEAD"
@@ -13613,7 +13670,6 @@ export type ShippableCountryCode =
   | "DE"
   | "HU"
   | "US"
-  | "JE"
   | "AD"
   | "PR"
   | "PT"
@@ -15792,8 +15848,9 @@ export type UpsertMerchantWarningInput = {
   readonly messageInput?: Maybe<ReplyInfractionInput>;
   readonly disputeInput?: Maybe<DisputeInfractionInput>;
   readonly requestPaymentInput?: Maybe<RequestPaymentInput>;
-  readonly cancelWarningInput?: Maybe<CancelInfractionInput>;
-  readonly claimWarningInput?: Maybe<ClaimInfractionInput>;
+  readonly cancelInput?: Maybe<CancelInfractionInput>;
+  readonly claimInput?: Maybe<ClaimInfractionInput>;
+  readonly closeInput?: Maybe<CloseInfractionInput>;
 };
 
 export type UpsertOrderInfractionDispute = {
