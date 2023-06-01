@@ -5,7 +5,7 @@ import PageRoot from "@core/components/PageRoot";
 import PageGuide from "@core/components/PageGuide";
 import PageHeader from "@core/components/PageHeader";
 import Skeleton from "@core/components/Skeleton";
-import { Text } from "@ContextLogic/atlas-ui";
+import { Button, Text } from "@ContextLogic/atlas-ui";
 import {
   PCC_QUERY,
   PccQueryResponse,
@@ -15,6 +15,8 @@ import EprCard from "@product-compliance-center/components/home-page/EprCard";
 import Image from "@core/components/Image";
 import { ci18n } from "@core/toolkit/i18n";
 import { useQuery } from "@apollo/client";
+import ActionCard from "@core/components/ActionCard";
+import Link from "next/link";
 
 const PageLayout = ({ cards }: { cards: ReadonlyArray<React.ReactNode> }) => {
   return (
@@ -97,6 +99,20 @@ const ProductComplianceCenterPage: NextPage<Record<string, never>> = () => {
             />
           ),
         ),
+        <ActionCard
+          key={-2}
+          title={i`Discounted EPR Services`}
+          ctaButtons={
+            <Link href={"http://www.avaskgroup.com/wish"} passHref>
+              <Button secondary>Enter</Button>
+            </Link>
+          }
+        >
+          <Text component="div">
+            Avask offers EPR registration services, including a 50% off discount
+            on obtaining EPR registration numbers
+          </Text>
+        </ActionCard>,
       ]}
     />
   );

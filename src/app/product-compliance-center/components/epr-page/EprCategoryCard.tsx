@@ -39,6 +39,7 @@ const EprCategoryCard: React.FC<Props> = ({
   responsibleEntityName,
   status,
   country,
+  inScopePidCount,
 }) => {
   const { surfaceLighter } = useTheme();
   const [addModalOpen, setAddModalOpen] = useState(false);
@@ -115,11 +116,10 @@ const EprCategoryCard: React.FC<Props> = ({
       >
         {styles}
         <Divider />
-        {/* Temporarily commenting out PID count until June 1, 2023. Number from BE is incorrect and will be fixed with the scheduled deploy then. */}
-        {/* <Text component="div" variant="bodyMStrong" sx={{ marginTop: "16px" }}>
+        <Text component="div" variant="bodyMStrong" sx={{ marginTop: "16px" }}>
           Number of In-Scope Products
         </Text>
-        <Text component="div">{inScopePidCount}</Text> */}
+        <Text component="div">{inScopePidCount}</Text>
         <Text component="div" variant="bodyMStrong" sx={{ marginTop: "16px" }}>
           EPR Registration Number
         </Text>
