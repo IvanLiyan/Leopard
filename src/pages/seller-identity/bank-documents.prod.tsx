@@ -23,7 +23,7 @@ const BankDocumentsPage: NextPage<Record<string, never>> = () => {
   const toastStore = useToastStore();
 
   const router = useRouter();
-  const sellerIdentityPageLink = "/settings#seller-profile";
+  const homepage = "/home";
 
   const [upload] = useMutation<
     UploadBankDocumentsResponse,
@@ -51,7 +51,7 @@ const BankDocumentsPage: NextPage<Record<string, never>> = () => {
     }
 
     toastStore.positive(i`Your document has been uploaded`);
-    void router.push(sellerIdentityPageLink);
+    void router.push(homepage);
   };
 
   return (
@@ -88,6 +88,7 @@ const BankDocumentsPage: NextPage<Record<string, never>> = () => {
                   maxSizeMB={5}
                   onAttachmentsChanged={(attachments) => {
                     if (attachments.length == 0) {
+                      setAttachment(null);
                       return;
                     }
                     setAttachment({
@@ -114,7 +115,7 @@ const BankDocumentsPage: NextPage<Record<string, never>> = () => {
                 >
                   Submit
                 </Button>
-                <Button secondary href={sellerIdentityPageLink}>
+                <Button secondary href={homepage}>
                   Back
                 </Button>
               </Stack>
