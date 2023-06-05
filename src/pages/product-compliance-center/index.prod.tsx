@@ -88,16 +88,18 @@ const ProductComplianceCenterPage: NextPage<Record<string, never>> = () => {
           }
         />,
         data.policy.productCompliance.extendedProducerResponsibility.countries.map(
-          (config, i) => (
-            <EprCard
-              key={i}
-              countryName={config.country.name}
-              countryCode={config.country.code}
-              categoriesWithEpr={config.categoriesWithEpr}
-              categoriesWithoutEpr={config.categoriesWithoutEpr}
-              hasAcceptedTos={config.hasAcceptedTos}
-            />
-          ),
+          (config, i) =>
+            config.country.code === "SE" ||
+            config.country.code === "AT" ? null : (
+              <EprCard
+                key={i}
+                countryName={config.country.name}
+                countryCode={config.country.code}
+                categoriesWithEpr={config.categoriesWithEpr}
+                categoriesWithoutEpr={config.categoriesWithoutEpr}
+                hasAcceptedTos={config.hasAcceptedTos}
+              />
+            ),
         ),
         <ActionCard
           key={-2}
