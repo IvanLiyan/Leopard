@@ -13,7 +13,13 @@ const MerchantDashboard = ({
   pageProps,
   router,
 }: AppProps): JSX.Element => {
-  const independentSubpaths = ["/dev-login", "/hello-world", "/go", "/data"];
+  const independentSubpaths = [
+    "/dev-login",
+    "/hello-world",
+    "/go",
+    "/data",
+    "/summit",
+  ];
   const foundIndependentSubpath = independentSubpaths.some((element) =>
     router.pathname.includes(element),
   );
