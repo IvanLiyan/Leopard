@@ -14,9 +14,8 @@ import {
   TaxonomySchemaLeafCategoriesArgs,
   TaxonomySchemaVariationOptionsArgs,
 } from "@schema";
-import { gql } from "@apollo/client";
+import { gql, useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
-import { jsonTree } from "@products-csv/mock-tree-json"; // csv TODO: remove mock
 import { Constants } from "./constants";
 import { TaxonomySchema } from "@schema";
 
@@ -34,10 +33,10 @@ export type CategoryTreeNode = {
   readonly isLeaf: boolean;
 };
 
-// csv TODO: need to update to BE type
+// BE type for category tree, BE will return the tree in json string
 export type Tree = {
-  nodeId: number;
-  nodeName: string;
+  id: number;
+  name: string;
   children: ReadonlyArray<Tree>;
 };
 
@@ -58,9 +57,9 @@ export const buildMapFromTree = ({
   currentMap: Map<CategoryId, CategoryTreeNode>;
 }): Map<CategoryId, CategoryTreeNode> => {
   if (currentNode.children.length === 0) {
-    return currentMap.set(currentNode.nodeId, {
-      name: currentNode.nodeName,
-      id: currentNode.nodeId,
+    return currentMap.set(currentNode.id, {
+      name: currentNode.name,
+      id: currentNode.id,
       path: currentPath,
       parentId: parentId,
       childrenIds: [],
@@ -71,12 +70,12 @@ export const buildMapFromTree = ({
     });
   }
 
-  const newMap = currentMap.set(currentNode.nodeId, {
-    name: currentNode.nodeName,
-    id: currentNode.nodeId,
+  const newMap = currentMap.set(currentNode.id, {
+    name: currentNode.name,
+    id: currentNode.id,
     path: currentPath,
     parentId: parentId,
-    childrenIds: currentNode.children.map((child) => child.nodeId),
+    childrenIds: currentNode.children.map((child) => child.id),
     highlighted: false,
     checked: false,
     disabled: false,
@@ -87,12 +86,12 @@ export const buildMapFromTree = ({
     const currentChild = currentNode.children[i];
 
     buildMapFromTree({
-      parentId: currentNode.nodeId,
+      parentId: currentNode.id,
       currentNode: currentChild,
       currentPath:
         currentPath.trim().length > 0
-          ? `${currentPath} > ${currentNode.nodeName}`
-          : currentNode.nodeName,
+          ? `${currentPath} > ${currentNode.name}`
+          : currentNode.name,
       currentMap: currentMap,
     });
   }
@@ -338,6 +337,21 @@ export type CategoryAttributesCsvResponseType = {
 export type CategoryAttributesCsvRequestType =
   TaxonomySchemaCategoryAttributesCsvArgs;
 
+export const CATEGORY_TREE_JSON_QUERY = gql`
+  query CategoryTreeJsonQuery {
+    productCatalog {
+      productCategoryTaxonomyTreeJson
+    }
+  }
+`;
+
+export type CategoryTreeJsonResponseType = {
+  readonly productCatalog?: Pick<
+    ProductCatalogSchema,
+    "productCategoryTaxonomyTreeJson"
+  > | null;
+};
+
 // =============================
 // Variation Grouping
 // =============================
@@ -382,27 +396,32 @@ export const GET_TAXONOMY_VARIATION_OPTIONS_QUERY = gql`
 `;
 
 export const useCategoryTreeMap = () => {
-  const [loading, setLoading] = useState<boolean>(false);
+  const [isLoadingMap, setIsLoadingMap] = useState<boolean>(false);
   const [categoryMap, setCategoryMap] = useState<
     Map<CategoryId, CategoryTreeNode>
   >(new Map());
 
+  const { data, loading: isLoadingTree } =
+    useQuery<CategoryTreeJsonResponseType>(CATEGORY_TREE_JSON_QUERY);
+  const jsonTree = data?.productCatalog?.productCategoryTaxonomyTreeJson;
+
   useEffect(() => {
-    setLoading(true);
-    const tree = parseJsonTree(jsonTree);
-    const currentMap = new Map(categoryMap);
-    const newMap = buildMapFromTree({
-      parentId: undefined,
-      currentNode: tree,
-      currentPath: "",
-      currentMap: currentMap,
-    });
-    setLoading(false);
-    setCategoryMap(newMap);
-    // csv TODO: update mock
+    if (jsonTree != null) {
+      setIsLoadingMap(true);
+      const tree = parseJsonTree(jsonTree);
+      const currentMap = new Map(categoryMap);
+      const newMap = buildMapFromTree({
+        parentId: undefined,
+        currentNode: tree,
+        currentPath: "",
+        currentMap: currentMap,
+      });
+      setIsLoadingMap(false);
+      setCategoryMap(newMap);
+    }
     // map only depends on tree data, categoryMap is not a dependency
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [jsonTree]);
 
-  return { categoryMap, loading };
+  return { categoryMap, loading: isLoadingTree || isLoadingMap };
 };

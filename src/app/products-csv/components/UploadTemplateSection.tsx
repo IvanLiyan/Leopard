@@ -10,9 +10,18 @@ import {
   UploadTemplateType,
   UPLOAD_TEMPLATE_NAMES,
 } from "@products-csv/toolkit";
+import { useMutation } from "@apollo/client";
+import {
+  UPSERT_PRODUCT_CSV_MUTATION,
+  UpsertProductCsvRequestType,
+  UpsertProductCsvResponseType,
+} from "@products-csv/queries";
+import { useToastStore } from "@core/stores/ToastStore";
+import { merchFeUrl } from "@core/toolkit/router";
 
 const UploadTemplateSection: React.FC = () => {
   const { textDark, textWhite } = useTheme();
+  const toastStore = useToastStore();
   const [uploadType, setUploadType] = useState<
     UploadTemplateType | undefined
   >();
@@ -26,6 +35,48 @@ const UploadTemplateSection: React.FC = () => {
       text,
     }),
   );
+
+  const [upsertProductCsv, { loading }] = useMutation<
+    UpsertProductCsvResponseType,
+    UpsertProductCsvRequestType
+  >(UPSERT_PRODUCT_CSV_MUTATION);
+
+  const onUpload = async () => {
+    try {
+      if (attachments.length === 0 || uploadType == null) {
+        return;
+      }
+
+      const resp = await upsertProductCsv({
+        variables: {
+          input: {
+            fileUrl: attachments[0].url,
+            feedType: uploadType,
+            columnIdList: [],
+          },
+        },
+      });
+
+      const jobId = resp.data?.productCatalog.upsertProductCsvFile?.jobId;
+      const message = resp.data?.productCatalog.upsertProductCsvFile?.message;
+      const ok = resp.data?.productCatalog.upsertProductCsvFile?.ok;
+      if (jobId == null || !ok) {
+        toastStore.negative(message ?? i`Something went wrong`);
+        return;
+      }
+
+      toastStore.positive(
+        i`Success! You will receive an email when your update is ready for review. ` +
+          i`[Return to Product Listing Feed Status](${merchFeUrl(
+            "/products/csv-history",
+          )})`,
+      );
+      setAttachments([]);
+      setUploadType(undefined);
+    } catch {
+      toastStore.negative(i`Something went wrong`);
+    }
+  };
 
   return (
     <div className="upload-template-root">
@@ -70,10 +121,11 @@ const UploadTemplateSection: React.FC = () => {
       />
       <Button
         primary
-        disabled={!uploadType || attachments.length === 0}
+        disabled={!uploadType || attachments.length === 0 || loading}
         sx={{
           marginTop: "24px",
         }}
+        onClick={() => void onUpload()}
         startIcon={<Icon name="uploadCloud" color={textWhite} />}
       >
         {ci18n("Button text", "Upload file")}

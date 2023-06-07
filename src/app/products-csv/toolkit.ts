@@ -1,14 +1,15 @@
 import { ci18n } from "@core/toolkit/i18n";
+import { ProductCsvJobType } from "@schema";
 
-export type UploadTemplateType =
-  | "ADD_PRODUCT"
-  | "EDIT_EXISTING_PRODUCT"
-  | "ADD_VARIATIONS"; // TODO: replace with BE typpe
+export type UploadTemplateType = Extract<
+  ProductCsvJobType,
+  "NEW_ADD_PRODUCTS" | "NEW_UPDATE_PRODUCTS" | "NEW_ADD_VARIATION"
+>;
 
 export const UPLOAD_TEMPLATE_NAMES: Record<UploadTemplateType, string> = {
-  ADD_PRODUCT: i`CSV file for adding new products`,
-  EDIT_EXISTING_PRODUCT: i`CSV file for editing existing products`,
-  ADD_VARIATIONS: i`CSV file for adding new variations`,
+  NEW_ADD_PRODUCTS: i`CSV file for adding new products`,
+  NEW_UPDATE_PRODUCTS: i`CSV file for editing existing products`,
+  NEW_ADD_VARIATION: i`CSV file for adding new variations`,
 };
 
 export type UpdateActionType = "ADD" | "EDIT";
