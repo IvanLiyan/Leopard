@@ -1,3 +1,5 @@
+import { unparse } from "papaparse";
+
 export type CreateFileAndDownloadProps = {
   readonly filename: string;
   readonly content: string;
@@ -22,4 +24,13 @@ export const createFileAndDownload = ({
   element.click();
 
   document.body.removeChild(element);
+};
+
+export const getCsvStrFromArray = (
+  data: ReadonlyArray<ReadonlyArray<string>>,
+) => {
+  if (data.length > 0) {
+    return unparse(data.concat());
+  }
+  return undefined;
 };

@@ -10,6 +10,7 @@ type Props = {
   readonly hideToken?: boolean;
   readonly dispatch: React.Dispatch<TaxonomyAction>;
   readonly state: TaxonomyState;
+  readonly selectLeafOnly?: boolean;
 };
 
 const TaxonomyCategoryColumnViewV2: React.FC<Props> = ({
@@ -17,6 +18,7 @@ const TaxonomyCategoryColumnViewV2: React.FC<Props> = ({
   hideToken,
   state,
   dispatch,
+  selectLeafOnly,
 }: Props) => {
   const { borderPrimary } = useTheme();
 
@@ -82,9 +84,11 @@ const TaxonomyCategoryColumnViewV2: React.FC<Props> = ({
                 key={id}
                 level={i + 1}
                 columnItems={children}
-                disableAll={maxReached}
+                disableAll={maxSelection !== 1 && maxReached}
                 dispatch={dispatch}
                 state={state}
+                singleSelect={maxSelection === 1}
+                selectLeafOnly={selectLeafOnly}
               />
             )
           );

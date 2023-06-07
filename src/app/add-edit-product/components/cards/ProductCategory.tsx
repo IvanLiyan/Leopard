@@ -23,7 +23,7 @@ import TaxonomyCategoryColumnView from "@core/taxonomy/TaxonomyCategoryColumnVie
 import AddEditProductState from "@add-edit-product/AddEditProductState";
 import { useDeciderKey } from "@core/stores/ExperimentStore";
 import { useTheme } from "@core/stores/ThemeStore";
-import { Constants, useTreeVersion } from "@add-edit-product/constants";
+import { useTreeVersion, Constants } from "@core/taxonomy/constants";
 import {
   CategoryAttributesRequestData,
   CategoryAttributesResponseData,

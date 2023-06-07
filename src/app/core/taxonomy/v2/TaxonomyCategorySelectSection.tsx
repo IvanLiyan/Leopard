@@ -7,13 +7,15 @@ import TaxonomyCategorySearchBarV2 from "./TaxonomyCategorySearchBarV2";
 import TaxonomyCategoryColumnViewV2 from "./TaxonomyCategoryColumnViewV2";
 import { css } from "@core/toolkit/styling";
 import taxonomyReducer from "@core/taxonomy/v2/reducer";
-import { Constants } from "@add-edit-product/constants";
+import { Constants } from "@core/taxonomy/constants";
 
 type Props = BaseProps & {
   readonly onSelectionsChange?: (categories: ReadonlyArray<CategoryId>) => void;
   readonly maxSelection?: number;
-  readonly showHeader?: boolean;
+  readonly hideHeader?: boolean;
   readonly initialCategoryTreeMap: ReadonlyMap<CategoryId, CategoryTreeNode>;
+  readonly selectLeafOnly?: boolean;
+  readonly hideToken?: boolean;
 };
 
 const TaxonomyCategorySelectSection: React.FC<Props> = ({
@@ -21,14 +23,23 @@ const TaxonomyCategorySelectSection: React.FC<Props> = ({
   style,
   onSelectionsChange,
   maxSelection,
-  showHeader,
   initialCategoryTreeMap,
+  hideHeader = false,
+  selectLeafOnly = false,
+  hideToken = false,
 }: Props) => {
   const [state, dispatch] = useReducer(taxonomyReducer, {
     categoryTreeMap: initialCategoryTreeMap,
     highlightedPath: [Constants.TAXONOMY.rootCategoryId],
     selectedNodes: new Set<CategoryId>(),
   });
+
+  useEffect(() => {
+    dispatch({
+      type: "INITIAL_STATE_CHANGE",
+      categoryMap: initialCategoryTreeMap,
+    });
+  }, [initialCategoryTreeMap]);
 
   useEffect(() => {
     onSelectionsChange && onSelectionsChange(Array.from(state.selectedNodes));
@@ -48,9 +59,11 @@ const TaxonomyCategorySelectSection: React.FC<Props> = ({
           flex-direction: column;
         }
       `}</style>
-      {maxSelection != null && showHeader && (
+      {maxSelection != null && !hideHeader && (
         <Heading variant="h4" sx={{ marginBottom: "8px" }}>
-          {i`Select up to ${maxSelection} categories (${state.selectedNodes.size}/${maxSelection})`}
+          {maxSelection > 1
+            ? i`Select up to ${maxSelection} categories (${state.selectedNodes.size}/${maxSelection})`
+            : i`Select a category`}
         </Heading>
       )}
       <TaxonomyCategorySearchBarV2
@@ -62,6 +75,8 @@ const TaxonomyCategorySelectSection: React.FC<Props> = ({
         maxSelection={maxSelection}
         state={state}
         dispatch={dispatch}
+        selectLeafOnly={selectLeafOnly}
+        hideToken={hideToken}
       />
     </div>
   );

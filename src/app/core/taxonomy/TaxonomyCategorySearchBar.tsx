@@ -11,7 +11,7 @@ import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { ci18n } from "@core/toolkit/i18n";
 import { useTheme } from "@core/stores/ThemeStore";
 import { KEYCODE_ENTER } from "@core/toolkit/dom";
-import { Constants, useTreeVersion } from "@add-edit-product/constants";
+import { Constants, useTreeVersion } from "@core/taxonomy/constants";
 import {
   LeafCategoryRequestData,
   LeafCategoryResponseData,

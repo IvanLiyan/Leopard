@@ -10,11 +10,15 @@ import {
   TaxonomyCategorySchema,
   TaxonomySchemaAttributesArgs,
   TaxonomySchemaCategoryArgs,
+  TaxonomySchemaCategoryAttributesCsvArgs,
   TaxonomySchemaLeafCategoriesArgs,
   TaxonomySchemaVariationOptionsArgs,
 } from "@schema";
 import { gql } from "@apollo/client";
-import { Constants } from "@add-edit-product/constants";
+import { useEffect, useState } from "react";
+import { jsonTree } from "@products-csv/mock-tree-json"; // csv TODO: remove mock
+import { Constants } from "./constants";
+import { TaxonomySchema } from "@schema";
 
 export type CategoryId = number;
 
@@ -27,6 +31,7 @@ export type CategoryTreeNode = {
   readonly highlighted: boolean;
   readonly checked: boolean;
   readonly disabled: boolean;
+  readonly isLeaf: boolean;
 };
 
 // csv TODO: need to update to BE type
@@ -62,6 +67,7 @@ export const buildMapFromTree = ({
       highlighted: false,
       checked: false,
       disabled: false,
+      isLeaf: true,
     });
   }
 
@@ -74,6 +80,7 @@ export const buildMapFromTree = ({
     highlighted: false,
     checked: false,
     disabled: false,
+    isLeaf: false,
   });
 
   for (let i = 0; i < currentNode.children.length; i++) {
@@ -91,6 +98,20 @@ export const buildMapFromTree = ({
   }
 
   return newMap;
+};
+
+export const getL1Node = (
+  node: CategoryTreeNode,
+  map: Map<CategoryId, CategoryTreeNode>,
+) => {
+  let curNode: CategoryTreeNode | undefined = node;
+  while (
+    curNode?.parentId != null &&
+    curNode.parentId != Constants.TAXONOMY.rootCategoryId
+  ) {
+    curNode = map.get(curNode.parentId);
+  }
+  return curNode;
 };
 
 export const AttributeLevelLabel: { readonly [f in AttributeLevel]: string } = {
@@ -302,22 +323,20 @@ export type CategoryCSVHeadersResponseData = {
   >;
 };
 
-export const SelfClassifyAllowedL1 = [
-  Constants.TAXONOMY.fashionCategoryId,
-  4047, // Jewelry & Accessories
-  4166, // Men’s Clothing
-  2, // Apparel Accessories
-  4740, // Shoes
-  4120, // Luggage & Bags
-  2329, // Home & Garden
-  3391, // Home Improvement
-  4787, // Entertainment
-  4878, // Sports
-  5706, // Toys & Hobbies
-  1244, // Cellphones & Telecommunications
-  1495, // Consumer Electronics
-  1317, // Computer & Office
-];
+export const CATEGORY_ATTRIBUTES_CSV_QUERY = gql`
+  query CategoryAttributesCsvQuery($categoryId: Int!) {
+    taxonomy {
+      categoryAttributesCsv(categoryId: $categoryId)
+    }
+  }
+`;
+
+export type CategoryAttributesCsvResponseType = {
+  readonly taxonomy?: Pick<TaxonomySchema, "categoryAttributesCsv"> | null;
+};
+
+export type CategoryAttributesCsvRequestType =
+  TaxonomySchemaCategoryAttributesCsvArgs;
 
 // =============================
 // Variation Grouping
@@ -361,3 +380,29 @@ export const GET_TAXONOMY_VARIATION_OPTIONS_QUERY = gql`
     }
   }
 `;
+
+export const useCategoryTreeMap = () => {
+  const [loading, setLoading] = useState<boolean>(false);
+  const [categoryMap, setCategoryMap] = useState<
+    Map<CategoryId, CategoryTreeNode>
+  >(new Map());
+
+  useEffect(() => {
+    setLoading(true);
+    const tree = parseJsonTree(jsonTree);
+    const currentMap = new Map(categoryMap);
+    const newMap = buildMapFromTree({
+      parentId: undefined,
+      currentNode: tree,
+      currentPath: "",
+      currentMap: currentMap,
+    });
+    setLoading(false);
+    setCategoryMap(newMap);
+    // csv TODO: update mock
+    // map only depends on tree data, categoryMap is not a dependency
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [jsonTree]);
+
+  return { categoryMap, loading };
+};

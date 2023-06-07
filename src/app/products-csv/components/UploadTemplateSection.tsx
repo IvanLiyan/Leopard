@@ -65,7 +65,6 @@ const UploadTemplateSection: React.FC = () => {
         style={{
           marginTop: 16,
           width: 400,
-          height: 240,
         }}
         maxRows={30000}
       />

@@ -1,4 +1,4 @@
-import { Constants } from "@add-edit-product/constants";
+import { Constants } from "@core/taxonomy/constants";
 import { CategoryId, CategoryTreeNode } from "@core/taxonomy/toolkit";
 
 export type TaxonomyState = {
@@ -7,10 +7,15 @@ export type TaxonomyState = {
   readonly selectedNodes: ReadonlySet<CategoryId>;
 };
 
-export type TaxonomyAction = {
-  readonly type: "HIGHLIGHT_NODE" | "CHECK_NODE" | "UNCHECK_NODE";
-  readonly id: CategoryId;
-};
+export type TaxonomyAction =
+  | {
+      readonly type: "HIGHLIGHT_NODE" | "CHECK_NODE" | "UNCHECK_NODE";
+      readonly id: CategoryId;
+    }
+  | {
+      readonly type: "INITIAL_STATE_CHANGE";
+      readonly categoryMap: ReadonlyMap<CategoryId, CategoryTreeNode>;
+    };
 
 // when parent is selected, child should be:
 // - checked
@@ -22,7 +27,7 @@ const childUpdateOnParentSelect = (
   categoryTreeMap: Map<CategoryId, CategoryTreeNode>,
 ) => {
   const curNode = categoryTreeMap.get(parentId);
-  if (curNode == null || curNode.childrenIds.length === 0) {
+  if (curNode == null || curNode.isLeaf) {
     return;
   }
 
@@ -52,7 +57,7 @@ const childUpdateOnParentDeselect = (
   categoryTreeMap: Map<CategoryId, CategoryTreeNode>,
 ) => {
   const curNode = categoryTreeMap.get(parentId);
-  if (curNode == null || curNode.childrenIds.length === 0) {
+  if (curNode == null || curNode.isLeaf) {
     return;
   }
 
@@ -102,6 +107,13 @@ const reducer = (
   action: TaxonomyAction,
 ): TaxonomyState => {
   switch (action.type) {
+    case "INITIAL_STATE_CHANGE": {
+      const newCategoryMap = new Map(action.categoryMap);
+      return {
+        ...state,
+        categoryTreeMap: newCategoryMap,
+      };
+    }
     case "CHECK_NODE": {
       const checkedId = action.id;
       if (!state.selectedNodes.has(checkedId)) {

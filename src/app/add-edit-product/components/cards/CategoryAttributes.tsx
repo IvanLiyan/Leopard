@@ -10,7 +10,7 @@ import ImageUploadGroup, {
   ImageInfo,
 } from "@add-edit-product/components/ImageUploadGroup";
 import AddEditProductState from "@add-edit-product/AddEditProductState";
-import { Constants } from "@add-edit-product/constants";
+import { Constants } from "@core/taxonomy/constants";
 import { PickedTaxonomyAttribute } from "@core/taxonomy/toolkit";
 import { StyleSheet } from "aphrodite";
 import { observer } from "mobx-react";

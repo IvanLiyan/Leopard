@@ -73,3 +73,8 @@ export const dateToUnix = (date: Date): number =>
 
 export const dateToUtcUnix = (date: Date): number =>
   moment(date).add(moment().utcOffset(), "minutes").unix();
+
+// this function is intended to format date in filenames, and not recommended for UI display
+export const yyyymmdd = (date: Date): string => {
+  return `${date.getFullYear()}${date.getMonth()}${date.getDay()}`;
+};

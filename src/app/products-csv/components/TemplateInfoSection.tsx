@@ -8,19 +8,17 @@ import { zendeskURL } from "@core/toolkit/url";
 import { useTheme } from "@core/stores/ThemeStore";
 import Illustration from "@core/components/Illustration";
 import { ci18n } from "@core/toolkit/i18n";
-import { unparse } from "papaparse";
-import { createFileAndDownload } from "@core/toolkit/file";
+import { createFileAndDownload, getCsvStrFromArray } from "@core/toolkit/file";
 import { useQuery } from "@apollo/client";
 import {
   GET_TAXONOMY_TREE_CSV_ROWS_QUERY,
   GetTaxonomyTreeCsvRowsResponseType,
 } from "@products-csv/queries";
-import { useLocalizationStore } from "@core/stores/LocalizationStore";
+import { yyyymmdd } from "@core/toolkit/datetime";
 
 const TemplateInfoSection: React.FC = () => {
   const styles = useStylesheet();
   const { textDark } = useTheme();
-  const { locale } = useLocalizationStore();
 
   const { data: taxonomyTreeData } =
     useQuery<GetTaxonomyTreeCsvRowsResponseType>(
@@ -31,18 +29,14 @@ const TemplateInfoSection: React.FC = () => {
     const taxonomyTreeCsvRows =
       taxonomyTreeData?.taxonomy?.taxonomyTreeCsv ?? [];
 
-    if (taxonomyTreeCsvRows.length > 0) {
-      return unparse(taxonomyTreeCsvRows.concat());
-    }
-
-    return undefined;
+    return getCsvStrFromArray(taxonomyTreeCsvRows);
   }, [taxonomyTreeData?.taxonomy?.taxonomyTreeCsv]);
 
   const downloadCsvTree = () => {
     if (taxonomyTreeCsvText) {
-      const date = new Date().toLocaleDateString(locale);
+      const dateStr = yyyymmdd(new Date());
       createFileAndDownload({
-        filename: `categories_${date}.csv`,
+        filename: `categories_${dateStr}.csv`,
         content: taxonomyTreeCsvText,
         mimeType: "text/csv",
       });

@@ -1,5 +1,5 @@
 import React from "react";
-import { Checkbox } from "@mui/material";
+import { Checkbox, Radio } from "@mui/material";
 import { useTheme } from "@core/stores/ThemeStore";
 import { observer } from "mobx-react";
 import { Text } from "@ContextLogic/atlas-ui";
@@ -13,6 +13,8 @@ type Props = {
   readonly dispatch: React.Dispatch<TaxonomyAction>;
   readonly state: TaxonomyState;
   readonly disableAll: boolean;
+  readonly singleSelect?: boolean;
+  readonly selectLeafOnly?: boolean;
 };
 
 const TaxonomyCategoryColumnItem: React.FC<Props> = ({
@@ -21,6 +23,8 @@ const TaxonomyCategoryColumnItem: React.FC<Props> = ({
   state,
   dispatch,
   disableAll,
+  singleSelect = false,
+  selectLeafOnly = false,
 }: Props) => {
   const {
     textDark,
@@ -71,6 +75,7 @@ const TaxonomyCategoryColumnItem: React.FC<Props> = ({
       `}</style>
       {columnItems.map((id) => {
         const treeItem = state.categoryTreeMap.get(id);
+        const canSelect = selectLeafOnly ? treeItem?.isLeaf : true;
 
         return (
           treeItem && (
@@ -88,20 +93,45 @@ const TaxonomyCategoryColumnItem: React.FC<Props> = ({
               }}
             >
               <div className="category-column-node-content">
-                <Checkbox
-                  checked={treeItem.checked}
-                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                    dispatch({
-                      type: event.target.checked
-                        ? "CHECK_NODE"
-                        : "UNCHECK_NODE",
-                      id,
-                    });
-                  }}
-                  disabled={disableAll || treeItem.disabled}
-                  size="medium"
-                  style={{ marginRight: "20px" }}
-                />
+                {canSelect && singleSelect && (
+                  <Radio
+                    checked={treeItem.checked}
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                      if (event.target.checked) {
+                        const selections = Array.from(state.selectedNodes);
+                        if (selections.length > 0) {
+                          dispatch({ type: "UNCHECK_NODE", id: selections[0] });
+                        }
+                        dispatch({
+                          type: "CHECK_NODE",
+                          id,
+                        });
+                      }
+                    }}
+                    disabled={disableAll || treeItem.disabled}
+                    size="medium"
+                    sx={{
+                      marginRight: "20px",
+                      padding: 0,
+                    }}
+                  />
+                )}
+                {canSelect && !singleSelect && (
+                  <Checkbox
+                    checked={treeItem.checked}
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                      dispatch({
+                        type: event.target.checked
+                          ? "CHECK_NODE"
+                          : "UNCHECK_NODE",
+                        id,
+                      });
+                    }}
+                    disabled={disableAll || treeItem.disabled}
+                    size="medium"
+                    sx={{ marginRight: "20px", padding: 0 }}
+                  />
+                )}
                 <Text
                   variant="bodyM"
                   sx={{ color: treeItem.highlighted ? textBlack : textDark }}

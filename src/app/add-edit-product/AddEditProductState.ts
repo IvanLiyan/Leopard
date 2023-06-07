@@ -70,7 +70,7 @@ import {
   PickedTaxonomyVariationOption,
   PickedTaxonomyVariationOptionValue,
 } from "@core/taxonomy/toolkit";
-import { Constants } from "@add-edit-product/constants";
+import { Constants } from "@core/taxonomy/constants";
 import numeral from "numeral";
 import { merchFeUrl } from "@core/toolkit/router";
 import {

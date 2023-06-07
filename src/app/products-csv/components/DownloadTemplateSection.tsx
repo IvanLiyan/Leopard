@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { observer } from "mobx-react";
 import RadioCard from "@core/components/RadioCard";
 import { IS_LARGE_SCREEN, IS_SMALL_SCREEN } from "@core/toolkit/styling";
@@ -8,15 +8,9 @@ import { Button, Text } from "@ContextLogic/atlas-ui";
 import Icon from "@core/components/Icon";
 import { DownloadTemplateType, UpdateActionType } from "@products-csv/toolkit";
 import EditTemplateSelect from "./EditTemplateSelect";
-import {
-  CategoryTreeNode,
-  parseJsonTree,
-  buildMapFromTree,
-  CategoryId,
-} from "@core/taxonomy/toolkit";
+import { CategoryId, useCategoryTreeMap } from "@core/taxonomy/toolkit";
 import TaxonomyCategorySelectSection from "@core/taxonomy/v2/TaxonomyCategorySelectSection";
-import { jsonTree } from "../mock-tree-json"; // csv TODO: remove mock
-import { LoadingIndicator } from "@ContextLogic/lego";
+import Skeleton from "@core/components/Skeleton";
 
 const DownloadTemplateSection: React.FC = () => {
   const [updateActionType, setUpdateActionType] = useState<UpdateActionType>();
@@ -27,31 +21,16 @@ const DownloadTemplateSection: React.FC = () => {
     ReadonlyArray<CategoryId>
   >([]);
   const { textWhite, primary, textDark } = useTheme();
-  const [categoryMap, setCategoryMap] = useState<
-    Map<CategoryId, CategoryTreeNode>
-  >(new Map());
-  const [isLoadingTree, setIsLoadingTree] = useState<boolean>(false);
+  const { categoryMap, loading: isLoadingCategoryMap } = useCategoryTreeMap();
   const maxCategory = 5;
 
-  useEffect(() => {
-    setIsLoadingTree(true);
-    const tree = parseJsonTree(jsonTree);
-    const treeMap = buildMapFromTree({
-      parentId: undefined,
-      currentNode: tree,
-      currentPath: "",
-      currentMap: categoryMap,
-    });
-    setIsLoadingTree(false);
-    setCategoryMap(treeMap);
-    // csv TODO: update mock
-    // map only depends on tree data, categoryMap is not a dependency
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [jsonTree]);
-
   const renderCategorySelectSection = () => {
-    if (isLoadingTree) {
-      return <LoadingIndicator />;
+    if (isLoadingCategoryMap) {
+      return <Skeleton width="100%" height={100} />;
+    }
+
+    if (categoryMap.size === 0) {
+      return null;
     }
 
     return (
@@ -59,7 +38,6 @@ const DownloadTemplateSection: React.FC = () => {
         initialCategoryTreeMap={categoryMap}
         onSelectionsChange={setSelectedCategories}
         maxSelection={maxCategory}
-        showHeader
       />
     );
   };

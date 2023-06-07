@@ -4,7 +4,7 @@ import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { Icon } from "@ContextLogic/zeus";
 import { ci18n } from "@core/toolkit/i18n";
 import { useTheme } from "@core/stores/ThemeStore";
-import { Constants, useTreeVersion } from "@add-edit-product/constants";
+import { Constants, useTreeVersion } from "@core/taxonomy/constants";
 import {
   PickedCategory,
   PickedCategoryWithDetails,

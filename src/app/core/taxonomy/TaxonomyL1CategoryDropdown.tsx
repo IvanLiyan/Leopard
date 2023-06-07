@@ -1,7 +1,7 @@
 import { useQuery } from "@apollo/client";
 import { LoadingIndicator, Option, SimpleSelect } from "@ContextLogic/lego";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import { Constants, useTreeVersion } from "@add-edit-product/constants";
+import { Constants, useTreeVersion } from "@core/taxonomy/constants";
 import {
   TaxonomyCategoryRequestData,
   TaxonomyCategoryResponseData,

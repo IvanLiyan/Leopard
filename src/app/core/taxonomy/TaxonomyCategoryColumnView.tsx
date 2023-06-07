@@ -1,7 +1,7 @@
 import { Layout } from "@ContextLogic/lego";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { useTheme } from "@core/stores/ThemeStore";
-import { Constants } from "@add-edit-product/constants";
+import { Constants } from "@core/taxonomy/constants";
 import {
   PickedCategory,
   PickedCategoryWithDetails,
