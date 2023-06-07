@@ -26,6 +26,9 @@ import PromoMessageModal from "./product-boost/PromoMessageModal";
 import FreeCreditModal from "./product-boost/FreeCreditModal";
 import AnnouncementModal from "./AnnouncementModal";
 import FrsOptInModal from "./FrsOptInModal";
+import FrsOptedInModal from "./FrsOptedInModal";
+import { useDeciderKey } from "@core/stores/ExperimentStore";
+import Cookies from "js-cookie";
 
 type ModalState = "OPEN" | "DISMISSED" | "QUEUED";
 
@@ -34,11 +37,15 @@ const AnnouncementModals: React.FC = () => {
 
   const [hasEnqueued, setHasEnqueued] = useState(false);
 
-  // One state per announement modal type. State options are:
+  // One state per announcement modal type. State options are:
   // - undefined: data has not loaded, or data has loaded and modal does not need to be shown
   // - "QUEUED": data has loaded and this modal has yet to be shown
   // - "OPEN": data has loaded and this modal is currently being shown (max one can be open at a time)
   // - "DISMISSED": data has loaded and this modal has already been shown
+  const [
+    frsOptedInAnnouncementModalState,
+    setFrsOptedInAnnouncementModalState,
+  ] = useState<ModalState | undefined>();
   const [frsOptInAnnouncementModalState, setFrsOptInAnnouncementModalState] =
     useState<ModalState | undefined>();
   const [announcementModalState, setAnnouncementModalState] = useState<
@@ -98,6 +105,13 @@ const AnnouncementModals: React.FC = () => {
   const { data: dataFrsOptInStatus, loading: isLoadingFrsOptInStatus } =
     useQuery<OptInStatusResponseType, Record<string, never>>(GET_OPT_IN_STATUS);
 
+  const {
+    decision: showFrsOptedInModal,
+    isLoading: showFrsOptedInModalLoading,
+  } = useDeciderKey("show_frs_opted_in_modal");
+  const { decision: hideFrsOptInModal, isLoading: hideFrsOptInModalLoading } =
+    useDeciderKey("hide_frs_opt_in_modal");
+
   // Once per lifecycle, once data has loaded, set modal states to "QUEUED" for
   // all modals that need to be shown. Set the first modal that would be "QUEUED"
   // to "OPEN"
@@ -110,7 +124,9 @@ const AnnouncementModals: React.FC = () => {
       dataAnnouncements == null ||
       isLoadingAnnouncements ||
       errorAnnouncements != null ||
-      isLoadingFrsOptInStatus
+      isLoadingFrsOptInStatus ||
+      showFrsOptedInModalLoading ||
+      hideFrsOptInModalLoading
     ) {
       return;
     }
@@ -132,14 +148,19 @@ const AnnouncementModals: React.FC = () => {
       can_view_refund_assurance_credit_modal: canViewRefundAssuranceCreditModal,
     } = dataPb;
 
+    const showFrsOptedInAnnouncementModal =
+      showFrsOptedInModal && Cookies.get("frs-opted-in-dismissed") !== "true";
+
     const optedIntoFrs =
       dataFrsOptInStatus?.currentMerchant?.isFlatRateShippingOptedIn ?? false;
     const canSeeFrsOptIn =
       dataFrsOptInStatus?.currentMerchant
         ?.canAccessFlatRateShippingOptInOptOut ?? false;
-    const showFrsOptInAnnouncementModal = canSeeFrsOptIn && !optedIntoFrs;
+    const showFrsOptInAnnouncementModal =
+      !hideFrsOptInModal && canSeeFrsOptIn && !optedIntoFrs;
 
     let firstModalSet = false;
+
     const enqueue = (
       setStateAction: (value: SetStateAction<ModalState | undefined>) => void,
     ) => {
@@ -151,6 +172,10 @@ const AnnouncementModals: React.FC = () => {
 
       setStateAction("QUEUED");
     };
+
+    if (showFrsOptedInAnnouncementModal) {
+      enqueue(setFrsOptedInAnnouncementModalState);
+    }
 
     if (showFrsOptInAnnouncementModal) {
       enqueue(setFrsOptInAnnouncementModalState);
@@ -200,6 +225,10 @@ const AnnouncementModals: React.FC = () => {
     errorAnnouncements,
     dataFrsOptInStatus,
     isLoadingFrsOptInStatus,
+    hideFrsOptInModal,
+    hideFrsOptInModalLoading,
+    showFrsOptedInModal,
+    showFrsOptedInModalLoading,
   ]);
 
   // When called, set the currently modal whose state is "OPEN" to "DISMISSED"
@@ -208,6 +237,7 @@ const AnnouncementModals: React.FC = () => {
     const stateActionPairs: ReadonlyArray<
       [ModalState | undefined, Dispatch<SetStateAction<ModalState | undefined>>]
     > = [
+      [frsOptedInAnnouncementModalState, setFrsOptedInAnnouncementModalState],
       [frsOptInAnnouncementModalState, setFrsOptInAnnouncementModalState],
       [announcementModalState, setAnnouncementModalState],
       [refundAssuranceSplashModalState, setRefundAssuranceSplashModalState],
@@ -277,6 +307,13 @@ const AnnouncementModals: React.FC = () => {
 
   return (
     <>
+      <FrsOptedInModal
+        open={frsOptedInAnnouncementModalState === "OPEN"}
+        onClose={() => {
+          Cookies.set("frs-opted-in-dismissed", "true", { expires: 3652 }); // 10 years
+          advanceModal();
+        }}
+      />
       <FrsOptInModal
         open={frsOptInAnnouncementModalState === "OPEN"}
         onClose={() => advanceModal()}
