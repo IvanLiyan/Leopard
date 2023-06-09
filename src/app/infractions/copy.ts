@@ -2,7 +2,7 @@ import { ci18n } from "@core/toolkit/i18n";
 import { zendeskSectionURL, zendeskURL } from "@core/toolkit/url";
 import {
   CommerceTransactionState,
-  CounterfeitReason,
+  CounterfeitReasonCode,
   MerchantWarningImpactType,
   MerchantWarningProofDisputeStatus,
   MerchantWarningReason,
@@ -28,7 +28,7 @@ const getDeprecatedInfractionData = (title: string): Copy => ({
 
 const TaggingViolationSubReasonCodeData: {
   readonly [reason in TaggingViolationSubReasonCode]: Partial<Copy> & {
-    readonly parent: CounterfeitReason;
+    readonly parent: CounterfeitReasonCode;
   };
 } = {
   BRAND_DISCREPANCY: {
@@ -1239,7 +1239,7 @@ const TaggingViolationSubReasonCodeData: {
 };
 
 const CounterfeitReasonData: {
-  readonly [reason in CounterfeitReason]: Partial<Copy>;
+  readonly [reason in CounterfeitReasonCode]: Partial<Copy>;
 } = {
   SAFETY_EQUIPMENT: {
     title: i`Safety Equipment`,
@@ -2092,7 +2092,7 @@ const getCopy = <T extends string | undefined>(
 
 export const getInfractionCopy = (
   reason: MerchantWarningReason,
-  inappropriateReason: CounterfeitReason | undefined,
+  inappropriateReason: CounterfeitReasonCode | undefined,
   inappropriateSubreason: TaggingViolationSubReasonCode | undefined,
 ): Copy =>
   reason !== "PRODUCT_IS_INAPPROPRIATE"

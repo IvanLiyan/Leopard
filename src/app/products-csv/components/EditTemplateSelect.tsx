@@ -42,7 +42,7 @@ const EditTemplateSelect: React.FC<EditTemplateSelectProps> = ({
           width: 400px;
         }
       `}</style>
-      <Text variant="bodyMStrong">Select a template</Text>
+      <Heading variant="h4">Select a template</Heading>
       <FormSelect
         options={downloadTypeOptions}
         selectedValue={selectedType}

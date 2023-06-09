@@ -1,4 +1,4 @@
-import { MerchantWarningReason, CounterfeitReason } from "@schema";
+import { MerchantWarningReason, CounterfeitReasonCode } from "@schema";
 import { InfractionQueryResponse } from "./api/infractionQuery";
 import { DisputeStatus } from "./copy";
 
@@ -21,8 +21,8 @@ export type DisputeFlow =
  */
 export const getDisputeFlow: {
   readonly [reason in MerchantWarningReason]: (
-    counterfeitViolationReason: CounterfeitReason | undefined,
-    inappropriateViolationReason: CounterfeitReason | undefined,
+    counterfeitViolationReason: CounterfeitReasonCode | undefined,
+    inappropriateViolationReason: CounterfeitReasonCode | undefined,
   ) => DisputeFlow;
 } = {
   /* eslint-disable @typescript-eslint/no-unused-vars */

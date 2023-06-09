@@ -47,7 +47,10 @@ const DownloadCSVButton: React.FC<Props> = ({ categoryId, disabled }) => {
     if (attributesCsvText) {
       const dateStr = yyyymmdd(new Date());
       createFileAndDownload({
-        filename: `${categoryId}_attributes_${dateStr}.csv`,
+        filename: `${categoryId}_${ci18n(
+          "CSV filename for downloading product attributes, please do not include any space in translation",
+          "attributes",
+        )}_${dateStr}.csv`,
         content: attributesCsvText,
         mimeType: "text/csv",
       });

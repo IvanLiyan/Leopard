@@ -89,7 +89,9 @@ export const buildMapFromTree = ({
       parentId: currentNode.id,
       currentNode: currentChild,
       currentPath:
-        currentPath.trim().length > 0
+        currentNode.id === Constants.TAXONOMY.rootCategoryId
+          ? currentPath
+          : currentPath.trim().length > 0
           ? `${currentPath} > ${currentNode.name}`
           : currentNode.name,
       currentMap: currentMap,
@@ -111,6 +113,39 @@ export const getL1Node = (
     curNode = map.get(curNode.parentId);
   }
   return curNode;
+};
+
+/**
+ * Return all the leaf children for the current node
+ */
+export const getLeafChildren = ({
+  node,
+  map,
+  curLeaves,
+}: {
+  node: CategoryTreeNode;
+  map: Map<CategoryId, CategoryTreeNode>;
+  curLeaves: ReadonlyArray<CategoryId>;
+}): ReadonlyArray<CategoryId> => {
+  if (node.isLeaf) {
+    return [...curLeaves, node.id];
+  }
+
+  let leaves = [...curLeaves];
+  node.childrenIds.forEach((childId) => {
+    const childNode = map.get(childId);
+    const childLeaves = childNode
+      ? getLeafChildren({
+          node: childNode,
+          map,
+          curLeaves: [],
+        })
+      : [];
+
+    leaves = [...leaves, ...childLeaves];
+  });
+
+  return leaves;
 };
 
 export const AttributeLevelLabel: { readonly [f in AttributeLevel]: string } = {

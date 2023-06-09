@@ -1593,8 +1593,9 @@ export type BusinessDocTypes =
   | "RECENT_BUSINESS_RETURNS"
   | "SHARE_ALLOCATION_CERTIFICATE"
   | "CERTIFICATE_OF_INCORPORATION"
-  | "UTILITY_BILL_STATEMENT"
+  | "TAX_FORM"
   | "CREDIT_CARD_STATEMENT"
+  | "UTILITY_BILL_STATEMENT"
   | "GOVERNMENT_ISSUED_BUSINESS_LICENSE"
   | "ENTITY_TRADING_NAME"
   | "ARTICLES_OF_INCORPORATION"
@@ -2311,57 +2312,6 @@ export type CountValueArgs = {
   targetUnit?: Maybe<CountUnit>;
 };
 
-export type CounterfeitReason =
-  | "UNLICENSED_MEDIA"
-  | "SAFETY_EQUIPMENT"
-  | "LIGHTERS"
-  | "PROP_MONEY"
-  | "GRAPHIC_VIOLENCE"
-  | "ILLEGAL_ELECTRONICS"
-  | "ANIMAL_PRODUCTS"
-  | "BLURRED_WATERMARK"
-  | "WISH_ADMIN"
-  | "HARMFUL_CHEMICALS"
-  | "CN_PROHIBITED_PRODUCTS"
-  | "FALSE_ADVERTISING"
-  | "RECALLED_TOYS"
-  | "CARSEAT"
-  | "PLANTS_AND_SEEDS"
-  | "UNVERIFIED_MONEY"
-  | "WEAPON"
-  | "TEAM_LOGO"
-  | "PICTURED_WITH_MAJOR_BRAND"
-  | "PIERCING_GUN"
-  | "ADULT_CONTENT"
-  | "PRICE_GOUGING"
-  | "SMOKING"
-  | "MISLEADING_LISTING"
-  | "REGIONAL_RESTRICTIONS"
-  | "PRODUCT_MODIFIED"
-  | "CENSORED_FACE"
-  | "NUDITY"
-  | "HATE_CRIME"
-  | "BLURRED_LABEL"
-  | "MEDICAL_MATERIALS"
-  | "AMBIGUOUS_LISTING"
-  | "JEWELRY_AND_METALS"
-  | "HOVERBOARD"
-  | "CELEBRITY_PHOTO"
-  | "TRICK_CANDLES"
-  | "BLURRED_INFORMATION"
-  | "CONSUMPTION_MATERIALS"
-  | "HAZARDOUS_MATERIALS"
-  | "IS_MAJOR_BRAND"
-  | "DISTASTEFUL_CONTENT"
-  | "DANGEROUS_ITEMS"
-  | "HARNESS"
-  | "TATTOO_GUN"
-  | "MISLEADING_LISTING_AUTHENTIC_BRAND"
-  | "CONTACT_LENSES"
-  | "VIRTUAL_GOODS"
-  | "BIKE_HELMETS"
-  | "PLANT_SEEDS";
-
 export type CounterfeitReasonCode =
   | "UNLICENSED_MEDIA"
   | "SAFETY_EQUIPMENT"
@@ -2418,7 +2368,7 @@ export type CounterfeitRiskLevel = "HIGH" | "MEDIUM" | "LOW";
 export type CounterfeitViolationSchema = {
   readonly __typename?: "CounterfeitViolationSchema";
   readonly isConfirmed: Scalars["Boolean"];
-  readonly reason?: Maybe<CounterfeitReason>;
+  readonly reason?: Maybe<CounterfeitReasonCode>;
   readonly reasonDisplayName?: Maybe<Scalars["String"]>;
   readonly reasonExplanation?: Maybe<Scalars["String"]>;
   readonly subcategoryMessage?: Maybe<Scalars["String"]>;
@@ -5102,10 +5052,15 @@ export type ImageSize = "LARGE" | "MEDIUM" | "ORIGINAL" | "SMALL" | "TINY";
 export type InappropriateViolationSchema = {
   readonly __typename?: "InappropriateViolationSchema";
   readonly isConfirmed: Scalars["Boolean"];
-  readonly reason?: Maybe<CounterfeitReason>;
+  readonly reason?: Maybe<CounterfeitReasonCode>;
   readonly reasonDisplayName?: Maybe<Scalars["String"]>;
   readonly reasonExplanation?: Maybe<Scalars["String"]>;
   readonly subcategoryMessage?: Maybe<Scalars["String"]>;
+};
+
+export type InappropriateViolationTaggingManagement = {
+  readonly __typename?: "InappropriateViolationTaggingManagement";
+  readonly violationReasons: ReadonlyArray<TaggingViolationReason>;
 };
 
 export type InfoCollectedForPaymentProvider = {
@@ -6518,6 +6473,10 @@ export type MerchantFileSchema = {
   readonly displayFilename: Scalars["String"];
   readonly fileUrl: Scalars["String"];
   readonly isImageFile: Scalars["Boolean"];
+};
+
+export type MerchantFileSchemaFileUrlArgs = {
+  console?: Maybe<Scalars["Boolean"]>;
 };
 
 export type MerchantFinalSaleAction = "ENABLE" | "DISABLE";
@@ -8560,6 +8519,7 @@ export type MfpServiceSchemaGenericEligibleProductsArgs = {
   offset?: Maybe<Scalars["Int"]>;
   limit?: Maybe<Scalars["Int"]>;
   sort?: Maybe<ProductSort>;
+  countries?: Maybe<ReadonlyArray<CountryCode>>;
 };
 
 export type MfpServiceSchemaEligibleProductsArgs = {
@@ -8665,6 +8625,11 @@ export type MfpVariationUnqualifiedReason =
   | "PROMOTION_HISTORY";
 
 export type MfpWhitelistProductSortBy = "START_TIME" | "END_TIME";
+
+export type MisleadingViolationTaggingManagement = {
+  readonly __typename?: "MisleadingViolationTaggingManagement";
+  readonly violationReasons: ReadonlyArray<TaggingViolationReason>;
+};
 
 export type MmsLeadProductCategory =
   | "TOYS_AND_GAMES"
@@ -9810,6 +9775,7 @@ export type PermissionType =
   | "REVIEW_ONEOFF_REQ_ENABLE_DISABLE_CSP_FOR_ALL_ELIGIBLE_PRODUCTS"
   | "COUNTERFEIT_TAG_RESOLUTION"
   | "MANAGE_WHITE_GLOVE"
+  | "CAN_UPDATE_CSP_CONFIG"
   | "CAN_VIEW_ORDERS"
   | "CAN_VIEW_CN_INFRACTIONS"
   | "CAN_GET_COLLECTIONBOOST"
@@ -10478,6 +10444,8 @@ export type PolicySchemaMerchantWarningCountArgs = {
   issueDateStart?: Maybe<DatetimeInput>;
   issueDateEnd?: Maybe<DatetimeInput>;
   wssImpact?: Maybe<ReadonlyArray<WssImpactState>>;
+  category?: Maybe<CounterfeitReasonCode>;
+  subcategory?: Maybe<TaggingViolationSubReasonCode>;
 };
 
 export type PolicySchemaMerchantWarningsArgs = {
@@ -10499,6 +10467,8 @@ export type PolicySchemaMerchantWarningsArgs = {
   issueDateStart?: Maybe<DatetimeInput>;
   issueDateEnd?: Maybe<DatetimeInput>;
   wssImpact?: Maybe<ReadonlyArray<WssImpactState>>;
+  category?: Maybe<CounterfeitReasonCode>;
+  subcategory?: Maybe<TaggingViolationSubReasonCode>;
 };
 
 export type PolicySchemaMerchantWarningArgs = {
@@ -10596,6 +10566,7 @@ export type ProductCatalogMutations = {
   readonly upsertVideo?: Maybe<UpsertVideo>;
   readonly removeVideo?: Maybe<RemoveVideo>;
   readonly forceApproveProduct?: Maybe<ForceApproveProduct>;
+  readonly uploadProductComplianceDocument?: Maybe<UploadProductComplianceDocuments>;
 };
 
 export type ProductCatalogMutationsUpsertProductArgs = {
@@ -10638,6 +10609,10 @@ export type ProductCatalogMutationsForceApproveProductArgs = {
   input: ForceApproveProductInput;
 };
 
+export type ProductCatalogMutationsUploadProductComplianceDocumentArgs = {
+  input: ReadonlyArray<ProductComplianceDocumentInput>;
+};
+
 export type ProductCatalogSchema = {
   readonly __typename?: "ProductCatalogSchema";
   readonly product?: Maybe<ProductSchema>;
@@ -10654,6 +10629,7 @@ export type ProductCatalogSchema = {
   readonly csvProductColumnNames: ReadonlyArray<Scalars["String"]>;
   readonly csvProductColumnEnums: ReadonlyArray<ProductCsvColumnName>;
   readonly csvAllHeaderNames: ReadonlyArray<Scalars["String"]>;
+  readonly csvEditVariationsHeaderNames: ReadonlyArray<Scalars["String"]>;
   readonly csvShippingHeaderNames: ReadonlyArray<Scalars["String"]>;
   readonly csvPriceInventoryHeaderNames: ReadonlyArray<Scalars["String"]>;
   readonly csvTitleImagesDescriptionHeaderNames: ReadonlyArray<
@@ -10756,6 +10732,14 @@ export type ProductCatalogSchemaBulkCsvProductImportJobsArgs = {
 
 export type ProductCatalogSchemaCsvProductImportJobsCountArgs = {
   feedType?: Maybe<ProductCsvJobType>;
+};
+
+export type ProductCatalogSchemaCsvAllHeaderNamesArgs = {
+  subcategoryIds?: Maybe<ReadonlyArray<Scalars["Int"]>>;
+};
+
+export type ProductCatalogSchemaCsvEditVariationsHeaderNamesArgs = {
+  subcategoryIds?: Maybe<ReadonlyArray<Scalars["Int"]>>;
 };
 
 export type ProductCatalogSchemaCsvProductTemplateWithTaxonomyColumnNamesArgs =
@@ -10877,6 +10861,22 @@ export type ProductCategoryDisputeTrueTagState =
   | "DISPUTED"
   | "APPROVED"
   | "PROPOSED";
+
+export type ProductComplianceDocumentInput = {
+  readonly productId: Scalars["ObjectIdType"];
+  readonly sourceUrl: Scalars["String"];
+  readonly documentLabel: Scalars["String"];
+  readonly fileName: Scalars["String"];
+  readonly fileExtension: Scalars["String"];
+  readonly delete: Scalars["Boolean"];
+};
+
+export type ProductComplianceDocumentSchema = {
+  readonly __typename?: "ProductComplianceDocumentSchema";
+  readonly s3Url: Scalars["String"];
+  readonly documentLabel: Scalars["String"];
+  readonly fileName?: Maybe<Scalars["String"]>;
+};
 
 export type ProductComplianceMutations = {
   readonly __typename?: "ProductComplianceMutations";
@@ -11585,6 +11585,9 @@ export type ProductSchema = {
   readonly flatRateShippingCountryCandidates?: Maybe<
     ReadonlyArray<FlatRateShippingCountryCandidate>
   >;
+  readonly productComplianceDocuments?: Maybe<
+    ReadonlyArray<ProductComplianceDocumentSchema>
+  >;
 };
 
 export type ProductSchemaVariationsArgs = {
@@ -11611,6 +11614,7 @@ export type ProductsCsvTemplateType =
   | "ENABLED"
   | "SHIPPING"
   | "CONTENT"
+  | "ALL_COLUMNS"
   | "PRICE_AND_INVENTORY";
 
 export type ProductSearchType = "ID" | "NAME" | "SKU" | "PARENTSKU";
@@ -13959,10 +13963,20 @@ export type ShippingSchema = {
   readonly wishpostEstimatedShipping?: Maybe<
     ReadonlyArray<WishPostShippingSchema>
   >;
+  readonly maxCalculatedShippingPrice?: Maybe<CurrencyValue>;
+  readonly maxMerchantSetShippingPrice?: Maybe<CurrencyValue>;
 };
 
 export type ShippingSchemaWarehouseCountryShippingArgs = {
   shippingTypes?: Maybe<ReadonlyArray<WarehouseShippingType>>;
+};
+
+export type ShippingSchemaMaxCalculatedShippingPriceArgs = {
+  countries?: Maybe<ReadonlyArray<CountryCode>>;
+};
+
+export type ShippingSchemaMaxMerchantSetShippingPriceArgs = {
+  countries?: Maybe<ReadonlyArray<CountryCode>>;
 };
 
 export type ShippingSettingMutations = {
@@ -14284,6 +14298,8 @@ export type TaggingMutationsDeleteDedupImageArgs = {
 export type TaggingServiceSchema = {
   readonly __typename?: "TaggingServiceSchema";
   readonly ipViolationTaggingManagement?: Maybe<IpViolationTaggingManagement>;
+  readonly misleadingViolationTaggingManagement?: Maybe<MisleadingViolationTaggingManagement>;
+  readonly inappropriateViolationTaggingManagement?: Maybe<InappropriateViolationTaggingManagement>;
   readonly productVideoContentTaggerJob?: Maybe<ProductVideoTaggerJobSchema>;
   readonly productVideoIpTaggerJob?: Maybe<ProductVideoTaggerJobSchema>;
   readonly generalTaggingManagement?: Maybe<GeneralTaggingManagement>;
@@ -15679,6 +15695,14 @@ export type UploadMutations = {
 
 export type UploadMutationsInitiateUploadArgs = {
   input: InitiateUploadInput;
+};
+
+export type UploadProductComplianceDocuments = {
+  readonly __typename?: "UploadProductComplianceDocuments";
+  readonly ok: Scalars["Boolean"];
+  readonly failures?: Maybe<ReadonlyArray<Scalars["String"]>>;
+  readonly productId?: Maybe<Scalars["ObjectIdType"]>;
+  readonly fileUrls?: Maybe<ReadonlyArray<Scalars["String"]>>;
 };
 
 export type UpsertConfirmedDeliveryCarrier = {

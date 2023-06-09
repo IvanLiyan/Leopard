@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { observer } from "mobx-react";
 import { AttachmentInfo, FormSelect } from "@ContextLogic/lego";
 import { Text, Button } from "@ContextLogic/atlas-ui";
@@ -20,7 +20,7 @@ import { useToastStore } from "@core/stores/ToastStore";
 import { merchFeUrl } from "@core/toolkit/router";
 
 const UploadTemplateSection: React.FC = () => {
-  const { textDark, textWhite } = useTheme();
+  const { textDark, textWhite, negative } = useTheme();
   const toastStore = useToastStore();
   const [uploadType, setUploadType] = useState<
     UploadTemplateType | undefined
@@ -28,6 +28,8 @@ const UploadTemplateSection: React.FC = () => {
   const [attachments, setAttachments] = useState<ReadonlyArray<AttachmentInfo>>(
     [],
   );
+  const [isUploading, setIsUploading] = useState<boolean>(false);
+  const [showError, setShowError] = useState<boolean>(false);
 
   const uploadTypeOptions = Object.entries(UPLOAD_TEMPLATE_NAMES).map(
     ([type, text]) => ({
@@ -36,13 +38,24 @@ const UploadTemplateSection: React.FC = () => {
     }),
   );
 
-  const [upsertProductCsv, { loading }] = useMutation<
+  const [upsertProductCsv] = useMutation<
     UpsertProductCsvResponseType,
     UpsertProductCsvRequestType
   >(UPSERT_PRODUCT_CSV_MUTATION);
 
+  const errorMessage = useMemo(() => {
+    if (uploadType == null) {
+      return i`Please select a template`;
+    } else if (attachments.length === 0) {
+      return i`Please upload a template`;
+    }
+    return undefined;
+  }, [attachments.length, uploadType]);
+
   const onUpload = async () => {
     try {
+      setShowError(true);
+      setIsUploading(true);
       if (attachments.length === 0 || uploadType == null) {
         return;
       }
@@ -73,8 +86,11 @@ const UploadTemplateSection: React.FC = () => {
       );
       setAttachments([]);
       setUploadType(undefined);
+      setShowError(false);
     } catch {
       toastStore.negative(i`Something went wrong`);
+    } finally {
+      setIsUploading(false);
     }
   };
 
@@ -96,6 +112,7 @@ const UploadTemplateSection: React.FC = () => {
         onSelected={(value: UploadTemplateType | undefined) =>
           setUploadType(value)
         }
+        borderColor={showError && uploadType == null ? negative : undefined}
         showArrow
       />
       <Text variant="bodyM" sx={{ color: textDark, marginTop: "16px" }}>
@@ -119,11 +136,14 @@ const UploadTemplateSection: React.FC = () => {
         }}
         maxRows={30000}
       />
+      {showError && errorMessage != null && (
+        <Text sx={{ color: negative, marginTop: "24px" }}>{errorMessage}</Text>
+      )}
       <Button
         primary
-        disabled={!uploadType || attachments.length === 0 || loading}
+        disabled={isUploading}
         sx={{
-          marginTop: "24px",
+          marginTop: showError && errorMessage != null ? "8px" : "24px",
         }}
         onClick={() => void onUpload()}
         startIcon={<Icon name="uploadCloud" color={textWhite} />}

@@ -12,6 +12,7 @@ export const Constants = {
     rootCategoryId: 1,
     printAttributeID: 3338,
     primaryColorAttributeID: 3345,
+    maxMultiselectCategory: 5,
   },
 };
 

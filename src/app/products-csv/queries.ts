@@ -1,7 +1,12 @@
 import {
+  DownloadAllProducts,
+  ProductCatalogMutationsDownloadAllProductsArgs,
   ProductCatalogMutationsUpsertProductCsvFileArgs,
+  ProductCatalogSchema,
   TaxonomySchema,
   UpsertProductsFromCsvFile,
+  ProductCatalogSchemaCsvAllHeaderNamesArgs,
+  ProductCatalogSchemaCsvEditVariationsHeaderNamesArgs,
 } from "@schema";
 import { gql } from "@apollo/client";
 
@@ -42,3 +47,122 @@ export type UpsertProductCsvResponseType = {
 
 export type UpsertProductCsvRequestType =
   ProductCatalogMutationsUpsertProductCsvFileArgs;
+
+export const DOWNLOAD_PRODUCT_CATALOG_MUTATION = gql`
+  mutation downloadProductCatalog($input: DownloadAllProductsInput!) {
+    productCatalog {
+      downloadAllProducts(input: $input) {
+        errorMessage
+        ok
+      }
+    }
+  }
+`;
+
+export type DownloadProductCatalogResponseType = {
+  readonly productCatalog: {
+    readonly downloadAllProducts?: Pick<
+      DownloadAllProducts,
+      "ok" | "errorMessage"
+    > | null;
+  };
+};
+
+export type DownloadProductCatalogRequestType =
+  ProductCatalogMutationsDownloadAllProductsArgs;
+
+export const DOWNLOAD_ALL_HEADERS_QUERY = gql`
+  query DownloadAllHeaders($subcategoryIds: [Int!]) {
+    productCatalog {
+      csvAllHeaderNames(subcategoryIds: $subcategoryIds)
+    }
+  }
+`;
+
+export type DownloadAllHeadersResponseType = {
+  readonly productCatalog?: Pick<
+    ProductCatalogSchema,
+    "csvAllHeaderNames"
+  > | null;
+};
+
+export type DownloadAllHeadersRequestType =
+  ProductCatalogSchemaCsvAllHeaderNamesArgs;
+
+export const DOWNLOAD_EDIT_VARIATION_HEADERS_QUERY = gql`
+  query DownloadEditVariationHeaders($subcategoryIds: [Int!]) {
+    productCatalog {
+      csvEditVariationsHeaderNames(subcategoryIds: $subcategoryIds)
+    }
+  }
+`;
+
+export type DownloadEditVariationHeadersResponseType = {
+  readonly productCatalog?: Pick<
+    ProductCatalogSchema,
+    "csvEditVariationsHeaderNames"
+  > | null;
+};
+
+export type DownloadEditVariationHeadersRequestType =
+  ProductCatalogSchemaCsvEditVariationsHeaderNamesArgs;
+
+export const DOWNLOAD_SHIPPING_HEADERS_QUERY = gql`
+  query DownloadShippingHeaders {
+    productCatalog {
+      csvShippingHeaderNames
+    }
+  }
+`;
+
+export type DownloadShippingHeadersResponseType = {
+  readonly productCatalog?: Pick<
+    ProductCatalogSchema,
+    "csvShippingHeaderNames"
+  > | null;
+};
+
+export const DOWNLOAD_PRICE_INVENTORY_HEADERS_QUERY = gql`
+  query DownloadPriceInventoryHeaders {
+    productCatalog {
+      csvPriceInventoryHeaderNames
+    }
+  }
+`;
+
+export type DownloadPriceInventoryHeadersResponseType = {
+  readonly productCatalog?: Pick<
+    ProductCatalogSchema,
+    "csvPriceInventoryHeaderNames"
+  > | null;
+};
+
+export const DOWNLOAD_TITLE_IMAGE_DESC_HEADERS_QUERY = gql`
+  query DownloadTitleImageDescHeaders {
+    productCatalog {
+      csvTitleImagesDescriptionHeaderNames
+    }
+  }
+`;
+
+export type DownloadTitleImageDescHeadersResponseType = {
+  readonly productCatalog?: Pick<
+    ProductCatalogSchema,
+    "csvTitleImagesDescriptionHeaderNames"
+  > | null;
+};
+
+export const DOWNLOAD_ENABLE_DISABLE_HEADERS_QUERY = gql`
+  query DownloadEnableDisableHeaders {
+    productCatalog {
+      csvEnableDisableHeaderNames
+    }
+  }
+`;
+
+export type DownloadEnableDisableHeadersResponseType = {
+  readonly productCatalog?: Pick<
+    ProductCatalogSchema,
+    "csvEnableDisableHeaderNames"
+  > | null;
+};
