@@ -41,7 +41,7 @@ const ProductsCsvPage: NextPage<Record<string, never>> = () => {
       <PageGuide style={styles.content} relaxed hideFooter>
         {isAlertOpen && (
           <Alert
-            severity="success"
+            severity="info"
             onClose={() => {
               setIsAlertOpen(false);
             }}

@@ -276,3 +276,23 @@ features:
     description: >
       This feature contains pages that allow merchants to monitor and maintain
       their products' compliance with Wish policies and laws.
+
+  - name: CSV Page - Leopard
+    owners:
+      - shli@wish.com
+    files:
+      - src/app/products-csv/*
+      - src/pages/products/csv.prod.tsx
+    description: >
+      Page where merchants can download templates for different bulk edit via CSV
+      options, and upload their csv to bulk edit products.
+
+  - name: Categories and Attributes Page - Leopard
+    owners:
+      - shli@wish.com
+    files:
+      - src/app/categories/*
+      - src/pages/products/categories.prod.tsx
+    description: >
+      Page where merchants can view product attributes information associated with 
+      different categories.

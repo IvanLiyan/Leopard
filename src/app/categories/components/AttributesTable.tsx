@@ -21,6 +21,7 @@ type Props = BaseProps & {
 type TableData = {
   readonly name: string;
   readonly level: string;
+  readonly enabledForVariations: boolean;
   readonly usage: string;
   readonly dataType: string;
   readonly description: string;
@@ -52,6 +53,7 @@ const AttributesTable: React.FC<Props> = ({
       level: attr.isVariationAttribute
         ? AttributeLevelLabel.ATTRIBUTE_LEVEL_VARIANT
         : AttributeLevelLabel.ATTRIBUTE_LEVEL_PRODUCT,
+      enabledForVariations: attr.enabledForVariations,
       usage: AttributeUsageLabel[attr.usage],
       dataType: AttributeDataTypeLabel[attr.dataType],
       description: attr.description,
@@ -74,6 +76,14 @@ const AttributesTable: React.FC<Props> = ({
           )}
           _key="level"
           columnKey="level"
+        />
+        <Table.BooleanColumn
+          title={ci18n(
+            "Column title, whether the attribute can be used for grouping varitaions",
+            "Enabled for Variations",
+          )}
+          _key="enabledForVariations"
+          columnKey="enabledForVariations"
         />
         <Table.Column
           title={ci18n(

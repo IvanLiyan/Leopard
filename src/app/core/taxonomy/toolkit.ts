@@ -265,6 +265,7 @@ export const CATEGORY_ATTRIBUTES_QUERY = gql`
         isVariationAttribute
         mode
         maxMultiSelect
+        enabledForVariations
       }
     }
   }
@@ -283,6 +284,7 @@ export type PickedTaxonomyAttribute = Pick<
   | "isVariationAttribute"
   | "mode"
   | "maxMultiSelect"
+  | "enabledForVariations"
 >;
 
 export type CategoryAttributesRequestData = TaxonomySchemaAttributesArgs;
