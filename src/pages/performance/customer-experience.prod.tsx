@@ -6,11 +6,11 @@ import PageRoot from "@core/components/PageRoot";
 import PageGuide from "@core/components/PageGuide";
 import { merchFeUrl } from "@core/toolkit/router";
 import PageHeader from "@core/components/PageHeader";
-import AverageFulfillmentTimeModel from "@performance/components/customer-experience-graphs/AverageFulfillmentTimeModel";
-import RefundRateModel from "@performance/components/customer-experience-graphs/RefundRateModel";
-import AverageShippingTimeModel from "@performance/components/customer-experience-graphs/AverageShippingTimeModel";
-import AverageShippingDelayModel from "@performance/components/customer-experience-graphs/AverageShippingDelayModel";
-import AverageRatingModel from "@performance/components/customer-experience-graphs/AverageRatingModel";
+import AverageFulfillmentTimeModel from "src/app/performance-cn/components/customer-experience-graphs/AverageFulfillmentTimeModel";
+import RefundRateModel from "src/app/performance-cn/components/customer-experience-graphs/RefundRateModel";
+import AverageShippingTimeModel from "src/app/performance-cn/components/customer-experience-graphs/AverageShippingTimeModel";
+import AverageShippingDelayModel from "src/app/performance-cn/components/customer-experience-graphs/AverageShippingDelayModel";
+import AverageRatingModel from "src/app/performance-cn/components/customer-experience-graphs/AverageRatingModel";
 
 const CustomerExperienceGraphsPage: NextPage<Record<string, never>> = () => {
   return (

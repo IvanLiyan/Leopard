@@ -10,23 +10,23 @@ import store, {
   ShippingDataQueryResponse,
   ShippingDataQueryArguments,
   AugmentedShipping,
-} from "@performance/stores/shipping";
-import BenchMarksModel from "@performance/components/shipping/BenchMarksModel";
+} from "src/app/performance-cn/stores/shipping";
+import BenchMarksModel from "src/app/performance-cn/components/shipping/BenchMarksModel";
 import { useQuery } from "@apollo/client";
 import { LoadingIndicator } from "@ContextLogic/lego";
-import { useExportCSV } from "@performance/toolkit/utils";
+import { useExportCSV } from "src/app/performance-cn/toolkit/utils";
 import {
   EXPORT_CSV_STATS_TYPE,
   EXPORT_CSV_TYPE,
-} from "@performance/toolkit/enums";
+} from "src/app/performance-cn/toolkit/enums";
 import {
   round,
   addCommas,
   formatPercentage,
 } from "src/app/core/toolkit/stringUtils";
-import { Table, Title, Icon } from "@performance/components";
-import { TableColumn } from "@performance/components/Table";
-import commonStyles from "@performance/styles/common.module.css";
+import { Table, Title, Icon } from "src/app/performance-cn/components";
+import { TableColumn } from "src/app/performance-cn/components/Table";
+import commonStyles from "@performance-cn/styles/common.module.css";
 import PageHeader from "@core/components/PageHeader";
 import PageGuide from "@core/components/PageGuide";
 import { merchFeUrl } from "@core/toolkit/router";

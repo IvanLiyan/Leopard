@@ -5,19 +5,19 @@ import { useQuery } from "@apollo/client";
 import { Tooltip } from "@mui/material";
 import { Button } from "@ContextLogic/atlas-ui";
 import { ThemedLabel, Alert, LoadingIndicator } from "@ContextLogic/lego";
-import { TableColumn } from "@performance/components/Table";
+import { TableColumn } from "src/app/performance-cn/components/Table";
 import Image from "@core/components/Image";
 import {
   useDecodedProductBreakdownURI,
   useExportCSV,
-} from "@performance/toolkit/utils";
+} from "src/app/performance-cn/toolkit/utils";
 import {
   CS_PERFORMANCE_BREAKDOWN_DATA_QUERY,
   AugmentedCustomerServiceBreakdown,
   CustomerServiceProductBreakdownResponseData,
   BreakdownRequestArgs,
-} from "@performance/toolkit/csProductBreakdown";
-import ProductBreakdownBenchMarksModel from "@performance/components/customer-service/ProductBreakdownBenchmarksModel";
+} from "src/app/performance-cn/toolkit/csProductBreakdown";
+import ProductBreakdownBenchMarksModel from "src/app/performance-cn/components/customer-service/ProductBreakdownBenchmarksModel";
 import PageRoot from "@core/components/PageRoot";
 import { formatCurrency } from "@ContextLogic/lego/toolkit/currency";
 import { wishURL, contestImageURL } from "@core/toolkit/url";
@@ -26,13 +26,13 @@ import {
   formatPercentage,
   round,
 } from "src/app/core/toolkit/stringUtils";
-import { Table, Title, Icon } from "@performance/components";
+import { Table, Title, Icon } from "src/app/performance-cn/components";
 import {
   EXPORT_CSV_STATS_TYPE,
   PER_PAGE_LIMIT,
   EXPORT_CSV_TYPE,
-} from "@performance/toolkit/enums";
-import commonStyles from "@performance/styles/common.module.css";
+} from "src/app/performance-cn/toolkit/enums";
+import commonStyles from "@performance-cn/styles/common.module.css";
 import { merchFeUrl } from "@core/toolkit/router";
 import PageGuide from "@core/components/PageGuide";
 import PageHeader from "@core/components/PageHeader";

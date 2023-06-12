@@ -16,7 +16,7 @@ const customJestConfig = {
     "@core-builder/(.*)": "<rootDir>/src/app/core-builder/$1",
     "@infractions/(.*)": "<rootDir>/src/app/infractions/$1",
     "@landing-pages/(.*)": "<rootDir>/src/app/landing-pages/$1",
-    "@performance/(.*)": "<rootDir>/src/app/performance/$1",
+    "@performance-cn/(.*)": "<rootDir>/src/app/performance/$1",
     "@schema": "<rootDir>/src/app/schema",
     "@deprecated/(.*)": "<rootDir>/src/deprecated/$1",
     "@public/(.*)": "<rootDir>/public/$1",

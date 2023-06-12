@@ -13,17 +13,17 @@ import {
   ProductDataQueryResponse,
   ProductDataQueryArguments,
   PickedProduct,
-} from "@performance/toolkit/product";
-import { Table, Icon } from "@performance/components";
-import { TableColumn } from "@performance/components/Table";
+} from "src/app/performance-cn/toolkit/product";
+import { Table, Icon } from "src/app/performance-cn/components";
+import { TableColumn } from "src/app/performance-cn/components/Table";
 import { addCommas, round } from "@core/toolkit/stringUtils";
 
 import {
   EXPORT_CSV_STATS_TYPE,
   EXPORT_CSV_TYPE,
-} from "@performance/toolkit/enums";
-import { useExportCSV } from "@performance/toolkit/utils";
-import commonStyles from "@performance/styles/common.module.css";
+} from "src/app/performance-cn/toolkit/enums";
+import { useExportCSV } from "src/app/performance-cn/toolkit/utils";
+import commonStyles from "@performance-cn/styles/common.module.css";
 import PageHeader from "@core/components/PageHeader";
 import { merchFeUrl } from "@core/toolkit/router";
 import { useTheme } from "@core/stores/ThemeStore";

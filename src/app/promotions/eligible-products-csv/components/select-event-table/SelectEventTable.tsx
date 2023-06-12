@@ -8,7 +8,7 @@ import {
 } from "@ContextLogic/lego";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { ci18n, cni18n } from "@core/toolkit/i18n";
-import TableControl from "./TableControl";
+import TableControl from "@core/components/TableControl";
 import {
   MfpCampaignEventSortBy,
   MfpCampaignPromotionType,

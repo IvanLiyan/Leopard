@@ -42,6 +42,18 @@ const DARKEST_CYAN = "#1E6458";
 const DARKER_PURPLE = "#7443FF";
 const INK = "#152934";
 
+const UNBRANDED_COLORS = {
+  pie: [
+    "#56D0DA",
+    "#16A44C",
+    "#626AC0",
+    "#C8402A",
+    "#D07AB6",
+    "#C4D62D",
+    "#DC8115",
+  ],
+};
+
 const COMMON_THEME = {
   textWhite: PALETTES.WHITE,
   textUltraLighter: PALETTES.GREY["300"],
@@ -162,6 +174,9 @@ const COMMON_THEME = {
   metricCyan: PALETTES.CYAN["400"],
   metricBlue: PALETTES.BLUE["500"],
   metricPurple: PALETTES.PURPLE["400"],
+
+  vermillion: PALETTES.VERMILLION["400"],
+  ...UNBRANDED_COLORS,
 };
 
 /**
@@ -414,6 +429,9 @@ export interface AppTheme {
   readonly metricCyan: string;
   readonly metricBlue: string;
   readonly metricPurple: string;
+
+  readonly vermillion: string;
+  readonly pie: ReadonlyArray<string>;
 }
 
 // exported solely for adding theming to legacy CC components

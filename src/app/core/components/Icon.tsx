@@ -10,11 +10,13 @@ import React, { SVGProps } from "react";
 import {
   Icon as IconZ,
   IconProps as IconZProps,
-  IconName,
+  IconName as IconZName,
 } from "@ContextLogic/zeus";
 import { useTheme } from "@core/stores/ThemeStore";
 import { css } from "@core/toolkit/styling";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
+
+export type IconName = IconZName;
 
 export type IconProps = BaseProps &
   Omit<
@@ -841,6 +843,15 @@ const Icon: React.FC<IconProps> = (props: IconProps) => {
         colors={{ color1: color }}
       />
     ),
+    impressionBoost: (
+      <IconZ
+        className={css(className, style)}
+        size={size}
+        {...otherProps}
+        name="impressionBoost"
+        colors={{ color1: color }}
+      />
+    ),
     inbound: (
       <IconZ
         className={css(className, style)}
@@ -874,6 +885,15 @@ const Icon: React.FC<IconProps> = (props: IconProps) => {
         size={size}
         {...otherProps}
         name="increaseDecrease"
+        colors={{ color1: color }}
+      />
+    ),
+    increasedFees: (
+      <IconZ
+        className={css(className, style)}
+        size={size}
+        {...otherProps}
+        name="increasedFees"
         colors={{ color1: color }}
       />
     ),
@@ -1228,6 +1248,15 @@ const Icon: React.FC<IconProps> = (props: IconProps) => {
         colors={{ color1: color }}
       />
     ),
+    premierMerchant: (
+      <IconZ
+        className={css(className, style)}
+        size={size}
+        {...otherProps}
+        name="premierMerchant"
+        colors={{ color1: color }}
+      />
+    ),
     printer: (
       <IconZ
         className={css(className, style)}
@@ -1261,6 +1290,15 @@ const Icon: React.FC<IconProps> = (props: IconProps) => {
         size={size}
         {...otherProps}
         name="redo"
+        colors={{ color1: color }}
+      />
+    ),
+    reducedFees: (
+      <IconZ
+        className={css(className, style)}
+        size={size}
+        {...otherProps}
+        name="reducedFees"
         colors={{ color1: color }}
       />
     ),

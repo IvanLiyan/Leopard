@@ -7,7 +7,7 @@ import { Tooltip } from "@mui/material";
 import { css } from "@core/toolkit/styling";
 import { LoadingIndicator, Alert } from "@ContextLogic/lego";
 import Image from "@core/components/Image";
-import { Table, Icon } from "@performance/components";
+import { Table, Icon } from "src/app/performance-cn/components";
 import PageRoot from "@core/components/PageRoot";
 import { wishURL, contestImageURL, zendeskURL } from "@core/toolkit/url";
 import { merchFeUrl } from "@core/toolkit/router";
@@ -15,22 +15,22 @@ import { useToastStore } from "@core/stores/ToastStore";
 import {
   useDecodedProductBreakdownURI,
   useExportCSV,
-} from "@performance/toolkit/utils";
-import { TableColumn } from "@performance/components/Table";
-import useRefundBaseColumn from "@performance/components/refund/RefundBaseColumn";
+} from "src/app/performance-cn/toolkit/utils";
+import { TableColumn } from "src/app/performance-cn/components/Table";
+import useRefundBaseColumn from "src/app/performance-cn/components/refund/RefundBaseColumn";
 import store, {
   PERFORMANCE_BREAKDOWN_DATA_QUERY,
   AugmentedRefundBreakdown,
   BreakdownRequestArgs,
   RefundBreakdownResponseData,
-} from "@performance/stores/Refund";
+} from "src/app/performance-cn/stores/Refund";
 import {
   PER_PAGE_LIMIT,
   EXPORT_CSV_STATS_TYPE,
   EXPORT_CSV_TYPE,
-} from "@performance/toolkit/enums";
-import styles from "@performance/styles/refund.module.css";
-import commonStyles from "@performance/styles/common.module.css";
+} from "src/app/performance-cn/toolkit/enums";
+import styles from "@performance-cn/styles/refund.module.css";
+import commonStyles from "@performance-cn/styles/common.module.css";
 import PageHeader from "@core/components/PageHeader";
 import PageGuide from "@core/components/PageGuide";
 import { addCommas } from "@core/toolkit/stringUtils";

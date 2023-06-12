@@ -12,23 +12,23 @@ import PageRoot from "@core/components/PageRoot";
 import {
   useDecodedProductBreakdownURI,
   useExportCSV,
-} from "@performance/toolkit/utils";
-import { Table, Icon } from "@performance/components";
-import { TableColumn } from "@performance/components/Table";
-import useSalesBaseColumn from "@performance/components/sales/SalesBaseColumn";
+} from "src/app/performance-cn/toolkit/utils";
+import { Table, Icon } from "src/app/performance-cn/components";
+import { TableColumn } from "src/app/performance-cn/components/Table";
+import useSalesBaseColumn from "src/app/performance-cn/components/sales/SalesBaseColumn";
 import {
   PERFORMANCE_BREAKDOWN_DATA_QUERY,
   AugmentedSalesBreakdown,
   SalesProductBreakdownResponseData,
   BreakdownRequestArgs,
-} from "@performance/toolkit/salesProductBreakdown";
+} from "src/app/performance-cn/toolkit/salesProductBreakdown";
 import {
   PER_PAGE_LIMIT,
   EXPORT_CSV_STATS_TYPE,
   EXPORT_CSV_TYPE,
-} from "@performance/toolkit/enums";
-import styles from "@performance/styles/sales.module.css";
-import commonStyles from "@performance/styles/common.module.css";
+} from "src/app/performance-cn/toolkit/enums";
+import styles from "@performance-cn/styles/sales.module.css";
+import commonStyles from "@performance-cn/styles/common.module.css";
 import Link from "@core/components/Link";
 import { merchFeUrl } from "@core/toolkit/router";
 import PageGuide from "@core/components/PageGuide";

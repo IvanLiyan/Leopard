@@ -2,19 +2,19 @@ import { NextPage } from "next";
 import { observer } from "mobx-react";
 import React, { useState } from "react";
 import { Alert } from "@ContextLogic/lego";
-import { Tabs, Tab, TabPanel } from "@performance/components";
-import AggregateRating from "@performance/components/rating/AggregateRating";
-import ProductRating from "@performance/components/rating/ProductRating";
-import StoreRating from "@performance/components/rating/StoreRating";
-import WeeklyStoreRating from "@performance/components/rating/WeeklyStoreRating";
-import WeeklyProductRating from "@performance/components/rating/WeeklyProductRating";
-import StoreRatingsBreakdown from "@performance/components/rating/StoreRatingsBreakdown";
-import ProductRatingsBreakdown from "@performance/components/rating/ProductRatingsBreakdown";
+import { Tabs, Tab, TabPanel } from "src/app/performance-cn/components";
+import AggregateRating from "src/app/performance-cn/components/rating/AggregateRating";
+import ProductRating from "src/app/performance-cn/components/rating/ProductRating";
+import StoreRating from "src/app/performance-cn/components/rating/StoreRating";
+import WeeklyStoreRating from "src/app/performance-cn/components/rating/WeeklyStoreRating";
+import WeeklyProductRating from "src/app/performance-cn/components/rating/WeeklyProductRating";
+import StoreRatingsBreakdown from "src/app/performance-cn/components/rating/StoreRatingsBreakdown";
+import ProductRatingsBreakdown from "src/app/performance-cn/components/rating/ProductRatingsBreakdown";
 import PageRoot from "@core/components/PageRoot";
 import { merchFeUrl } from "@core/toolkit/router";
 import PageGuide from "@core/components/PageGuide";
 import PageHeader from "@core/components/PageHeader";
-import { RATING_TAB_TYPE } from "@performance/toolkit/enums";
+import { RATING_TAB_TYPE } from "src/app/performance-cn/toolkit/enums";
 
 const RatingPerformance: NextPage<Record<string, never>> = () => {
   const [ratingTabType, setRatingTabType] = useState(

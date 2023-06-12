@@ -28,6 +28,7 @@
       "@infractions/*": ["src/app/infractions/*"],
       "@landing-pages/*": ["src/app/landing-pages/*"],
       "@performance/*": ["src/app/performance/*"],
+      "@performance-cn/*": ["src/app/performance-cn/*"],
       "@product-compliance-center/*": ["src/app/product-compliance-center/*"],
       "@products-csv/*": ["src/app/products-csv/*"],
       "@promotions/*": ["src/app/promotions/*"],
