@@ -24,7 +24,7 @@ import { merchFeUrl } from "@core/toolkit/router";
 type Props = BaseProps;
 
 const AnnouncementsSection: React.FC<Props> = ({ style, className }: Props) => {
-  const { nonBatchingClient } = useApolloStore();
+  const { client } = useApolloStore();
 
   const toastStore = useToastStore();
 
@@ -36,7 +36,7 @@ const AnnouncementsSection: React.FC<Props> = ({ style, className }: Props) => {
     GetUserAnnouncementsV2ResponseType,
     AnnouncementsForUsersV2SchemaListArgs
   >(GET_USER_ANNOUNCEMENTS_V2, {
-    client: nonBatchingClient,
+    client: client,
     variables: {
       announcementType:
         AnnouncementTypeConstants.ANNOUNCEMENT_TYPE_SYSTEM_UPDATE,

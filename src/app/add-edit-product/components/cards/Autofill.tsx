@@ -46,7 +46,7 @@ type Props = Omit<SectionProps, "title"> & {
 const Autofill: React.FC<Props> = (props: Props) => {
   const styles = useStylesheet();
 
-  const { nonBatchingClient: client } = useApolloStore();
+  const { client } = useApolloStore();
   const toastStore = useToastStore();
   const { negative } = useTheme();
 

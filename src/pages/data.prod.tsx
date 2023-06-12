@@ -9,7 +9,7 @@ import { useApolloStore } from "@core/stores/ApolloStore";
 import FullPageError from "@core/components/FullPageError";
 
 const GQLPlaygroundPage: NextPage<Record<string, never>> = () => {
-  const { nonBatchingClient } = useApolloStore();
+  const { client } = useApolloStore();
   const { data, loading } = useQuery<{
     readonly su?: {
       readonly id: string;
@@ -28,7 +28,7 @@ const GQLPlaygroundPage: NextPage<Record<string, never>> = () => {
         }
       }
     `,
-    { client: nonBatchingClient },
+    { client },
   );
 
   if (loading) {

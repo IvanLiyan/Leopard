@@ -33,7 +33,7 @@ import Cookies from "js-cookie";
 type ModalState = "OPEN" | "DISMISSED" | "QUEUED";
 
 const AnnouncementModals: React.FC = () => {
-  const { nonBatchingClient } = useApolloStore();
+  const { client } = useApolloStore();
 
   const [hasEnqueued, setHasEnqueued] = useState(false);
 
@@ -88,7 +88,7 @@ const AnnouncementModals: React.FC = () => {
       offset: 0,
       limit: 1,
     },
-    client: nonBatchingClient,
+    client: client,
   });
 
   const {

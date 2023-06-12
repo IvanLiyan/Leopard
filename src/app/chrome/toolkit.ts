@@ -209,7 +209,7 @@ export const useAppTopBarData = (): QueryResult<
   GetAppTopbarDataResponse,
   void
 > => {
-  const { nonBatchingClient: client } = useApolloStore();
+  const { client } = useApolloStore();
   return useQuery<GetAppTopbarDataResponse, void>(GET_APP_TOPBAR_DATA_QUERY, {
     client,
   });
