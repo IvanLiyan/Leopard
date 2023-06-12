@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from "react";
 import { observer } from "mobx-react";
 import { StyleSheet } from "aphrodite";
+import Cookies from "js-cookie";
 import { NextPage } from "next";
 import PageRoot from "@core/components/PageRoot";
 import { useTheme } from "@core/stores/ThemeStore";
@@ -16,7 +17,9 @@ import { merchFeUrl, useRouter } from "@core/toolkit/router";
 
 const ProductsCsvPage: NextPage<Record<string, never>> = () => {
   const styles = useStylesheet();
-  const [isAlertOpen, setIsAlertOpen] = useState<boolean>(true);
+  const [isAlertOpen, setIsAlertOpen] = useState<boolean>(
+    Cookies.get("csv-revamp-alert-dismissed") !== "true",
+  );
   const { decision: showCsvRevamp, isLoading: isLoadingShowCsvRevamp } =
     useDeciderKey("show_csv_revamp_ui");
   const router = useRouter();
@@ -24,8 +27,8 @@ const ProductsCsvPage: NextPage<Record<string, never>> = () => {
   if (isLoadingShowCsvRevamp) {
     return (
       <PageRoot style={{ padding: "20px" }}>
-        <Skeleton height="20%" sx={{ marginBottom: "20px" }} />
-        <Skeleton height="80%" />
+        <Skeleton height={100} sx={{ marginBottom: "20px" }} />
+        <Skeleton height={800} />
       </PageRoot>
     );
   }
@@ -43,6 +46,9 @@ const ProductsCsvPage: NextPage<Record<string, never>> = () => {
           <Alert
             severity="info"
             onClose={() => {
+              Cookies.set("csv-revamp-alert-dismissed", "true", {
+                expires: 3652,
+              }); // 10 years
               setIsAlertOpen(false);
             }}
             sx={{ marginBottom: "40px" }}

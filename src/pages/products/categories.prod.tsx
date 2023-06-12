@@ -19,8 +19,8 @@ const CategoriesAttributesPage: NextPage<Record<string, never>> = () => {
   if (isLoadingShowCsvRevamp) {
     return (
       <PageRoot style={{ padding: "20px" }}>
-        <Skeleton height="20%" sx={{ marginBottom: "20px" }} />
-        <Skeleton height="80%" />
+        <Skeleton height={100} sx={{ marginBottom: "20px" }} />
+        <Skeleton height={800} />
       </PageRoot>
     );
   }

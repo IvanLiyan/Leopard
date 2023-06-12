@@ -45,10 +45,6 @@ const AllCategories: React.FC = () => {
       return <Skeleton height={300} sx={{ marginTop: "16px" }} />;
     }
 
-    if (categoryMap.size === 0) {
-      return null;
-    }
-
     return (
       <TaxonomyCategorySelectSection
         style={{ marginTop: "16px" }}

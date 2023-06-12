@@ -73,10 +73,6 @@ const DownloadTemplateSection: React.FC = () => {
       return <Skeleton width="100%" height={100} />;
     }
 
-    if (categoryMap.size === 0) {
-      return null;
-    }
-
     return (
       <TaxonomyCategorySelectSection
         initialCategoryTreeMap={categoryMap}
