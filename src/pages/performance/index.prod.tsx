@@ -3,12 +3,11 @@ import { NextPage } from "next";
 import { observer } from "mobx-react";
 import { StyleSheet } from "aphrodite";
 
-import { Pager, Layout, H6 } from "@ContextLogic/lego";
+import { Pager } from "@ContextLogic/lego";
 import { Text } from "@ContextLogic/atlas-ui";
 
 import { css } from "@core/toolkit/styling";
 import { useStringQueryParam } from "@core/toolkit/url";
-import { useTheme } from "@core/stores/ThemeStore";
 import PageHeader from "@core/components/PageHeader";
 
 import PerformanceStoreMetricsSection from "@performance/migrated/sales-metrics-components/PerformanceStoreMetricsSection";
@@ -25,6 +24,7 @@ import {
 import PageRoot from "@core/components/PageRoot";
 import Skeleton from "@core/components/Skeleton";
 import { RelaxedSidePadding } from "@core/components/PageGuide";
+import { ci18n } from "@core/toolkit/i18n";
 
 const PageLayout: React.FC = ({ children }) => {
   return (
@@ -69,7 +69,12 @@ const PerformanceOverviewPage: NextPage<Record<string, never>> = () => {
   if (loading) {
     return (
       <PageLayout>
-        <Skeleton height={720} />
+        <Skeleton
+          sx={{
+            margin: `32px ${RelaxedSidePadding} 0px ${RelaxedSidePadding}`,
+          }}
+          height={1920}
+        />
       </PageLayout>
     );
   }
@@ -81,10 +86,6 @@ const PerformanceOverviewPage: NextPage<Record<string, never>> = () => {
       </PageLayout>
     );
   }
-
-  const renderNewBadge = () => (
-    <Layout.FlexRow style={styles.newBadge}>New</Layout.FlexRow>
-  );
 
   return (
     <PageLayout>
@@ -103,11 +104,7 @@ const PerformanceOverviewPage: NextPage<Record<string, never>> = () => {
       >
         <Pager.Content
           tabKey="metrics"
-          titleValue={() => (
-            <Layout.FlexRow justifyContent="center" style={styles.tab}>
-              <H6>Sales Metrics</H6>
-            </Layout.FlexRow>
-          )}
+          titleValue={ci18n("title of tab on page", "Sales Metrics")}
         >
           <PerformanceStoreMetricsSection
             initialData={initialData}
@@ -116,12 +113,7 @@ const PerformanceOverviewPage: NextPage<Record<string, never>> = () => {
         </Pager.Content>
         <Pager.Content
           tabKey="wish-standards"
-          titleValue={() => (
-            <Layout.FlexRow justifyContent="center" style={styles.tab}>
-              <H6>Wish Standards</H6>
-              {renderNewBadge()}
-            </Layout.FlexRow>
-          )}
+          titleValue={ci18n("title of tab on page", "Wish Standards")}
         >
           <MerchantScoreSection
             initialData={initialData}
@@ -134,36 +126,14 @@ const PerformanceOverviewPage: NextPage<Record<string, never>> = () => {
 };
 
 const useStylesheet = () => {
-  const { pageBackground, secondaryDark, textWhite } = useTheme();
   return useMemo(
     () =>
       StyleSheet.create({
-        root: {
-          backgroundColor: pageBackground,
-        },
         section: {
           marginTop: 32,
-          zIndex: 200,
-        },
-        text: {
-          marginTop: 8,
-        },
-        newLabel: {
-          marginLeft: 16,
-        },
-        tab: {
-          padding: "12px 20px",
-        },
-        newBadge: {
-          fontSize: 12,
-          color: textWhite,
-          backgroundColor: secondaryDark,
-          padding: "4px 8px",
-          borderRadius: 14,
-          marginLeft: 8,
         },
       }),
-    [pageBackground, secondaryDark, textWhite],
+    [],
   );
 };
 

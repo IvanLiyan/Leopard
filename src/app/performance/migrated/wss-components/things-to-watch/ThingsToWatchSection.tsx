@@ -1,11 +1,4 @@
-import {
-  CellInfo,
-  Layout,
-  LoadingIndicator,
-  Markdown,
-  Table,
-  Text,
-} from "@ContextLogic/lego";
+import { CellInfo, Layout, Markdown, Table, Text } from "@ContextLogic/lego";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { ci18n } from "@core/toolkit/i18n";
 import Icon, { IconProps } from "@core/components/Icon";
@@ -28,6 +21,7 @@ import { observer } from "mobx-react";
 import numeral from "numeral";
 import React, { useMemo } from "react";
 import { useQuery } from "@apollo/client";
+import Skeleton from "@core/components/Skeleton";
 
 type Props = BaseProps & {
   readonly wssDetails?: PickedMerchantWssDetails | null;
@@ -45,8 +39,24 @@ type TableData = {
 const ThingsToWatchSection: React.FC<Props> = ({
   className,
   style,
-  wssDetails,
+  ...rest
 }) => {
+  return (
+    <WssSection
+      style={[className, style]}
+      title={ci18n(
+        "Title of card that displays the top 3 metrics to be improved",
+        "Things to Watch",
+      )}
+    >
+      <ThingsToWatchSectionBody {...rest} />
+    </WssSection>
+  );
+};
+
+const ThingsToWatchSectionBody: React.FC<{
+  readonly wssDetails?: PickedMerchantWssDetails | null;
+}> = ({ wssDetails }) => {
   const styles = useStylesheet();
   const trendIcon = useTrendIcon();
   const noDataMessage = useNoOpportunityMessage(wssDetails);
@@ -110,17 +120,11 @@ const ThingsToWatchSection: React.FC<Props> = ({
       .slice(0, 3);
 
   if (loading) {
-    return <LoadingIndicator />;
+    return <Skeleton height="100%" width="50vw" />;
   }
 
   return (
-    <WssSection
-      style={[className, style]}
-      title={ci18n(
-        "Title of card that displays the top 3 metrics to be improved",
-        "Things to Watch",
-      )}
-    >
+    <>
       {!tableData?.length && noDataMessage ? (
         <Layout.FlexColumn justifyContent="center" style={styles.card}>
           <Markdown style={{ textAlign: "center" }} text={noDataMessage} />
@@ -224,7 +228,7 @@ const ThingsToWatchSection: React.FC<Props> = ({
           </Table>
         </Layout.FlexColumn>
       )}
-    </WssSection>
+    </>
   );
 };
 

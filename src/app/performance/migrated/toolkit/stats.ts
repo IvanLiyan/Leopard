@@ -107,6 +107,7 @@ export type PickedWishSellerStandardStats = Pick<
   | "productLogisticsRefundRate"
   | "maturedOrderCount"
   | "ninetyDayOrderCount"
+  | "badProductRate"
 > & {
   readonly fulfillmentSpeed?: Pick<
     Timedelta,
@@ -474,6 +475,17 @@ export const LOGISTICS_REFUND_RATE = [0.1, 0.08, 0.04, 0.02, 0] as const;
 export const QUALITY_REFUND_RATE = [0.05, 0.02, 0.01, 0.005, 0] as const;
 export const VALID_TRACKING_RATE = [0.95, 0.97, 0.99, 0.995, 1] as const;
 export const FULFILLMENT_SPEED_RATE = [5, 2, 1.5, 1.0, 1.0] as const;
+// Below are new ranges; will enable behind dkey once we confirm whether they are
+// active during the transition or post transition state TODO [lliepert]
+// export const USER_RATING = [3.5, 4, 4.3, 4.5, 5.0] as const;
+// export const ORDER_FULFILLMENT_RATE = [0.97, 0.985, 0.995, 0.998, 1] as const;
+// export const QUALITY_REFUND_RATE = [0.05, 0.02, 0.01, 0.005, 0] as const;
+// export const LOGISTICS_REFUND_RATE = [0.04, 0.02, 0.015, 0.01, 0] as const;
+// export const VALID_TRACKING_RATE = [0.95, 0.97, 0.99, 0.995, 1] as const;
+// export const FULFILLMENT_SPEED_RATE = [3, 2, 1.5, 1.0, 1.0] as const;
+export const UNDERPERFORMING_PRODUCT_RATE = [
+  0.09, 0.05, 0.03, 0.015, 0,
+] as const;
 
 const USER_RATING_IMPERFECT_BEST = 4.9;
 const ORDER_FULFILLMENT_RATE_IMPERFECT_BEST = 0.999;
@@ -850,6 +862,38 @@ const getFulfillmentSpeedData = (
   };
 };
 
+const getUnderperformingProducts = (
+  stats:
+    | Pick<PickedWishSellerStandardStats, "badProductRate">
+    | null
+    | undefined,
+): ScoreData => {
+  if (stats?.badProductRate == null) {
+    return getScoreData({
+      currentScore: null,
+      thresholds: UNDERPERFORMING_PRODUCT_RATE,
+      displayFormat: "0.0%",
+      desc: true,
+    });
+  }
+
+  const currentScore =
+    stats.badProductRate ==
+    UNDERPERFORMING_PRODUCT_RATE[UNDERPERFORMING_PRODUCT_RATE.length - 1]
+      ? stats.badProductRate
+      : Math.max(
+          round(stats.badProductRate, 3),
+          QUALITY_REFUND_RATE_IMPERFECT_BEST,
+        );
+
+  return getScoreData({
+    currentScore,
+    thresholds: UNDERPERFORMING_PRODUCT_RATE,
+    displayFormat: "0.0%",
+    desc: true,
+  });
+};
+
 // Will NOT round to perfect metric value
 export const metricsDataMap = {
   userRating: getAverageUserRatingData,
@@ -858,6 +902,7 @@ export const metricsDataMap = {
   productQualityRefundRate: getQualityRefundData,
   productLogisticsRefundRate: getLogisticsRefundData,
   fulfillmentSpeed: getFulfillmentSpeedData,
+  underperformingProducts: getUnderperformingProducts,
 } as const;
 
 const countMetrics = (
@@ -1051,6 +1096,7 @@ export const MERCHANT_SCORE_QUERY = gql`
           validTrackingRate
           productQualityRefundRate
           productLogisticsRefundRate
+          badProductRate
           fulfillmentSpeed {
             days
             hours
@@ -1072,6 +1118,7 @@ export const MERCHANT_SCORE_QUERY = gql`
           validTrackingRate
           productQualityRefundRate
           productLogisticsRefundRate
+          badProductRate
           fulfillmentSpeed {
             days
             hours

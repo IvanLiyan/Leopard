@@ -20,10 +20,11 @@ import PerformanceMetricsCardV2, {
   PerformanceMetricsCardPropsV2,
 } from "./PerformanceMetricsCardV2";
 import WssSection from "./WssSection";
+import Skeleton from "@core/components/Skeleton";
+import { useDeciderKey } from "@core/stores/ExperimentStore";
 
 type PerformanceMetricsProps = BaseProps & {
   readonly wssDetails?: PickedMerchantWssDetails | null;
-  readonly wssInsights?: boolean | null;
 };
 
 type MetricType = keyof typeof metricsDataMap;
@@ -35,20 +36,93 @@ const MetricLinkByType: { readonly [T in MetricType]: string } = {
   productQualityRefundRate: "/performance/wish-standards/quality-refund",
   productLogisticsRefundRate: "/performance/wish-standards/logistics-refund",
   fulfillmentSpeed: "/performance/wish-standards/fulfillment-speed",
+  underperformingProducts:
+    "/performance/wish-standards/underperforming-products", // TODO [lliepert] make this page
 };
 
 const PerformanceMetrics: React.FC<PerformanceMetricsProps> = (props) => {
-  const { className, style, wssDetails, wssInsights } = props;
+  const { className, style, wssDetails } = props;
   const stats = wssDetails?.stats;
-  const monthlyUpdateStats = wssDetails?.monthlyUpdateStats;
   const endDateMetricsWindow =
     wssDetails?.endDateForLastMonthlyUpdateCalcWindow;
 
   const { primary } = useTheme();
+  const styles = useStylesheet();
+  const learnMore = zendeskURL("4409934726683");
+
+  const todayMetricsPopover = stats
+    ? `${formatDatetimeLocalized(
+        moment.unix(stats.date.unix).subtract(90, "days"),
+        "LL",
+      )} - ${formatDatetimeLocalized(moment.unix(stats.date.unix), "LL")}`
+    : "-";
+
+  const lastUpdateMetricsPopever = endDateMetricsWindow
+    ? `${formatDatetimeLocalized(
+        moment.unix(endDateMetricsWindow.unix).subtract(90, "days"),
+        "LL",
+      )} - ${formatDatetimeLocalized(
+        moment.unix(endDateMetricsWindow.unix),
+        "LL",
+      )}`
+    : "-";
+
+  return (
+    <WssSection
+      style={[className, style]}
+      title={i`Performance Metrics`}
+      subtitle={() => (
+        <>
+          <Layout.FlexRow>
+            <Markdown
+              style={styles.subtitleText}
+              text={i`Wish calculates your metrics for **Today** on a ${90}-day rolling basis.`}
+            />
+            <Popover popoverContent={todayMetricsPopover}>
+              <Icon
+                style={styles.calendarIcon}
+                name="calendar"
+                size={20}
+                color={primary}
+              />
+            </Popover>
+          </Layout.FlexRow>
+          <Layout.FlexRow>
+            <Markdown
+              style={styles.subtitleText}
+              text={i`Wish also calculates your metrics for your **Last update** on a ${90}-day basis.`}
+            />
+            <Popover popoverContent={lastUpdateMetricsPopever}>
+              <Icon
+                style={styles.calendarIcon}
+                name="calendar"
+                size={20}
+                color={primary}
+              />
+            </Popover>
+            <Markdown
+              style={styles.subtitleText}
+              text={i`[Learn more](${learnMore})`}
+              openLinksInNewTab
+            />
+          </Layout.FlexRow>
+        </>
+      )}
+    >
+      <PerformanceMetricsBody wssDetails={wssDetails} />
+    </WssSection>
+  );
+};
+
+const PerformanceMetricsBody: React.FC<
+  Pick<PerformanceMetricsProps, "wssDetails">
+> = ({ wssDetails }) => {
+  const stats = wssDetails?.stats;
+  const monthlyUpdateStats = wssDetails?.monthlyUpdateStats;
+
   const trendIcon = useTrendIcon();
   const { isVerySmallScreen } = useDeviceStore();
   const styles = useStylesheet();
-  const learnMore = zendeskURL("4409934726683");
 
   const getCardProps = (
     metricName: MetricType,
@@ -110,108 +184,103 @@ const PerformanceMetrics: React.FC<PerformanceMetricsProps> = (props) => {
     };
   };
 
-  const todayMetricsPopover = stats
-    ? `${formatDatetimeLocalized(
-        moment.unix(stats.date.unix).subtract(90, "days"),
-        "LL",
-      )} - ${formatDatetimeLocalized(moment.unix(stats.date.unix), "LL")}`
-    : "-";
+  const {
+    decision: wss2p0InTransitionState,
+    isLoading: wss2p0InTransitionStateLoading,
+  } = useDeciderKey("wss_2_0_transition_state");
+  const {
+    decision: wss2p0InPostTransitionState,
+    isLoading: wss2p0InPostTransitionStateLoading,
+  } = useDeciderKey("wss_2_0_post_transition_state");
 
-  const lastUpdateMetricsPopever = endDateMetricsWindow
-    ? `${formatDatetimeLocalized(
-        moment.unix(endDateMetricsWindow.unix).subtract(90, "days"),
-        "LL",
-      )} - ${formatDatetimeLocalized(
-        moment.unix(endDateMetricsWindow.unix),
-        "LL",
-      )}`
-    : "-";
+  if (wss2p0InTransitionStateLoading || wss2p0InPostTransitionStateLoading) {
+    return <Skeleton height={434} />;
+  }
 
   return (
-    <WssSection
-      style={[className, style]}
-      title={i`Performance Metrics`}
-      subtitle={() => (
+    <Layout.GridRow
+      style={styles.body}
+      templateColumns="repeat(3, 1fr)"
+      smallScreenTemplateColumns={isVerySmallScreen ? "1fr" : "1fr 1fr"}
+    >
+      {!wss2p0InPostTransitionState ? (
         <>
-          <Layout.FlexRow>
-            <Markdown
-              style={styles.subtitleText}
-              text={i`Wish calculates your metrics for **Today** on a ${90}-day rolling basis.`}
+          <PerformanceMetricsCardV2
+            title={i`Average user rating`}
+            info={i`Average of product ratings on your orders`}
+            {...getCardProps("userRating")}
+          />
+          <PerformanceMetricsCardV2
+            title={i`Order fulfillment rate`}
+            info={i`Share of orders successfully fulfilled`}
+            {...getCardProps("orderFultillmentRate")}
+          />
+          <PerformanceMetricsCardV2
+            title={i`Product quality refund`}
+            info={i`Share of orders refunded due to product quality`}
+            {...getCardProps("productQualityRefundRate")}
+          />
+          <PerformanceMetricsCardV2
+            title={i`Confirmed fulfillment speed`}
+            info={i`Average time for an order to be confirmed fulfilled`}
+            {...getCardProps("fulfillmentSpeed")}
+          />
+          <PerformanceMetricsCardV2
+            title={i`Valid tracking rate`}
+            info={i`Share of 'marked shipped' orders that are 'confirmed shipped'`}
+            {...getCardProps("validTrackingRate")}
+          />
+          <PerformanceMetricsCardV2
+            title={i`Logistics refund`}
+            info={i`Share of orders refunded due to fulfillment related reasons`}
+            {...getCardProps("productLogisticsRefundRate")}
+          />
+          {wss2p0InTransitionState && (
+            <PerformanceMetricsCardV2
+              title={i`Underperforming products`}
+              info={i`Share of products in the last 90 days with high product quality refunds and low ratings`}
+              {...getCardProps("underperformingProducts")}
+              isNew
+              showDelayedImpactBanner
             />
-            <Popover popoverContent={todayMetricsPopover}>
-              <Icon
-                style={styles.calendarIcon}
-                name="calendar"
-                size={20}
-                color={primary}
-              />
-            </Popover>
-          </Layout.FlexRow>
-          <Layout.FlexRow>
-            <Markdown
-              style={styles.subtitleText}
-              text={i`Wish also calculates your metrics for your **Last update** on a ${90}-day basis.`}
-            />
-            <Popover popoverContent={lastUpdateMetricsPopever}>
-              <Icon
-                style={styles.calendarIcon}
-                name="calendar"
-                size={20}
-                color={primary}
-              />
-            </Popover>
-            <Markdown
-              style={styles.subtitleText}
-              text={i`[Learn more](${learnMore})`}
-              openLinksInNewTab
-            />
-          </Layout.FlexRow>
+          )}
+        </>
+      ) : (
+        <>
+          <PerformanceMetricsCardV2
+            title={i`Underperforming products`}
+            info={i`Share of products in the last 90 days with high product quality refunds and low ratings`}
+            {...getCardProps("underperformingProducts")}
+            isNew
+          />
+          <PerformanceMetricsCardV2
+            title={i`Product quality refund`}
+            info={i`Share of orders refunded due to product quality`}
+            {...getCardProps("productQualityRefundRate")}
+          />
+          <PerformanceMetricsCardV2
+            title={i`Confirmed fulfillment speed`}
+            info={i`Average time for an order to be confirmed fulfilled`}
+            {...getCardProps("fulfillmentSpeed")}
+          />
+          <PerformanceMetricsCardV2
+            title={i`Order fulfillment rate`}
+            info={i`Share of orders successfully fulfilled`}
+            {...getCardProps("orderFultillmentRate")}
+          />
+          <PerformanceMetricsCardV2
+            title={i`Average user rating`}
+            info={i`Average of product ratings on your orders`}
+            {...getCardProps("userRating")}
+          />
+          <PerformanceMetricsCardV2
+            title={i`Logistics refund`}
+            info={i`Share of orders refunded due to fulfillment related reasons`}
+            {...getCardProps("productLogisticsRefundRate")}
+          />
         </>
       )}
-    >
-      <Layout.GridRow
-        style={styles.body}
-        templateColumns="repeat(3, 1fr)"
-        smallScreenTemplateColumns={isVerySmallScreen ? "1fr" : "1fr 1fr"}
-      >
-        <PerformanceMetricsCardV2
-          icon={wssInsights ? undefined : "halfStar"}
-          title={i`Average user rating`}
-          info={i`Average of product ratings on your orders`}
-          {...getCardProps("userRating")}
-        />
-        <PerformanceMetricsCardV2
-          icon={wssInsights ? undefined : "truck"}
-          title={i`Order fulfillment rate`}
-          info={i`Share of orders successfully fulfilled`}
-          {...getCardProps("orderFultillmentRate")}
-        />
-        <PerformanceMetricsCardV2
-          icon={wssInsights ? undefined : "return"}
-          title={i`Product quality refund`}
-          info={i`Share of orders refunded due to product quality`}
-          {...getCardProps("productQualityRefundRate")}
-        />
-        <PerformanceMetricsCardV2
-          icon={wssInsights ? undefined : "airplane"}
-          title={i`Confirmed fulfillment speed`}
-          info={i`Average time for an order to be confirmed fulfilled`}
-          {...getCardProps("fulfillmentSpeed")}
-        />
-        <PerformanceMetricsCardV2
-          icon={wssInsights ? undefined : "barcode"}
-          title={i`Valid tracking rate`}
-          info={i`Share of 'marked shipped' orders that are 'confirmed shipped'`}
-          {...getCardProps("validTrackingRate")}
-        />
-        <PerformanceMetricsCardV2
-          icon={wssInsights ? undefined : "ship"}
-          title={i`Logistics refund`}
-          info={i`Share of orders refunded due to fulfillment related reasons`}
-          {...getCardProps("productLogisticsRefundRate")}
-        />
-      </Layout.GridRow>
-    </WssSection>
+    </Layout.GridRow>
   );
 };
 

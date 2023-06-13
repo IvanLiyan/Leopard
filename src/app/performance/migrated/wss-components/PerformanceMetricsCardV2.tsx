@@ -9,7 +9,7 @@ import { Info, Layout, Text } from "@ContextLogic/lego";
 import Link from "@core/components/Link";
 
 /* Merchant Components */
-import Icon, { IconProps } from "@core/components/Icon";
+import Icon from "@core/components/Icon";
 import Illustration from "@core/components/Illustration";
 
 /* Store */
@@ -21,6 +21,8 @@ import { useTierThemesV2 } from "@performance/migrated/toolkit/stats";
 
 /* Types */
 import { WssMerchantLevelType } from "@schema";
+import Chip from "@mui/material/Chip";
+import { Alert } from "@ContextLogic/atlas-ui";
 
 type Score = {
   readonly level: WssMerchantLevelType | "PERFECT";
@@ -28,7 +30,6 @@ type Score = {
 };
 
 export type PerformanceMetricsCardPropsV2 = BaseProps & {
-  readonly icon?: IconProps["name"];
   readonly title: string;
   readonly info: string;
   readonly href?: string;
@@ -39,20 +40,22 @@ export type PerformanceMetricsCardPropsV2 = BaseProps & {
     readonly lastUpdated: Score;
     readonly goal: Score;
   };
+  isNew?: boolean;
+  showDelayedImpactBanner?: boolean; // this prop can be removed when cleaning up dkey wss_2_0_post_transition_state
 };
 
 const PerformanceMetricsCardV2: React.FC<PerformanceMetricsCardPropsV2> = ({
   className,
   style,
-  icon,
   title,
   info,
   href,
   compareIcon,
   deltaText,
   stats,
+  isNew,
+  showDelayedImpactBanner,
 }) => {
-  const { textDark } = useTheme();
   const styles = useStylesheet();
   const tierThemes = useTierThemesV2();
 
@@ -93,11 +96,31 @@ const PerformanceMetricsCardV2: React.FC<PerformanceMetricsCardPropsV2> = ({
   return (
     <Layout.FlexColumn style={[styles.root, className, style]}>
       <Layout.FlexRow style={styles.headerRow}>
-        {!!icon && <Icon name={icon} size={32} color={textDark} />}
         <Text weight="semibold" style={styles.title}>
           {title}
         </Text>
         <Info style={styles.icon} text={info} size={20} sentiment="info" />
+        {isNew && (
+          <>
+            <div style={{ flex: 1 }} />
+            <Chip
+              label={ci18n("label indicating a new feature", "New")}
+              icon={
+                <Icon
+                  style={{ paddingLeft: "7px" }}
+                  size="small"
+                  color="white"
+                  name="thumbsUp" // TODO: add proper icon to atlas-ui
+                />
+              }
+              color="primary"
+              variant={"filled"}
+              sx={{
+                fontFamily: "Proxima",
+              }}
+            />
+          </>
+        )}
       </Layout.FlexRow>
 
       <Layout.FlexRow>
@@ -160,6 +183,12 @@ const PerformanceMetricsCardV2: React.FC<PerformanceMetricsCardPropsV2> = ({
             )}
           </Text>
         </Link>
+      )}
+      {showDelayedImpactBanner && (
+        <Alert severity="info" icon={false}>
+          IMPORTANT: This new metric will not impact your Wish Standards Tier
+          until August 6th, 2023.
+        </Alert>
       )}
     </Layout.FlexColumn>
   );

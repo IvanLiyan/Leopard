@@ -1,10 +1,9 @@
 import { useQuery } from "@apollo/client";
-import { Layout, LoadingIndicator } from "@ContextLogic/lego";
+import { Layout } from "@ContextLogic/lego";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import ThingsToWatchSection from "./things-to-watch/ThingsToWatchSection";
 import TierSection from "./tier/TierSection";
 import InfractionsSection from "./infractions/InfractionsSection";
-import { useDeciderKey } from "@core/stores/ExperimentStore";
 import {
   MerchantScoreResponseData,
   MERCHANT_SCORE_QUERY,
@@ -14,12 +13,10 @@ import { StyleSheet } from "aphrodite";
 import { observer } from "mobx-react";
 import React, { useMemo } from "react";
 import CustomerService from "./CustomerService";
-import Infractions from "./Infractions";
-import Overview from "./Overview";
 import PerformanceMetrics from "./PerformanceMetrics";
 import TierDetails from "./TierDetails";
 import WssBanner from "./WssBanner";
-import { useUserStore } from "@core/stores/UserStore";
+import Skeleton from "@core/components/Skeleton";
 
 type Props = BaseProps & {
   readonly initialData: PerformanceHealthInitialData;
@@ -38,40 +35,22 @@ const Dashboard: React.FC<Props> = (props: Props) => {
       fetchPolicy: "no-cache",
     },
   );
-  const { decision: wssInsights, isLoading: wssInsightsLoading } =
-    useDeciderKey("wss_insights");
-  const { isSu } = useUserStore();
 
   const wssDetails = data?.currentMerchant.wishSellerStandard;
 
-  if (loading || wssInsightsLoading) {
-    return <LoadingIndicator />;
+  if (loading) {
+    return <Skeleton height={1920} />;
   }
 
   return (
     <Layout.FlexColumn style={[styles.root, className, style]}>
-      <WssBanner
-        merchantState={state}
-        wssDetails={wssDetails}
-        wssInsights={wssInsights || isSu}
-      />
-      {wssInsights || isSu ? (
-        <Layout.GridRow templateColumns={"auto auto"} gap={16}>
-          <TierSection merchantState={state} wssDetails={wssDetails} />
-          <ThingsToWatchSection wssDetails={wssDetails} />
-        </Layout.GridRow>
-      ) : (
-        <Overview initialData={initialData} wssDetails={wssDetails} />
-      )}
-      <PerformanceMetrics
-        wssDetails={wssDetails}
-        wssInsights={wssInsights || isSu}
-      />
-      {wssInsights || isSu ? (
-        <InfractionsSection wssDetails={wssDetails} />
-      ) : (
-        <Infractions wssDetails={wssDetails} />
-      )}
+      <WssBanner merchantState={state} wssDetails={wssDetails} />
+      <Layout.GridRow templateColumns={"auto auto"} gap={16}>
+        <TierSection merchantState={state} wssDetails={wssDetails} />
+        <ThingsToWatchSection wssDetails={wssDetails} />
+      </Layout.GridRow>
+      <PerformanceMetrics wssDetails={wssDetails} />
+      <InfractionsSection wssDetails={wssDetails} />
       <TierDetails level={wssDetails?.level} />
       <CustomerService cs={storeStats?.cs} />
     </Layout.FlexColumn>
