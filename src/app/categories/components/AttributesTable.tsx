@@ -9,6 +9,7 @@ import {
   CategoryAttributesRequestData,
   CategoryAttributesResponseData,
   CATEGORY_ATTRIBUTES_QUERY,
+  AttributeSelectionTypeLabel,
 } from "@core/taxonomy/toolkit";
 import { observer } from "mobx-react";
 import React from "react";
@@ -23,10 +24,14 @@ type TableData = {
   readonly level: string;
   readonly enabledForVariations: boolean;
   readonly usage: string;
+  readonly selectionType: string;
+  readonly maxSelection?: number;
   readonly dataType: string;
   readonly description: string;
   readonly validValues: string;
 };
+
+const NO_DATA_MESSAGE = "-";
 
 const AttributesTable: React.FC<Props> = ({
   className,
@@ -55,6 +60,13 @@ const AttributesTable: React.FC<Props> = ({
         : AttributeLevelLabel.ATTRIBUTE_LEVEL_PRODUCT,
       enabledForVariations: attr.enabledForVariations,
       usage: AttributeUsageLabel[attr.usage],
+      selectionType: AttributeSelectionTypeLabel[attr.mode],
+      maxSelection:
+        attr.mode === "ATTRIBUTE_MODE_MULTI_SELECTION_ONLY"
+          ? attr.maxMultiSelect
+          : attr.mode === "ATTRIBUTE_MODE_SINGLE_SELECTION_ONLY"
+          ? 1
+          : undefined,
       dataType: AttributeDataTypeLabel[attr.dataType],
       description: attr.description,
       validValues: attr.values?.map((attr) => attr.value).join(", ") || "",
@@ -92,6 +104,23 @@ const AttributesTable: React.FC<Props> = ({
           )}
           _key="usage"
           columnKey="usage"
+        />
+        <Table.Column
+          title={ci18n(
+            "Column title, the attribute's selection type, can be single select, multi select, free text",
+            "Selection Type",
+          )}
+          _key="selectionType"
+          columnKey="selectionType"
+        />
+        <Table.NumeralColumn
+          title={ci18n(
+            "Column title, max number of selections for the attribute",
+            "Maximum Selections",
+          )}
+          noDataMessage={NO_DATA_MESSAGE}
+          _key="maxSelection"
+          columnKey="maxSelection"
         />
         <Table.Column
           title={ci18n(

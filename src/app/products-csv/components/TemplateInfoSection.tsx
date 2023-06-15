@@ -90,12 +90,18 @@ const TemplateInfoSection: React.FC = () => {
             >
               Find category ID
             </Link>
-            <Link href={"/products/categories"} style={styles.link} underline>
+            <Link
+              href={"/products/categories"}
+              style={styles.link}
+              underline
+              openInNewTab
+            >
               Find category attributes and values
             </Link>
             <Link
               href={zendeskURL("1260805100070")}
               style={styles.link}
+              openInNewTab
               underline
             >
               See all other attributes

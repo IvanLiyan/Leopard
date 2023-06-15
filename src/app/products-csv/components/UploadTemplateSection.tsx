@@ -74,7 +74,13 @@ const UploadTemplateSection: React.FC = () => {
       const message = resp.data?.productCatalog.upsertProductCsvFile?.message;
       const ok = resp.data?.productCatalog.upsertProductCsvFile?.ok;
       if (jobId == null || !ok) {
-        toastStore.negative(message ?? i`Something went wrong`);
+        toastStore.negative(
+          message ? (
+            <Text variant="bodyLStrong">{message}</Text>
+          ) : (
+            i`Something went wrong`
+          ),
+        );
         return;
       }
 

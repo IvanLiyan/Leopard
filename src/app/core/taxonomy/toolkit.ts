@@ -2,6 +2,7 @@ import { ci18n } from "@core/toolkit/i18n";
 import {
   AttributeDataType,
   AttributeLevel,
+  AttributeMode,
   AttributeUsage,
   ProductCatalogSchema,
   ProductCatalogSchemaCsvProductTemplateWithTaxonomyColumnNamesArgs,
@@ -158,8 +159,8 @@ export const AttributeLevelLabel: { readonly [f in AttributeLevel]: string } = {
     "Unspecified",
   ),
   ATTRIBUTE_LEVEL_VARIANT: ci18n(
-    "attribute level label, means attribute is on variant-level",
-    "Variant",
+    "attribute level label, means attribute is on variant-level or product-level",
+    "Variant/Product",
   ),
 };
 
@@ -204,6 +205,27 @@ export const AttributeDataTypeLabel: {
   ATTRIBUTE_DATA_TYPE_UNSPECIFIED: ci18n(
     "attribute data type label, means the attribute data type is unspecified",
     "Unspecified",
+  ),
+};
+
+export const AttributeSelectionTypeLabel: {
+  readonly [f in AttributeMode]: string;
+} = {
+  ATTRIBUTE_MODE_UNSPECIFIED: ci18n(
+    "Product attribute input type label, means type is unspecified",
+    "Unspecified",
+  ),
+  ATTRIBUTE_MODE_FREE_TEXT: ci18n(
+    "Product attribute input type label, means free text input",
+    "Free Text",
+  ),
+  ATTRIBUTE_MODE_SINGLE_SELECTION_ONLY: ci18n(
+    "Product attribute input type label, means single selection input",
+    "Single Select",
+  ),
+  ATTRIBUTE_MODE_MULTI_SELECTION_ONLY: ci18n(
+    "Product attribute input type label, means multi selection input",
+    "Multi Select",
   ),
 };
 

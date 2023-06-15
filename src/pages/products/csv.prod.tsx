@@ -14,6 +14,7 @@ import { useDeciderKey } from "@core/stores/ExperimentStore";
 import Skeleton from "@core/components/Skeleton";
 import FullPageError from "@core/components/FullPageError";
 import { merchFeUrl, useRouter } from "@core/toolkit/router";
+import { zendeskURL } from "@core/toolkit/url";
 
 const ProductsCsvPage: NextPage<Record<string, never>> = () => {
   const styles = useStylesheet();
@@ -56,7 +57,12 @@ const ProductsCsvPage: NextPage<Record<string, never>> = () => {
             <AlertTitle>Introducing the new product add/edit flow</AlertTitle>
             We have retired our old bulk add/edit CSV templates. Create
             templates using our new flow to avoid uploading errors.{" "}
-            <Link style={styles.link} underline>
+            <Link
+              href={zendeskURL("1260805100290")}
+              style={styles.link}
+              openInNewTab
+              underline
+            >
               Learn more
             </Link>
           </Alert>

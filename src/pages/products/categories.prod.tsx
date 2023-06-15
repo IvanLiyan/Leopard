@@ -34,11 +34,9 @@ const CategoriesAttributesPage: NextPage<Record<string, never>> = () => {
     <PageRoot>
       <PageHeader title={i`Categories and Attributes`} relaxed>
         <Text variant="bodyLStrong">
-          Navigate the category paths, or search for and select your product
-          category, to view its attributes or download a CSV template (coming
-          soon). You can provide these attributes when adding or editing
-          products manually or via API, or you will have the option to do so via
-          CSV soon.
+          Use our category tree to locate corresponding attribute fields and
+          accepted attribute values, and identify which fields are required and
+          which can be used to define variants.
         </Text>
       </PageHeader>
       <PageGuide relaxed>

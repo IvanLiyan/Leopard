@@ -9,7 +9,7 @@ import DownloadCSVButton from "./DownloadCSVButton";
 import TaxonomyCategorySelectSection from "@core/taxonomy/v2/TaxonomyCategorySelectSection";
 import Skeleton from "@core/components/Skeleton";
 import { SelfClassifyAllowedL1 } from "@core/taxonomy/constants";
-import { Button, Tooltip, Alert, Stack } from "@ContextLogic/atlas-ui";
+import { Button, Tooltip, Stack } from "@ContextLogic/atlas-ui";
 
 const AllCategories: React.FC = () => {
   const styles = useStylesheet();
@@ -42,12 +42,11 @@ const AllCategories: React.FC = () => {
 
   const renderSelectSection = () => {
     if (isLoadingCategoryTree) {
-      return <Skeleton height={300} sx={{ marginTop: "16px" }} />;
+      return <Skeleton height={300} />;
     }
 
     return (
       <TaxonomyCategorySelectSection
-        style={{ marginTop: "16px" }}
         initialCategoryTreeMap={categoryMap}
         onSelectionsChange={(categories) =>
           categories.length > 0
@@ -66,13 +65,6 @@ const AllCategories: React.FC = () => {
       title={i`Step 1: Search Category`}
       contentContainerStyle={{ padding: 16 }}
     >
-      <Alert severity="info">
-        Note: Only these 1st level categories have attributes: Apparel
-        Accessories, Cellphones & Telecommunications, Computer & Office,
-        Consumer Electronics, Entertainment, Home & Garden, Home Improvement,
-        Jewelry & Accessories, Luggage & Bags, Men&apos;s Clothing, Shoes,
-        Sports, and Toys & Hobbies
-      </Alert>
       {renderSelectSection()}
       <Stack
         sx={{ marginTop: "26px" }}
@@ -110,17 +102,19 @@ const AllCategories: React.FC = () => {
     </Card>
   );
 
-  const stepTwo = showAttributes && selectedLeafCategoryId != null && (
-    <Card
-      title={i`Step 2: View Attributes`}
-      contentContainerStyle={{ padding: 16 }}
-    >
-      <AttributesTable
-        style={styles.step}
-        categoryId={selectedLeafCategoryId}
-      />
-    </Card>
-  );
+  const stepTwo = showAttributes &&
+    selectedLeafCategoryId != null &&
+    !attributesButtonDisabled && (
+      <Card
+        title={i`Step 2: View Attributes`}
+        contentContainerStyle={{ padding: 16 }}
+      >
+        <AttributesTable
+          style={styles.step}
+          categoryId={selectedLeafCategoryId}
+        />
+      </Card>
+    );
 
   return (
     <Stack direction="column" sx={{ paddingTop: "16px" }} spacing={4}>

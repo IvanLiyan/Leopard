@@ -4,6 +4,7 @@ import {
   useContext,
   createRef,
   useImperativeHandle,
+  ReactNode,
 } from "react";
 
 /* Lego Components */
@@ -23,7 +24,7 @@ type ToastOptions = {
 };
 
 type ToastConfig = ToastOptions & {
-  readonly message: string;
+  readonly message: string | ReactNode;
   readonly sentiment: BannerSentiment;
 };
 
@@ -34,11 +35,26 @@ export type ToastStore = {
   willClose: boolean;
   modalOpen: boolean;
   setModalOpen(value: boolean): void;
-  positive(message: string, options?: ToastOptions | null | undefined): void;
-  negative(message: string, options?: ToastOptions | null | undefined): void;
-  error(message: string, options?: ToastOptions | null | undefined): void;
-  warning(message: string, options?: ToastOptions | null | undefined): void;
-  info(message: string, options?: ToastOptions | null | undefined): void;
+  positive(
+    message: string | ReactNode,
+    options?: ToastOptions | null | undefined,
+  ): void;
+  negative(
+    message: string | ReactNode,
+    options?: ToastOptions | null | undefined,
+  ): void;
+  error(
+    message: string | ReactNode,
+    options?: ToastOptions | null | undefined,
+  ): void;
+  warning(
+    message: string | ReactNode,
+    options?: ToastOptions | null | undefined,
+  ): void;
+  info(
+    message: string | ReactNode,
+    options?: ToastOptions | null | undefined,
+  ): void;
   post(config: ToastConfig): void;
   dismissToast(): void;
 };
@@ -118,7 +134,7 @@ export const ToastProvider: React.FC = ({ children }) => {
   };
 
   const error = (
-    message: string,
+    message: string | ReactNode,
     options: ToastOptions | null | undefined = {
       timeoutMs: 7 * 1000,
     },
@@ -127,28 +143,28 @@ export const ToastProvider: React.FC = ({ children }) => {
   };
 
   const positive = (
-    message: string,
+    message: string | ReactNode,
     options?: ToastOptions | null | undefined,
   ): void => {
     post({ message, sentiment: "success", ...options });
   };
 
   const negative = (
-    message: string,
+    message: string | ReactNode,
     options?: ToastOptions | null | undefined,
   ): void => {
     error(message, options);
   };
 
   const warning = (
-    message: string,
+    message: string | ReactNode,
     options?: ToastOptions | null | undefined,
   ): void => {
     post({ message, sentiment: "warning", ...options });
   };
 
   const info = (
-    message: string,
+    message: string | ReactNode,
     options?: ToastOptions | null | undefined,
   ): void => {
     post({ message, sentiment: "info", ...options });
