@@ -55,8 +55,10 @@ const ProductsCsvPage: NextPage<Record<string, never>> = () => {
             sx={{ marginBottom: "40px" }}
           >
             <AlertTitle>Introducing the new product add/edit flow</AlertTitle>
-            We have retired our old bulk add/edit CSV templates. Create
-            templates using our new flow to avoid uploading errors.{" "}
+            <span>
+              We have retired our old bulk add/edit CSV templates. Create
+              templates using our new flow to avoid uploading errors.
+            </span>
             <Link
               href={zendeskURL("1260805100290")}
               style={styles.link}

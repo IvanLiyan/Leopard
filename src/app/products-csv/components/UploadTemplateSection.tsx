@@ -18,6 +18,7 @@ import {
 } from "@products-csv/queries";
 import { useToastStore } from "@core/stores/ToastStore";
 import { merchFeUrl } from "@core/toolkit/router";
+import SomethingWentWrongText from "@core/components/SomethingWentWrongText";
 
 const UploadTemplateSection: React.FC = () => {
   const { textDark, textWhite, negative } = useTheme();
@@ -75,11 +76,7 @@ const UploadTemplateSection: React.FC = () => {
       const ok = resp.data?.productCatalog.upsertProductCsvFile?.ok;
       if (jobId == null || !ok) {
         toastStore.negative(
-          message ? (
-            <Text variant="bodyLStrong">{message}</Text>
-          ) : (
-            i`Something went wrong`
-          ),
+          <SomethingWentWrongText>{message}</SomethingWentWrongText>,
         );
         return;
       }
@@ -94,7 +91,7 @@ const UploadTemplateSection: React.FC = () => {
       setUploadType(undefined);
       setShowError(false);
     } catch {
-      toastStore.negative(i`Something went wrong`);
+      toastStore.negative(<SomethingWentWrongText />);
     } finally {
       setIsUploading(false);
     }

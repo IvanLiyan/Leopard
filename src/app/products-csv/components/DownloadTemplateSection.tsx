@@ -31,6 +31,7 @@ import { useToastStore } from "@core/stores/ToastStore";
 import { createFileAndDownload, getCsvStrFromArray } from "@core/toolkit/file";
 import { yyyymmdd } from "@core/toolkit/datetime";
 import { Constants } from "@core/taxonomy/constants";
+import SomethingWentWrongText from "@core/components/SomethingWentWrongText";
 
 const DownloadTemplateSection: React.FC = () => {
   const toastStore = useToastStore();
@@ -90,8 +91,7 @@ const DownloadTemplateSection: React.FC = () => {
   const showDownloadCatalogButton =
     templateType != null &&
     templateType !== "ADD_PRODUCT" &&
-    templateType !== "ADD_VARIATIONS" &&
-    templateType !== "EDIT_BY_CATEGORY";
+    templateType !== "ADD_VARIATIONS";
 
   // download catalog
   const [downloadCatalog] = useMutation<
@@ -127,7 +127,9 @@ const DownloadTemplateSection: React.FC = () => {
       const errorMessage =
         resp.data?.productCatalog.downloadAllProducts?.errorMessage;
       if (!ok) {
-        toastStore.negative(errorMessage ?? i`Something went wrong`);
+        toastStore.negative(
+          <SomethingWentWrongText>{errorMessage}</SomethingWentWrongText>,
+        );
         return;
       }
 
@@ -136,7 +138,7 @@ const DownloadTemplateSection: React.FC = () => {
           i`receive an email with a link to download the file in ${24} hours.`,
       );
     } catch {
-      toastStore.negative(`Something went wrong`);
+      toastStore.negative(<SomethingWentWrongText />);
     } finally {
       setIsDownloadingCatalog(false);
     }
