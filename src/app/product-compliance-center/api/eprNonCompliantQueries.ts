@@ -45,6 +45,39 @@ export type EprNonCompliantSummaryQueryResponse = {
   };
 };
 
+export const EPR_NON_COMPLIANT_COUNTRIES_AVAILABLE_QUERY = gql`
+  query EprNonCompliantCountriesAvailableQuery {
+    policy {
+      productCompliance {
+        extendedProducerResponsibility {
+          eprNonCompliantSummary {
+            summaryRecords {
+              country {
+                name
+                code
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+export type EprNonCompliantCountriesAvailableQueryResponse = {
+  readonly policy?: {
+    readonly productCompliance?: {
+      readonly extendedProducerResponsibility: {
+        readonly eprNonCompliantSummary: {
+          readonly summaryRecords: ReadonlyArray<{
+            readonly country: Pick<Country, "name" | "code">;
+          }>;
+        };
+      };
+    };
+  };
+};
+
 export const EPR_NON_COMPLIANT_PRODUCTS_QUERY = gql`
   query EprNonCompliantProductsQuery(
     $countryCode: CountryCode!

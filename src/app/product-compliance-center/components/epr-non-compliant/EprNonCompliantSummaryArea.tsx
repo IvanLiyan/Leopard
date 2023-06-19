@@ -7,7 +7,7 @@ import Skeleton from "@core/components/Skeleton";
 import {
   EPR_NON_COMPLIANT_SUMMARY_QUERY,
   EprNonCompliantSummaryQueryResponse,
-} from "@product-compliance-center/api/eprNonCompliantQuery";
+} from "@product-compliance-center/api/eprNonCompliantQueries";
 import { EprNonCompliantSummaryRecordSchema } from "@schema";
 import { ci18n } from "@core/toolkit/i18n";
 

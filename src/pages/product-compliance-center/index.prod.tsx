@@ -63,9 +63,12 @@ const ProductComplianceCenterPage: NextPage<Record<string, never>> = () => {
     return (
       <PageLayout
         cards={[
-          <Skeleton key={"1"} height={238} />,
-          <Skeleton key={"2"} height={238} />,
-          <Skeleton key={"3"} height={238} />,
+          <Skeleton key={"1"} height={167.5} />,
+          <Skeleton key={"2"} height={167.5} />,
+          <Skeleton key={"3"} height={167.5} />,
+          <Skeleton key={"4"} height={167.5} />,
+          <Skeleton key={"5"} height={167.5} />,
+          <Skeleton key={"6"} height={167.5} />,
         ]}
       />
     );
@@ -78,15 +81,17 @@ const ProductComplianceCenterPage: NextPage<Record<string, never>> = () => {
   return (
     <PageLayout
       cards={[
-        <EuResponsiblePersonsCards
-          key={-1}
-          productsWithResponsiblePerson={
-            data.policy.productCompliance.productsWithEuResponsiblePerson
-          }
-          productsWithoutResponsiblePerson={
-            data.policy.productCompliance.productsWithoutEuResponsiblePerson
-          }
-        />,
+        data.policy.productCompliance.euComplianceInScope ? (
+          <EuResponsiblePersonsCards
+            key={-1}
+            productsWithResponsiblePerson={
+              data.policy.productCompliance.productsWithEuResponsiblePerson
+            }
+            productsWithoutResponsiblePerson={
+              data.policy.productCompliance.productsWithoutEuResponsiblePerson
+            }
+          />
+        ) : null,
         data.policy.productCompliance.extendedProducerResponsibility.countries.map(
           (config, i) => (
             <EprCard
@@ -113,6 +118,27 @@ const ProductComplianceCenterPage: NextPage<Record<string, never>> = () => {
             on obtaining EPR registration numbers
           </Text>
         </ActionCard>,
+        data.policy.productCompliance.extendedProducerResponsibility.eprNonCompliantSummary.summaryRecords.some(
+          (record) => record.nonCompliantProductCount > 0,
+        ) ? (
+          <ActionCard
+            key={-3}
+            title={i`EPR Products Requiring Attention`}
+            ctaButtons={
+              <Link
+                href={"/product-compliance-center/epr-non-compliant"}
+                passHref
+              >
+                <Button secondary>Enter</Button>
+              </Link>
+            }
+          >
+            <Text component="div">
+              One or more of your products are missing an EPR registration
+              number
+            </Text>
+          </ActionCard>
+        ) : null,
       ]}
     />
   );

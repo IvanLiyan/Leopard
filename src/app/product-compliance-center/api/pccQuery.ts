@@ -1,5 +1,10 @@
 import { gql } from "@apollo/client";
-import { Country, CountryEprSchema, ProductComplianceSchema } from "@schema";
+import {
+  Country,
+  CountryEprSchema,
+  EprNonCompliantSummaryRecordSchema,
+  ProductComplianceSchema,
+} from "@schema";
 
 export const PCC_QUERY = gql`
   query ProductComplianceCenterQuery {
@@ -43,7 +48,13 @@ export const PCC_QUERY = gql`
             categoriesWithoutEpr
             hasAcceptedTos
           }
+          eprNonCompliantSummary {
+            summaryRecords {
+              nonCompliantProductCount
+            }
+          }
         }
+        euComplianceInScope
       }
     }
   }
@@ -51,7 +62,10 @@ export const PCC_QUERY = gql`
 
 export type PccQueryResponse = {
   readonly policy?: {
-    readonly productCompliance?: {
+    readonly productCompliance?: Pick<
+      ProductComplianceSchema,
+      "euComplianceInScope"
+    > & {
       readonly productsWithEuResponsiblePerson: ProductComplianceSchema["linkCount"];
       readonly productsWithoutEuResponsiblePerson: ProductComplianceSchema["linkCount"];
       readonly extendedProducerResponsibility: {
@@ -63,6 +77,11 @@ export type PccQueryResponse = {
             "categoriesWithEpr" | "categoriesWithoutEpr" | "hasAcceptedTos"
           >
         >;
+        readonly eprNonCompliantSummary: {
+          readonly summaryRecords: ReadonlyArray<
+            Pick<EprNonCompliantSummaryRecordSchema, "nonCompliantProductCount">
+          >;
+        };
       };
     };
   };

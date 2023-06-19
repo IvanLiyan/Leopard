@@ -1,6 +1,5 @@
 import { ci18n } from "@core/toolkit/i18n";
 import { Option } from "@ContextLogic/lego";
-import countries from "@core/toolkit/countries";
 
 export const SupportedCountryCodes = ["FR", "DE", "SE", "AT"] as const;
 
@@ -175,9 +174,3 @@ export const PAGE_SIZE_OPTIONS: ReadonlyArray<Option<string>> = [
   { value: "50", text: "50" },
   { value: "100", text: "100" },
 ];
-
-export const PRODUCTS_COUNTRY_OPTIONS: ReadonlyArray<Option<string>> =
-  SupportedCountryCodes.map((cc) => ({
-    value: cc,
-    text: countries[cc],
-  }));

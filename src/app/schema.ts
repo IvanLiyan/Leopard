@@ -8187,6 +8187,7 @@ export type MerchantWarningSchema = {
   readonly replies?: Maybe<ReadonlyArray<MerchantWarningReplySchema>>;
   readonly resolved: Scalars["Boolean"];
   readonly bulkProcessing?: Maybe<Scalars["Boolean"]>;
+  readonly urgencyScore?: Maybe<Scalars["Float"]>;
 };
 
 export type MerchantWarningSchemaFineAmountArgs = {
@@ -8201,7 +8202,8 @@ export type MerchantWarningSort = {
 export type MerchantWarningSortFieldType =
   | "CREATED_TIME"
   | "PRODUCT_GMV_AT_AUDIT"
-  | "LAST_UPDATE";
+  | "LAST_UPDATE"
+  | "URGENCY_SCORE";
 
 export type MerchantWarningState =
   | "AWAITING_AUTH_TAGGING_HIGH_GMV"
@@ -8341,7 +8343,9 @@ export type MfpCampaignSchema = {
     ReadonlyArray<MfpUnqualifiedVariationData>
   >;
   readonly discountDetails?: Maybe<ReadonlyArray<MfpVariationDiscountData>>;
+  readonly discountDetailsProductCount?: Maybe<Scalars["Int"]>;
   readonly flashSaleDetails?: Maybe<ReadonlyArray<MfpVariationDiscountData>>;
+  readonly flashSaleDetailsProductCount?: Maybe<Scalars["Int"]>;
   readonly countries?: Maybe<ReadonlyArray<Country>>;
   readonly skipShipping: Scalars["Boolean"];
   readonly event?: Maybe<CampaignEventInfo>;
@@ -8355,11 +8359,15 @@ export type MfpCampaignSchema = {
 export type MfpCampaignSchemaGenericDiscountDetailsArgs = {
   performanceStartDate?: Maybe<DatetimeInput>;
   performanceEndDate?: Maybe<DatetimeInput>;
+  offset?: Maybe<Scalars["Int"]>;
+  limit?: Maybe<Scalars["Int"]>;
 };
 
 export type MfpCampaignSchemaGenericFlashSaleDetailsArgs = {
   performanceStartDate?: Maybe<DatetimeInput>;
   performanceEndDate?: Maybe<DatetimeInput>;
+  offset?: Maybe<Scalars["Int"]>;
+  limit?: Maybe<Scalars["Int"]>;
 };
 
 export type MfpCampaignSearchType =
@@ -10430,6 +10438,7 @@ export type PolicySchemaFinalSaleCategoriesArgs = {
 export type PolicySchemaMerchantWarningCountArgs = {
   merchantId?: Maybe<Scalars["ObjectIdType"]>;
   id?: Maybe<Scalars["ObjectIdType"]>;
+  ids?: Maybe<ReadonlyArray<Scalars["ObjectIdType"]>>;
   banned?: Maybe<Scalars["Boolean"]>;
   fined?: Maybe<Scalars["Boolean"]>;
   reasons?: Maybe<ReadonlyArray<MerchantWarningReason>>;
@@ -10446,6 +10455,7 @@ export type PolicySchemaMerchantWarningCountArgs = {
   wssImpact?: Maybe<ReadonlyArray<WssImpactState>>;
   category?: Maybe<CounterfeitReasonCode>;
   subcategory?: Maybe<TaggingViolationSubReasonCode>;
+  correspondenceStatus?: Maybe<MerchantWarningCorrespondenceStatus>;
 };
 
 export type PolicySchemaMerchantWarningsArgs = {
@@ -10453,6 +10463,7 @@ export type PolicySchemaMerchantWarningsArgs = {
   limit?: Maybe<Scalars["Int"]>;
   merchantId?: Maybe<Scalars["ObjectIdType"]>;
   id?: Maybe<Scalars["ObjectIdType"]>;
+  ids?: Maybe<ReadonlyArray<Scalars["ObjectIdType"]>>;
   banned?: Maybe<Scalars["Boolean"]>;
   fined?: Maybe<Scalars["Boolean"]>;
   auditStatuses?: Maybe<ReadonlyArray<MerchantWarningAuditStatus>>;
@@ -10469,6 +10480,7 @@ export type PolicySchemaMerchantWarningsArgs = {
   wssImpact?: Maybe<ReadonlyArray<WssImpactState>>;
   category?: Maybe<CounterfeitReasonCode>;
   subcategory?: Maybe<TaggingViolationSubReasonCode>;
+  correspondenceStatus?: Maybe<MerchantWarningCorrespondenceStatus>;
 };
 
 export type PolicySchemaMerchantWarningArgs = {
@@ -10873,9 +10885,9 @@ export type ProductComplianceDocumentInput = {
 
 export type ProductComplianceDocumentSchema = {
   readonly __typename?: "ProductComplianceDocumentSchema";
-  readonly s3Url: Scalars["String"];
+  readonly fileUrl: Scalars["String"];
   readonly documentLabel: Scalars["String"];
-  readonly fileName?: Maybe<Scalars["String"]>;
+  readonly fileName: Scalars["String"];
 };
 
 export type ProductComplianceMutations = {
@@ -10910,6 +10922,7 @@ export type ProductComplianceSchema = {
     ReadonlyArray<GermanyProductUniqueIdentificationNumberSchema>
   >;
   readonly extendedProducerResponsibility: ExtendedProducerResponsibilitySchema;
+  readonly euComplianceInScope: Scalars["Boolean"];
 };
 
 export type ProductComplianceSchemaResponsiblePersonCountArgs = {
@@ -15700,8 +15713,7 @@ export type UploadMutationsInitiateUploadArgs = {
 export type UploadProductComplianceDocuments = {
   readonly __typename?: "UploadProductComplianceDocuments";
   readonly ok: Scalars["Boolean"];
-  readonly failures?: Maybe<ReadonlyArray<Scalars["String"]>>;
-  readonly productId?: Maybe<Scalars["ObjectIdType"]>;
+  readonly failure?: Maybe<Scalars["String"]>;
   readonly fileUrls?: Maybe<ReadonlyArray<Scalars["String"]>>;
 };
 
