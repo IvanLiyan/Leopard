@@ -1,13 +1,18 @@
+import { Layout } from "@ContextLogic/lego";
 import {
   CartesianGrid,
-  Layout,
   Line,
   LineChart,
-  RechartsTooltip,
-  RechartsTooltipProps,
+  Tooltip as RechartsTooltip,
+  TooltipProps as RechartsTooltipProps,
   XAxis,
   YAxis,
-} from "@ContextLogic/lego";
+  ResponsiveContainer,
+} from "recharts";
+import {
+  NameType,
+  ValueType,
+} from "recharts/types/component/DefaultTooltipContent";
 import {
   Alert,
   AlertProps,
@@ -122,7 +127,9 @@ const MetricLineChart: React.FC<MetricHeaderProps> = ({
     return vermillion;
   };
 
-  const tooltipFormatter = (props: RechartsTooltipProps) => {
+  const tooltipFormatter = (
+    props: RechartsTooltipProps<ValueType, NameType>,
+  ) => {
     const {
       payload,
     }: {
@@ -178,72 +185,75 @@ const MetricLineChart: React.FC<MetricHeaderProps> = ({
 
   return (
     <Layout.FlexColumn style={styles.chartContainer}>
-      <LineChart data={chart.data}>
-        <CartesianGrid vertical={false} strokeDasharray="4 3" horizontal />
-        <RechartsTooltip
-          imageFormatter={() => undefined}
-          content={tooltipFormatter}
-        />
-        <XAxis
-          dataKey={nameOf<TimelineDatapoint>("millisecond")}
-          tickFormatter={(tick: TimelineDatapoint["millisecond"]) => {
-            if (tick == chart.data[chart.data.length - 1].millisecond) {
-              return ci18n("XAxis label meaning today's date", "Today");
-            }
-            return new Intl.DateTimeFormat(locale, {
-              month: "short",
-              day: "numeric",
-            }).format(new Date(tick));
-          }}
-        />
-        <YAxis
-          reversed={!higherIsBetter}
-          width={200}
-          dataKey={nameOf<TimelineDatapoint>("value")}
-          yAxisId={nameOf<TimelineDatapoint>("value")}
-          ticks={[chart.goal.value, chart.lastUpdated.value]}
-          tickCount={6}
-          interval={0}
-          tickFormatter={(tick: number) => {
-            const formattedMetricValue = formatter(tick);
-            if (tick == chart.lastUpdated.value) {
-              return ci18n(
-                "The value of the WSS metric that was calculated during last tier update",
-                "Last update: {%1=formattedMetricValue}",
-                formattedMetricValue,
-              );
-            } else if (tick == chart.goal.value) {
-              return ci18n(
-                "The minimum required value of the WSS metric to advance to next tier",
-                "Goal: {%1=formattedMetricValue}",
-                formattedMetricValue,
-              );
-            }
-            return "";
-          }}
-          domain={[
-            (dataMin: number) =>
-              Math.min(
-                chart.goal.value ?? dataMin,
-                chart.lastUpdated.value ?? dataMin,
-                dataMin,
-              ),
-            (dataMax: number) =>
-              Math.max(
-                chart.goal.value ?? dataMax,
-                chart.lastUpdated.value ?? dataMax,
-                dataMax,
-              ),
-          ]}
-          type="number"
-        />
-        <Line
-          yAxisId="value"
-          dataKey="value"
-          strokeWidth={2}
-          stroke={lineStrokeColor()}
-        />
-      </LineChart>
+      <ResponsiveContainer>
+        <LineChart data={[...chart.data]}>
+          <CartesianGrid vertical={false} strokeDasharray="4 3" horizontal />
+          <RechartsTooltip content={tooltipFormatter} />
+          <XAxis
+            dataKey={nameOf<TimelineDatapoint>("millisecond")}
+            tickFormatter={(tick: TimelineDatapoint["millisecond"]) => {
+              if (tick == chart.data[chart.data.length - 1].millisecond) {
+                return ci18n("XAxis label meaning today's date", "Today");
+              }
+              return new Intl.DateTimeFormat(locale, {
+                month: "short",
+                day: "numeric",
+              }).format(new Date(tick));
+            }}
+            strokeWidth={0}
+            style={{ fontSize: "12px" }}
+          />
+          <YAxis
+            reversed={!higherIsBetter}
+            width={200}
+            dataKey={nameOf<TimelineDatapoint>("value")}
+            yAxisId={nameOf<TimelineDatapoint>("value")}
+            ticks={[chart.goal.value, chart.lastUpdated.value]}
+            tickCount={6}
+            interval={0}
+            tickFormatter={(tick: number) => {
+              const formattedMetricValue = formatter(tick);
+              if (tick == chart.lastUpdated.value) {
+                return ci18n(
+                  "The value of the WSS metric that was calculated during last tier update",
+                  "Last update: {%1=formattedMetricValue}",
+                  formattedMetricValue,
+                );
+              } else if (tick == chart.goal.value) {
+                return ci18n(
+                  "The minimum required value of the WSS metric to advance to next tier",
+                  "Goal: {%1=formattedMetricValue}",
+                  formattedMetricValue,
+                );
+              }
+              return "";
+            }}
+            domain={[
+              (dataMin: number) =>
+                Math.min(
+                  chart.goal.value ?? dataMin,
+                  chart.lastUpdated.value ?? dataMin,
+                  dataMin,
+                ),
+              (dataMax: number) =>
+                Math.max(
+                  chart.goal.value ?? dataMax,
+                  chart.lastUpdated.value ?? dataMax,
+                  dataMax,
+                ),
+            ]}
+            type="number"
+            strokeWidth={0}
+            style={{ fontSize: "12px" }}
+          />
+          <Line
+            yAxisId="value"
+            dataKey="value"
+            strokeWidth={2}
+            stroke={lineStrokeColor()}
+          />
+        </LineChart>
+      </ResponsiveContainer>
     </Layout.FlexColumn>
   );
 };

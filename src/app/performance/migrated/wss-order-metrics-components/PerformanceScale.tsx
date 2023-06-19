@@ -1,5 +1,6 @@
 /* eslint-disable react/forbid-dom-props */
-import { H6, Layout, Line, LineChart, Text, XAxis } from "@ContextLogic/lego";
+import { H6, Layout, Text } from "@ContextLogic/lego";
+import { Line, LineChart, XAxis, ResponsiveContainer } from "recharts";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { ci18n } from "@core/toolkit/i18n";
 import Illustration from "@core/components/Illustration";
@@ -187,47 +188,49 @@ const PerformanceScale: React.FC<Props> = ({
 
   return (
     <Layout.FlexColumn style={[styles.root, className, style]}>
-      <LineChart
-        data={chartData}
-        margin={{ left: 20, right: 100, top: 10, bottom: 10 }}
-      >
-        {MetricScaleDisplayedTiers.map((level) => (
-          <Line
-            key={level}
-            id={level}
-            dataKey={level}
-            stroke={tierThemes(level).scale}
-            dot={false}
-            strokeWidth={4}
+      <ResponsiveContainer>
+        <LineChart
+          data={[...chartData]}
+          margin={{ left: 20, right: 100, top: 10, bottom: 10 }}
+        >
+          {MetricScaleDisplayedTiers.map((level) => (
+            <Line
+              key={level}
+              id={level}
+              dataKey={level}
+              stroke={tierThemes(level).scale}
+              dot={false}
+              strokeWidth={4}
+            />
+          ))}
+          <XAxis
+            reversed={!higherIsBetter}
+            height={80}
+            dataKey="x"
+            type="number"
+            ticks={
+              clampedCurrentValue != null
+                ? ([...ticks, clampedCurrentValue] as Array<number>)
+                : (ticks as unknown as Array<number>)
+            }
+            domain={[Math.min(...ticks), Math.max(...ticks)]}
+            interval={0}
+            tick={(props: ChartProps) => {
+              return (
+                <>
+                  {props.payload.value === clampedCurrentValue &&
+                    currentScoreTickLabel(props)}
+                  {props.payload.value === worstTick && atRiskTickLabel(props)}
+                  {props.payload.value !== worstTick &&
+                    props.payload.value !== bestTick &&
+                    ticks.includes(props.payload.value) &&
+                    normalTickLabel(props)}
+                </>
+              );
+            }}
           />
-        ))}
-        <XAxis
-          reversed={!higherIsBetter}
-          height={80}
-          dataKey="x"
-          type="number"
-          ticks={
-            clampedCurrentValue != null
-              ? ([...ticks, clampedCurrentValue] as Array<number>)
-              : (ticks as unknown as Array<number>)
-          }
-          domain={[Math.min(...ticks), Math.max(...ticks)]}
-          interval={0}
-          tick={(props: ChartProps) => {
-            return (
-              <>
-                {props.payload.value === clampedCurrentValue &&
-                  currentScoreTickLabel(props)}
-                {props.payload.value === worstTick && atRiskTickLabel(props)}
-                {props.payload.value !== worstTick &&
-                  props.payload.value !== bestTick &&
-                  ticks.includes(props.payload.value) &&
-                  normalTickLabel(props)}
-              </>
-            );
-          }}
-        />
-      </LineChart>
+        </LineChart>
+      </ResponsiveContainer>
     </Layout.FlexColumn>
   );
 };

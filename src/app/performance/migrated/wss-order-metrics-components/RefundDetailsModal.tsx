@@ -25,7 +25,7 @@ const RefundDetailsModal: React.FC<Props> = ({
 }) => {
   const styles = useStylesheet();
   return (
-    <Modal open={open} onClose={onClose} fullWidth>
+    <Modal open={open} onClose={onClose} maxWidth="md">
       <ModalTitle
         title={ci18n(
           "modal title, let's merchants view the details relating to a refunded order",

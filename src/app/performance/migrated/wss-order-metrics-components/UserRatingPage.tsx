@@ -1,4 +1,4 @@
-import { Layout, Markdown } from "@ContextLogic/lego";
+import { H4, Layout, Markdown } from "@ContextLogic/lego";
 import { Text, Card } from "@ContextLogic/atlas-ui";
 import { Icon } from "@ContextLogic/zeus";
 import { ci18n } from "@core/toolkit/i18n";
@@ -184,7 +184,10 @@ const UserRatingPage: React.FC = () => {
           higherIsBetter
         />
       </PerformanceScaleSection>
-      <UserRatingTable formatter={formatter} style={styles.table} />
+      <Layout.FlexColumn style={styles.table}>
+        <H4>All rated products</H4>
+        <UserRatingTable formatter={formatter} />
+      </Layout.FlexColumn>
     </Card>
   );
 };

@@ -3,40 +3,29 @@ import { StyleSheet } from "aphrodite";
 import numeral from "numeral";
 import hash from "object-hash";
 
+import { H4, H5, Card, Info } from "@ContextLogic/lego";
 import {
-  H4,
-  H5,
-  Card,
   LineChart,
   CartesianGrid,
   XAxis,
-  RechartsTooltip,
   Line,
   YAxis,
   Legend,
-  Info,
   LegendProps,
-  RechartsTooltipProps,
-} from "@ContextLogic/lego";
+  ResponsiveContainer,
+  Tooltip as RechartsTooltip,
+  TooltipProps as RechartsTooltipProps,
+} from "recharts";
+import {
+  NameType,
+  ValueType,
+} from "recharts/types/component/DefaultTooltipContent";
 
 /* Lego Toolkit */
 import { css } from "@core/toolkit/styling";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { useTheme } from "@core/stores/ThemeStore";
 import { useLocalizationStore } from "@core/stores/LocalizationStore";
-
-type CustomRechartsToolTipProps = Omit<RechartsTooltipProps, "payload"> & {
-  readonly payload: ReadonlyArray<
-    unknown & {
-      readonly name: string;
-      readonly value: string;
-      readonly color: string;
-      readonly dataKey: string;
-      readonly strokeDasharray: string | undefined;
-      readonly payload: GraphData;
-    }
-  >;
-};
 
 type LineProps = {
   readonly name: string;
@@ -146,7 +135,9 @@ const StoreChart = (props: Props) => {
     );
   };
 
-  const tooltipFormatter = (props: CustomRechartsToolTipProps) => {
+  const tooltipFormatter = (
+    props: RechartsTooltipProps<ValueType, NameType>,
+  ) => {
     const { payload } = props;
 
     if (payload == null || payload.length === 0) {
@@ -217,59 +208,77 @@ const StoreChart = (props: Props) => {
 
   return (
     <div className={css(styles.chart, className, style)}>
-      <LineChart data={graphData}>
-        <CartesianGrid vertical={false} strokeDasharray="4" horizontal />
-        <XAxis dataKey="name" />
-        <Legend
-          verticalAlign="top"
-          align="left"
-          wrapperStyle={{ top: -20 }}
-          content={legendFormatter}
-        />
-        <RechartsTooltip
-          imageFormatter={() => null}
-          content={tooltipFormatter}
-        />
-        <YAxis
-          yAxisId="left"
-          dataKey={firstLineProps.dataKey}
-          stroke={firstLineProps.stroke}
-          orientation="left"
-          tickCount={6}
-          tickFormatter={(value) =>
-            firstLegendData.currencyCode != null
-              ? // legacy migrated code
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-                formatCurrency(value, firstLegendData.currencyCode)
-              : numeral(value).format("0,0")
-          }
-          domain={[0, "dataMax"]}
-          type="number"
-          width={100}
-          allowDecimals={false}
-        />
-        <YAxis
-          yAxisId="right"
-          dataKey={secondLineProps.dataKey}
-          stroke={secondLineProps.stroke}
-          orientation="right"
-          tickCount={6}
-          tickFormatter={(value) =>
-            secondLegendData.currencyCode != null
-              ? // legacy migrated code
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-                formatCurrency(value, secondLegendData.currencyCode)
-              : numeral(value).format("0,0")
-          }
-          domain={[0, "dataMax"]}
-          type="number"
-          width={100}
-          dx={8}
-          allowDecimals={false}
-        />
-        <Line yAxisId="left" strokeWidth={3} {...firstLineProps} />
-        <Line yAxisId="right" strokeWidth={3} {...secondLineProps} />
-      </LineChart>
+      <ResponsiveContainer>
+        {/* we have to make a copy of graphData since recharts can't handle readonly */}
+        <LineChart data={graphData ? [...graphData] : undefined}>
+          <CartesianGrid vertical={false} strokeDasharray="4" horizontal />
+          <XAxis dataKey="name" strokeWidth={0} style={{ fontSize: "12px" }} />
+          <Legend
+            verticalAlign="top"
+            align="left"
+            wrapperStyle={{ top: -20 }}
+            content={legendFormatter}
+          />
+          <RechartsTooltip
+            wrapperClassName={css(styles.tooltipContainer)}
+            labelClassName={css(styles.tooltipContainer)}
+            content={tooltipFormatter}
+          />
+          <YAxis
+            yAxisId="left"
+            dataKey={firstLineProps.dataKey}
+            stroke={firstLineProps.stroke}
+            orientation="left"
+            tickCount={6}
+            tickFormatter={(value) =>
+              firstLegendData.currencyCode != null
+                ? // legacy migrated code
+                  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+                  formatCurrency(value, firstLegendData.currencyCode)
+                : numeral(value).format("0,0")
+            }
+            domain={[0, "dataMax"]}
+            type="number"
+            width={100}
+            allowDecimals={false}
+            strokeWidth={0}
+            style={{ fontSize: "12px" }}
+          />
+          <YAxis
+            yAxisId="right"
+            dataKey={secondLineProps.dataKey}
+            stroke={secondLineProps.stroke}
+            orientation="right"
+            tickCount={6}
+            tickFormatter={(value) =>
+              secondLegendData.currencyCode != null
+                ? // legacy migrated code
+                  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+                  formatCurrency(value, secondLegendData.currencyCode)
+                : numeral(value).format("0,0")
+            }
+            domain={[0, "dataMax"]}
+            type="number"
+            width={100}
+            dx={8}
+            allowDecimals={false}
+            strokeWidth={0}
+            style={{ fontSize: "12px" }}
+          />
+          <Line
+            yAxisId="left"
+            strokeWidth={3}
+            type="monotone"
+            {...firstLineProps}
+          />
+          <Line
+            yAxisId="right"
+            strokeWidth={3}
+            type="monotone"
+            {...secondLineProps}
+          />
+        </LineChart>
+      </ResponsiveContainer>
     </div>
   );
 };
@@ -277,7 +286,7 @@ const StoreChart = (props: Props) => {
 export default StoreChart;
 
 const useStylesheet = () => {
-  const { textDark } = useTheme();
+  const { textDark, borderPrimary } = useTheme();
   return useMemo(
     () =>
       StyleSheet.create({
@@ -313,6 +322,10 @@ const useStylesheet = () => {
           marginTop: 8,
           marginRight: 16,
         },
+        tooltipContainer: {
+          backgroundColor: "yellow",
+          border: `solid 2px ${borderPrimary} !important`,
+        },
         tooltip: {
           display: "flex",
           flexDirection: "column",
@@ -331,6 +344,6 @@ const useStylesheet = () => {
           marginBottom: 16,
         },
       }),
-    [textDark],
+    [textDark, borderPrimary],
   );
 };

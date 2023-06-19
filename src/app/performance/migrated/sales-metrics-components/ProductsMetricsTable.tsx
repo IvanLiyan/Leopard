@@ -14,7 +14,6 @@ import {
   TextInputWithSelect,
   PageIndicator,
   MultiSecondaryButton,
-  LoadingIndicator,
   CellInfo,
 } from "@ContextLogic/lego";
 
@@ -49,6 +48,7 @@ import logger from "@performance/migrated/toolkit/logger";
 
 /* Relative Imports */
 import ProductChart from "./ProductChart";
+import Skeleton from "@core/components/Skeleton";
 
 const PRODUCTS_STATS_QUERY = gql`
   query ProductsStats_ProductMetricsTable(
@@ -143,7 +143,7 @@ const ProductsMetricsTable = (props: Props) => {
   });
 
   if (data == null || data.currentMerchant == null) {
-    return <LoadingIndicator />;
+    return <Skeleton height={460} />;
   }
 
   const isApproved = data.currentMerchant.state === "APPROVED";
@@ -365,7 +365,9 @@ const ProductsMetricsTable = (props: Props) => {
             />
           </div>
         </div>
-        <LoadingIndicator loadingComplete={!loading}>
+        {loading ? (
+          <Skeleton height={370} />
+        ) : (
           <Table
             data={productsList}
             rowExpands={() => true}
@@ -440,7 +442,7 @@ const ProductsMetricsTable = (props: Props) => {
               )}
             </Table.Column>
           </Table>
-        </LoadingIndicator>
+        )}
       </Layout.FlexColumn>
     </Card>
   );

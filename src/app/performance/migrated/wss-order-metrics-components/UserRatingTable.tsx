@@ -1,8 +1,6 @@
 import {
   CellInfo,
-  H4,
   Layout,
-  LoadingIndicator,
   SearchBox,
   SortOrder,
   Table,
@@ -25,6 +23,7 @@ import { observer } from "mobx-react";
 import React, { useMemo, useState } from "react";
 import { useQuery } from "@apollo/client";
 import TableControl from "@core/components/TableControl";
+import Skeleton from "@core/components/Skeleton";
 
 type TableData = {
   readonly productId: string;
@@ -36,9 +35,15 @@ type TableData = {
 
 type Props = BaseProps & {
   readonly formatter: (metric: number) => string;
+  readonly showOnlyUnderperformingProducts?: boolean;
 };
 
-const UserRatingTable: React.FC<Props> = ({ style, className, formatter }) => {
+const UserRatingTable: React.FC<Props> = ({
+  style,
+  className,
+  formatter,
+  showOnlyUnderperformingProducts,
+}) => {
   const styles = useStylesheet();
 
   const [sortField, setSortField] = useState<SortProductRatingField | null>(
@@ -59,6 +64,7 @@ const UserRatingTable: React.FC<Props> = ({ style, className, formatter }) => {
       productIds: searchInput ? [searchInput] : undefined,
       sortField: sortOrder && sortField ? sortField : undefined,
       sortOrder: sortOrder && sortField ? sortOrder : undefined,
+      isBadByRating: showOnlyUnderperformingProducts,
     },
   });
 
@@ -111,9 +117,8 @@ const UserRatingTable: React.FC<Props> = ({ style, className, formatter }) => {
   };
 
   return (
-    <Layout.FlexColumn style={[className, style]}>
-      <H4>All rated products</H4>
-      <Layout.FlexRow style={styles.tableSearch}>
+    <>
+      <Layout.FlexRow style={[styles.tableSearch, className, style]}>
         <SearchBox
           icon="search"
           placeholder={i`Search by Product ID`}
@@ -131,73 +136,77 @@ const UserRatingTable: React.FC<Props> = ({ style, className, formatter }) => {
           }}
         />
       </Layout.FlexRow>
-      <LoadingIndicator loadingComplete={!loading}>
-        <Table
-          data={tableData}
-          actions={tableActions}
-          actionColumnWidth={250}
-          keepColumnHeaderVisible
-          rowDataCy={(row: TableData) => `rated-product-row-${row.productId}`}
-        >
-          <Table.Column
-            _key="product"
-            columnKey="productId"
-            title={ci18n("Column name, shows product name and ID", "Product")}
-            columnDataCy={"product-column"}
+      {loading ? (
+        <Skeleton height={260} />
+      ) : (
+        <>
+          <Table
+            data={tableData}
+            actions={tableActions}
+            actionColumnWidth={250}
+            keepColumnHeaderVisible
+            rowDataCy={(row: TableData) => `rated-product-row-${row.productId}`}
           >
-            {({ row }: CellInfo<React.ReactNode, TableData>) => {
-              return (
-                <ProductCell
-                  id={row.productId}
-                  name={row.productName}
-                  imgURL={row.productImg}
-                />
-              );
-            }}
-          </Table.Column>
-          <Table.Column
-            _key="ratingCount"
-            columnKey="ratingCount"
-            description={
-              i`Wish uses ratings from orders that matured during the evaluation period ` +
-              i`for this metric. We may exclude ratings and reviews that violate our policies.`
-            }
-            title={i`Number of Ratings`}
-            columnDataCy={"rating-count-column"}
+            <Table.Column
+              _key="product"
+              columnKey="productId"
+              title={ci18n("Column name, shows product name and ID", "Product")}
+              columnDataCy={"product-column"}
+            >
+              {({ row }: CellInfo<React.ReactNode, TableData>) => {
+                return (
+                  <ProductCell
+                    id={row.productId}
+                    name={row.productName}
+                    imgURL={row.productImg}
+                  />
+                );
+              }}
+            </Table.Column>
+            <Table.Column
+              _key="ratingCount"
+              columnKey="ratingCount"
+              description={
+                i`Wish uses ratings from orders that matured during the evaluation period ` +
+                i`for this metric. We may exclude ratings and reviews that violate our policies.`
+              }
+              title={i`Number of Ratings`}
+              columnDataCy={"rating-count-column"}
+            />
+            <Table.Column
+              _key="averageRating"
+              columnKey="averageRating"
+              title={i`Average Product Rating`}
+              sortOrder={getSortOrderForField("AverageRating")}
+              onSortToggled={onFieldSortToggled("AverageRating")}
+              columnDataCy={"average-rating-column"}
+            >
+              {({ row }: CellInfo<React.ReactNode, TableData>) => {
+                return (
+                  <Text>
+                    {cni18n(
+                      "Average rating of orders for a given product",
+                      row.averageRating,
+                      "1 star",
+                      "{%2=star rating} stars",
+                      formatter(row.averageRating),
+                    )}
+                  </Text>
+                );
+              }}
+            </Table.Column>
+          </Table>
+          <TableControl
+            limit={limit}
+            offset={offset}
+            total={total}
+            onLimitChange={(limit) => setLimit(limit)}
+            onOffsetChange={(offset) => setOffset(offset)}
+            style={{ paddingBottom: "0px" }}
           />
-          <Table.Column
-            _key="averageRating"
-            columnKey="averageRating"
-            title={i`Average Product Rating`}
-            sortOrder={getSortOrderForField("AverageRating")}
-            onSortToggled={onFieldSortToggled("AverageRating")}
-            columnDataCy={"average-rating-column"}
-          >
-            {({ row }: CellInfo<React.ReactNode, TableData>) => {
-              return (
-                <Text>
-                  {cni18n(
-                    "Average rating of orders for a given product",
-                    row.averageRating,
-                    "1 star",
-                    "{%2=star rating} stars",
-                    formatter(row.averageRating),
-                  )}
-                </Text>
-              );
-            }}
-          </Table.Column>
-        </Table>
-      </LoadingIndicator>
-      <TableControl
-        limit={limit}
-        offset={offset}
-        total={total}
-        onLimitChange={(limit) => setLimit(limit)}
-        onOffsetChange={(offset) => setOffset(offset)}
-        style={{ paddingBottom: "0px" }}
-      />
-    </Layout.FlexColumn>
+        </>
+      )}
+    </>
   );
 };
 

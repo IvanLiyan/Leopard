@@ -450,14 +450,17 @@ export const useTierThemesV2: () => (tier: WssMerchantLevelType | null) => {
  * because we want to know if score has changed in the displayed format.
  * For example, if original score is 1.51 and it changes to 1.52, the displayed
  * score (one decimal places) would be 1.5 for both.
- * If we campare original scores then it would say that the score has increased,
+ * If we compare original scores then it would say that the score has increased,
  * which is not what we want here.
  * @example gt("1.5", "1.4") => 1.5 - 1.4 => 0.1
  * @example lt("99.8%", "99.9%") => 99.9 - 99.8 => 0.1
  */
-const gt = (a: string, b: string) => numeral(a).value() - numeral(b).value();
-const lt = (a: string, b: string) => numeral(b).value() - numeral(a).value();
+export const gt = (a: string, b: string) =>
+  numeral(a).value() - numeral(b).value();
+export const lt = (a: string, b: string) =>
+  numeral(b).value() - numeral(a).value();
 
+// TODO [lliepert] properly type this
 export const statsComparator: {
   [key: string]: (a: string, b: string) => number;
 } = {
@@ -467,6 +470,7 @@ export const statsComparator: {
   productQualityRefundRate: lt,
   productLogisticsRefundRate: lt,
   fulfillmentSpeed: lt,
+  underperformingProducts: lt,
 };
 
 export const USER_RATING = [3.5, 4, 4.3, 4.5, 5.0] as const;

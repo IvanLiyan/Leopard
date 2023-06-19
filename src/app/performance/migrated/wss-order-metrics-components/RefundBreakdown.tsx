@@ -1,12 +1,5 @@
-import {
-  Cell,
-  H5,
-  Layout,
-  LoadingIndicator,
-  Pie,
-  PieChart,
-  Text,
-} from "@ContextLogic/lego";
+import { H5, Layout, Text } from "@ContextLogic/lego";
+import { Cell, Pie, PieChart, ResponsiveContainer } from "recharts";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { ci18n } from "@core/toolkit/i18n";
 import { useTheme } from "@core/stores/ThemeStore";
@@ -27,6 +20,7 @@ import { observer } from "mobx-react";
 import numeral from "numeral";
 import React, { useMemo } from "react";
 import { useQuery } from "@apollo/client";
+import Skeleton from "@core/components/Skeleton";
 
 const MAX_REFUND_REASONS_TO_SHOW = 7;
 
@@ -89,7 +83,7 @@ const RefundBreakdown: React.FC<Props> = ({ style, className, productId }) => {
     );
 
   if (loading) {
-    return <LoadingIndicator />;
+    return <Skeleton height={277} sx={{ margin: "24px 0px" }} />;
   }
 
   return (
@@ -98,18 +92,20 @@ const RefundBreakdown: React.FC<Props> = ({ style, className, productId }) => {
       alignItems="flex-start"
     >
       <div style={{ width: 325, height: 325 }}>
-        <PieChart dataKey={"count"}>
-          <Pie
-            data={mergedBreakdownData as RefundBreakdownType[]}
-            dataKey={"count"}
-            innerRadius={80}
-            outerRadius={140}
-          >
-            {mergedBreakdownData.map((entry, idx) => (
-              <Cell key={entry.reason} fill={palette[idx % palette.length]} />
-            ))}
-          </Pie>
-        </PieChart>
+        <ResponsiveContainer>
+          <PieChart>
+            <Pie
+              data={mergedBreakdownData as RefundBreakdownType[]}
+              dataKey={"count"}
+              innerRadius={80}
+              outerRadius={140}
+            >
+              {mergedBreakdownData.map((entry, idx) => (
+                <Cell key={entry.reason} fill={palette[idx % palette.length]} />
+              ))}
+            </Pie>
+          </PieChart>
+        </ResponsiveContainer>
       </div>
       <Layout.FlexColumn>
         <H5>

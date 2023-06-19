@@ -11,7 +11,6 @@ import {
   Card,
   Info,
   FormSelect,
-  LoadingIndicator,
   Popover,
   Markdown,
   Layout,
@@ -35,6 +34,7 @@ import {
 } from "@performance/migrated/toolkit/stats";
 import { Page } from "@performance/migrated/toolkit/constants";
 import logger from "@performance/migrated/toolkit/logger";
+import Skeleton from "@core/components/Skeleton";
 
 const STORE_SALES_STATS_QUERY = gql`
   query StoreSalesStats_StoreSalesCharts($days: Int!) {
@@ -100,7 +100,7 @@ const StoreSalesCharts = (props: Props) => {
   });
 
   if (data == null || loading) {
-    return <LoadingIndicator />;
+    return <Skeleton height={1220} />;
   }
 
   if (data.currentMerchant == null || data.currentMerchant.storeStats == null) {

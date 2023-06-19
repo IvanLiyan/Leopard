@@ -38,6 +38,7 @@ import {
   VALID_TRACKING_RATE,
 } from "./stats";
 
+export const WssLookbackDayCount = 90;
 export const RecentStatsDayCount = 30;
 
 type PickedDate = {
@@ -312,7 +313,7 @@ export const formatDateWindow = (
         month: "short",
         day: "numeric",
         year: "numeric",
-      }).format(new Date(today).setDate(today.getDate() - 90))
+      }).format(new Date(today).setDate(today.getDate() - WssLookbackDayCount))
     : undefined;
 
   const formattedEndDate = today
@@ -333,6 +334,7 @@ export const WSSAverageUserRatingQuery = gql`
     $sortField: SortProductRatingField
     $sortOrder: SortByOrder
     $productIds: [ObjectIdType!]
+    $isBadByRating: Boolean
   ) {
     currentMerchant {
       wishSellerStandard {
@@ -343,6 +345,7 @@ export const WSSAverageUserRatingQuery = gql`
             sortField: $sortField
             sortOrder: $sortOrder
             productIds: $productIds
+            isBadByRating: $isBadByRating
           ) {
             totalCount
             dataSlice {
@@ -574,6 +577,7 @@ export const WSSProductQualityRefundQuery = gql`
     $sortField: SortProductQualityRefundField
     $sortOrder: SortByOrder
     $productIds: [ObjectIdType!]
+    $isBadByRefund: Boolean
   ) {
     currentMerchant {
       wishSellerStandard {
@@ -584,6 +588,7 @@ export const WSSProductQualityRefundQuery = gql`
             sortField: $sortField
             sortOrder: $sortOrder
             productIds: $productIds
+            isBadByRefund: $isBadByRefund
           ) {
             totalCount
             dataSlice {

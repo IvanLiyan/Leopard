@@ -1,8 +1,6 @@
 import {
   CellInfo,
-  H4,
   Layout,
-  LoadingIndicator,
   SearchBox,
   SortOrder,
   Table,
@@ -25,6 +23,7 @@ import { observer } from "mobx-react";
 import React, { useMemo, useState } from "react";
 import { useQuery } from "@apollo/client";
 import TableControl from "@core/components/TableControl";
+import Skeleton from "@core/components/Skeleton";
 
 type TableData = {
   readonly productId: string;
@@ -37,12 +36,14 @@ type TableData = {
 
 type Props = BaseProps & {
   readonly formatter: (metric: number) => string;
+  readonly showOnlyUnderperformingProducts?: boolean;
 };
 
 const ProductQualityRefundTable: React.FC<Props> = ({
   style,
   className,
   formatter,
+  showOnlyUnderperformingProducts,
 }) => {
   const styles = useStylesheet();
 
@@ -68,6 +69,7 @@ const ProductQualityRefundTable: React.FC<Props> = ({
       sortField: sortOrder && sortField ? sortField : undefined,
       sortOrder: sortOrder && sortField ? sortOrder : undefined,
       productIds: searchInput ? [searchInput] : undefined,
+      isBadByRefund: showOnlyUnderperformingProducts,
     },
   });
 
@@ -136,27 +138,28 @@ const ProductQualityRefundTable: React.FC<Props> = ({
         productName={productName}
         productImg={productImg}
       />
-      <Layout.FlexColumn style={[className, style]}>
-        <H4>All refunded products</H4>
-        <Layout.FlexRow style={styles.tableSearch}>
-          <SearchBox
-            icon="search"
-            placeholder={i`Search by Product ID`}
-            tokenize
-            noDuplicateTokens
-            maxTokens={1}
-            defaultValue={searchInput}
-            onTokensChanged={({ tokens }) => {
-              if (tokens.length > 0) {
-                setSearchInput(tokens[0].trim());
-              } else {
-                setSearchInput("");
-              }
-              setOffset(0);
-            }}
-          />
-        </Layout.FlexRow>
-        <LoadingIndicator loadingComplete={!loading}>
+      <Layout.FlexRow style={[styles.tableSearch, className, style]}>
+        <SearchBox
+          icon="search"
+          placeholder={i`Search by Product ID`}
+          tokenize
+          noDuplicateTokens
+          maxTokens={1}
+          defaultValue={searchInput}
+          onTokensChanged={({ tokens }) => {
+            if (tokens.length > 0) {
+              setSearchInput(tokens[0].trim());
+            } else {
+              setSearchInput("");
+            }
+            setOffset(0);
+          }}
+        />
+      </Layout.FlexRow>
+      {loading ? (
+        <Skeleton height={260} />
+      ) : (
+        <>
           <Table
             data={tableData}
             actions={tableActions}
@@ -212,16 +215,16 @@ const ProductQualityRefundTable: React.FC<Props> = ({
               columnDataCy={"refund-rate-column"}
             />
           </Table>
-        </LoadingIndicator>
-        <TableControl
-          limit={limit}
-          offset={offset}
-          total={total}
-          onLimitChange={(limit) => setLimit(limit)}
-          onOffsetChange={(offset) => setOffset(offset)}
-          style={{ paddingBottom: "0px" }}
-        />
-      </Layout.FlexColumn>
+          <TableControl
+            limit={limit}
+            offset={offset}
+            total={total}
+            onLimitChange={(limit) => setLimit(limit)}
+            onOffsetChange={(offset) => setOffset(offset)}
+            style={{ paddingBottom: "0px" }}
+          />
+        </>
+      )}
     </>
   );
 };

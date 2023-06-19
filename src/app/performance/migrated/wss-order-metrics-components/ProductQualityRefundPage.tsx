@@ -1,4 +1,4 @@
-import { Layout, Markdown } from "@ContextLogic/lego";
+import { H4, Layout, Markdown } from "@ContextLogic/lego";
 import { Icon } from "@ContextLogic/zeus";
 import { ci18n } from "@core/toolkit/i18n";
 import Illustration from "@core/components/Illustration";
@@ -206,7 +206,13 @@ const ProductQualityRefundPage: React.FC = () => {
           <Text>You don&apos;t have any refunded products at this time</Text>
         </Layout.FlexColumn>
       ) : (
-        <ProductQualityRefundTable formatter={formatter} style={styles.table} />
+        <Layout.FlexColumn style={styles.table}>
+          <H4>All refunded products</H4>
+          <ProductQualityRefundTable
+            formatter={formatter}
+            style={styles.table}
+          />
+        </Layout.FlexColumn>
       )}
     </Card>
   );

@@ -37,7 +37,7 @@ const MetricLinkByType: { readonly [T in MetricType]: string } = {
   productLogisticsRefundRate: "/performance/wish-standards/logistics-refund",
   fulfillmentSpeed: "/performance/wish-standards/fulfillment-speed",
   underperformingProducts:
-    "/performance/wish-standards/underperforming-products", // TODO [lliepert] make this page
+    "/performance/wish-standards/underperforming-products",
 };
 
 const PerformanceMetrics: React.FC<PerformanceMetricsProps> = (props) => {
