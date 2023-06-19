@@ -5,6 +5,7 @@ import Link from "@core/components/Link";
 import { useDeciderKey } from "@core/stores/ExperimentStore";
 import { useLocalizationStore } from "@core/stores/LocalizationStore";
 import { useTheme } from "@core/stores/ThemeStore";
+import { merchFeUrl } from "@core/toolkit/router";
 import { UserSchema } from "@schema";
 import { StyleSheet } from "aphrodite";
 import Script from "next/script";
@@ -15,8 +16,16 @@ declare global {
     // Disabling because Salesforce doesn't provide typing
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     embedded_svc: any;
+    // Disabling because Zendesk doesn't provide typing
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    zESettings: any;
+    // Disabling because Zendesk doesn't provide typing
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    zE: any;
   }
 }
+const CN_ZENDESK_PATH =
+  "/zendesk-proxy/zendesk-widget-js?key=44aa0837-02db-42c8-acc2-d811f41218c8";
 
 const SalesforceWidget: React.FC<{ isPublic: boolean }> = ({
   children,
@@ -115,6 +124,7 @@ const SalesforceWidget: React.FC<{ isPublic: boolean }> = ({
     if (showWidget) {
       return chatScript(Config.salesforceUS);
     }
+    // Non-CN Zendesk is EOL, show nothing
     return <>{children}</>;
   }
 
@@ -122,7 +132,37 @@ const SalesforceWidget: React.FC<{ isPublic: boolean }> = ({
     if (showWidgetCN) {
       return chatScript(Config.salesforceCN);
     }
-    return <>{children}</>;
+    // CN Zendesk is still live, so show it
+    return (
+      <>
+        <Script
+          id="ze-snippet"
+          src={merchFeUrl(CN_ZENDESK_PATH)}
+          onLoad={() => {
+            // Legacy Zendesk config
+            window.zE(function () {
+              window.zE.setLocale(localeProper);
+              window.zE.identify({
+                name: loggedInUser.displayName,
+                email: loggedInUser.email,
+              });
+            });
+            window.zESettings = {
+              webWidget: {
+                color: {
+                  theme: "#022786",
+                  launcher: "#022786",
+                  launcherText: "#FFFFFF",
+                  header: "#DCE5E9",
+                  button: "#305BEF",
+                },
+              },
+            };
+          }}
+        />
+        {children}
+      </>
+    );
   }
 
   // Otherwise, if merchant has a BD assigned specifically,
