@@ -17,6 +17,7 @@ import { ci18n } from "@core/toolkit/i18n";
 import { useQuery } from "@apollo/client";
 import ActionCard from "@core/components/ActionCard";
 import Link from "next/link";
+import { useDeciderKey } from "@core/stores/ExperimentStore";
 
 const PageLayout = ({ cards }: { cards: ReadonlyArray<React.ReactNode> }) => {
   return (
@@ -58,8 +59,11 @@ const PageLayout = ({ cards }: { cards: ReadonlyArray<React.ReactNode> }) => {
 
 const ProductComplianceCenterPage: NextPage<Record<string, never>> = () => {
   const { data, loading, error } = useQuery<PccQueryResponse>(PCC_QUERY);
+  const { decision: showEprTablePage, isLoading: dkeyLoading } = useDeciderKey(
+    "show_epr_non_compliant_card",
+  );
 
-  if (loading) {
+  if (loading || dkeyLoading) {
     return (
       <PageLayout
         cards={[
@@ -118,6 +122,7 @@ const ProductComplianceCenterPage: NextPage<Record<string, never>> = () => {
             on obtaining EPR registration numbers
           </Text>
         </ActionCard>,
+        showEprTablePage &&
         data.policy.productCompliance.extendedProducerResponsibility.eprNonCompliantSummary.summaryRecords.some(
           (record) => record.nonCompliantProductCount > 0,
         ) ? (
