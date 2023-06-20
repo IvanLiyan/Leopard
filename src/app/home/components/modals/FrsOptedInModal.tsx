@@ -8,7 +8,6 @@ import Icon from "@core/components/Icon";
 import { useTheme } from "@core/stores/ThemeStore";
 import Illustration from "@core/components/Illustration";
 import Link from "@core/components/Link";
-import { zendeskURL } from "@core/toolkit/url";
 
 type FrsOptedInModalProps = Pick<ModalProps, "open"> & {
   readonly onClose: () => unknown;
@@ -43,7 +42,13 @@ const FrsOptedInModal: React.FC<FrsOptedInModalProps> = ({ open, onClose }) => {
           If you did not enroll in flat rate shipping before June 12, then your
           store has been automatically enrolled in flat rate shipping, which is
           live to customers. Please see the{" "}
-          <Link href={zendeskURL("12378330575643")} openInNewTab>
+          <Link
+            // hardcoded link since this format isn't compatible with zendeskUrl, please don't repeat
+            href={
+              "https://merchanthelp.wish.com/s/article/Flat-Rate-Shipping-Enhancements-for-Advanced-Logistics-Program-Orders"
+            }
+            openInNewTab
+          >
             Flat Rate Shipping FAQ
           </Link>{" "}
           to learn more.
