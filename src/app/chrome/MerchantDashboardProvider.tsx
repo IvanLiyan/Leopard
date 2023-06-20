@@ -26,7 +26,10 @@ import { LoadingIndicator } from "@ContextLogic/lego";
 import { env } from "@core/stores/EnvironmentStore";
 import { datadogRum } from "@datadog/browser-rum";
 import FullPageError from "@core/components/FullPageError";
-import SalesforceWidget from "@chrome/components/SalesforceWidget";
+import SalesforceWidget, {
+  MerchantSupportConfigQuery,
+  MerchantSupportConfigQueryResponse,
+} from "@chrome/components/SalesforceWidget";
 import {
   AtlasThemeProvider,
   AtlasMuiThemeOptions,
@@ -34,6 +37,7 @@ import {
 import { useRouter } from "next/router";
 import { StepperTheme } from "@core/components/Stepper/Stepper";
 import { StepLabelTheme } from "@core/components/Stepper/StepLabel";
+import { useDeciderKey } from "@core/stores/ExperimentStore";
 
 datadogRum.init({
   applicationId: "901bc1fd-28d9-4542-88ca-f109e88b2a43",
@@ -129,11 +133,32 @@ const MerchantDashboardProvider: React.FC<MerchantDashboardProviderProps> = ({
     skip: isPublic || xsrfCheckLoading,
   });
 
+  // Customer support widget API calls
+  const { decision: showWidget, isLoading: showWidgetLoading } = useDeciderKey(
+    "md_salesforce_widget",
+  );
+  const { decision: showWidgetCN, isLoading: showWidgetCNLoading } =
+    useDeciderKey("md_salesforce_widget_cn");
+
+  const {
+    data: merchantSupportConfigInitialData,
+    loading: merchantSupportConfigLoading,
+  } = useQuery<MerchantSupportConfigQueryResponse, never>(
+    MerchantSupportConfigQuery,
+    {
+      client,
+      skip: isPublic,
+    },
+  );
+  const widgetQueriesLoading =
+    showWidgetLoading || showWidgetCNLoading || merchantSupportConfigLoading;
+
   if (
     xsrfCheckLoading ||
     userStoreLoading ||
     localizationStoreLoading ||
-    chromeStoreLoading
+    chromeStoreLoading ||
+    widgetQueriesLoading
   ) {
     return (
       <LoadingIndicator
@@ -188,7 +213,13 @@ const MerchantDashboardProvider: React.FC<MerchantDashboardProviderProps> = ({
                   <LocalizationStoreProvider
                     initialData={localizationStoreInitialData}
                   >
-                    <SalesforceWidget isPublic={isPublic}>
+                    <SalesforceWidget
+                      showWidget={showWidget}
+                      showWidgetCN={showWidgetCN}
+                      merchantSupportConfigInitialData={
+                        merchantSupportConfigInitialData
+                      }
+                    >
                       <ThemeStoreProvider>
                         <ChromeProvider initialData={chromeStoreInitialData}>
                           {children}

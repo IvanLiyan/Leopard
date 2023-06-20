@@ -1,8 +1,7 @@
-import { gql, useQuery } from "@apollo/client";
+import { gql } from "@apollo/client";
 import Config from "@chrome/salesforce";
 import { Text } from "@ContextLogic/lego";
 import Link from "@core/components/Link";
-import { useDeciderKey } from "@core/stores/ExperimentStore";
 import { useLocalizationStore } from "@core/stores/LocalizationStore";
 import { useTheme } from "@core/stores/ThemeStore";
 import { merchFeUrl } from "@core/toolkit/router";
@@ -27,33 +26,23 @@ declare global {
 const CN_ZENDESK_PATH =
   "/zendesk-proxy/zendesk-widget-js?key=44aa0837-02db-42c8-acc2-d811f41218c8";
 
-const SalesforceWidget: React.FC<{ isPublic: boolean }> = ({
+const SalesforceWidget: React.FC<{
+  showWidget?: boolean | null;
+  showWidgetCN?: boolean | null;
+  merchantSupportConfigInitialData?: MerchantSupportConfigQueryResponse | null;
+}> = ({
   children,
-  isPublic,
+  showWidget,
+  showWidgetCN,
+  merchantSupportConfigInitialData,
 }) => {
   const styles = useStylesheet();
 
   const { localeProper } = useLocalizationStore();
-  const { decision: showWidget, isLoading: showWidgetLoading } = useDeciderKey(
-    "md_salesforce_widget",
-  );
-  const { decision: showWidgetCN, isLoading: showWidgetCNLoading } =
-    useDeciderKey("md_salesforce_widget_cn");
 
-  const { data, loading: loggedInUserLoading } = useQuery<
-    MerchantSupportConfigQueryResponse,
-    never
-  >(MerchantSupportConfigQuery, {
-    skip: isPublic,
-  });
-  const loggedInUser = data?.currentUser;
+  const loggedInUser = merchantSupportConfigInitialData?.currentUser;
 
-  if (
-    loggedInUserLoading ||
-    !loggedInUser ||
-    showWidgetLoading ||
-    showWidgetCNLoading
-  ) {
+  if (!loggedInUser) {
     return <>{children}</>;
   }
 
@@ -138,6 +127,7 @@ const SalesforceWidget: React.FC<{ isPublic: boolean }> = ({
         <Script
           id="ze-snippet"
           src={merchFeUrl(CN_ZENDESK_PATH)}
+          strategy="lazyOnload"
           onLoad={() => {
             // Legacy Zendesk config
             window.zE(function () {
@@ -223,7 +213,7 @@ const useStylesheet = () => {
   );
 };
 
-const MerchantSupportConfigQuery = gql`
+export const MerchantSupportConfigQuery = gql`
   query MerchantSupportConfigQuery {
     currentUser {
       displayName
@@ -239,7 +229,7 @@ const MerchantSupportConfigQuery = gql`
   }
 `;
 
-type MerchantSupportConfigQueryResponse = {
+export type MerchantSupportConfigQueryResponse = {
   readonly currentUser?:
     | ({ readonly accountManager?: Pick<UserSchema, "email"> | null } & Pick<
         UserSchema,
