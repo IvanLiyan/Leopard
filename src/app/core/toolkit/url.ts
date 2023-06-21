@@ -371,9 +371,13 @@ const useQueryParam = <T>(
       }
 
       if (asPath != null && !isEqual(newQuery, query)) {
-        await replace({
-          query: newQuery,
-        });
+        await replace(
+          {
+            query: newQuery,
+          },
+          undefined,
+          { scroll: false },
+        );
       }
     },
     [key, options, asPath, replace],
@@ -449,7 +453,7 @@ export const useUpsertQueryParams = () => {
       };
     }, queryObj);
 
-    await replace({ query });
+    await replace({ query }, undefined, { scroll: false });
   };
 };
 

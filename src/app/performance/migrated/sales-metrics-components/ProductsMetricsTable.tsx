@@ -1,8 +1,7 @@
-import React, { useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { StyleSheet } from "aphrodite";
 import { observer } from "mobx-react";
 import numeral from "numeral";
-import { gql } from "@apollo/client";
 import { useQuery } from "@apollo/client";
 
 /* Lego Components */
@@ -35,11 +34,7 @@ import ProductColumn from "./ProductColumn";
 import ProductsPriceRange from "./ProductsPriceRange";
 
 /* Model */
-import {
-  PerformanceMetricsProductsRequestData,
-  PerformanceMetricsProductsResponseData,
-  PerformanceHealthInitialData,
-} from "@performance/migrated/toolkit/stats";
+import { PerformanceHealthInitialData } from "@performance/migrated/toolkit/stats";
 import { ProductSearchType } from "@schema";
 
 /* Toolkit */
@@ -49,62 +44,15 @@ import logger from "@performance/migrated/toolkit/logger";
 /* Relative Imports */
 import ProductChart from "./ProductChart";
 import Skeleton from "@core/components/Skeleton";
-
-const PRODUCTS_STATS_QUERY = gql`
-  query ProductsStats_ProductMetricsTable(
-    $offset: Int!
-    $limit: Int!
-    $days: Int!
-    $searchType: ProductSearchType
-    $query: String
-  ) {
-    currentMerchant {
-      state
-    }
-    productCatalog {
-      productCountV2(searchType: $searchType, query: $query, state: ACTIVE)
-      productsV2(
-        limit: $limit
-        offset: $offset
-        searchType: $searchType
-        query: $query
-        sort: { order: DESC, field: SALES }
-        state: ACTIVE
-      ) {
-        sku
-        name
-        id
-        variations {
-          price {
-            amount
-            display
-          }
-        }
-        stats {
-          totals(coreMetricsOnly: true, days: $days) {
-            gmv {
-              amount
-              display
-            }
-            orders
-            impressions
-          }
-        }
-      }
-    }
-  }
-`;
-
-type TableData = {
-  readonly name: string;
-  readonly id: string;
-  readonly productId: string;
-  readonly price: string;
-  readonly gmv: string;
-  readonly orders: string;
-  readonly impressions: string;
-  readonly actions: string;
-};
+import {
+  ProductsMetricsTableTableQueryResponse,
+  ProductsMetricsTableTableQueryVariables,
+  PRODUCTS_METRICS_TABLE_TABLE_QUERY,
+  PRODUCTS_METRICS_TABLE_COMPONENT_QUERY,
+  ProductsMetricsTableComponentQueryResponse,
+} from "@performance/api/productsMetricsTableQueries";
+import SomethingWentWrongText from "@core/components/SomethingWentWrongText";
+import debounce from "lodash/debounce";
 
 type Props = BaseProps & {
   readonly initialData: PerformanceHealthInitialData;
@@ -120,7 +68,11 @@ const ProductsMetricsTable = (props: Props) => {
   const [productsPerPageQuery, setProductsPerPageQuery] =
     useIntQueryParam("limit");
   const [lastNDaysQuery, setLastNdaysQuery] = useIntQueryParam("days");
-  const [searchQuery, setSearchQuery] = useStringQueryParam("query");
+  const [searchQuery, setSearchQueryRaw] = useStringQueryParam("query");
+
+  // there are no dependencies
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const setSearchQuery = useCallback(debounce(setSearchQueryRaw, 300), []);
 
   const pageOffset = pageOffsetQuery || 0;
   const searchType = searchTypeQuery || "NAME";
@@ -128,10 +80,15 @@ const ProductsMetricsTable = (props: Props) => {
   const lastNDays = lastNDaysQuery || 7;
   const query = searchQuery || null;
 
-  const { data, loading, refetch } = useQuery<
-    PerformanceMetricsProductsResponseData,
-    PerformanceMetricsProductsRequestData
-  >(PRODUCTS_STATS_QUERY, {
+  const { data: componentData, loading: componentQueryLoading } =
+    useQuery<ProductsMetricsTableComponentQueryResponse>(
+      PRODUCTS_METRICS_TABLE_COMPONENT_QUERY,
+    );
+
+  const { data: tableData, loading: tableQueryLoading } = useQuery<
+    ProductsMetricsTableTableQueryResponse,
+    ProductsMetricsTableTableQueryVariables
+  >(PRODUCTS_METRICS_TABLE_TABLE_QUERY, {
     variables: {
       offset: pageOffset,
       limit: productsPerPage,
@@ -142,18 +99,26 @@ const ProductsMetricsTable = (props: Props) => {
     fetchPolicy: "no-cache",
   });
 
-  if (data == null || data.currentMerchant == null) {
+  if (componentQueryLoading) {
     return <Skeleton height={460} />;
   }
 
-  const isApproved = data.currentMerchant.state === "APPROVED";
+  if (componentData?.currentMerchant == null) {
+    return <SomethingWentWrongText />;
+  }
+
+  const isApproved = componentData.currentMerchant.state === "APPROVED";
 
   const totalProducts =
-    data.productCatalog != null ? data.productCatalog.productCountV2 : 0;
+    tableData == null
+      ? null
+      : tableData.productCatalog != null
+      ? tableData.productCatalog.productCountV2
+      : 0;
 
   const productsList =
-    data.productCatalog != null
-      ? data.productCatalog.productsV2.map((product) => ({
+    tableData?.productCatalog != null
+      ? tableData.productCatalog.productsV2.map((product) => ({
           name: product.name,
           id: product.id,
           productId: product.id,
@@ -190,7 +155,6 @@ const ProductsMetricsTable = (props: Props) => {
       new_value: parseInt(value),
     });
     await setProductsPerPageQuery(parseInt(value));
-    await refetch();
   };
 
   const onSelectLastNDays = async (value: string) => {
@@ -202,7 +166,6 @@ const ProductsMetricsTable = (props: Props) => {
       new_value: parseInt(value),
     });
     await setLastNdaysQuery(parseInt(value));
-    await refetch();
   };
 
   const onPageChange = async (currentPage: number) => {
@@ -212,17 +175,16 @@ const ProductsMetricsTable = (props: Props) => {
       event_name: "NEXT_X_PRODUCTS",
       page: Page.salesMetrics,
       old_value: `${pageOffset + 1}-${Math.min(
-        totalProducts,
+        totalProducts || 0,
         pageOffset + productsPerPage,
-      )} of ${totalProducts}`,
+      )} of ${totalProducts || 0}`,
       new_value: `${nextPage * productsPerPage + 1}-${Math.min(
-        totalProducts,
+        totalProducts || 0,
         nextPage * productsPerPage + productsPerPage,
-      )} of ${totalProducts}`,
+      )} of ${totalProducts || 0}`,
     });
     await setPageOffsetQuery(nextPage * productsPerPage);
     setExpandedRows(new Set([]));
-    await refetch();
   };
 
   const onSearchInputChange = async (value: string) => {
@@ -233,10 +195,9 @@ const ProductsMetricsTable = (props: Props) => {
       page: Page.salesMetrics,
       search_input: query,
     });
-    await refetch();
   };
 
-  const renderChart = (row: TableData) => (
+  const renderChart = (row: typeof productsList[number]) => (
     <ProductChart
       productId={row.productId}
       lastNDays={lastNDays}
@@ -330,7 +291,6 @@ const ProductsMetricsTable = (props: Props) => {
               }}
               textInputProps={{
                 placeholder: i`Search`,
-                // icon: searchImg, TODO [lucas liepert] bring back
                 onChange: async ({ text }) => await onSearchInputChange(text),
               }}
             />
@@ -365,7 +325,7 @@ const ProductsMetricsTable = (props: Props) => {
             />
           </div>
         </div>
-        {loading ? (
+        {tableQueryLoading ? (
           <Skeleton height={370} />
         ) : (
           <Table
@@ -405,7 +365,12 @@ const ProductsMetricsTable = (props: Props) => {
               minWidth={70}
               columnDataCy={"price-column"}
             >
-              {({ value }) => <ProductsPriceRange variations={value} />}
+              {({
+                value,
+              }: CellInfo<
+                typeof productsList[number]["variations"],
+                typeof productsList[number]
+              >) => <ProductsPriceRange variations={value} />}
             </Table.Column>
             <Table.Column
               _key={"gmv"}
@@ -432,7 +397,13 @@ const ProductsMetricsTable = (props: Props) => {
               width={100}
               columnDataCy={"actions-column"}
             >
-              {({ index, value }: CellInfo<string, TableData>) => (
+              {({
+                index,
+                value,
+              }: CellInfo<
+                typeof productsList[number]["actions"],
+                typeof productsList[number]
+              >) => (
                 <MultiSecondaryButton
                   actions={tableActions(value, index)}
                   visibleButtonCount={0}

@@ -15,9 +15,6 @@ import {
   CommerceMerchantState,
   MerchantTotalStats,
   MerchantSchema,
-  ProductCatalogSchema,
-  ProductSchema,
-  ProductCatalogSchemaProductsV2Args,
   ProductTotalStats,
   MerchantWishSellerStandardDetails,
   WishSellerStandardStats,
@@ -187,29 +184,6 @@ export type PerformanceMetricsStoreSalesResponseData = {
   };
 };
 
-export type PerformanceMetricsProductsResponseData = {
-  readonly currentMerchant?: Pick<MerchantSchema, "state"> | null;
-  readonly productCatalog?:
-    | (Pick<ProductCatalogSchema, "productCountV2"> & {
-        readonly productsV2: ReadonlyArray<
-          Pick<ProductSchema, "sku" | "name" | "id"> & {
-            readonly variations: {
-              readonly price: Pick<CurrencyValue, "amount" | "display">;
-            };
-            readonly stats: {
-              readonly totals: Pick<
-                ProductTotalStats,
-                "orders" | "impressions"
-              > & {
-                readonly gmv: Pick<CurrencyValue, "amount" | "display">;
-              };
-            };
-          }
-        >;
-      })
-    | null;
-};
-
 export type PerformanceMetricsProductStatsDailyResponseData = {
   readonly productCatalog?: {
     readonly product?: {
@@ -227,11 +201,6 @@ export type PerformanceMetricsProductStatsDailyResponseData = {
 export type PerformanceMetricsStoreSalesRequestData = {
   readonly days: number;
 };
-
-export type PerformanceMetricsProductsRequestData =
-  ProductCatalogSchemaProductsV2Args & {
-    readonly days: number;
-  };
 
 export type PerformanceMetricsProductStatsDailyRequestData = {
   readonly days: number;
