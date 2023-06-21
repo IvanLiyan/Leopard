@@ -29,11 +29,13 @@ const CN_ZENDESK_PATH =
 const SalesforceWidget: React.FC<{
   showWidget?: boolean | null;
   showWidgetCN?: boolean | null;
+  forceCnMailTo?: boolean | null;
   merchantSupportConfigInitialData?: MerchantSupportConfigQueryResponse | null;
 }> = ({
   children,
   showWidget,
   showWidgetCN,
+  forceCnMailTo,
   merchantSupportConfigInitialData,
 }) => {
   const styles = useStylesheet();
@@ -107,6 +109,24 @@ const SalesforceWidget: React.FC<{
     </>
   );
 
+  const mailToFAB = (
+    <>
+      <Link
+        style={styles.fakeSupport}
+        href={`mailto:${
+          loggedInUser?.accountManager?.email ?? "merchant_support@wish.com"
+        }`}
+        fadeOnHover={false}
+      >
+        <Text renderAsSpan style={styles.fakeQuestionMark}>{`?`}</Text>
+        <Text weight="bold" renderAsSpan style={styles.fakeSupportText}>
+          Support
+        </Text>
+      </Link>
+      {children}
+    </>
+  );
+
   // If merchant is in US or CN support group, show
   // Salesforce chat widget
   if (loggedInUser.supportConfig?.isEnBd) {
@@ -118,6 +138,12 @@ const SalesforceWidget: React.FC<{
   }
 
   if (loggedInUser?.supportConfig?.isNonEnBd) {
+    // In case CN zendesk proxy is broken, we can turn on this dkey to
+    // show a mailto: link in place so that merchants still have a way to reach support
+    if (forceCnMailTo) {
+      return mailToFAB;
+    }
+    // This dkey is likely going to remain OFF as CN does not want to use Salesforce
     if (showWidgetCN) {
       return chatScript(Config.salesforceCN);
     }
@@ -158,21 +184,7 @@ const SalesforceWidget: React.FC<{
   // Otherwise, if merchant has a BD assigned specifically,
   // show a mailto: link
   if (loggedInUser.accountManager?.email) {
-    return (
-      <>
-        <Link
-          style={styles.fakeSupport}
-          href={`mailto:${loggedInUser.accountManager.email}`}
-          fadeOnHover={false}
-        >
-          <Text renderAsSpan style={styles.fakeQuestionMark}>{`?`}</Text>
-          <Text weight="bold" renderAsSpan style={styles.fakeSupportText}>
-            Support
-          </Text>
-        </Link>
-        {children}
-      </>
-    );
+    return mailToFAB;
   }
 
   // Otherwise, show nothing

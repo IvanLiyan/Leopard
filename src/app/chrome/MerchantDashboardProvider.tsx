@@ -139,6 +139,8 @@ const MerchantDashboardProvider: React.FC<MerchantDashboardProviderProps> = ({
   );
   const { decision: showWidgetCN, isLoading: showWidgetCNLoading } =
     useDeciderKey("md_salesforce_widget_cn");
+  const { decision: forceCnMailTo, isLoading: forceCnMailToLoading } =
+    useDeciderKey("md_zendesk_widget_cn_hide");
 
   const {
     data: merchantSupportConfigInitialData,
@@ -151,7 +153,10 @@ const MerchantDashboardProvider: React.FC<MerchantDashboardProviderProps> = ({
     },
   );
   const widgetQueriesLoading =
-    showWidgetLoading || showWidgetCNLoading || merchantSupportConfigLoading;
+    showWidgetLoading ||
+    showWidgetCNLoading ||
+    forceCnMailToLoading ||
+    merchantSupportConfigLoading;
 
   if (
     xsrfCheckLoading ||
@@ -216,6 +221,7 @@ const MerchantDashboardProvider: React.FC<MerchantDashboardProviderProps> = ({
                     <SalesforceWidget
                       showWidget={showWidget}
                       showWidgetCN={showWidgetCN}
+                      forceCnMailTo={forceCnMailTo}
                       merchantSupportConfigInitialData={
                         merchantSupportConfigInitialData
                       }
