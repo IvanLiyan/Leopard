@@ -6,7 +6,7 @@ import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { Text } from "@ContextLogic/atlas-ui";
 import { useTheme } from "@core/stores/ThemeStore";
 import { css } from "@core/toolkit/styling";
-import Link from "@core/components/Link";
+import Link from "@deprecated/components/Link";
 import Icon from "@core/components/Icon";
 import Image from "@core/components/Image";
 import { merchFeUrl } from "@core/toolkit/router";

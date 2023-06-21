@@ -34,7 +34,7 @@ import CaptchaInput, {
 import PasswordField from "@core/components/PasswordField";
 import LoginCard from "@landing-pages/authentication/LoginCard";
 import WechatQrInput from "@landing-pages/authentication/WechatQrInput";
-import Link from "@core/components/Link";
+import Link from "@deprecated/components/Link";
 
 /* Merchant Stores */
 import { useToastStore } from "@core/stores/ToastStore";

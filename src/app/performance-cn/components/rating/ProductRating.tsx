@@ -16,7 +16,7 @@ import {
 } from "src/app/performance-cn/toolkit/rating";
 import commonStyles from "@performance-cn/styles/common.module.css";
 import { PER_PAGE_LIMIT } from "src/app/performance-cn/toolkit/enums";
-import Link from "@core/components/Link";
+import Link from "@deprecated/components/Link";
 import { wishURL, contestImageURL } from "@core/toolkit/url";
 import { round } from "src/app/core/toolkit/stringUtils";
 

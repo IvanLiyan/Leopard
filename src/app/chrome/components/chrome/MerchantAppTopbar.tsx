@@ -6,7 +6,7 @@ import { Layout, Switch, Popover } from "@ContextLogic/lego";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
 import Icon from "@core/components/Icon";
-import Link from "@core/components/Link";
+import Link from "@deprecated/components/Link";
 import { useApolloStore } from "@core/stores/ApolloStore";
 import { useDeviceStore } from "@core/stores/DeviceStore";
 import { useEnvironmentStore } from "@core/stores/EnvironmentStore";

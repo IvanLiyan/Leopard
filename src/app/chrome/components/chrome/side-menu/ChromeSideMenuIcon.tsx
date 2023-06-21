@@ -18,7 +18,7 @@ import { css } from "@core/toolkit/styling";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 
-import Link from "@core/components/Link";
+import Link from "@deprecated/components/Link";
 import { ChromeNavigationNode } from "@core/stores/ChromeStore";
 
 type Props = BaseProps & {

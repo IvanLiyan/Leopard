@@ -7,7 +7,7 @@ import PageRoot from "@core/components/PageRoot";
 import { useTheme } from "@core/stores/ThemeStore";
 import { Alert, AlertTitle } from "@ContextLogic/atlas-ui";
 import ProductsCsvSteps from "@products-csv/components/ProductsCsvSteps";
-import Link from "@core/components/Link";
+import Link from "@deprecated/components/Link";
 import PageHeader from "@core/components/PageHeader";
 import PageGuide from "@core/components/PageGuide";
 import { useDeciderKey } from "@core/stores/ExperimentStore";

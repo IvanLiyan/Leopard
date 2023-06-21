@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 import Config from "@chrome/salesforce";
 import { Text } from "@ContextLogic/lego";
-import Link from "@core/components/Link";
+import Link from "@deprecated/components/Link";
 import { useLocalizationStore } from "@core/stores/LocalizationStore";
 import { useTheme } from "@core/stores/ThemeStore";
 import { merchFeUrl } from "@core/toolkit/router";

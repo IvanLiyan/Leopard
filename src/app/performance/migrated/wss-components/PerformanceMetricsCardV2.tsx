@@ -6,7 +6,7 @@ import { ci18n } from "@core/toolkit/i18n";
 
 /* Lego Components */
 import { Info, Layout, Text } from "@ContextLogic/lego";
-import Link from "@core/components/Link";
+import Link from "@deprecated/components/Link";
 
 /* Merchant Components */
 import Icon from "@core/components/Icon";

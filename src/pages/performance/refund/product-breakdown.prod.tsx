@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo } from "react";
-import Link from "@core/components/Link";
+import Link from "@deprecated/components/Link";
 import { observer } from "mobx-react";
 import { useQuery } from "@apollo/client";
 import { Button } from "@ContextLogic/atlas-ui";

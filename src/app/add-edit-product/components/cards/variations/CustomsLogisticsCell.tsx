@@ -9,7 +9,7 @@ import AddEditProductState, {
 import { Layout, Text } from "@ContextLogic/lego";
 import { useTheme } from "@core/stores/ThemeStore";
 import CustomCustomsLogisticsModal from "./CustomCustomsLogisticsModal";
-import Link from "@core/components/Link";
+import Link from "@deprecated/components/Link";
 import Icon from "@core/components/Icon";
 
 type Props = BaseProps & {

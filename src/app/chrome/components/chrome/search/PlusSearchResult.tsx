@@ -21,7 +21,7 @@ import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { NavigationSearchResult } from "@chrome/search/searchStore";
 import { useTheme } from "@core/stores/ThemeStore";
 
-import Link from "@core/components/Link";
+import Link from "@deprecated/components/Link";
 import NextImage from "@core/components/Image";
 
 type Props = BaseProps & {

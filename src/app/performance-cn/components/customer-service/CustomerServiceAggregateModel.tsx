@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { observer } from "mobx-react";
-import Link from "@core/components/Link";
+import Link from "@deprecated/components/Link";
 import { useQuery } from "@apollo/client";
 import { ThemedLabel, LoadingIndicator, Alert } from "@ContextLogic/lego";
 import { Tooltip } from "@mui/material";

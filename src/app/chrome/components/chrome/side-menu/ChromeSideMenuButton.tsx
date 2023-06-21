@@ -26,7 +26,7 @@ import { ChromeBadgeType } from "@schema";
 import { IconName } from "@ContextLogic/zeus";
 import Icon from "@core/components/Icon";
 
-import Link from "@core/components/Link";
+import Link from "@deprecated/components/Link";
 import { ChromeNavigationNode } from "@core/stores/ChromeStore";
 
 type Props = BaseProps & {

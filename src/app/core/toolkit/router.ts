@@ -1,4 +1,3 @@
-import { isValidURL } from "@core/components/Link";
 import { NextRouter, useRouter as useNextRouter } from "next/router";
 
 /**
@@ -12,6 +11,20 @@ export const merchFeUrl = (link: string): string => {
   }
 
   return `${window.location.origin}${link}`;
+};
+
+/**
+ * Used in components like core/Link to check for usage of the above merchFeUrl
+ */
+export const isValidURL = (s: string): boolean => {
+  try {
+    new URL(s);
+    // test has passed, s is a valid URL
+    return true;
+  } catch (_) {
+    // test failed, s is not a valid URL
+    return false;
+  }
 };
 
 /**

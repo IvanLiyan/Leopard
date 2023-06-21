@@ -2,7 +2,7 @@ import React from "react";
 import { observer } from "mobx-react";
 import ReactMarkdown, { Options } from "react-markdown";
 import { Heading, HeadingProps, Text, TextProps } from "@ContextLogic/atlas-ui";
-import Link, { LinkProps } from "@core/components/Link";
+import Link, { LinkProps } from "@deprecated/components/Link";
 
 const Markdown = ({
   h1Props,

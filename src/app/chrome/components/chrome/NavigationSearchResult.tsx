@@ -13,7 +13,7 @@ import * as fonts from "@core/toolkit/fonts";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { NavigationSearchResult } from "@chrome/search/searchStore";
 
-import Link from "@core/components/Link";
+import Link from "@deprecated/components/Link";
 import NextImage from "@core/components/Image";
 import { useTheme } from "@core/stores/ThemeStore";
 

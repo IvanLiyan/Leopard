@@ -27,7 +27,7 @@ import { useDeviceStore } from "@core/stores/DeviceStore";
 import { useUserStore } from "@core/stores/UserStore";
 import AppLocaleSelector from "@chrome/components/AppLocaleSelector";
 import { merchFeUrl } from "@core/toolkit/router";
-import Link from "@core/components/Link";
+import Link from "@deprecated/components/Link";
 
 type NavigationProps = BaseProps & {
   readonly insetX?: number;

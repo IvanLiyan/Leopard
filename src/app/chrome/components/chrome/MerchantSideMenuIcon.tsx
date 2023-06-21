@@ -21,7 +21,7 @@ import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { SideMenuCounts, getNodeCount } from "../../toolkit";
 import { useLocalizationStore } from "@core/stores/LocalizationStore";
 
-import Link from "@core/components/Link";
+import Link from "@deprecated/components/Link";
 import { ChromeNavigationNode } from "@core/stores/ChromeStore";
 import Illustration, { IllustrationName } from "@core/components/Illustration";
 

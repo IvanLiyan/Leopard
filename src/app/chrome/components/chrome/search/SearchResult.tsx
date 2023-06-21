@@ -14,7 +14,7 @@ import { palettes } from "@deprecated/pkg/toolkit/lego-legacy/DEPRECATED_colors"
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { NavigationSearchResult } from "@chrome/search/searchStore";
 
-import Link from "@core/components/Link";
+import Link from "@deprecated/components/Link";
 import NextImage from "@core/components/Image";
 
 type Props = BaseProps & {

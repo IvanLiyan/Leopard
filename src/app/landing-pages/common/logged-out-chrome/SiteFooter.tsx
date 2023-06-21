@@ -10,7 +10,7 @@ import { useDeviceStore } from "@core/stores/DeviceStore";
 import { useTheme } from "@core/stores/ThemeStore";
 import { css } from "@core/toolkit/styling";
 import { merchFeUrl } from "@core/toolkit/router";
-import Link from "@core/components/Link";
+import Link from "@deprecated/components/Link";
 
 export type SiteFooterProps = BaseProps;
 

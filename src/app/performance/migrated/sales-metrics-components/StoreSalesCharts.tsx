@@ -14,7 +14,6 @@ import {
   Popover,
   Markdown,
   Layout,
-  Link,
 } from "@ContextLogic/lego";
 
 /* Lego Toolkit */
@@ -35,6 +34,7 @@ import {
 import { Page } from "@performance/migrated/toolkit/constants";
 import logger from "@performance/migrated/toolkit/logger";
 import Skeleton from "@core/components/Skeleton";
+import Link from "@core/components/Link";
 
 const STORE_SALES_STATS_QUERY = gql`
   query StoreSalesStats_StoreSalesCharts($days: Int!) {

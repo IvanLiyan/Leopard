@@ -14,7 +14,7 @@ import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { useUserStore } from "@core/stores/UserStore";
 import { useNavigationStore } from "@core/stores/NavigationStore";
 
-import Link from "@core/components//Link";
+import Link from "@deprecated/components/Link";
 
 const MerchantSearchDiscovery = observer((props: BaseProps) => {
   const { className, style } = props;

@@ -21,7 +21,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import NextLink from "next/link";
 import Skeleton from "@core/components/Skeleton";
 import Icon from "@core/components/Icon";
-import Link from "@core/components/Link";
+import Link from "@deprecated/components/Link";
 import { useDebouncer } from "@ContextLogic/lego/toolkit/hooks";
 import { useQuery } from "@apollo/client";
 import {

@@ -29,7 +29,7 @@ import {
 } from "src/app/performance-cn/toolkit/enums";
 import styles from "@performance-cn/styles/sales.module.css";
 import commonStyles from "@performance-cn/styles/common.module.css";
-import Link from "@core/components/Link";
+import Link from "@deprecated/components/Link";
 import { merchFeUrl } from "@core/toolkit/router";
 import PageGuide from "@core/components/PageGuide";
 import PageHeader from "@core/components/PageHeader";

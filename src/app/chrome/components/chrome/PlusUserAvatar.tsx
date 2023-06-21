@@ -38,7 +38,7 @@ import { ByUserIdInput } from "@schema";
 
 import { useAppTopBarData } from "@chrome/toolkit";
 
-import Link from "@core/components/Link";
+import Link from "@deprecated/components/Link";
 import { merchFeUrl } from "@core/toolkit/router";
 
 const PlusUserAvatar: React.FC<BaseProps> = ({

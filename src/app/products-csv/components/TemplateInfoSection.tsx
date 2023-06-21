@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import { observer } from "mobx-react";
 import { StyleSheet } from "aphrodite";
 import { Card, Heading, Text } from "@ContextLogic/atlas-ui";
-import Link from "@core/components/Link";
+import Link from "@deprecated/components/Link";
 import { zendeskURL } from "@core/toolkit/url";
 import { useTheme } from "@core/stores/ThemeStore";
 import Illustration from "@core/components/Illustration";

@@ -7,7 +7,7 @@ import { ci18n } from "@core/toolkit/i18n";
 import Icon from "@core/components/Icon";
 import { useTheme } from "@core/stores/ThemeStore";
 import Illustration from "@core/components/Illustration";
-import Link from "@core/components/Link";
+import Link from "@deprecated/components/Link";
 
 type FrsOptedInModalProps = Pick<ModalProps, "open"> & {
   readonly onClose: () => unknown;

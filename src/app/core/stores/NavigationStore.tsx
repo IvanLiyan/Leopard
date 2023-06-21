@@ -21,7 +21,7 @@ import { useRouter } from "next/router";
 /* External Libraries */
 import queryString from "query-string";
 import Path from "path-parser";
-import { isValidURL } from "@core/components/Link";
+import { isValidURL } from "@deprecated/components/Link";
 
 const getPath = (str: string | null | undefined): string | null | undefined => {
   if (str == null) {
