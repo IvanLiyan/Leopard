@@ -9,6 +9,7 @@ export type RadioButtonCardProps = Omit<CardProps, "onClick"> & {
   readonly onChange: CardProps["onChange"];
   readonly text?: TextProps["children"];
   readonly disabled?: boolean;
+  readonly "data-cy"?: string;
 };
 
 const RadioCard: React.FC<RadioButtonCardProps> = ({

@@ -86,6 +86,7 @@ const TemplateInfoSection: React.FC = () => {
               onClick={() => {
                 downloadCsvTree();
               }}
+              data-cy="link-category-tree-csv"
               underline
             >
               Find category ID
@@ -93,6 +94,7 @@ const TemplateInfoSection: React.FC = () => {
             <Link
               href={"/products/categories"}
               style={styles.link}
+              data-cy="link-categories-page"
               underline
               openInNewTab
             >
@@ -101,6 +103,7 @@ const TemplateInfoSection: React.FC = () => {
             <Link
               href={zendeskURL("1260805100070")}
               style={styles.link}
+              data-cy="link-attributes-faq"
               openInNewTab
               underline
             >

@@ -47,6 +47,7 @@ const EditTemplateSelect: React.FC<EditTemplateSelectProps> = ({
         options={downloadTypeOptions}
         selectedValue={selectedType}
         onSelected={(value: DownloadTemplateType) => onSelect(value)}
+        data-cy="select-edit-template"
         showArrow
       />
       {templateInfos && (

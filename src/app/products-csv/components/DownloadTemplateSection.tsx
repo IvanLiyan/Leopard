@@ -225,6 +225,7 @@ const DownloadTemplateSection: React.FC = () => {
             }
           }}
           sx={{ width: "400px" }}
+          data-cy="radio-card-add-product"
         />
         <RadioCard
           checked={updateActionType === "EDIT"}
@@ -239,6 +240,7 @@ const DownloadTemplateSection: React.FC = () => {
             }
           }}
           sx={{ width: "400px" }}
+          data-cy="radio-card-edit-product"
         />
       </div>
       {updateActionType === "EDIT" && (
@@ -259,6 +261,7 @@ const DownloadTemplateSection: React.FC = () => {
                 startIcon={<Icon name="download" color={textWhite} />}
                 disabled={isDownloadingCatalog || isLoadingSubcategories}
                 onClick={() => void onDownloadCatalog()}
+                data-cy="button-download-catalog"
               >
                 {ci18n(
                   "Button text, download bulk add/edit product csv template with product catalog data",
@@ -272,6 +275,7 @@ const DownloadTemplateSection: React.FC = () => {
               startIcon={<Icon name="download" color={primary} />}
               disabled={isLoadingTemplate || isLoadingSubcategories}
               onClick={onDownloadTemplate}
+              data-cy="button-download-template"
             >
               {ci18n(
                 "Button text, download bulk add/edit product csv template",

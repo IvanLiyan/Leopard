@@ -116,6 +116,7 @@ const UploadTemplateSection: React.FC = () => {
           setUploadType(value)
         }
         borderColor={showError && uploadType == null ? negative : undefined}
+        data-cy="select-upload-template"
         showArrow
       />
       <Text variant="bodyM" sx={{ color: textDark, marginTop: "16px" }}>
@@ -138,6 +139,7 @@ const UploadTemplateSection: React.FC = () => {
           width: 400,
         }}
         maxRows={30000}
+        data-cy="input-csv"
       />
       {showError && errorMessage != null && (
         <Text sx={{ color: negative, marginTop: "24px" }}>{errorMessage}</Text>
@@ -150,6 +152,7 @@ const UploadTemplateSection: React.FC = () => {
         }}
         onClick={() => void onUpload()}
         startIcon={<Icon name="uploadCloud" color={textWhite} />}
+        data-cy="button-upload-csv"
       >
         {ci18n("Button text", "Upload file")}
       </Button>
