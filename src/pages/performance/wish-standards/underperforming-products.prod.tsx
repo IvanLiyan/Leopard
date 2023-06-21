@@ -10,6 +10,7 @@ import { ci18n } from "@core/toolkit/i18n";
 import UnderperformingProductsHeader from "@performance/components/underperforming-products/UnderperformingProductsHeader";
 import UnderperformingProductsPerformanceScale from "@performance/components/underperforming-products/UnderperformingProductsPerformanceScale";
 import UnderperformingProductsTable from "@performance/components/underperforming-products/UnderperformingProductsTable";
+import TierPreviewBanner from "@performance/components/wish-standards/TierPreviewBanner";
 
 const UnderperformingProductsPage: NextPage<Record<string, never>> = () => {
   return (
@@ -32,6 +33,7 @@ const UnderperformingProductsPage: NextPage<Record<string, never>> = () => {
       </PageHeader>
       <PageGuide relaxed style={{ marginTop: "32px" }}>
         <Card sx={{ padding: "20px 24px 24px 24px" }}>
+          <TierPreviewBanner sx={{ margin: "4px 0px 24px 0px" }} />
           <UnderperformingProductsHeader />
           <UnderperformingProductsPerformanceScale />
           <UnderperformingProductsTable />

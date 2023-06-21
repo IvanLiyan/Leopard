@@ -29,6 +29,7 @@ import numeral from "numeral";
 import React, { useMemo } from "react";
 import { useQuery } from "@apollo/client";
 import Skeleton from "@core/components/Skeleton";
+import TierPreviewBanner from "@performance/components/wish-standards/TierPreviewBanner";
 
 const UserRatingPage: React.FC = () => {
   const styles = useStylesheet();
@@ -134,6 +135,7 @@ const UserRatingPage: React.FC = () => {
 
   return (
     <Card sx={{ padding: "20px 24px 24px 24px" }}>
+      <TierPreviewBanner sx={{ margin: "4px 0px 24px 0px" }} />
       <MetricHeaderSection
         formatter={formatter}
         compare={compareFn}
