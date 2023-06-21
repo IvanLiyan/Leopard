@@ -78,7 +78,9 @@ const EprNonCompliantProductsArea: React.FC = () => {
     SupportedCountryCodes as ReadonlyArray<string>
   ).includes(rawProductsCountry)
     ? (rawProductsCountry as SupportedCountryCode)
-    : (countriesOptions[0].value as SupportedCountryCode);
+    : countriesOptions.length > 0
+    ? (countriesOptions[0].value as SupportedCountryCode)
+    : "FR"; // FR will not be shown to the merchant, table will not display in this case
   const categoryOptions = COUNTRY_TO_EPR_CATEGORY_OPTIONS[productsCountry];
   const productsCategory = rawProductsCategory || ALL_EPR_CATEGORIES_VALUE;
 
@@ -136,6 +138,10 @@ const EprNonCompliantProductsArea: React.FC = () => {
       </Heading>
       {loadingPageData ? (
         <Skeleton height={560} sx={{ margin: "12px 0px" }} />
+      ) : countriesOptions.length === 0 ? (
+        <Text variant="bodyL" sx={{ marginTop: "12px" }}>
+          You do not have any non-compliant products.
+        </Text>
       ) : (
         <>
           <Stack
