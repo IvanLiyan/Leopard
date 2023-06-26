@@ -1,4 +1,4 @@
-import { Button } from "@ContextLogic/atlas-ui";
+import { Button, Text } from "@ContextLogic/atlas-ui";
 import { useToastStore } from "@core/stores/ToastStore";
 import { ci18n } from "@core/toolkit/i18n";
 import { NextPage } from "next";
@@ -19,14 +19,15 @@ const EUSummitPage: NextPage<Record<string, never>> = () => {
     <>
       <Script src="https://www.eventbrite.com/static/widgets/eb_widgets.js" />
       <Button
-        id="eventbrite-widget-modal-trigger-638743477937"
+        size="large"
+        id="eventbrite-widget-modal-trigger-648285809307"
         onClick={() => {
           window.EBWidgets.createWidget({
             widgetType: "checkout",
-            eventId: "638743477937",
+            eventId: "648285809307",
             modal: true,
             modalTriggerElementId:
-              "eventbrite-widget-modal-trigger-638743477937",
+              "eventbrite-widget-modal-trigger-648285809307",
             onOrderComplete: () =>
               toastStore.positive(
                 ci18n(
@@ -36,13 +37,26 @@ const EUSummitPage: NextPage<Record<string, never>> = () => {
               ),
           });
         }}
-        sx={{ position: "fixed", bottom: "20px", right: "20px" }}
+        sx={{
+          position: "fixed",
+          bottom: "20px",
+          left: "20px",
+          borderRadius: "21px",
+          textTransform: "none",
+          color: "black",
+          border: "1px solid black",
+          fontWeight: "bold",
+          backgroundColor: "#32E476",
+          "&:hover": {
+            backgroundColor: "#28B65E",
+          },
+        }}
       >
-        {ci18n("CTA text", "Register Now")}
+        <Text variant="bodyM">{ci18n("CTA text", "Register Now")}</Text>
       </Button>
       <noscript>
         <a
-          href="https://www.eventbrite.com/e/test-event-tickets-638743477937"
+          href="https://www.eventbrite.com/e/wish-passport-european-merchant-summit-tickets-648285809307"
           rel="noopener noreferrer"
           target="_blank"
         >
@@ -55,7 +69,7 @@ const EUSummitPage: NextPage<Record<string, never>> = () => {
           width: "100%",
           border: 0,
         }}
-        src="https://merchantblog.wish.com/ev-test?hs_preview=BKUIbzyb-116084126037"
+        src="https://merchantblog.wish.com/wish-passport"
       ></iframe>
     </>
   );
