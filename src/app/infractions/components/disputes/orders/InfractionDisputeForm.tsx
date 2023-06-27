@@ -58,6 +58,8 @@ import { useInfractionContext } from "@infractions/InfractionContext";
 import { Heading } from "@ContextLogic/atlas-ui";
 import { useInfractionDetailsStylesheet } from "@infractions/styles";
 import { css } from "@core/toolkit/styling";
+import { useBulkDisputeContext } from "@infractions/DisputeContext";
+import SkipDisputeButton from "@infractions/components/disputes/SkipDisputeButton";
 
 type Props = BaseProps & {
   readonly orderId: string;
@@ -152,8 +154,9 @@ const countryCodes = () => {
 
 const InfractionDisputeForm = (props: Props) => {
   const {
-    infraction: { id: infractionId },
+    infraction: { id: infractionId, disputeUnavailableReason },
   } = useInfractionContext();
+  const { onExitDispute } = useBulkDisputeContext();
   const styles = useInfractionDetailsStylesheet();
 
   const {
@@ -609,14 +612,22 @@ const InfractionDisputeForm = (props: Props) => {
         <ModalFooter
           action={{
             text: ci18n("CTA for button", "Submit"),
-            onClick: async () => await state.createDispute(),
-            isDisabled: !state.isValid || state.isSubmitting,
+            onClick: async () => {
+              await state.createDispute();
+              onExitDispute();
+            },
+            isDisabled:
+              !state.isValid ||
+              state.isSubmitting ||
+              !!disputeUnavailableReason,
+            popoverContent: disputeUnavailableReason,
           }}
           cancel={{
             text: ci18n("CTA for button", "Cancel"),
             href: `/warnings/warning?id=${infractionId}`,
             disabled: state.isSubmitting,
           }}
+          extraFooterContent={<SkipDisputeButton />}
         />
       </Accordion>
     );

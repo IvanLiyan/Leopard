@@ -18,16 +18,16 @@ import {
   SUBMIT_DISPUTE_MUTATION,
 } from "@infractions/api/submitDisputeMutation";
 import { useToastStore } from "@core/stores/ToastStore";
-import { useNavigationStore } from "@core/stores/NavigationStore";
+import SkipDisputeButton from "@infractions/components/disputes/SkipDisputeButton";
+import { useBulkDisputeContext } from "@infractions/DisputeContext";
 
 const MerchantLevelDispute: React.FC = () => {
   const styles = useInfractionDetailsStylesheet();
   const {
-    infraction: { id: infractionId, actions },
-    refetchInfraction,
+    infraction: { id: infractionId, actions, disputeUnavailableReason },
   } = useInfractionContext();
+  const { onExitDispute } = useBulkDisputeContext();
   const toastStore = useToastStore();
-  const navigationStore = useNavigationStore();
 
   const [explanation, setExplanation] = useState<string | undefined>(undefined);
   const [documentation, setDocumentation] = useState<ReadonlyArray<Attachment>>(
@@ -67,8 +67,7 @@ const MerchantLevelDispute: React.FC = () => {
         toastStore.positive(i`Your dispute was successfully submitted.`, {
           deferred: true,
         });
-        refetchInfraction();
-        await navigationStore.navigate(`/warnings/warning?id=${infractionId}`);
+        onExitDispute();
       }
     } catch {
       toastStore.negative(i`Something went wrong.`);
@@ -137,8 +136,9 @@ const MerchantLevelDispute: React.FC = () => {
             ? {
                 text: i`Submit`,
                 onClick: onSubmit,
-                isDisabled: loading || !canSubmit,
+                isDisabled: loading || !canSubmit || !!disputeUnavailableReason,
                 "data-cy": "submit-button",
+                popoverContent: disputeUnavailableReason,
               }
             : undefined
         }
@@ -148,6 +148,7 @@ const MerchantLevelDispute: React.FC = () => {
           disabled: loading,
           "data-cy": "cancel-button",
         }}
+        extraFooterContent={<SkipDisputeButton />}
       />
     </Accordion>
   );

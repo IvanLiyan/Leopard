@@ -23,7 +23,6 @@ import {
   SUBMIT_DISPUTE_MUTATION,
 } from "@infractions/api/submitDisputeMutation";
 import { useToastStore } from "@core/stores/ToastStore";
-import { useNavigationStore } from "@core/stores/NavigationStore";
 import { ci18n } from "@core/toolkit/i18n";
 import Checkbox from "@mui/material/Checkbox";
 import Radio from "@mui/material/Radio";
@@ -33,6 +32,8 @@ import {
 } from "@infractions/api/taggingQuery";
 import { CountryCode } from "@schema";
 import countries from "@core/toolkit/countries";
+import SkipDisputeButton from "@infractions/components/disputes/SkipDisputeButton";
+import { useBulkDisputeContext } from "@infractions/DisputeContext";
 
 /*
   NOTE: street address 2, 3, and state are temporarily disabled.
@@ -44,12 +45,11 @@ import countries from "@core/toolkit/countries";
 const MisleadingListingDispute: React.FC = () => {
   const styles = useInfractionDetailsStylesheet();
   const {
-    infraction: { id: infractionId, actions },
+    infraction: { id: infractionId, actions, disputeUnavailableReason },
     merchantCurrency,
-    refetchInfraction,
   } = useInfractionContext();
+  const { onExitDispute } = useBulkDisputeContext();
   const toastStore = useToastStore();
-  const navigationStore = useNavigationStore();
 
   const [checkA, setCheckA] = useState(false);
   const [checkB, setCheckB] = useState(false);
@@ -173,12 +173,11 @@ const MisleadingListingDispute: React.FC = () => {
         toastStore.positive(i`Your dispute was successfully submitted.`, {
           deferred: true,
         });
-        refetchInfraction();
-        await navigationStore.navigate(`/warnings/warning?id=${infractionId}`);
       }
     } catch {
       toastStore.negative(ci18n("error message", "Something went wrong."));
     }
+    onExitDispute();
   };
 
   const hFieldProps: Partial<HorizontalFieldProps> = {
@@ -656,8 +655,10 @@ const MisleadingListingDispute: React.FC = () => {
             ? {
                 text: ci18n("CTA for button", "Submit"),
                 onClick: onSubmit,
-                isDisabled: mutationLoading || !canSubmit,
+                isDisabled:
+                  mutationLoading || !canSubmit || !!disputeUnavailableReason,
                 "data-cy": "submit-button",
+                popoverContent: disputeUnavailableReason,
               }
             : undefined
         }
@@ -667,6 +668,7 @@ const MisleadingListingDispute: React.FC = () => {
           disabled: mutationLoading,
           "data-cy": "cancel-button",
         }}
+        extraFooterContent={<SkipDisputeButton />}
       />
     </Accordion>
   );

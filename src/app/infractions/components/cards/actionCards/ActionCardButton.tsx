@@ -20,23 +20,12 @@ const ActionCardButton: React.FC<
   }
 > = ({ tooltipTitle: titleProp, disabled: disabledProp, sx, ...rest }) => {
   const {
-    infraction: { actionsTaken, disputeDeadlineUnix, state },
+    infraction: { disputeUnavailableReason },
   } = useInfractionContext();
   const { primary, textWhite } = useTheme();
 
-  const isClosed = state === "CANCELLED" || state === "CLOSED";
-  const hasTakenAction = actionsTaken.length > 0;
-  const nowUnix = Date.now() / 1000;
-  const disputeDeadlinePassed = nowUnix > disputeDeadlineUnix;
-  const title = isClosed
-    ? i`You cannot take this action because the infraction is closed.`
-    : hasTakenAction
-    ? i`You have already taken action on this infraction.`
-    : disputeDeadlinePassed
-    ? i`You cannot take this action because the dispute deadline has passed.`
-    : titleProp;
-  const disabled =
-    disabledProp || isClosed || hasTakenAction || disputeDeadlinePassed;
+  const disabled = disabledProp || !!disputeUnavailableReason;
+  const title = disputeUnavailableReason || titleProp;
 
   const Button = () => (
     <AtlasButton

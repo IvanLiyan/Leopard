@@ -22,6 +22,10 @@ import CounterfeitDispute from "@infractions/components/disputes/CounterfeitDisp
 import InappropriateContentDispute from "@infractions/components/disputes/InappropriateContentDispute";
 import MisleadingListingDispute from "@infractions/components/disputes/MisleadingListingDispute";
 import Orders from "@infractions/components/disputes/Orders";
+import {
+  BulkDisputeContextProvider,
+  useBulkDisputeInfractionIds,
+} from "@infractions/DisputeContext";
 
 const PageLayout = ({ children }: { children: React.ReactNode }) => {
   const styles = useInfractionDetailsStylesheet();
@@ -40,9 +44,11 @@ const InfractionsPage: NextPage<Record<string, never>> = () => {
   const [infractionId] = useStringQueryParam("id");
   const { merchantId } = useUserStore();
 
+  const [bulkInfractionIds] = useBulkDisputeInfractionIds();
+
   const { InfractionProvider, loading, error, infractionContext } =
     useInfractionProvider({
-      infractionId,
+      infractionId: infractionId || bulkInfractionIds[0],
       merchantId,
     });
 
@@ -85,16 +91,18 @@ const InfractionsPage: NextPage<Record<string, never>> = () => {
   }
 
   return (
-    <InfractionProvider>
-      <PageLayout>
-        <InfractionDetailsCard asAccordion />
-        <OrderDetailsCard asAccordion />
-        <ProductListingDetailsCard asAccordion />
-        <BrandDetailsCard asAccordion />
-        <InfractionEvidenceCard asAccordion />
-        {disputeFlowComponent}
-      </PageLayout>
-    </InfractionProvider>
+    <BulkDisputeContextProvider>
+      <InfractionProvider>
+        <PageLayout>
+          <InfractionDetailsCard asAccordion />
+          <OrderDetailsCard asAccordion />
+          <ProductListingDetailsCard asAccordion />
+          <BrandDetailsCard asAccordion />
+          <InfractionEvidenceCard asAccordion />
+          {disputeFlowComponent}
+        </PageLayout>
+      </InfractionProvider>
+    </BulkDisputeContextProvider>
   );
 };
 

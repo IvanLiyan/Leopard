@@ -298,7 +298,6 @@ export default class InfractionDisputeState {
   @action
   async createDispute() {
     const toastStore = ToastStore.instance();
-    const navigationStore = NavigationStore.instance();
     const { client } = ApolloStore.instance();
 
     this.isSubmitting = true;
@@ -378,10 +377,6 @@ export default class InfractionDisputeState {
       );
       return;
     }
-
-    await navigationStore.navigate(`/warnings/warning?id=${warningId}`, {
-      fullReload: true,
-    });
 
     toastStore.positive(i`Your dispute has been submitted.`, {
       timeoutMs: 7000,

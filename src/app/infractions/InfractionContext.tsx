@@ -13,7 +13,12 @@ import {
   getInfractionCopy,
   MerchantWarningImpactTypeDisplayText,
 } from "./copy";
-import { DisputeFlow, getDisputeFlow, getDisputeStatus } from "./toolkit";
+import {
+  DisputeFlow,
+  getDisputeFlow,
+  getDisputeStatus,
+  getDisputeUnavailableReason,
+} from "./toolkit";
 import { ApolloError, useQuery } from "@apollo/client";
 import { zendeskURL } from "@core/toolkit/url";
 import {
@@ -36,6 +41,7 @@ type InfractionContextType = {
     readonly disputeDeadline: string;
     readonly disputeDeadlineUnix: number;
     readonly disputeStatus: DisputeStatus;
+    readonly disputeUnavailableReason: string | undefined;
     readonly infractionImpacts: ReadonlyArray<string>;
     readonly wssImpact: boolean | undefined;
     readonly order?: {
@@ -101,6 +107,7 @@ const InfractionContext = createContext<InfractionContextType>({
     disputeDeadline: "",
     disputeDeadlineUnix: 0,
     disputeStatus: "NOT_DISPUTED",
+    disputeUnavailableReason: undefined,
     infractionImpacts: [],
     wssImpact: false,
     order: undefined,
@@ -201,6 +208,8 @@ export const useInfractionProvider = ({
       disputeDeadline: infraction.effectiveDisputeDeadlineDate.datetime,
       disputeDeadlineUnix: infraction.effectiveDisputeDeadlineDate.unix,
       disputeStatus: getDisputeStatus(infraction),
+      disputeUnavailableReason:
+        getDisputeUnavailableReason(infraction) ?? undefined,
       infractionImpacts:
         infraction.impacts != null
           ? infraction.impacts.map(({ type, startDate, endDate, countries }) =>

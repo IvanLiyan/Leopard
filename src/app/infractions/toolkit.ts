@@ -1,4 +1,9 @@
-import { MerchantWarningReason, CounterfeitReasonCode } from "@schema";
+import {
+  MerchantWarningReason,
+  CounterfeitReasonCode,
+  MerchantWarningSchema,
+  Datetime,
+} from "@schema";
 import { InfractionQueryResponse } from "./api/infractionQuery";
 import { DisputeStatus } from "./copy";
 
@@ -177,4 +182,29 @@ export const getDisputeStatus = (
     : infraction.proofs.length > 0
     ? infraction.proofs[0].disputeStatus
     : "NOT_DISPUTED";
+};
+
+export const getDisputeUnavailableReason = (
+  infraction: Pick<
+    MerchantWarningSchema,
+    "outstandingMerchantActions" | "state"
+  > & { readonly effectiveDisputeDeadlineDate: Pick<Datetime, "unix"> },
+): string | null => {
+  const { state, outstandingMerchantActions, effectiveDisputeDeadlineDate } =
+    infraction;
+  const isClosed = state === "CANCELLED" || state === "CLOSED";
+  const hasTakenAction = !!outstandingMerchantActions?.length;
+  const nowUnix = Date.now() / 1000;
+  const disputeDeadlinePassed = nowUnix > effectiveDisputeDeadlineDate.unix;
+
+  if (isClosed) {
+    return i`You cannot take this action because the infraction is closed.`;
+  }
+  if (hasTakenAction) {
+    return i`You have already taken action on this infraction.`;
+  }
+  if (disputeDeadlinePassed) {
+    return i`You cannot take this action because the dispute deadline has passed.`;
+  }
+  return null;
 };
