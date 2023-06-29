@@ -83,11 +83,9 @@ export const MESSAGES_QUERY = gql`
   query MessagesQuery($infractionId: ObjectIdType) {
     policy {
       merchantWarning(id: $infractionId) {
-        order {
-          trackingDispute {
-            messages {
-              ...TrackingMessageFields
-            }
+        trackingDispute {
+          messages {
+            ...TrackingMessageFields
           }
         }
         replies {
@@ -101,10 +99,8 @@ export const MESSAGES_QUERY = gql`
 export type MessagesQueryResponse = {
   readonly policy?: {
     readonly merchantWarning?: {
-      readonly order?: {
-        readonly trackingDispute?: {
-          readonly messages: ReadonlyArray<TrackingMessageFields>;
-        };
+      readonly trackingDispute?: {
+        readonly messages: ReadonlyArray<TrackingMessageFields>;
       };
       readonly replies: ReadonlyArray<ReplyFields>;
     };

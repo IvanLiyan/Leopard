@@ -58,7 +58,7 @@ const MessagesCard: React.FC<Pick<BaseProps, "className" | "style">> = ({
   });
 
   const infraction = data?.policy?.merchantWarning;
-  const isOrderInfraction = infraction?.order?.trackingDispute != null;
+  const isOrderInfraction = infraction?.trackingDispute != null;
 
   const messageGroups: ReadonlyArray<MessageGroup> = useMemo(() => {
     if (!infraction) {
@@ -75,7 +75,7 @@ const MessagesCard: React.FC<Pick<BaseProps, "className" | "style">> = ({
 
     const messages: ReadonlyArray<Message & { messageGroup: string }> =
       isOrderInfraction
-        ? infraction.order.trackingDispute.messages.map(
+        ? infraction.trackingDispute.messages.map(
             ({ senderType, senderName, date: { unix }, message, files }) => ({
               type: senderType !== "MERCHANT" ? "RECEIVED" : "SENT",
               author:
