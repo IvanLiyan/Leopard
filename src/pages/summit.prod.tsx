@@ -39,16 +39,16 @@ const EUSummitPage: NextPage<Record<string, never>> = () => {
         }}
         sx={{
           position: "fixed",
-          bottom: "20px",
-          left: "20px",
+          bottom: "130px",
+          left: "10px",
           borderRadius: "21px",
           textTransform: "none",
           color: "black",
           border: "1px solid black",
           fontWeight: "bold",
-          backgroundColor: "#32E476",
+          backgroundColor: "#DAEE32",
           "&:hover": {
-            backgroundColor: "#28B65E",
+            backgroundColor: "#AEBE28",
           },
         }}
       >
