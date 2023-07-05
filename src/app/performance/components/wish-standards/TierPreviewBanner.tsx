@@ -85,10 +85,10 @@ const TierPreviewBanner: React.FC<
 
   const body =
     currentTier === newTier
-      ? i`Based on your current performance, you will maintain your tier when we enforce the new Wish Standards criteria on August 6th, 2023.`
+      ? i`Based on your current performance, you will maintain your tier when we enforce the new Wish Standards criteria on August 18th, 2023.`
       : TierInfo[currentTier].level < TierInfo[newTier].level
-      ? i`Based on your current performance, you will reach the ${TierInfo[newTier].name} tier when we enforce the new Wish Standards criteria on August 6th, 2023.`
-      : i`You are at risk of dropping down to the ${TierInfo[newTier].name} tier when we enforce the new Wish Standards criteria on August 6th, 2023.`;
+      ? i`Based on your current performance, you will reach the ${TierInfo[newTier].name} tier when we enforce the new Wish Standards criteria on August 18th, 2023.`
+      : i`You are at risk of dropping down to the ${TierInfo[newTier].name} tier when we enforce the new Wish Standards criteria on August 18th, 2023.`;
 
   return (
     <Alert

@@ -187,7 +187,7 @@ const PerformanceMetricsCardV2: React.FC<PerformanceMetricsCardPropsV2> = ({
       {showDelayedImpactBanner && (
         <Alert severity="info" icon={false}>
           IMPORTANT: This new metric will not impact your Wish Standards Tier
-          until August 6th, 2023.
+          until August 18th, 2023.
         </Alert>
       )}
     </Layout.FlexColumn>
