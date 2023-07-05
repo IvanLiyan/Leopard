@@ -24,6 +24,7 @@ import { useNavigationStore } from "@core/stores/NavigationStore";
 import { AddEditProductInitialData } from "@add-edit-product/queries/initial-queries";
 import AddEditProduct from "@add-edit-product/components/AddEditProduct";
 import { ci18n } from "@core/toolkit/i18n";
+import AddEditProductV2 from "@add-edit-product/components/AddEditProductV2";
 
 type Props = {
   readonly initialData: AddEditProductInitialData;
@@ -55,6 +56,7 @@ const AddEditProductContainer: React.FC<Props> = ({ initialData }: Props) => {
   const disputes = policy?.productCategoryDispute?.disputes;
   const disputeId =
     disputes != null && disputes.length > 0 ? disputes[0].id : null;
+  const showRevampedAddEditProductUI = deciderKey?.showRevampedAddEditProductUI;
 
   const [state] = useState(
     new AddEditProductState({
@@ -70,6 +72,7 @@ const AddEditProductContainer: React.FC<Props> = ({ initialData }: Props) => {
       caProp65AllChemicalsList: prop65Chemicals,
       showVariationGroupingUI:
         showVariationGroupingMUG || deciderKey?.showVariationGroupingDkey,
+      showRevampedAddEditProductUI,
     }),
   );
 
@@ -126,7 +129,11 @@ const AddEditProductContainer: React.FC<Props> = ({ initialData }: Props) => {
         relaxed
       />
       <PageGuide relaxed>
-        <AddEditProduct style={styles.content} state={state} />
+        {showRevampedAddEditProductUI ? (
+          <AddEditProductV2 style={styles.content} state={state} />
+        ) : (
+          <AddEditProduct style={styles.content} state={state} />
+        )}
       </PageGuide>
     </PageRoot>
   );

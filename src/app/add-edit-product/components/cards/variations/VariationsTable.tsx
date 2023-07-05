@@ -99,6 +99,7 @@ const VariationsTable: React.FC<Props> = (props: Props) => {
     isVariationSaved,
     updateVariation,
     subcategory,
+    subcategoryId,
     showVariationGroupingUI,
   } = state;
   const isOptionEditable = showVariationGroupingUI && !isNewProduct;
@@ -327,7 +328,7 @@ const VariationsTable: React.FC<Props> = (props: Props) => {
         }}
       />
       {renderDiscardModal(variationsToDiscard)}
-      {showFashionUI && subcategory && (
+      {showFashionUI && (subcategory || subcategoryId) && (
         <>
           <Divider />
           <Layout.FlexColumn

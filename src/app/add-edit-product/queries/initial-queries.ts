@@ -65,6 +65,9 @@ export const ADD_PRODUCT_INITIAL_DATA_QUERY = gql`
       }
       deciderKey {
         showVariationGroupingDkey: decideForName(name: "variation_grouping_ui")
+        showRevampedAddEditProductUI: decideForName(
+          name: "add_edit_product_ui_revamp"
+        )
       }
     }
     productCatalog {
@@ -107,6 +110,9 @@ export const EDIT_PRODUCT_INITIAL_DATA_QUERY = gql`
       }
       deciderKey {
         showVariationGroupingDkey: decideForName(name: "variation_grouping_ui")
+        showRevampedAddEditProductUI: decideForName(
+          name: "add_edit_product_ui_revamp"
+        )
       }
     }
     policy {
@@ -492,6 +498,7 @@ export type AddEditProductInitialData = {
     readonly product: Pick<ProductConstantsSchema, "prop65Chemicals">;
     readonly deciderKey?: {
       readonly showVariationGroupingDkey: DeciderKeySchema["decideForName"];
+      readonly showRevampedAddEditProductUI: DeciderKeySchema["decideForName"];
     } | null;
   };
 

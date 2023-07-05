@@ -104,7 +104,7 @@ export const buildMapFromTree = ({
 
 export const getL1Node = (
   node: CategoryTreeNode,
-  map: Map<CategoryId, CategoryTreeNode>,
+  map: ReadonlyMap<CategoryId, CategoryTreeNode>,
 ) => {
   let curNode: CategoryTreeNode | undefined = node;
   while (
@@ -125,7 +125,7 @@ export const getLeafChildren = ({
   curLeaves,
 }: {
   node: CategoryTreeNode;
-  map: Map<CategoryId, CategoryTreeNode>;
+  map: ReadonlyMap<CategoryId, CategoryTreeNode>;
   curLeaves: ReadonlyArray<CategoryId>;
 }): ReadonlyArray<CategoryId> => {
   if (node.isLeaf) {
@@ -457,7 +457,7 @@ export const GET_TAXONOMY_VARIATION_OPTIONS_QUERY = gql`
 export const useCategoryTreeMap = () => {
   const [isLoadingMap, setIsLoadingMap] = useState<boolean>(false);
   const [categoryMap, setCategoryMap] = useState<
-    Map<CategoryId, CategoryTreeNode>
+    ReadonlyMap<CategoryId, CategoryTreeNode>
   >(new Map());
 
   const { data, loading: isLoadingTree } =

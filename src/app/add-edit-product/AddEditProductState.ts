@@ -65,6 +65,7 @@ import {
   MAX_ALLOWED_DELIVERY_DAYS,
 } from "@add-edit-product/toolkit";
 import {
+  CategoryId,
   PickedCategoryWithDetails,
   PickedTaxonomyAttribute,
   PickedTaxonomyVariationOption,
@@ -762,7 +763,10 @@ export default class AddEditProductState {
   id: InitialProductState["id"] | null | undefined;
 
   @observable
-  subcategory: PickedCategoryWithDetails | null | undefined;
+  subcategory: PickedCategoryWithDetails | null | undefined; // when dkey add_edit_product_ui_revamp is off, all subcategory data is kept
+
+  @observable
+  subcategoryId: CategoryId | null | undefined; // when dkey add_edit_product_ui_revamp is on, only subcategory id is kept
 
   @observable
   tags: InitialProductState["tags"] | null | undefined;
@@ -885,6 +889,9 @@ export default class AddEditProductState {
   showVariationGroupingUI: boolean;
 
   @observable
+  showRevampedAddEditProductUI: boolean;
+
+  @observable
   saved = false;
 
   constructor({
@@ -900,6 +907,7 @@ export default class AddEditProductState {
     useCalculatedShipping,
     caProp65AllChemicalsList,
     showVariationGroupingUI,
+    showRevampedAddEditProductUI,
   }: {
     readonly standardWarehouseId: string;
     readonly primaryCurrency: PaymentCurrencyCode;
@@ -913,6 +921,7 @@ export default class AddEditProductState {
     readonly useCalculatedShipping?: boolean | null;
     readonly caProp65AllChemicalsList: ReadonlyArray<string>;
     readonly showVariationGroupingUI?: boolean | null | undefined;
+    readonly showRevampedAddEditProductUI?: boolean | null | undefined;
   }) {
     this.initialState = initialState;
     this.caProp65AllChemicalsList = caProp65AllChemicalsList;
@@ -942,7 +951,11 @@ export default class AddEditProductState {
     this.caProp65Warning = initialState?.warningType;
     this.caProp65Chemicals = initialState?.chemicalNames;
     this.subcategory = initialState?.subcategory ?? null;
+    this.subcategoryId = initialState?.subcategory?.id
+      ? parseInt(initialState.subcategory.id)
+      : null;
     this.showVariationGroupingUI = !!showVariationGroupingUI;
+    this.showRevampedAddEditProductUI = !!showRevampedAddEditProductUI;
 
     const countryShippingStates: Map<CountryCode, CountryShipping> = new Map();
     const warehouseCountryShippingSettings =
@@ -2076,6 +2089,11 @@ export default class AddEditProductState {
     this.subcategory = props;
   };
 
+  @action
+  updateSubcategoryId = (id: number | null | undefined) => {
+    this.subcategoryId = id;
+  };
+
   private subcategoryAttributesAsInput = (): Pick<
     ProductUpsertInput,
     "attributes"
@@ -2718,6 +2736,7 @@ export default class AddEditProductState {
     const {
       id,
       subcategory,
+      subcategoryId,
       enabled,
       tags,
       requestedBrand,
@@ -2744,6 +2763,7 @@ export default class AddEditProductState {
       caProp65Chemicals,
       customsLogisticsDefault,
       subcategoryAttributesAsInput,
+      showRevampedAddEditProductUI,
     } = this;
 
     const countryShippingInputList = Array.from(countryShippingStates.values())
@@ -2862,7 +2882,11 @@ export default class AddEditProductState {
     return {
       id,
       sku: hasVariations ? parentSku : firstVariationSku,
-      subcategoryId: subcategory?.id ? parseInt(subcategory.id) : undefined,
+      subcategoryId: showRevampedAddEditProductUI
+        ? subcategoryId
+        : subcategory?.id
+        ? parseInt(subcategory.id)
+        : undefined,
       tags,
       enabled,
       defaultShipping,
@@ -2983,7 +3007,7 @@ export default class AddEditProductState {
             "The product name is placed in a link that leads to a page where they merchant can view the product",
           "[%1$s](%2$s) has been added to your store",
           name,
-          `/md/products/edit?pid=${productId}`,
+          merchFeUrl(`/md/products/edit?pid=${productId}`),
         ),
         {
           timeoutMs: 7000,
@@ -2996,7 +3020,7 @@ export default class AddEditProductState {
             "The product name is placed in a link that leads to a page where they merchant can view the product",
           "[%1$s](%2$s) has been updated",
           name,
-          `/md/products/edit?pid=${productId}`,
+          merchFeUrl(`/md/products/edit?pid=${productId}`),
         ),
         {
           timeoutMs: 7000,
