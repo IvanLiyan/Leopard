@@ -1,0 +1,43 @@
+policy:
+  approval:
+    - or:
+        - FORCE_COMMIT
+        - and:
+            - peer_review
+            - org_me_web
+
+approval_rules:
+  - name: peer_review
+    requires:
+      count: 1
+      organizations: ["ContextLogic"]
+    options:
+      invalidate_on_push: true
+      ignore_update_merges: true
+      methods:
+        github_review: true
+
+  - name: org_me_web
+    if:
+      changed_files:
+        paths:
+          - "."
+    requires:
+      count: 1
+      teams: ["ContextLogic/org_me_web"]
+    options:
+      invalidate_on_push: true
+      ignore_update_merges: true
+      methods:
+        github_review: true
+
+  - name: FORCE_COMMIT
+    options:
+      allow_author: true
+      allow_contributor: true
+      methods:
+        comments:
+          - FORCE_COMMIT
+      requires:
+        count: 1
+        teams: ["ContextLogic/org_me_web"]
