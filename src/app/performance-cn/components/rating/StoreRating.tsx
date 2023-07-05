@@ -43,7 +43,7 @@ const StoreRating: React.FC = () => {
       const storeRatingsCount =
         data?.currentMerchant?.storeStats?.storeRatingsCount || 0;
       setCountTitle(i`${storeRatingsCount} Reviews`);
-      return data?.currentMerchant?.storeStats?.storeRatings.map((item) => {
+      return data?.currentMerchant?.storeStats?.storeRatings?.map((item) => {
         const { orderIds, date, rating, comment, refundReason } = item;
         return {
           orderIds,

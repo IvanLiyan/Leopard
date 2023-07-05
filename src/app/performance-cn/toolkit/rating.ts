@@ -346,7 +346,7 @@ export type PickedStoreRatingListing = Pick<
 export type StoreRatingListingResponseData = {
   readonly currentMerchant: {
     readonly storeStats: Pick<MerchantStats, "storeRatingsCount"> & {
-      readonly storeRatings: ReadonlyArray<PickedStoreRatingListing>;
+      readonly storeRatings?: ReadonlyArray<PickedStoreRatingListing>;
     };
   };
 };
