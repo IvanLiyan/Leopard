@@ -1,5 +1,6 @@
 import { useRouter } from "@core/toolkit/router";
 import { useStringArrayQueryParam } from "@core/toolkit/url";
+import { useInfractionContext } from "@infractions/InfractionContext";
 import { createContext, useContext } from "react";
 
 type BulkDisputeContextType = {
@@ -23,10 +24,14 @@ export const BulkDisputeContextProvider: React.FC<{
   children?: React.ReactNode | undefined;
 }> = ({ children }) => {
   const [bulkInfractionIds] = useBulkDisputeInfractionIds();
+  const {
+    infraction: { id },
+  } = useInfractionContext();
   const router = useRouter();
 
   const onExit = () => {
     if (bulkInfractionIds.length == 0) {
+      void router.push(`/warnings/warning?id=${id}`);
       return;
     }
     if (bulkInfractionIds.length == 1) {

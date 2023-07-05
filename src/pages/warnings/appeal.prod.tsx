@@ -91,8 +91,8 @@ const InfractionsPage: NextPage<Record<string, never>> = () => {
   }
 
   return (
-    <BulkDisputeContextProvider>
-      <InfractionProvider>
+    <InfractionProvider>
+      <BulkDisputeContextProvider>
         <PageLayout>
           <InfractionDetailsCard asAccordion />
           <OrderDetailsCard asAccordion />
@@ -101,8 +101,8 @@ const InfractionsPage: NextPage<Record<string, never>> = () => {
           <InfractionEvidenceCard asAccordion />
           {disputeFlowComponent}
         </PageLayout>
-      </InfractionProvider>
-    </BulkDisputeContextProvider>
+      </BulkDisputeContextProvider>
+    </InfractionProvider>
   );
 };
 
