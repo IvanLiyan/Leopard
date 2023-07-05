@@ -38,6 +38,6 @@ approval_rules:
       methods:
         comments:
           - FORCE_COMMIT
-      requires:
-        count: 1
-        teams: ["ContextLogic/org_me_web"]
+    requires:
+      count: 1
+      teams: ["ContextLogic/org_me_web"]
