@@ -9,4 +9,4 @@
 # Docs here: https://help.github.com/en/github/creating-cloning-and-archiving-repositories/about-code-owners
 #
 
-* @ContextLogic/org_me_web
+* @ContextLogic/org_me_web @ContextLogic/cn_org_le_ui

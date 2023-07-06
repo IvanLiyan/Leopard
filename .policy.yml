@@ -4,7 +4,7 @@ policy:
         - FORCE_COMMIT
         - and:
             - peer_review
-            - org_me_web
+            - merchant_web_team
 
 approval_rules:
   - name: peer_review
@@ -17,14 +17,14 @@ approval_rules:
       methods:
         github_review: true
 
-  - name: org_me_web
+  - name: merchant_web_team
     if:
       changed_files:
         paths:
           - "."
     requires:
       count: 1
-      teams: ["ContextLogic/org_me_web"]
+      teams: ["ContextLogic/org_me_web", "ContextLogic/cn_org_le_ui"]
     options:
       invalidate_on_push: true
       ignore_update_merges: true
@@ -40,4 +40,4 @@ approval_rules:
           - FORCE_COMMIT
     requires:
       count: 1
-      teams: ["ContextLogic/org_me_web"]
+      teams: ["ContextLogic/org_me_web", "ContextLogic/cn_org_le_ui"]
