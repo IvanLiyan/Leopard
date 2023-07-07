@@ -38,6 +38,7 @@ approval_rules:
       methods:
         comments:
           - FORCE_COMMIT
+        github_review: false
     requires:
       count: 1
       teams: ["ContextLogic/org_me_web", "ContextLogic/cn_org_le_ui"]
