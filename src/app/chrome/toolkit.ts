@@ -1,4 +1,4 @@
-import gql from "graphql-tag";
+import { gql } from "@gql";
 import { useApolloStore } from "../core/stores/ApolloStore";
 import { QueryResult, useQuery } from "@apollo/client";
 import {
@@ -27,7 +27,7 @@ export type NavigationBadge = {
   readonly expiry_date: number;
 };
 
-export const SIDE_MENU_COUNTS_QUERY = gql`
+export const SIDE_MENU_COUNTS_QUERY = gql(`
   query Chrome_GetSideMenuCounts {
     cs {
       ticketCount(
@@ -108,7 +108,7 @@ export const SIDE_MENU_COUNTS_QUERY = gql`
       }
     }
   }
-`;
+`);
 
 export type SideMenuCounts = {
   readonly cs?: Pick<CustomerSupportServiceSchema, "ticketCount">;
@@ -172,7 +172,7 @@ export type GetAppTopbarDataResponse = {
   >;
 };
 
-export const GET_APP_TOPBAR_DATA_QUERY = gql`
+export const GET_APP_TOPBAR_DATA_QUERY = gql(`
   query Chrome_GetAppTopbarData {
     su {
       hasPermission(
@@ -191,19 +191,19 @@ export const GET_APP_TOPBAR_DATA_QUERY = gql`
       firstName
     }
   }
-`;
+`);
 
 export type GetNotificationButtonResponse = {
   readonly notifications: Pick<NotificationsServiceSchema, "notificationCount">;
 };
 
-export const GET_NOTIFICATION_BUTTON_QUERY = gql`
+export const GET_NOTIFICATION_BUTTON_QUERY = gql(`
   query Chrome_NotificationButtonData {
     notifications {
       notificationCount(viewed: false)
     }
   }
-`;
+`);
 
 export const useAppTopBarData = (): QueryResult<
   GetAppTopbarDataResponse,
@@ -223,7 +223,7 @@ export const AlertSentimentMap: {
   NEGATIVE: "error",
 };
 
-export const GET_ALERTS_QUERY = gql`
+export const GET_ALERTS_QUERY = gql(`
   query Chrome_GetAlerts {
     currentUser {
       alerts {
@@ -236,7 +236,7 @@ export const GET_ALERTS_QUERY = gql`
       }
     }
   }
-`;
+`);
 
 export type PickedUserAlert = Pick<
   AlertSchema,

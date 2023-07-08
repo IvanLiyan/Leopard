@@ -41,7 +41,6 @@ import {
   UserGateSchema,
   DeciderKeySchema,
 } from "@schema";
-import gql from "graphql-tag";
 import { ci18n } from "@core/toolkit/i18n";
 import { IllustrationName } from "@core/components/Illustration";
 import {
@@ -49,6 +48,7 @@ import {
   Unit,
   unitDisplayName,
 } from "@add-edit-product/toolkit";
+import { gql } from "@gql";
 
 export const COLLAPSED_VARIATIONS_SHOWN = 5;
 
@@ -59,7 +59,7 @@ export type PickedWarehouse = Pick<MerchantWarehouseSchema, "id" | "unitId"> & {
   } | null;
 };
 
-export const PRODUCTS_CONTAINER_INITIAL_DATA_QUERY = gql`
+export const PRODUCTS_CONTAINER_INITIAL_DATA_QUERY = gql(`
   query AllProducts_ProductsContainerInitialDataQuery {
     currentMerchant {
       state
@@ -85,7 +85,7 @@ export const PRODUCTS_CONTAINER_INITIAL_DATA_QUERY = gql`
       }
     }
   }
-`;
+`);
 
 export type ProductsContainerInitialData = {
   readonly currentMerchant?:
@@ -106,7 +106,7 @@ export type ProductsContainerInitialData = {
 };
 
 // Get product count query
-export const GET_PRODUCT_COUNT_QUERY = gql`
+export const GET_PRODUCT_COUNT_QUERY = gql(`
   query AllProducts_GetProductCount(
     $query: String
     $merchantId: ObjectIdType
@@ -136,7 +136,7 @@ export const GET_PRODUCT_COUNT_QUERY = gql`
       )
     }
   }
-`;
+`);
 
 export type GetProductCountResponseType = {
   readonly productCatalog?: Pick<ProductCatalogSchema, "productCountV2"> | null;
@@ -145,7 +145,7 @@ export type GetProductCountResponseType = {
 export type GetProductCountRequestType = ProductCatalogSchemaProductCountV2Args;
 
 // Get products query
-export const GET_PRODUCTS_QUERY = gql`
+export const GET_PRODUCTS_QUERY = gql(`
   query AllProducts_GetProducts(
     $query: String
     $searchType: ProductSearchType
@@ -236,7 +236,7 @@ export const GET_PRODUCTS_QUERY = gql`
           formatted(fmt: "MM-dd-YYYY z")
         }
         variationCount
-        variations(offset: 0, limit: ${COLLAPSED_VARIATIONS_SHOWN}) {
+        variations(offset: 0, limit: 5) {
           id
           productId
           size
@@ -263,7 +263,7 @@ export const GET_PRODUCTS_QUERY = gql`
       }
     }
   }
-`;
+`);
 
 export type PickedInventory = Pick<InventorySchema, "count" | "warehouseId">;
 
@@ -336,7 +336,7 @@ export type GetProductsResponseType = {
 export type GetProductsRequestType = ProductCatalogSchemaProductsV2Args &
   ProductSchemaShippingArgs;
 
-export const GET_PRODUCT_VARIATIONS_QUERY = gql`
+export const GET_PRODUCT_VARIATIONS_QUERY = gql(`
   query AllProducts_GetProductVariations($query: String, $limit: Int) {
     productCatalog {
       productsV2(limit: 1, searchType: ID, query: $query) {
@@ -367,7 +367,7 @@ export const GET_PRODUCT_VARIATIONS_QUERY = gql`
       }
     }
   }
-`;
+`);
 
 export type GetProductVariationsResponseType = {
   readonly productCatalog?: {
@@ -381,7 +381,7 @@ export type GetProductVariationsRequestType =
   ProductCatalogSchemaProductsV2Args & ProductSchemaVariationsArgs;
 
 // Upsert multiple products mutation
-export const UPSERT_PRODUCTS_MUTATION = gql`
+export const UPSERT_PRODUCTS_MUTATION = gql(`
   mutation AllProducts_UpsertProductsMutation($input: [ProductUpsertInput!]!) {
     productCatalog {
       upsertProducts(input: $input) {
@@ -393,7 +393,7 @@ export const UPSERT_PRODUCTS_MUTATION = gql`
       }
     }
   }
-`;
+`);
 
 export type UpsertProductsResponseType = {
   readonly productCatalog: {
@@ -408,7 +408,7 @@ export type UpsertProductsRequestType =
   ProductCatalogMutationsUpsertProductsArgs;
 
 // Remove product mutation
-export const REMOVE_PRODUCT_MUTATION = gql`
+export const REMOVE_PRODUCT_MUTATION = gql(`
   mutation AllProducts_RemoveProductMutation($input: RemoveProductInput!) {
     productCatalog {
       removeProduct(input: $input) {
@@ -417,7 +417,7 @@ export const REMOVE_PRODUCT_MUTATION = gql`
       }
     }
   }
-`;
+`);
 
 export type RemoveProductResponseType = {
   readonly productCatalog: {
@@ -427,7 +427,7 @@ export type RemoveProductResponseType = {
 export type RemoveProductRequestType = ProductCatalogMutationsRemoveProductArgs;
 
 // Request download mutation
-export const DOWNLOAD_PRODUCTS_MUTATION = gql`
+export const DOWNLOAD_PRODUCTS_MUTATION = gql(`
   mutation AllProducts_DownloadProductsMutation(
     $input: DownloadAllProductsInput!
   ) {
@@ -438,7 +438,7 @@ export const DOWNLOAD_PRODUCTS_MUTATION = gql`
       }
     }
   }
-`;
+`);
 
 export type DownloadProductsResponseType = {
   readonly productCatalog: {
@@ -452,7 +452,7 @@ export type DownloadProductsRequestType =
   ProductCatalogMutationsDownloadAllProductsArgs;
 
 // Delete warehouse mutation
-export const DELETE_WAREHOUSE = gql`
+export const DELETE_WAREHOUSE = gql(`
   mutation AllProducts_DeleteWarehouse($input: DeleteMerchantWarehouseInput!) {
     currentMerchant {
       warehouseSettings {
@@ -463,7 +463,7 @@ export const DELETE_WAREHOUSE = gql`
       }
     }
   }
-`;
+`);
 
 export type DeleteWarehouseInputType =
   MerchantWarehouseMutationsDeleteWarehouseArgs;
@@ -692,7 +692,7 @@ type ExportCsvVariationColumn = ExtractStrict<
   | "VARIATION_OPTIONS"
 >;
 
-export const GET_PRODUCTS_FOR_EXPORT_QUERY = gql`
+export const GET_PRODUCTS_FOR_EXPORT_QUERY = gql(`
   query AllProducts_GetProductsForExport(
     $query: String
     $searchType: ProductSearchType
@@ -896,7 +896,7 @@ export const GET_PRODUCTS_FOR_EXPORT_QUERY = gql`
       }
     }
   }
-`;
+`);
 
 // Must be equal so the CSV can match the exact products in the table
 export type GetProductsForExportRequestType = GetProductsRequestType;

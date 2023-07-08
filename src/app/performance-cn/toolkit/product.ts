@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { gql } from "@gql";
 import {
   CurrencyValue,
   Datetime,
@@ -7,7 +7,7 @@ import {
   ProductPerformanceStats,
 } from "@schema";
 
-export const PERFORMANCE_PRODUCT_DATA_QUERY = gql`
+export const PERFORMANCE_PRODUCT_DATA_QUERY = gql(`
   query Product_PerformanceProductDataQuery($weeks: Int!) {
     currentMerchant {
       primaryCurrency
@@ -43,7 +43,7 @@ export const PERFORMANCE_PRODUCT_DATA_QUERY = gql`
       }
     }
   }
-`;
+`);
 
 export type PickedProduct = {
   readonly startDate: Pick<Datetime, "mmddyyyy">;

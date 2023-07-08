@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { gql } from "@gql";
 import {
   CurrencyValue,
   ProductSchema,
@@ -10,7 +10,7 @@ import {
   MerchantSchema,
 } from "@schema";
 
-export const PERFORMANCE_BREAKDOWN_DATA_QUERY = gql`
+export const PERFORMANCE_BREAKDOWN_DATA_QUERY = gql(`
   query Sales_PerformanceBreakdownDataQuery(
     $offset: Int
     $limit: Int
@@ -48,7 +48,7 @@ export const PERFORMANCE_BREAKDOWN_DATA_QUERY = gql`
       }
     }
   }
-`;
+`);
 
 export type PickedSalesBreakdown = {
   readonly gmv?: Pick<CurrencyValue, "amount" | "currencyCode">;

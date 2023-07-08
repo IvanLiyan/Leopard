@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { gql } from "@gql";
 import {
   MerchantSchema,
   ProductCatalogSchema,
@@ -8,19 +8,19 @@ import {
   ProductCatalogSchemaProductsV2Args,
 } from "@schema";
 
-export const PRODUCTS_METRICS_TABLE_COMPONENT_QUERY = gql`
+export const PRODUCTS_METRICS_TABLE_COMPONENT_QUERY = gql(`
   query ProductsMetricsTableComponentQuery {
     currentMerchant {
       state
     }
   }
-`;
+`);
 
 export type ProductsMetricsTableComponentQueryResponse = {
   readonly currentMerchant?: Pick<MerchantSchema, "state"> | null;
 };
 
-export const PRODUCTS_METRICS_TABLE_TABLE_QUERY = gql`
+export const PRODUCTS_METRICS_TABLE_TABLE_QUERY = gql(`
   query ProductsMetricsTableTableQuery(
     $offset: Int!
     $limit: Int!
@@ -60,7 +60,7 @@ export const PRODUCTS_METRICS_TABLE_TABLE_QUERY = gql`
       }
     }
   }
-`;
+`);
 
 export type ProductsMetricsTableTableQueryResponse = {
   readonly productCatalog?:

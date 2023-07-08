@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { gql } from "@gql";
 import { observable, action, computed } from "mobx";
 import moment from "moment-timezone";
 
@@ -20,7 +20,7 @@ import {
   OrderInfractionType,
 } from "./order-disputes";
 
-const ORDER_INFRACTION_DISPUTE_MUTATION = gql`
+const ORDER_INFRACTION_DISPUTE_MUTATION = gql(`
   mutation InfractionDisputeState_OrderInfractionDisputeMutation(
     $input: UpsertOrderInfractionDisputeInput!
   ) {
@@ -33,7 +33,7 @@ const ORDER_INFRACTION_DISPUTE_MUTATION = gql`
       }
     }
   }
-`;
+`);
 
 type OrderInfractionDisputeResponse = {
   readonly policy: {

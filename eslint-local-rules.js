@@ -2681,6 +2681,39 @@ module.exports = {
       };
     },
   },
+  "no-apollo-gql-import": {
+    meta: {
+      docs: {
+        description:
+          "Do not import `gql` from `@apollo/client`, use `@gql` instead",
+        category: "Possible Errors",
+        recommended: false,
+      },
+      fixable: "code",
+      schema: [],
+    },
+    create: function (context) {
+      return {
+        ImportDeclaration(node) {
+          if (node.source.value === "@apollo/client") {
+            node.specifiers.forEach((specifier) => {
+              if (specifier.imported.name === "gql") {
+                context.report({
+                  node: node,
+                  message:
+                    "Do not import `gql` from `@apollo/client`, use `@gql` instead",
+                  fix: function (fixer) {
+                    const range = [node.source.range[0], node.source.range[1]];
+                    return fixer.replaceTextRange(range, '"@gql"');
+                  },
+                });
+              }
+            });
+          }
+        },
+      };
+    },
+  },
   "no-internal-import": {
     meta: {
       docs: {

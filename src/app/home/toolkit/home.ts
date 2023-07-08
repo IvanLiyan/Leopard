@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { gql } from "@gql";
 
 import {
   Datetime,
@@ -79,7 +79,7 @@ export type PickedAnnouncement = Pick<
   readonly program?: Pick<AnnouncementProgramSchema, "text" | "type"> | null;
 };
 
-export const GET_HOME_INITIAL_DATA = gql`
+export const GET_HOME_INITIAL_DATA = gql(`
   query Home_GetInitialData {
     announcements {
       forUsers(announcementType: SYSTEM_UPDATE, limit: 5) {
@@ -158,7 +158,7 @@ export const GET_HOME_INITIAL_DATA = gql`
       }
     }
   }
-`;
+`);
 
 export type HomeInitialData = {
   readonly currentUser: {
@@ -170,7 +170,7 @@ export type HomeInitialData = {
   };
 };
 
-export const GET_BANNER_DATA_QUERY = gql`
+export const GET_BANNER_DATA_QUERY = gql(`
   query HomeBanner_GetInitialData {
     currentUser {
       utmSource
@@ -192,9 +192,9 @@ export const GET_BANNER_DATA_QUERY = gql`
       }
     }
   }
-`;
+`);
 
-export const ACCOUNT_BALANCE_QUERY = gql`
+export const ACCOUNT_BALANCE_QUERY = gql(`
   query PlusPayments_GetAccountBalance($currency: PaymentCurrencyCode!) {
     payments {
       paymentInfo {
@@ -222,7 +222,7 @@ export const ACCOUNT_BALANCE_QUERY = gql`
       }
     }
   }
-`;
+`);
 
 export type AccountBalanceResponseData = {
   readonly payments?: {
@@ -260,7 +260,7 @@ export type BannerInitialData = {
   };
 };
 
-export const GET_ORDERS_AND_ANNOUNCEMENTS_QUERY = gql`
+export const GET_ORDERS_AND_ANNOUNCEMENTS_QUERY = gql(`
   query MerchantHome_GetOrdersAndAnnouncements {
     currentMerchant {
       storeStats {
@@ -278,7 +278,7 @@ export const GET_ORDERS_AND_ANNOUNCEMENTS_QUERY = gql`
       }
     }
   }
-`;
+`);
 
 export type GetOrdersAndAnnouncements = {
   readonly currentMerchant?: {

@@ -1,10 +1,10 @@
-import gql from "graphql-tag";
+import { gql } from "@gql";
 import {
   WechatCheckScanMutation,
   AuthenticationMutationsCheckWechatScanArgs,
 } from "@schema";
 
-export const WECHAT_CHECK_SCAN_MUTATION = gql`
+export const WECHAT_CHECK_SCAN_MUTATION = gql(`
   mutation Authentication_WechatCheckScanMutation(
     $input: WechatCheckScanInput!
   ) {
@@ -17,7 +17,7 @@ export const WECHAT_CHECK_SCAN_MUTATION = gql`
       }
     }
   }
-`;
+`);
 
 export type WechatCheckScanResponseType = {
   readonly authentication?: {

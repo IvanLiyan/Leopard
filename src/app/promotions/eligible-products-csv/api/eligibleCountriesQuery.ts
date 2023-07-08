@@ -1,7 +1,7 @@
-import { gql } from "@apollo/client";
+import { gql } from "@gql";
 import { Country } from "@schema";
 
-export const ELIGIBLE_COUNTRIES_QUERY = gql`
+export const ELIGIBLE_COUNTRIES_QUERY = gql(`
   query EligibleCountriesQuery {
     currentMerchant {
       shippingSettings {
@@ -12,7 +12,7 @@ export const ELIGIBLE_COUNTRIES_QUERY = gql`
       }
     }
   }
-`;
+`);
 
 export type EligibleCountriesQueryResponse = {
   readonly currentMerchant?: {

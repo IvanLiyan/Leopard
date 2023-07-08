@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { gql } from "@gql";
 import {
   MerchantWarningSchema,
   MerchantWarningProofSchema,
@@ -173,7 +173,7 @@ export type OrderDetailsResponseData = {
   };
 };
 
-export const ORDER_DETAILS_QUERY = gql`
+export const ORDER_DETAILS_QUERY = gql(`
   query OrderDetails_InfractionDetails($id: String!) {
     fulfillment {
       order(id: $id) {
@@ -290,4 +290,4 @@ export const ORDER_DETAILS_QUERY = gql`
       }
     }
   }
-`;
+`);

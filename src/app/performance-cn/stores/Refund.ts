@@ -1,5 +1,5 @@
 import { observable, action } from "mobx";
-import { gql } from "@apollo/client";
+import { gql } from "@gql";
 import {
   ProductCatalogSchemaProductsArgs,
   RefundPerformanceStats,
@@ -13,7 +13,7 @@ export type RefundAggregateBenchMark = {
   readonly refundRate: number;
 };
 
-export const PERFORMANCE_AGGREGATE_DATA_QUERY = gql`
+export const PERFORMANCE_AGGREGATE_DATA_QUERY = gql(`
   query Refund_PerformanceAggregateDataQuery($weeks: Int!) {
     currentMerchant {
       storeStats {
@@ -43,7 +43,7 @@ export const PERFORMANCE_AGGREGATE_DATA_QUERY = gql`
       }
     }
   }
-`;
+`);
 
 type PickedRefundAggregate = {
   readonly startDate: Pick<Datetime, "mmddyyyy">;
@@ -76,7 +76,7 @@ export type RefundAggregateResponseData = {
   };
 };
 
-export const PERFORMANCE_BREAKDOWN_DATA_QUERY = gql`
+export const PERFORMANCE_BREAKDOWN_DATA_QUERY = gql(`
   query Refund_PerformanceBreakdownDataQuery(
     $offset: Int
     $limit: Int
@@ -114,7 +114,7 @@ export const PERFORMANCE_BREAKDOWN_DATA_QUERY = gql`
       }
     }
   }
-`;
+`);
 
 type PickedRefundBreakdown = Pick<
   RefundPerformanceStats,

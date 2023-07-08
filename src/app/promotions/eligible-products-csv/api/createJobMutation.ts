@@ -1,10 +1,10 @@
-import { gql } from "@apollo/client";
+import { gql } from "@gql";
 import {
   CreateProductsDownloadJobInput,
   CreateProductsDownloadJobMutation,
 } from "@schema";
 
-export const CREATE_JOB_MUTATION = gql`
+export const CREATE_JOB_MUTATION = gql(`
   mutation CreateProductDownloadsJobForMerchantPromotionsMutation(
     $input: CreateProductsDownloadJobInput!
   ) {
@@ -16,7 +16,7 @@ export const CREATE_JOB_MUTATION = gql`
       }
     }
   }
-`;
+`);
 
 export type CreateJobMutationResponse = {
   readonly mfp?: {

@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { gql } from "@gql";
 import {
   CurrencyValue,
   Datetime,
@@ -16,7 +16,7 @@ export type CustomerServiceProductBreakdownBenchMark = {
   readonly refundRatio93d: string;
 };
 
-export const CS_PERFORMANCE_BREAKDOWN_DATA_QUERY = gql`
+export const CS_PERFORMANCE_BREAKDOWN_DATA_QUERY = gql(`
   query CustomerService_PerformanceBreakdownDataQuery(
     $offset: Int
     $limit: Int
@@ -57,7 +57,7 @@ export const CS_PERFORMANCE_BREAKDOWN_DATA_QUERY = gql`
       }
     }
   }
-`;
+`);
 
 type PickedCustomerServiceBreakdown = {
   readonly gmv?: Pick<CurrencyValue, "amount" | "currencyCode">;

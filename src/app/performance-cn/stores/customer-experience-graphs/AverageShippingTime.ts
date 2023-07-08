@@ -1,12 +1,12 @@
 import { observable, action } from "mobx";
-import { gql } from "@apollo/client";
+import { gql } from "@gql";
 import { MerchantStatsDailyArgs, Datetime, Timedelta } from "@schema";
 import { round } from "@core/toolkit/stringUtils";
 
 const defaultStartDate = new Date(Date.now() - 30 * 24 * 3600 * 1000);
 const defaultEndDate = new Date();
 
-export const PERFORMANCE_CEG_DATA_QUERY = gql`
+export const PERFORMANCE_CEG_DATA_QUERY = gql(`
   query CEG_AverageShippingTime_DataQuery($days: Int!, $offsetDays: Int!) {
     currentMerchant {
       storeStats {
@@ -24,7 +24,7 @@ export const PERFORMANCE_CEG_DATA_QUERY = gql`
       }
     }
   }
-`;
+`);
 
 export type PickedCEGraph = {
   readonly startDate: Pick<Datetime, "mmddyyyy">;

@@ -1,9 +1,12 @@
-import { gql } from "@apollo/client";
-import { RecentStatsDayCount } from "@performance/migrated/toolkit/order-metrics";
-import { Datetime, WishSellerStandardStats } from "@schema";
+import { gql } from "@gql";
+import {
+  Datetime,
+  MerchantWishSellerStandardDetailsRecentStatsArgs,
+  WishSellerStandardStats,
+} from "@schema";
 
-export const UNDERPERFORMING_PRODUCTS_HEADER_QUERY = gql`
-  query UnderperformingProductsHeaderQuery {
+export const UNDERPERFORMING_PRODUCTS_HEADER_QUERY = gql(`
+  query UnderperformingProductsHeaderQuery($days: Int) {
     currentMerchant {
       wishSellerStandard {
         stats {
@@ -14,7 +17,7 @@ export const UNDERPERFORMING_PRODUCTS_HEADER_QUERY = gql`
             unix
           }
         }
-        recentStats(days: ${RecentStatsDayCount}) {
+        recentStats(days: $days) {
           badProductRate
           date {
             unix
@@ -26,7 +29,7 @@ export const UNDERPERFORMING_PRODUCTS_HEADER_QUERY = gql`
       }
     }
   }
-`;
+`);
 
 export type UnderperformingProductsHeaderQueryResponse = {
   readonly currentMerchant?: {
@@ -47,3 +50,6 @@ export type UnderperformingProductsHeaderQueryResponse = {
     };
   };
 };
+
+export type UnderperformingProductsHeaderQueryRequest =
+  MerchantWishSellerStandardDetailsRecentStatsArgs;

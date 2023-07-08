@@ -33,7 +33,8 @@
       "@products-csv/*": ["src/app/products-csv/*"],
       "@promotions/*": ["src/app/promotions/*"],
       "@seller-identity/*": ["src/app/seller-identity/*"],
-      "@schema": ["src/app/schema"],
+      "@schema": ["src/schema/graphql"],
+      "@gql": ["src/schema/gql"],
       "@deprecated/*": ["src/deprecated/*"],
       "@public/*": ["public/index", "public/*"]
     },

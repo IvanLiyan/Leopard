@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { gql } from "@gql";
 import {
   Country,
   CountryEprSchema,
@@ -6,7 +6,7 @@ import {
   ProductComplianceSchema,
 } from "@schema";
 
-export const PCC_QUERY = gql`
+export const PCC_QUERY = gql(`
   query ProductComplianceCenterQuery {
     policy {
       productCompliance {
@@ -58,7 +58,7 @@ export const PCC_QUERY = gql`
       }
     }
   }
-`;
+`);
 
 export type PccQueryResponse = {
   readonly policy?: {

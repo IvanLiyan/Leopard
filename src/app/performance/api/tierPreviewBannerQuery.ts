@@ -1,10 +1,10 @@
-import { gql } from "@apollo/client";
+import { gql } from "@gql";
 import {
   MerchantWishSellerStandardDetails,
   WishSellerStandardStats,
 } from "@schema";
 
-export const TIER_PREVIEW_BANNER_QUERY = gql`
+export const TIER_PREVIEW_BANNER_QUERY = gql(`
   query TierPreviewBannerQuery {
     currentMerchant {
       wishSellerStandard {
@@ -15,7 +15,7 @@ export const TIER_PREVIEW_BANNER_QUERY = gql`
       }
     }
   }
-`;
+`);
 
 export type TierPreviewBannerQueryResponse = {
   readonly currentMerchant?: {

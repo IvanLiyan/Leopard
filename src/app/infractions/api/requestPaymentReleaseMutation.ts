@@ -1,7 +1,7 @@
-import { gql } from "@apollo/client";
+import { gql } from "@gql";
 import { UpsertMerchantWarning, UpsertMerchantWarningInput } from "@schema";
 
-export const REQUEST_PAYMENT_RELEASE_MUTATION = gql`
+export const REQUEST_PAYMENT_RELEASE_MUTATION = gql(`
   mutation RequestPaymentReleaseMutation(
     $infractionId: ObjectIdType
     $idFiles: [FileInput!]
@@ -25,7 +25,7 @@ export const REQUEST_PAYMENT_RELEASE_MUTATION = gql`
       }
     }
   }
-`;
+`);
 
 export type RequestPaymentReleaseMutationResponse = {
   readonly policy?: {

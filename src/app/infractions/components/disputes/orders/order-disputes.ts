@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { gql } from "@gql";
 import {
   MerchantWarningSchema,
   MerchantWarningProofSchema,
@@ -53,7 +53,7 @@ export type OrderShippingProvidersResponseData = {
   };
 };
 
-export const ORDER_SHIPPING_PROVIDERS = gql`
+export const ORDER_SHIPPING_PROVIDERS = gql(`
   query OrderShippingProviders_InfractionDisputeForm(
     $id: String!
     $originCountryCode: CountryCode!
@@ -67,7 +67,7 @@ export const ORDER_SHIPPING_PROVIDERS = gql`
       }
     }
   }
-`;
+`);
 
 export const ReasonText: {
   [reason in OrderInfractionDisputeSubreason]: string;
