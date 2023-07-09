@@ -12,7 +12,6 @@ approval_rules:
       count: 1
       organizations: ["ContextLogic"]
     options:
-      invalidate_on_push: true
       ignore_update_merges: true
       methods:
         github_review: true
@@ -26,7 +25,6 @@ approval_rules:
       count: 1
       teams: ["ContextLogic/org_me_web", "ContextLogic/cn_org_le_ui"]
     options:
-      invalidate_on_push: true
       ignore_update_merges: true
       methods:
         github_review: true
