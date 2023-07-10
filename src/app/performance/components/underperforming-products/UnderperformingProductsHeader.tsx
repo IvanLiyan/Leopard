@@ -7,7 +7,6 @@ import Skeleton from "@core/components/Skeleton";
 import { useLocalizationStore } from "@core/stores/LocalizationStore";
 import MetricHeaderSection from "@performance/migrated/wss-order-metrics-components/MetricHeaderSection";
 import {
-  RecentStatsDayCount,
   TimelineDatapoint,
   formatDateWindow,
 } from "@performance/migrated/toolkit/order-metrics";
@@ -18,7 +17,6 @@ import {
 } from "@performance/migrated/toolkit/stats";
 import {
   UNDERPERFORMING_PRODUCTS_HEADER_QUERY,
-  UnderperformingProductsHeaderQueryRequest,
   UnderperformingProductsHeaderQueryResponse,
 } from "@performance/api/underperformingProductsHeaderQuery";
 import {
@@ -30,13 +28,13 @@ const UnderperformingProductsHeader: React.FC = () => {
   const tierThemes = useTierThemes();
   const { locale } = useLocalizationStore();
 
-  const { data, loading } = useQuery<
-    UnderperformingProductsHeaderQueryResponse,
-    UnderperformingProductsHeaderQueryRequest
-  >(UNDERPERFORMING_PRODUCTS_HEADER_QUERY, {
-    variables: { days: RecentStatsDayCount },
-    fetchPolicy: "no-cache",
-  });
+  const { data, loading } =
+    useQuery<UnderperformingProductsHeaderQueryResponse>(
+      UNDERPERFORMING_PRODUCTS_HEADER_QUERY,
+      {
+        fetchPolicy: "no-cache",
+      },
+    );
 
   if (loading) {
     return <Skeleton height={265} />;

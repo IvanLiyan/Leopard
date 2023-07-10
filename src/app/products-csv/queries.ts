@@ -8,21 +8,21 @@ import {
   ProductCatalogSchemaCsvAllHeaderNamesArgs,
   ProductCatalogSchemaCsvEditVariationsHeaderNamesArgs,
 } from "@schema";
-import { gql } from "@gql";
+import { gql } from "@apollo/client";
 
-export const GET_TAXONOMY_TREE_CSV_ROWS_QUERY = gql(`
+export const GET_TAXONOMY_TREE_CSV_ROWS_QUERY = gql`
   query CSV_GetTaxonomyTreeCsvRows {
     taxonomy {
       taxonomyTreeCsv
     }
   }
-`);
+`;
 
 export type GetTaxonomyTreeCsvRowsResponseType = {
   readonly taxonomy?: Pick<TaxonomySchema, "taxonomyTreeCsv"> | null;
 };
 
-export const UPSERT_PRODUCT_CSV_MUTATION = gql(`
+export const UPSERT_PRODUCT_CSV_MUTATION = gql`
   mutation CSV_UpsertProductCsvMutation(
     $input: UpsertProductsFromCSVFileInput!
   ) {
@@ -34,7 +34,7 @@ export const UPSERT_PRODUCT_CSV_MUTATION = gql(`
       }
     }
   }
-`);
+`;
 
 export type UpsertProductCsvResponseType = {
   readonly productCatalog: {
@@ -48,7 +48,7 @@ export type UpsertProductCsvResponseType = {
 export type UpsertProductCsvRequestType =
   ProductCatalogMutationsUpsertProductCsvFileArgs;
 
-export const DOWNLOAD_PRODUCT_CATALOG_MUTATION = gql(`
+export const DOWNLOAD_PRODUCT_CATALOG_MUTATION = gql`
   mutation downloadProductCatalog($input: DownloadAllProductsInput!) {
     productCatalog {
       downloadAllProducts(input: $input) {
@@ -57,7 +57,7 @@ export const DOWNLOAD_PRODUCT_CATALOG_MUTATION = gql(`
       }
     }
   }
-`);
+`;
 
 export type DownloadProductCatalogResponseType = {
   readonly productCatalog: {
@@ -71,13 +71,13 @@ export type DownloadProductCatalogResponseType = {
 export type DownloadProductCatalogRequestType =
   ProductCatalogMutationsDownloadAllProductsArgs;
 
-export const DOWNLOAD_ALL_HEADERS_QUERY = gql(`
+export const DOWNLOAD_ALL_HEADERS_QUERY = gql`
   query DownloadAllHeaders($subcategoryIds: [Int!]) {
     productCatalog {
       csvAllHeaderNames(subcategoryIds: $subcategoryIds)
     }
   }
-`);
+`;
 
 export type DownloadAllHeadersResponseType = {
   readonly productCatalog?: Pick<
@@ -89,13 +89,13 @@ export type DownloadAllHeadersResponseType = {
 export type DownloadAllHeadersRequestType =
   ProductCatalogSchemaCsvAllHeaderNamesArgs;
 
-export const DOWNLOAD_EDIT_VARIATION_HEADERS_QUERY = gql(`
+export const DOWNLOAD_EDIT_VARIATION_HEADERS_QUERY = gql`
   query DownloadEditVariationHeaders($subcategoryIds: [Int!]) {
     productCatalog {
       csvEditVariationsHeaderNames(subcategoryIds: $subcategoryIds)
     }
   }
-`);
+`;
 
 export type DownloadEditVariationHeadersResponseType = {
   readonly productCatalog?: Pick<
@@ -107,13 +107,13 @@ export type DownloadEditVariationHeadersResponseType = {
 export type DownloadEditVariationHeadersRequestType =
   ProductCatalogSchemaCsvEditVariationsHeaderNamesArgs;
 
-export const DOWNLOAD_SHIPPING_HEADERS_QUERY = gql(`
+export const DOWNLOAD_SHIPPING_HEADERS_QUERY = gql`
   query DownloadShippingHeaders {
     productCatalog {
       csvShippingHeaderNames
     }
   }
-`);
+`;
 
 export type DownloadShippingHeadersResponseType = {
   readonly productCatalog?: Pick<
@@ -122,13 +122,13 @@ export type DownloadShippingHeadersResponseType = {
   > | null;
 };
 
-export const DOWNLOAD_PRICE_INVENTORY_HEADERS_QUERY = gql(`
+export const DOWNLOAD_PRICE_INVENTORY_HEADERS_QUERY = gql`
   query DownloadPriceInventoryHeaders {
     productCatalog {
       csvPriceInventoryHeaderNames
     }
   }
-`);
+`;
 
 export type DownloadPriceInventoryHeadersResponseType = {
   readonly productCatalog?: Pick<
@@ -137,13 +137,13 @@ export type DownloadPriceInventoryHeadersResponseType = {
   > | null;
 };
 
-export const DOWNLOAD_TITLE_IMAGE_DESC_HEADERS_QUERY = gql(`
+export const DOWNLOAD_TITLE_IMAGE_DESC_HEADERS_QUERY = gql`
   query DownloadTitleImageDescHeaders {
     productCatalog {
       csvTitleImagesDescriptionHeaderNames
     }
   }
-`);
+`;
 
 export type DownloadTitleImageDescHeadersResponseType = {
   readonly productCatalog?: Pick<
@@ -152,13 +152,13 @@ export type DownloadTitleImageDescHeadersResponseType = {
   > | null;
 };
 
-export const DOWNLOAD_ENABLE_DISABLE_HEADERS_QUERY = gql(`
+export const DOWNLOAD_ENABLE_DISABLE_HEADERS_QUERY = gql`
   query DownloadEnableDisableHeaders {
     productCatalog {
       csvEnableDisableHeaderNames
     }
   }
-`);
+`;
 
 export type DownloadEnableDisableHeadersResponseType = {
   readonly productCatalog?: Pick<

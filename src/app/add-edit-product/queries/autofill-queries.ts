@@ -9,9 +9,9 @@ import {
   PaymentCurrencyCode,
   BrandServiceSchemaTrueBrandsArgs,
 } from "@schema";
-import { gql } from "@gql";
+import { gql } from "@apollo/client";
 
-export const GET_GTIN_PRODUCT_QUERY = gql(`
+export const GET_GTIN_PRODUCT_QUERY = gql`
   query AddEdit_GetGtinProductQuery(
     $gtins: [String!]!
     $currency: PaymentCurrencyCode!
@@ -57,7 +57,7 @@ export const GET_GTIN_PRODUCT_QUERY = gql(`
       }
     }
   }
-`);
+`;
 
 export type PickedGtinVariation = Pick<
   GtinVariationSchema,
@@ -91,7 +91,7 @@ export type GetGtinProductQueryResponse = {
   } | null;
 };
 
-export const GET_BRAND_MATCH = gql(`
+export const GET_BRAND_MATCH = gql`
   query GetBrandMatch($brandName: String!) {
     brand {
       trueBrands(brandName: $brandName, count: 1) {
@@ -101,7 +101,7 @@ export const GET_BRAND_MATCH = gql(`
       }
     }
   }
-`);
+`;
 
 export type PickedBrand = Pick<BrandSchema, "id" | "displayName" | "logoUrl">;
 

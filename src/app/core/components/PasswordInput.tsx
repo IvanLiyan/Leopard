@@ -11,7 +11,7 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { StyleSheet } from "aphrodite";
 import { observer } from "mobx-react";
-import { gql } from "@gql";
+import gql from "graphql-tag";
 import { useQuery } from "@apollo/client";
 import pick from "lodash/pick";
 
@@ -34,7 +34,7 @@ import {
   AuthenticationServiceSchemaPasswordEvaluationArgs,
 } from "@schema";
 
-const CHECK_PASSWORD_STRENGTH = gql(`
+const CHECK_PASSWORD_STRENGTH = gql`
   query PasswordInput_CheckPasswordStrength($password: String!) {
     authentication {
       passwordEvaluation(password: $password) {
@@ -43,7 +43,7 @@ const CHECK_PASSWORD_STRENGTH = gql(`
       }
     }
   }
-`);
+`;
 
 type CheckPasswordStrengthInput = {
   readonly password: AuthenticationServiceSchemaPasswordEvaluationArgs["password"];

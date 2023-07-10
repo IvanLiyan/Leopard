@@ -1,10 +1,10 @@
-import { gql } from "@gql";
+import gql from "graphql-tag";
 import {
   GenWechatQrMutation,
   AuthenticationMutationsGenWechatQrArgs,
 } from "@schema";
 
-export const GEN_WECHAT_QR_MUTATION = gql(`
+export const GEN_WECHAT_QR_MUTATION = gql`
   mutation Authentication_GenWechatQrMutation($input: GenWechatQrInput!) {
     authentication {
       genWechatQr(input: $input) {
@@ -12,7 +12,7 @@ export const GEN_WECHAT_QR_MUTATION = gql(`
       }
     }
   }
-`);
+`;
 
 export type GenWechatQrResponseType = {
   readonly authentication?: {

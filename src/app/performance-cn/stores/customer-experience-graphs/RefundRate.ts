@@ -1,5 +1,5 @@
 import { observable, action } from "mobx";
-import { gql } from "@gql";
+import { gql } from "@apollo/client";
 import {
   MerchantStatsDailyArgs,
   Datetime,
@@ -11,7 +11,7 @@ import { round } from "@core/toolkit/stringUtils";
 const defaultStartDate = new Date(Date.now() - 30 * 24 * 3600 * 1000);
 const defaultEndDate = new Date();
 
-export const PERFORMANCE_CEG_DATA_QUERY = gql(`
+export const PERFORMANCE_CEG_DATA_QUERY = gql`
   query CEG_RefundRate_DataQuery($days: Int!, $offsetDays: Int!) {
     currentMerchant {
       storeStats {
@@ -27,7 +27,7 @@ export const PERFORMANCE_CEG_DATA_QUERY = gql(`
       }
     }
   }
-`);
+`;
 
 export type PickedCEGraph = {
   readonly startDate: Pick<Datetime, "mmddyyyy">;

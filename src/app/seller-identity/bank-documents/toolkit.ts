@@ -1,4 +1,4 @@
-import { gql } from "@gql";
+import { gql } from "@apollo/client";
 import {
   UploadBankAccountDocument,
   UploadBankAccountDocumentInput,
@@ -18,7 +18,7 @@ export type UploadBankDocumentsRequest = {
   readonly input: UploadBankAccountDocumentInput;
 };
 
-export const UploadBankDocumentsMutation = gql(`
+export const UploadBankDocumentsMutation = gql`
   mutation SellerIdentity_UploadBankDocuments(
     $input: UploadBankAccountDocumentInput!
   ) {
@@ -31,4 +31,4 @@ export const UploadBankDocumentsMutation = gql(`
       }
     }
   }
-`);
+`;

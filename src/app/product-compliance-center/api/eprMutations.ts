@@ -1,4 +1,4 @@
-import { gql } from "@gql";
+import { gql } from "@apollo/client";
 import {
   CreateUin,
   CreateUinInput,
@@ -8,7 +8,7 @@ import {
   UpdateUinInput,
 } from "@schema";
 
-export const ADD_EPR_MUTATION = gql(`
+export const ADD_EPR_MUTATION = gql`
   mutation AddEprMutation($input: CreateUinInput!) {
     policy {
       productCompliance {
@@ -21,7 +21,7 @@ export const ADD_EPR_MUTATION = gql(`
       }
     }
   }
-`);
+`;
 
 export type AddEprMutationResponse = {
   readonly policy?: {
@@ -35,7 +35,7 @@ export type AddEprMutationResponse = {
 
 export type AddEprMutationVariables = { readonly input: CreateUinInput };
 
-export const EDIT_EPR_MUTATION = gql(`
+export const EDIT_EPR_MUTATION = gql`
   mutation EditEprMutation($input: UpdateUinInput!) {
     policy {
       productCompliance {
@@ -48,7 +48,7 @@ export const EDIT_EPR_MUTATION = gql(`
       }
     }
   }
-`);
+`;
 
 export type EditEprMutationResponse = {
   readonly policy?: {
@@ -62,7 +62,7 @@ export type EditEprMutationResponse = {
 
 export type EditEprMutationVariables = { readonly input: UpdateUinInput };
 
-export const DELETE_EPR_MUTATION = gql(`
+export const DELETE_EPR_MUTATION = gql`
   mutation DeleteEprMutation($input: DeleteUinInput!) {
     policy {
       productCompliance {
@@ -75,7 +75,7 @@ export const DELETE_EPR_MUTATION = gql(`
       }
     }
   }
-`);
+`;
 
 export type DeleteEprMutationResponse = {
   readonly policy?: {

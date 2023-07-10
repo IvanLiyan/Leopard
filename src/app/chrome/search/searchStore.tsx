@@ -26,7 +26,7 @@ import flatten from "lodash/flatten";
 import UserStore from "@core/stores/UserStore";
 import NavigationStore from "@core/stores/NavigationStore";
 import ApolloStore from "@core/stores/ApolloStore";
-import { gql } from "@gql";
+import { gql } from "@apollo/client";
 import {
   ChromeSchemaObjectSearchArgs,
   NavigationResultSchema,
@@ -36,7 +36,7 @@ import { ChromeNavigationNode } from "@core/stores/ChromeStore";
 import { queryZendesk } from "./zendesk";
 import LocalizationStore from "@core/stores/LocalizationStore";
 
-const OBJECT_SEARCH_QUERY = gql(`
+const OBJECT_SEARCH_QUERY = gql`
   query SearchStore_ObjectSearchQuery(
     $objectId: ObjectIdType!
     $currentPath: String
@@ -52,7 +52,7 @@ const OBJECT_SEARCH_QUERY = gql(`
       }
     }
   }
-`);
+`;
 
 type ObjectSearchQueryRequestType = ChromeSchemaObjectSearchArgs;
 type ObjectSearchQueryResponseType = {

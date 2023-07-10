@@ -1,4 +1,4 @@
-import { gql } from "@gql";
+import { gql } from "@apollo/client";
 import {
   Datetime,
   MerchantFileSchema,
@@ -15,7 +15,7 @@ import {
 // TODO: BE will be deprecating the images and idFiles resolvers and moving
 // those responses to files. no changes will be required by FE at the time but
 // once that is done we can remove them from our query here and elsewhere
-export const REPLY_FIELDS = gql(`
+export const REPLY_FIELDS = gql`
   fragment ReplyFields on MerchantWarningReplySchema {
     senderType
     senderName
@@ -36,7 +36,7 @@ export const REPLY_FIELDS = gql(`
       isImageFile
     }
   }
-`);
+`;
 
 export type ReplyFields = Pick<
   MerchantWarningReplySchema,
@@ -51,7 +51,7 @@ export type ReplyFields = Pick<
   >;
 };
 
-export const TRACKING_MESSAGE_FIELDS = gql(`
+export const TRACKING_MESSAGE_FIELDS = gql`
   fragment TrackingMessageFields on TrackingDisputeMessageSchema {
     senderType
     senderName
@@ -65,7 +65,7 @@ export const TRACKING_MESSAGE_FIELDS = gql(`
       isImageFile
     }
   }
-`);
+`;
 
 export type TrackingMessageFields = Pick<
   TrackingDisputeMessageSchema,
@@ -77,7 +77,9 @@ export type TrackingMessageFields = Pick<
   >;
 };
 
-export const MESSAGES_QUERY = gql(`
+export const MESSAGES_QUERY = gql`
+  ${REPLY_FIELDS}
+  ${TRACKING_MESSAGE_FIELDS}
   query MessagesQuery($infractionId: ObjectIdType) {
     policy {
       merchantWarning(id: $infractionId) {
@@ -92,7 +94,7 @@ export const MESSAGES_QUERY = gql(`
       }
     }
   }
-`);
+`;
 
 export type MessagesQueryResponse = {
   readonly policy?: {

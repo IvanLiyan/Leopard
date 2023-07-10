@@ -13,7 +13,7 @@ import { useApolloStore } from "@core/stores/ApolloStore";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { observer } from "mobx-react";
 import { BrandSchema, BrandServiceSchemaTrueBrandsArgs } from "@schema";
-import { gql } from "@gql";
+import { gql } from "@apollo/client";
 
 export type TrueBrandObject = Pick<
   BrandSchema,
@@ -28,7 +28,7 @@ type BrandSearchProps = BaseProps &
     readonly setNumBrands?: (numBrands: number) => unknown;
   };
 
-const GET_TRUE_BRANDS_QUERY = gql(`
+const GET_TRUE_BRANDS_QUERY = gql`
   query BrandSearch_GetTrueBrands(
     $count: Int!
     $offset: Int!
@@ -48,7 +48,7 @@ const GET_TRUE_BRANDS_QUERY = gql(`
       }
     }
   }
-`);
+`;
 
 type GetTrueBrandsRequestType = BrandServiceSchemaTrueBrandsArgs;
 

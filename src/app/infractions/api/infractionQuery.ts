@@ -1,4 +1,4 @@
-import { gql } from "@gql";
+import { gql } from "@apollo/client";
 import {
   BrandAuthorizationSchema,
   BrandSchema,
@@ -23,12 +23,19 @@ import {
   TrackingCheckpointResultingStateSchema,
   TrackingDisputeSchema,
 } from "@schema";
-import { ReplyFields, TrackingMessageFields } from "./messagesQueries";
+import {
+  ReplyFields,
+  REPLY_FIELDS,
+  TrackingMessageFields,
+  TRACKING_MESSAGE_FIELDS,
+} from "./messagesQueries";
 
 // note: we pre-fetch the initial messages to prime the
 // cache for subsequent query. this reduces the time the
 // messages component will be in the loading state
-export const INFRACTION_QUERY = gql(`
+export const INFRACTION_QUERY = gql`
+  ${REPLY_FIELDS}
+  ${TRACKING_MESSAGE_FIELDS}
   query InfractionQuery(
     $infractionId: ObjectIdType
     $merchantId: ObjectIdType
@@ -165,7 +172,7 @@ export const INFRACTION_QUERY = gql(`
       }
     }
   }
-`);
+`;
 
 export type InfractionQueryResponse = {
   readonly policy?: {

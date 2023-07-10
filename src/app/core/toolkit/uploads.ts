@@ -1,4 +1,4 @@
-import { gql } from "@gql";
+import gql from "graphql-tag";
 import ApolloStore from "@core/stores/ApolloStore";
 import ToastStore from "@core/stores/ToastStore";
 
@@ -8,7 +8,7 @@ import {
   UploadMutationsInitiateUploadArgs,
 } from "@schema";
 
-const INITIATE_UPLOAD = gql(`
+const INITIATE_UPLOAD = gql`
   mutation Toolkit_InitialUpload($input: InitiateUploadInput!) {
     uploads {
       initiateUpload(input: $input) {
@@ -20,7 +20,7 @@ const INITIATE_UPLOAD = gql(`
       }
     }
   }
-`);
+`;
 
 type PickedInitiateUploadMutation = Pick<
   InitiateUploadMutation,

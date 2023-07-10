@@ -1,4 +1,4 @@
-import { gql } from "@gql";
+import { gql } from "@apollo/client";
 import {
   AcceptTos,
   AcceptTosInput,
@@ -6,7 +6,7 @@ import {
   ExtendedProducerResponsibilitySchemaCountryArgs,
 } from "@schema";
 
-export const TOS_QUERY = gql(`
+export const TOS_QUERY = gql`
   query TosModalQuery($countryCode: CountryCode!) {
     policy {
       productCompliance {
@@ -18,7 +18,7 @@ export const TOS_QUERY = gql(`
       }
     }
   }
-`);
+`;
 
 export type TosQueryResponse = {
   readonly policy?: {
@@ -32,7 +32,7 @@ export type TosQueryResponse = {
 
 export type TosQueryVariables = ExtendedProducerResponsibilitySchemaCountryArgs;
 
-export const ACCEPT_TOS_MUTATION = gql(`
+export const ACCEPT_TOS_MUTATION = gql`
   mutation AcceptTosMutation($input: AcceptTosInput!) {
     policy {
       productCompliance {
@@ -45,7 +45,7 @@ export const ACCEPT_TOS_MUTATION = gql(`
       }
     }
   }
-`);
+`;
 
 export type AcceptTosMutationResponse = {
   readonly policy?: {

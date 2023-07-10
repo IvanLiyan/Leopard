@@ -1,7 +1,7 @@
-import { gql } from "@gql";
+import { gql } from "@apollo/client";
 import { UpsertMerchantWarning, UpsertMerchantWarningInput } from "@schema";
 
-export const SUBMIT_DISPUTE_MUTATION = gql(`
+export const SUBMIT_DISPUTE_MUTATION = gql`
   mutation SubmitDisputeMutation(
     $action: MerchantWarningAction!
     $infractionId: ObjectIdType
@@ -22,7 +22,7 @@ export const SUBMIT_DISPUTE_MUTATION = gql(`
       }
     }
   }
-`);
+`;
 
 export type SubmitDisputeMutationResponse = {
   readonly policy?: {

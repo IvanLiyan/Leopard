@@ -8,9 +8,9 @@ import {
   MerchantAnnouncementV2Schema,
   MerchantSchema,
 } from "@schema";
-import { gql } from "@gql";
+import gql from "graphql-tag";
 
-export const GET_USER_ANNOUNCEMENTS_V2 = gql(`
+export const GET_USER_ANNOUNCEMENTS_V2 = gql`
   query GetUserAnnouncementsV2_List(
     $offset: Int!
     $limit: Int!
@@ -43,7 +43,7 @@ export const GET_USER_ANNOUNCEMENTS_V2 = gql(`
       }
     }
   }
-`);
+`;
 
 type PickedAnnouncementCategorySchemaV2 = Pick<
   AnnouncementCategorySchemaV2,
@@ -68,7 +68,7 @@ export type GetUserAnnouncementsV2ResponseType = {
   };
 };
 
-export const GET_USER_ANNOUNCEMENTS_V2_MODAL = gql(`
+export const GET_USER_ANNOUNCEMENTS_V2_MODAL = gql`
   query GetUserAnnouncementsV2_Modal(
     $offset: Int!
     $limit: Int!
@@ -88,7 +88,7 @@ export const GET_USER_ANNOUNCEMENTS_V2_MODAL = gql(`
       }
     }
   }
-`);
+`;
 
 export type GetUserAnnouncementsV2ModalResponseType = {
   readonly announcements: {
@@ -133,11 +133,11 @@ export type OptInStatusResponseType = {
     "isFlatRateShippingOptedIn" | "canAccessFlatRateShippingOptInOptOut"
   > | null;
 };
-export const GET_OPT_IN_STATUS = gql(`
+export const GET_OPT_IN_STATUS = gql`
   query FlatRateShippingSettings_GetOptInStatus {
     currentMerchant {
       isFlatRateShippingOptedIn
       canAccessFlatRateShippingOptInOptOut
     }
   }
-`);
+`;

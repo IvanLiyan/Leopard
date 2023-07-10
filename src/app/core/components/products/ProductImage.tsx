@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import { observer } from "mobx-react";
 
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import { gql } from "@gql";
+import gql from "graphql-tag";
 import { ImageSchema } from "@schema";
 import imageLoadingSrc from "public/images/image-loading.svg";
 import imageMissingSrc from "public/images/image-missing.svg";
@@ -26,7 +26,7 @@ export type ProductImageProps = BaseProps &
       }
   );
 
-const GET_PRODUCT_IMAGE = gql(`
+const GET_PRODUCT_IMAGE = gql`
   query ProductImage_GetProductImage($productId: String!) {
     productCatalog {
       product(id: $productId) {
@@ -36,7 +36,7 @@ const GET_PRODUCT_IMAGE = gql(`
       }
     }
   }
-`);
+`;
 
 type GetProductImageResponse = {
   readonly productCatalog?: {

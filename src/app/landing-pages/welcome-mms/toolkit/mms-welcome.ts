@@ -4,10 +4,10 @@ import {
   MmsLeadSubmissionMutation,
   MmsLeadYearlyRevenue,
 } from "@schema";
-import { gql } from "@gql";
+import gql from "graphql-tag";
 import { ci18n } from "@core/toolkit/i18n";
 
-export const SUBMIT_MMS_MERCHANT_LEAD_MUTATION = gql(`
+export const SUBMIT_MMS_MERCHANT_LEAD_MUTATION = gql`
   mutation MmsWelcome_SubmitMmsMerchantLeadMutation(
     $input: MMSLeadSubmissionInput!
   ) {
@@ -18,7 +18,7 @@ export const SUBMIT_MMS_MERCHANT_LEAD_MUTATION = gql(`
       }
     }
   }
-`);
+`;
 
 export type SubmitMmsMerchantLeadRequestType =
   AuthenticationMutationsMmsLeadSubmissionArgs;

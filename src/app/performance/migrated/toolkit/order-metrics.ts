@@ -29,7 +29,7 @@ import {
   WssPerformanceDeepDiveHubQualityRefundReasonsArgs,
   Locale,
 } from "@schema";
-import { gql } from "@gql";
+import { gql } from "@apollo/client";
 import {
   LOGISTICS_REFUND_RATE,
   ORDER_FULFILLMENT_RATE,
@@ -55,7 +55,7 @@ type PickedStats = Pick<
   | "productLogisticsRefundRate"
 >;
 
-export const WSSDeepDiveQuery = gql(`
+export const WSSDeepDiveQuery = gql`
   query WSSOrdersDeepDive($days: Int) {
     currentMerchant {
       wishSellerStandard {
@@ -124,7 +124,7 @@ export const WSSDeepDiveQuery = gql(`
       }
     }
   }
-`);
+`;
 
 export type WSSDeepDiveQueryRequest =
   MerchantWishSellerStandardDetailsRecentStatsArgs;
@@ -327,7 +327,7 @@ export const formatDateWindow = (
   return [formattedStartDate, formattedEndDate];
 };
 
-export const WSSAverageUserRatingQuery = gql(`
+export const WSSAverageUserRatingQuery = gql`
   query OrderMetricsDeepDive_UserRating(
     $offset: Int
     $limit: Int
@@ -360,7 +360,7 @@ export const WSSAverageUserRatingQuery = gql(`
       }
     }
   }
-`);
+`;
 export type WSSAverageUserRatingRequest =
   WssPerformanceDeepDiveHubProductRatingArgs;
 export type WSSAverageUserRatingResponse = {
@@ -385,7 +385,7 @@ export type WSSAverageUserRatingResponse = {
   };
 };
 
-export const WSSOrderFulfillmentRateQuery = gql(`
+export const WSSOrderFulfillmentRateQuery = gql`
   query OrderMetricsDeepDive_OrderFulfillmentRate(
     $offset: Int
     $limit: Int
@@ -424,7 +424,7 @@ export const WSSOrderFulfillmentRateQuery = gql(`
       }
     }
   }
-`);
+`;
 export type WSSOrderFulfillmentRateRequest =
   WssPerformanceDeepDiveHubOrderUnfulfilledArgs;
 export type WSSOrderFulfillmentRateResponse = {
@@ -452,7 +452,7 @@ export type WSSOrderFulfillmentRateResponse = {
   };
 };
 
-export const WSSDestinationOptionsQuery = gql(`
+export const WSSDestinationOptionsQuery = gql`
   query OrderMetricsDeepDive_WSSDestinationOptions(
     $pageType: WSSDeepDivePageType!
   ) {
@@ -464,7 +464,7 @@ export const WSSDestinationOptionsQuery = gql(`
       }
     }
   }
-`);
+`;
 export type WSSDestinationOptionsRequest =
   WssPerformanceDeepDiveHubDestinationsArgs;
 export type WSSDestinationOptionsResponse = {
@@ -478,7 +478,7 @@ export type WSSDestinationOptionsResponse = {
   } | null;
 };
 
-export const WSSCarrierOptionsQuery = gql(`
+export const WSSCarrierOptionsQuery = gql`
   query OrderMetricsDeepDive_WSSCarrierOptions(
     $pageType: WSSDeepDivePageType!
   ) {
@@ -490,7 +490,7 @@ export const WSSCarrierOptionsQuery = gql(`
       }
     }
   }
-`);
+`;
 export type WSSCarrierOptionsRequest = WssPerformanceDeepDiveHubCarriersArgs;
 export type WSSCarrierOptionsResponse = {
   readonly currentMerchant?: {
@@ -500,7 +500,7 @@ export type WSSCarrierOptionsResponse = {
   } | null;
 };
 
-export const WSSUnfulfilledReasonOptionsQuery = gql(`
+export const WSSUnfulfilledReasonOptionsQuery = gql`
   query OrderMetricsDeepDive_WSSUnfulfilledReasonOptions {
     currentMerchant {
       wishSellerStandard {
@@ -510,7 +510,7 @@ export const WSSUnfulfilledReasonOptionsQuery = gql(`
       }
     }
   }
-`);
+`;
 export type WSSUnfulfilledReasonOptionsResponse = {
   readonly currentMerchant?: {
     readonly wishSellerStandard: {
@@ -522,7 +522,7 @@ export type WSSUnfulfilledReasonOptionsResponse = {
   } | null;
 };
 
-export const WSSLogisticsRefundReasonOptionsQuery = gql(`
+export const WSSLogisticsRefundReasonOptionsQuery = gql`
   query OrderMetricsDeepDive_WSSLogisticsRefundReasonOptions {
     currentMerchant {
       wishSellerStandard {
@@ -532,7 +532,7 @@ export const WSSLogisticsRefundReasonOptionsQuery = gql(`
       }
     }
   }
-`);
+`;
 export type WSSLogisticsRefundReasonOptionsResponse = {
   readonly currentMerchant?: {
     readonly wishSellerStandard: {
@@ -544,7 +544,7 @@ export type WSSLogisticsRefundReasonOptionsResponse = {
   } | null;
 };
 
-export const WSSQualityRefundReasonOptionsQuery = gql(`
+export const WSSQualityRefundReasonOptionsQuery = gql`
   query OrderMetricsDeepDive_WSSQualityRefundReasonOptions(
     $productId: ObjectIdType!
   ) {
@@ -556,7 +556,7 @@ export const WSSQualityRefundReasonOptionsQuery = gql(`
       }
     }
   }
-`);
+`;
 export type WSSQualityRefundReasonOptionsRequest =
   WssPerformanceDeepDiveHubQualityRefundReasonsArgs;
 export type WSSQualityRefundReasonOptionsResponse = {
@@ -570,7 +570,7 @@ export type WSSQualityRefundReasonOptionsResponse = {
   } | null;
 };
 
-export const WSSProductQualityRefundQuery = gql(`
+export const WSSProductQualityRefundQuery = gql`
   query OrderMetricsDeepDive_ProductQualityRefund(
     $offset: Int
     $limit: Int
@@ -604,7 +604,7 @@ export const WSSProductQualityRefundQuery = gql(`
       }
     }
   }
-`);
+`;
 export type WSSProductQualityRefundRequest =
   WssPerformanceDeepDiveHubProductQualityRefundArgs;
 export type WSSProductQualityRefundResponse = {
@@ -630,7 +630,7 @@ export type WSSProductQualityRefundResponse = {
   };
 };
 
-export const WSSOrderQualityRefundQuery = gql(`
+export const WSSOrderQualityRefundQuery = gql`
   query OrderMetricsDeepDive_OrderQualityRefund(
     $offset: Int
     $limit: Int
@@ -664,7 +664,7 @@ export const WSSOrderQualityRefundQuery = gql(`
       }
     }
   }
-`);
+`;
 export type WSSOrderQualityRefundRequest =
   WssPerformanceDeepDiveHubOrderQualityRefundArgs;
 export type WSSOrderQualityRefundResponse = {
@@ -684,7 +684,7 @@ export type WSSOrderQualityRefundResponse = {
   };
 };
 
-export const WSSQualityRefundBreakdownQuery = gql(`
+export const WSSQualityRefundBreakdownQuery = gql`
   query OrderMetricsDeepDive_QualityRefundBreakdown($productId: ObjectIdType) {
     currentMerchant {
       wishSellerStandard {
@@ -698,7 +698,7 @@ export const WSSQualityRefundBreakdownQuery = gql(`
       }
     }
   }
-`);
+`;
 export type WSSQualityRefundBreakdownRequest =
   WssPerformanceDeepDiveHubQualityRefundBreakdownArgs;
 export type WSSQualityRefundBreakdownResponse = {
@@ -712,7 +712,7 @@ export type WSSQualityRefundBreakdownResponse = {
   };
 };
 
-export const WSSConfirmedFulfillmentSpeedQuery = gql(`
+export const WSSConfirmedFulfillmentSpeedQuery = gql`
   query OrderMetricsDeepDive_ConfirmedFulfillmentSpeed(
     $offset: Int
     $limit: Int
@@ -755,7 +755,7 @@ export const WSSConfirmedFulfillmentSpeedQuery = gql(`
       }
     }
   }
-`);
+`;
 export type WSSConfirmedFulfillmentSpeedRequest =
   WssPerformanceDeepDiveHubOrderFulfillmentSpeedArgs;
 export type WSSConfirmedFulfillmentSpeedResponse = {
@@ -782,7 +782,7 @@ export type WSSConfirmedFulfillmentSpeedResponse = {
   };
 };
 
-export const WSSValidTrackingRateQuery = gql(`
+export const WSSValidTrackingRateQuery = gql`
   query OrderMetricsDeepDive_ValidTrackingRate(
     $offset: Int
     $limit: Int
@@ -820,7 +820,7 @@ export const WSSValidTrackingRateQuery = gql(`
       }
     }
   }
-`);
+`;
 export type WSSValidTrackingRateRequest =
   WssPerformanceDeepDiveHubOrderInvalidTrackingArgs;
 export type WSSValidTrackingRateResponse = {
@@ -843,7 +843,7 @@ export type WSSValidTrackingRateResponse = {
   };
 };
 
-export const WSSOrderLogisticsRefundQuery = gql(`
+export const WSSOrderLogisticsRefundQuery = gql`
   query OrderMetricsDeepDive_LogisticsRefundRate(
     $offset: Int
     $limit: Int
@@ -879,7 +879,7 @@ export const WSSOrderLogisticsRefundQuery = gql(`
       }
     }
   }
-`);
+`;
 export type WSSOrderLogisticsRefundRequest =
   WssPerformanceDeepDiveHubOrderLogisticsRefundArgs;
 export type WSSOrderLogisticsRefundResponse = {

@@ -1,7 +1,7 @@
-import { gql } from "@gql";
+import { gql } from "@apollo/client";
 import { WssProductRatingPage, WssProductRefundPage } from "@schema";
 
-export const UNDERPERFORMING_PRODUCTS_TABLE_QUERY = gql(`
+export const UNDERPERFORMING_PRODUCTS_TABLE_QUERY = gql`
   query UnderperformingProductsTableQuery {
     currentMerchant {
       wishSellerStandard {
@@ -16,7 +16,7 @@ export const UNDERPERFORMING_PRODUCTS_TABLE_QUERY = gql(`
       }
     }
   }
-`);
+`;
 
 export type UnderperformingProductsTableQueryResponse = {
   readonly currentMerchant?: {

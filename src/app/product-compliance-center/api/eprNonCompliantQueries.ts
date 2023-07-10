@@ -1,4 +1,4 @@
-import { gql } from "@gql";
+import { gql } from "@apollo/client";
 import {
   Country,
   EprNonCompliantSummarySchema,
@@ -7,7 +7,7 @@ import {
   EprNonCompliantSummarySchemaProductRecordsArgs,
 } from "@schema";
 
-export const EPR_NON_COMPLIANT_SUMMARY_QUERY = gql(`
+export const EPR_NON_COMPLIANT_SUMMARY_QUERY = gql`
   query EprNonCompliantSummaryQuery {
     policy {
       productCompliance {
@@ -26,7 +26,7 @@ export const EPR_NON_COMPLIANT_SUMMARY_QUERY = gql(`
       }
     }
   }
-`);
+`;
 
 export type EprNonCompliantSummaryQueryResponse = {
   readonly policy?: {
@@ -45,7 +45,7 @@ export type EprNonCompliantSummaryQueryResponse = {
   };
 };
 
-export const EPR_NON_COMPLIANT_COUNTRIES_AVAILABLE_QUERY = gql(`
+export const EPR_NON_COMPLIANT_COUNTRIES_AVAILABLE_QUERY = gql`
   query EprNonCompliantCountriesAvailableQuery {
     policy {
       productCompliance {
@@ -62,7 +62,7 @@ export const EPR_NON_COMPLIANT_COUNTRIES_AVAILABLE_QUERY = gql(`
       }
     }
   }
-`);
+`;
 
 export type EprNonCompliantCountriesAvailableQueryResponse = {
   readonly policy?: {
@@ -78,7 +78,7 @@ export type EprNonCompliantCountriesAvailableQueryResponse = {
   };
 };
 
-export const EPR_NON_COMPLIANT_PRODUCTS_QUERY = gql(`
+export const EPR_NON_COMPLIANT_PRODUCTS_QUERY = gql`
   query EprNonCompliantProductsQuery(
     $countryCode: CountryCode!
     $eprCategories: [Int!]
@@ -115,7 +115,7 @@ export const EPR_NON_COMPLIANT_PRODUCTS_QUERY = gql(`
       }
     }
   }
-`);
+`;
 
 export type EprNonCompliantProductsQueryVariables =
   EprNonCompliantSummarySchemaProductRecordsArgs;

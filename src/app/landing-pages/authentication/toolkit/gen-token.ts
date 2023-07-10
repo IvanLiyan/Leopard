@@ -1,10 +1,10 @@
-import { gql } from "@gql";
+import gql from "graphql-tag";
 import {
   TwoFactorGenTokenMutation,
   AuthenticationMutationsGen2faCodeArgs,
 } from "@schema";
 
-export const TWO_FACTOR_GEN_TOKEN_MUTATION = gql(`
+export const TWO_FACTOR_GEN_TOKEN_MUTATION = gql`
   mutation Authentication_TwoFactorGenTokenMutation(
     $input: TwoFactorGenTokenInput!
   ) {
@@ -20,7 +20,7 @@ export const TWO_FACTOR_GEN_TOKEN_MUTATION = gql(`
       }
     }
   }
-`);
+`;
 
 export type TwoFactorGenTokenResponseType = {
   readonly authentication?: {

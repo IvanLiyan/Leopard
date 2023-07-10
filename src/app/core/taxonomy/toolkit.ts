@@ -15,11 +15,10 @@ import {
   TaxonomySchemaLeafCategoriesArgs,
   TaxonomySchemaVariationOptionsArgs,
 } from "@schema";
-import { useQuery } from "@apollo/client";
+import { gql, useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
 import { Constants } from "./constants";
 import { TaxonomySchema } from "@schema";
-import { gql } from "@gql";
 
 export type CategoryId = number;
 
@@ -230,7 +229,7 @@ export const AttributeSelectionTypeLabel: {
   ),
 };
 
-export const LEAF_CATEGORIES_QUERY = gql(`
+export const LEAF_CATEGORIES_QUERY = gql`
   query Fashion_GetLeafCategories($l1CategoryId: Int!, $treeVersion: String!) {
     taxonomy {
       leafCategories(l1CategoryId: $l1CategoryId, treeVersion: $treeVersion) {
@@ -247,7 +246,7 @@ export const LEAF_CATEGORIES_QUERY = gql(`
       }
     }
   }
-`);
+`;
 
 export type PickedCategory = Pick<TaxonomyCategorySchema, "id" | "name">;
 export type PickedCategoryWithDetails = PickedCategory & {
@@ -267,7 +266,7 @@ export type LeafCategoryResponseData = {
   };
 };
 
-export const CATEGORY_ATTRIBUTES_QUERY = gql(`
+export const CATEGORY_ATTRIBUTES_QUERY = gql`
   query Fashion_GetCategoryAttributes(
     $categoryId: Int!
     $treeVersion: String!
@@ -292,7 +291,7 @@ export const CATEGORY_ATTRIBUTES_QUERY = gql(`
       }
     }
   }
-`);
+`;
 
 export type PickedTaxonomyAttribute = Pick<
   TaxonomyAttributeSchema,
@@ -317,7 +316,7 @@ export type CategoryAttributesResponseData = {
   };
 };
 
-export const TAXONOMY_CATEGORY_QUERY = gql(`
+export const TAXONOMY_CATEGORY_QUERY = gql`
   query Fashion_TaxonomyCategoriesQuery(
     $categoryId: Int!
     $treeVersion: String!
@@ -345,7 +344,7 @@ export const TAXONOMY_CATEGORY_QUERY = gql(`
       }
     }
   }
-`);
+`;
 
 export type TaxonomyCategoryRequestData = TaxonomySchemaCategoryArgs;
 export type TaxonomyCategoryResponseData = {
@@ -362,7 +361,7 @@ export type TaxonomyCategoryResponseData = {
   };
 };
 
-export const CATEGORY_CSV_HEADERS_QUERY = gql(`
+export const CATEGORY_CSV_HEADERS_QUERY = gql`
   query CategoryCSVHeadersQuery($categoryId: Int!, $treeVersion: String!) {
     productCatalog {
       csvProductTemplateWithTaxonomyColumnNames(
@@ -371,7 +370,7 @@ export const CATEGORY_CSV_HEADERS_QUERY = gql(`
       )
     }
   }
-`);
+`;
 
 export type CategoryCSVHeadersRequestData =
   ProductCatalogSchemaCsvProductTemplateWithTaxonomyColumnNamesArgs;
@@ -382,13 +381,13 @@ export type CategoryCSVHeadersResponseData = {
   >;
 };
 
-export const CATEGORY_ATTRIBUTES_CSV_QUERY = gql(`
+export const CATEGORY_ATTRIBUTES_CSV_QUERY = gql`
   query CategoryAttributesCsvQuery($categoryId: Int!) {
     taxonomy {
       categoryAttributesCsv(categoryId: $categoryId)
     }
   }
-`);
+`;
 
 export type CategoryAttributesCsvResponseType = {
   readonly taxonomy?: Pick<TaxonomySchema, "categoryAttributesCsv"> | null;
@@ -397,13 +396,13 @@ export type CategoryAttributesCsvResponseType = {
 export type CategoryAttributesCsvRequestType =
   TaxonomySchemaCategoryAttributesCsvArgs;
 
-export const CATEGORY_TREE_JSON_QUERY = gql(`
+export const CATEGORY_TREE_JSON_QUERY = gql`
   query CategoryTreeJsonQuery {
     productCatalog {
       productCategoryTaxonomyTreeJson
     }
   }
-`);
+`;
 
 export type CategoryTreeJsonResponseType = {
   readonly productCatalog?: Pick<
@@ -437,7 +436,7 @@ export type GetTaxonomyVariationOptionsResponseType = {
   } | null;
 };
 
-export const GET_TAXONOMY_VARIATION_OPTIONS_QUERY = gql(`
+export const GET_TAXONOMY_VARIATION_OPTIONS_QUERY = gql`
   query VariationGrouping_GetTaxonomyVariationOptionsQuery(
     $categoryId: Int!
     $treeVersion: String
@@ -453,7 +452,7 @@ export const GET_TAXONOMY_VARIATION_OPTIONS_QUERY = gql(`
       }
     }
   }
-`);
+`;
 
 export const useCategoryTreeMap = () => {
   const [isLoadingMap, setIsLoadingMap] = useState<boolean>(false);

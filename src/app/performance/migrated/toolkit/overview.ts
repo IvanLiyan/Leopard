@@ -6,9 +6,9 @@ import {
   WssThingsToWatch,
 } from "@schema";
 import { metricsDataMap, PickedMerchantWssDetails } from "./stats";
-import { gql } from "@gql";
+import { gql } from "@apollo/client";
 
-export const WSSThingsToWatchQuery = gql(`
+export const WSSThingsToWatchQuery = gql`
   query MerchantScore_ThingsToWatch {
     currentMerchant {
       wishSellerStandard {
@@ -25,7 +25,7 @@ export const WSSThingsToWatchQuery = gql(`
       }
     }
   }
-`);
+`;
 export type WSSThingsToWatchQueryResponse = {
   readonly currentMerchant?: {
     readonly wishSellerStandard?: {

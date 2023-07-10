@@ -1,7 +1,7 @@
-import { gql } from "@gql";
+import { gql } from "@apollo/client";
 import { PerformanceHealthInitialData } from "@performance/migrated/toolkit/stats";
 
-export const PERFORMANCE_OVERVIEW_PAGE_INITIAL_DATA_QUERY = gql(`
+export const PERFORMANCE_OVERVIEW_PAGE_INITIAL_DATA_QUERY = gql`
   query PerformanceOverviewPageInitialDataQuery {
     policy {
       misleadingProducts: merchantWarningCount(
@@ -116,7 +116,7 @@ export const PERFORMANCE_OVERVIEW_PAGE_INITIAL_DATA_QUERY = gql(`
       }
     }
   }
-`);
+`;
 
 export type PerformanceOverviewPageInitialDataQueryResponse =
   PerformanceHealthInitialData;

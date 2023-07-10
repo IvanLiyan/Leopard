@@ -1,4 +1,4 @@
-import { gql } from "@gql";
+import { gql } from "@apollo/client";
 import numeral from "numeral";
 
 /* Legacy */
@@ -1032,7 +1032,7 @@ const wssMerchantLevelGt = (
   b: WssMerchantLevelType | null | undefined,
 ): boolean => !!a && !!b && wssMerchantLevelCode[a] > wssMerchantLevelCode[b];
 
-export const MERCHANT_SCORE_QUERY = gql(`
+export const MERCHANT_SCORE_QUERY = gql`
   query MerchantScore_MerchantScoreSection {
     currentMerchant {
       id
@@ -1118,4 +1118,4 @@ export const MERCHANT_SCORE_QUERY = gql(`
       }
     }
   }
-`);
+`;

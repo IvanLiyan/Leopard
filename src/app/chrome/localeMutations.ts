@@ -1,7 +1,7 @@
 import { ChangeLocale, LocaleMutationsChangeLocaleArgs } from "@schema";
-import { gql } from "@gql";
+import gql from "graphql-tag";
 
-export const CHANGE_LOCALE_MUTATION = gql(`
+export const CHANGE_LOCALE_MUTATION = gql`
   mutation AppLocalSelector_ChangeLocaleMutation($input: ChangeLocaleInput!) {
     locale {
       changeLocale(input: $input) {
@@ -10,7 +10,7 @@ export const CHANGE_LOCALE_MUTATION = gql(`
       }
     }
   }
-`);
+`;
 
 export type ChangeLocalRequestType = LocaleMutationsChangeLocaleArgs;
 export type ChangeLocalResponseType = {

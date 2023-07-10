@@ -1,7 +1,7 @@
-import { gql } from "@gql";
+import gql from "graphql-tag";
 import { LoginMutation, AuthenticationMutationsLoginArgs } from "@schema";
 
-export const LOGIN_MUTATION = gql(`
+export const LOGIN_MUTATION = gql`
   mutation Authentication_LoginMutation($input: LoginMutationInput!) {
     authentication {
       login(input: $input) {
@@ -15,7 +15,7 @@ export const LOGIN_MUTATION = gql(`
       }
     }
   }
-`);
+`;
 
 export type LoginResponseType = {
   readonly authentication?: {

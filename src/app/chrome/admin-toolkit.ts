@@ -1,4 +1,4 @@
-import { gql } from "@gql";
+import gql from "graphql-tag";
 import {
   UserSchema,
   IdentityServiceSchemaUsersArgs,
@@ -50,7 +50,7 @@ export type AdminUsersInitialData = {
   };
 };
 
-export const GET_INTERNAL_USERS_QUERY = gql(`
+export const GET_INTERNAL_USERS_QUERY = gql`
   query AdminUsersTable_GetInternalUsersQuery(
     $offset: Int!
     $limit: Int!
@@ -95,7 +95,7 @@ export const GET_INTERNAL_USERS_QUERY = gql(`
       )
     }
   }
-`);
+`;
 
 export type GetInternalUsersResponseType = {
   readonly identity: {
@@ -106,7 +106,7 @@ export type GetInternalUsersResponseType = {
 
 export type GetInternalUsersRequestType = IdentityServiceSchemaUsersArgs;
 
-export const LOGIN_AS_USER_MUTATION = gql(`
+export const LOGIN_AS_USER_MUTATION = gql`
   mutation AdminUsersTable_LoginAsUserMutation($input: ByUserIdInput!) {
     authentication {
       loginAs {
@@ -117,7 +117,7 @@ export const LOGIN_AS_USER_MUTATION = gql(`
       }
     }
   }
-`);
+`;
 
 export type LoginAsUserResponseType = {
   readonly authentication: {

@@ -1,7 +1,7 @@
-import { gql } from "@gql";
+import { gql } from "@apollo/client";
 import { TrueTagSchema } from "@schema";
 
-export const TAGGING_QUERY = gql(`
+export const TAGGING_QUERY = gql`
   query Tags {
     platformConstants {
       topLevelTags {
@@ -10,7 +10,7 @@ export const TAGGING_QUERY = gql(`
       }
     }
   }
-`);
+`;
 
 export type TaggingQueryResponse = {
   readonly platformConstants: {

@@ -25,7 +25,7 @@ import {
   TaxonomyCategorySchema,
   PaymentCurrencyCode,
 } from "@schema";
-import { gql } from "@gql";
+import { gql } from "@apollo/client";
 import moment from "moment/moment";
 import { useMemo } from "react";
 import Fuse from "fuse.js";
@@ -159,8 +159,8 @@ export type MfpCreateCampaignInitialData = {
 };
 
 // Get Eligible Products Query
-export const GET_ELIGIBLE_PRODUCTS_GENERIC_QUERY = gql(`
-  query MfpTools_GetEligibleProductsGeneric(
+export const GET_ELIGIBLE_PRODUCTS_GENERIC_QUERY = gql`
+  query MfpTools_GetEligibleProducts(
     $searchType: MFPProductSearchType
     $searchQuery: String
     $promotionType: MFPCampaignPromotionType!
@@ -181,9 +181,9 @@ export const GET_ELIGIBLE_PRODUCTS_GENERIC_QUERY = gql(`
       )
     }
   }
-`);
+`;
 
-export const GET_ELIGIBLE_PRODUCTS_QUERY = gql(`
+export const GET_ELIGIBLE_PRODUCTS_QUERY = gql`
   query MfpTools_GetEligibleProducts(
     $searchType: MFPProductSearchType
     $searchQuery: String
@@ -266,7 +266,7 @@ export const GET_ELIGIBLE_PRODUCTS_QUERY = gql(`
       }
     }
   }
-`);
+`;
 
 export type EligibleVariation = Pick<
   VariationSchema,
@@ -325,7 +325,7 @@ export type GetEligibleProductsRequest =
   };
 
 // Get campaigns count query
-export const GET_ELIGIBLE_PRODUCTS_COUNT_QUERY = gql(`
+export const GET_ELIGIBLE_PRODUCTS_COUNT_QUERY = gql`
   query MfpTools_GetEligibleProductsCount(
     $searchType: MFPProductSearchType
     $searchQuery: String
@@ -341,7 +341,7 @@ export const GET_ELIGIBLE_PRODUCTS_COUNT_QUERY = gql(`
       )
     }
   }
-`);
+`;
 
 export type GetEligibleProductsCountResponse = {
   readonly mfp?: Pick<MfpServiceSchema, "eligibleProductsCount"> | null;
@@ -355,7 +355,7 @@ export const variationInventory = (variation: EligibleVariation): number => {
 };
 
 // Get whitelisted products query
-export const GET_WHITELIST_PRODUCTS_QUERY = gql(`
+export const GET_WHITELIST_PRODUCTS_QUERY = gql`
   query GetWhitelistProducts_ProductWhitelistingSection(
     $productIds: [ObjectIdType!]
     $offset: Int
@@ -441,7 +441,7 @@ export const GET_WHITELIST_PRODUCTS_QUERY = gql(`
       activeWhitelistProductsCount(productIds: $productIds)
     }
   }
-`);
+`;
 
 type PickedWhitelistProductInfo = {
   readonly product: EligibleProduct;
@@ -462,7 +462,7 @@ export type GetWhitelistProductsResponseData = {
 };
 
 // Get prefill campaign information query
-export const GET_PREFILL_CAMPAIGN_QUERY = gql(`
+export const GET_PREFILL_CAMPAIGN_QUERY = gql`
   query MfpTools_GetPrefillCampaignQuery(
     $id: String
     $merchantCurrency: PaymentCurrencyCode!
@@ -660,7 +660,7 @@ export const GET_PREFILL_CAMPAIGN_QUERY = gql(`
       }
     }
   }
-`);
+`;
 
 export type PickedCampaignPrefill = Pick<
   MfpCampaignSchema,
@@ -786,7 +786,7 @@ export type GetPrefillCampaignRequest = {
   readonly merchantCurrency: PaymentCurrencyCode;
 };
 
-export const GET_CAMPAIGN_EVENTS_QUERY = gql(`
+export const GET_CAMPAIGN_EVENTS_QUERY = gql`
   query MfpTools_GetCampaignEvents(
     $offset: Int
     $limit: Int
@@ -836,7 +836,7 @@ export const GET_CAMPAIGN_EVENTS_QUERY = gql(`
       )
     }
   }
-`);
+`;
 
 export type GetCampaignEventsRequest = MfpServiceSchemaCampaignEventsArgs;
 

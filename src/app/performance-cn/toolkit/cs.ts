@@ -1,4 +1,4 @@
-import { gql } from "@gql";
+import { gql } from "@apollo/client";
 import {
   CurrencyValue,
   Datetime,
@@ -19,7 +19,7 @@ export type CustomerServiceAggregateBenchMark = {
   readonly customerSatisfaction: string;
 };
 
-export const CS_PERFORMANCE_AGGREGATE_DATA_QUERY = gql(`
+export const CS_PERFORMANCE_AGGREGATE_DATA_QUERY = gql`
   query CustomerService_PerformanceAggregateDataQuery($weeks: Int!) {
     currentMerchant {
       primaryCurrency
@@ -62,7 +62,7 @@ export const CS_PERFORMANCE_AGGREGATE_DATA_QUERY = gql(`
       }
     }
   }
-`);
+`;
 
 export type PickedCustomerServiceAggregate = {
   readonly startDate: Pick<Datetime, "mmddyyyy">;

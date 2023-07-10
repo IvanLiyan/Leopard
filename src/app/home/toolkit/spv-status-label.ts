@@ -1,7 +1,7 @@
 import { SellerVerificationSchema } from "@schema";
-import { gql } from "@gql";
+import gql from "graphql-tag";
 
-export const GET_SPV_STATUS_QUERY = gql(`
+export const GET_SPV_STATUS_QUERY = gql`
   query MerchantOnboarding_GetSellerVerificationStatus {
     currentMerchant {
       sellerVerification {
@@ -9,7 +9,7 @@ export const GET_SPV_STATUS_QUERY = gql(`
       }
     }
   }
-`);
+`;
 
 export type GetSPVStatusResponse = {
   readonly currentMerchant?: {

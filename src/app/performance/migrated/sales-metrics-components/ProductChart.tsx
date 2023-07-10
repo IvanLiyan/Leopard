@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import { StyleSheet } from "aphrodite";
 import { observer } from "mobx-react";
 import numeral from "numeral";
-import { gql } from "@gql";
+import { gql } from "@apollo/client";
 import { useQuery } from "@apollo/client";
 
 /* Lego Components */
@@ -22,7 +22,7 @@ import {
   PerformanceMetricsProductStatsDailyRequestData,
 } from "@performance/migrated/toolkit/stats";
 
-const PRODUCT_STATS_QUERY = gql(`
+const PRODUCT_STATS_QUERY = gql`
   query ProductCatalogProductStats_ProductChart($id: String!, $days: Int!) {
     productCatalog {
       product(id: $id) {
@@ -43,7 +43,7 @@ const PRODUCT_STATS_QUERY = gql(`
       }
     }
   }
-`);
+`;
 
 type Props = BaseProps & {
   readonly productId: string;

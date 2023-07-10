@@ -10,7 +10,7 @@
 
 /* External Libraries */
 import { useState, useEffect } from "react";
-import { gql } from "@gql";
+import gql from "graphql-tag";
 
 /* Relative Imports */
 import { useApolloStore } from "./ApolloStore";
@@ -22,7 +22,7 @@ import {
   DeciderKeySchemaDecideForNameArgs,
 } from "@schema";
 
-const GET_EXP_BUCKET_FOR_MERCHANT = gql(`
+const GET_EXP_BUCKET_FOR_MERCHANT = gql`
   query ExperimentStore_GetBucketForExperiment($name: String!) {
     currentMerchant {
       exp {
@@ -30,7 +30,7 @@ const GET_EXP_BUCKET_FOR_MERCHANT = gql(`
       }
     }
   }
-`);
+`;
 
 type GetExpBucketForMerchantResponseType = {
   readonly currentMerchant: {
@@ -38,7 +38,7 @@ type GetExpBucketForMerchantResponseType = {
   };
 };
 
-const GET_DECIDER_KEY = gql(`
+const GET_DECIDER_KEY = gql`
   query ExperimentStore_GetDeciderKey($name: String!) {
     platformConstants {
       deciderKey {
@@ -46,7 +46,7 @@ const GET_DECIDER_KEY = gql(`
       }
     }
   }
-`);
+`;
 
 type GetDeciderKeyResponseType = {
   readonly platformConstants: {
