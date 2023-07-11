@@ -136,11 +136,16 @@ const MerchantDashboardProvider: React.FC<MerchantDashboardProviderProps> = ({
   // Customer support widget API calls
   const { decision: showWidget, isLoading: showWidgetLoading } = useDeciderKey(
     "md_salesforce_widget",
+    { skip: isPublic || xsrfCheckLoading },
   );
   const { decision: showWidgetCN, isLoading: showWidgetCNLoading } =
-    useDeciderKey("md_salesforce_widget_cn");
+    useDeciderKey("md_salesforce_widget_cn", {
+      skip: isPublic || xsrfCheckLoading,
+    });
   const { decision: forceCnMailTo, isLoading: forceCnMailToLoading } =
-    useDeciderKey("md_zendesk_widget_cn_hide");
+    useDeciderKey("md_zendesk_widget_cn_hide", {
+      skip: isPublic || xsrfCheckLoading,
+    });
 
   const {
     data: merchantSupportConfigInitialData,
@@ -149,7 +154,7 @@ const MerchantDashboardProvider: React.FC<MerchantDashboardProviderProps> = ({
     MerchantSupportConfigQuery,
     {
       client,
-      skip: isPublic,
+      skip: isPublic || xsrfCheckLoading,
     },
   );
   const widgetQueriesLoading =

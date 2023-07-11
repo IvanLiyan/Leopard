@@ -118,15 +118,19 @@ export const useExperiment = (
 
 export const useDeciderKey = (
   name: string,
+  options?: { readonly skip?: boolean | null | undefined },
 ): {
   readonly decision: boolean | undefined | null;
   readonly isLoading: boolean;
 } => {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [decision, setDecision] = useState<boolean | undefined>();
   const experimentStore = useExperimentStore();
 
   useEffect(() => {
+    if (options?.skip) {
+      return;
+    }
     void (async () => {
       setIsLoading(true);
       const decision = await experimentStore.getDeciderKeyDecision(name);
@@ -136,7 +140,7 @@ export const useDeciderKey = (
     // Exclude experimentStore in dependency to avoid infinite loop, as updating states "isLoading" and "bucket" will
     // cause a component re-render, and a new experimentStore to be instantiated, hence this useEffect hook will run infinitely
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [name]);
+  }, [name, options?.skip]);
 
   return { decision, isLoading };
 };
