@@ -6,7 +6,7 @@ import {
   useImperativeHandle,
 } from "react";
 import { computed } from "mobx";
-import { gql } from "@apollo/client";
+import { gql } from "@gql";
 
 /* Toolkit */
 import { RootQuery, PlatformConstants, Locale, CountryCode } from "@schema";
@@ -185,7 +185,7 @@ export const useLocalizationStore = (): LocalizationStore => {
   return useContext(LocalizationStoreContext);
 };
 
-export const LOCALIZATION_STORE_INITIAL_QUERY = gql`
+export const LOCALIZATION_STORE_INITIAL_QUERY = gql(`
   query LocalizationStore_InitialQuery {
     currentLocale
     currentProperLocale
@@ -193,7 +193,7 @@ export const LOCALIZATION_STORE_INITIAL_QUERY = gql`
       availableLocales
     }
   }
-`;
+`);
 
 export type LocalizationStoreInitialQueryResponse = {
   readonly platformConstants: Pick<PlatformConstants, "availableLocales">;

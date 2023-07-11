@@ -6,14 +6,14 @@
 //  Copyright © 2019-present ContextLogic Inc. All rights reserved.
 //
 import { useMemo, useState } from "react";
-import gql from "graphql-tag";
+import { gql } from "@gql";
 
 import UserStore from "@core/stores/UserStore";
 import ApolloStore from "@core/stores/ApolloStore";
 
 import { LoggableTable, LogToTreasureDataInput } from "@schema";
 
-const LOG_MUTATION = gql`
+const LOG_MUTATION = gql(`
   mutation Logger_WriteLog($input: LogToTreasureDataInput!) {
     analytics {
       log(input: $input) {
@@ -21,7 +21,7 @@ const LOG_MUTATION = gql`
       }
     }
   }
-`;
+`);
 
 export type LoggableValue =
   | (string | null | undefined)

@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { gql } from "@gql";
 import Config from "@chrome/salesforce";
 import { Text } from "@ContextLogic/lego";
 import Link from "@deprecated/components/Link";
@@ -225,7 +225,7 @@ const useStylesheet = () => {
   );
 };
 
-export const MerchantSupportConfigQuery = gql`
+export const MerchantSupportConfigQuery = gql(`
   query MerchantSupportConfigQuery {
     currentUser {
       displayName
@@ -239,7 +239,7 @@ export const MerchantSupportConfigQuery = gql`
       }
     }
   }
-`;
+`);
 
 export type MerchantSupportConfigQueryResponse = {
   readonly currentUser?:

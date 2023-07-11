@@ -4,9 +4,10 @@ import Cookies from "js-cookie";
 import { GraphiQL } from "graphiql";
 import { createGraphiQLFetcher } from "@graphiql/toolkit";
 import "graphiql/graphiql.min.css";
-import { useQuery, gql } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import { useApolloStore } from "@core/stores/ApolloStore";
 import FullPageError from "@core/components/FullPageError";
+import { gql } from "@gql";
 
 const GQLPlaygroundPage: NextPage<Record<string, never>> = () => {
   const { client } = useApolloStore();
@@ -18,7 +19,7 @@ const GQLPlaygroundPage: NextPage<Record<string, never>> = () => {
       readonly isAdmin: boolean;
     };
   }>(
-    gql`
+    gql(`
       query AdminCheck {
         su {
           id
@@ -27,7 +28,7 @@ const GQLPlaygroundPage: NextPage<Record<string, never>> = () => {
           isAdmin
         }
       }
-    `,
+    `),
     { client },
   );
 

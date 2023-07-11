@@ -16,7 +16,7 @@ import {
   useImperativeHandle,
 } from "react";
 import { computed } from "mobx";
-import { gql } from "@apollo/client";
+import { gql } from "@gql";
 
 import {
   UserSchema,
@@ -28,7 +28,7 @@ import {
   RoleSchema,
 } from "@schema";
 
-export const USER_STORE_INITIAL_QUERY = gql`
+export const USER_STORE_INITIAL_QUERY = gql(`
   query UserStore_InitialQuery {
     currentCountry {
       code
@@ -78,7 +78,7 @@ export const USER_STORE_INITIAL_QUERY = gql`
       isStoreOrMerchantUser
     }
   }
-`;
+`);
 
 type PickedCurrentMerchant = Pick<
   MerchantSchema,

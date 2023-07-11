@@ -28,6 +28,7 @@ module.exports = {
       },
     ],
     "local-rules/validate-root": "error",
+    "local-rules/no-apollo-gql-import": "error",
     // TODO [lliepert]: re-enable these for forward commits
     "@typescript-eslint/no-unsafe-assignment": "off",
     "@typescript-eslint/no-unsafe-call": "off",
@@ -40,11 +41,13 @@ module.exports = {
     "eslint-local-rules.js",
     "next.config.js",
     "jest.config.js",
+    "babel.config.js",
     "node_modules",
     "build",
     "out",
     "eslint-local-rules-OLD.js",
     "lighthouse", // if linting lighthouse is desired, we should give it it's own eslintrc
     "tests/*",
+    "src/schema",
   ],
 };

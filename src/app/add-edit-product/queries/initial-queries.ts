@@ -27,10 +27,10 @@ import {
   MerchantProvidedAttributeSchema,
   DeciderKeySchema,
 } from "@schema";
-import { gql } from "@apollo/client";
+import { gql } from "@gql";
 import { PickedCategory } from "@core/taxonomy/toolkit";
 
-export const ADD_PRODUCT_INITIAL_DATA_QUERY = gql`
+export const ADD_PRODUCT_INITIAL_DATA_QUERY = gql(`
   query AddProduct_GetInitialDataQuery {
     currentMerchant {
       standardWarehouseId
@@ -74,9 +74,9 @@ export const ADD_PRODUCT_INITIAL_DATA_QUERY = gql`
       productCount
     }
   }
-`;
+`);
 
-export const EDIT_PRODUCT_INITIAL_DATA_QUERY = gql`
+export const EDIT_PRODUCT_INITIAL_DATA_QUERY = gql(`
   query EditProduct_GetInitialDataQuery($productId: String) {
     currentMerchant {
       standardWarehouseId
@@ -320,7 +320,7 @@ export const EDIT_PRODUCT_INITIAL_DATA_QUERY = gql`
       }
     }
   }
-`;
+`);
 
 export type PickedRegion = Pick<Region, "code" | "name">;
 

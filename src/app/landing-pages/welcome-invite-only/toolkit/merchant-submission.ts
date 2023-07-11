@@ -1,10 +1,10 @@
-import gql from "graphql-tag";
+import { gql } from "@gql";
 import {
   MerchantLeadSubmissionMutation,
   MerchantLeadSubmissionInput,
 } from "@schema";
 
-export const MERCHANT_LEAD_SUBMIT = gql`
+export const MERCHANT_LEAD_SUBMIT = gql(`
   mutation Questionnaire_MerchantLeadSubmit(
     $input: MerchantLeadSubmissionInput!
   ) {
@@ -15,7 +15,7 @@ export const MERCHANT_LEAD_SUBMIT = gql`
       }
     }
   }
-`;
+`);
 
 export type MerchantLeadSubmissionResponseType = {
   readonly authentication: {

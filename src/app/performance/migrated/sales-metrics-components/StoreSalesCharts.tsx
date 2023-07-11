@@ -2,7 +2,7 @@ import React, { useMemo, useState } from "react";
 import { StyleSheet, CSSProperties } from "aphrodite";
 import { observer } from "mobx-react";
 import numeral from "numeral";
-import { gql } from "@apollo/client";
+import { gql } from "@gql";
 import { useQuery } from "@apollo/client";
 
 /* Lego Components */
@@ -36,7 +36,7 @@ import logger from "@performance/migrated/toolkit/logger";
 import Skeleton from "@core/components/Skeleton";
 import Link from "@core/components/Link";
 
-const STORE_SALES_STATS_QUERY = gql`
+const STORE_SALES_STATS_QUERY = gql(`
   query StoreSalesStats_StoreSalesCharts($days: Int!) {
     currentMerchant {
       storeStats {
@@ -71,7 +71,7 @@ const STORE_SALES_STATS_QUERY = gql`
       }
     }
   }
-`;
+`);
 
 type StatInfo = {
   readonly metric: string;

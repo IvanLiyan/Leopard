@@ -12,8 +12,9 @@ import React, {
   createContext,
   useContext,
 } from "react";
-import { gql, useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import { StyleSheet } from "aphrodite";
+import { gql } from "@gql";
 
 import { css } from "@core/toolkit/styling";
 
@@ -59,7 +60,29 @@ const BOTTOM_NODES: ReadonlySet<string> = new Set([
 // TODO [lliepert]: remove reference to legacy store nomenclature (https://jira.wish.site/browse/MKL-55300)
 // TODO [lliepert]: update with actual query once we have the gql finished
 // TODO [lliepert]: bring back loading between pages
-export const CHROME_STORE_INITIAL_QUERY = gql`
+export const CHROME_STORE_INITIAL_QUERY = gql(`
+  query ChromeStore_InitialQuery {
+    chrome {
+      merchantGraph {
+        ...NodeElements
+        children {
+          ...NodeElements
+          children {
+            ...NodeElements
+            children {
+              ...NodeElements
+              children {
+                ...NodeElements
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`);
+
+export const NODE_ELEMENTS_FIELDS = gql(`
   fragment NodeElements on ChromeNodeSchema {
     url
     path
@@ -85,27 +108,7 @@ export const CHROME_STORE_INITIAL_QUERY = gql`
     }
     countSelectors
   }
-
-  query ChromeStore_InitialQuery {
-    chrome {
-      merchantGraph {
-        ...NodeElements
-        children {
-          ...NodeElements
-          children {
-            ...NodeElements
-            children {
-              ...NodeElements
-              children {
-                ...NodeElements
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-`;
+`);
 
 export type ChromeNavigationNode = Pick<
   ChromeNodeSchema,

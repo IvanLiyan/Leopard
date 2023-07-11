@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { gql } from "@gql";
 import {
   RatingPerformanceStats,
   RatingBreakdown,
@@ -12,7 +12,7 @@ import {
   MerchantStatsWeeklyArgs,
 } from "@schema";
 
-export const RATING_PERFORMANCE_AGGREGATE_DATA_QUERY = gql`
+export const RATING_PERFORMANCE_AGGREGATE_DATA_QUERY = gql(`
   query Rating_PerformanceAggregateDataQuery($weeks: Int) {
     currentMerchant {
       storeStats {
@@ -36,7 +36,7 @@ export const RATING_PERFORMANCE_AGGREGATE_DATA_QUERY = gql`
       }
     }
   }
-`;
+`);
 
 export type PickedRatingAggregate = {
   readonly startDate: Pick<Datetime, "mmddyyyy">;
@@ -73,8 +73,8 @@ export type RatingAggregateBenchMark = {
   readonly average30dStoreRating: string;
 };
 
-export const RATING_PERFORMANCE_WEEKLY_STORE_RATING_DATA_QUERY = gql`
-  query Rating_PerformanceAggregateDataQuery($weeks: Int) {
+export const RATING_PERFORMANCE_WEEKLY_STORE_RATING_DATA_QUERY = gql(`
+  query Rating_PerformanceWeeklyStoreRatingDataQuery($weeks: Int) {
     currentMerchant {
       storeStats {
         weekly(weeks: $weeks) {
@@ -91,7 +91,7 @@ export const RATING_PERFORMANCE_WEEKLY_STORE_RATING_DATA_QUERY = gql`
       }
     }
   }
-`;
+`);
 
 export type PickedWeeklyStoreRating = {
   readonly startDate: Pick<Datetime, "mmddyyyy">;
@@ -114,8 +114,8 @@ export type AugmentedWeeklyStoreRating = {
 
 export type WeeklyStoreRatingArgs = MerchantStatsWeeklyArgs;
 
-export const RATING_PERFORMANCE_WEEKLY_PRODUCT_RATING_DATA_QUERY = gql`
-  query Rating_PerformanceAggregateDataQuery($weeks: Int) {
+export const RATING_PERFORMANCE_WEEKLY_PRODUCT_RATING_DATA_QUERY = gql(`
+  query Rating_PerformanceWeeklyProductRatingDataQuery($weeks: Int) {
     currentMerchant {
       storeStats {
         weekly(weeks: $weeks) {
@@ -132,7 +132,7 @@ export const RATING_PERFORMANCE_WEEKLY_PRODUCT_RATING_DATA_QUERY = gql`
       }
     }
   }
-`;
+`);
 
 export type PickedWeeklyProductRating = {
   readonly startDate: Pick<Datetime, "mmddyyyy">;
@@ -155,8 +155,8 @@ export type AugmentedWeeklyProductRating = {
 
 export type WeeklyProductRatingArgs = MerchantStatsWeeklyArgs;
 
-export const RATING_PERFORMANCE_STORE_RATING_BREAKDOWN_DATA_QUERY = gql`
-  query Rating_PerformanceAggregateDataQuery($weeks: Int) {
+export const RATING_PERFORMANCE_STORE_RATING_BREAKDOWN_DATA_QUERY = gql(`
+  query Rating_PerformanceStoreRatingBreakdownDataQuery($weeks: Int) {
     currentMerchant {
       storeStats {
         weekly(weeks: $weeks) {
@@ -179,7 +179,7 @@ export const RATING_PERFORMANCE_STORE_RATING_BREAKDOWN_DATA_QUERY = gql`
       }
     }
   }
-`;
+`);
 
 export type PickedStoreRatingBreakdown = {
   readonly startDate: Pick<Datetime, "mmddyyyy">;
@@ -210,8 +210,8 @@ export type AugmentedStoreRatingBreakdown = {
 
 export type StoreRatingBreakdownArgs = MerchantStatsWeeklyArgs;
 
-export const RATING_PERFORMANCE_PRODUCT_RATING_BREAKDOWN_DATA_QUERY = gql`
-  query Rating_PerformanceAggregateDataQuery($weeks: Int) {
+export const RATING_PERFORMANCE_PRODUCT_RATING_BREAKDOWN_DATA_QUERY = gql(`
+  query Rating_PerformanceProductRatingnBreakdownDataQuery($weeks: Int) {
     currentMerchant {
       storeStats {
         weekly(weeks: $weeks) {
@@ -234,7 +234,7 @@ export const RATING_PERFORMANCE_PRODUCT_RATING_BREAKDOWN_DATA_QUERY = gql`
       }
     }
   }
-`;
+`);
 
 export type PickedProductRatingBreakdown = {
   readonly startDate: Pick<Datetime, "mmddyyyy">;
@@ -265,7 +265,7 @@ export type AugmentedProductRatingBreakdown = {
 
 export type ProductRatingBreakdownArgs = MerchantStatsWeeklyArgs;
 
-export const PRODUCT_RATING_LISTING_DATA_QUERY = gql`
+export const PRODUCT_RATING_LISTING_DATA_QUERY = gql(`
   query Rating_ProductRatingListingDataQuery(
     $offset: Int
     $limit: Int
@@ -287,7 +287,7 @@ export const PRODUCT_RATING_LISTING_DATA_QUERY = gql`
       }
     }
   }
-`;
+`);
 
 type PickedProductRatingListing = Pick<
   ProductRating,
@@ -313,7 +313,7 @@ export type ProductRatingListingRequestArgs = {
 
 export type ProductRatingListingTabData = ProductRatingListingTab;
 
-export const STORE_RATING_LISTING_DATA_QUERY = gql`
+export const STORE_RATING_LISTING_DATA_QUERY = gql(`
   query Rating_StoreRatingListingDataQuery(
     $offset: Int
     $limit: Int
@@ -336,7 +336,7 @@ export const STORE_RATING_LISTING_DATA_QUERY = gql`
       }
     }
   }
-`;
+`);
 
 export type PickedStoreRatingListing = Pick<
   StoreRating,

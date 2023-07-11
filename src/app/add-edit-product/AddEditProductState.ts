@@ -1,6 +1,6 @@
 /* External Libraries */
 import { observable, computed, toJS, action } from "mobx";
-import { gql } from "@apollo/client";
+import { gql } from "@gql";
 import sortBy from "lodash/sortBy";
 import uniq from "lodash/uniq";
 import uniqBy from "lodash/uniqBy";
@@ -84,7 +84,7 @@ import {
   PickedRegion,
 } from "@add-edit-product/queries/initial-queries";
 
-const UPSERT_PRODUCT_MUTATION = gql`
+const UPSERT_PRODUCT_MUTATION = gql(`
   mutation ProductEditState_EditOrCreateProduct($input: ProductUpsertInput!) {
     productCatalog {
       upsertProduct(input: $input) {
@@ -94,9 +94,9 @@ const UPSERT_PRODUCT_MUTATION = gql`
       }
     }
   }
-`;
+`);
 
-const REMOVE_PRODUCT_MUTATION = gql`
+const REMOVE_PRODUCT_MUTATION = gql(`
   mutation ProductEditState_RemoveProduct($input: RemoveProductInput!) {
     productCatalog {
       removeProduct(input: $input) {
@@ -105,7 +105,7 @@ const REMOVE_PRODUCT_MUTATION = gql`
       }
     }
   }
-`;
+`);
 
 // ====================================
 // CountryShipping

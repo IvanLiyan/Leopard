@@ -1,5 +1,5 @@
 import { observable, action } from "mobx";
-import { gql } from "@apollo/client";
+import { gql } from "@gql";
 import {
   Datetime,
   Timedelta,
@@ -8,7 +8,7 @@ import {
   DeliveryPerformanceStats,
 } from "@schema";
 
-export const SHIPPING_PERFORMANCE_DATA = gql`
+export const SHIPPING_PERFORMANCE_DATA = gql(`
   query ShippingPerformanceShippingDataQuery($weeks: Int!) {
     currentMerchant {
       storeStats {
@@ -54,7 +54,7 @@ export const SHIPPING_PERFORMANCE_DATA = gql`
       }
     }
   }
-`;
+`);
 
 type PickedProductTracking = {
   readonly startDate: Pick<Datetime, "mmddyyyy">;

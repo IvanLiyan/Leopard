@@ -9,7 +9,7 @@ import { ObjectId } from "@ContextLogic/lego";
 
 /* Toolkit */
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import gql from "graphql-tag";
+import { gql } from "@gql";
 import ProductImage from "./ProductImage";
 import {
   ImageSchema,
@@ -28,7 +28,7 @@ type ProductDetailModalContentProps = BaseProps &
     readonly productId: string;
   };
 
-const GET_PRODUCT_QUERY = gql`
+const GET_PRODUCT_QUERY = gql(`
   query ProductDetailModal_GetProduct($id: String, $sku: String) {
     productCatalog {
       product(id: $id, sku: $sku) {
@@ -42,7 +42,7 @@ const GET_PRODUCT_QUERY = gql`
       }
     }
   }
-`;
+`);
 
 type GetProductRequestType = ProductCatalogSchemaProductArgs;
 type GetProductResponseType = {

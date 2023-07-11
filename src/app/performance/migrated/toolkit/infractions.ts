@@ -1,7 +1,7 @@
 import { Datetime } from "@schema";
-import { gql } from "@apollo/client";
+import { gql } from "@gql";
 
-export const WSSInfractionWindowQuery = gql`
+export const WSSInfractionWindowQuery = gql(`
   query WSSInsight_InfractionWindow {
     currentMerchant {
       wishSellerStandard {
@@ -20,7 +20,7 @@ export const WSSInfractionWindowQuery = gql`
       }
     }
   }
-`;
+`);
 export type WSSInfractionWindowQueryResponse = {
   readonly currentMerchant?: {
     readonly wishSellerStandard?: {

@@ -1,11 +1,11 @@
-import { gql } from "@apollo/client";
+import { gql } from "@gql";
 import {
   CategoryEprSchema,
   CountryEprSchema,
   ExtendedProducerResponsibilitySchemaCountryArgs,
 } from "@schema";
 
-export const EPR_QUERY = gql`
+export const EPR_QUERY = gql(`
   query ExtendedProducerResponsibilityPageQuery($countryCode: CountryCode!) {
     policy {
       productCompliance {
@@ -26,7 +26,7 @@ export const EPR_QUERY = gql`
       }
     }
   }
-`;
+`);
 
 export type EprQueryResponse = {
   readonly policy?: {

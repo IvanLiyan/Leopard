@@ -1,7 +1,7 @@
-import { gql } from "@apollo/client";
+import { gql } from "@gql";
 import { WishSellerStandardStats } from "@schema";
 
-export const UNDERPERFORMING_PRODUCTS_PERFORMANCE_SCALE_QUERY = gql`
+export const UNDERPERFORMING_PRODUCTS_PERFORMANCE_SCALE_QUERY = gql(`
   query UnderperformingProductsPerformanceScaleQuery {
     currentMerchant {
       wishSellerStandard {
@@ -11,7 +11,7 @@ export const UNDERPERFORMING_PRODUCTS_PERFORMANCE_SCALE_QUERY = gql`
       }
     }
   }
-`;
+`);
 
 export type UnderperformingProductsPerformanceScaleQueryResponse = {
   readonly currentMerchant?: {
