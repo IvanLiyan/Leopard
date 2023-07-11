@@ -142,5 +142,8 @@ export const useDeciderKey = (
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [name, options?.skip]);
 
-  return { decision, isLoading };
+  return {
+    decision,
+    isLoading: (isLoading || decision == null) && !options?.skip,
+  };
 };
