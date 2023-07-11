@@ -9,6 +9,7 @@ import { wishProductURL } from "@core/toolkit/url";
 import { CellInfo, Layout, PageIndicator, Table } from "@ContextLogic/lego";
 import { InfractionEvidenceTypeDisplayText } from "@infractions/copy";
 import { merchFeUrl } from "@core/toolkit/router";
+import Link from "@core/components/Link";
 
 export type InfractionEvidenceType = MerchantWarningProofType | "INFRACTION";
 
@@ -16,17 +17,16 @@ const getIdLink: {
   readonly [type in InfractionEvidenceType]: (props: {
     id: string;
     productId?: string | undefined;
-  }) => string;
+  }) => string | null;
 } = {
-  MERCHANT: ({ id }) => id,
-  PRODUCT: ({ id }) => `[${id}](${wishProductURL(id)})`,
-  VARIATION: ({ id, productId }) =>
-    productId ? `[${id}](${wishProductURL(productId)})` : id,
-  PRODUCT_RATING: ({ id, productId }) =>
-    productId ? `[${id}](${wishProductURL(productId)})` : id,
-  TICKET: ({ id }) => `[${id}](${merchFeUrl(`/ticket/${id}`)})`,
-  ORDER: ({ id }) => `[${id}](${merchFeUrl(`/order/${id}`)})`,
-  INFRACTION: ({ id }) => `[${id}](/warnings/warning?id=${id})`,
+  MERCHANT: () => null,
+  PRODUCT: ({ id }) => wishProductURL(id),
+  VARIATION: ({ productId }) => (productId ? wishProductURL(productId) : null),
+  PRODUCT_RATING: ({ productId }) =>
+    productId ? wishProductURL(productId) : null,
+  TICKET: ({ id }) => merchFeUrl(`/ticket/${id}`),
+  ORDER: ({ id }) => merchFeUrl(`/order/${id}`),
+  INFRACTION: ({ id }) => `/warnings/warning?id=${id}`,
 };
 
 const PAGE_SIZE = 10;
@@ -84,14 +84,14 @@ const InfractionEvidenceCard: React.FC<
             columnKey="id"
           >
             {({ row }: CellInfo<unknown, typeof infractionEvidence[0]>) => {
-              return (
-                <Markdown
-                  text={getIdLink[row.type]({
-                    id: row.id,
-                    productId: product?.productId,
-                  })}
-                />
-              );
+              const next = getIdLink[row.type]({
+                id: row.id,
+                productId: product?.productId,
+              });
+              if (!next) {
+                return <Markdown text={row.id} />;
+              }
+              return <Link href={next}>{row.id}</Link>;
             }}
           </Table.Column>
           <Table.Column

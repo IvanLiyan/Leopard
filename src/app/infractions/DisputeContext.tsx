@@ -1,4 +1,4 @@
-import { useRouter } from "@core/toolkit/router";
+import { merchFeUrl, useRouter } from "@core/toolkit/router";
 import { useStringArrayQueryParam } from "@core/toolkit/url";
 import { useInfractionContext } from "@infractions/InfractionContext";
 import { createContext, useContext } from "react";
@@ -35,7 +35,7 @@ export const BulkDisputeContextProvider: React.FC<{
       return;
     }
     if (bulkInfractionIds.length == 1) {
-      void router.push(`/warnings/warning?id=${bulkInfractionIds[0]}`);
+      void router.push(merchFeUrl(`/warnings/v2`));
       return;
     }
     void router.push({

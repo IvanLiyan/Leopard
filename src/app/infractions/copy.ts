@@ -1289,7 +1289,7 @@ const CounterfeitReasonData: {
   },
   SMOKING: {
     title: i`Drugs and Drug Paraphernalia`,
-    body: i`This listing has been flagged for violating Wish's Policies on "Drugs and Drug Paraphernalia". For more information regarding our "Drugs and Drug Paraphernalia" Policy, [click here]${"https://merchant.wish.com/policy/inappropriate-reasons/14"}.`,
+    body: i`This listing has been flagged for violating Wish's Policies on "Drugs and Drug Paraphernalia". For more information regarding our "Drugs and Drug Paraphernalia" Policy, [click here](${"https://merchant.wish.com/policy/inappropriate-reasons/14"}).`,
   },
   MISLEADING_LISTING: {
     title: i`Misleading Listing`,

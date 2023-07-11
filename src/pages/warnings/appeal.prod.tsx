@@ -94,11 +94,26 @@ const InfractionsPage: NextPage<Record<string, never>> = () => {
     <InfractionProvider>
       <BulkDisputeContextProvider>
         <PageLayout>
-          <InfractionDetailsCard asAccordion />
-          <OrderDetailsCard asAccordion />
-          <ProductListingDetailsCard asAccordion />
-          <BrandDetailsCard asAccordion />
-          <InfractionEvidenceCard asAccordion />
+          <InfractionDetailsCard
+            asAccordion
+            accordionProps={{ expanded: !infractionId }}
+          />
+          <OrderDetailsCard
+            asAccordion
+            accordionProps={{ expanded: !infractionId }}
+          />
+          <ProductListingDetailsCard
+            asAccordion
+            accordionProps={{ expanded: !infractionId }}
+          />
+          <BrandDetailsCard
+            asAccordion
+            accordionProps={{ expanded: !infractionId }}
+          />
+          <InfractionEvidenceCard
+            asAccordion
+            accordionProps={{ expanded: !infractionId }}
+          />
           {disputeFlowComponent}
         </PageLayout>
       </BulkDisputeContextProvider>
