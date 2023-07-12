@@ -28,6 +28,8 @@ lint:
   image: registry-gitlab.i.wish.com/contextlogic/leopard/node:18
   script:
     - yarn lint
+    - yarn graphql-codegen --overwrite --verbose
+    - git diff --no-patch --exit-code
   dependencies:
     - install dependencies
 
