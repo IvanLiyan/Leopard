@@ -8,7 +8,7 @@ import React, { useMemo, useState } from "react";
 import { StyleSheet } from "aphrodite";
 import { observer } from "mobx-react";
 import { runInAction } from "mobx";
-import Dropzone, { DropzoneRenderArgs } from "react-dropzone";
+import Dropzone, { DropzoneState } from "react-dropzone";
 
 /* Lego */
 import {
@@ -84,6 +84,10 @@ const ImageUploadGroup = (props: ImageUploadGroupProps) => {
   >([]);
 
   const accepts = ".jpeg,.jpg,.png";
+  const acceptMimeObject = {
+    "image/png": [".png"],
+    "image/jpeg": [".jpeg", ".jpg"],
+  };
   const imageCount = pendingImages.length + images.length;
   const showImages = imageCount > 0;
   const showDropZone = maxImages !== imageCount;
@@ -102,11 +106,19 @@ const ImageUploadGroup = (props: ImageUploadGroupProps) => {
     );
   };
 
-  const renderDropzoneContent = ({ isDragActive }: DropzoneRenderArgs) => {
+  const renderDropzoneContent = ({
+    isDragActive,
+    getRootProps,
+  }: DropzoneState) => {
     return (
       <Layout.FlexColumn
-        style={[styles.dropzoneContent, { opacity: isDragActive ? 0.3 : 1 }]}
+        style={[
+          styles.dropzone,
+          styles.dropzoneContent,
+          { opacity: isDragActive ? 0.3 : 1 },
+        ]}
         alignItems="center"
+        {...getRootProps()}
       >
         <Text style={styles.title}>Drop images here to upload</Text>
         <Button>
@@ -355,12 +367,11 @@ const ImageUploadGroup = (props: ImageUploadGroupProps) => {
         pendingImages.map((img) => renderPendingImage(img))}
       {showDropZone && (
         <Dropzone
-          accept={accepts}
+          accept={acceptMimeObject}
           onDropRejected={onImageRejected}
           onDropAccepted={(acceptedFiles) => void onUploadImage(acceptedFiles)}
           maxSize={maxSizeMB * 1048576} // convert to bytes
           multiple={imageCount < maxImages - 1}
-          className={css(styles.dropzone)}
           data-cy={`${dataCy}-upload`}
         >
           {renderDropzoneContent}

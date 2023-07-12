@@ -3050,7 +3050,7 @@ export default class AddEditProductState {
   }
 
   @action
-  async submit() {
+  async submit(): Promise<string | null> {
     const { errorMessage, name, asInput: input, isNewProduct } = this;
     this.forceValidation = true;
     const toastStore = ToastStore.instance();
@@ -3059,7 +3059,7 @@ export default class AddEditProductState {
       toastStore.negative(errorMessage, {
         timeoutMs: 4000,
       });
-      return;
+      return null;
     }
 
     type ResponseType = {
@@ -3085,7 +3085,7 @@ export default class AddEditProductState {
     const productId = data?.productCatalog?.upsertProduct?.productId;
     if (!ok || productId == null) {
       toastStore.negative(message || i`Something went wrong`);
-      return;
+      return null;
     }
     this.saved = true;
 
@@ -3118,6 +3118,8 @@ export default class AddEditProductState {
         },
       );
     }
+
+    return productId;
   }
 }
 

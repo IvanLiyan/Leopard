@@ -4,7 +4,7 @@
  * Created by Jonah Dlin on Fri Oct 08 2021
  * Copyright © 2021-present ContextLogic Inc. All rights reserved.
  */
-import React, { useMemo, useState, useEffect } from "react";
+import React, { useMemo, useState } from "react";
 import { StyleSheet } from "aphrodite";
 import { observer } from "mobx-react";
 
@@ -25,6 +25,12 @@ import { AddEditProductInitialData } from "@add-edit-product/queries/initial-que
 import AddEditProduct from "@add-edit-product/components/AddEditProduct";
 import { ci18n } from "@core/toolkit/i18n";
 import AddEditProductV2 from "@add-edit-product/components/AddEditProductV2";
+import { ComplianceDocumentsProvider } from "@add-edit-product/compliance-documents/ComplianceDocumentsContext";
+import {
+  useUpdateComplianceDocuments,
+  useVerifyComplianceDocuments,
+} from "@add-edit-product/compliance-documents/toolkit";
+import { useToastStore } from "@core/stores/ToastStore";
 
 type Props = {
   readonly initialData: AddEditProductInitialData;
@@ -84,16 +90,40 @@ const AddEditProductContainer: React.FC<Props> = ({ initialData }: Props) => {
     message: i`You have unsaved changes. Are you sure you want to leave?`,
   });
 
-  useEffect(() => {
+  const [
+    updateComplianceDocuments,
+    { loading: complianceDocumentsMutationLoading },
+  ] = useUpdateComplianceDocuments();
+  const verifyComplianceDocuments = useVerifyComplianceDocuments();
+  const toastStore = useToastStore();
+
+  const backLink = "/products";
+
+  const onSave = async () => {
+    // the compliance documents upload flow is separate from the product upsert flow
+    // first verify the compliance documents before upserting the product, then add
+    // the compliance documents based on the product id
+    const ok = verifyComplianceDocuments();
+
+    if (!ok) {
+      toastStore.negative(
+        i`Please provide a document label for each compliance document.`,
+      );
+      return;
+    }
+
+    const productId = await state.submit();
+
+    if (productId) {
+      // if there is no product ID, an error ocurred and state.saved will be false
+      await updateComplianceDocuments({ productId });
+    }
+
     if (state.saved) {
       bypassExitConfirmation(true);
       void navigationStore.navigate("/products");
     }
-    // navigationStore is not a dependency
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state.saved, bypassExitConfirmation]);
-
-  const backLink = "/products";
+  };
 
   const actions = (
     <>
@@ -109,11 +139,12 @@ const AddEditProductContainer: React.FC<Props> = ({ initialData }: Props) => {
       </Button>
       <PrimaryButton
         style={styles.actionButton}
-        onClick={async () => await state.submit()}
+        onClick={onSave}
         minWidth
         popoverContent={state.saveButtonInactiveMessage}
         popoverPosition="top center"
         data-cy="button-save"
+        isDisabled={complianceDocumentsMutationLoading}
       >
         {ci18n(
           "Text on a button to save changes on the adding/editing a product form",
@@ -163,4 +194,12 @@ const useStylesheet = () =>
     [],
   );
 
-export default observer(AddEditProductContainer);
+const WrappedAddEditProductContainer: React.FC<Props> = (props) => {
+  return (
+    <ComplianceDocumentsProvider>
+      <AddEditProductContainer {...props} />
+    </ComplianceDocumentsProvider>
+  );
+};
+
+export default observer(WrappedAddEditProductContainer);

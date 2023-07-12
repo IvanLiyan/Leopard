@@ -32,6 +32,8 @@ import { ChemicalStartCharsToIgnoreSorting } from "@add-edit-product/ca-prop-65-
 import { ci18n } from "@core/toolkit/i18n";
 import SearchableMultiselect from "@core/components/SearchableMultiselect";
 import { useTheme } from "@core/stores/ThemeStore";
+import { useDeciderKey } from "@core/stores/ExperimentStore";
+import OptionalDocumentationUpload from "./compliance/OptionalDocumentationUpload";
 
 type Props = Omit<SectionProps, "title" | "rightCard"> & {
   readonly state: AddEditProductState;
@@ -68,6 +70,11 @@ const Compliance: React.FC<Props> = ({
       stripPrefixes(a).toUpperCase() > stripPrefixes(b).toUpperCase() ? 1 : -1,
     );
   }, [caProp65AllChemicalsList]);
+
+  const {
+    decision: showComplianceDocumentsUploadFlow,
+    isLoading: dKeyIsLoading,
+  } = useDeciderKey("show_compliance_documents_upload");
 
   return (
     <Section
@@ -131,6 +138,15 @@ const Compliance: React.FC<Props> = ({
             />
           </Field>
         </Layout.FlexRow>
+        {showComplianceDocumentsUploadFlow && !dKeyIsLoading && (
+          <>
+            <Markdown
+              style={styles.desc}
+              text={i`You are encouraged to use the field below to upload any compliance documentation, including any laboratory results, testing or certificates, that may be relevant to or relate to the product you are listing for sale.  If you are  selling the product into the State of California in the United States, and it may contain an ingredient or compound on the California Prop 65 List (The Proposition 65 List - OEHHA (ca.gov)), you can use this field to upload these compliance documents.`}
+            />
+            <OptionalDocumentationUpload />
+          </>
+        )}
       </Layout.FlexColumn>
     </Section>
   );

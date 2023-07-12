@@ -10,10 +10,10 @@ import {
 } from "@add-edit-product/queries/initial-queries";
 import { LoadingIndicator } from "@ContextLogic/lego";
 import FullPageError from "@core/components/FullPageError";
-import { useStringQueryParam } from "@core/toolkit/url";
+import { useProductId } from "@add-edit-product/toolkit";
 
 const EditProductPage: NextPage<Record<string, never>> = () => {
-  const [productId] = useStringQueryParam("pid");
+  const [productId] = useProductId();
 
   const {
     data: initialData,

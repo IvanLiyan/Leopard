@@ -5,9 +5,11 @@ type Props = {
   readonly children?: TextProps["children"] | null;
 };
 
+export const SOMETHING_WENT_WRONG_TEXT = i`Something went wrong`;
+
 const SomethingWentWrongText = ({ children }: Props) => {
   return (
-    <Text variant="bodyLStrong">{children ?? i`Something went wrong.`}</Text>
+    <Text variant="bodyLStrong">{children ?? SOMETHING_WENT_WRONG_TEXT}</Text>
   );
 };
 

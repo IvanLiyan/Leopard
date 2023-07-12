@@ -14,6 +14,7 @@ import {
 import { IconName } from "@ContextLogic/zeus";
 import { Option } from "@ContextLogic/lego/component/form/SimpleSelect";
 import { Variation } from "@add-edit-product/AddEditProductState";
+import { useStringQueryParam } from "@core/toolkit/url";
 
 export const ConditionDisplay: {
   readonly [condition in CommerceProductCondition]: string;
@@ -484,3 +485,5 @@ export const MeasurementOptions: {
     text: WeightUnitDisplayNames[unit].name,
   })),
 };
+
+export const useProductId = () => useStringQueryParam("pid");
