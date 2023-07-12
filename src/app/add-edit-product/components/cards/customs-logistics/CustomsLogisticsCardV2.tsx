@@ -1,26 +1,18 @@
-/*
- * CustomsLogisticsCard.tsx
- *
- * Created by Jonah Dlin on Wed Oct 27 2021
- * Copyright © 2021-present ContextLogic Inc. All rights reserved.
- */
 import React from "react";
 import { observer } from "mobx-react";
-
-/* Lego Toolkit */
-import { css } from "@core/toolkit/styling";
-
-import Section, { SectionProps } from "./Section";
+import Section, {
+  SectionProps,
+} from "@add-edit-product/components/cards/Section";
 import AddEditProductState, {
   createCustomsLogistics,
 } from "@add-edit-product/AddEditProductState";
-import CustomsLogisticsForm from "./customs-logistics/CustomsLogisticsForm";
+import CustomsLogisticsFormV2 from "./CustomsLogisticsFormV2";
 
 type Props = Omit<SectionProps, "title" | "rightCard"> & {
   readonly state: AddEditProductState;
 };
 
-const CustomsLogisticsCard: React.FC<Props> = ({
+const CustomsLogisticsCardV2: React.FC<Props> = ({
   style,
   className,
   state,
@@ -32,25 +24,28 @@ const CustomsLogisticsCard: React.FC<Props> = ({
     customsLogisticsDefault,
     updateDefaultCustomsLogistics,
     isSubmitting,
+    useCalculatedShipping,
   } = state;
 
   return (
     <Section
-      className={css(style, className)}
-      title={i`**Customs and Logistics** (Default / Optional)`}
+      style={[style, className]}
+      title={i`**Customs and logistics**`}
       markdown
       {...sectionProps}
     >
-      <CustomsLogisticsForm
+      <CustomsLogisticsFormV2
         data={customsLogisticsDefault || createCustomsLogistics()}
-        disable={isSubmitting}
+        disabled={isSubmitting}
         onUpdate={updateDefaultCustomsLogistics}
         currency={primaryCurrency}
         customsCountryOptions={customsCountryOptions}
         data-cy="default-customs"
+        state={state}
+        useCalculatedShipping={useCalculatedShipping}
       />
     </Section>
   );
 };
 
-export default observer(CustomsLogisticsCard);
+export default observer(CustomsLogisticsCardV2);

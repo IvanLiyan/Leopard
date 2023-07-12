@@ -1,5 +1,4 @@
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import { useTreeVersion } from "@core/taxonomy/constants";
 import {
   CategoryId,
   CategoryAttributesCsvResponseType,
@@ -20,9 +19,6 @@ type Props = BaseProps & {
 };
 
 const DownloadCSVButton: React.FC<Props> = ({ categoryId, disabled }) => {
-  const { version: treeVersion, loading: treeVersionLoading } =
-    useTreeVersion();
-
   const { data, loading } = useQuery<
     CategoryAttributesCsvResponseType,
     CategoryAttributesCsvRequestType
@@ -30,11 +26,7 @@ const DownloadCSVButton: React.FC<Props> = ({ categoryId, disabled }) => {
     variables: {
       categoryId: categoryId ?? 0, // categoryId will not be null, fallback added to bypass type error
     },
-    skip:
-      categoryId == null ||
-      !!disabled ||
-      treeVersion == null ||
-      treeVersionLoading,
+    skip: categoryId == null || !!disabled,
   });
 
   const attributesCsvText = useMemo(() => {

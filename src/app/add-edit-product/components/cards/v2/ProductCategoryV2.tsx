@@ -2,7 +2,6 @@ import { useQuery } from "@apollo/client";
 import { Token } from "@ContextLogic/lego";
 import { ci18n } from "@core/toolkit/i18n";
 import AddEditProductState from "@add-edit-product/AddEditProductState";
-import { useTreeVersion, Constants } from "@core/taxonomy/constants";
 import {
   CategoryAttributesRequestData,
   CategoryAttributesResponseData,
@@ -43,8 +42,6 @@ const ProductCategoryV2: React.FC<Props> = (props: Props) => {
     showVariationGroupingUI,
   } = state;
 
-  const { version: treeVersion, loading: treeVersionLoading } =
-    useTreeVersion();
   const { categoryMap, loading: isLoadingCategoryTree } = useCategoryTreeMap();
   const [selectedSubcategoryId, setSelectedSubcategoryId] = useState<
     CategoryId | null | undefined
@@ -66,9 +63,8 @@ const ProductCategoryV2: React.FC<Props> = (props: Props) => {
   >(CATEGORY_ATTRIBUTES_QUERY, {
     variables: {
       categoryId: subcategoryId ?? 0,
-      treeVersion: treeVersion || Constants.TAXONOMY.treeVersion,
     },
-    skip: subcategoryId == null || treeVersion == null || treeVersionLoading,
+    skip: subcategoryId == null,
   });
 
   const { data: variationOptionsData } = useQuery<

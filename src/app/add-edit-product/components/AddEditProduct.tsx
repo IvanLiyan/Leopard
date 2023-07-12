@@ -29,7 +29,7 @@ import { useDeciderKey } from "@core/stores/ExperimentStore";
 
 import { Layout } from "@ContextLogic/lego";
 import AddEditProductState from "@add-edit-product/AddEditProductState";
-import CustomsLogisticsCard from "./cards/CustomsLogisticsCard";
+import CustomsLogisticsCard from "./cards/customs-logistics/CustomsLogisticsCard";
 import BasicInfo from "./cards/BasicInfo";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 

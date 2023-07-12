@@ -17,9 +17,10 @@ import Categorization from "./cards/Categorization";
 import Compliance from "./cards/Compliance";
 import { Layout } from "@ContextLogic/lego";
 import AddEditProductState from "@add-edit-product/AddEditProductState";
-import CustomsLogisticsCard from "./cards/CustomsLogisticsCard";
+import CustomsLogisticsCardV2 from "./cards/customs-logistics/CustomsLogisticsCardV2";
 import BasicInfo from "./cards/BasicInfo";
 import ProductCategoryV2 from "./cards/v2/ProductCategoryV2";
+import AdditionalAttributesV2 from "./cards/AdditionalAttributesV2";
 
 const CardSpacing = 25;
 
@@ -52,8 +53,10 @@ const AddEditProductV2 = ({ className, style, state }: Props) => {
   const [customsLogisticsOpen, setCustomsLogisticsOpen] = useState(true);
   const [shippingOpen, setShippingOpen] = useState(true);
   const [complianceOpen, setComplianceOpen] = useState(true);
+  const [additionalAttributesOpen, setAdditionalAttributesOpen] =
+    useState(true);
 
-  const { hasVariations, isNewProduct } = state;
+  const { hasVariations, isNewProduct, subcategoryId } = state;
 
   const showTips = false;
 
@@ -93,18 +96,14 @@ const AddEditProductV2 = ({ className, style, state }: Props) => {
             state={state}
             onOpenToggled={(isOpen) => setUnitPriceOpen(isOpen)}
           />
-          <CategoryAttributes
-            style={styles.section}
-            isOpen={categoryAttributesOpen}
-            state={state}
-            onOpenToggled={(isOpen) => setCategoryAttributesOpen(isOpen)}
-          />
-          <CustomsLogisticsCard
-            style={styles.section}
-            isOpen={customsLogisticsOpen}
-            state={state}
-            onOpenToggled={(isOpen) => setCustomsLogisticsOpen(isOpen)}
-          />
+          {subcategoryId && (
+            <CategoryAttributes
+              style={styles.section}
+              isOpen={categoryAttributesOpen}
+              state={state}
+              onOpenToggled={(isOpen) => setCategoryAttributesOpen(isOpen)}
+            />
+          )}
           <Variations
             style={styles.section}
             isOpen={variationsOpen}
@@ -113,6 +112,16 @@ const AddEditProductV2 = ({ className, style, state }: Props) => {
           />
           {!hasVariations && (
             <>
+              {subcategoryId && (
+                <AdditionalAttributesV2
+                  style={styles.section}
+                  state={state}
+                  isOpen={additionalAttributesOpen}
+                  onOpenToggled={(isOpen) =>
+                    setAdditionalAttributesOpen(isOpen)
+                  }
+                />
+              )}
               <Price
                 style={styles.section}
                 isOpen={pricingOpen}
@@ -125,6 +134,12 @@ const AddEditProductV2 = ({ className, style, state }: Props) => {
                 isOpen={inventoryOpen}
                 state={state}
                 onOpenToggled={(isOpen) => setInventoryOpen(isOpen)}
+              />
+              <CustomsLogisticsCardV2
+                style={styles.section}
+                isOpen={customsLogisticsOpen}
+                state={state}
+                onOpenToggled={(isOpen) => setCustomsLogisticsOpen(isOpen)}
               />
             </>
           )}

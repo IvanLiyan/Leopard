@@ -1,7 +1,6 @@
 import { LoadingIndicator, Table } from "@ContextLogic/lego";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { ci18n } from "@core/toolkit/i18n";
-import { Constants, useTreeVersion } from "@core/taxonomy/constants";
 import {
   AttributeDataTypeLabel,
   AttributeLevelLabel,
@@ -38,18 +37,13 @@ const AttributesTable: React.FC<Props> = ({
   style,
   categoryId,
 }: Props) => {
-  const { version: treeVersion, loading: treeVersionLoading } =
-    useTreeVersion();
-
   const { data, loading } = useQuery<
     CategoryAttributesResponseData,
     CategoryAttributesRequestData
   >(CATEGORY_ATTRIBUTES_QUERY, {
     variables: {
       categoryId,
-      treeVersion: treeVersion || Constants.TAXONOMY.treeVersion,
     },
-    skip: treeVersion == null || treeVersionLoading,
   });
 
   const tableData = data?.taxonomy?.attributes?.map((attr): TableData => {

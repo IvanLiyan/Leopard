@@ -18,7 +18,7 @@ import { useTheme } from "@core/stores/ThemeStore";
 
 type Props = BaseProps & {
   readonly attribute: PickedTaxonomyAttribute;
-  readonly value: ReadonlyArray<string> | undefined;
+  readonly value: ReadonlyArray<string> | null | undefined;
   readonly onChange: (value: ReadonlyArray<string> | undefined) => unknown;
   readonly forceValidation?: boolean | undefined;
   readonly required?: boolean;

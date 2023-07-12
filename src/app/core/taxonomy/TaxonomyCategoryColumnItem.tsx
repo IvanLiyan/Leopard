@@ -4,7 +4,6 @@ import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { Icon } from "@ContextLogic/zeus";
 import { ci18n } from "@core/toolkit/i18n";
 import { useTheme } from "@core/stores/ThemeStore";
-import { Constants, useTreeVersion } from "@core/taxonomy/constants";
 import {
   PickedCategory,
   PickedCategoryWithDetails,
@@ -22,7 +21,6 @@ type Props = BaseProps & {
   readonly allowlist?: ReadonlyArray<Pick<PickedCategory, "id">>;
   readonly highlight?: ReadonlyArray<Pick<PickedCategory, "id">>;
   readonly onSelect?: (category: PickedCategoryWithDetails) => void;
-  readonly overrideTreeVersion?: string;
 };
 
 const TaxonomyCategoryColumnItem: React.FC<Props> = ({
@@ -33,25 +31,16 @@ const TaxonomyCategoryColumnItem: React.FC<Props> = ({
   allowlist,
   highlight,
   onSelect,
-  overrideTreeVersion,
 }: Props) => {
   const styles = useStylesheet();
-
-  const { version: treeVersion, loading: treeVersionLoading } =
-    useTreeVersion();
 
   const { data: queryData, loading: queryLoading } = useQuery<
     TaxonomyCategoryResponseData,
     TaxonomyCategoryRequestData
   >(TAXONOMY_CATEGORY_QUERY, {
     variables: {
-      treeVersion:
-        overrideTreeVersion || treeVersion || Constants.TAXONOMY.treeVersion,
       categoryId: parentCategory,
     },
-    skip:
-      overrideTreeVersion == null &&
-      (treeVersion == null || treeVersionLoading),
   });
 
   const columnData = queryData?.taxonomy?.category?.categoryChildren?.filter(

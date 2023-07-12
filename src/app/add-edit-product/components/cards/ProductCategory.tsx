@@ -23,7 +23,7 @@ import TaxonomyCategoryColumnView from "@core/taxonomy/TaxonomyCategoryColumnVie
 import AddEditProductState from "@add-edit-product/AddEditProductState";
 import { useDeciderKey } from "@core/stores/ExperimentStore";
 import { useTheme } from "@core/stores/ThemeStore";
-import { useTreeVersion, Constants } from "@core/taxonomy/constants";
+import { Constants } from "@core/taxonomy/constants";
 import {
   CategoryAttributesRequestData,
   CategoryAttributesResponseData,
@@ -73,8 +73,6 @@ const ProductCategory: React.FC<Props> = (props: Props) => {
     decision: showCategoryUpdates,
     isLoading: isLoadingCategoryUpdatesDecision,
   } = useDeciderKey("taxonomy_category_updates_04_2023");
-  const { version: treeVersion, loading: treeVersionLoading } =
-    useTreeVersion();
 
   const { data: attributesData } = useQuery<
     CategoryAttributesResponseData,
@@ -82,9 +80,8 @@ const ProductCategory: React.FC<Props> = (props: Props) => {
   >(CATEGORY_ATTRIBUTES_QUERY, {
     variables: {
       categoryId: subcategory?.id ? parseInt(subcategory.id) : 0,
-      treeVersion: treeVersion || Constants.TAXONOMY.treeVersion,
     },
-    skip: !subcategory?.id || treeVersion == null || treeVersionLoading,
+    skip: !subcategory?.id,
   });
 
   const { data: variationOptionsData } = useQuery<

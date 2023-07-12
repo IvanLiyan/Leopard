@@ -52,6 +52,9 @@ export const ADD_PRODUCT_INITIAL_DATA_QUERY = gql(`
           }
         }
       }
+      countryOfDomicile {
+        code
+      }
     }
     currentUser {
       gating {
@@ -68,6 +71,7 @@ export const ADD_PRODUCT_INITIAL_DATA_QUERY = gql(`
         showRevampedAddEditProductUI: decideForName(
           name: "add_edit_product_ui_revamp"
         )
+        showInventoryOnHand: decideForName(name: "show_inventory_on_hand")
       }
     }
     productCatalog {
@@ -97,6 +101,9 @@ export const EDIT_PRODUCT_INITIAL_DATA_QUERY = gql(`
           }
         }
       }
+      countryOfDomicile {
+        code
+      }
     }
     currentUser {
       gating {
@@ -113,6 +120,7 @@ export const EDIT_PRODUCT_INITIAL_DATA_QUERY = gql(`
         showRevampedAddEditProductUI: decideForName(
           name: "add_edit_product_ui_revamp"
         )
+        showInventoryOnHand: decideForName(name: "show_inventory_on_hand")
       }
     }
     policy {
@@ -485,6 +493,7 @@ export type AddEditProductInitialData = {
     | "isCnForFulfillment"
   > & {
     readonly shippingSettings: ReadonlyArray<PickedShippingSettingsSchema>;
+    readonly countryOfDomicile?: Pick<Country, "code"> | null;
   };
 
   readonly currentUser: {
@@ -499,6 +508,7 @@ export type AddEditProductInitialData = {
     readonly deciderKey?: {
       readonly showVariationGroupingDkey: DeciderKeySchema["decideForName"];
       readonly showRevampedAddEditProductUI: DeciderKeySchema["decideForName"];
+      readonly showInventoryOnHand: DeciderKeySchema["decideForName"];
     } | null;
   };
 

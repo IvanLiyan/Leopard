@@ -25,6 +25,7 @@ import VariationsTable from "./variations/VariationsTable";
 import AddEditProductState from "@add-edit-product/AddEditProductState";
 import AdditionalAttributes from "./variations/AdditionalAttributes";
 import { ci18n } from "@core/toolkit/i18n";
+import VariationsTableV2 from "./variations/VariationsTableV2";
 
 type Props = Omit<SectionProps, "title"> & {
   readonly state: AddEditProductState;
@@ -42,6 +43,7 @@ const Variations: React.FC<Props> = (props: Props) => {
     checkHasVariations,
     uncheckHasVariations,
     showVariationGroupingUI,
+    showRevampedAddEditProductUI,
   } = state;
 
   return (
@@ -113,7 +115,12 @@ const Variations: React.FC<Props> = (props: Props) => {
         </>
       </Layout.FlexColumn>
 
-      {hasVariations && <VariationsTable state={state} />}
+      {hasVariations &&
+        (showRevampedAddEditProductUI ? (
+          <VariationsTableV2 state={state} style={{ padding: "24px" }} />
+        ) : (
+          <VariationsTable state={state} />
+        ))}
     </Section>
   );
 };

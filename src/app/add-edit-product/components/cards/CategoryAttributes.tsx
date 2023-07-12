@@ -17,6 +17,7 @@ import { observer } from "mobx-react";
 import React, { useMemo } from "react";
 import AttributeInput from "./AttributeInput";
 import Section, { SectionProps } from "./Section";
+import { merchFeUrl } from "@core/toolkit/router";
 
 type Props = Omit<SectionProps, "title"> & {
   readonly state: AddEditProductState;
@@ -83,6 +84,9 @@ const CategoryAttributes: React.FC<Props> = (props: Props) => {
         "Attributes associated with current product category",
         "**Category Attributes**",
       )}
+      tooltip={i`Click [here](${merchFeUrl(
+        "/md/products/categories",
+      )}) to learn more about category attribute definitions. `}
       markdown
       {...sectionProps}
     >

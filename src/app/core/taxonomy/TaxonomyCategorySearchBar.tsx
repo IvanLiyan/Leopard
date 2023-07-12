@@ -11,7 +11,7 @@ import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import { ci18n } from "@core/toolkit/i18n";
 import { useTheme } from "@core/stores/ThemeStore";
 import { KEYCODE_ENTER } from "@core/toolkit/dom";
-import { Constants, useTreeVersion } from "@core/taxonomy/constants";
+import { Constants } from "@core/taxonomy/constants";
 import {
   LeafCategoryRequestData,
   LeafCategoryResponseData,
@@ -33,7 +33,6 @@ type Props = BaseProps & {
   readonly placeholder?: string;
   readonly l1CategoryId?: number | null;
   readonly onSelect?: (category: PickedCategoryWithDetails) => void;
-  readonly overrideTreeVersion?: string;
 };
 
 const TaxonomyCategorySearchBar: React.FC<Props> = ({
@@ -43,7 +42,6 @@ const TaxonomyCategorySearchBar: React.FC<Props> = ({
   l1CategoryId,
   placeholder,
   onSelect,
-  overrideTreeVersion,
 }) => {
   const styles = useStylesheet();
 
@@ -53,21 +51,13 @@ const TaxonomyCategorySearchBar: React.FC<Props> = ({
   const [searchTerm, setSearchTerm] = useState<string>("");
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const { version: treeVersion, loading: treeVersionLoading } =
-    useTreeVersion();
-
   const { data, loading } = useQuery<
     LeafCategoryResponseData,
     LeafCategoryRequestData
   >(LEAF_CATEGORIES_QUERY, {
     variables: {
       l1CategoryId: l1CategoryId ?? Constants.TAXONOMY.rootCategoryId,
-      treeVersion:
-        overrideTreeVersion || treeVersion || Constants.TAXONOMY.treeVersion,
     },
-    skip:
-      overrideTreeVersion == null &&
-      (treeVersion == null || treeVersionLoading),
   });
   const leaves = data?.taxonomy?.leafCategories;
 

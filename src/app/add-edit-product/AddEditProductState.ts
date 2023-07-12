@@ -368,6 +368,7 @@ export type CustomsLogistics = {
   readonly hasLiquid?: boolean | null;
   readonly hasBattery?: boolean | null;
   readonly hasMetal?: boolean | null;
+  readonly inventoryOnHand?: string | null | undefined; // TODO: field type TBD
 };
 
 export const createCustomsLogistics = (
@@ -751,6 +752,9 @@ export default class AddEditProductState {
   canShowMaxDeliveryDays: boolean;
 
   @observable
+  isCnMerchant: boolean;
+
+  @observable
   isCloning: boolean;
 
   @observable
@@ -843,6 +847,11 @@ export default class AddEditProductState {
   @observable
   subcategoryAttributes: Partial<Record<string, ReadonlyArray<string>>> = {};
 
+  // additional variation level attributes that merchants can input if they don't explicitly specify any variations
+  // key: name of additional attributes -> value: attribute value input by merchant
+  @observable
+  additionalAttributes: Partial<Record<string, ReadonlyArray<string>>> = {};
+
   @observable
   private taxonomyAttributesRaw: ReadonlyArray<PickedTaxonomyAttribute> = [];
 
@@ -892,6 +901,15 @@ export default class AddEditProductState {
   showRevampedAddEditProductUI: boolean;
 
   @observable
+  showInventoryOnHand: boolean; // turn on the dkey when BE change is ready
+
+  @observable
+  customsLogisticsUpdateCounter = 0;
+
+  @observable
+  isUpdatingCustoms = false;
+
+  @observable
   saved = false;
 
   constructor({
@@ -908,6 +926,8 @@ export default class AddEditProductState {
     caProp65AllChemicalsList,
     showVariationGroupingUI,
     showRevampedAddEditProductUI,
+    showInventoryOnHand,
+    isCnMerchant,
   }: {
     readonly standardWarehouseId: string;
     readonly primaryCurrency: PaymentCurrencyCode;
@@ -922,6 +942,8 @@ export default class AddEditProductState {
     readonly caProp65AllChemicalsList: ReadonlyArray<string>;
     readonly showVariationGroupingUI?: boolean | null | undefined;
     readonly showRevampedAddEditProductUI?: boolean | null | undefined;
+    readonly showInventoryOnHand?: boolean | null | undefined;
+    readonly isCnMerchant?: boolean | null | undefined;
   }) {
     this.initialState = initialState;
     this.caProp65AllChemicalsList = caProp65AllChemicalsList;
@@ -946,6 +968,7 @@ export default class AddEditProductState {
     this.isStoreMerchant = isStoreMerchant;
     this.canShowMaxDeliveryDays =
       isCnForFulfillment == null || !isCnForFulfillment;
+    this.isCnMerchant = !!isCnMerchant;
     this.disputeId = disputeId;
     this.useCalculatedShipping = useCalculatedShipping || false;
     this.caProp65Warning = initialState?.warningType;
@@ -956,6 +979,7 @@ export default class AddEditProductState {
       : null;
     this.showVariationGroupingUI = !!showVariationGroupingUI;
     this.showRevampedAddEditProductUI = !!showRevampedAddEditProductUI;
+    this.showInventoryOnHand = !!showInventoryOnHand;
 
     const countryShippingStates: Map<CountryCode, CountryShipping> = new Map();
     const warehouseCountryShippingSettings =
@@ -1312,6 +1336,33 @@ export default class AddEditProductState {
     });
   };
 
+  @action
+  updateAllCustomsLogistics = (newProps: Partial<CustomsLogistics>) => {
+    this.isUpdatingCustoms = true;
+
+    const { variations, updateVariation } = this;
+    variations.forEach((variation) => {
+      const curCustomsLogistics = variation.customCustomsLogistics
+        ? createCustomsLogistics(variation.customCustomsLogistics)
+        : createCustomsLogistics();
+
+      const newCustomsLogistics = updateCustomsLogistics({
+        data: curCustomsLogistics,
+        newProps,
+      });
+
+      updateVariation({
+        clientSideId: variation.clientSideId,
+        newProps: {
+          customCustomsLogistics: newCustomsLogistics,
+        },
+      });
+    });
+
+    this.customsLogisticsUpdateCounter += 1;
+    this.isUpdatingCustoms = false;
+  };
+
   @computed
   get customsLogisticsDefault(): CustomsLogistics | null {
     const { customsLogisticsDefaultRaw } = this;
@@ -1350,7 +1401,8 @@ export default class AddEditProductState {
       return undefined;
     }
 
-    const { primaryCurrency } = this;
+    const { primaryCurrency, showRevampedAddEditProductUI, isCnMerchant } =
+      this;
 
     const {
       countryOfOrigin,
@@ -1399,6 +1451,20 @@ export default class AddEditProductState {
           }
         : undefined;
 
+    const logisticsInput =
+      showRevampedAddEditProductUI && isCnMerchant
+        ? {
+            weight: weightInput,
+          }
+        : showRevampedAddEditProductUI
+        ? {}
+        : {
+            length: lengthInput,
+            width: widthInput,
+            height: heightInput,
+            weight: weightInput,
+          };
+
     return {
       declaredName,
       declaredLocalName,
@@ -1412,14 +1478,11 @@ export default class AddEditProductState {
             },
       originCountry: countryOfOrigin,
       pieces: piecesIncluded,
-      length: lengthInput,
-      width: widthInput,
-      height: heightInput,
-      weight: weightInput,
       hasPowder,
       hasLiquid,
       hasBattery,
       hasMetal,
+      ...logisticsInput,
     };
   };
 
@@ -1555,6 +1618,7 @@ export default class AddEditProductState {
   @action
   checkHasVariations = () => {
     this.replaceVariations([]);
+    this.additionalAttributes = {};
     this.hasVariationsInternal = true;
   };
 
@@ -2000,6 +2064,14 @@ export default class AddEditProductState {
     return undefined;
   }
 
+  @computed
+  get variationAttributes(): ReadonlyArray<PickedTaxonomyAttribute> {
+    const { taxonomyAttributes } = this;
+    return taxonomyAttributes.filter(
+      (attribute) => attribute.isVariationAttribute,
+    );
+  }
+
   /*
     Scenario 1: attribute that has a pre-defined list of values
       Requirement: use {id: <attribute-id>, value: [{id: <attribute-value-id>}]} as upsert input
@@ -2094,13 +2166,17 @@ export default class AddEditProductState {
     this.subcategoryId = id;
   };
 
-  private subcategoryAttributesAsInput = (): Pick<
+  private productAttributesAsInput = (): Pick<
     ProductUpsertInput,
     "attributes"
   > => {
-    const { subcategoryAttributes, attributesAsInput } = this;
+    const { subcategoryAttributes, additionalAttributes, attributesAsInput } =
+      this;
+    const subcategoryAttributesInput = attributesAsInput(subcategoryAttributes);
+    const additionalAttributesInput = attributesAsInput(additionalAttributes);
+
     return {
-      attributes: attributesAsInput(subcategoryAttributes),
+      attributes: [...subcategoryAttributesInput, ...additionalAttributesInput],
     };
   };
 
@@ -2115,6 +2191,21 @@ export default class AddEditProductState {
     const { subcategoryAttributes } = this;
     this.subcategoryAttributes = {
       ...subcategoryAttributes,
+      [attrName]: attrValue ?? [],
+    };
+  };
+
+  @action
+  updateAdditionalAttributes = ({
+    attrName,
+    attrValue,
+  }: {
+    readonly attrName: string;
+    readonly attrValue: ReadonlyArray<string> | undefined;
+  }) => {
+    const { additionalAttributes } = this;
+    this.additionalAttributes = {
+      ...additionalAttributes,
       [attrName]: attrValue ?? [],
     };
   };
@@ -2762,7 +2853,7 @@ export default class AddEditProductState {
       caProp65Warning,
       caProp65Chemicals,
       customsLogisticsDefault,
-      subcategoryAttributesAsInput,
+      productAttributesAsInput,
       showRevampedAddEditProductUI,
     } = this;
 
@@ -2877,7 +2968,7 @@ export default class AddEditProductState {
     const firstVariationSku =
       variations.length > 0 ? variations[0].sku : undefined;
 
-    const subcategoryAttributesInput = subcategoryAttributesAsInput();
+    const productAttributesInput = productAttributesAsInput();
 
     return {
       id,
@@ -2908,7 +2999,7 @@ export default class AddEditProductState {
             }))
           : undefined,
       ...variationsInput,
-      ...subcategoryAttributesInput,
+      ...productAttributesInput,
     };
   }
 

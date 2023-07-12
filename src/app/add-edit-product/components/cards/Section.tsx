@@ -15,6 +15,7 @@ import {
   Accordion,
   StaggeredFadeIn,
   Layout,
+  Info,
 } from "@ContextLogic/lego";
 import { AccordionProps } from "@ContextLogic/lego";
 
@@ -39,6 +40,7 @@ export type SectionProps = Omit<
   readonly rightCard?: ReactElement;
   readonly isTip?: boolean;
   readonly alwaysOpen?: boolean;
+  readonly tooltip?: string;
 };
 
 const MARKDOWN_DEFAULT = false;
@@ -57,6 +59,7 @@ const Section = (props: SectionProps) => {
     rightCard,
     isTip,
     alwaysOpen,
+    tooltip,
     ...accordionProps
   } = props;
   const { surfaceLight } = useTheme();
@@ -81,10 +84,13 @@ const Section = (props: SectionProps) => {
           isOpen={isOpen}
           onOpenToggled={onOpenToggled}
           header={() => (
-            <Markdown
-              className={css(styles.header)}
-              text={markdown ? title : `**${title}**`}
-            />
+            <Layout.FlexRow alignItems="center" style={{ gap: "8px" }}>
+              <Markdown
+                className={css(styles.header)}
+                text={markdown ? title : `**${title}**`}
+              />
+              {tooltip && <Info text={tooltip} />}
+            </Layout.FlexRow>
           )}
           headerContainerStyle={{
             padding: `0px ${hideChevron ? 16 : 8}px`,

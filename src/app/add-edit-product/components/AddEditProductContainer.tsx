@@ -42,6 +42,7 @@ const AddEditProductContainer: React.FC<Props> = ({ initialData }: Props) => {
       isStoreMerchant,
       canManageShipping,
       isCnForFulfillment,
+      countryOfDomicile,
     },
     currentUser: {
       gating: { useCalculatedShipping, showVariationGroupingMUG },
@@ -73,6 +74,8 @@ const AddEditProductContainer: React.FC<Props> = ({ initialData }: Props) => {
       showVariationGroupingUI:
         showVariationGroupingMUG || deciderKey?.showVariationGroupingDkey,
       showRevampedAddEditProductUI,
+      showInventoryOnHand: deciderKey?.showInventoryOnHand,
+      isCnMerchant: countryOfDomicile?.code === "CN",
     }),
   );
 

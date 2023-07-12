@@ -1,6 +1,3 @@
-import { useDeciderKey } from "@core/stores/ExperimentStore";
-import { useEffect, useState } from "react";
-
 export const Constants = {
   TAXONOMY: {
     // disabled because this attribute name is hardcoded on BE side and not localized
@@ -14,23 +11,6 @@ export const Constants = {
     primaryColorAttributeID: 3345,
     maxMultiselectCategory: 5,
   },
-};
-
-export const useTreeVersion = () => {
-  const { decision, isLoading } = useDeciderKey(
-    "enable_taxonomy_version_upgrade",
-  );
-  const [loading, setLoading] = useState<boolean>(isLoading);
-  const [version, setVersion] = useState<string | undefined>();
-
-  useEffect(() => {
-    setLoading(isLoading);
-    if (!isLoading) {
-      setVersion(decision ? "v3.0.1" : "v3.0.0");
-    }
-  }, [decision, isLoading]);
-
-  return { version, loading };
 };
 
 export const SelfClassifyAllowedL1 = [

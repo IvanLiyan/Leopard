@@ -231,9 +231,9 @@ export const AttributeSelectionTypeLabel: {
 };
 
 export const LEAF_CATEGORIES_QUERY = gql(`
-  query Fashion_GetLeafCategories($l1CategoryId: Int!, $treeVersion: String!) {
+  query Fashion_GetLeafCategories($l1CategoryId: Int!) {
     taxonomy {
-      leafCategories(l1CategoryId: $l1CategoryId, treeVersion: $treeVersion) {
+      leafCategories(l1CategoryId: $l1CategoryId) {
         id
         name
         categoriesAlongPath {
@@ -270,10 +270,9 @@ export type LeafCategoryResponseData = {
 export const CATEGORY_ATTRIBUTES_QUERY = gql(`
   query Fashion_GetCategoryAttributes(
     $categoryId: Int!
-    $treeVersion: String!
   ) {
     taxonomy {
-      attributes(categoryId: $categoryId, treeVersion: $treeVersion) {
+      attributes(categoryId: $categoryId) {
         id
         name
         values {
@@ -320,10 +319,9 @@ export type CategoryAttributesResponseData = {
 export const TAXONOMY_CATEGORY_QUERY = gql(`
   query Fashion_TaxonomyCategoriesQuery(
     $categoryId: Int!
-    $treeVersion: String!
   ) {
     taxonomy {
-      category(categoryId: $categoryId, treeVersion: $treeVersion) {
+      category(categoryId: $categoryId) {
         id
         name
         categoriesAlongPath {

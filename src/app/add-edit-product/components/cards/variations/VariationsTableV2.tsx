@@ -1,34 +1,16 @@
-/*
- * VariationsTable.tsx
- *
- * Created by Jonah Dlin on Tue Oct 19 2021
- * Copyright © 2021-present ContextLogic Inc. All rights reserved.
- */
-import React, { useEffect, useMemo, useState } from "react";
+import React, { CSSProperties, useEffect, useMemo, useState } from "react";
 import { observer } from "mobx-react";
 import { StyleSheet } from "aphrodite";
-
 import { ni18n } from "@core/toolkit/i18n";
-
-import faker from "faker/locale/en";
-
-/* Lego Toolkit */
 import { css } from "@core/toolkit/styling";
-import { GtinValidator, RequiredValidator } from "@core/toolkit/validators";
+import { RequiredValidator } from "@core/toolkit/validators";
 import { zendeskURL } from "@core/toolkit/url";
-
-/* Merchant Store */
 import { useToastStore } from "@core/stores/ToastStore";
-
 import {
   Button,
-  Divider,
   FormSelect,
-  Layout,
-  PrimaryButton,
   RowSelectionArgs,
   StaggeredFadeIn,
-  Text,
 } from "@ContextLogic/lego";
 import {
   TextInput,
@@ -39,48 +21,49 @@ import {
 import ConfirmationModal from "@core/components/ConfirmationModal";
 import VariationTableImage from "./VariationTableImage";
 import { Table } from "@ContextLogic/lego";
-
 import { CellInfo } from "@ContextLogic/lego";
-import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import AddEditProductState, {
   setVariationInventory,
   UniqueSkuValidator,
-  UniqueGtinValidator,
   Variation,
+  updateCustomsLogistics,
+  createCustomsLogistics,
 } from "@add-edit-product/AddEditProductState";
-import { useTheme } from "@core/stores/ThemeStore";
 import { formatCurrency } from "@core/toolkit/currency";
 import NumberButton from "./NumberButton";
-import TaxonomyAttributesModal from "./TaxonomyAttributesModal";
-import { useDeciderKey } from "@core/stores/ExperimentStore";
 import { ci18n } from "@core/toolkit/i18n";
 import {
   unitDisplayName,
   LEGACY_COLOR_DISPLAY_TEXT,
   LEGACY_SIZE_DISPLAY_TEXT,
+  CustomsLogisticsWeightUnit,
+  WeightUnitDisplayNames,
 } from "@add-edit-product/toolkit";
-import CustomsLogisticsCell from "./CustomsLogisticsCell";
+import { CountryCode } from "@schema";
+import AttributesCell from "./AttributesCell";
+import { Stack, Text } from "@ContextLogic/atlas-ui";
 
-type Props = BaseProps & {
+type Props = {
+  readonly style: CSSProperties;
   readonly state: AddEditProductState;
 };
 
 const NO_DATA_MSG = "-";
 
-const VariationsTable: React.FC<Props> = (props: Props) => {
-  const { style, className, state } = props;
+const VariationsTableV2: React.FC<Props> = (props: Props) => {
+  const { style, state } = props;
   const styles = useStylesheet();
   const [selectedRowIds, setSelectedRowIds] = useState<Set<string>>(
     new Set([]),
   );
   const [isDiscardModalOpen, setIsDiscardModalOpen] = useState<boolean>(false);
-  const [isAttributesModalOpen, setIsAttributesModalOpen] =
-    useState<boolean>(false);
   const [variationsToDiscard, setVariationsToDiscard] = useState<
     ReadonlyArray<Variation>
   >([]);
   const toastStore = useToastStore();
-  const { decision: showFashionUI } = useDeciderKey("women_fashion_ui");
+
+  const learnMoreLink = zendeskURL("4405383834267");
+  const attributesLearnMoreLink = zendeskURL("1260805100070");
 
   const {
     standardWarehouseId,
@@ -95,14 +78,16 @@ const VariationsTable: React.FC<Props> = (props: Props) => {
     forceValidation,
     primaryCurrency,
     showUnitPrice = false,
+    customsCountryOptions,
     unitPriceUnit,
     isVariationSaved,
     updateVariation,
-    subcategory,
-    subcategoryId,
+    isCnMerchant,
     showVariationGroupingUI,
+    showInventoryOnHand,
   } = state;
   const isOptionEditable = showVariationGroupingUI && !isNewProduct;
+  const weightAbbr = WeightUnitDisplayNames[CustomsLogisticsWeightUnit].symbol;
 
   useEffect(() => {
     const existingVariationIds = new Set(
@@ -267,11 +252,10 @@ const VariationsTable: React.FC<Props> = (props: Props) => {
                 });
               }}
               placeholder={ci18n("Select a dropdown option", "Select")}
+              style={styles.selectField}
             />
           ) : (
-            <Text style={styles.tableText}>
-              {values.join(", ") || NO_DATA_MSG}
-            </Text>
+            <Text>{values.join(", ") || NO_DATA_MSG}</Text>
           );
         }}
       </Table.Column>
@@ -317,47 +301,18 @@ const VariationsTable: React.FC<Props> = (props: Props) => {
     );
   };
 
-  const learnMoreLink = zendeskURL("4405383834267");
-
   return (
-    <Layout.FlexColumn alignItems="stretch" style={[style, className]}>
-      <TaxonomyAttributesModal
-        open={isAttributesModalOpen}
-        state={state}
-        onClose={() => {
-          setIsAttributesModalOpen(false);
-        }}
-      />
+    <Stack direction="column" alignItems="stretch" style={style}>
       {renderDiscardModal(variationsToDiscard)}
-      {showFashionUI && (subcategory || subcategoryId) && (
-        <>
-          <Divider />
-          <Layout.FlexColumn
-            style={[styles.modalButtonsColumn, styles.modalButtons]}
-            alignItems="flex-start"
-          >
-            <Text style={styles.textDark}>
-              View and update required category specific variation attributes
-            </Text>
-            <PrimaryButton
-              onClick={() => {
-                setIsAttributesModalOpen(true);
-              }}
-              data-cy="button-view-variation-attributes"
-            >
-              View Variation Attributes
-            </PrimaryButton>
-          </Layout.FlexColumn>
-        </>
-      )}
       {selectedRowIds.size > 0 && (
         <StaggeredFadeIn deltaY={-5} animationDurationMs={400}>
-          <Layout.FlexRow
+          <Stack
+            direction="row"
             justifyContent="space-between"
-            alignItems="flex-end"
-            style={styles.bulkActionsRow}
+            alignItems="center"
+            sx={{ margin: "0px 16px 16px 0px" }}
           >
-            <Layout.FlexRow style={styles.bulkActions}>
+            <Stack direction="row" alignItems="center" sx={{ gap: "16px" }}>
               <NumberButton
                 style={styles.bulkAction}
                 buttonText={i`Apply price`}
@@ -404,8 +359,15 @@ const VariationsTable: React.FC<Props> = (props: Props) => {
               >
                 Discard
               </Button>
-            </Layout.FlexRow>
-            <Text weight="semibold" style={styles.bulkNumberText}>
+            </Stack>
+            <Text
+              variant="bodyMStrong"
+              sx={{
+                lineHeight: "26px",
+                marginLeft: "16px",
+                whiteSpace: "nowrap",
+              }}
+            >
               {ni18n(
                 selectedRowIds.size,
                 "1 item selected",
@@ -413,9 +375,13 @@ const VariationsTable: React.FC<Props> = (props: Props) => {
                 selectedRowIds.size,
               )}
             </Text>
-          </Layout.FlexRow>
+          </Stack>
         </StaggeredFadeIn>
       )}
+
+      <Text variant="bodyLStrong">
+        {ci18n("Variations details", "Variations details")}
+      </Text>
       <Table
         key={[hasColors, hasSizes, hasOptions, showUnitPrice].join("_")}
         data={variations}
@@ -442,10 +408,14 @@ const VariationsTable: React.FC<Props> = (props: Props) => {
         rowDataCy={(row: Variation) =>
           `variation-row-${row.sku ?? row.clientSideId}`
         }
+        hideHeaderRowBackground
       >
         <Table.Column
           _key="image"
-          title={i`Image`}
+          title={ci18n(
+            "Table column header, product image, the asterisk symbol means required field",
+            "Image*",
+          )}
           columnKey="image.wishUrl"
           columnDataCy="column-image"
           handleEmptyRow
@@ -466,7 +436,10 @@ const VariationsTable: React.FC<Props> = (props: Props) => {
           })}
         <Table.Column
           _key="sku"
-          title={i`SKU`}
+          title={ci18n(
+            "Table column header, product SKU, the asterisk symbol means required field",
+            "SKU*",
+          )}
           columnKey="sku"
           columnDataCy="column-sku"
           handleEmptyRow
@@ -480,7 +453,6 @@ const VariationsTable: React.FC<Props> = (props: Props) => {
                   newProps: { sku: text },
                 })
               }
-              debugValue={faker.finance.iban().substring(0, 5)}
               style={styles.skuInput}
               hideCheckmarkWhenValid
               forceValidation={forceValidation}
@@ -495,7 +467,10 @@ const VariationsTable: React.FC<Props> = (props: Props) => {
         </Table.Column>
         <Table.Column
           _key="price"
-          title={i`Price`}
+          title={ci18n(
+            "Table column header, product price, the asterisk symbol means required field",
+            "Price*",
+          )}
           columnKey="price"
           minWidth={80}
           columnDataCy="column-price"
@@ -513,11 +488,14 @@ const VariationsTable: React.FC<Props> = (props: Props) => {
                 onChange={({ textAsNumber }) =>
                   updateVariation({
                     clientSideId: variation.clientSideId,
-                    newProps: { price: textAsNumber },
+                    newProps: {
+                      price:
+                        textAsNumber != null
+                          ? Math.max(0, textAsNumber)
+                          : undefined,
+                    },
                   })
                 }
-                debugValue={(Math.random() * 10).toFixed(2).toString()}
-                style={{ minWidth: 80 }}
                 forceValidation={forceValidation}
                 validators={[new RequiredValidator()]}
                 disabled={isSubmitting}
@@ -528,7 +506,10 @@ const VariationsTable: React.FC<Props> = (props: Props) => {
         </Table.Column>
         <Table.Column
           _key="inventory"
-          title={i`Inventory`}
+          title={ci18n(
+            "Table column header, product price, the asterisk symbol means required field",
+            "Inventory*",
+          )}
           columnKey="inventory"
           columnDataCy="column-inventory"
           handleEmptyRow
@@ -559,48 +540,141 @@ const VariationsTable: React.FC<Props> = (props: Props) => {
             );
           }}
         </Table.Column>
+        {isCnMerchant && (
+          <Table.Column
+            _key="weight"
+            title={ci18n(
+              "Add/edit product form field title, product weight, the asterisk symbol means required field",
+              "Weight*",
+            )}
+            columnKey="weight"
+            columnDataCy="column-weight"
+            handleEmptyRow
+          >
+            {({ row: variation }: CellInfo<React.ReactNode, Variation>) => {
+              const curCustomsLogistics = variation.customCustomsLogistics
+                ? createCustomsLogistics(variation.customCustomsLogistics)
+                : createCustomsLogistics();
+
+              return (
+                <Stack direction="row" alignItems="center" sx={{ gap: "8px" }}>
+                  <NumericInput
+                    value={curCustomsLogistics.weight}
+                    onChange={({ valueAsNumber }) => {
+                      const newCustomsLogistics = updateCustomsLogistics({
+                        data: curCustomsLogistics,
+                        newProps: {
+                          weight:
+                            valueAsNumber != null
+                              ? Math.max(0, valueAsNumber)
+                              : undefined,
+                        },
+                      });
+
+                      updateVariation({
+                        clientSideId: variation.clientSideId,
+                        newProps: {
+                          customCustomsLogistics: newCustomsLogistics,
+                        },
+                      });
+                    }}
+                    validators={[new RequiredValidator()]}
+                    forceValidation={forceValidation}
+                    disabled={isSubmitting}
+                    style={[styles.inventoryInput]}
+                  />
+                  <Text>{weightAbbr}</Text>
+                </Stack>
+              );
+            }}
+          </Table.Column>
+        )}
+        {showInventoryOnHand && (
+          <Table.Column
+            _key="inventory-on-hand"
+            title={i`Inventory on hand`}
+            columnKey="inventory-on-hand"
+            columnDataCy="column-inventory-on-hand"
+            handleEmptyRow
+          >
+            {({ row: variation }: CellInfo<React.ReactNode, Variation>) => {
+              const curCustomsLogistics = variation.customCustomsLogistics
+                ? createCustomsLogistics(variation.customCustomsLogistics)
+                : createCustomsLogistics();
+
+              return (
+                <TextInput
+                  value={curCustomsLogistics.inventoryOnHand}
+                  onChange={({ text }) => {
+                    const newCustomsLogistics = updateCustomsLogistics({
+                      data: curCustomsLogistics,
+                      newProps: {
+                        inventoryOnHand: text,
+                      },
+                    });
+
+                    updateVariation({
+                      clientSideId: variation.clientSideId,
+                      newProps: {
+                        customCustomsLogistics: newCustomsLogistics,
+                      },
+                    });
+                  }}
+                  disabled={isSubmitting}
+                  style={[styles.inventoryInput]}
+                />
+              );
+            }}
+          </Table.Column>
+        )}
         <Table.Column
-          _key="gtin"
-          title={i`GTIN`}
-          columnKey="gtin"
-          columnDataCy="column-gtin"
-          handleEmptyRow
-          description={
-            i`${8} to ${14} digits GTIN (UPC, EAN, ISBN) contains no letters or ` +
-            i`other characters. GTIN must be unique for each variation.`
-          }
-        >
-          {({ row: variation }: CellInfo<React.ReactNode, Variation>) => (
-            <TextInput
-              value={variation.gtin == null ? null : variation.gtin}
-              onChange={({ text }) =>
-                updateVariation({
-                  clientSideId: variation.clientSideId,
-                  newProps: { gtin: text },
-                })
-              }
-              debugValue={(
-                10000000 +
-                Math.max(faker.random.number(99999999999 - 10000000), 0)
-              ).toString()}
-              validators={[
-                new GtinValidator(),
-                new UniqueGtinValidator({ pageState: state }),
-              ]}
-              forceValidation={forceValidation}
-              style={styles.gtinInput}
-              disabled={isSubmitting}
-              hideCheckmarkWhenValid
-              inputStyle={{ padding: "0px 9px" }}
-              inputContainerStyle={{ maxWidth: 166, boxSizing: "border-box" }}
-            />
+          _key="country-of-origin"
+          key="country-of-origin"
+          title={ci18n(
+            "Add/edit product form field title, the asterisk symbol means the field is required",
+            "Country of origin*",
           )}
+          columnKey="country-of-origin"
+          columnDataCy={`column-country-of-origin`}
+          description={i`Country where the product is manufactured, produced, or grown. [Learn more](${attributesLearnMoreLink})`}
+          handleEmptyRow
+        >
+          {({ row: variation }: CellInfo<React.ReactNode, Variation>) => {
+            const curCustomsLogistics = variation.customCustomsLogistics
+              ? createCustomsLogistics(variation.customCustomsLogistics)
+              : createCustomsLogistics();
+
+            return (
+              <FormSelect
+                placeholder={i`Select a country or region`}
+                options={customsCountryOptions}
+                selectedValue={curCustomsLogistics.countryOfOrigin}
+                onSelected={(cc: CountryCode) => {
+                  const newCustomsLogistics = updateCustomsLogistics({
+                    data: curCustomsLogistics,
+                    newProps: {
+                      countryOfOrigin: cc,
+                    },
+                  });
+
+                  updateVariation({
+                    clientSideId: variation.clientSideId,
+                    newProps: {
+                      customCustomsLogistics: newCustomsLogistics,
+                    },
+                  });
+                }}
+                disabled={isSubmitting}
+                style={styles.selectField}
+              />
+            );
+          }}
         </Table.Column>
         {showUnitPrice && (
           <Table.Column
-            _key="weight"
+            _key="quantityValue"
             title={i`Quantity value`}
-            columnKey="weight"
+            columnKey="quantityValue"
             columnDataCy="column-quantity-value"
             handleEmptyRow
             description={
@@ -613,7 +687,7 @@ const VariationsTable: React.FC<Props> = (props: Props) => {
           >
             {({ row: variation }: CellInfo<React.ReactNode, Variation>) => {
               return (
-                <Layout.FlexRow>
+                <Stack direction="row" alignItems="center" sx={{ gap: "8px" }}>
                   <NumericInput
                     value={
                       variation.quantityValue == null
@@ -637,96 +711,65 @@ const VariationsTable: React.FC<Props> = (props: Props) => {
                     style={styles.quantityValueInput}
                   />
                   {unitPriceUnit != null && (
-                    <Text style={[styles.tableText, { marginLeft: 8 }]}>
-                      {unitDisplayName(unitPriceUnit).symbol}
-                    </Text>
+                    <Text>{unitDisplayName(unitPriceUnit).symbol}</Text>
                   )}
-                </Layout.FlexRow>
+                </Stack>
               );
             }}
           </Table.Column>
         )}
         <Table.Column
-          _key="useDefaultCustomsLogistics"
-          title={i`Customs & Logistics`}
-          columnKey="useDefaultCustomsLogistics"
-          columnDataCy="column-customs"
+          _key="attributes"
+          title={ci18n(
+            "Table column header, means product attributes",
+            "Attributes",
+          )}
+          columnKey="clientSideId"
+          columnDataCy="column-attributes"
           handleEmptyRow
         >
           {({ row: variation }: CellInfo<React.ReactNode, Variation>) => (
-            <CustomsLogisticsCell
+            <AttributesCell
               state={state}
               variation={variation}
-              key={variation.clientSideId}
+              key={i`${variation.clientSideId}-${state.customsLogisticsUpdateCounter}`}
             />
           )}
         </Table.Column>
       </Table>
-    </Layout.FlexColumn>
+    </Stack>
   );
 };
 
-export default observer(VariationsTable);
+export default observer(VariationsTableV2);
 
 const useStylesheet = () => {
-  const { textDark } = useTheme();
   return useMemo(
     () =>
       StyleSheet.create({
         skuInput: {
-          minWidth: 64,
+          minWidth: 80,
         },
         inventoryInput: {
           minWidth: 80,
         },
         priceInputContainer: {
-          minWidth: 53,
+          minWidth: 64,
         },
         quantityValueInput: {
-          minWidth: 80,
-        },
-        gtinInput: {
           minWidth: 80,
         },
         optionInput: {
           minWidth: 64,
         },
-        bulkPriceInputContainer: {
-          maxWidth: 64,
-        },
-        bulkActionsRow: {
-          margin: "0px 24px 8px 24px",
-        },
-        bulkActions: {
-          flexWrap: "wrap",
-          gap: 16,
-        },
         bulkAction: {
           height: 42,
         },
-        bulkNumberText: {
-          color: textDark,
-          fontSize: 16,
-          lineHeight: "26px",
-          marginLeft: 16,
-          whiteSpace: "nowrap",
-        },
-        customLogisticsLink: {
-          gap: 4,
-        },
-        modalButtons: {
-          margin: 16,
-        },
-        modalButtonsColumn: {
-          gap: 16,
-        },
-        textDark: {
-          color: textDark,
-        },
-        tableText: {
-          fontSize: 15,
+        selectField: {
+          maxWidth: "100px",
+          overflow: "auto",
         },
       }),
-    [textDark],
+    [],
   );
 };

@@ -15,7 +15,6 @@ type Props = BaseProps & {
   readonly l1CategoryIds?: ReadonlyArray<number>;
   readonly currentPath?: ReadonlyArray<PickedCategory>;
   readonly onSelect?: (category: PickedCategoryWithDetails) => void;
-  readonly overrideTreeVersion?: string;
 };
 
 const TaxonomyCategoryColumnView: React.FC<Props> = ({
@@ -24,7 +23,6 @@ const TaxonomyCategoryColumnView: React.FC<Props> = ({
   l1CategoryIds,
   currentPath,
   onSelect,
-  overrideTreeVersion,
 }: Props) => {
   const styles = useStylesheet();
 
@@ -65,7 +63,6 @@ const TaxonomyCategoryColumnView: React.FC<Props> = ({
               ]);
               onSelect && onSelect(selectedCategory);
             }}
-            overrideTreeVersion={overrideTreeVersion}
           />
         ))}
       </Layout.GridRow>

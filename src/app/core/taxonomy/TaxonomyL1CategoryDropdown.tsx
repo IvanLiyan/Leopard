@@ -1,7 +1,7 @@
 import { useQuery } from "@apollo/client";
 import { LoadingIndicator, Option, SimpleSelect } from "@ContextLogic/lego";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import { Constants, useTreeVersion } from "@core/taxonomy/constants";
+import { Constants } from "@core/taxonomy/constants";
 import {
   TaxonomyCategoryRequestData,
   TaxonomyCategoryResponseData,
@@ -13,7 +13,6 @@ import React, { useEffect, useState } from "react";
 type Props = BaseProps & {
   readonly onSelect?: (l1CategoryId: string | null) => void;
   readonly l1CategoryId?: string | null;
-  readonly overrideTreeVersion?: string;
 };
 
 const TaxonomyL1CategoryDropdown: React.FC<Props> = ({
@@ -21,28 +20,19 @@ const TaxonomyL1CategoryDropdown: React.FC<Props> = ({
   style,
   onSelect,
   l1CategoryId,
-  overrideTreeVersion,
 }) => {
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   useEffect(() => {
     setSelectedOption(l1CategoryId || null);
   }, [l1CategoryId]);
 
-  const { version: treeVersion, loading: treeVersionLoading } =
-    useTreeVersion();
-
   const { data, loading } = useQuery<
     TaxonomyCategoryResponseData,
     TaxonomyCategoryRequestData
   >(TAXONOMY_CATEGORY_QUERY, {
     variables: {
-      treeVersion:
-        overrideTreeVersion || treeVersion || Constants.TAXONOMY.treeVersion,
       categoryId: Constants.TAXONOMY.rootCategoryId,
     },
-    skip:
-      overrideTreeVersion == null &&
-      (treeVersion == null || treeVersionLoading),
   });
 
   const dropdownOptions =
