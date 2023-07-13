@@ -27,7 +27,7 @@ import perStateReducer, {
 import { useToastStore } from "@core/stores/ToastStore";
 import sjsxCss from "styled-jsx/css";
 
-const { className: sjsxClassName, styles: sjsxStyles } = sjsxCss.resolve`
+const { className: imageClassName, styles: imageStyles } = sjsxCss.resolve`
   div :global(div:nth-child(1)) {
     margin-bottom: 0px !important;
   }
@@ -36,6 +36,21 @@ const { className: sjsxClassName, styles: sjsxStyles } = sjsxCss.resolve`
     position: static !important;
     width: 50%;
     overflow-x: scroll;
+  }
+`;
+
+const {
+  className: additionalImagesClassName,
+  styles: additionalImagesStyles,
+} = sjsxCss.resolve`
+  // select the previews row
+  div > :global(div:nth-child(2)) > :global(div:nth-child(2)) {
+    width: 100% !important;
+    overflow-x: scroll;
+  }
+  // select previewImageOverlay in each preview
+  div > :global(div:nth-child(2)) > :global(div:nth-child(2)) > :global(div) > :global(div:nth-child(1)) {
+    width: 100px !important;
   }
 `;
 
@@ -166,7 +181,8 @@ const EditYourProductListingModal: React.FC<
 
   return (
     <Modal open={open} onClose={onClose} fullWidth>
-      {sjsxStyles}
+      {imageStyles}
+      {additionalImagesStyles}
       <ModalTitle
         title={ci18n("modal header", "Edit Product Request")}
         onClose={(e) => {
@@ -221,7 +237,7 @@ const EditYourProductListingModal: React.FC<
                 </HorizontalField>
                 <HorizontalField title={ci18n("field title", "Main Image")}>
                   <SecureFileInput
-                    className={sjsxClassName}
+                    className={imageClassName}
                     style={{
                       flexDirection: "row",
                     }}
@@ -244,6 +260,7 @@ const EditYourProductListingModal: React.FC<
                   centerTitleVertically={false}
                 >
                   <SecureFileInput
+                    className={additionalImagesClassName}
                     accepts=".jpeg,.jpg,.png"
                     maxSizeMB={5}
                     maxAttachments={20}
@@ -321,7 +338,7 @@ const EditYourProductListingModal: React.FC<
                       </HorizontalField>
                       <HorizontalField title={ci18n("field title", "Image")}>
                         <SecureFileInput
-                          className={sjsxClassName}
+                          className={imageClassName}
                           style={{
                             flexDirection: "row",
                           }}

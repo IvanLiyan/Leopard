@@ -5,7 +5,7 @@ import Button from "./ActionCardButton";
 import ActionCard from "@core/components/ActionCard";
 import { merchFeUrl } from "@core/toolkit/router";
 import { useInfractionDetailsStylesheet } from "@infractions/styles";
-import EditYourProductListingModal from "./EditYourProductListingModal";
+import EditYourProductListingModal from "./PerModal";
 
 const EditYouProductListing: React.FC = () => {
   const styles = useInfractionDetailsStylesheet();
