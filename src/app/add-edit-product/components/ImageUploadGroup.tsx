@@ -118,6 +118,7 @@ const ImageUploadGroup = (props: ImageUploadGroupProps) => {
           { opacity: isDragActive ? 0.3 : 1 },
         ]}
         alignItems="center"
+        data-cy={`${dataCy}-upload`}
         {...getRootProps()}
       >
         <Text style={styles.title}>Drop images here to upload</Text>
@@ -372,7 +373,6 @@ const ImageUploadGroup = (props: ImageUploadGroupProps) => {
           onDropAccepted={(acceptedFiles) => void onUploadImage(acceptedFiles)}
           maxSize={maxSizeMB * 1048576} // convert to bytes
           multiple={imageCount < maxImages - 1}
-          data-cy={`${dataCy}-upload`}
         >
           {renderDropzoneContent}
         </Dropzone>
