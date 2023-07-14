@@ -33,7 +33,7 @@ import { ci18n } from "@core/toolkit/i18n";
 import SearchableMultiselect from "@core/components/SearchableMultiselect";
 import { useTheme } from "@core/stores/ThemeStore";
 import { useDeciderKey } from "@core/stores/ExperimentStore";
-import OptionalDocumentationUpload from "./compliance/OptionalDocumentationUpload";
+import OptionalDocumentationUpload from "./ComplianceDocuments";
 
 type Props = Omit<SectionProps, "title" | "rightCard"> & {
   readonly state: AddEditProductState;

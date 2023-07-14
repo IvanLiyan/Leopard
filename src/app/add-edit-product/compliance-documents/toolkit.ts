@@ -25,8 +25,12 @@ export const useUpdateComplianceDocuments = () => {
       .filter(
         (cur) =>
           !(
-            (cur.onServer && !cur.dirty && !cur.deleted) ||
-            (!cur.onServer && cur.deleted)
+            // don't upload files on server that haven't been modified or deleted
+            (
+              (cur.onServer && !cur.dirty && !cur.deleted) ||
+              // don't upload files not on server that have been deleted locally
+              (!cur.onServer && cur.deleted)
+            )
           ),
       )
       .map((cur) => ({
@@ -64,7 +68,9 @@ export const useVerifyComplianceDocuments = (): (() => boolean) => {
     dispatch({ type: "ATTEMPT_SAVE" });
 
     return documents.every(
-      (doc) => doc.documentLabel && DocumentLabelRegex.test(doc.documentLabel),
+      (doc) =>
+        doc.deleted ||
+        (doc.documentLabel && DocumentLabelRegex.test(doc.documentLabel)),
     );
   };
 };

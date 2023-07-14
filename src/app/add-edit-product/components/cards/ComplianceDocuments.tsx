@@ -119,7 +119,11 @@ const OptionalDocumentationUpload: React.FC = () => {
     string | undefined
   >();
 
-  const documentCount = pendingDocuments.length + documents.length;
+  const documentCount = useMemo(
+    () =>
+      pendingDocuments.length + documents.filter((doc) => !doc.deleted).length,
+    [pendingDocuments, documents],
+  );
   const showDocuments = documentCount > 0;
   const showDropZone = MAX_FILES !== documentCount;
 
@@ -286,7 +290,7 @@ const OptionalDocumentationUpload: React.FC = () => {
           onDropRejected={onDropRejected}
           onDropAccepted={(acceptedFiles) => void onDropAccepted(acceptedFiles)}
           maxSize={MAX_SIZE_IN_MB * 1048576} // convert to bytes
-          maxFiles={MAX_FILES}
+          maxFiles={MAX_FILES - documentCount}
           multiple={documentCount < MAX_FILES - 1}
           data-cy={`${dataCy}-upload`}
           validator={validator}
