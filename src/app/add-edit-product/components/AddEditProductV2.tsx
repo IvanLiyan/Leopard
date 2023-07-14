@@ -2,24 +2,20 @@ import React, { useMemo, useState } from "react";
 import { StyleSheet } from "aphrodite";
 import { observer } from "mobx-react";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import { css } from "@core/toolkit/styling";
 import CategoryAttributes from "./cards/CategoryAttributes";
 import Shipping from "./cards/Shipping";
 import Variations from "./cards/Variations";
-import ProductImages from "./cards/ProductImages";
-import ListingDetails from "./cards/ListingDetails";
-import Autofill from "./cards/Autofill";
-import Inventory from "./cards/Inventory";
+import ProductImagesV2 from "./cards/ProductImagesV2";
+import ListingDetailsV2 from "./cards/ListingDetailsV2";
+import InventoryGtin from "./cards/InventoryGtin";
 import UnitPrice from "./cards/UnitPrice";
 import Price from "./cards/Price";
-import WishPreviewCard from "./cards/WishPreviewCard";
-import Categorization from "./cards/Categorization";
+import CategorizationV2 from "./cards/CategorizationV2";
 import Compliance from "./cards/Compliance";
 import { Layout } from "@ContextLogic/lego";
 import AddEditProductState from "@add-edit-product/AddEditProductState";
 import CustomsLogisticsCardV2 from "./cards/customs-logistics/CustomsLogisticsCardV2";
-import BasicInfo from "./cards/BasicInfo";
-import ProductCategoryV2 from "./cards/v2/ProductCategoryV2";
+import ProductCategoryV2 from "./cards/ProductCategoryV2";
 import AdditionalAttributesV2 from "./cards/AdditionalAttributesV2";
 
 const CardSpacing = 25;
@@ -42,7 +38,6 @@ const AddEditProductV2 = ({ className, style, state }: Props) => {
   const styles = useStylesheet();
 
   const [productCategoryOpen, setProductCategoryOpen] = useState(true);
-  const [autoFillOpen, setAutoFillOpen] = useState(true);
   const [productImagesOpen, setProductImagesOpen] = useState(true);
   const [inventoryOpen, setInventoryOpen] = useState(true);
   const [listingDetailsOpen, setListingDetailsOpen] = useState(true);
@@ -55,6 +50,7 @@ const AddEditProductV2 = ({ className, style, state }: Props) => {
   const [complianceOpen, setComplianceOpen] = useState(true);
   const [additionalAttributesOpen, setAdditionalAttributesOpen] =
     useState(true);
+  const [categorizationOpen, setCategorizationOpen] = useState(true);
 
   const { hasVariations, isNewProduct, subcategoryId } = state;
 
@@ -62,111 +58,98 @@ const AddEditProductV2 = ({ className, style, state }: Props) => {
 
   return (
     <Layout.FlexColumn style={[styles.root, className, style]}>
-      <div className={css(styles.content)}>
-        <Layout.FlexColumn style={styles.leftSide}>
-          <ProductCategoryV2
+      <Layout.FlexColumn>
+        <ProductCategoryV2
+          style={styles.section}
+          isOpen={productCategoryOpen}
+          state={state}
+          onOpenToggled={(isOpen: boolean) => setProductCategoryOpen(isOpen)}
+        />
+        <ListingDetailsV2
+          style={styles.section}
+          isOpen={listingDetailsOpen}
+          state={state}
+          onOpenToggled={(isOpen) => setListingDetailsOpen(isOpen)}
+        />
+        <ProductImagesV2
+          style={styles.section}
+          isOpen={productImagesOpen}
+          state={state}
+          onOpenToggled={(isOpen) => setProductImagesOpen(isOpen)}
+        />
+        {subcategoryId && (
+          <CategoryAttributes
             style={styles.section}
-            isOpen={productCategoryOpen}
+            isOpen={categoryAttributesOpen}
             state={state}
-            onOpenToggled={(isOpen: boolean) => setProductCategoryOpen(isOpen)}
+            onOpenToggled={(isOpen) => setCategoryAttributesOpen(isOpen)}
           />
-          {isNewProduct && (
-            <Autofill
-              style={styles.section}
-              isOpen={autoFillOpen}
-              state={state}
-              onOpenToggled={(isOpen: boolean) => setAutoFillOpen(isOpen)}
-            />
-          )}
-          <ProductImages
-            style={styles.section}
-            isOpen={productImagesOpen}
-            state={state}
-            onOpenToggled={(isOpen) => setProductImagesOpen(isOpen)}
-          />
-          <ListingDetails
-            style={styles.section}
-            isOpen={listingDetailsOpen}
-            state={state}
-            onOpenToggled={(isOpen) => setListingDetailsOpen(isOpen)}
-          />
-          <UnitPrice
-            style={styles.section}
-            isOpen={unitPriceOpen}
-            state={state}
-            onOpenToggled={(isOpen) => setUnitPriceOpen(isOpen)}
-          />
-          {subcategoryId && (
-            <CategoryAttributes
-              style={styles.section}
-              isOpen={categoryAttributesOpen}
-              state={state}
-              onOpenToggled={(isOpen) => setCategoryAttributesOpen(isOpen)}
-            />
-          )}
-          <Variations
-            style={styles.section}
-            isOpen={variationsOpen}
-            state={state}
-            onOpenToggled={(isOpen) => setVariationsOpen(isOpen)}
-          />
-          {!hasVariations && (
-            <>
-              {subcategoryId && (
-                <AdditionalAttributesV2
-                  style={styles.section}
-                  state={state}
-                  isOpen={additionalAttributesOpen}
-                  onOpenToggled={(isOpen) =>
-                    setAdditionalAttributesOpen(isOpen)
-                  }
-                />
-              )}
-              <Price
+        )}
+        <Variations
+          style={styles.section}
+          isOpen={variationsOpen}
+          state={state}
+          onOpenToggled={(isOpen) => setVariationsOpen(isOpen)}
+        />
+        {!hasVariations && (
+          <>
+            {subcategoryId && (
+              <AdditionalAttributesV2
                 style={styles.section}
-                isOpen={pricingOpen}
                 state={state}
-                onOpenToggled={(isOpen) => setPricingOpen(isOpen)}
-                showTip={showTips}
+                isOpen={additionalAttributesOpen}
+                onOpenToggled={(isOpen) => setAdditionalAttributesOpen(isOpen)}
               />
-              <Inventory
-                style={styles.section}
-                isOpen={inventoryOpen}
-                state={state}
-                onOpenToggled={(isOpen) => setInventoryOpen(isOpen)}
-              />
-              <CustomsLogisticsCardV2
-                style={styles.section}
-                isOpen={customsLogisticsOpen}
-                state={state}
-                onOpenToggled={(isOpen) => setCustomsLogisticsOpen(isOpen)}
-              />
-            </>
-          )}
-          {isNewProduct && (
-            <Shipping
+            )}
+            <Price
               style={styles.section}
-              isOpen={shippingOpen}
+              isOpen={pricingOpen}
               state={state}
-              onOpenToggled={(isOpen) => setShippingOpen(isOpen)}
+              onOpenToggled={(isOpen) => setPricingOpen(isOpen)}
               showTip={showTips}
             />
-          )}
-          <Compliance
+            <InventoryGtin
+              style={styles.section}
+              isOpen={inventoryOpen}
+              state={state}
+              onOpenToggled={(isOpen) => setInventoryOpen(isOpen)}
+            />
+            <CustomsLogisticsCardV2
+              style={styles.section}
+              isOpen={customsLogisticsOpen}
+              state={state}
+              onOpenToggled={(isOpen) => setCustomsLogisticsOpen(isOpen)}
+            />
+          </>
+        )}
+        <CategorizationV2
+          style={styles.section}
+          state={state}
+          isOpen={categorizationOpen}
+          onOpenToggled={(isOpen) => setCategorizationOpen(isOpen)}
+        />
+        {isNewProduct && (
+          <Shipping
             style={styles.section}
-            isOpen={complianceOpen}
+            isOpen={shippingOpen}
             state={state}
-            onOpenToggled={(isOpen) => setComplianceOpen(isOpen)}
+            onOpenToggled={(isOpen) => setShippingOpen(isOpen)}
+            showTip={showTips}
           />
-        </Layout.FlexColumn>
-        <Layout.FlexColumn style={styles.rightSide} alignItems="stretch">
-          <Categorization className={css(styles.rightCard)} state={state} />
-          <WishPreviewCard className={css(styles.rightCard)} state={state} />
-          {!isNewProduct && (
-            <BasicInfo className={css(styles.rightCard)} state={state} />
-          )}
-        </Layout.FlexColumn>
-      </div>
+        )}
+        <UnitPrice
+          style={styles.section}
+          isOpen={unitPriceOpen}
+          state={state}
+          onOpenToggled={(isOpen) => setUnitPriceOpen(isOpen)}
+        />
+        <Compliance
+          style={styles.section}
+          isOpen={complianceOpen}
+          state={state}
+          onOpenToggled={(isOpen) => setComplianceOpen(isOpen)}
+        />
+      </Layout.FlexColumn>
     </Layout.FlexColumn>
   );
 };
@@ -180,41 +163,7 @@ const useStylesheet = () =>
         root: {
           paddingTop: 25,
         },
-        pageLoadingIndicator: {
-          paddingTop: 25,
-        },
-        content: {
-          display: "flex",
-          "@media (max-width: 900px)": {
-            flexDirection: "column",
-            alignItems: "stretch",
-          },
-          "@media (min-width: 900px)": {
-            flexDirection: "row",
-            alignItems: "flex-start",
-          },
-          flex: 1,
-        },
         section: {
-          marginBottom: CardSpacing,
-        },
-        leftSide: {
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "stretch",
-          flex: 1,
-          "@media (min-width: 900px)": {
-            minWidth: "65%",
-          },
-        },
-        rightSide: {
-          "@media (min-width: 900px)": {
-            width: "calc(35% - 35px)",
-            flexShrink: 0,
-            marginLeft: 35,
-          },
-        },
-        rightCard: {
           marginBottom: CardSpacing,
         },
       }),

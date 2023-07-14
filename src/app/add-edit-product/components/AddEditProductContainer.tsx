@@ -160,9 +160,9 @@ const AddEditProductContainer: React.FC<Props> = ({ initialData }: Props) => {
         title={state.name || i`Unsaved product listing`}
         actions={actions}
         className={css(styles.header)}
-        relaxed
+        relaxed={!showRevampedAddEditProductUI}
       />
-      <PageGuide relaxed>
+      <PageGuide relaxed={!showRevampedAddEditProductUI}>
         {showRevampedAddEditProductUI ? (
           <AddEditProductV2 style={styles.content} state={state} />
         ) : (

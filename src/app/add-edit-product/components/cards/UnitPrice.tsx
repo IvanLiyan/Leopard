@@ -40,6 +40,7 @@ import {
   RequiredValidator,
 } from "@core/toolkit/validators";
 import AddEditProductState from "@add-edit-product/AddEditProductState";
+import { ci18n } from "@core/toolkit/i18n";
 
 type Props = Omit<SectionProps, "title"> & {
   readonly state: AddEditProductState;
@@ -62,6 +63,7 @@ const UnitPrice: React.FC<Props> = (props: Props) => {
     measurementType,
     unitPriceUnit,
     isSubmitting,
+    showRevampedAddEditProductUI,
   } = state;
 
   const exampleBasePrice = 11.69;
@@ -78,7 +80,11 @@ const UnitPrice: React.FC<Props> = (props: Props) => {
   return (
     <Section
       className={css(style, className)}
-      title={i`Unit price (optional)`}
+      title={
+        showRevampedAddEditProductUI
+          ? ci18n("Section title", "Unit price")
+          : i`Unit price (optional)`
+      }
       {...sectionProps}
       contentStyle={{ padding: 0 }}
     >

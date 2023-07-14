@@ -487,3 +487,15 @@ export const MeasurementOptions: {
 };
 
 export const useProductId = () => useStringQueryParam("pid");
+
+export const ConditionOrder: ReadonlyArray<CommerceProductCondition> = [
+  "NEW",
+  "USED",
+  "REFURBISHED",
+];
+
+export const ConditionOptions: ReadonlyArray<Option<CommerceProductCondition>> =
+  ConditionOrder.map((value: CommerceProductCondition) => ({
+    value,
+    text: ConditionDisplay[value],
+  }));

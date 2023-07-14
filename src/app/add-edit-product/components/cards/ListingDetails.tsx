@@ -18,9 +18,8 @@ import { RequiredValidator } from "@core/toolkit/validators";
 import { css } from "@core/toolkit/styling";
 
 import Section, { SectionProps } from "./Section";
-import { Option } from "@ContextLogic/lego/component/form/SimpleSelect";
 import { CommerceProductCondition } from "@schema";
-import { ConditionDisplay } from "@add-edit-product/toolkit";
+import { ConditionOptions } from "@add-edit-product/toolkit";
 import { useTheme } from "@core/stores/ThemeStore";
 import AddEditProductState from "@add-edit-product/AddEditProductState";
 import { zendeskURL } from "@core/toolkit/url";
@@ -28,17 +27,6 @@ import { zendeskURL } from "@core/toolkit/url";
 type Props = Omit<SectionProps, "title"> & {
   readonly state: AddEditProductState;
 };
-
-const ConditionOrder: ReadonlyArray<CommerceProductCondition> = [
-  "NEW",
-  "USED",
-  "REFURBISHED",
-];
-const ConditionOptions: ReadonlyArray<Option<CommerceProductCondition>> =
-  ConditionOrder.map((value: CommerceProductCondition) => ({
-    value,
-    text: ConditionDisplay[value],
-  }));
 
 const ListingDetails: React.FC<Props> = (props: Props) => {
   const styles = useStylesheet();

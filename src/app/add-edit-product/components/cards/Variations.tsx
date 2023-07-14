@@ -49,11 +49,17 @@ const Variations: React.FC<Props> = (props: Props) => {
   return (
     <Section
       className={css(style, className)}
-      title={i`**Variations** (optional)`}
+      title={
+        showRevampedAddEditProductUI
+          ? ci18n("Section title", "**Variations**")
+          : i`**Variations** (optional)`
+      }
       markdown
       contentStyle={{ padding: "none" }}
       rightCard={
-        hasVariations ? <AdditionalAttributes state={state} /> : undefined
+        hasVariations && !showRevampedAddEditProductUI ? (
+          <AdditionalAttributes state={state} />
+        ) : undefined
       }
       {...sectionProps}
     >

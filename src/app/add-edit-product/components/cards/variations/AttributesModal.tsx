@@ -18,7 +18,7 @@ import { GtinValidator } from "@core/toolkit/validators";
 import CustomsLogisticsFormV2 from "@add-edit-product/components/cards/customs-logistics/CustomsLogisticsFormV2";
 import Skeleton from "@core/components/Skeleton";
 
-export type AttributesModalProps = Pick<ModalProps, "open"> & {
+type AttributesModalProps = Pick<ModalProps, "open"> & {
   readonly state: AddEditProductState;
   readonly variation: Variation;
   readonly onClose: () => unknown;

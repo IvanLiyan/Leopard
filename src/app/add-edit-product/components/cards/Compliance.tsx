@@ -57,6 +57,7 @@ const Compliance: React.FC<Props> = ({
     caProp65Chemicals,
     isSubmitting,
     caProp65AllChemicalsList,
+    showRevampedAddEditProductUI,
   } = state;
 
   const learnMoreLink = zendeskURL("360025359874");
@@ -79,10 +80,17 @@ const Compliance: React.FC<Props> = ({
   return (
     <Section
       className={css(style, className)}
-      title={ci18n(
-        "Title of a card on the product upload/edit page in which merchants can set or adjust settings related to legal compliance for a product",
-        "Compliance (optional)",
-      )}
+      title={
+        showRevampedAddEditProductUI
+          ? ci18n(
+              "Title of a card on the product upload/edit page in which merchants can set or adjust settings related to legal compliance for a product",
+              "Compliance",
+            )
+          : ci18n(
+              "Title of a card on the product upload/edit page in which merchants can set or adjust settings related to legal compliance for a product",
+              "Compliance (optional)",
+            )
+      }
       {...sectionProps}
     >
       <Layout.FlexColumn style={styles.content} alignItems="stretch">
