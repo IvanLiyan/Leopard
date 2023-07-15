@@ -154,9 +154,9 @@ const countryCodes = () => {
 
 const InfractionDisputeForm = (props: Props) => {
   const {
-    infraction: { id: infractionId, disputeUnavailableReason },
+    infraction: { disputeUnavailableReason },
   } = useInfractionContext();
-  const { onExitDispute } = useBulkDisputeContext();
+  const { onExitDispute, onCancelDispute } = useBulkDisputeContext();
   const styles = useInfractionDetailsStylesheet();
 
   const {
@@ -624,7 +624,9 @@ const InfractionDisputeForm = (props: Props) => {
           }}
           cancel={{
             text: ci18n("CTA for button", "Cancel"),
-            href: `/warnings/warning?id=${infractionId}`,
+            onClick: () => {
+              onCancelDispute("/fulfillment-infractions");
+            },
             disabled: state.isSubmitting,
           }}
           extraFooterContent={<SkipDisputeButton />}

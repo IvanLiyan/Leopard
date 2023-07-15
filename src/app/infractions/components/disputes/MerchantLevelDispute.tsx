@@ -26,7 +26,7 @@ const MerchantLevelDispute: React.FC = () => {
   const {
     infraction: { id: infractionId, actions, disputeUnavailableReason },
   } = useInfractionContext();
-  const { onExitDispute } = useBulkDisputeContext();
+  const { onExitDispute, onCancelDispute } = useBulkDisputeContext();
   const toastStore = useToastStore();
 
   const [explanation, setExplanation] = useState<string | undefined>(undefined);
@@ -144,7 +144,9 @@ const MerchantLevelDispute: React.FC = () => {
         }
         cancel={{
           text: i`Cancel`,
-          href: `/warnings/warning?id=${infractionId}`,
+          onClick: () => {
+            onCancelDispute("/other-infractions");
+          },
           disabled: loading,
           "data-cy": "cancel-button",
         }}

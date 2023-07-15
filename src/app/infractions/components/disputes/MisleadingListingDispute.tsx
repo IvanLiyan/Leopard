@@ -48,7 +48,7 @@ const MisleadingListingDispute: React.FC = () => {
     infraction: { id: infractionId, actions, disputeUnavailableReason },
     merchantCurrency,
   } = useInfractionContext();
-  const { onExitDispute } = useBulkDisputeContext();
+  const { onExitDispute, onCancelDispute } = useBulkDisputeContext();
   const toastStore = useToastStore();
 
   const [checkA, setCheckA] = useState(false);
@@ -664,7 +664,9 @@ const MisleadingListingDispute: React.FC = () => {
         }
         cancel={{
           text: ci18n("CTA for button", "Cancel"),
-          href: `/warnings/warning?id=${infractionId}`,
+          onClick: () => {
+            onCancelDispute("/product-infractions");
+          },
           disabled: mutationLoading,
           "data-cy": "cancel-button",
         }}

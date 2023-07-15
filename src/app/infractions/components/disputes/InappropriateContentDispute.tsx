@@ -32,7 +32,7 @@ const InappropriateContentDispute: React.FC = () => {
   const {
     infraction: { id: infractionId, title, actions, disputeUnavailableReason },
   } = useInfractionContext();
-  const { onExitDispute } = useBulkDisputeContext();
+  const { onExitDispute, onCancelDispute } = useBulkDisputeContext();
   const toastStore = useToastStore();
 
   const [checkA, setCheckA] = useState(false);
@@ -289,7 +289,9 @@ const InappropriateContentDispute: React.FC = () => {
         }
         cancel={{
           text: ci18n("CTA on button", "Cancel"),
-          href: `/warnings/warning?id=${infractionId}`,
+          onClick: () => {
+            onCancelDispute("/product-infractions");
+          },
           disabled: mutationLoading,
           "data-cy": "cancel-button",
         }}

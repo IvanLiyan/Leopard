@@ -5,6 +5,7 @@ import { createContext, useContext } from "react";
 
 type BulkDisputeContextType = {
   readonly onExitDispute: () => void;
+  readonly onCancelDispute: (tab: string) => void;
 };
 
 const BulkDisputeContext = createContext<BulkDisputeContextType | null>(null);
@@ -46,10 +47,19 @@ export const BulkDisputeContextProvider: React.FC<{
     });
   };
 
+  const onCancel = (tab: string) => {
+    if (bulkInfractionIds.length > 0) {
+      void router.push(merchFeUrl(`/warnings/v2${tab}`));
+      return;
+    }
+    void router.push(`/warnings/warning?id=${id}`);
+  };
+
   return (
     <BulkDisputeContext.Provider
       value={{
         onExitDispute: onExit,
+        onCancelDispute: onCancel,
       }}
     >
       {children}
