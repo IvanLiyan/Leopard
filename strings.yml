@@ -307,7 +307,7 @@ features:
     description: >
       Page where merchants can view a list of all their products.
 
-  - name: Add/Edit Product Page - Leopard
+  - name: Add and Edit Product Page - Leopard
     owners:
       - shli@wish.com
     files:
