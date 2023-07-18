@@ -30,6 +30,7 @@ export type PageHeaderProps = BaseProps & {
   readonly relaxed?: boolean;
   readonly veryRelaxed?: boolean;
   readonly illustration?: (IllustrationName | (() => ReactNode)) | null;
+  readonly paddingY?: number;
 };
 
 const PageHeader = (props: PageHeaderProps) => {
@@ -45,6 +46,7 @@ const PageHeader = (props: PageHeaderProps) => {
     relaxed,
     veryRelaxed,
     illustration,
+    paddingY,
   } = props;
   const { pageBackground } = useTheme();
 
@@ -77,7 +79,9 @@ const PageHeader = (props: PageHeaderProps) => {
       title={() => header}
       body={children ? () => children : undefined}
       style={{
-        padding: `60px ${sidePadding} 20px ${sidePadding}`,
+        padding: `${paddingY ?? 60}px ${sidePadding} ${
+          paddingY ?? 20
+        }px ${sidePadding}`,
         ...(hideBackground ? { backgroundColor: pageBackground } : {}),
       }}
       illustration={illustration}

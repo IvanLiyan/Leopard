@@ -18,6 +18,8 @@ import {
 } from "@all-products/toolkit";
 import { useQuery } from "@apollo/client";
 import FullPageError from "@core/components/FullPageError";
+import LQSHeader from "@all-products/components/LQSHeader";
+import { useDeciderKey } from "@core/stores/ExperimentStore";
 
 const AddWarehouseTabKey = "ADD_WAREHOUSE";
 
@@ -26,6 +28,7 @@ const ProductsContainer: NextPage<Record<string, never>> = () => {
   const navigationStore = useNavigationStore();
   const upsertQueryParams = useUpsertQueryParams();
   const [selectedTab] = useStringQueryParam("warehouse");
+  const { decision: showLQS } = useDeciderKey("show_lqs_entry_point");
 
   const {
     data: initialData,
@@ -59,11 +62,13 @@ const ProductsContainer: NextPage<Record<string, never>> = () => {
 
   return (
     <PageRoot>
+      {showLQS && <LQSHeader />}
       <PageHeader
         title={ci18n(
           "Title of a page on which merchants can view all their products in table form",
           "All products",
         )}
+        paddingY={showLQS ? 20 : undefined}
         veryRelaxed
       />
       {isLoadingInitialData ? (
