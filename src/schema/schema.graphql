@@ -1562,6 +1562,15 @@ input ChangeLocaleInput {
   locale: Locale!
 }
 
+input ChangeMFTOptOutInput {
+  isOptedOut: Boolean!
+}
+
+type ChangeMFTOptOutMutation {
+  error: String
+  ok: String
+}
+
 input ChangePasswordInput {
   curPassword: String
   newPassword: String
@@ -2451,6 +2460,20 @@ type CreateLQDCampaign {
   message: String
 }
 
+type CreateNotifier {
+  ok: Boolean!
+  message: String
+}
+
+input CreateNotifierInput {
+  notifierType: NotifierType!
+  email: String!
+  organization: String!
+  countryCodes: [CountryCode!]!
+  name: String
+  isTrustedFlagger: Boolean = false
+}
+
 type CreateProductTaxonomyCategoryDispute {
   ok: Boolean!
   productDisputeEligibility: ProductTaxonomyCategoryDisputeEligibilityEnum!
@@ -2777,6 +2800,27 @@ enum CustomerSupportTicketType {
   POST_CUSTOMER_SUPPORT
   NON_ORDER
   ORDER
+}
+
+type DSACannedResponseSchema {
+  name: String!
+  content: String!
+}
+
+type DSAHub {
+  notice(noticeId: ObjectIdType!): NoticeSchema
+  noticeCount(queryInput: NoticeQueryInput!): Int!
+  notices(offset: Int! = 0, limit: Int! = 10, queryInput: NoticeQueryInput!): [NoticeSchema!]!
+  notifierCount(queryInput: NotifierQueryInput!): Int!
+  notifiers(offset: Int! = 0, limit: Int! = 10, queryInput: NotifierQueryInput!): [NotifierSchema!]!
+  notifierOrganizations: [String!]!
+  reviewCannedResponses: [DSACannedResponseSchema!]!
+}
+
+type DSAMutations {
+  createNotifier(input: CreateNotifierInput!): CreateNotifier
+  updateNotifier(input: UpdateNotifierInput!): UpdateNotifier
+  removeNotifier(input: RemoveNotifierInput!): RemoveNotifier
 }
 
 scalar DateTime
@@ -5279,6 +5323,7 @@ enum MFPVariationUnqualifiedReason {
   FLASH_SALE_MINIMUM_VARIATION_INVENTORY
   COMPETING_PROMOTION
   PROMOTION_HISTORY
+  NEGATIVE_PRODUCT_PRICE
 }
 
 enum MFPWhitelistProductSortBy {
@@ -5735,6 +5780,12 @@ type MerchantFineSchema {
   creator: UserSchema
 }
 
+input MerchantFulfillmentTimeInfoInput {
+  pickupCarrier: PickupCarrier
+  carrierPickupTime: String
+  merchantHandlingTime: Int
+}
+
 enum MerchantGamingReviewFieldTicketType {
   lastSourceUpsertDate
 }
@@ -5940,6 +5991,7 @@ type MerchantMutation {
   bankAccountVerification: BankAccountVerificationMerchantMutations!
   returnSettings: MerchantReturnSettingsMutations!
   returnWarehouseSettings: MerchantReturnWarehouseMutations
+  mftOptOut(input: ChangeMFTOptOutInput!): ChangeMFTOptOutMutation
 }
 
 enum MerchantOnboardingStep {
@@ -6363,6 +6415,7 @@ type MerchantSchema {
   canAccessFlatRateShippingOptInOptOut: Boolean
   calculatedShippingAccountConfig: CalculatedShippingAccountConfigType
   canAccessCalculatedShippingAccountConfig: Boolean
+  isMerchantFulfillmentTimeOptOut: Boolean
 }
 
 type MerchantSenderAddressMutations {
@@ -6771,6 +6824,9 @@ type MerchantWarehouseSchema {
   enabledCountries: [Country!]!
   verificationState: WarehouseVerificationState
   verificationRequest: WarehouseVerificationRequestSchema
+  pickupCarrier: PickupCarrier
+  carrierPickupTime: String
+  merchantHandlingTime: Int
 }
 
 type MerchantWarehouseWeekStatsSchema {
@@ -7074,6 +7130,7 @@ type MerchantWarningSchema {
   productGmvAtAudit: CurrencyValue
   claimedBy: UserSchema
   auditStatus: MerchantWarningAuditStatus
+  disputeCutoffDay: Int!
   effectiveDisputeDeadlineDate: Datetime!
   trackingDispute: TrackingDisputeSchema
   wssImpact: WSSImpactState!
@@ -7212,8 +7269,99 @@ enum NavigationResultType {
   ORDER
 }
 
+enum NoticePriority {
+  DEFAULT
+  HIGH
+}
+
+type NoticeProductSchema {
+  product: ProductSchema!
+  status: NoticeProductStatus!
+}
+
+enum NoticeProductStatus {
+  IP_REMOVED
+  DISPUTED
+  INAPPROPRIATE_REMOVED
+  REPORTED
+  ALREADY_REMOVED
+  GEO_BLOCKED
+}
+
+input NoticeQueryInput {
+  productId: ObjectIdType
+  notifierEmail: String
+  notifierOrganization: String
+  statuses: [NoticeStatus!]
+  startDate: DatetimeInput
+  endDate: DatetimeInput
+  sortMode: NoticeSortMode = 1
+}
+
+type NoticeSchema {
+  id: ObjectIdType!
+  status: NoticeStatus!
+  products: [NoticeProductSchema!]!
+  notifierName: String!
+  notifierEmail: String!
+  notifier: NotifierSchema
+  description: String!
+  priority: NoticePriority!
+  supportFiles: [MerchantFileSchema!]!
+  datetimeCreated: Datetime!
+  disputeEligibility: Boolean!
+  lastClaimedUser: UserSchema
+  reviewer: UserSchema
+  reviewResponse: String
+  datetimeReviewed: Datetime
+  disputeDescription: String
+  disputeSupportFiles: [MerchantFileSchema!]
+  datetimeDisputed: Datetime
+  disputeReviewer: UserSchema
+  disputeReviewResponse: String
+  datetimeDisputeReviewed: Datetime
+}
+
+enum NoticeSortMode {
+  NO_SORT
+}
+
+enum NoticeStatus {
+  RESOLVED
+  REJECTED
+  DISPUTE_PENDING_REVIEW
+  PARTIALLY_REJECTED
+  DISPUTE_UNDER_REVIEW
+  UNDER_REVIEW
+  PENDING_REVIEW
+}
+
 type NotificationsServiceSchema {
   notificationCount(viewed: Boolean): Int!
+}
+
+input NotifierQueryInput {
+  type: NotifierType!
+  name: String
+  email: String
+  countryCode: CountryCode
+  organization: String
+  isTrustedFlagger: Boolean
+}
+
+type NotifierSchema {
+  id: ObjectIdType!
+  type: NotifierType!
+  organization: String!
+  countries: [Country!]!
+  name: String
+  email: String!
+  isTrustedFlagger: Boolean!
+}
+
+enum NotifierType {
+  EMAIL_ADDRESS
+  EMAIL_DOMAIN
 }
 
 type NotifyPasswordRecoveryMutation {
@@ -7254,6 +7402,18 @@ type OffsiteBoostStats {
   startDate: Datetime!
   endDate: Datetime!
   daily: [OffsiteBoostDailyStats!]!
+}
+
+type OidcCredentialSchema {
+  id: ObjectIdType!
+  authEmail: String!
+  authProvider: OidcProviderEnum!
+}
+
+enum OidcProviderEnum {
+  WISH_OKTA
+  GOOGLE
+  WISH_AUTH
 }
 
 type OnboardingSchema {
@@ -7652,6 +7812,8 @@ type OrderSchema {
   merchantPriceAfterMfpDiscount: CurrencyValue!
   merchantShipping(localized: Boolean): CurrencyValue!
   merchantShippingAfterMfpDiscount: CurrencyValue!
+  adjustedProductPrice: CurrencyValue
+  adjustedShippingPrice: CurrencyValue
   shippingCost(localized: Boolean): CurrencyValue!
   warehouseId: String
   limboState: OrderLimboState!
@@ -8528,6 +8690,11 @@ enum PermissionType {
   SUPPLY_CHAIN_QC
   VIEW_HIGH_GAMING_GMV_HOLD
   CAN_VIEW_DISPUTES
+}
+
+enum PickupCarrier {
+  YANWEN
+  WISE
 }
 
 enum PictureType {
@@ -10118,6 +10285,15 @@ type RemoveFromPlus {
 
 input RemoveFromPlusInput {
   merchantIds: [ObjectIdType!]!
+}
+
+type RemoveNotifier {
+  ok: Boolean!
+  message: String
+}
+
+input RemoveNotifierInput {
+  notifierId: ObjectIdType!
 }
 
 type RemoveProduct {
@@ -11799,6 +11975,7 @@ type TaggingMutations {
   submitAttributeExtraction(input: SubmitAttributeExtractionInput!): SubmitAttributeExtraction
   updateDedupImage(input: UpdateDedupImageInput!): UpdateDedupImage
   deleteDedupImage(input: DeleteDedupImageInput!): DeleteDedupImage
+  dsa: DSAMutations
 }
 
 type TaggingServiceSchema {
@@ -11813,6 +11990,7 @@ type TaggingServiceSchema {
   productTaxonomyCategoryDisputeHub: ProductTaxonomyCategoryDisputeHub
   attributeExtractionTaggerJob(taskId: String): AttributeExtractionTaggerJobSchema
   dedupImageLibHub: DedupImageLibraryHub
+  dsa: DSAHub
 }
 
 type TaggingViolationReason {
@@ -11829,14 +12007,14 @@ enum TaggingViolationSubReasonCode {
   RECREATIONAL_DRUGS_AND_CHEMICALS
   SUBSCRIPTIONS_OR_MEMBERSHIPS
   DOMESTIC_TERRORISTS_MEMORABILIA
-  HYPERREALISTIC_CONTENT
+  BLOOD_COLLECTION_TUBES
   PLANT_SEED_WITH_IMPOSSIBLE_CLAIM
   DANGEROUS_NON_CPA_VIOLATION
   LASER_DISC
   PRODUCT_VARIANCE
   PRESCRIPTION_STRENGTH_ITEMS
   NOT_FOCUS_OF_MAIN_IMAGE
-  REVIEW_SHOW_WRONG_PRODUCT
+  PENICILLIN
   SPY_CAMERAS
   TERRORIST_PROMOTION_GROUPS
   EURO_CURRENCY
@@ -11848,7 +12026,7 @@ enum TaggingViolationSubReasonCode {
   SIZE_NOT_AS_ADVERTISED
   SEXUALLY_SUGGESTIVE_CONTENT
   LISTING_PROMOTES_HIDING_PROHIBITED_SUBSTANCE
-  PENICILLIN
+  BRASS_OR_METAL_KNUCKLES
   VHS_TAPE
   VIDEO_GAME
   EPA_EMMISIONS_DEFEAT_US
@@ -11861,6 +12039,7 @@ enum TaggingViolationSubReasonCode {
   GUN_SILENCER_COMPONENTS
   ANIME_PRODUCTS
   LIVE_ANIMAL
+  SOFTWARE
   UNVERIFIED_WARRANTIES
   ALCOHOL
   TOBACCO
@@ -11874,6 +12053,7 @@ enum TaggingViolationSubReasonCode {
   SELF_FEEDING_BABY_PILLOWS
   METAL_NINJA_STARS
   CN_PROHIBITED_PRODUCT_STUN_GUNS
+  SYRINGES
   FULLY_EXPOSED_NIPPLE
   HOUSEKEEPING_TOUR_PACKAGES
   RECORDS
@@ -11914,6 +12094,7 @@ enum TaggingViolationSubReasonCode {
   ANTI_GAY
   UNVERFIED_PRICE_INFORMATION
   TOBACCO_SEEDS
+  REVIEW_SHOW_WRONG_PRODUCT
   PROHIBITED_SUBSTANCE_PIPE
   BLURRED_WATERMARKS
   COMPETITOR_WATERMARK
@@ -11975,7 +12156,7 @@ enum TaggingViolationSubReasonCode {
   HATEFUL_CORONAVIRUS_PRODUCTS
   INJECTABLE_ITEMS
   CONTAINS_HARMFUL_CONTENT
-  SOFTWARE
+  HYPERREALISTIC_CONTENT
   SIZE_COLOR_OPTION_GAMING
   HATE_GROUPS
   QANON_MEMORABILIA
@@ -12080,6 +12261,7 @@ enum TaxAuthorityType {
   CITY_FEES
   ICMS_ST_CNAE_IVA
   BMP
+  ADDITIONAL_FEE
   SCT
   IGV
   TOURISM_TAX
@@ -12093,6 +12275,7 @@ enum TaxAuthorityType {
   MOT
   CBT
   PST
+  GENERAL_SALES_AND_USE_TAX
   ISS
   ISV
   IST
@@ -12135,6 +12318,7 @@ enum TaxAuthorityType {
   CONSUMPTION_TAX
   II
   ICMS_PF
+  ADDITIONAL_SALES_AND_USE_TAX
   MVA
   TELECOM
   STATE_FEES
@@ -12891,6 +13075,19 @@ type UpdateMerchantGamingReviewTicket {
   message: String
 }
 
+type UpdateNotifier {
+  ok: Boolean!
+  message: String
+}
+
+input UpdateNotifierInput {
+  notifierId: ObjectIdType!
+  newOrganization: String
+  newCountryCodes: [CountryCode!]
+  newName: String
+  newIsTrustedFlagger: Boolean
+}
+
 type UpdateOffsiteBoost {
   ok: Boolean!
   message: String
@@ -13041,6 +13238,7 @@ input UpdateUserInfoInput {
   id: ObjectIdType!
   firstName: String
   lastName: String
+  username: String
   email: String
   bdMerchantCountry: BDMerchantCountryCodeType
   manager: ObjectIdType
@@ -13399,6 +13597,7 @@ input UpsertWarehouseInput {
   enabledCountries: [CountryCode!]
   address: AddressInput
   name: String
+  merchantFulfillmentTimeInfo: MerchantFulfillmentTimeInfoInput
 }
 
 type UpsertWebhookSubscription {
@@ -13575,6 +13774,7 @@ type UserSchema {
   canAccessHome: Boolean!
   isApiUser: Boolean!
   supportConfig: MerchantSupportConfigSchema
+  oidcCredentials: [OidcCredentialSchema!]
 }
 
 enum UserServiceType {
@@ -13999,7 +14199,9 @@ enum WSSLogisticsRefundReason {
   ITEM_RETURNED_TO_SENDER
   ITEM_MARKED_DELIVERED_BUT_DID_NOT_ARRIVE
   NOT_QUALIFIED_SHIPPING_PROVIDER
+  REPLACEMENT_NEVER_RECEIVED
   FBW_FAILED_TO_FULFILL_DUE_TO_CARRIER_RETURN
+  ITEM_MARKED_DELIVERED_NOT_ALL_ITEMS_ARRIVED
   EPC_OVERWEIGHT
   EPC_OVERSIZE
   EPC_LAST_MILE_CARRIERS_UNABLE_TO_SHIP

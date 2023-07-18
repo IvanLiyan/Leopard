@@ -2056,6 +2056,16 @@ export type ChangeLocaleInput = {
   readonly locale: Locale;
 };
 
+export type ChangeMftOptOutInput = {
+  readonly isOptedOut: Scalars['Boolean'];
+};
+
+export type ChangeMftOptOutMutation = {
+  readonly __typename?: 'ChangeMFTOptOutMutation';
+  readonly error?: Maybe<Scalars['String']>;
+  readonly ok?: Maybe<Scalars['String']>;
+};
+
 export type ChangePasswordInput = {
   readonly curPassword?: InputMaybe<Scalars['String']>;
   readonly newPassword?: InputMaybe<Scalars['String']>;
@@ -2973,6 +2983,21 @@ export type CreateLqdCampaign = {
   readonly ok: Scalars['Boolean'];
 };
 
+export type CreateNotifier = {
+  readonly __typename?: 'CreateNotifier';
+  readonly message?: Maybe<Scalars['String']>;
+  readonly ok: Scalars['Boolean'];
+};
+
+export type CreateNotifierInput = {
+  readonly countryCodes: ReadonlyArray<CountryCode>;
+  readonly email: Scalars['String'];
+  readonly isTrustedFlagger?: InputMaybe<Scalars['Boolean']>;
+  readonly name?: InputMaybe<Scalars['String']>;
+  readonly notifierType: NotifierType;
+  readonly organization: Scalars['String'];
+};
+
 export type CreateProductTaxonomyCategoryDispute = {
   readonly __typename?: 'CreateProductTaxonomyCategoryDispute';
   readonly ok: Scalars['Boolean'];
@@ -3404,6 +3429,74 @@ export type CustomerSupportTicketType =
   | 'ORDER'
   | 'POST_CUSTOMER_SUPPORT'
   | 'PRE_PURCHASE';
+
+export type DsaCannedResponseSchema = {
+  readonly __typename?: 'DSACannedResponseSchema';
+  readonly content: Scalars['String'];
+  readonly name: Scalars['String'];
+};
+
+export type DsaHub = {
+  readonly __typename?: 'DSAHub';
+  readonly notice?: Maybe<NoticeSchema>;
+  readonly noticeCount: Scalars['Int'];
+  readonly notices: ReadonlyArray<NoticeSchema>;
+  readonly notifierCount: Scalars['Int'];
+  readonly notifierOrganizations: ReadonlyArray<Scalars['String']>;
+  readonly notifiers: ReadonlyArray<NotifierSchema>;
+  readonly reviewCannedResponses: ReadonlyArray<DsaCannedResponseSchema>;
+};
+
+
+export type DsaHubNoticeArgs = {
+  noticeId: Scalars['ObjectIdType'];
+};
+
+
+export type DsaHubNoticeCountArgs = {
+  queryInput: NoticeQueryInput;
+};
+
+
+export type DsaHubNoticesArgs = {
+  limit?: Scalars['Int'];
+  offset?: Scalars['Int'];
+  queryInput: NoticeQueryInput;
+};
+
+
+export type DsaHubNotifierCountArgs = {
+  queryInput: NotifierQueryInput;
+};
+
+
+export type DsaHubNotifiersArgs = {
+  limit?: Scalars['Int'];
+  offset?: Scalars['Int'];
+  queryInput: NotifierQueryInput;
+};
+
+export type DsaMutations = {
+  readonly __typename?: 'DSAMutations';
+  readonly createNotifier?: Maybe<CreateNotifier>;
+  readonly removeNotifier?: Maybe<RemoveNotifier>;
+  readonly updateNotifier?: Maybe<UpdateNotifier>;
+};
+
+
+export type DsaMutationsCreateNotifierArgs = {
+  input: CreateNotifierInput;
+};
+
+
+export type DsaMutationsRemoveNotifierArgs = {
+  input: RemoveNotifierInput;
+};
+
+
+export type DsaMutationsUpdateNotifierArgs = {
+  input: UpdateNotifierInput;
+};
 
 export type Datetime = {
   readonly __typename?: 'Datetime';
@@ -6631,6 +6724,7 @@ export type MfpVariationUnqualifiedReason =
   | 'LOW_RATING'
   | 'MERCHANT_ELIGIBILITY'
   | 'MININUM_VARIATION_PERCENTAGE'
+  | 'NEGATIVE_PRODUCT_PRICE'
   | 'NOT_IN_STOCK'
   | 'NOT_OWNED_BY_MERCHANT'
   | 'PRODUCT_CATEGORY'
@@ -7234,6 +7328,12 @@ export type MerchantFineSchema = {
   readonly timestamp?: Maybe<Datetime>;
 };
 
+export type MerchantFulfillmentTimeInfoInput = {
+  readonly carrierPickupTime?: InputMaybe<Scalars['String']>;
+  readonly merchantHandlingTime?: InputMaybe<Scalars['Int']>;
+  readonly pickupCarrier?: InputMaybe<PickupCarrier>;
+};
+
 export type MerchantGamingReviewFieldTicketType =
   | 'lastSourceUpsertDate';
 
@@ -7473,6 +7573,7 @@ export type MerchantMutation = {
   readonly merchantSenderAddress: MerchantSenderAddressMutations;
   readonly merchantTaxIdentification: MerchantTaxIdentificationMutations;
   readonly merchantTermsAgreed?: Maybe<MerchantTermsAgreedMutations>;
+  readonly mftOptOut?: Maybe<ChangeMftOptOutMutation>;
   readonly returnSettings: MerchantReturnSettingsMutations;
   readonly returnWarehouseSettings?: Maybe<MerchantReturnWarehouseMutations>;
   readonly sellerIdentityCnVerification: SellerIdentityCnVerificationMutations;
@@ -7491,6 +7592,11 @@ export type MerchantMutationChangeDisplayNameArgs = {
 
 export type MerchantMutationChangePreferredUnitsArgs = {
   input: ChangePreferredUnitsInput;
+};
+
+
+export type MerchantMutationMftOptOutArgs = {
+  input: ChangeMftOptOutInput;
 };
 
 export type MerchantOnboardingStep =
@@ -8034,6 +8140,7 @@ export type MerchantSchema = {
   readonly isFactory: Scalars['Boolean'];
   readonly isFlatRateShippingOptedIn?: Maybe<Scalars['Boolean']>;
   readonly isIdentifiedUsTax?: Maybe<Scalars['Boolean']>;
+  readonly isMerchantFulfillmentTimeOptOut?: Maybe<Scalars['Boolean']>;
   readonly isMerchantInCalculatedShippingBeta: Scalars['Boolean'];
   readonly isPayable: Scalars['Boolean'];
   readonly isStoreMerchant: Scalars['Boolean'];
@@ -8640,8 +8747,11 @@ export type MerchantWarehouseMutationsUpsertWarehouseArgs = {
 export type MerchantWarehouseSchema = {
   readonly __typename?: 'MerchantWarehouseSchema';
   readonly address?: Maybe<AddressSchema>;
+  readonly carrierPickupTime?: Maybe<Scalars['String']>;
   readonly enabledCountries: ReadonlyArray<Country>;
   readonly id: Scalars['String'];
+  readonly merchantHandlingTime?: Maybe<Scalars['Int']>;
+  readonly pickupCarrier?: Maybe<PickupCarrier>;
   readonly unitId: Scalars['String'];
   readonly verificationRequest?: Maybe<WarehouseVerificationRequestSchema>;
   readonly verificationState?: Maybe<WarehouseVerificationState>;
@@ -8972,6 +9082,7 @@ export type MerchantWarningSchema = {
   readonly counterfeitReasonText?: Maybe<Scalars['String']>;
   readonly createdTime: Datetime;
   readonly creatorName?: Maybe<Scalars['String']>;
+  readonly disputeCutoffDay: Scalars['Int'];
   readonly effectiveDisputeDeadlineDate: Datetime;
   readonly fine?: Maybe<MerchantFineSchema>;
   readonly fineAmount?: Maybe<CurrencyValue>;
@@ -9141,6 +9252,71 @@ export type NavigationResultType =
   | 'PRODUCT'
   | 'WARNING';
 
+export type NoticePriority =
+  | 'DEFAULT'
+  | 'HIGH';
+
+export type NoticeProductSchema = {
+  readonly __typename?: 'NoticeProductSchema';
+  readonly product: ProductSchema;
+  readonly status: NoticeProductStatus;
+};
+
+export type NoticeProductStatus =
+  | 'ALREADY_REMOVED'
+  | 'DISPUTED'
+  | 'GEO_BLOCKED'
+  | 'INAPPROPRIATE_REMOVED'
+  | 'IP_REMOVED'
+  | 'REPORTED';
+
+export type NoticeQueryInput = {
+  readonly endDate?: InputMaybe<DatetimeInput>;
+  readonly notifierEmail?: InputMaybe<Scalars['String']>;
+  readonly notifierOrganization?: InputMaybe<Scalars['String']>;
+  readonly productId?: InputMaybe<Scalars['ObjectIdType']>;
+  readonly sortMode?: InputMaybe<NoticeSortMode>;
+  readonly startDate?: InputMaybe<DatetimeInput>;
+  readonly statuses?: InputMaybe<ReadonlyArray<NoticeStatus>>;
+};
+
+export type NoticeSchema = {
+  readonly __typename?: 'NoticeSchema';
+  readonly datetimeCreated: Datetime;
+  readonly datetimeDisputeReviewed?: Maybe<Datetime>;
+  readonly datetimeDisputed?: Maybe<Datetime>;
+  readonly datetimeReviewed?: Maybe<Datetime>;
+  readonly description: Scalars['String'];
+  readonly disputeDescription?: Maybe<Scalars['String']>;
+  readonly disputeEligibility: Scalars['Boolean'];
+  readonly disputeReviewResponse?: Maybe<Scalars['String']>;
+  readonly disputeReviewer?: Maybe<UserSchema>;
+  readonly disputeSupportFiles?: Maybe<ReadonlyArray<MerchantFileSchema>>;
+  readonly id: Scalars['ObjectIdType'];
+  readonly lastClaimedUser?: Maybe<UserSchema>;
+  readonly notifier?: Maybe<NotifierSchema>;
+  readonly notifierEmail: Scalars['String'];
+  readonly notifierName: Scalars['String'];
+  readonly priority: NoticePriority;
+  readonly products: ReadonlyArray<NoticeProductSchema>;
+  readonly reviewResponse?: Maybe<Scalars['String']>;
+  readonly reviewer?: Maybe<UserSchema>;
+  readonly status: NoticeStatus;
+  readonly supportFiles: ReadonlyArray<MerchantFileSchema>;
+};
+
+export type NoticeSortMode =
+  | 'NO_SORT';
+
+export type NoticeStatus =
+  | 'DISPUTE_PENDING_REVIEW'
+  | 'DISPUTE_UNDER_REVIEW'
+  | 'PARTIALLY_REJECTED'
+  | 'PENDING_REVIEW'
+  | 'REJECTED'
+  | 'RESOLVED'
+  | 'UNDER_REVIEW';
+
 export type NotificationsServiceSchema = {
   readonly __typename?: 'NotificationsServiceSchema';
   readonly notificationCount: Scalars['Int'];
@@ -9150,6 +9326,30 @@ export type NotificationsServiceSchema = {
 export type NotificationsServiceSchemaNotificationCountArgs = {
   viewed?: InputMaybe<Scalars['Boolean']>;
 };
+
+export type NotifierQueryInput = {
+  readonly countryCode?: InputMaybe<CountryCode>;
+  readonly email?: InputMaybe<Scalars['String']>;
+  readonly isTrustedFlagger?: InputMaybe<Scalars['Boolean']>;
+  readonly name?: InputMaybe<Scalars['String']>;
+  readonly organization?: InputMaybe<Scalars['String']>;
+  readonly type: NotifierType;
+};
+
+export type NotifierSchema = {
+  readonly __typename?: 'NotifierSchema';
+  readonly countries: ReadonlyArray<Country>;
+  readonly email: Scalars['String'];
+  readonly id: Scalars['ObjectIdType'];
+  readonly isTrustedFlagger: Scalars['Boolean'];
+  readonly name?: Maybe<Scalars['String']>;
+  readonly organization: Scalars['String'];
+  readonly type: NotifierType;
+};
+
+export type NotifierType =
+  | 'EMAIL_ADDRESS'
+  | 'EMAIL_DOMAIN';
 
 export type NotifyPasswordRecoveryMutation = {
   readonly __typename?: 'NotifyPasswordRecoveryMutation';
@@ -9192,6 +9392,18 @@ export type OffsiteBoostStats = {
   readonly endDate: Datetime;
   readonly startDate: Datetime;
 };
+
+export type OidcCredentialSchema = {
+  readonly __typename?: 'OidcCredentialSchema';
+  readonly authEmail: Scalars['String'];
+  readonly authProvider: OidcProviderEnum;
+  readonly id: Scalars['ObjectIdType'];
+};
+
+export type OidcProviderEnum =
+  | 'GOOGLE'
+  | 'WISH_AUTH'
+  | 'WISH_OKTA';
 
 export type OnboardingSchema = {
   readonly __typename?: 'OnboardingSchema';
@@ -9606,6 +9818,8 @@ export type OrderSalesTaxDetailsSchemaSalesTaxArgs = {
 export type OrderSchema = {
   readonly __typename?: 'OrderSchema';
   readonly acceptableShippingOrigins: ReadonlyArray<Country>;
+  readonly adjustedProductPrice?: Maybe<CurrencyValue>;
+  readonly adjustedShippingPrice?: Maybe<CurrencyValue>;
   readonly advancedLogistics?: Maybe<OrderAdvancedLogisticsInfoSchema>;
   readonly availableShippingProviders: ReadonlyArray<ShippingProviderSchema>;
   readonly badges: ReadonlyArray<OrderBadge>;
@@ -10617,6 +10831,10 @@ export type PermissionType =
   | 'WISH_LOCAL_DETAIL_TAG'
   | 'WISH_LOCAL_TAG_STATUS_CHECK'
   | 'YANWEN_LOGISTIC';
+
+export type PickupCarrier =
+  | 'WISE'
+  | 'YANWEN';
 
 export type PictureType =
   | 'BACK'
@@ -12931,6 +13149,16 @@ export type RemoveFromPlusInput = {
   readonly merchantIds: ReadonlyArray<Scalars['ObjectIdType']>;
 };
 
+export type RemoveNotifier = {
+  readonly __typename?: 'RemoveNotifier';
+  readonly message?: Maybe<Scalars['String']>;
+  readonly ok: Scalars['Boolean'];
+};
+
+export type RemoveNotifierInput = {
+  readonly notifierId: Scalars['ObjectIdType'];
+};
+
 export type RemoveProduct = {
   readonly __typename?: 'RemoveProduct';
   readonly message?: Maybe<Scalars['String']>;
@@ -14802,6 +15030,7 @@ export type TaggingMutations = {
   readonly __typename?: 'TaggingMutations';
   readonly createProductTaxonomyCategoryDispute?: Maybe<CreateProductTaxonomyCategoryDispute>;
   readonly deleteDedupImage?: Maybe<DeleteDedupImage>;
+  readonly dsa?: Maybe<DsaMutations>;
   readonly getAndClaimProductTaxonomyCategoryDispute?: Maybe<GetAndClaimProductTaxonomyCategoryDisputeForReview>;
   readonly markProductTaxonomyCategoryDisputeUnchanged?: Maybe<MarkProductTaxonomyCategoryDisputeUnchanged>;
   readonly markProductTaxonomyCategoryDisputeUpdated?: Maybe<MarkProductTaxonomyCategoryDisputeUpdated>;
@@ -14864,6 +15093,7 @@ export type TaggingServiceSchema = {
   readonly attributeExtractionTaggerJob?: Maybe<AttributeExtractionTaggerJobSchema>;
   readonly categoryClassificationTaggerJob?: Maybe<CategoryClassificationTaggerJobSchema>;
   readonly dedupImageLibHub?: Maybe<DedupImageLibraryHub>;
+  readonly dsa?: Maybe<DsaHub>;
   readonly generalTaggingManagement?: Maybe<GeneralTaggingManagement>;
   readonly inappropriateViolationTaggingManagement?: Maybe<InappropriateViolationTaggingManagement>;
   readonly ipViolationTaggingManagement?: Maybe<IpViolationTaggingManagement>;
@@ -14901,12 +15131,14 @@ export type TaggingViolationSubReasonCode =
   | 'ASSAULT_WEAPON_CONVERSION_PIECES'
   | 'BENZENE'
   | 'BEVERAGES'
+  | 'BLOOD_COLLECTION_TUBES'
   | 'BLUE_RAY'
   | 'BLURRED_LOGOS'
   | 'BLURRED_TAGS'
   | 'BLURRED_WATERMARKS'
   | 'BRANDING_CHANGE'
   | 'BRAND_DISCREPANCY'
+  | 'BRASS_OR_METAL_KNUCKLES'
   | 'BULLION'
   | 'BULLYING'
   | 'BUTANE'
@@ -15040,6 +15272,7 @@ export type TaggingViolationSubReasonCode =
   | 'STANDALONE_LITHIUM_BATTERY'
   | 'SUBSCRIPTIONS_OR_MEMBERSHIPS'
   | 'SURPRISE_BOX'
+  | 'SYRINGES'
   | 'TERRORIST_PROMOTION_GROUPS'
   | 'TIRE_SPIKES'
   | 'TITLE_IMAGE_MISMATCH'
@@ -15141,6 +15374,8 @@ export type TaxAuthoritySchema = {
 };
 
 export type TaxAuthorityType =
+  | 'ADDITIONAL_FEE'
+  | 'ADDITIONAL_SALES_AND_USE_TAX'
   | 'BMP'
   | 'CBT'
   | 'CGST'
@@ -15173,6 +15408,7 @@ export type TaxAuthorityType =
   | 'FCP_ST'
   | 'FEE'
   | 'GCT'
+  | 'GENERAL_SALES_AND_USE_TAX'
   | 'GIT'
   | 'GST'
   | 'HST'
@@ -16174,6 +16410,20 @@ export type UpdateMerchantGamingReviewTicket = {
   readonly ok: Scalars['Boolean'];
 };
 
+export type UpdateNotifier = {
+  readonly __typename?: 'UpdateNotifier';
+  readonly message?: Maybe<Scalars['String']>;
+  readonly ok: Scalars['Boolean'];
+};
+
+export type UpdateNotifierInput = {
+  readonly newCountryCodes?: InputMaybe<ReadonlyArray<CountryCode>>;
+  readonly newIsTrustedFlagger?: InputMaybe<Scalars['Boolean']>;
+  readonly newName?: InputMaybe<Scalars['String']>;
+  readonly newOrganization?: InputMaybe<Scalars['String']>;
+  readonly notifierId: Scalars['ObjectIdType'];
+};
+
 export type UpdateOffsiteBoost = {
   readonly __typename?: 'UpdateOffsiteBoost';
   readonly message?: Maybe<Scalars['String']>;
@@ -16341,6 +16591,7 @@ export type UpdateUserInfoInput = {
   readonly id: Scalars['ObjectIdType'];
   readonly lastName?: InputMaybe<Scalars['String']>;
   readonly manager?: InputMaybe<Scalars['ObjectIdType']>;
+  readonly username?: InputMaybe<Scalars['String']>;
 };
 
 export type UpdateUserInfoMutation = {
@@ -16732,6 +16983,7 @@ export type UpsertWarehouseInput = {
   readonly address?: InputMaybe<AddressInput>;
   readonly enabledCountries?: InputMaybe<ReadonlyArray<CountryCode>>;
   readonly id?: InputMaybe<Scalars['ObjectIdType']>;
+  readonly merchantFulfillmentTimeInfo?: InputMaybe<MerchantFulfillmentTimeInfoInput>;
   readonly name?: InputMaybe<Scalars['String']>;
 };
 
@@ -16941,6 +17193,7 @@ export type UserSchema = {
   readonly merchantId?: Maybe<Scalars['ObjectIdType']>;
   readonly name?: Maybe<Scalars['String']>;
   readonly numCurrentDevices?: Maybe<Scalars['Int']>;
+  readonly oidcCredentials?: Maybe<ReadonlyArray<OidcCredentialSchema>>;
   readonly onboarding?: Maybe<OnboardingSchema>;
   readonly onboardingUrl?: Maybe<Scalars['String']>;
   readonly permissions?: Maybe<ReadonlyArray<PermissionSchema>>;
@@ -17434,10 +17687,12 @@ export type WssLogisticsRefundReason =
   | 'FBW_FAILED_TO_FULFILL_DUE_TO_CARRIER_RETURN'
   | 'ITEM_HELD_AT_CUSTOMS'
   | 'ITEM_MARKED_DELIVERED_BUT_DID_NOT_ARRIVE'
+  | 'ITEM_MARKED_DELIVERED_NOT_ALL_ITEMS_ARRIVED'
   | 'ITEM_NEVER_ARRIVED'
   | 'ITEM_RETURNED_TO_SENDER'
   | 'MERCHANT_SENT_TO_WRONG_ADDRESS'
   | 'NOT_QUALIFIED_SHIPPING_PROVIDER'
+  | 'REPLACEMENT_NEVER_RECEIVED'
   | 'SHIPPING_TAKING_TOO_LONG'
   | 'USER_ENTERED_INVALID_ADDRESS';
 

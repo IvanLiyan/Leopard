@@ -195,6 +195,14 @@ export const LogisticsRefundReasonLabel: {
     "Item marked delivered; user did not receive it",
   ),
   USER_ENTERED_INVALID_ADDRESS: ci18n("Refund reason", "Invalid address"),
+  ITEM_MARKED_DELIVERED_NOT_ALL_ITEMS_ARRIVED: ci18n(
+    "Refund reason",
+    "Items marked delivered; user did not receive all of them",
+  ),
+  REPLACEMENT_NEVER_RECEIVED: ci18n(
+    "Refund reason",
+    "Replacement item shipment beyond latest delivery date",
+  ),
 };
 
 export const AllWssQualityRefundReasons: ReadonlyArray<WssQualityRefundReason> =

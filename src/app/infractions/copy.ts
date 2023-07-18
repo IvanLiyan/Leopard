@@ -69,6 +69,13 @@ const TaggingViolationSubReasonCodeData: {
     policy: i`[Hateful Symbols & Messages Policy](${"https://merchant.wish.com/policy/inappropriate-reasons/23"})`,
     faq: i`[Prohibited Product Listings FAQ](${zendeskURL("205211777")})`,
   },
+  BLOOD_COLLECTION_TUBES: {
+    parent: "MEDICAL_MATERIALS",
+    title: ci18n("name of warning", "Blood Collection Tubes"),
+    body: i`At this time, Wish prohibits the sale of blood collection tubes. This product may not be relisted.`,
+    policy: i`[Medically Regulated Materials Policy](${"https://merchant.wish.com/policy/inappropriate-reasons/34"})`,
+    faq: i`[Prohibited Product Listings FAQ](${zendeskURL("205211777")})`,
+  },
   HYPERREALISTIC_CONTENT: {
     parent: "NUDITY",
     title: ci18n("name of warning", "Hyperrealistic Content"),
@@ -191,6 +198,13 @@ const TaggingViolationSubReasonCodeData: {
     ),
     body: i`At this time, Wish prohibits the sale of products that promote the concealment of prohibited substances. If such content is removed, the listing may be reactivated.`,
     policy: i`[Drugs and Drug Paraphernalia Policy](${"https://merchant.wish.com/policy/inappropriate-reasons/14"})`,
+    faq: i`[Prohibited Product Listings FAQ](${zendeskURL("205211777")})`,
+  },
+  BRASS_OR_METAL_KNUCKLES: {
+    parent: "WEAPON",
+    title: ci18n("name of warning", "Brass or Metal Knuckles"),
+    body: i`At this time, Wish prohibits the sale of brass and/or metal knuckles. This product may not be relisted.`,
+    policy: i`[Weapons Policy](${"https://merchant.wish.com/policy/inappropriate-reasons/7"})`,
     faq: i`[Prohibited Product Listings FAQ](${zendeskURL("205211777")})`,
   },
   PENICILLIN: {
@@ -1094,6 +1108,13 @@ const TaggingViolationSubReasonCodeData: {
     parent: "CN_PROHIBITED_PRODUCTS",
     title: ci18n("name of warning", "Stun Guns"),
     body: i`Product listing is prohibited in your region.`,
+  },
+  SYRINGES: {
+    parent: "MEDICAL_MATERIALS",
+    title: ci18n("name of warning", "Sytinges"),
+    body: i`At this time, Wish prohibits the sale of blood collection tubes. This product may not be relisted.`,
+    policy: i`[Medically Regulated Materials Policy](${"https://merchant.wish.com/policy/inappropriate-reasons/34"})`,
+    faq: i`[Prohibited Product Listings FAQ](${zendeskURL("205211777")})`,
   },
   FULLY_EXPOSED_NIPPLE: {
     parent: "NUDITY",
