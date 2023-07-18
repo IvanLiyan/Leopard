@@ -297,3 +297,22 @@ features:
     description: >
       Page where merchants can view product attributes information associated with
       different categories.
+
+  - name: All Products Page - Leopard
+    owners:
+      - shli@wish.com
+    files:
+      - src/app/all-products/*
+      - src/pages/products/index.prod.tsx
+    description: >
+      Page where merchants can view a list of all their products.
+
+  - name: Add/Edit Product Page - Leopard
+    owners:
+      - shli@wish.com
+    files:
+      - src/app/add-edit-product/*
+      - src/pages/products/add.prod.tsx
+      - src/pages/products/edit.prod.tsx
+    description: >
+      Page where merchants can manually add a product or edit an existing one.
