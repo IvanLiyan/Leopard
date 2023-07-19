@@ -27,7 +27,8 @@ export const GetListingQualityInsightsUrlQuery = gql(`
 
 const LQSHeader: React.FC = () => {
   const { surfaceLightest, textDark } = useTheme();
-  const learnMoreLink = "/"; // TBD
+  const learnMoreLink =
+    "https://merchanthelp.wish.com/s/article/Listing-Quality-Insights-FAQ";
   const description =
     i`Reports are generated every 24 hours, but may take up to 48 hours to appear. ` +
     i`[Learn more](${learnMoreLink})`;
