@@ -23,6 +23,7 @@ import Image from "@core/components/Image";
 type Props = BaseProps & {
   readonly state: AddEditProductState;
   readonly variation: Variation;
+  readonly error?: boolean;
 };
 
 const VariationsTableImage: React.FC<Props> = (props: Props) => {
@@ -33,6 +34,7 @@ const VariationsTableImage: React.FC<Props> = (props: Props) => {
     state,
     variation,
     variation: { image },
+    error,
   } = props;
   const [isImageModalOpen, setIsImageModalOpen] = useState<boolean>(false);
 
@@ -52,7 +54,12 @@ const VariationsTableImage: React.FC<Props> = (props: Props) => {
           initiallySelectedVariation={variation}
         />
         <Illustration
-          className={css(styles.placeholder, style, className)}
+          className={css(
+            styles.placeholder,
+            error && styles.errorBorder,
+            style,
+            className,
+          )}
           onClick={onImageClicked}
           name="emptyImage"
           alt={i`Please select an image for your variation`}
@@ -73,7 +80,12 @@ const VariationsTableImage: React.FC<Props> = (props: Props) => {
       />
       <Layout.FlexColumn
         key={image.wishUrl}
-        style={[styles.imageContainer, style, className]}
+        style={[
+          styles.imageContainer,
+          error && styles.errorBorder,
+          style,
+          className,
+        ]}
         justifyContent="center"
         alignItems="center"
         onClick={onImageClicked}
@@ -90,7 +102,7 @@ const VariationsTableImage: React.FC<Props> = (props: Props) => {
 };
 
 const useStylesheet = ({ state: { isSubmitting } }: Props) => {
-  const { surfaceLightest } = useTheme();
+  const { surfaceLightest, negative } = useTheme();
   return useMemo(
     () =>
       StyleSheet.create({
@@ -114,8 +126,11 @@ const useStylesheet = ({ state: { isSubmitting } }: Props) => {
           maxHeight: "100%",
           maxWidth: "100%",
         },
+        errorBorder: {
+          border: `1px solid ${negative}`,
+        },
       }),
-    [isSubmitting, surfaceLightest],
+    [isSubmitting, negative, surfaceLightest],
   );
 };
 

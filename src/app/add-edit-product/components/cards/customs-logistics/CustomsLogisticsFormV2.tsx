@@ -8,6 +8,7 @@ import {
   NumericInput,
   TextInput,
   Option,
+  ErrorText,
 } from "@ContextLogic/lego";
 import AddEditProductState, {
   CustomsLogistics,
@@ -16,10 +17,13 @@ import { useTheme } from "@core/stores/ThemeStore";
 import { CountryCode, PaymentCurrencyCode } from "@schema";
 import {
   CustomsHsCodeValidator,
+  MinMaxValueValidator,
   RequiredValidator,
 } from "@core/toolkit/validators";
 import {
   CustomsLogisticsWeightUnit,
+  INVENTORY_ON_HAND_OPITONS,
+  InventoryOnHandState,
   WeightUnitDisplayNames,
 } from "@add-edit-product/toolkit";
 import { zendeskURL } from "@core/toolkit/url";
@@ -80,64 +84,78 @@ const CustomsLogisticsFormV2: React.FC<Props> = ({
 
   return (
     <Stack direction="column" alignItems="stretch" sx={{ gap: "16px" }}>
-      <Heading variant="h4">
-        {ci18n("Product add/edit form section title", "Logistics information")}
-      </Heading>
       {!checkHasVariation && (isCnMerchant || showInventoryOnHand) && (
-        <Grid container spacing={{ xs: 2 }}>
-          {isCnMerchant && (
-            <Grid item xs={6}>
-              <Field
-                title={ci18n(
-                  "Add/edit product form field title, product weight, the asterisk symbol means required field",
-                  "Weight*",
-                )}
-              >
-                <Stack
-                  direction="row"
-                  alignItems="center"
-                  justifyContent="stretch"
-                  sx={{ gap: "8px" }}
+        <>
+          <Heading variant="h4">
+            {ci18n(
+              "Product add/edit form section title",
+              "Logistics information",
+            )}
+          </Heading>
+          <Grid container spacing={{ xs: 2 }}>
+            {isCnMerchant && (
+              <Grid item xs={6}>
+                <Field
+                  title={ci18n(
+                    "Add/edit product form field title, product weight, the asterisk symbol means required field",
+                    "Weight*",
+                  )}
                 >
-                  <NumericInput
-                    value={displayWeight}
-                    onChange={({ valueAsNumber }) =>
+                  <Stack
+                    direction="row"
+                    alignItems="center"
+                    justifyContent="stretch"
+                    sx={{ gap: "8px" }}
+                  >
+                    <NumericInput
+                      value={displayWeight}
+                      onChange={({ valueAsNumber }) =>
+                        onUpdate({
+                          weight: valueAsNumber,
+                        })
+                      }
+                      disabled={disabled}
+                      validators={[
+                        new RequiredValidator(),
+                        new MinMaxValueValidator({
+                          minAllowedValue: 0,
+                          customMessage: i`Value cannot be negative`,
+                          allowBlank: true,
+                        }),
+                      ]}
+                      forceValidation={forceValidation}
+                      data-cy={`${dataCy}-input-weight`}
+                      style={{ width: "90%" }}
+                    />
+                    <Text variant="bodyM">{weightAbbr}</Text>
+                  </Stack>
+                </Field>
+              </Grid>
+            )}
+            {showInventoryOnHand && (
+              <Grid item xs={6}>
+                <Field title={i`Inventory on hand`}>
+                  <FormSelect
+                    placeholder={ci18n("Dropdown placeholder text", "Select")}
+                    options={INVENTORY_ON_HAND_OPITONS}
+                    selectedValue={inventoryOnHand ?? "NOT_SET"}
+                    onSelected={(option: InventoryOnHandState) => {
                       onUpdate({
-                        weight:
-                          valueAsNumber != null
-                            ? Math.max(0, valueAsNumber)
-                            : undefined,
-                      })
-                    }
+                        inventoryOnHand: option,
+                      });
+                    }}
                     disabled={disabled}
-                    validators={[new RequiredValidator()]}
-                    forceValidation={forceValidation}
-                    data-cy={`${dataCy}-input-weight`}
-                    style={{ width: "90%" }}
+                    data-cy={`${dataCy}-select-inventory-on-hand`}
                   />
-                  <Text variant="bodyM">{weightAbbr}</Text>
-                </Stack>
-              </Field>
-            </Grid>
-          )}
-          {showInventoryOnHand && (
-            <Grid item xs={6}>
-              <Field title={i`Inventory on hand`}>
-                <TextInput
-                  value={inventoryOnHand}
-                  onChange={({ text }) =>
-                    onUpdate({
-                      inventoryOnHand: text,
-                    })
-                  }
-                  disabled={disabled}
-                  data-cy={`${dataCy}-input-inventory-on-hand`}
-                />
-              </Field>
-            </Grid>
-          )}
-        </Grid>
+                </Field>
+              </Grid>
+            )}
+          </Grid>
+        </>
       )}
+      <Heading variant="h4">
+        {ci18n("Product add/edit form section title", "Compliance")}
+      </Heading>
       <Text variant="bodyM">
         Does the product contain any of the following?
       </Text>
@@ -227,8 +245,14 @@ const CustomsLogisticsFormV2: React.FC<Props> = ({
                 }}
                 disabled={disabled}
                 data-cy={`${dataCy}-select-country`}
+                error={forceValidation && countryOfOrigin == null}
               />
             </Field>
+            {forceValidation && countryOfOrigin == null && (
+              <ErrorText style={{ marginTop: 8 }}>
+                This field is required
+              </ErrorText>
+            )}
           </Grid>
         )}
         <Grid item xs={6}>

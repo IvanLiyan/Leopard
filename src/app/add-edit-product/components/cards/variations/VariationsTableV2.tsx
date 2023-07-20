@@ -3,7 +3,10 @@ import { observer } from "mobx-react";
 import { StyleSheet } from "aphrodite";
 import { ni18n } from "@core/toolkit/i18n";
 import { css } from "@core/toolkit/styling";
-import { RequiredValidator } from "@core/toolkit/validators";
+import {
+  MinMaxValueValidator,
+  RequiredValidator,
+} from "@core/toolkit/validators";
 import { zendeskURL } from "@core/toolkit/url";
 import { useToastStore } from "@core/stores/ToastStore";
 import {
@@ -11,6 +14,7 @@ import {
   FormSelect,
   RowSelectionArgs,
   StaggeredFadeIn,
+  ErrorText,
 } from "@ContextLogic/lego";
 import {
   TextInput,
@@ -26,7 +30,6 @@ import AddEditProductState, {
   setVariationInventory,
   UniqueSkuValidator,
   Variation,
-  updateCustomsLogistics,
   createCustomsLogistics,
 } from "@add-edit-product/AddEditProductState";
 import { formatCurrency } from "@core/toolkit/currency";
@@ -38,10 +41,13 @@ import {
   LEGACY_SIZE_DISPLAY_TEXT,
   CustomsLogisticsWeightUnit,
   WeightUnitDisplayNames,
+  INVENTORY_ON_HAND_OPITONS,
+  InventoryOnHandState,
 } from "@add-edit-product/toolkit";
 import { CountryCode } from "@schema";
 import AttributesCell from "./AttributesCell";
 import { Stack, Text } from "@ContextLogic/atlas-ui";
+import SelectButton from "./SelectButton";
 
 type Props = {
   readonly style: CSSProperties;
@@ -85,6 +91,7 @@ const VariationsTableV2: React.FC<Props> = (props: Props) => {
     isCnMerchant,
     showVariationGroupingUI,
     showInventoryOnHand,
+    updateVariationCustomsLogistics,
   } = state;
   const isOptionEditable = showVariationGroupingUI && !isNewProduct;
   const weightAbbr = WeightUnitDisplayNames[CustomsLogisticsWeightUnit].symbol;
@@ -155,6 +162,7 @@ const VariationsTableV2: React.FC<Props> = (props: Props) => {
     return (
       <Table.Column
         _key="size"
+        key="size"
         title={
           showVariationGroupingUI
             ? LEGACY_SIZE_DISPLAY_TEXT
@@ -167,7 +175,7 @@ const VariationsTableV2: React.FC<Props> = (props: Props) => {
         {({ row: variation }: CellInfo<React.ReactNode, Variation>) =>
           editable ? (
             <TextInput
-              value={variation.size}
+              value={variation.size == null ? null : variation.size}
               onChange={({ text }) =>
                 updateVariation({
                   clientSideId: variation.clientSideId,
@@ -190,6 +198,7 @@ const VariationsTableV2: React.FC<Props> = (props: Props) => {
     return (
       <Table.Column
         _key="color"
+        key="color"
         title={
           showVariationGroupingUI
             ? LEGACY_COLOR_DISPLAY_TEXT
@@ -202,7 +211,7 @@ const VariationsTableV2: React.FC<Props> = (props: Props) => {
         {({ row: variation }: CellInfo<React.ReactNode, Variation>) =>
           editable ? (
             <TextInput
-              value={variation.color}
+              value={variation.color == null ? null : variation.color}
               onChange={({ text }) =>
                 updateVariation({
                   clientSideId: variation.clientSideId,
@@ -310,11 +319,10 @@ const VariationsTableV2: React.FC<Props> = (props: Props) => {
             direction="row"
             justifyContent="space-between"
             alignItems="center"
-            sx={{ margin: "0px 16px 16px 0px" }}
+            sx={{ margin: "0px 16px 16px 0px", overflow: "auto" }}
           >
             <Stack direction="row" alignItems="center" sx={{ gap: "16px" }}>
               <NumberButton
-                style={styles.bulkAction}
                 buttonText={i`Apply price`}
                 onSubmit={(value) =>
                   Array.from(selectedRowIds).forEach((clientSideId) =>
@@ -330,7 +338,6 @@ const VariationsTableV2: React.FC<Props> = (props: Props) => {
                 data-cy="apply-price"
               />
               <NumberButton
-                style={styles.bulkAction}
                 buttonText={i`Apply inventory`}
                 onSubmit={(value) => {
                   if (value != null) {
@@ -349,6 +356,40 @@ const VariationsTableV2: React.FC<Props> = (props: Props) => {
                 placeholder="0"
                 data-cy="apply-inventory"
               />
+              <NumberButton
+                buttonText={ci18n("Apply", "Apply weight")}
+                onSubmit={(value) => {
+                  if (value != null) {
+                    Array.from(selectedRowIds).forEach((clientSideId) => {
+                      updateVariationCustomsLogistics({
+                        clientSideId,
+                        newProps: {
+                          weight: value,
+                        },
+                      });
+                    });
+                  }
+                }}
+                placeholder="0"
+                data-cy="apply-weight"
+              />
+              <SelectButton
+                onSubmit={(value) => {
+                  if (value != null) {
+                    Array.from(selectedRowIds).forEach((clientSideId) => {
+                      updateVariationCustomsLogistics({
+                        clientSideId,
+                        newProps: {
+                          inventoryOnHand: value as InventoryOnHandState,
+                        },
+                      });
+                    });
+                  }
+                }}
+                options={INVENTORY_ON_HAND_OPITONS}
+                buttonText={i`Inventory on hand`}
+                data-cy="apply-inventory-on-hand"
+              />
               <Button
                 style={styles.bulkAction}
                 onClick={() => {
@@ -360,21 +401,6 @@ const VariationsTableV2: React.FC<Props> = (props: Props) => {
                 Discard
               </Button>
             </Stack>
-            <Text
-              variant="bodyMStrong"
-              sx={{
-                lineHeight: "26px",
-                marginLeft: "16px",
-                whiteSpace: "nowrap",
-              }}
-            >
-              {ni18n(
-                selectedRowIds.size,
-                "1 item selected",
-                "{%1=number of selected items} items selected",
-                selectedRowIds.size,
-              )}
-            </Text>
           </Stack>
         </StaggeredFadeIn>
       )}
@@ -421,11 +447,19 @@ const VariationsTableV2: React.FC<Props> = (props: Props) => {
           handleEmptyRow
         >
           {({ row: variation }: CellInfo<React.ReactNode, Variation>) => (
-            <VariationTableImage
-              variation={variation}
-              state={state}
-              key={variation.clientSideId}
-            />
+            <Stack direction="column">
+              <VariationTableImage
+                variation={variation}
+                state={state}
+                key={variation.clientSideId}
+                error={forceValidation && variation.image == null}
+              />
+              {forceValidation && variation.image == null && (
+                <ErrorText style={{ marginTop: 8 }}>
+                  This field is required
+                </ErrorText>
+              )}
+            </Stack>
           )}
         </Table.Column>
         {hasColors && renderColorColumn(isOptionEditable)}
@@ -489,15 +523,19 @@ const VariationsTableV2: React.FC<Props> = (props: Props) => {
                   updateVariation({
                     clientSideId: variation.clientSideId,
                     newProps: {
-                      price:
-                        textAsNumber != null
-                          ? Math.max(0, textAsNumber)
-                          : undefined,
+                      price: textAsNumber,
                     },
                   })
                 }
                 forceValidation={forceValidation}
-                validators={[new RequiredValidator()]}
+                validators={[
+                  new RequiredValidator(),
+                  new MinMaxValueValidator({
+                    minAllowedValue: 0,
+                    customMessage: i`Value cannot be negative`,
+                    allowBlank: true,
+                  }),
+                ]}
                 disabled={isSubmitting}
                 inputStyle={{ padding: "0px 9px" }}
               />
@@ -519,7 +557,7 @@ const VariationsTableV2: React.FC<Props> = (props: Props) => {
               variation.inventoryByWarehouseId.get(standardWarehouseId);
             return (
               <NumericInput
-                value={inventory || 0}
+                value={inventory}
                 onChange={({ valueAsNumber }) =>
                   updateVariation({
                     clientSideId: variation.clientSideId,
@@ -532,7 +570,14 @@ const VariationsTableV2: React.FC<Props> = (props: Props) => {
                     },
                   })
                 }
-                validators={[new RequiredValidator()]}
+                validators={[
+                  new RequiredValidator(),
+                  new MinMaxValueValidator({
+                    minAllowedValue: 0,
+                    customMessage: i`Value cannot be negative`,
+                    allowBlank: true,
+                  }),
+                ]}
                 forceValidation={forceValidation}
                 disabled={isSubmitting}
                 style={[styles.inventoryInput]}
@@ -561,24 +606,21 @@ const VariationsTableV2: React.FC<Props> = (props: Props) => {
                   <NumericInput
                     value={curCustomsLogistics.weight}
                     onChange={({ valueAsNumber }) => {
-                      const newCustomsLogistics = updateCustomsLogistics({
-                        data: curCustomsLogistics,
-                        newProps: {
-                          weight:
-                            valueAsNumber != null
-                              ? Math.max(0, valueAsNumber)
-                              : undefined,
-                        },
-                      });
-
-                      updateVariation({
+                      updateVariationCustomsLogistics({
                         clientSideId: variation.clientSideId,
                         newProps: {
-                          customCustomsLogistics: newCustomsLogistics,
+                          weight: valueAsNumber,
                         },
                       });
                     }}
-                    validators={[new RequiredValidator()]}
+                    validators={[
+                      new RequiredValidator(),
+                      new MinMaxValueValidator({
+                        minAllowedValue: 0,
+                        customMessage: i`Value cannot be negative`,
+                        allowBlank: true,
+                      }),
+                    ]}
                     forceValidation={forceValidation}
                     disabled={isSubmitting}
                     style={[styles.inventoryInput]}
@@ -603,25 +645,22 @@ const VariationsTableV2: React.FC<Props> = (props: Props) => {
                 : createCustomsLogistics();
 
               return (
-                <TextInput
-                  value={curCustomsLogistics.inventoryOnHand}
-                  onChange={({ text }) => {
-                    const newCustomsLogistics = updateCustomsLogistics({
-                      data: curCustomsLogistics,
-                      newProps: {
-                        inventoryOnHand: text,
-                      },
-                    });
-
-                    updateVariation({
+                <FormSelect
+                  style={styles.inventoryInput}
+                  placeholder={ci18n("Dropdown placeholder text", "Select")}
+                  options={INVENTORY_ON_HAND_OPITONS}
+                  selectedValue={
+                    curCustomsLogistics.inventoryOnHand ?? "NOT_SET"
+                  }
+                  onSelected={(option: InventoryOnHandState) => {
+                    updateVariationCustomsLogistics({
                       clientSideId: variation.clientSideId,
                       newProps: {
-                        customCustomsLogistics: newCustomsLogistics,
+                        inventoryOnHand: option,
                       },
                     });
                   }}
                   disabled={isSubmitting}
-                  style={[styles.inventoryInput]}
                 />
               );
             }}
@@ -645,28 +684,33 @@ const VariationsTableV2: React.FC<Props> = (props: Props) => {
               : createCustomsLogistics();
 
             return (
-              <FormSelect
-                placeholder={i`Select a country or region`}
-                options={customsCountryOptions}
-                selectedValue={curCustomsLogistics.countryOfOrigin}
-                onSelected={(cc: CountryCode) => {
-                  const newCustomsLogistics = updateCustomsLogistics({
-                    data: curCustomsLogistics,
-                    newProps: {
-                      countryOfOrigin: cc,
-                    },
-                  });
-
-                  updateVariation({
-                    clientSideId: variation.clientSideId,
-                    newProps: {
-                      customCustomsLogistics: newCustomsLogistics,
-                    },
-                  });
-                }}
-                disabled={isSubmitting}
-                style={styles.selectField}
-              />
+              <Stack direction="column">
+                <FormSelect
+                  placeholder={i`Select a country or region`}
+                  options={customsCountryOptions}
+                  selectedValue={curCustomsLogistics.countryOfOrigin}
+                  onSelected={(cc: CountryCode) => {
+                    updateVariationCustomsLogistics({
+                      clientSideId: variation.clientSideId,
+                      newProps: {
+                        countryOfOrigin: cc,
+                      },
+                    });
+                  }}
+                  disabled={isSubmitting}
+                  style={styles.selectField}
+                  error={
+                    forceValidation &&
+                    variation.customCustomsLogistics?.countryOfOrigin == null
+                  }
+                />
+                {forceValidation &&
+                  variation.customCustomsLogistics?.countryOfOrigin == null && (
+                    <ErrorText style={{ marginTop: 8 }}>
+                      This field is required
+                    </ErrorText>
+                  )}
+              </Stack>
             );
           }}
         </Table.Column>

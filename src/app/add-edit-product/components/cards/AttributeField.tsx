@@ -26,7 +26,11 @@ const AttributeField: React.FC<Props> = ({
   return (
     <Field
       style={[style, className, { minWidth: 0, overflow: "auto" }]}
-      title={attribute.name}
+      title={
+        attribute.usage === "ATTRIBUTE_USAGE_REQUIRED"
+          ? `${attribute.name}*`
+          : attribute.name
+      }
       description={attribute.description}
       key={attribute.id}
     >
@@ -38,7 +42,6 @@ const AttributeField: React.FC<Props> = ({
         forceValidation={forceValidation}
         disabled={isSubmitting}
         acceptNegative={false}
-        required={attribute.usage == "ATTRIBUTE_USAGE_REQUIRED"}
       />
     </Field>
   );

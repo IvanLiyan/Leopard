@@ -35,6 +35,7 @@ const CategoryAttributes: React.FC<Props> = (props: Props) => {
     subcategoryAttributes,
     updateSubcategoryAttributes,
     taxonomyAttributes,
+    showRevampedAddEditProductUI,
   } = state;
 
   const imageInfos: ReadonlyArray<ImageInfo> = useMemo(() => {
@@ -53,7 +54,12 @@ const CategoryAttributes: React.FC<Props> = (props: Props) => {
     const attrValue = subcategoryAttributes[attribute.name];
     return (
       <Field
-        title={attribute.name}
+        title={
+          attribute.usage === "ATTRIBUTE_USAGE_REQUIRED" &&
+          showRevampedAddEditProductUI
+            ? `${attribute.name}*`
+            : attribute.name
+        }
         description={attribute.description}
         key={attribute.id}
         style={styles.field}
@@ -71,7 +77,6 @@ const CategoryAttributes: React.FC<Props> = (props: Props) => {
           forceValidation={forceValidation}
           disabled={isSubmitting}
           acceptNegative={false}
-          required={attribute.usage == "ATTRIBUTE_USAGE_REQUIRED"}
         />
       </Field>
     );
@@ -100,30 +105,32 @@ const CategoryAttributes: React.FC<Props> = (props: Props) => {
             .filter((attr) => !attr.isVariationAttribute)
             .map((attr) => renderAttribute(attr))}
         </Layout.GridRow>
-        <Field
-          title={ci18n(
-            "Input label, lets merchant upload image of the size chart for a product listing",
-            "Size chart",
-          )}
-          key={Constants.TAXONOMY.sizeChartImgAttrName}
-          style={styles.field}
-        >
-          <ImageUploadGroup
-            style={styles.input}
-            maxSizeMB={10}
-            maxImages={1}
-            onImagesChanged={(images: ReadonlyArray<ImageInfo>) => {
-              updateSubcategoryAttributes({
-                attrName: Constants.TAXONOMY.sizeChartImgAttrName,
-                attrValue: images.length ? [images[0].url] : undefined,
-              });
-            }}
-            cleanImageEnabled={false}
-            images={imageInfos}
-            imageWidth={ImageWidth}
-            data-cy="size-chart"
-          />
-        </Field>
+        {!showRevampedAddEditProductUI && (
+          <Field
+            title={ci18n(
+              "Input label, lets merchant upload image of the size chart for a product listing",
+              "Size chart",
+            )}
+            key={Constants.TAXONOMY.sizeChartImgAttrName}
+            style={styles.field}
+          >
+            <ImageUploadGroup
+              style={styles.input}
+              maxSizeMB={10}
+              maxImages={1}
+              onImagesChanged={(images: ReadonlyArray<ImageInfo>) => {
+                updateSubcategoryAttributes({
+                  attrName: Constants.TAXONOMY.sizeChartImgAttrName,
+                  attrValue: images.length ? [images[0].url] : undefined,
+                });
+              }}
+              cleanImageEnabled={false}
+              images={imageInfos}
+              imageWidth={ImageWidth}
+              data-cy="size-chart"
+            />
+          </Field>
+        )}
       </Layout.FlexColumn>
     </Section>
   );

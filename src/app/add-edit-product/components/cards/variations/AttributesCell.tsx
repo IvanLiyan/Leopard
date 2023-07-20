@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { observer } from "mobx-react";
 import AddEditProductState, {
   Variation,
@@ -6,6 +6,8 @@ import AddEditProductState, {
 import Link from "@deprecated/components/Link";
 import { ci18n } from "@core/toolkit/i18n";
 import AttributesModal from "./AttributesModal";
+import { Stack } from "@ContextLogic/atlas-ui";
+import { ErrorText } from "@ContextLogic/lego";
 
 type Props = {
   readonly state: AddEditProductState;
@@ -16,6 +18,14 @@ const AttributesCell: React.FC<Props> = (props: Props) => {
   const { state, variation } = props;
   const [isAttributesModalOpen, setIsAttributesModalOpen] =
     useState<boolean>(false);
+  const { attributesHasError, forceValidation } = state;
+
+  const hasError = useMemo(() => {
+    return attributesHasError({
+      attributesInput: variation.attributes ?? {},
+      isVariationLevel: true,
+    });
+  }, [attributesHasError, variation.attributes]);
 
   return (
     <>
@@ -27,13 +37,18 @@ const AttributesCell: React.FC<Props> = (props: Props) => {
         }}
         open={isAttributesModalOpen}
       />
-      <Link
-        onClick={() => {
-          setIsAttributesModalOpen(true);
-        }}
-      >
-        {ci18n("Link text, add/edit info", "Add/Edit")}
-      </Link>
+      <Stack direction="column">
+        <Link
+          onClick={() => {
+            setIsAttributesModalOpen(true);
+          }}
+        >
+          {ci18n("Link text, add/edit info", "Add/Edit")}
+        </Link>
+        {hasError && forceValidation && (
+          <ErrorText style={{ marginTop: 8 }}>Has error</ErrorText>
+        )}
+      </Stack>
     </>
   );
 };

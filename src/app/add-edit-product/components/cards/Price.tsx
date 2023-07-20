@@ -9,7 +9,10 @@ import { StyleSheet } from "aphrodite";
 import { observer } from "mobx-react";
 
 import { Field, Markdown, CurrencyInput, Layout } from "@ContextLogic/lego";
-import { RequiredValidator } from "@core/toolkit/validators";
+import {
+  MinMaxValueValidator,
+  RequiredValidator,
+} from "@core/toolkit/validators";
 
 /* Lego Toolkit */
 import { css } from "@core/toolkit/styling";
@@ -18,6 +21,7 @@ import { zendeskURL } from "@core/toolkit/url";
 import Section, { SectionProps } from "./Section";
 import AddEditProductState from "@add-edit-product/AddEditProductState";
 import { merchFeUrl } from "@core/toolkit/router";
+import { ci18n } from "@core/toolkit/i18n";
 
 type Props = Omit<SectionProps, "title" | "rightCard"> & {
   readonly state: AddEditProductState;
@@ -32,7 +36,13 @@ const Price: React.FC<Props> = ({
   ...sectionProps
 }: Props) => {
   const styles = useStylesheet();
-  const { forceValidation, primaryCurrency, isSubmitting, variations } = state;
+  const {
+    forceValidation,
+    primaryCurrency,
+    isSubmitting,
+    variations,
+    showRevampedAddEditProductUI,
+  } = state;
 
   const price = useMemo(() => {
     const variation = variations[0];
@@ -44,7 +54,14 @@ const Price: React.FC<Props> = ({
   return (
     <Section
       className={css(style, className)}
-      title={i`Price`}
+      title={
+        showRevampedAddEditProductUI
+          ? ci18n(
+              "Section header, the asterisk symbol means field is required",
+              "Price*",
+            )
+          : i`Price`
+      }
       rightCard={
         showTip ? (
           <Section title={i`What should I know?`} isTip>
@@ -86,7 +103,14 @@ const Price: React.FC<Props> = ({
             }
             debugValue={(Math.random() * 10).toFixed(2).toString()}
             forceValidation={forceValidation}
-            validators={[new RequiredValidator()]}
+            validators={[
+              new RequiredValidator(),
+              new MinMaxValueValidator({
+                minAllowedValue: 0,
+                customMessage: i`Value cannot be negative`,
+                allowBlank: true,
+              }),
+            ]}
             disabled={isSubmitting}
             data-cy="input-price"
           />

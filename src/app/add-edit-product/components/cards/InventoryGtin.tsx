@@ -66,7 +66,6 @@ const InventoryGtin: React.FC<Props> = (props: Props) => {
           >
             <NumericInput
               value={inventory}
-              placeholder="0"
               onChange={({ valueAsNumber }) =>
                 setSingleVariationInventory(valueAsNumber)
               }
@@ -75,6 +74,7 @@ const InventoryGtin: React.FC<Props> = (props: Props) => {
                 new MinMaxValueValidator({
                   minAllowedValue: 0,
                   customMessage: i`Value cannot be negative`,
+                  allowBlank: true,
                 }),
               ]}
               forceValidation={forceValidation}

@@ -21,7 +21,7 @@ const ImageWidth = 173;
 const ProductImagesV2: React.FC<Props> = (props: Props) => {
   const { style, className, state, ...sectionProps } = props;
 
-  const { forceValidation, images } = state;
+  const { forceValidation, images, imageErrorMessage } = state;
   const imageInfos: ReadonlyArray<ImageInfo> = useMemo(() => {
     if (images == null) {
       return [];
@@ -52,7 +52,8 @@ const ProductImagesV2: React.FC<Props> = (props: Props) => {
         "Product images*",
       )}
       {...sectionProps}
-      hasInvalidData={forceValidation && imageInfos.length == 0}
+      hasInvalidData={forceValidation && imageErrorMessage != null}
+      errorMessage={imageErrorMessage}
     >
       <Stack direction="row" sx={{ gap: "16px" }} alignItems="flex-start">
         <Stack direction="column" sx={{ gap: "8px", width: "70%" }}>

@@ -499,3 +499,21 @@ export const ConditionOptions: ReadonlyArray<Option<CommerceProductCondition>> =
     value,
     text: ConditionDisplay[value],
   }));
+
+export type InventoryOnHandState = "ON_HAND" | "OFF_HAND" | "NOT_SET"; // TODO: replace with BE type, BE ticket https://jira.wish.site/browse/MAL-675
+
+export const INVENTORY_ON_HAND_OPTION_NAMES: Record<
+  InventoryOnHandState,
+  string
+> = {
+  ON_HAND: ci18n("Inventory on hand dropdown option", "On hand"),
+  OFF_HAND: ci18n("Inventory on hand dropdown option", "Off hand"),
+  NOT_SET: ci18n("Inventory on hand dropdown option", "Not set"),
+};
+
+export const INVENTORY_ON_HAND_OPITONS: ReadonlyArray<
+  Option<InventoryOnHandState>
+> = Object.entries(INVENTORY_ON_HAND_OPTION_NAMES).map(([state, name]) => ({
+  value: state as InventoryOnHandState,
+  text: name,
+}));

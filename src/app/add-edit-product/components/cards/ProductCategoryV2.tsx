@@ -40,6 +40,8 @@ const ProductCategoryV2: React.FC<Props> = (props: Props) => {
     removeInvalidOptionsFromVariations,
     isNewProduct,
     showVariationGroupingUI,
+    forceValidation,
+    categoryErrorMessage,
   } = state;
 
   const { categoryMap, loading: isLoadingCategoryTree } = useCategoryTreeMap();
@@ -115,6 +117,8 @@ const ProductCategoryV2: React.FC<Props> = (props: Props) => {
         "**Product Category***",
       )}
       markdown
+      hasInvalidData={forceValidation && categoryErrorMessage != null}
+      errorMessage={categoryErrorMessage}
       {...sectionProps}
     >
       <ConfirmationModal

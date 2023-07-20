@@ -16,6 +16,7 @@ import {
   StaggeredFadeIn,
   Layout,
   Info,
+  ErrorText,
 } from "@ContextLogic/lego";
 import { AccordionProps } from "@ContextLogic/lego";
 
@@ -41,6 +42,7 @@ export type SectionProps = Omit<
   readonly isTip?: boolean;
   readonly alwaysOpen?: boolean;
   readonly tooltip?: string;
+  readonly errorMessage?: string;
 };
 
 const MARKDOWN_DEFAULT = false;
@@ -60,6 +62,7 @@ const Section = (props: SectionProps) => {
     isTip,
     alwaysOpen,
     tooltip,
+    errorMessage,
     ...accordionProps
   } = props;
   const { surfaceLight } = useTheme();
@@ -75,45 +78,49 @@ const Section = (props: SectionProps) => {
       alignItems="stretch"
       style={[styles.root, !isTip && { position: "relative" }]}
     >
-      <Card
-        className={css(className, style)}
-        style={{ boxShadow: "none" }}
-        contentContainerStyle={css(styles.root)}
-      >
-        <Accordion
-          isOpen={isOpen}
-          onOpenToggled={onOpenToggled}
-          header={() => (
-            <Layout.FlexRow alignItems="center" style={{ gap: "8px" }}>
-              <Markdown
-                className={css(styles.header)}
-                text={markdown ? title : `**${title}**`}
-              />
-              {tooltip && <Info text={tooltip} />}
-            </Layout.FlexRow>
-          )}
-          headerContainerStyle={{
-            padding: `0px ${hideChevron ? 16 : 8}px`,
-            height: 48,
-            backgroundColor: surfaceLight,
-          }}
-          chevronLocation="left"
-          chevronSize={16}
-          hideChevron={hideChevron}
-          {...accordionProps}
+      <Layout.FlexColumn style={[className, style]}>
+        <Card
+          style={{ boxShadow: "none" }}
+          contentContainerStyle={css(styles.root)}
         >
-          <Layout.FlexColumn
-            alignItems="stretch"
-            style={[
-              styles.content,
-              contentStyle,
-              hasInvalidData ? styles.invalidData : null,
-            ]}
+          <Accordion
+            isOpen={isOpen}
+            onOpenToggled={onOpenToggled}
+            header={() => (
+              <Layout.FlexRow alignItems="center" style={{ gap: "8px" }}>
+                <Markdown
+                  className={css(styles.header)}
+                  text={markdown ? title : `**${title}**`}
+                />
+                {tooltip && <Info text={tooltip} />}
+              </Layout.FlexRow>
+            )}
+            headerContainerStyle={{
+              padding: `0px ${hideChevron ? 16 : 8}px`,
+              height: 48,
+              backgroundColor: surfaceLight,
+            }}
+            chevronLocation="left"
+            chevronSize={16}
+            hideChevron={hideChevron}
+            {...accordionProps}
           >
-            {children}
-          </Layout.FlexColumn>
-        </Accordion>
-      </Card>
+            <Layout.FlexColumn
+              alignItems="stretch"
+              style={[
+                styles.content,
+                contentStyle,
+                hasInvalidData ? styles.invalidData : null,
+              ]}
+            >
+              {children}
+            </Layout.FlexColumn>
+          </Accordion>
+        </Card>
+        {hasInvalidData && errorMessage && (
+          <ErrorText style={{ marginTop: "8px" }}>{errorMessage}</ErrorText>
+        )}
+      </Layout.FlexColumn>
       {rightCard && isOpen && (
         <StaggeredFadeIn
           style={styles.rightCard}

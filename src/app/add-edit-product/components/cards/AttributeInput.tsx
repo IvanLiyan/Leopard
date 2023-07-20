@@ -21,7 +21,6 @@ type Props = BaseProps & {
   readonly value: ReadonlyArray<string> | null | undefined;
   readonly onChange: (value: ReadonlyArray<string> | undefined) => unknown;
   readonly forceValidation?: boolean | undefined;
-  readonly required?: boolean;
   readonly disabled?: boolean;
   readonly acceptNegative?: boolean;
   readonly selectPlaceholder?: string;
@@ -37,12 +36,13 @@ const AttributeInput: React.FC<Props> = ({
   onChange,
   selectPlaceholder,
   inputPlaceholder,
-  required,
   disabled,
   acceptNegative = true,
 }: Props) => {
   const styles = useStylesheet();
+  const required = attribute.usage === "ATTRIBUTE_USAGE_REQUIRED";
   const validators = required ? [new RequiredValidator()] : undefined;
+  const showRequiredError = forceValidation && required && value == null;
   const [multiSelectError, setMultiSelectError] = useState<string | undefined>(
     undefined,
   );
@@ -87,28 +87,34 @@ const AttributeInput: React.FC<Props> = ({
     );
   } else if (attribute.mode === "ATTRIBUTE_MODE_SINGLE_SELECTION_ONLY") {
     return (
-      <FormSelect
-        style={[className, style]}
-        options={
-          attribute.values?.map((v) => {
-            return {
-              text: v.value,
-              value: v.value,
-            };
-          }) || []
-        }
-        placeholder={
-          selectPlaceholder ||
-          ci18n("Dropdown placeholder, select a value", "Select")
-        }
-        selectedValue={value && value.length > 0 ? value[0] : undefined}
-        onSelected={(value: string | undefined) => {
-          onChange(value ? [value] : undefined);
-        }}
-        disabled={disabled}
-        data-cy={`select-attribute-${attribute.id}`}
-        showArrow
-      />
+      <Layout.FlexColumn>
+        <FormSelect
+          style={[className, style]}
+          options={
+            attribute.values?.map((v) => {
+              return {
+                text: v.value,
+                value: v.value,
+              };
+            }) || []
+          }
+          placeholder={
+            selectPlaceholder ||
+            ci18n("Dropdown placeholder, select a value", "Select")
+          }
+          selectedValue={value && value.length > 0 ? value[0] : undefined}
+          onSelected={(value: string | undefined) => {
+            onChange(value ? [value] : undefined);
+          }}
+          disabled={disabled}
+          data-cy={`select-attribute-${attribute.id}`}
+          error={showRequiredError}
+          showArrow
+        />
+        {showRequiredError && (
+          <ErrorText style={styles.error}>This field is required</ErrorText>
+        )}
+      </Layout.FlexColumn>
     );
   } else if (attribute.mode === "ATTRIBUTE_MODE_MULTI_SELECTION_ONLY") {
     return (
@@ -133,11 +139,16 @@ const AttributeInput: React.FC<Props> = ({
             selectPlaceholder ||
             ci18n("Dropdown placeholder, select a value", "Select")
           }
-          borderColor={multiSelectError ? negative : undefined}
+          borderColor={
+            multiSelectError || showRequiredError ? negative : undefined
+          }
           data-cy={`multiselect-attribute-${attribute.id}`}
         />
         {multiSelectError && (
           <ErrorText style={styles.error}>{multiSelectError}</ErrorText>
+        )}
+        {showRequiredError && (
+          <ErrorText style={styles.error}>This field is required</ErrorText>
         )}
       </Layout.FlexColumn>
     );

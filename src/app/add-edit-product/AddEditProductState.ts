@@ -63,6 +63,7 @@ import {
   LEGACY_COLOR_ID,
   LEGACY_SIZE_ID,
   MAX_ALLOWED_DELIVERY_DAYS,
+  InventoryOnHandState,
 } from "@add-edit-product/toolkit";
 import {
   CategoryId,
@@ -368,7 +369,7 @@ export type CustomsLogistics = {
   readonly hasLiquid?: boolean | null;
   readonly hasBattery?: boolean | null;
   readonly hasMetal?: boolean | null;
-  readonly inventoryOnHand?: string | null | undefined; // TODO: field type TBD
+  readonly inventoryOnHand?: InventoryOnHandState | null | undefined; // TODO: replace with BE type, BE ticket https://jira.wish.site/browse/MAL-675
 };
 
 export const createCustomsLogistics = (
@@ -1557,6 +1558,49 @@ export default class AddEditProductState {
     this.replaceVariations(newVariations);
   };
 
+  @action
+  updateVariationCustomsLogistics = ({
+    clientSideId,
+    newProps,
+  }: {
+    readonly clientSideId: string;
+    readonly newProps: Partial<CustomsLogistics>;
+  }) => {
+    const { getVariationFromId, updateVariation } = this;
+    const variation = getVariationFromId({ clientSideId });
+
+    if (variation == null) {
+      return;
+    }
+
+    const curCustomsLogistics = variation.customCustomsLogistics
+      ? createCustomsLogistics(variation.customCustomsLogistics)
+      : createCustomsLogistics();
+
+    const newCustomsLogistics = updateCustomsLogistics({
+      data: curCustomsLogistics,
+      newProps,
+    });
+
+    updateVariation({
+      clientSideId: variation.clientSideId,
+      newProps: {
+        customCustomsLogistics: newCustomsLogistics,
+      },
+    });
+  };
+
+  getVariationFromId = ({ clientSideId }: { clientSideId: string }) => {
+    const { variationsRaw } = this;
+    const targetVariationIndex = variationsRaw.findIndex(
+      ({ clientSideId: id }) => id === clientSideId,
+    );
+    if (targetVariationIndex == -1) {
+      return undefined;
+    }
+    return variationsRaw[targetVariationIndex];
+  };
+
   @computed
   get mainImageVariation(): Variation | undefined {
     const { variations, images } = this;
@@ -1833,6 +1877,98 @@ export default class AddEditProductState {
     return null;
   };
 
+  private variationErrorMessageV2 = (variation: Variation): string | null => {
+    const {
+      sku,
+      price,
+      image,
+      inventoryByWarehouseId,
+      quantityValue,
+      customCustomsLogistics: variationCustomsLogistics,
+      attributes: variationAttributes,
+    } = variation;
+
+    const {
+      hasVariations,
+      showUnitPrice,
+      isCnMerchant,
+      attributesHasError,
+      customsLogisticsDefault,
+      additionalAttributes,
+    } = this;
+
+    const customCustomsLogistics = hasVariations
+      ? variationCustomsLogistics
+      : customsLogisticsDefault;
+    const attributes = hasVariations
+      ? variationAttributes
+      : additionalAttributes;
+
+    if (image == null) {
+      return hasVariations
+        ? i`Please attach an image to all your variations`
+        : i`Please attach at least one image to your product`;
+    }
+
+    if (sku == null || sku.trim().length === 0) {
+      return hasVariations
+        ? i`Please attach a sku to all your variations`
+        : i`Please provide a sku for your product`;
+    }
+
+    if (price == null || price < 0) {
+      return hasVariations
+        ? i`Please provide a non-negative price for your variations`
+        : i`Please provide a non-negative price for your product`;
+    }
+
+    if (
+      inventoryByWarehouseId.size == 0 ||
+      Array.from(inventoryByWarehouseId).some(
+        (inventoryData) => inventoryData[1] < 0,
+      )
+    ) {
+      return hasVariations
+        ? i`Please attach a non-negative inventory quantity to all your variations`
+        : i`Please provide a non-negative inventory quantity for your product`;
+    }
+
+    if (showUnitPrice && (quantityValue == null || quantityValue <= 0)) {
+      return hasVariations
+        ? i`Please provide positive quantity values for all your variations`
+        : i`Please provide a positive quantity value for your product`;
+    }
+
+    if (
+      isCnMerchant &&
+      (customCustomsLogistics?.weight == null ||
+        customCustomsLogistics.weight < 0)
+    ) {
+      return hasVariations
+        ? i`Please provide a non-negative weight for all your variations`
+        : i`Please provide a non-negative weight for your product`;
+    }
+
+    if (customCustomsLogistics?.countryOfOrigin == null) {
+      return hasVariations
+        ? i`Please provide a country of origin for all your variations`
+        : i`Please provide a country of origin for your product`;
+    }
+
+    if (
+      attributesHasError({
+        attributesInput: attributes ?? {},
+        isVariationLevel: true,
+      })
+    ) {
+      return hasVariations
+        ? i`Please enter required variation attributes for all your variations`
+        : i`Please enter required additional attributes for your product`;
+    }
+
+    return null;
+  };
+
   private variationAttributesAsInput = (
     variation: Variation,
   ): Pick<VariationInput, "attributes"> => {
@@ -2054,6 +2190,27 @@ export default class AddEditProductState {
   }
 
   @computed
+  get requiredTaxonomyProductAttributes(): ReadonlyArray<PickedTaxonomyAttribute> {
+    const { taxonomyAttributesRaw } = this;
+    return taxonomyAttributesRaw.filter(
+      (attribute) =>
+        attribute.usage === "ATTRIBUTE_USAGE_REQUIRED" &&
+        !attribute.isVariationAttribute,
+    );
+  }
+
+  @computed
+  get requiredTaxonomyVariationAttributes(): ReadonlyArray<PickedTaxonomyAttribute> {
+    const { taxonomyAttributesRaw, optionNames } = this;
+    return taxonomyAttributesRaw.filter(
+      (attribute) =>
+        attribute.usage === "ATTRIBUTE_USAGE_REQUIRED" &&
+        attribute.isVariationAttribute &&
+        !optionNames.includes(attribute.name),
+    );
+  }
+
+  @computed
   get savedCategory() {
     const { initialState, id } = this;
 
@@ -2066,9 +2223,10 @@ export default class AddEditProductState {
 
   @computed
   get variationAttributes(): ReadonlyArray<PickedTaxonomyAttribute> {
-    const { taxonomyAttributes } = this;
+    const { taxonomyAttributes, optionNames } = this;
     return taxonomyAttributes.filter(
-      (attribute) => attribute.isVariationAttribute,
+      (attribute) =>
+        attribute.isVariationAttribute && !optionNames.includes(attribute.name),
     );
   }
 
@@ -2156,6 +2314,31 @@ export default class AddEditProductState {
     );
   };
 
+  attributesHasError = ({
+    attributesInput,
+    isVariationLevel,
+  }: {
+    attributesInput: Partial<Record<string, ReadonlyArray<string>>>;
+    isVariationLevel: boolean;
+  }): boolean => {
+    const requiredTaxonomyAttributes = isVariationLevel
+      ? this.requiredTaxonomyVariationAttributes
+      : this.requiredTaxonomyProductAttributes;
+
+    const hasMissingField = requiredTaxonomyAttributes.some((attribute) => {
+      const name = attribute.name;
+      const merchantValues = attributesInput[name];
+
+      if (merchantValues == null || merchantValues.length === 0) {
+        return true;
+      }
+
+      return false;
+    });
+
+    return hasMissingField;
+  };
+
   @action
   updateSubcategory = (props: PickedCategoryWithDetails | null | undefined) => {
     this.subcategory = props;
@@ -2170,13 +2353,11 @@ export default class AddEditProductState {
     ProductUpsertInput,
     "attributes"
   > => {
-    const { subcategoryAttributes, additionalAttributes, attributesAsInput } =
-      this;
+    const { subcategoryAttributes, attributesAsInput } = this;
     const subcategoryAttributesInput = attributesAsInput(subcategoryAttributes);
-    const additionalAttributesInput = attributesAsInput(additionalAttributes);
 
     return {
-      attributes: [...subcategoryAttributesInput, ...additionalAttributesInput],
+      attributes: [...subcategoryAttributesInput],
     };
   };
 
@@ -2530,6 +2711,140 @@ export default class AddEditProductState {
   }
 
   @computed
+  get categoryErrorMessage(): string | undefined {
+    if (this.subcategoryId == null) {
+      return i`Please select a category to continue`;
+    }
+
+    return undefined;
+  }
+
+  @computed
+  get imageErrorMessage(): string | undefined {
+    const { images } = this;
+
+    if (images.length === 0) {
+      return i`Please add at least one image to continue`;
+    }
+
+    if (images.every((image) => !image.isCleanImage)) {
+      return i`Please select one Clean image to continue `;
+    }
+
+    return undefined;
+  }
+
+  @computed
+  get errorMessageV2(): string | undefined {
+    const {
+      categoryErrorMessage,
+      variations,
+      name,
+      description,
+      showUnitPrice,
+      measurementType,
+      unitPriceUnit,
+      unitPrice,
+      countryShippings,
+      defaultShippingPrice,
+      canManageShipping,
+      hasVariations,
+      variationErrorMessageV2,
+      imageErrorMessage,
+      subcategoryAttributes,
+      attributesHasError,
+    } = this;
+
+    if (categoryErrorMessage) {
+      return categoryErrorMessage;
+    }
+
+    if (name == null || name.trim().length == 0) {
+      return i`Please provide a product name`;
+    }
+
+    if (description == null || description.trim().length == 0) {
+      return i`Please provide a product description`;
+    }
+
+    if (imageErrorMessage) {
+      return imageErrorMessage;
+    }
+
+    if (
+      attributesHasError({
+        attributesInput: subcategoryAttributes ?? {},
+        isVariationLevel: false,
+      })
+    ) {
+      return i`Please enter required subcategory attributes for your product`;
+    }
+
+    if (hasVariations && variations.length == 0) {
+      return i`Please add at least one variation`;
+    }
+
+    const variationError = variations.reduce<string | null>(
+      (acc, variation) => {
+        return acc == null ? variationErrorMessageV2(variation) : acc;
+      },
+      null,
+    );
+
+    if (variationError != null) {
+      return variationError;
+    }
+
+    const uniqueVariationSkus = uniq(variations.map((v) => v.sku));
+    if (uniqueVariationSkus.length != variations.length) {
+      return i`Please make sure each of your variations has a unique sku`;
+    }
+
+    if (
+      variations.some(
+        (targetVariation, targetIndex) =>
+          variations.findIndex(
+            (variation) =>
+              variation.color == targetVariation.color &&
+              variation.size == targetVariation.size &&
+              variationOptionsEqual(variation.options, targetVariation.options),
+          ) != targetIndex,
+      )
+    ) {
+      return i`Please make sure each of your variation has a unique set of options`;
+    }
+
+    if (
+      showUnitPrice &&
+      (measurementType == null || unitPriceUnit == null || unitPrice == null)
+    ) {
+      return i`Please provide a measurement type, unit and reference value.`;
+    }
+
+    if (
+      showUnitPrice &&
+      unitPrice != null &&
+      (!isInteger(unitPrice) || unitPrice <= 0)
+    ) {
+      return i`Reference value must be a positive integer.`;
+    }
+
+    const countryShippingWithError = countryShippings.find(
+      (countryShipping) => countryShippingErrorMessage(countryShipping) != null,
+    );
+
+    if (countryShippingWithError != null) {
+      return countryShippingErrorMessage(countryShippingWithError);
+    }
+
+    if (defaultShippingPrice == null && canManageShipping) {
+      return i`Please provide a default shipping price`;
+    }
+
+    return undefined;
+  }
+
+  @computed
   get errorMessage(): string | undefined {
     const {
       variations,
@@ -2855,6 +3170,7 @@ export default class AddEditProductState {
       customsLogisticsDefault,
       productAttributesAsInput,
       showRevampedAddEditProductUI,
+      additionalAttributes,
     } = this;
 
     const countryShippingInputList = Array.from(countryShippingStates.values())
@@ -2956,6 +3272,7 @@ export default class AddEditProductState {
               variationAsInput({
                 ...variations[0],
                 customCustomsLogistics: customsLogisticsDefault,
+                attributes: additionalAttributes,
               }),
             ],
           }
@@ -3051,12 +3368,26 @@ export default class AddEditProductState {
 
   @action
   async submit(): Promise<string | null> {
-    const { errorMessage, name, asInput: input, isNewProduct } = this;
+    const {
+      errorMessage,
+      errorMessageV2,
+      name,
+      asInput: input,
+      isNewProduct,
+      showRevampedAddEditProductUI,
+    } = this;
     this.forceValidation = true;
     const toastStore = ToastStore.instance();
     const { client } = ApolloStore.instance();
-    if (errorMessage != null) {
+    if (errorMessage != null && !showRevampedAddEditProductUI) {
       toastStore.negative(errorMessage, {
+        timeoutMs: 4000,
+      });
+      return null;
+    }
+
+    if (errorMessageV2 != null && showRevampedAddEditProductUI) {
+      toastStore.negative(errorMessageV2, {
         timeoutMs: 4000,
       });
       return null;
