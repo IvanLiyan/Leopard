@@ -1111,7 +1111,7 @@ const TaggingViolationSubReasonCodeData: {
   },
   SYRINGES: {
     parent: "MEDICAL_MATERIALS",
-    title: ci18n("name of warning", "Sytinges"),
+    title: ci18n("name of warning", "Syringes"),
     body: i`At this time, Wish prohibits the sale of syringes. This product may not be relisted.`,
     policy: i`[Medically Regulated Materials Policy](${"https://merchant.wish.com/policy/inappropriate-reasons/34"})`,
     faq: i`[Prohibited Product Listings FAQ](${zendeskURL("205211777")})`,
