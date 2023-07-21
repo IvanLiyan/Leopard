@@ -114,6 +114,7 @@ const TaxonomyCategoryColumnItem: React.FC<Props> = ({
                       marginRight: "20px",
                       padding: 0,
                     }}
+                    data-cy={`radio-item-${id}`}
                   />
                 )}
                 {canSelect && !singleSelect && (
@@ -130,6 +131,7 @@ const TaxonomyCategoryColumnItem: React.FC<Props> = ({
                     disabled={disableAll || treeItem.disabled}
                     size="medium"
                     sx={{ marginRight: "20px", padding: 0 }}
+                    data-cy={`checkbox-item-${id}`}
                   />
                 )}
                 <Text

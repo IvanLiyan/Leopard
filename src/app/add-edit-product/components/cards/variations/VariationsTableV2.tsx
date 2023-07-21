@@ -608,7 +608,12 @@ const VariationsTableV2: React.FC<Props> = (props: Props) => {
               return (
                 <Stack direction="row" alignItems="center" sx={{ gap: "8px" }}>
                   <NumericInput
-                    value={curCustomsLogistics.weight}
+                    key={variation.clientSideId}
+                    value={
+                      curCustomsLogistics.weight == null
+                        ? null
+                        : curCustomsLogistics.weight
+                    }
                     onChange={({ valueAsNumber }) => {
                       updateVariationCustomsLogistics({
                         clientSideId: variation.clientSideId,

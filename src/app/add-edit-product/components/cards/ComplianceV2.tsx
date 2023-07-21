@@ -157,6 +157,7 @@ const ComplianceV2: React.FC<Props> = ({
               onUpdate={updateDefaultCustomsLogistics}
               data={customsLogisticsDefault || createCustomsLogistics()}
               disabled={isSubmitting}
+              data-cy="compliance"
             />
           </>
         )}

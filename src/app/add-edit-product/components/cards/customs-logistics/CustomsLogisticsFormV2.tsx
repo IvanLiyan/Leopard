@@ -153,10 +153,19 @@ const CustomsLogisticsFormV2: React.FC<Props> = ({
           </Grid>
         </>
       )}
-      <Heading variant="h4">
-        {ci18n("Product add/edit form section title", "Compliance")}
-      </Heading>
-      <ProductContents onUpdate={onUpdate} data={data} disabled={disabled} />
+      {checkHasVariation && (
+        <>
+          <Heading variant="h4">
+            {ci18n("Product add/edit form section title", "Compliance")}
+          </Heading>
+          <ProductContents
+            onUpdate={onUpdate}
+            data={data}
+            disabled={disabled}
+            data-cy={dataCy}
+          />
+        </>
+      )}
       {checkHasVariation && (
         <Link
           data-cy="button-apply-all-logistics"

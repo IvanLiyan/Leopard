@@ -19,8 +19,13 @@ const ListingDetailsV2: React.FC<Props> = (props: Props) => {
   const styles = useStylesheet();
   const { style, className, state, ...sectionProps } = props;
 
-  const { forceValidation, isSubmitting, condition, setSingleVariationSku } =
-    state;
+  const {
+    forceValidation,
+    isSubmitting,
+    condition,
+    setSingleVariationSku,
+    hasVariations,
+  } = state;
 
   const attributesLearnMoreLink = zendeskURL("1260805100070");
 
@@ -66,7 +71,13 @@ const ListingDetailsV2: React.FC<Props> = (props: Props) => {
             <TextInput
               value={state.parentSku}
               placeholder={i`Enter a unique identifier to group variations`}
-              onChange={({ text }) => setSingleVariationSku(text)}
+              onChange={({ text }) => {
+                if (hasVariations) {
+                  state.parentSku = text;
+                } else {
+                  setSingleVariationSku(text);
+                }
+              }}
               validators={[new RequiredValidator()]}
               forceValidation={forceValidation}
               disabled={isSubmitting}
