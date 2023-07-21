@@ -154,6 +154,7 @@ import darkGreenCheckmarkFilledUrl from "public/images/dark-green-checkmark-fill
 import oneExclamationUrl from "public/images/one-exclamation.svg";
 import twoExclamationUrl from "public/images/two-exclamation.svg";
 import wssDeepDiveNoTableDataUrl from "public/images/wss-deep-dive-no-table-data.svg";
+import productsParcelUrl from "public/images/products-parcel.svg";
 
 export const wishLogoInk = wishLogoInkUrl;
 export const wishLogoWhite = wishLogoWhiteUrl;
@@ -306,3 +307,4 @@ export const darkGreenCheckmarkFilled = darkGreenCheckmarkFilledUrl;
 export const oneExclamation = oneExclamationUrl;
 export const twoExclamation = twoExclamationUrl;
 export const wssDeepDiveNoTableData = wssDeepDiveNoTableDataUrl;
+export const productsParcel = productsParcelUrl;

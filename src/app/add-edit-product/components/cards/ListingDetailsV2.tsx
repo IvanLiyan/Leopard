@@ -78,7 +78,7 @@ const ListingDetailsV2: React.FC<Props> = (props: Props) => {
             style={styles.input}
             description={
               i`Please provide this information so that orders bound for the European ` +
-              i`"Union can pass through customs smoothly. [Learn more](${attributesLearnMoreLink})`
+              i`Union can pass through customs smoothly. [Learn more](${attributesLearnMoreLink})`
             }
           >
             <FormSelect

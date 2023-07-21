@@ -31,6 +31,8 @@ import {
   useVerifyComplianceDocuments,
 } from "@add-edit-product/compliance-documents/toolkit";
 import { useToastStore } from "@core/stores/ToastStore";
+import SuccessModal from "@add-edit-product/components/cards/SuccessModal";
+import { merchFeUrl } from "@core/toolkit/router";
 
 type Props = {
   readonly initialData: AddEditProductInitialData;
@@ -39,6 +41,7 @@ type Props = {
 const AddEditProductContainer: React.FC<Props> = ({ initialData }: Props) => {
   const styles = useStylesheet();
   const navigationStore = useNavigationStore();
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState<boolean>();
   const {
     productCatalog: { product },
     currentMerchant: {
@@ -121,7 +124,11 @@ const AddEditProductContainer: React.FC<Props> = ({ initialData }: Props) => {
 
     if (state.saved) {
       bypassExitConfirmation(true);
-      void navigationStore.navigate("/products");
+      if (showRevampedAddEditProductUI) {
+        setIsSuccessModalOpen(true);
+      } else {
+        void navigationStore.navigate("/products");
+      }
     }
   };
 
@@ -156,11 +163,47 @@ const AddEditProductContainer: React.FC<Props> = ({ initialData }: Props) => {
 
   return (
     <PageRoot>
+      <SuccessModal
+        open={isSuccessModalOpen ?? false}
+        state={state}
+        onClose={() => setIsSuccessModalOpen(false)}
+      />
       <PageHeader
-        title={state.name || i`Unsaved product listing`}
+        title={
+          state.name
+            ? state.name
+            : showRevampedAddEditProductUI
+            ? i`New product listing`
+            : i`Unsaved product listing`
+        }
         actions={actions}
         className={css(styles.header)}
         relaxed={!showRevampedAddEditProductUI}
+        breadcrumbs={
+          showRevampedAddEditProductUI
+            ? [
+                {
+                  name: ci18n(
+                    "Breadcrumb item name, all products page",
+                    "Products",
+                  ),
+                  href: merchFeUrl("/md/products"),
+                },
+                {
+                  name: product?.id
+                    ? ci18n(
+                        "Breadcrumb item name, edit product page",
+                        "Edit existing product",
+                      )
+                    : ci18n(
+                        "Breadcrumb item name, add product page",
+                        "Add new product",
+                      ),
+                  href: window.location.href,
+                },
+              ]
+            : undefined
+        }
       />
       <PageGuide relaxed={!showRevampedAddEditProductUI}>
         {showRevampedAddEditProductUI ? (

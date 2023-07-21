@@ -144,7 +144,9 @@ const AddVariationModalV2: React.FC<AddVariationModalV2Props> = ({
     );
 
     if (variationExists) {
-      toastStore.negative(i`This variation already exists`);
+      toastStore.negative(
+        i`Please make sure each variation has unique variation option`,
+      );
       return;
     }
 

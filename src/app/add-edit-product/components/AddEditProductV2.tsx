@@ -11,7 +11,7 @@ import InventoryGtin from "./cards/InventoryGtin";
 import UnitPrice from "./cards/UnitPrice";
 import Price from "./cards/Price";
 import CategorizationV2 from "./cards/CategorizationV2";
-import Compliance from "./cards/Compliance";
+import ComplianceV2 from "./cards/ComplianceV2";
 import { Layout } from "@ContextLogic/lego";
 import AddEditProductState from "@add-edit-product/AddEditProductState";
 import CustomsLogisticsCardV2 from "./cards/customs-logistics/CustomsLogisticsCardV2";
@@ -114,12 +114,6 @@ const AddEditProductV2 = ({ className, style, state }: Props) => {
               state={state}
               onOpenToggled={(isOpen) => setInventoryOpen(isOpen)}
             />
-            <CustomsLogisticsCardV2
-              style={styles.section}
-              isOpen={customsLogisticsOpen}
-              state={state}
-              onOpenToggled={(isOpen) => setCustomsLogisticsOpen(isOpen)}
-            />
           </>
         )}
         <CategorizationV2
@@ -137,13 +131,21 @@ const AddEditProductV2 = ({ className, style, state }: Props) => {
             showTip={showTips}
           />
         )}
+        {!hasVariations && (
+          <CustomsLogisticsCardV2
+            style={styles.section}
+            isOpen={customsLogisticsOpen}
+            state={state}
+            onOpenToggled={(isOpen) => setCustomsLogisticsOpen(isOpen)}
+          />
+        )}
         <UnitPrice
           style={styles.section}
           isOpen={unitPriceOpen}
           state={state}
           onOpenToggled={(isOpen) => setUnitPriceOpen(isOpen)}
         />
-        <Compliance
+        <ComplianceV2
           style={styles.section}
           isOpen={complianceOpen}
           state={state}

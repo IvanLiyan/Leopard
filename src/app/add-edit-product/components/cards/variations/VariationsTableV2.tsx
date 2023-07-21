@@ -313,13 +313,16 @@ const VariationsTableV2: React.FC<Props> = (props: Props) => {
   return (
     <Stack direction="column" alignItems="stretch" style={style}>
       {renderDiscardModal(variationsToDiscard)}
+      <Text variant="bodyLStrong">
+        {ci18n("Variations details", "Variations details")}
+      </Text>
       {selectedRowIds.size > 0 && (
         <StaggeredFadeIn deltaY={-5} animationDurationMs={400}>
           <Stack
             direction="row"
             justifyContent="space-between"
             alignItems="center"
-            sx={{ margin: "0px 16px 16px 0px", overflow: "auto" }}
+            sx={{ margin: "16px 16px 16px 0px", overflow: "auto" }}
           >
             <Stack direction="row" alignItems="center" sx={{ gap: "16px" }}>
               <NumberButton
@@ -356,40 +359,44 @@ const VariationsTableV2: React.FC<Props> = (props: Props) => {
                 placeholder="0"
                 data-cy="apply-inventory"
               />
-              <NumberButton
-                buttonText={ci18n("Apply", "Apply weight")}
-                onSubmit={(value) => {
-                  if (value != null) {
-                    Array.from(selectedRowIds).forEach((clientSideId) => {
-                      updateVariationCustomsLogistics({
-                        clientSideId,
-                        newProps: {
-                          weight: value,
-                        },
+              {isCnMerchant && (
+                <NumberButton
+                  buttonText={ci18n("Apply", "Apply weight")}
+                  onSubmit={(value) => {
+                    if (value != null) {
+                      Array.from(selectedRowIds).forEach((clientSideId) => {
+                        updateVariationCustomsLogistics({
+                          clientSideId,
+                          newProps: {
+                            weight: value,
+                          },
+                        });
                       });
-                    });
-                  }
-                }}
-                placeholder="0"
-                data-cy="apply-weight"
-              />
-              <SelectButton
-                onSubmit={(value) => {
-                  if (value != null) {
-                    Array.from(selectedRowIds).forEach((clientSideId) => {
-                      updateVariationCustomsLogistics({
-                        clientSideId,
-                        newProps: {
-                          inventoryOnHand: value as InventoryOnHandState,
-                        },
+                    }
+                  }}
+                  placeholder="0"
+                  data-cy="apply-weight"
+                />
+              )}
+              {showInventoryOnHand && (
+                <SelectButton
+                  onSubmit={(value) => {
+                    if (value != null) {
+                      Array.from(selectedRowIds).forEach((clientSideId) => {
+                        updateVariationCustomsLogistics({
+                          clientSideId,
+                          newProps: {
+                            inventoryOnHand: value as InventoryOnHandState,
+                          },
+                        });
                       });
-                    });
-                  }
-                }}
-                options={INVENTORY_ON_HAND_OPITONS}
-                buttonText={i`Inventory on hand`}
-                data-cy="apply-inventory-on-hand"
-              />
+                    }
+                  }}
+                  options={INVENTORY_ON_HAND_OPITONS}
+                  buttonText={i`Inventory on hand`}
+                  data-cy="apply-inventory-on-hand"
+                />
+              )}
               <Button
                 style={styles.bulkAction}
                 onClick={() => {
@@ -405,9 +412,6 @@ const VariationsTableV2: React.FC<Props> = (props: Props) => {
         </StaggeredFadeIn>
       )}
 
-      <Text variant="bodyLStrong">
-        {ci18n("Variations details", "Variations details")}
-      </Text>
       <Table
         key={[hasColors, hasSizes, hasOptions, showUnitPrice].join("_")}
         data={variations}

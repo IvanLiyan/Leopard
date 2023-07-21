@@ -1,28 +1,14 @@
-/*
- * Compliance.tsx
- *
- * Created by Jonah Dlin on Thu Mar 24 2022
- * Copyright © 2022-present ContextLogic Inc. All rights reserved.
- */
 import React, { useMemo } from "react";
 import { StyleSheet } from "aphrodite";
 import { observer } from "mobx-react";
 import trim from "lodash/trim";
-
-import {
-  Field,
-  Markdown,
-  Layout,
-  FormSelect,
-  Option,
-} from "@ContextLogic/lego";
-
-/* Lego Toolkit */
+import { Field, FormSelect, Option } from "@ContextLogic/lego";
 import { css } from "@core/toolkit/styling";
 import { zendeskURL } from "@core/toolkit/url";
-
 import Section, { SectionProps } from "./Section";
-import AddEditProductState from "@add-edit-product/AddEditProductState";
+import AddEditProductState, {
+  createCustomsLogistics,
+} from "@add-edit-product/AddEditProductState";
 import { ContestWarningType } from "@schema";
 import {
   ContestWarningOptionOrder,
@@ -31,9 +17,11 @@ import {
 import { ChemicalStartCharsToIgnoreSorting } from "@add-edit-product/ca-prop-65-chemicals";
 import { ci18n } from "@core/toolkit/i18n";
 import SearchableMultiselect from "@core/components/SearchableMultiselect";
-import { useTheme } from "@core/stores/ThemeStore";
 import { useDeciderKey } from "@core/stores/ExperimentStore";
 import OptionalDocumentationUpload from "./ComplianceDocuments";
+import ProductContents from "./ProductContents";
+import { Heading, Stack } from "@ContextLogic/atlas-ui";
+import Markdown from "@core/components/Markdown";
 
 type Props = Omit<SectionProps, "title" | "rightCard"> & {
   readonly state: AddEditProductState;
@@ -45,7 +33,7 @@ const ContestWarningOptions: ReadonlyArray<Option<ContestWarningType>> =
     text: ContestWarningDisplayNames[value],
   }));
 
-const Compliance: React.FC<Props> = ({
+const ComplianceV2: React.FC<Props> = ({
   style,
   className,
   state,
@@ -57,9 +45,16 @@ const Compliance: React.FC<Props> = ({
     caProp65Chemicals,
     isSubmitting,
     caProp65AllChemicalsList,
+    updateDefaultCustomsLogistics,
+    customsLogisticsDefault,
+    hasVariations,
   } = state;
 
   const learnMoreLink = zendeskURL("360025359874");
+  const p65Description =
+    i`If you ship products to California, you may be required to ` +
+    i`provide California Proposition 65 information. [Learn more](${learnMoreLink})`;
+  const docDescription = i`You are encouraged to use the field below to upload any compliance documentation, including any laboratory results, testing or certificates, that may be relevant to or relate to the product you are listing for sale.  If you are  selling the product into the State of California in the United States, and it may contain an ingredient or compound on the California Prop 65 List (The Proposition 65 List - OEHHA (ca.gov)), you can use this field to upload these compliance documents.`;
 
   const sortedChems = useMemo(() => {
     const stripPrefixes = (c: string): string => {
@@ -81,19 +76,19 @@ const Compliance: React.FC<Props> = ({
       className={css(style, className)}
       title={ci18n(
         "Title of a card on the product upload/edit page in which merchants can set or adjust settings related to legal compliance for a product",
-        "Compliance (optional)",
+        "Compliance",
       )}
       {...sectionProps}
     >
-      <Layout.FlexColumn style={styles.content} alignItems="stretch">
-        <Markdown
-          style={styles.desc}
-          text={
-            i`If you ship products to California, you may be required to ` +
-            i`provide California Proposition 65 information. [Learn more](${learnMoreLink})`
-          }
-        />
-        <Layout.FlexRow style={styles.fields}>
+      <Stack direction="column" alignItems="stretch" sx={{ gap: "16px" }}>
+        <Heading variant="h4">
+          {ci18n(
+            "Product add/edit form compliance section header",
+            "California Prop 65 warning",
+          )}
+        </Heading>
+        <Markdown>{p65Description}</Markdown>
+        <Stack direction="row" sx={{ gap: "16px" }}>
           <Field
             style={styles.warningField}
             title={i`California Proposition 65 Warning Type`}
@@ -137,39 +132,45 @@ const Compliance: React.FC<Props> = ({
               data-cy="multiselect-chemical-names"
             />
           </Field>
-        </Layout.FlexRow>
+        </Stack>
         {showComplianceDocumentsUploadFlow && !dKeyIsLoading && (
           <>
-            <Markdown
-              style={styles.desc}
-              text={i`You are encouraged to use the field below to upload any compliance documentation, including any laboratory results, testing or certificates, that may be relevant to or relate to the product you are listing for sale.  If you are  selling the product into the State of California in the United States, and it may contain an ingredient or compound on the California Prop 65 List (The Proposition 65 List - OEHHA (ca.gov)), you can use this field to upload these compliance documents.`}
-            />
+            <Heading variant="h4">
+              {ci18n(
+                "Product add/edit form compliance section header",
+                "Compliance documentation",
+              )}
+            </Heading>
+            <Markdown>{docDescription}</Markdown>
             <OptionalDocumentationUpload />
           </>
         )}
-      </Layout.FlexColumn>
+        {!hasVariations && (
+          <>
+            <Heading variant="h4">
+              {ci18n(
+                "Product add/edit form compliance section header",
+                "Product contents",
+              )}
+            </Heading>
+            <ProductContents
+              onUpdate={updateDefaultCustomsLogistics}
+              data={customsLogisticsDefault || createCustomsLogistics()}
+              disabled={isSubmitting}
+            />
+          </>
+        )}
+      </Stack>
     </Section>
   );
 };
 
-export default observer(Compliance);
+export default observer(ComplianceV2);
 
 const useStylesheet = () => {
-  const { textDark } = useTheme();
   return useMemo(
     () =>
       StyleSheet.create({
-        content: {
-          gap: 24,
-        },
-        desc: {
-          fontSize: 14,
-          lineHeight: "20px",
-          color: textDark,
-        },
-        fields: {
-          gap: 16,
-        },
         warningField: {
           flex: "1 0 324px",
           maxWidth: 324,
@@ -180,6 +181,6 @@ const useStylesheet = () => {
           minWidth: 0,
         },
       }),
-    [textDark],
+    [],
   );
 };

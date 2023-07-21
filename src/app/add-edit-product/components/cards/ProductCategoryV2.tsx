@@ -114,7 +114,7 @@ const ProductCategoryV2: React.FC<Props> = (props: Props) => {
       className={css(style, className)}
       title={ci18n(
         "Category the current product falls under",
-        "**Product Category***",
+        "**Product category***",
       )}
       markdown
       hasInvalidData={forceValidation && categoryErrorMessage != null}

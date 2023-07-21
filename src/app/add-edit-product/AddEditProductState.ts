@@ -913,6 +913,9 @@ export default class AddEditProductState {
   @observable
   saved = false;
 
+  @observable
+  savedProductId?: string;
+
   constructor({
     initialState,
     isCloning = false,
@@ -3419,6 +3422,11 @@ export default class AddEditProductState {
       return null;
     }
     this.saved = true;
+    this.savedProductId = productId;
+
+    if (showRevampedAddEditProductUI) {
+      return productId;
+    }
 
     // Lint doesn't see that the arg is a binary expression of string literals
     /* eslint-disable local-rules/only-literals-in-i18n,local-rules/unwrapped-i18n */
