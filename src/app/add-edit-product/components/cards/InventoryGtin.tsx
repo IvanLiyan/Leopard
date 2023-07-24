@@ -60,7 +60,7 @@ const InventoryGtin: React.FC<Props> = (props: Props) => {
             )}
             description={
               i`Amount of stock for an SKU. Please use inventory buffering for Wish ` +
-              i`specified inventory. Maximum 500,000. Larger inventories will be` +
+              i`specified inventory. Maximum 500,000. Larger inventories will be ` +
               i`automatically lowered. [Learn more](${attributesLearnMoreLink})`
             }
           >

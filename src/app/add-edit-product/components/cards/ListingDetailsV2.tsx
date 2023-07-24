@@ -108,7 +108,7 @@ const ListingDetailsV2: React.FC<Props> = (props: Props) => {
         <Field
           title={ci18n("Field name, means product description", "Description*")}
           description={
-            i`Limit of 4,000 characters. Do not include any HTML code, details about` +
+            i`Limit of 4,000 characters. Do not include any HTML code, details about ` +
             i`store policies, other store-specific language.`
           }
         >
