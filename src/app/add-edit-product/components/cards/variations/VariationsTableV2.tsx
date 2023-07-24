@@ -785,7 +785,7 @@ const VariationsTableV2: React.FC<Props> = (props: Props) => {
             <AttributesCell
               state={state}
               variation={variation}
-              key={i`${variation.clientSideId}-${state.customsLogisticsUpdateCounter}`}
+              key={`${variation.clientSideId}-${state.customsLogisticsUpdateCounter}-${state.forceValidation}`}
             />
           )}
         </Table.Column>

@@ -1591,6 +1591,8 @@ export default class AddEditProductState {
         customCustomsLogistics: newCustomsLogistics,
       },
     });
+
+    this.customsLogisticsUpdateCounter += 1;
   };
 
   getVariationFromId = ({ clientSideId }: { clientSideId: string }) => {

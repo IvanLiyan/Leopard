@@ -7,7 +7,6 @@ import AddEditProductState, {
   CustomsLogistics,
   getVariationOptionValues,
   UniqueGtinValidator,
-  updateCustomsLogistics,
   Variation,
 } from "@add-edit-product/AddEditProductState";
 import { ci18n } from "@core/toolkit/i18n";
@@ -35,6 +34,7 @@ const AttributesModal: React.FC<AttributesModalProps> = ({
     customsCountryOptions,
     primaryCurrency,
     updateAllCustomsLogistics,
+    updateVariationCustomsLogistics,
     updateVariation,
     useCalculatedShipping,
     variationAttributes,
@@ -201,13 +201,13 @@ const AttributesModal: React.FC<AttributesModalProps> = ({
           <Button
             primary
             onClick={() => {
+              updateVariationCustomsLogistics({
+                clientSideId,
+                newProps: editedCustoms,
+              });
               updateVariation({
                 clientSideId,
                 newProps: {
-                  customCustomsLogistics: updateCustomsLogistics({
-                    data: initialCustomsData,
-                    newProps: editedCustoms,
-                  }),
                   attributes: editedAttributes,
                   gtin: editedGtin,
                 },

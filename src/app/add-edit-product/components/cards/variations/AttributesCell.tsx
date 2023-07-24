@@ -37,7 +37,7 @@ const AttributesCell: React.FC<Props> = (props: Props) => {
         }}
         open={isAttributesModalOpen}
       />
-      <Stack direction="column">
+      <Stack direction="column" key={`${hasError}-${forceValidation}`}>
         <Link
           onClick={() => {
             setIsAttributesModalOpen(true);
