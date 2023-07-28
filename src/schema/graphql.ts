@@ -626,7 +626,7 @@ export type AttributeFieldTagResultSchema = {
 export type AttributeInput = {
   readonly id?: InputMaybe<Scalars['Int']>;
   readonly name?: InputMaybe<Scalars['String']>;
-  readonly value: ReadonlyArray<AttributeValueInput>;
+  readonly value?: InputMaybe<ReadonlyArray<AttributeValueInput>>;
 };
 
 export type AttributeLevel =
@@ -1684,6 +1684,8 @@ export type BusinessDocTypes =
   | 'RECENT_BUSINESS_RETURNS'
   | 'SHARE_ALLOCATION_CERTIFICATE'
   | 'TAX_FORM'
+  | 'TAX_FORM_W_8'
+  | 'TAX_FORM_W_9'
   | 'UTILITY_BILL_STATEMENT';
 
 export type BuyerFraudReasonCategory =
@@ -7085,6 +7087,25 @@ export type MarketingStatsOffsiteBoostArgs = {
   startDate: DatetimeInput;
 };
 
+export type MerchantActionsRequiredSchema = {
+  readonly __typename?: 'MerchantActionsRequiredSchema';
+  readonly actionsCompleted: ReadonlyArray<MerchantActionsType>;
+  readonly actionsRequired: ReadonlyArray<MerchantActionsType>;
+  readonly currentAction: MerchantActionsType;
+  readonly id: Scalars['ObjectIdType'];
+  readonly merchantId: Scalars['ObjectIdType'];
+  readonly state: MerchantActionsRequiredStateType;
+};
+
+export type MerchantActionsRequiredStateType =
+  | 'COMPLETED'
+  | 'IN_PROGRESS'
+  | 'REJECTED';
+
+export type MerchantActionsType =
+  | 'BANK_VERIFICATION'
+  | 'SELLER_PROFILE_VERIFICATION';
+
 export type MerchantAnnouncementCategory =
   | 'ACCOUNT_SETTINGS'
   | 'API'
@@ -7332,6 +7353,8 @@ export type MerchantFulfillmentTimeInfoInput = {
   readonly carrierPickupTime?: InputMaybe<Scalars['String']>;
   readonly merchantHandlingTime?: InputMaybe<Scalars['Int']>;
   readonly pickupCarrier?: InputMaybe<PickupCarrier>;
+  readonly workdayCalendar?: InputMaybe<WorkdayCalenderInput>;
+  readonly workdayOverrideCalendar?: InputMaybe<ReadonlyArray<InputMaybe<WorkDayOverrideInput>>>;
 };
 
 export type MerchantGamingReviewFieldTicketType =
@@ -8137,6 +8160,7 @@ export type MerchantSchema = {
   readonly isBba?: Maybe<Scalars['Boolean']>;
   readonly isCnForFulfillment: Scalars['Boolean'];
   readonly isCnMerchant: Scalars['Boolean'];
+  readonly isConsignmentMode?: Maybe<Scalars['Boolean']>;
   readonly isFactory: Scalars['Boolean'];
   readonly isFlatRateShippingOptedIn?: Maybe<Scalars['Boolean']>;
   readonly isIdentifiedUsTax?: Maybe<Scalars['Boolean']>;
@@ -8147,6 +8171,7 @@ export type MerchantSchema = {
   readonly isUnityEnabled: Scalars['Boolean'];
   readonly isWhiteGlove: Scalars['Boolean'];
   readonly isWishBlueSelfInventory: Scalars['Boolean'];
+  readonly latestActionsRequired?: Maybe<MerchantActionsRequiredSchema>;
   readonly lead: UserSchema;
   readonly marketing: MarketingMerchantPropertySchema;
   readonly maxDeliveryDays: Scalars['Int'];
@@ -8757,6 +8782,8 @@ export type MerchantWarehouseSchema = {
   readonly verificationState?: Maybe<WarehouseVerificationState>;
   readonly weekStats?: Maybe<ReadonlyArray<MerchantWarehouseWeekStatsSchema>>;
   readonly weekStatsCount: Scalars['Int'];
+  readonly workdayCalendar?: Maybe<WorkdayCalender>;
+  readonly workdayOverrideCalendar?: Maybe<ReadonlyArray<WorkDayOverride>>;
 };
 
 
@@ -9275,9 +9302,14 @@ export type NoticeQueryInput = {
   readonly notifierEmail?: InputMaybe<Scalars['String']>;
   readonly notifierOrganization?: InputMaybe<Scalars['String']>;
   readonly productId?: InputMaybe<Scalars['ObjectIdType']>;
-  readonly sortMode?: InputMaybe<NoticeSortMode>;
+  readonly sort?: InputMaybe<ReadonlyArray<NoticeQuerySortInput>>;
   readonly startDate?: InputMaybe<DatetimeInput>;
   readonly statuses?: InputMaybe<ReadonlyArray<NoticeStatus>>;
+};
+
+export type NoticeQuerySortInput = {
+  readonly field: NoticeSortField;
+  readonly order: SortOrderType;
 };
 
 export type NoticeSchema = {
@@ -9305,8 +9337,10 @@ export type NoticeSchema = {
   readonly supportFiles: ReadonlyArray<MerchantFileSchema>;
 };
 
-export type NoticeSortMode =
-  | 'NO_SORT';
+export type NoticeSortField =
+  | 'DATETIME_CREATED'
+  | 'DATETIME_DISPUTED'
+  | 'PRIORITY';
 
 export type NoticeStatus =
   | 'DISPUTE_PENDING_REVIEW'
@@ -12234,6 +12268,7 @@ export type ProductSchema = {
   readonly categoryExperienceEligibility?: Maybe<Scalars['Boolean']>;
   readonly chemicalNames?: Maybe<ReadonlyArray<Scalars['String']>>;
   readonly condition?: Maybe<CommerceProductCondition>;
+  readonly consignmentOriginalPid?: Maybe<Scalars['ObjectIdType']>;
   readonly countryBlocks?: Maybe<ReadonlyArray<ProductCountryBlockSchema>>;
   readonly createTime: Datetime;
   readonly demoVideo?: Maybe<ProductVideo>;
@@ -12248,6 +12283,7 @@ export type ProductSchema = {
   readonly id: Scalars['ObjectIdType'];
   readonly infractions: ReadonlyArray<InfractionSchema>;
   readonly invalidCategoryNote?: Maybe<Scalars['String']>;
+  readonly isConsignmentEligible?: Maybe<Scalars['Boolean']>;
   readonly isEuCompliant: Scalars['Boolean'];
   readonly isLtl?: Maybe<Scalars['Boolean']>;
   readonly isPromoted: Scalars['Boolean'];
@@ -12465,6 +12501,7 @@ export type ProductUpsertInput = {
   readonly attributes?: InputMaybe<ReadonlyArray<AttributeInput>>;
   readonly chemicalNames?: InputMaybe<ReadonlyArray<Scalars['String']>>;
   readonly condition?: InputMaybe<CommerceProductCondition>;
+  readonly consignmentOriginalPid?: InputMaybe<Scalars['ObjectIdType']>;
   readonly countryShipping?: InputMaybe<ReadonlyArray<WarehouseCountryShippingInput>>;
   readonly defaultShipping?: InputMaybe<ReadonlyArray<DefaultShippingInput>>;
   readonly demoVideoSourceUrl?: InputMaybe<Scalars['String']>;
@@ -12473,6 +12510,7 @@ export type ProductUpsertInput = {
   readonly enabled?: InputMaybe<Scalars['Boolean']>;
   readonly id?: InputMaybe<Scalars['ObjectIdType']>;
   readonly images?: InputMaybe<ReadonlyArray<ImageInput>>;
+  readonly isConsignmentEligible?: InputMaybe<Scalars['Boolean']>;
   readonly maxQuantity?: InputMaybe<Scalars['Int']>;
   readonly msrp?: InputMaybe<CurrencyInput>;
   readonly name?: InputMaybe<Scalars['String']>;
@@ -13788,6 +13826,7 @@ export type RoleType =
   | 'ACCENTURE_DETAIL_WORKER'
   | 'ACCENTURE_FRAUD_LEAD'
   | 'ACCENTURE_FRAUD_WORKER'
+  | 'ACCENTURE_INFRACTION_WORKER'
   | 'ACCENTURE_TAGGER_LEAD'
   | 'ACCENTURE_TAGGER_WORKER'
   | 'ACCENTURE_WORKER'
@@ -17182,6 +17221,7 @@ export type UserSchema = {
   readonly id: Scalars['ObjectIdType'];
   readonly isAdmin: Scalars['Boolean'];
   readonly isApiUser: Scalars['Boolean'];
+  readonly isBd?: Maybe<Scalars['Boolean']>;
   readonly isEnabled: Scalars['Boolean'];
   readonly isNewNav?: Maybe<Scalars['Boolean']>;
   readonly isOnCsTeam: Scalars['Boolean'];
@@ -17311,6 +17351,7 @@ export type VariationDiscountDataInput = {
 export type VariationInput = {
   readonly attributes?: InputMaybe<ReadonlyArray<AttributeInput>>;
   readonly color?: InputMaybe<Scalars['String']>;
+  readonly consignmentSupplyCost?: InputMaybe<Scalars['Float']>;
   readonly cost?: InputMaybe<CurrencyInput>;
   readonly customsHsCode?: InputMaybe<Scalars['String']>;
   readonly declaredLocalName?: InputMaybe<Scalars['String']>;
@@ -17346,6 +17387,7 @@ export type VariationSchema = {
   readonly __typename?: 'VariationSchema';
   readonly attributes?: Maybe<ReadonlyArray<MerchantProvidedAttributeSchema>>;
   readonly color?: Maybe<Scalars['String']>;
+  readonly consignmentSupplyCost?: Maybe<CurrencyValue>;
   readonly customsHsCode?: Maybe<Scalars['String']>;
   readonly declaredLocalName?: Maybe<Scalars['String']>;
   readonly declaredName?: Maybe<Scalars['String']>;
@@ -18265,6 +18307,38 @@ export type WishUserSignupMethod =
   | 'FACEBOOK'
   | 'GOOGLE_PLUS'
   | 'PHONE_NUMBER';
+
+export type WorkDayOverride = {
+  readonly __typename?: 'WorkDayOverride';
+  readonly date: Scalars['String'];
+  readonly value: Scalars['Boolean'];
+};
+
+export type WorkDayOverrideInput = {
+  readonly date: Scalars['String'];
+  readonly value: Scalars['Boolean'];
+};
+
+export type WorkdayCalender = {
+  readonly __typename?: 'WorkdayCalender';
+  readonly friday: Scalars['Boolean'];
+  readonly monday: Scalars['Boolean'];
+  readonly saturday: Scalars['Boolean'];
+  readonly sunday: Scalars['Boolean'];
+  readonly thursday: Scalars['Boolean'];
+  readonly tuesday: Scalars['Boolean'];
+  readonly wednesday: Scalars['Boolean'];
+};
+
+export type WorkdayCalenderInput = {
+  readonly friday: Scalars['Boolean'];
+  readonly monday: Scalars['Boolean'];
+  readonly saturday: Scalars['Boolean'];
+  readonly sunday: Scalars['Boolean'];
+  readonly thursday: Scalars['Boolean'];
+  readonly tuesday: Scalars['Boolean'];
+  readonly wednesday: Scalars['Boolean'];
+};
 
 export type WssTier =
   | 'BAN'

@@ -507,7 +507,7 @@ type AttributeFieldTagResultSchema {
 input AttributeInput {
   id: Int
   name: String
-  value: [AttributeValueInput!]!
+  value: [AttributeValueInput!]
 }
 
 enum AttributeLevel {
@@ -1253,6 +1253,7 @@ input BulkUpsertMerchantWarningInput {
 }
 
 enum BusinessDocTypes {
+  TAX_FORM_W_9
   OFFICIAL_BANK_STATEMENT
   RECENT_BUSINESS_RETURNS
   SHARE_ALLOCATION_CERTIFICATE
@@ -1263,6 +1264,7 @@ enum BusinessDocTypes {
   GOVERNMENT_ISSUED_BUSINESS_LICENSE
   ENTITY_TRADING_NAME
   ARTICLES_OF_INCORPORATION
+  TAX_FORM_W_8
   PRODUCT_LICENSING
 }
 
@@ -5564,6 +5566,26 @@ type MarketingStats {
   lqdPromotion(campaignId: ObjectIdType!): LQDPromotionStats!
 }
 
+type MerchantActionsRequiredSchema {
+  id: ObjectIdType!
+  merchantId: ObjectIdType!
+  state: MerchantActionsRequiredStateType!
+  currentAction: MerchantActionsType!
+  actionsRequired: [MerchantActionsType!]!
+  actionsCompleted: [MerchantActionsType!]!
+}
+
+enum MerchantActionsRequiredStateType {
+  COMPLETED
+  IN_PROGRESS
+  REJECTED
+}
+
+enum MerchantActionsType {
+  SELLER_PROFILE_VERIFICATION
+  BANK_VERIFICATION
+}
+
 enum MerchantAnnouncementCategory {
   LOGISTICS
   INTELLECTUAL_PROPERTY
@@ -5784,6 +5806,8 @@ input MerchantFulfillmentTimeInfoInput {
   pickupCarrier: PickupCarrier
   carrierPickupTime: String
   merchantHandlingTime: Int
+  workdayCalendar: WorkdayCalenderInput
+  workdayOverrideCalendar: [WorkDayOverrideInput]
 }
 
 enum MerchantGamingReviewFieldTicketType {
@@ -6396,6 +6420,7 @@ type MerchantSchema {
   isFactory: Boolean!
   taxIdentification: MerchantTaxIdentificationSchema
   bankAccountVerification: BankAccountVerificationSchema
+  latestActionsRequired: MerchantActionsRequiredSchema
   email: String!
   isIdentifiedUsTax: Boolean
   eligibleForExpeditedPaymentPolicy: Boolean
@@ -6416,6 +6441,7 @@ type MerchantSchema {
   calculatedShippingAccountConfig: CalculatedShippingAccountConfigType
   canAccessCalculatedShippingAccountConfig: Boolean
   isMerchantFulfillmentTimeOptOut: Boolean
+  isConsignmentMode: Boolean
 }
 
 type MerchantSenderAddressMutations {
@@ -6827,6 +6853,8 @@ type MerchantWarehouseSchema {
   pickupCarrier: PickupCarrier
   carrierPickupTime: String
   merchantHandlingTime: Int
+  workdayCalendar: WorkdayCalender
+  workdayOverrideCalendar: [WorkDayOverride!]
 }
 
 type MerchantWarehouseWeekStatsSchema {
@@ -7295,7 +7323,12 @@ input NoticeQueryInput {
   statuses: [NoticeStatus!]
   startDate: DatetimeInput
   endDate: DatetimeInput
-  sortMode: NoticeSortMode = 1
+  sort: [NoticeQuerySortInput!]
+}
+
+input NoticeQuerySortInput {
+  field: NoticeSortField!
+  order: SortOrderType!
 }
 
 type NoticeSchema {
@@ -7322,8 +7355,10 @@ type NoticeSchema {
   datetimeDisputeReviewed: Datetime
 }
 
-enum NoticeSortMode {
-  NO_SORT
+enum NoticeSortField {
+  PRIORITY
+  DATETIME_CREATED
+  DATETIME_DISPUTED
 }
 
 enum NoticeStatus {
@@ -9612,6 +9647,8 @@ type ProductSchema {
   maxQuantity: Int
   attributes: [MerchantProvidedAttributeSchema!]
   warningType: ContestWarningType
+  isConsignmentEligible: Boolean
+  consignmentOriginalPid: ObjectIdType
   chemicalNames: [String!]
   performance(startDate: DatetimeInput!, endDate: DatetimeInput!): ProductPerformanceSchema
   taxonomyCategory: TaxonomyCategorySchema
@@ -9752,6 +9789,8 @@ input ProductUpsertInput {
   maxQuantity: Int
   attributes: [AttributeInput!]
   warningType: ContestWarningType
+  isConsignmentEligible: Boolean
+  consignmentOriginalPid: ObjectIdType
   chemicalNames: [String!]
   subcategoryId: Int
 }
@@ -10877,7 +10916,8 @@ enum RoleType {
   TEST_USER
   SALES_REP
   TELEPERFORMANCE_BOGOTA_LEAD
-  ALORICA_LEAD
+  CS_ADMIN
+  ACCENTURE_INFRACTION_WORKER
   LOGISTICS_TRACKING_ADMIN
   CN_ORG_MLE_MPS
   MERCHANT_SUPPORT_LEAD
@@ -10905,7 +10945,7 @@ enum RoleType {
   TRUSTED_TAGGER
   BRAND_PROTECTION_LEAD
   TELEPERFORMANCE_BOGOTA_WORKER
-  CS_ADMIN
+  ALORICA_LEAD
   CONTRACTOR
   STORE_USER
   CS_REP_EXTERNAL
@@ -13775,6 +13815,7 @@ type UserSchema {
   isApiUser: Boolean!
   supportConfig: MerchantSupportConfigSchema
   oidcCredentials: [OidcCredentialSchema!]
+  isBd: Boolean
 }
 
 enum UserServiceType {
@@ -13871,6 +13912,7 @@ input VariationInput {
   quantityVolume: VolumeInput
   quantityArea: AreaInput
   quantityUnit: CountInput
+  consignmentSupplyCost: Float
   attributes: [AttributeInput!]
   options: [AttributeInput!]
 }
@@ -13900,6 +13942,7 @@ type VariationSchema {
   inventory: [InventorySchema!]!
   fbwInventory: [FBWInventorySchema!]!
   price: CurrencyValue!
+  consignmentSupplyCost: CurrencyValue
   msrp: CurrencyValue
   image: ImageSchema
   enabled: Boolean
@@ -14641,6 +14684,36 @@ enum WishUserSignupMethod {
   FACEBOOK
   APPLE
   EMAIL
+}
+
+type WorkDayOverride {
+  date: String!
+  value: Boolean!
+}
+
+input WorkDayOverrideInput {
+  date: String!
+  value: Boolean!
+}
+
+type WorkdayCalender {
+  monday: Boolean!
+  tuesday: Boolean!
+  wednesday: Boolean!
+  thursday: Boolean!
+  friday: Boolean!
+  saturday: Boolean!
+  sunday: Boolean!
+}
+
+input WorkdayCalenderInput {
+  monday: Boolean!
+  tuesday: Boolean!
+  wednesday: Boolean!
+  thursday: Boolean!
+  friday: Boolean!
+  saturday: Boolean!
+  sunday: Boolean!
 }
 
 enum WssTier {

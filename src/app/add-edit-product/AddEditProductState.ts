@@ -1985,7 +1985,10 @@ export default class AddEditProductState {
       };
     }
     return {
-      attributes: attributesAsInput(attributes),
+      attributes: attributesAsInput({
+        dict: attributes,
+        isVariationLevel: true,
+      }),
     };
   };
 
@@ -2235,6 +2238,14 @@ export default class AddEditProductState {
     );
   }
 
+  @computed
+  get productAttributes(): ReadonlyArray<PickedTaxonomyAttribute> {
+    const { taxonomyAttributes } = this;
+    return taxonomyAttributes.filter(
+      (attribute) => !attribute.isVariationAttribute,
+    );
+  }
+
   /*
     Scenario 1: attribute that has a pre-defined list of values
       Requirement: use {id: <attribute-id>, value: [{id: <attribute-value-id>}]} as upsert input
@@ -2248,75 +2259,75 @@ export default class AddEditProductState {
     We will maintain {name: "", value: [{value: ""}]} information for each attribute throughout frontend,
     and only convert them to IDs, if appropriate, upon calling GQL
   */
-  private attributesAsInput = (
-    dict: Partial<Record<string, ReadonlyArray<string>>>,
-  ): ReadonlyArray<AttributeInput> => {
-    const { taxonomyAttributesRaw } = this;
+  private attributesAsInput = ({
+    dict,
+    isVariationLevel,
+  }: {
+    dict: Partial<Record<string, ReadonlyArray<string>>>;
+    isVariationLevel: boolean;
+  }): ReadonlyArray<AttributeInput> => {
+    const taxonomyAttributes = isVariationLevel
+      ? this.variationAttributes
+      : this.productAttributes;
 
-    return Object.keys(dict).reduce<AttributeInput[]>(
-      (accumulatedAttributeInputs, key) => {
-        const merchantValues = dict[key];
-        if (!merchantValues || merchantValues.length == 0) {
-          return accumulatedAttributeInputs;
-        }
+    const taxonomyAttributesInput = taxonomyAttributes.map((attribute) => {
+      const attributeName = attribute.name;
+      const attributeId = attribute.id;
+      const attributeValues = attribute.values;
+      const merchantValues = dict[attributeName];
 
-        if (key == Constants.TAXONOMY.sizeChartImgAttrName) {
-          return [
-            ...accumulatedAttributeInputs,
-            {
-              name: key,
-              value: [{ value: merchantValues[0] }], // only 1 size chart image is permitted
-            },
-          ];
-        }
+      if (merchantValues == null || merchantValues.length === 0) {
+        return {
+          id: attributeId,
+          name: attributeName,
+          value: null,
+        };
+      }
 
-        const taxonomyAttribute = taxonomyAttributesRaw.find(
-          (attr) => attr.name == key,
-        );
-        if (!taxonomyAttribute) {
-          return accumulatedAttributeInputs;
-        }
+      if (!attributeValues?.length) {
+        return {
+          id: attributeId,
+          name: attributeName,
+          value: merchantValues.map((v): AttributeValueInput => {
+            return {
+              value: v,
+            };
+          }),
+        };
+      }
 
-        if (!taxonomyAttribute.values?.length) {
-          return [
-            ...accumulatedAttributeInputs,
-            {
-              id: taxonomyAttribute.id,
-              value: merchantValues.map((v): AttributeValueInput => {
-                return {
-                  value: v,
-                };
-              }),
-            },
-          ];
-        }
-
-        return [
-          ...accumulatedAttributeInputs,
-          {
-            id: taxonomyAttribute.id,
-            value: merchantValues.reduce<ReadonlyArray<AttributeValueInput>>(
-              (accumulatedValueInputs, cur) => {
-                const taxonomyValue = taxonomyAttribute.values?.find(
-                  (v) => v.value == cur,
-                );
-                if (!taxonomyValue) {
-                  return accumulatedValueInputs;
-                }
-                return [
-                  ...accumulatedValueInputs,
-                  {
-                    id: taxonomyValue.id,
-                  },
-                ];
+      return {
+        id: attributeId,
+        name: attributeName,
+        value: merchantValues.reduce<ReadonlyArray<AttributeValueInput>>(
+          (accumulatedValueInputs, cur) => {
+            const taxonomyValue = attribute.values?.find((v) => v.value == cur);
+            if (!taxonomyValue) {
+              return accumulatedValueInputs;
+            }
+            return [
+              ...accumulatedValueInputs,
+              {
+                id: taxonomyValue.id,
               },
-              [],
-            ),
+            ];
           },
-        ];
-      },
-      [],
-    );
+          [],
+        ),
+      };
+    });
+
+    const sizeChartValue = dict[Constants.TAXONOMY.sizeChartImgAttrName];
+    const sizeChartInput = sizeChartValue
+      ? [
+          {
+            name: Constants.TAXONOMY.sizeChartImgAttrName,
+            value: [{ value: sizeChartValue[0] }], // only 1 size chart image is permitted
+          },
+        ]
+      : [];
+
+    return [...sizeChartInput, ...taxonomyAttributesInput];
   };
 
   attributesHasError = ({
@@ -2359,7 +2370,10 @@ export default class AddEditProductState {
     "attributes"
   > => {
     const { subcategoryAttributes, attributesAsInput } = this;
-    const subcategoryAttributesInput = attributesAsInput(subcategoryAttributes);
+    const subcategoryAttributesInput = attributesAsInput({
+      dict: subcategoryAttributes,
+      isVariationLevel: false,
+    });
 
     return {
       attributes: [...subcategoryAttributesInput],
