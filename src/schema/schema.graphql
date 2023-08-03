@@ -1765,6 +1765,15 @@ input ClaimInfractionInput {
   warningIds: [ObjectIdType!]
 }
 
+type ClaimNotices {
+  ok: Boolean!
+  message: String
+}
+
+input ClaimNoticesInput {
+  noticeIds: [ObjectIdType!]!
+}
+
 type ClearAllUIState {
   ok: Boolean!
   message: String
@@ -1938,6 +1947,26 @@ enum CommerceTransactionTaxRemitType {
   WISH_REMIT
   NO_REMIT
   TBD_REMIT
+}
+
+type CompleteDisputeReview {
+  ok: Boolean!
+  message: String
+}
+
+input CompleteDisputeReviewInput {
+  noticeId: ObjectIdType!
+  disputeReviewResponse: String!
+}
+
+type CompleteNoticeReview {
+  ok: Boolean!
+  message: String
+}
+
+input CompleteNoticeReviewInput {
+  noticeId: ObjectIdType!
+  reviewResponse: String!
 }
 
 type ConfirmedDeliveryCarriers {
@@ -2462,6 +2491,19 @@ type CreateLQDCampaign {
   message: String
 }
 
+type CreateNotice {
+  ok: Boolean!
+  message: String
+}
+
+input CreateNoticeInput {
+  productIds: [ObjectIdType!]!
+  notifierName: String!
+  notifierEmail: String!
+  description: String!
+  supportFiles: [FileInput!]
+}
+
 type CreateNotifier {
   ok: Boolean!
   message: String
@@ -2823,6 +2865,11 @@ type DSAMutations {
   createNotifier(input: CreateNotifierInput!): CreateNotifier
   updateNotifier(input: UpdateNotifierInput!): UpdateNotifier
   removeNotifier(input: RemoveNotifierInput!): RemoveNotifier
+  claimNotices(input: ClaimNoticesInput!): ClaimNotices
+  unclaimNotices(input: UnclaimNoticesInput!): UnclaimNotices
+  completeNoticeReview(input: CompleteNoticeReviewInput!): CompleteNoticeReview
+  completeDisputeReview(input: CompleteDisputeReviewInput!): CompleteDisputeReview
+  public: PublicDSAMutations
 }
 
 scalar DateTime
@@ -3187,6 +3234,18 @@ enum DisputeMessageType {
   CANCELLED
   REPLY
   APPROVED
+}
+
+type DisputeNotice {
+  ok: Boolean!
+  message: String
+}
+
+input DisputeNoticeInput {
+  noticeId: ObjectIdType!
+  productIds: [ObjectIdType!]!
+  disputeDescription: String!
+  disputeSupportFiles: [FileInput!]
 }
 
 enum DisputeReason {
@@ -9955,6 +10014,11 @@ type PromotableProduct {
   isInTrendingCategory: Boolean!
 }
 
+type PublicDSAMutations {
+  createNotice(input: CreateNoticeInput!): CreateNotice
+  disputeNotice(input: DisputeNoticeInput!): DisputeNotice
+}
+
 type PublicShippingProviderDocs {
   shippingProviderPolicies(destCountryCode: CountryCode): [ShippingProviderPolicySchema!]
 }
@@ -11039,6 +11103,7 @@ type RootMutation {
   locale: LocaleMutations
   sanctionScreening: SanctionScreeningMutations
   merchantIdentity: MerchantIdentityMutations
+  dsa: DSAMutations
 }
 
 type RootQuery {
@@ -11081,6 +11146,7 @@ type RootQuery {
   taxonomy: TaxonomySchema
   listingQualityInsights: ListingQualityInsightsSchema
   merchantIdentity: MerchantIdentityServiceSchema
+  dsa: DSAHub
 }
 
 type SalesPerformanceStats {
@@ -12016,6 +12082,7 @@ type TaggingMutations {
   updateDedupImage(input: UpdateDedupImageInput!): UpdateDedupImage
   deleteDedupImage(input: DeleteDedupImageInput!): DeleteDedupImage
   dsa: DSAMutations
+  publicDsa: PublicDSAMutations
 }
 
 type TaggingServiceSchema {
@@ -12030,7 +12097,6 @@ type TaggingServiceSchema {
   productTaxonomyCategoryDisputeHub: ProductTaxonomyCategoryDisputeHub
   attributeExtractionTaggerJob(taskId: String): AttributeExtractionTaggerJobSchema
   dedupImageLibHub: DedupImageLibraryHub
-  dsa: DSAHub
 }
 
 type TaggingViolationReason {
@@ -13047,6 +13113,15 @@ type USTaxMarketplaceMunicipalities {
   cities: [String!]!
   counties: [String!]!
   districts: [String!]!
+}
+
+type UnclaimNotices {
+  ok: Boolean!
+  message: String
+}
+
+input UnclaimNoticesInput {
+  noticeIds: [ObjectIdType!]!
 }
 
 type Union {

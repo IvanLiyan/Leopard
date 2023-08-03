@@ -25,6 +25,7 @@ import {
   UserGateSchema,
   ProductConstantsSchema,
   MerchantProvidedAttributeSchema,
+  UserSchema,
   DeciderKeySchema,
 } from "@schema";
 import { gql } from "@gql";
@@ -82,7 +83,11 @@ export const ADD_PRODUCT_INITIAL_DATA_QUERY = gql(`
 
 export const EDIT_PRODUCT_INITIAL_DATA_QUERY = gql(`
   query EditProduct_GetInitialDataQuery($productId: String) {
+    su {
+      isBd
+    }
     currentMerchant {
+      isConsignmentMode
       standardWarehouseId
       primaryCurrency
       canManageShipping
@@ -121,6 +126,7 @@ export const EDIT_PRODUCT_INITIAL_DATA_QUERY = gql(`
           name: "add_edit_product_ui_revamp"
         )
         showInventoryOnHand: decideForName(name: "show_inventory_on_hand")
+        showConsignmentOverwrite: decideForName(name: "show_consignment_overwrite")
       }
     }
     policy {
@@ -147,6 +153,8 @@ export const EDIT_PRODUCT_INITIAL_DATA_QUERY = gql(`
         eligibleForCategoryDispute
         warningType
         chemicalNames
+        isConsignmentEligible
+        consignmentOriginalPid
         subcategory {
           id
           name
@@ -224,6 +232,10 @@ export const EDIT_PRODUCT_INITIAL_DATA_QUERY = gql(`
           }
           customsHsCode
           price {
+            amount
+            currencyCode
+          }
+          consignmentSupplyCost {
             amount
             currencyCode
           }
@@ -371,6 +383,10 @@ export type VariationInitialState = Pick<
   readonly image: PickedImage;
   readonly inventory: ReadonlyArray<PickedInventory>;
   readonly price: Pick<CurrencyValue, "amount" | "currencyCode">;
+  readonly consignmentSupplyCost?: Pick<
+    CurrencyValue,
+    "amount" | "currencyCode"
+  >;
   readonly quantityWeight?: Pick<Weight, "value"> | null | undefined;
   readonly quantityLength?: Pick<Length, "value"> | null | undefined;
   readonly quantityVolume?: Pick<Volume, "value"> | null | undefined;
@@ -444,6 +460,8 @@ export type InitialProductState = Pick<
   | "warningType"
   | "chemicalNames"
   | "attributes"
+  | "consignmentOriginalPid"
+  | "isConsignmentEligible"
 > & {
   readonly variations: ReadonlyArray<VariationInitialState>;
   readonly requestedBrand: PickedBrandSchema | undefined | null;
@@ -484,6 +502,8 @@ export type AddEditProductInitialData = {
     } | null;
   } | null;
 
+  readonly su?: Pick<UserSchema, "isBd">;
+
   readonly currentMerchant: Pick<
     MerchantSchema,
     | "standardWarehouseId"
@@ -491,6 +511,7 @@ export type AddEditProductInitialData = {
     | "isStoreMerchant"
     | "canManageShipping"
     | "isCnForFulfillment"
+    | "isConsignmentMode"
   > & {
     readonly shippingSettings: ReadonlyArray<PickedShippingSettingsSchema>;
     readonly countryOfDomicile?: Pick<Country, "code"> | null;
@@ -509,6 +530,7 @@ export type AddEditProductInitialData = {
       readonly showVariationGroupingDkey: DeciderKeySchema["decideForName"];
       readonly showRevampedAddEditProductUI: DeciderKeySchema["decideForName"];
       readonly showInventoryOnHand: DeciderKeySchema["decideForName"];
+      readonly showConsignmentOverwrite: DeciderKeySchema["decideForName"];
     } | null;
   };
 

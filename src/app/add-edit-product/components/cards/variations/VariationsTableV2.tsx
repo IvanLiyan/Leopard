@@ -92,6 +92,7 @@ const VariationsTableV2: React.FC<Props> = (props: Props) => {
     showVariationGroupingUI,
     showInventoryOnHand,
     updateVariationCustomsLogistics,
+    IsConsignmentAndNotBd,
   } = state;
   const isOptionEditable = showVariationGroupingUI && !isNewProduct;
   const weightAbbr = WeightUnitDisplayNames[CustomsLogisticsWeightUnit].symbol;
@@ -540,7 +541,7 @@ const VariationsTableV2: React.FC<Props> = (props: Props) => {
                     allowBlank: true,
                   }),
                 ]}
-                disabled={isSubmitting}
+                disabled={isSubmitting || IsConsignmentAndNotBd}
                 inputStyle={{ padding: "0px 9px" }}
               />
             );
@@ -583,7 +584,7 @@ const VariationsTableV2: React.FC<Props> = (props: Props) => {
                   }),
                 ]}
                 forceValidation={forceValidation}
-                disabled={isSubmitting}
+                disabled={isSubmitting || IsConsignmentAndNotBd}
                 style={[styles.inventoryInput]}
               />
             );

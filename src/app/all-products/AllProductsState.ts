@@ -97,6 +97,15 @@ export default class AllProductsState {
   }
 
   @computed
+  get IsConsignmentAndNotBd(): boolean {
+    return (
+      !!this.initialData.currentMerchant?.isConsignmentMode &&
+      !this.initialData.su?.isBd &&
+      !!this.initialData.platformConstants?.deciderKey?.showConsignmentOverwrite
+    );
+  }
+
+  @computed
   get isPrimaryWarehouse(): boolean {
     const warehouses = this.initialData.currentMerchant?.warehouses || [];
 

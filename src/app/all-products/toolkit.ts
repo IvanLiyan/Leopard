@@ -39,6 +39,7 @@ import {
   TaxonomyCategorySchema,
   MerchantProvidedAttributeSchema,
   UserGateSchema,
+  UserSchema,
   DeciderKeySchema,
 } from "@schema";
 import { ci18n } from "@core/toolkit/i18n";
@@ -61,7 +62,11 @@ export type PickedWarehouse = Pick<MerchantWarehouseSchema, "id" | "unitId"> & {
 
 export const PRODUCTS_CONTAINER_INITIAL_DATA_QUERY = gql(`
   query AllProducts_ProductsContainerInitialDataQuery {
+    su {
+      isBd
+    }
     currentMerchant {
+      isConsignmentMode
       state
       canAccessPaidPlacement
       warehouses {
@@ -82,14 +87,19 @@ export const PRODUCTS_CONTAINER_INITIAL_DATA_QUERY = gql(`
     platformConstants {
       deciderKey {
         showVariationGroupingDkey: decideForName(name: "variation_grouping_ui")
+        showConsignmentOverwrite: decideForName(name: "show_consignment_overwrite")
       }
     }
   }
 `);
 
 export type ProductsContainerInitialData = {
+  readonly su?: Pick<UserSchema, "isBd">;
   readonly currentMerchant?:
-    | (Pick<MerchantSchema, "canAccessPaidPlacement" | "state"> & {
+    | (Pick<
+        MerchantSchema,
+        "canAccessPaidPlacement" | "state" | "isConsignmentMode"
+      > & {
         readonly warehouses?: ReadonlyArray<PickedWarehouse> | null;
       })
     | null;
@@ -101,6 +111,7 @@ export type ProductsContainerInitialData = {
   readonly platformConstants?: {
     readonly deciderKey?: {
       readonly showVariationGroupingDkey: DeciderKeySchema["decideForName"];
+      readonly showConsignmentOverwrite: DeciderKeySchema["decideForName"];
     } | null;
   } | null;
 };

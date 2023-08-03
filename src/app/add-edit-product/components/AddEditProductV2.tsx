@@ -17,7 +17,7 @@ import AddEditProductState from "@add-edit-product/AddEditProductState";
 import CustomsLogisticsCardV2 from "./cards/customs-logistics/CustomsLogisticsCardV2";
 import ProductCategoryV2 from "./cards/ProductCategoryV2";
 import AdditionalAttributesV2 from "./cards/AdditionalAttributesV2";
-
+import ConsignmentOverwrite from "./cards/ConsignmentOverwrite";
 const CardSpacing = 25;
 
 type Props = BaseProps & {
@@ -36,7 +36,8 @@ type Props = BaseProps & {
  */
 const AddEditProductV2 = ({ className, style, state }: Props) => {
   const styles = useStylesheet();
-
+  const [consignmentOverwriteOpen, setConsignmentOverwriteOpen] =
+    useState(true);
   const [productCategoryOpen, setProductCategoryOpen] = useState(true);
   const [productImagesOpen, setProductImagesOpen] = useState(true);
   const [inventoryOpen, setInventoryOpen] = useState(true);
@@ -52,13 +53,22 @@ const AddEditProductV2 = ({ className, style, state }: Props) => {
     useState(true);
   const [categorizationOpen, setCategorizationOpen] = useState(true);
 
-  const { hasVariations, isNewProduct, subcategoryId } = state;
+  const { hasVariations, isNewProduct, subcategoryId, IsConsignmentAndBd } =
+    state;
 
   const showTips = false;
 
   return (
     <Layout.FlexColumn style={[styles.root, className, style]}>
       <Layout.FlexColumn>
+        {IsConsignmentAndBd && (
+          <ConsignmentOverwrite
+            style={styles.section}
+            isOpen={consignmentOverwriteOpen}
+            state={state}
+            onOpenToggled={(isOpen) => setConsignmentOverwriteOpen(isOpen)}
+          />
+        )}
         <ProductCategoryV2
           style={styles.section}
           isOpen={productCategoryOpen}

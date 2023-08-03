@@ -93,6 +93,7 @@ const ProductTable: React.FC<Props> = ({
     isPrimaryWarehouse,
     initialData: { currentMerchant: merchant },
     showVariationGroupingUI,
+    IsConsignmentAndNotBd,
   } = state;
 
   const { data: allProductVariationsData, loading: loadingProductVariations } =
@@ -887,7 +888,7 @@ const ProductTable: React.FC<Props> = ({
                 });
               }}
               debugValue={(Math.random() * 10).toFixed(2).toString()}
-              disabled={isSubmitting || productRemoved}
+              disabled={isSubmitting || productRemoved || IsConsignmentAndNotBd}
               validationResponse={
                 hasError ? i`Price must be greater than 0` : undefined
               }
@@ -999,7 +1000,7 @@ const ProductTable: React.FC<Props> = ({
                   newInventory: valueAsNumber == null ? null : valueAsNumber,
                 });
               }}
-              disabled={isSubmitting || productRemoved}
+              disabled={isSubmitting || productRemoved || IsConsignmentAndNotBd}
               borderColor={localChange != null ? primary : undefined}
             />
           );

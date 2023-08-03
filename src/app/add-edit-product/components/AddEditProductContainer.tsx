@@ -52,6 +52,7 @@ const AddEditProductContainer: React.FC<Props> = ({ initialData }: Props) => {
       canManageShipping,
       isCnForFulfillment,
       countryOfDomicile,
+      isConsignmentMode,
     },
     currentUser: {
       gating: { useCalculatedShipping, showVariationGroupingMUG },
@@ -61,6 +62,7 @@ const AddEditProductContainer: React.FC<Props> = ({ initialData }: Props) => {
       deciderKey,
     },
     policy,
+    su,
   } = initialData;
 
   const disputes = policy?.productCategoryDispute?.disputes;
@@ -84,7 +86,10 @@ const AddEditProductContainer: React.FC<Props> = ({ initialData }: Props) => {
         showVariationGroupingMUG || deciderKey?.showVariationGroupingDkey,
       showRevampedAddEditProductUI,
       showInventoryOnHand: deciderKey?.showInventoryOnHand,
+      showConsignmentOverwrite: deciderKey?.showConsignmentOverwrite,
       isCnMerchant: countryOfDomicile?.code === "CN",
+      isConsignmentMode,
+      isBd: su ? su.isBd : false,
     }),
   );
 

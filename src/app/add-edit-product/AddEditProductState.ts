@@ -408,6 +408,7 @@ export type Variation = {
   readonly size: VariationInitialState["size"] | null | undefined;
   readonly color: VariationInitialState["color"] | null | undefined;
   readonly price: number | null | undefined;
+  readonly consignmentSupplyCost: number | null | undefined;
   readonly image: VariationInitialState["image"] | null | undefined;
   readonly gtin: VariationInitialState["gtin"] | null | undefined;
   readonly quantityValue: number | null | undefined;
@@ -488,6 +489,7 @@ export const createVariation = ({
     size: initialState.size,
     color: initialState.color,
     price: initialState.price?.amount,
+    consignmentSupplyCost: initialState.consignmentSupplyCost?.amount,
     image: initialState.image,
     gtin: initialState.gtin,
     quantityValue:
@@ -524,6 +526,7 @@ const hasVariationChanged = (variation: Variation): boolean => {
     size,
     color,
     price,
+    consignmentSupplyCost,
     initialState,
     gtin,
     customCustomsLogistics,
@@ -589,6 +592,10 @@ const hasVariationChanged = (variation: Variation): boolean => {
   }
 
   if (price != initialState.price?.amount) {
+    return true;
+  }
+
+  if (consignmentSupplyCost != initialState.consignmentSupplyCost?.amount) {
     return true;
   }
 
@@ -753,6 +760,12 @@ export default class AddEditProductState {
   canShowMaxDeliveryDays: boolean;
 
   @observable
+  IsConsignmentAndBd: boolean;
+
+  @observable
+  IsConsignmentAndNotBd: boolean;
+
+  @observable
   isCnMerchant: boolean;
 
   @observable
@@ -902,6 +915,9 @@ export default class AddEditProductState {
   showRevampedAddEditProductUI: boolean;
 
   @observable
+  showConsignmentOverwrite: boolean;
+
+  @observable
   showInventoryOnHand: boolean; // turn on the dkey when BE change is ready
 
   @observable
@@ -916,6 +932,17 @@ export default class AddEditProductState {
   @observable
   savedProductId?: string;
 
+  @observable
+  consignmentOriginalPid?:
+    | InitialProductState["consignmentOriginalPid"]
+    | null
+    | undefined;
+
+  @observable
+  isConsignmentEligible?:
+    | InitialProductState["isConsignmentEligible"]
+    | null
+    | undefined;
   constructor({
     initialState,
     isCloning = false,
@@ -925,13 +952,16 @@ export default class AddEditProductState {
     canManageShipping,
     disputeId,
     isCnForFulfillment,
+    isConsignmentMode,
     isStoreMerchant,
     useCalculatedShipping,
     caProp65AllChemicalsList,
     showVariationGroupingUI,
     showRevampedAddEditProductUI,
+    showConsignmentOverwrite,
     showInventoryOnHand,
     isCnMerchant,
+    isBd,
   }: {
     readonly standardWarehouseId: string;
     readonly primaryCurrency: PaymentCurrencyCode;
@@ -942,16 +972,18 @@ export default class AddEditProductState {
     readonly canManageShipping: boolean;
     readonly disputeId?: string | null;
     readonly isCnForFulfillment?: boolean | null;
+    readonly isConsignmentMode?: boolean | null;
+    readonly isBd?: boolean | null;
     readonly useCalculatedShipping?: boolean | null;
     readonly caProp65AllChemicalsList: ReadonlyArray<string>;
     readonly showVariationGroupingUI?: boolean | null | undefined;
     readonly showRevampedAddEditProductUI?: boolean | null | undefined;
+    readonly showConsignmentOverwrite?: boolean | null | undefined;
     readonly showInventoryOnHand?: boolean | null | undefined;
     readonly isCnMerchant?: boolean | null | undefined;
   }) {
     this.initialState = initialState;
     this.caProp65AllChemicalsList = caProp65AllChemicalsList;
-
     this.id = isCloning || initialState == null ? undefined : initialState.id;
     this.parentSku = initialState == null ? undefined : initialState.sku;
     this.isCloning = isCloning;
@@ -972,6 +1004,11 @@ export default class AddEditProductState {
     this.isStoreMerchant = isStoreMerchant;
     this.canShowMaxDeliveryDays =
       isCnForFulfillment == null || !isCnForFulfillment;
+    this.showConsignmentOverwrite = !!showConsignmentOverwrite;
+    this.IsConsignmentAndBd =
+      !!isConsignmentMode && !!isBd && !!showConsignmentOverwrite;
+    this.IsConsignmentAndNotBd =
+      !!isConsignmentMode && !isBd && !!showConsignmentOverwrite;
     this.isCnMerchant = !!isCnMerchant;
     this.disputeId = disputeId;
     this.useCalculatedShipping = useCalculatedShipping || false;
@@ -984,6 +1021,10 @@ export default class AddEditProductState {
     this.showVariationGroupingUI = !!showVariationGroupingUI;
     this.showRevampedAddEditProductUI = !!showRevampedAddEditProductUI;
     this.showInventoryOnHand = !!showInventoryOnHand;
+    this.consignmentOriginalPid =
+      initialState == null ? undefined : initialState?.consignmentOriginalPid;
+    this.isConsignmentEligible =
+      initialState == null ? undefined : initialState?.isConsignmentEligible;
 
     const countryShippingStates: Map<CountryCode, CountryShipping> = new Map();
     const warehouseCountryShippingSettings =
@@ -2028,6 +2069,7 @@ export default class AddEditProductState {
       id,
       sku,
       price,
+      consignmentSupplyCost,
       size,
       color,
       image,
@@ -2141,6 +2183,7 @@ export default class AddEditProductState {
       sku,
       inventory,
       price: priceInput,
+      consignmentSupplyCost,
       size,
       color,
       gtin,
@@ -2702,6 +2745,19 @@ export default class AddEditProductState {
   };
 
   // =============================
+  // Consignment Overwrite
+  // =============================
+
+  @computed
+  get consignmentListingCheckboxEnable(): boolean {
+    const { consignmentOriginalPid, variations } = this;
+    const getAllSupplyCost = variations.every(
+      (item) => item.consignmentSupplyCost,
+    );
+    return !!consignmentOriginalPid && getAllSupplyCost;
+  }
+
+  // =============================
   // Whole page
   // =============================
   @computed
@@ -3190,6 +3246,8 @@ export default class AddEditProductState {
       productAttributesAsInput,
       showRevampedAddEditProductUI,
       additionalAttributes,
+      consignmentOriginalPid,
+      isConsignmentEligible,
     } = this;
 
     const countryShippingInputList = Array.from(countryShippingStates.values())
@@ -3323,6 +3381,9 @@ export default class AddEditProductState {
       name,
       description,
       condition,
+      consignmentOriginalPid,
+      isConsignmentEligible:
+        isConsignmentEligible === true ? isConsignmentEligible : false,
       warningType: caProp65Warning == null ? null : caProp65Warning,
       chemicalNames: caProp65Chemicals,
       ...referencePriceInput,
