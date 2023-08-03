@@ -95,7 +95,11 @@ const Shipping: React.FC<Props> = (props: Props) => {
               }
               debugValue={(Math.random() * 10).toFixed(2).toString()}
               forceValidation={forceValidation}
-              validators={[new RequiredValidator()]}
+              validators={[
+                new RequiredValidator({
+                  customMessage: i`This field is required`,
+                }),
+              ]}
               disabled={state.isSubmitting}
               data-cy="input-default-shipping-price"
             />

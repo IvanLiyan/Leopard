@@ -116,7 +116,9 @@ const CustomsLogisticsFormV2: React.FC<Props> = ({
                       }
                       disabled={disabled}
                       validators={[
-                        new RequiredValidator(),
+                        new RequiredValidator({
+                          customMessage: i`This field is required`,
+                        }),
                         new MinMaxValueValidator({
                           minAllowedValue: 0,
                           customMessage: i`Value cannot be negative`,
@@ -218,7 +220,7 @@ const CustomsLogisticsFormV2: React.FC<Props> = ({
             </Field>
             {forceValidation && countryOfOrigin == null && (
               <ErrorText style={{ marginTop: 8 }}>
-                This field is required
+                {i`This field is required`}
               </ErrorText>
             )}
           </Grid>

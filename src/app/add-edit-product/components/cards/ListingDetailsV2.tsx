@@ -50,7 +50,11 @@ const ListingDetailsV2: React.FC<Props> = (props: Props) => {
             placeholder={i`Be clear, concise, and descriptive of the product being sold`}
             style={styles.input}
             onChange={({ text }) => (state.name = text)}
-            validators={[new RequiredValidator()]}
+            validators={[
+              new RequiredValidator({
+                customMessage: i`This field is required`,
+              }),
+            ]}
             forceValidation={forceValidation}
             disabled={isSubmitting}
             data-cy="input-name"
@@ -78,7 +82,11 @@ const ListingDetailsV2: React.FC<Props> = (props: Props) => {
                   setSingleVariationSku(text);
                 }
               }}
-              validators={[new RequiredValidator()]}
+              validators={[
+                new RequiredValidator({
+                  customMessage: i`This field is required`,
+                }),
+              ]}
               forceValidation={forceValidation}
               disabled={isSubmitting}
               data-cy="input-parent-sku"
@@ -118,7 +126,11 @@ const ListingDetailsV2: React.FC<Props> = (props: Props) => {
             isTextArea
             value={state.description}
             onChange={({ text }) => (state.description = text)}
-            validators={[new RequiredValidator()]}
+            validators={[
+              new RequiredValidator({
+                customMessage: i`This field is required`,
+              }),
+            ]}
             forceValidation={forceValidation}
             disabled={isSubmitting}
             data-cy="input-description"

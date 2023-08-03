@@ -70,7 +70,9 @@ const InventoryGtin: React.FC<Props> = (props: Props) => {
                 setSingleVariationInventory(valueAsNumber)
               }
               validators={[
-                new RequiredValidator(),
+                new RequiredValidator({
+                  customMessage: i`This field is required`,
+                }),
                 new MinMaxValueValidator({
                   minAllowedValue: 0,
                   customMessage: i`Value cannot be negative`,

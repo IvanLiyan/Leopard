@@ -104,7 +104,9 @@ const Price: React.FC<Props> = ({
             debugValue={(Math.random() * 10).toFixed(2).toString()}
             forceValidation={forceValidation}
             validators={[
-              new RequiredValidator(),
+              new RequiredValidator({
+                customMessage: i`This field is required`,
+              }),
               new MinMaxValueValidator({
                 minAllowedValue: 0,
                 customMessage: i`Value cannot be negative`,
