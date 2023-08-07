@@ -68,10 +68,10 @@ const ConsignmentOverwrite: React.FC<Props> = (props: Props) => {
           <Field style={styles.rowField} title={i`Existing PID`}>
             <TextInput
               value={consignmentOriginalPid}
-              placeholder={i`Enter exiting PID to import and map`}
+              placeholder={i`Enter existing PID to import and map`}
               onChange={({ text }) => (state.consignmentOriginalPid = text)}
               validators={[new RequiredValidator()]}
-              data-cy="input-ExitingPID"
+              data-cy="input-ExistingPID"
             />
           </Field>
           <Field title={i`Merchant set cost`} style={styles.rowField}>
