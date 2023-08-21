@@ -24,6 +24,7 @@ import {
 } from "@home/toolkit/banner";
 import moment from "moment";
 import { LogData, log } from "@core/toolkit/logger";
+import { useDeciderKey } from "@core/stores/ExperimentStore";
 import ProductBoostPromoBanner from "./banners/ProductBoostPromoBanner";
 import ProductBoostAutomatedCampaignBanner from "./banners/ProductBoostAutomatedCampaignBanner";
 import SellerProfileBanner from "./banners/SellerProfileBanner";
@@ -33,6 +34,7 @@ import MerchantBlogBanner from "./banners/MerchantBlogBanner";
 import CustomerServiceProgramBanner from "./banners/CustomerServiceProgramBanner";
 import WeeklyDisbUpgradeBanner from "./banners/WeeklyDisbUpgradeBanner";
 import OnboardingReviewBanner from "./banners/OnboardingReviewBanner";
+import MerchantSummitBanner from "../../../MerchantSummit/MerchantSummitBanner";
 
 export type HomeBannerProps = BaseProps;
 
@@ -40,6 +42,7 @@ const HomeBannerCarousel = (props: HomeBannerProps) => {
   const { className, style } = props;
   const styles = useStylesheet();
   const { banners, isLoading } = useBanners();
+  const { decision: MerchantSummitDecision } = useDeciderKey("merchant_summit");
 
   const [hasLoggedBannerImpressions, setHasLoggedBannerImpressions] =
     useState(false);
@@ -83,6 +86,9 @@ const HomeBannerCarousel = (props: HomeBannerProps) => {
     >
       {banners.map((item) => {
         const { component } = item;
+        if (item.id === "MerchantSummitBanner" && !MerchantSummitDecision) {
+          return null;
+        }
         return (
           <HeroBanner.Item
             key={item.id}
@@ -319,6 +325,15 @@ const useBanners = (): {
               (paymentDetails.fullyEnrolledInPaymentCycle &&
                 paymentDetails.paymentCycle === "WEEKLY") ||
               false,
+            background: surfaceLightest,
+            logParams: {
+              merchant_id: currentMerchant.id,
+            },
+          },
+          {
+            id: "MerchantSummitBanner",
+            component: <MerchantSummitBanner />,
+            shouldShow: () => isCnMerchant,
             background: surfaceLightest,
             logParams: {
               merchant_id: currentMerchant.id,
