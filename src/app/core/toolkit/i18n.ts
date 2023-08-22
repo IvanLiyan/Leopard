@@ -2,16 +2,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Jed } from "jed";
-import deTranslations from "@ContextLogic/merchantstrings/de_DE.jed.json";
-import frTranslations from "@ContextLogic/merchantstrings/fr_FR.jed.json";
-import jaTranslations from "@ContextLogic/merchantstrings/ja_JP.jed.json";
-import ptTranslations from "@ContextLogic/merchantstrings/pt_BR.jed.json";
-import viTranslations from "@ContextLogic/merchantstrings/vi_VN.jed.json";
-import esTranslations from "@ContextLogic/merchantstrings/es_LA.jed.json";
-import itTranslations from "@ContextLogic/merchantstrings/it_IT.jed.json";
-import koTranslations from "@ContextLogic/merchantstrings/ko_KR.jed.json";
-import trTranslations from "@ContextLogic/merchantstrings/tr_TR.jed.json";
-import zhTranslations from "@ContextLogic/merchantstrings/zh_CN.jed.json";
+import deTranslations from "@ContextLogic/merchantstrings/de_DE.jed1.x.json";
+import frTranslations from "@ContextLogic/merchantstrings/fr_FR.jed1.x.json";
+import jaTranslations from "@ContextLogic/merchantstrings/ja_JP.jed1.x.json";
+import ptTranslations from "@ContextLogic/merchantstrings/pt_BR.jed1.x.json";
+import viTranslations from "@ContextLogic/merchantstrings/vi_VN.jed1.x.json";
+import esTranslations from "@ContextLogic/merchantstrings/es_LA.jed1.x.json";
+import itTranslations from "@ContextLogic/merchantstrings/it_IT.jed1.x.json";
+import koTranslations from "@ContextLogic/merchantstrings/ko_KR.jed1.x.json";
+import trTranslations from "@ContextLogic/merchantstrings/tr_TR.jed1.x.json";
+import zhTranslations from "@ContextLogic/merchantstrings/zh_CN.jed1.x.json";
 import { Locale } from "@schema";
 import { getBrowserLocale } from "@core/stores/LocalizationStore";
 
