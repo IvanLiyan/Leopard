@@ -374,6 +374,7 @@ export type AnnouncementJobSchema = {
   readonly createdTime: Datetime;
   readonly csvS3Url: Scalars['String'];
   readonly id: Scalars['ObjectIdType'];
+  readonly isEmailSent?: Maybe<Scalars['Boolean']>;
   readonly jobType: AnnouncementJobType;
   readonly messageTemplateCn?: Maybe<Scalars['String']>;
   readonly messageTemplateEn: Scalars['String'];
@@ -5751,6 +5752,7 @@ export type KycProfilePaymentStatus =
 
 export type KycProfileVerificationAdminStatus =
   | 'APPROVED'
+  | 'INVALID'
   | 'IN_PROGRESS'
   | 'NOT_SET'
   | 'ON_HOLD'
@@ -9382,7 +9384,9 @@ export type NoticeProductStatus =
   | 'REPORTED';
 
 export type NoticeQueryInput = {
+  readonly claimedByEmail?: InputMaybe<Scalars['String']>;
   readonly endDate?: InputMaybe<DatetimeInput>;
+  readonly noticeId?: InputMaybe<Scalars['ObjectIdType']>;
   readonly notifierEmail?: InputMaybe<Scalars['String']>;
   readonly notifierOrganization?: InputMaybe<Scalars['String']>;
   readonly productId?: InputMaybe<Scalars['ObjectIdType']>;
@@ -10551,6 +10555,7 @@ export type PermissionType =
   | 'CAN_PERFORM_CHARGEBACK_REVIEW_AUDIT'
   | 'CAN_PROVIDE_MERCHANT_CHAT_SUPPORT'
   | 'CAN_RECEIVE_SMS_ON_QA_ENV'
+  | 'CAN_RESUBMIT_PAYMENT'
   | 'CAN_REVERSE_FINE'
   | 'CAN_REVIEW_BANK_ACCOUNT_DOCUMENT'
   | 'CAN_REVIEW_CN_PAYMENT_REQUEST'
@@ -15171,14 +15176,12 @@ export type TaggingMutations = {
   readonly __typename?: 'TaggingMutations';
   readonly createProductTaxonomyCategoryDispute?: Maybe<CreateProductTaxonomyCategoryDispute>;
   readonly deleteDedupImage?: Maybe<DeleteDedupImage>;
-  readonly dsa?: Maybe<DsaMutations>;
   readonly getAndClaimProductTaxonomyCategoryDispute?: Maybe<GetAndClaimProductTaxonomyCategoryDisputeForReview>;
   readonly markProductTaxonomyCategoryDisputeUnchanged?: Maybe<MarkProductTaxonomyCategoryDisputeUnchanged>;
   readonly markProductTaxonomyCategoryDisputeUpdated?: Maybe<MarkProductTaxonomyCategoryDisputeUpdated>;
   readonly platformSweeps?: Maybe<PlatformSweepMutations>;
   readonly productVideoContentTag?: Maybe<ProductVideoContentTagMutations>;
   readonly productVideoIpTag?: Maybe<ProductVideoIpTagMutations>;
-  readonly publicDsa?: Maybe<PublicDsaMutations>;
   readonly submitAttributeExtraction?: Maybe<SubmitAttributeExtraction>;
   readonly submitCategoryClassification?: Maybe<SubmitCategoryClassification>;
   readonly submitCategoryManualOverride?: Maybe<SubmitCategoryManualOverride>;
@@ -15825,7 +15828,8 @@ export type TaxType =
   | 'US_UU'
   | 'US_VG'
   | 'US_ZE'
-  | 'US_ZR';
+  | 'US_ZR'
+  | 'Undefined';
 
 export type TaxonomyAttributeSchema = {
   readonly __typename?: 'TaxonomyAttributeSchema';
@@ -17866,6 +17870,7 @@ export type WssMetricTrend =
 
 export type WssMetricType =
   | 'AVERAGE_USER_RATING'
+  | 'BAD_PRODUCT_RATE'
   | 'LATE_CONFIRMED_FULFILLMENT'
   | 'LOGISTICS_REFUND'
   | 'MISLEADING_LISTING'

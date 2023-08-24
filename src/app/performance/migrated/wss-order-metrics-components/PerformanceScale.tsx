@@ -137,7 +137,7 @@ const PerformanceScale: React.FC<Props> = ({
     return (
       <foreignObject
         x={props.x}
-        y={props.y + props.dy}
+        y={props.y}
         style={{ width: 100, height: 100, overflow: "visible" }}
       >
         <Layout.FlexRow>

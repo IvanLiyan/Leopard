@@ -296,6 +296,7 @@ type AnnouncementJobSchema {
   baseAnnouncementTotal: Int
   baseAnnouncementCount: Int!
   annUrlsCsvFileUrl: String
+  isEmailSent: Boolean
 }
 
 enum AnnouncementJobState {
@@ -4564,9 +4565,10 @@ enum KYCProfilePaymentStatus {
 }
 
 enum KYCProfileVerificationAdminStatus {
+  REJECTED
+  INVALID
   NOT_SET
   IN_PROGRESS
-  REJECTED
   APPROVED
   ON_HOLD
 }
@@ -7376,7 +7378,9 @@ enum NoticeProductStatus {
 }
 
 input NoticeQueryInput {
+  noticeId: ObjectIdType
   productId: ObjectIdType
+  claimedByEmail: String
   notifierEmail: String
   notifierOrganization: String
   statuses: [NoticeStatus!]
@@ -8523,12 +8527,13 @@ enum PermissionType {
   MODIFY_MERCHANT_FINES
   REVIEW_ONEOFF_REQ_ENROLL_MERCHANT_PLUS
   CAN_VIEW_ORDER_SHIPPING_ESTIMATE
-  VIEW_PAYMENT_HISTORY
+  CAN_RESUBMIT_PAYMENT
   WISHPOST
   VIEW_LCL_FBW_FEE
   CAN_ADMIN_CANNED_RESPONSES
   CAN_EDIT_TAGGING_TESTS
   MGC_CONTENT_TAG
+  VIEW_PAYMENT_HISTORY
   CREATE_TEAM_MEMBER
   CAN_VIEW_BRANDS
   CAN_AUDIT_REVIEW_RESULT
@@ -12081,8 +12086,6 @@ type TaggingMutations {
   submitAttributeExtraction(input: SubmitAttributeExtractionInput!): SubmitAttributeExtraction
   updateDedupImage(input: UpdateDedupImageInput!): UpdateDedupImage
   deleteDedupImage(input: DeleteDedupImageInput!): DeleteDedupImage
-  dsa: DSAMutations
-  publicDsa: PublicDSAMutations
 }
 
 type TaggingServiceSchema {
@@ -12576,6 +12579,7 @@ enum TaxType {
   INTERNATIONAL_SA
   INTERNATIONAL_ZI
   INTERNATIONAL_DS
+  Undefined
   US_S
   INTERNATIONAL_ZC
   INTERNATIONAL_SI
@@ -14357,6 +14361,7 @@ enum WSSMetricType {
   ORDER_CANCELLATION
   UNFULFILLED_ORDER
   LATE_CONFIRMED_FULFILLMENT
+  BAD_PRODUCT_RATE
 }
 
 type WSSOrderFulfillment {

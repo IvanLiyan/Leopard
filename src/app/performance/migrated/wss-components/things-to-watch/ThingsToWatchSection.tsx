@@ -22,6 +22,7 @@ import numeral from "numeral";
 import React, { useMemo } from "react";
 import { useQuery } from "@apollo/client";
 import Skeleton from "@core/components/Skeleton";
+import Link from "@deprecated/components/Link";
 
 type Props = BaseProps & {
   readonly wssDetails?: PickedMerchantWssDetails | null;
@@ -78,7 +79,8 @@ const ThingsToWatchSectionBody: React.FC<{
       o.metricType === "ORDER_FULFILLMENT_RATE" ||
       o.metricType === "ORDER_FULFILLMENT_SPEED" ||
       o.metricType === "PRODUCT_QUALITY_REFUND" ||
-      o.metricType === "VALID_TRACKING_RATE"
+      o.metricType === "VALID_TRACKING_RATE" ||
+      o.metricType === "BAD_PRODUCT_RATE"
     ) {
       const todayScoreData = WSSMetricTypeScoreDataMap[o.metricType](
         wssDetails?.stats,
@@ -161,12 +163,20 @@ const ThingsToWatchSectionBody: React.FC<{
               handleEmptyRow
               columnDataCy={"opportunity-name-column"}
             >
-              {({ row }: CellInfo<React.ReactNode, TableData>) => (
-                <Markdown
-                  openLinksInNewTab
-                  text={i`[${row.name}](${row.href})`}
-                />
-              )}
+              {({ row }: CellInfo<React.ReactNode, TableData>) =>
+                row.type === "Performance metrics" ? (
+                  <Link openInNewTab href={row.href}>
+                    <Text
+                      style={{ fontFamily: "Proxima-Semibold" }}
+                    >{i`${row.name}`}</Text>
+                  </Link>
+                ) : (
+                  <Markdown
+                    openLinksInNewTab
+                    text={i`[${row.name}](${row.href})`}
+                  />
+                )
+              }
             </Table.Column>
             <Table.Column
               title={ci18n(
@@ -248,6 +258,9 @@ const useStylesheet = () => {
         },
         icon: {
           margin: "0px 4px 0px 4px",
+        },
+        fontFamily: {
+          fontFamily: `Proxima-Semibold`,
         },
       }),
     [borderPrimary, surfaceLightest],
