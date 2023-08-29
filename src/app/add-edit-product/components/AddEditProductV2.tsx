@@ -18,6 +18,7 @@ import CustomsLogisticsCardV2 from "./cards/customs-logistics/CustomsLogisticsCa
 import ProductCategoryV2 from "./cards/ProductCategoryV2";
 import AdditionalAttributesV2 from "./cards/AdditionalAttributesV2";
 import ConsignmentOverwrite from "./cards/ConsignmentOverwrite";
+import MaxquantityV2 from "./cards/MaxquantityV2";
 const CardSpacing = 25;
 
 type Props = BaseProps & {
@@ -52,6 +53,7 @@ const AddEditProductV2 = ({ className, style, state }: Props) => {
   const [additionalAttributesOpen, setAdditionalAttributesOpen] =
     useState(true);
   const [categorizationOpen, setCategorizationOpen] = useState(true);
+  const [maxquantityOpen, setMaxquantityOpen] = useState(true);
 
   const { hasVariations, isNewProduct, subcategoryId, IsConsignmentAndBd } =
     state;
@@ -131,6 +133,12 @@ const AddEditProductV2 = ({ className, style, state }: Props) => {
           state={state}
           isOpen={categorizationOpen}
           onOpenToggled={(isOpen) => setCategorizationOpen(isOpen)}
+        />
+        <MaxquantityV2
+          style={styles.section}
+          state={state}
+          isOpen={maxquantityOpen}
+          onOpenToggled={(isOpen) => setMaxquantityOpen(isOpen)}
         />
         {isNewProduct && (
           <Shipping

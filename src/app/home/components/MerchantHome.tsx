@@ -77,7 +77,7 @@ const MerchantHome: React.FC<Props> = ({
   ) : (
     <StaggeredFadeIn>
       <Layout.FlexColumn style={[className, style]}>
-        {!initialData.currentMerchant.isFactory && <HomeBannerCarousel />}
+        {!initialData.currentMerchant?.isFactory && <HomeBannerCarousel />}
         <AnnouncementModals />
         <Layout.FlexColumn alignItems="stretch">
           <PageGuide className={css(styles.content)} relaxed>

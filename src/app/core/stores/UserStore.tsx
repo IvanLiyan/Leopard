@@ -113,7 +113,7 @@ type PickedCurrentUser = {
   | "isAdmin"
 >;
 
-type PickedSU = Pick<UserSchema, "id" | "isAdmin">;
+type PickedSU = Pick<UserSchema, "id" | "isAdmin" | "isBd">;
 
 type PickedRecentUser = Pick<
   UserSchema,

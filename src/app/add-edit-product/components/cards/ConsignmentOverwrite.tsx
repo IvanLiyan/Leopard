@@ -46,7 +46,6 @@ const ConsignmentOverwrite: React.FC<Props> = (props: Props) => {
     showRevampedAddEditProductUI,
     variations,
     updateVariation,
-    consignmentListingCheckboxEnable,
   } = state;
 
   if (variations.length == 0) {
@@ -190,7 +189,6 @@ const ConsignmentOverwrite: React.FC<Props> = (props: Props) => {
             onChange={(checked) => {
               state.isConsignmentEligible = checked;
             }}
-            disabled={!consignmentListingCheckboxEnable}
             data-cy="checkbox-enable-consignment-listing"
           />
         </Layout.FlexRow>

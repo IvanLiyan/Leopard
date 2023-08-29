@@ -61,7 +61,7 @@ const AnnouncementsSection: React.FC<Props> = ({ style, className }: Props) => {
     return <LoadingIndicator style={styles.loading} />;
   }
 
-  const announcementsV2 = announcementV2Data?.announcements.forUsersV2.list;
+  const announcementsV2 = announcementV2Data?.announcements.forUsersV2?.list;
 
   if (announcementsV2 == null) {
     return null;

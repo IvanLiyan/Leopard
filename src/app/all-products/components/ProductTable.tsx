@@ -50,6 +50,7 @@ import Image from "@core/components/Image";
 import { useSortBy, useSortOrder } from "@all-products/stateHooks";
 import { useQuery } from "@apollo/client";
 import { useDeciderKey } from "@core/stores/ExperimentStore";
+import { useUserStore } from "@core/stores/UserStore";
 
 type Props = BaseProps & {
   readonly state: AllProductsState;
@@ -69,7 +70,16 @@ const ProductTable: React.FC<Props> = ({
   onRefetchProducts,
 }) => {
   const styles = useStylesheet();
+  const {
+    warehouse,
+    isPrimaryWarehouse,
+    initialData: { currentMerchant: merchant, su: suObj },
+    showVariationGroupingUI,
+    IsConsignmentAndNotBd,
+  } = state;
   const { surfaceLighter, textLight, primary, negative } = useTheme();
+  const { su } = useUserStore();
+  const isAdminOrBd = su?.isAdmin || suObj?.isBd;
   const [products, setProducts] =
     useState<ReadonlyArray<PickedProduct>>(initialProducts);
   const [expandedProducts, setExpandedProducts] = useState<ReadonlySet<string>>(
@@ -87,14 +97,6 @@ const ProductTable: React.FC<Props> = ({
     decision: showCategoryUpdates,
     isLoading: isLoadingCategoryUpdatesDecision,
   } = useDeciderKey("taxonomy_category_updates_04_2023");
-
-  const {
-    warehouse,
-    isPrimaryWarehouse,
-    initialData: { currentMerchant: merchant },
-    showVariationGroupingUI,
-    IsConsignmentAndNotBd,
-  } = state;
 
   const { data: allProductVariationsData, loading: loadingProductVariations } =
     useQuery<GetProductVariationsResponseType, GetProductVariationsRequestType>(
@@ -659,7 +661,11 @@ const ProductTable: React.FC<Props> = ({
                       });
                     }
                   }}
-                  disabled={isSubmitting || productRemoved}
+                  disabled={
+                    isSubmitting ||
+                    productRemoved ||
+                    (merchant?.isConsignmentMode && !isAdminOrBd ? true : false)
+                  }
                 />
                 {localChange != null && (
                   <Icon
@@ -712,7 +718,11 @@ const ProductTable: React.FC<Props> = ({
                     });
                   }
                 }}
-                disabled={isSubmitting || productRemoved}
+                disabled={
+                  isSubmitting ||
+                  productRemoved ||
+                  (merchant?.isConsignmentMode && !isAdminOrBd ? true : false)
+                }
               />
               {localChange != null && (
                 <Icon
