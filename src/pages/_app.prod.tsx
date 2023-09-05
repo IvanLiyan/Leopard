@@ -27,7 +27,12 @@ const MerchantDashboard = ({
 
   // if a page is in this array, any queries made for setting up stores that
   // require a logged in user (e.g. navigation graph) will be skipped
-  const publicSubpaths = ["/welcome-mms", "/welcome-invite-only", "/login"];
+  const publicSubpaths = [
+    "/welcome-mms",
+    "/welcome-invite-only",
+    "/login",
+    "/notice-portal/intake",
+  ];
   const isPublic = publicSubpaths.some((element) => {
     return router.asPath.includes(element);
   });
