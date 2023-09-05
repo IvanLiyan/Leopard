@@ -11,7 +11,7 @@ import NextLink from "next/link";
 
 const Dispute: React.FC = () => {
   const {
-    infraction: { id, disputeStatus, disputeDeadline },
+    infraction: { id, disputeCutoffDay, disputeStatus, disputeDeadline },
   } = useInfractionContext();
   const styles = useInfractionDetailsStylesheet();
 
@@ -30,7 +30,7 @@ const Dispute: React.FC = () => {
     >
       <Markdown
         style={styles.cardMargin}
-        text={i`You can dispute this infraction within 90 calendar days of its creation. Successfully disputing will reverse any consequences caused by this infraction, but it won't impact any other disputes.`}
+        text={i`You can dispute this infraction within ${disputeCutoffDay} calendar days of its creation. Successfully disputing will reverse any consequences caused by this infraction, but it won't impact any other disputes.`}
       />
       <Markdown
         style={styles.cardMarginLarge}

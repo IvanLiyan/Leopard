@@ -43,6 +43,7 @@ export const INFRACTION_QUERY = gql(`
         wssImpact
         merchantActions
         outstandingMerchantActions
+        disputeCutoffDay
         reason {
           reason
         }
@@ -176,6 +177,7 @@ export type InfractionQueryResponse = {
       | "wssImpact"
       | "merchantActions"
       | "outstandingMerchantActions"
+      | "disputeCutoffDay"
     > & {
       readonly merchant: Pick<MerchantSchema, "primaryCurrency">;
       readonly reason: Pick<MerchantWarningReasonSchema, "reason">;

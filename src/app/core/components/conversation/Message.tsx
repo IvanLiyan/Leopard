@@ -76,7 +76,9 @@ const Message: React.FC<Props> = ({
         </Link>
       ))}
       {message != undefined && (
-        <Text sx={{ overflowWrap: "break-word" }}>{message}</Text>
+        <Text sx={{ overflowWrap: "break-word", whiteSpace: "pre-line" }}>
+          {message}
+        </Text>
       )}
       <div className={css(styles.metadataContainer)}>
         {author != undefined && (

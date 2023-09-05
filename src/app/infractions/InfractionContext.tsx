@@ -38,6 +38,7 @@ type InfractionContextType = {
     readonly faq: string | undefined;
     readonly state: MerchantWarningState;
     readonly issuedDate: string;
+    readonly disputeCutoffDay: number;
     readonly disputeDeadline: string;
     readonly disputeDeadlineUnix: number;
     readonly disputeStatus: DisputeStatus;
@@ -104,6 +105,7 @@ const InfractionContext = createContext<InfractionContextType>({
     faq: "",
     state: "NEW",
     issuedDate: "",
+    disputeCutoffDay: 0,
     disputeDeadline: "",
     disputeDeadlineUnix: 0,
     disputeStatus: "NOT_DISPUTED",
@@ -205,6 +207,7 @@ export const useInfractionProvider = ({
       faq: infractionCopy.faq,
       state: infraction.state,
       issuedDate: infraction.createdTime.datetime,
+      disputeCutoffDay: infraction.disputeCutoffDay,
       disputeDeadline: infraction.effectiveDisputeDeadlineDate.datetime,
       disputeDeadlineUnix: infraction.effectiveDisputeDeadlineDate.unix,
       disputeStatus: getDisputeStatus(infraction),
