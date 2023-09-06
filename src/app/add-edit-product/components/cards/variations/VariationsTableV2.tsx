@@ -776,7 +776,7 @@ const VariationsTableV2: React.FC<Props> = (props: Props) => {
           _key="attributes"
           title={ci18n(
             "Table column header, means product attributes",
-            "Attributes",
+            "Attributes*",
           )}
           columnKey="clientSideId"
           columnDataCy="column-attributes"
