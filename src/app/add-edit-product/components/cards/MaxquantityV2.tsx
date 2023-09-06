@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import { observer } from "mobx-react";
 import { StyleSheet } from "aphrodite";
 import { Field, NumericInput } from "@ContextLogic/lego";
@@ -13,16 +13,8 @@ type Props = Omit<SectionProps, "title"> & {
 
 const MaxquantityV2: React.FC<Props> = (props: Props) => {
   const { className, style, state, ...sectionProps } = props;
+  const { maxQuantity } = state;
   const styles = useStylesheet();
-
-  const [maxQuantity, setMaxQuantity] = useState<number | null | undefined>(
-    null,
-  );
-
-  const onNumberChange = (value: number | null | undefined) => {
-    state.maxQuantity = value;
-    setMaxQuantity(value);
-  };
 
   return (
     <Section
@@ -35,7 +27,7 @@ const MaxquantityV2: React.FC<Props> = (props: Props) => {
           <NumericInput
             value={maxQuantity}
             incrementStep={1}
-            onChange={(value) => onNumberChange(value.valueAsNumber)}
+            onChange={(value) => (state.maxQuantity = value.valueAsNumber)}
           />
         </Field>
       </Stack>
