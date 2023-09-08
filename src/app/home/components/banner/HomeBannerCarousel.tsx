@@ -25,7 +25,6 @@ import {
 import moment from "moment";
 import { LogData, log } from "@core/toolkit/logger";
 import { useDeciderKey } from "@core/stores/ExperimentStore";
-import UserStore from "@core/stores/UserStore";
 import ProductBoostPromoBanner from "./banners/ProductBoostPromoBanner";
 import ProductBoostAutomatedCampaignBanner from "./banners/ProductBoostAutomatedCampaignBanner";
 import SellerProfileBanner from "./banners/SellerProfileBanner";
@@ -36,7 +35,6 @@ import CustomerServiceProgramBanner from "./banners/CustomerServiceProgramBanner
 import WeeklyDisbUpgradeBanner from "./banners/WeeklyDisbUpgradeBanner";
 import OnboardingReviewBanner from "./banners/OnboardingReviewBanner";
 import MerchantSummitBanner from "../../../MerchantSummit/MerchantSummitBanner";
-import EUMerchantSummitBanner from "../../../MerchantSummit/EUMerchantSummitBanner";
 
 export type HomeBannerProps = BaseProps;
 
@@ -45,8 +43,6 @@ const HomeBannerCarousel = (props: HomeBannerProps) => {
   const styles = useStylesheet();
   const { banners, isLoading } = useBanners();
   const { decision: MerchantSummitDecision } = useDeciderKey("merchant_summit");
-  const { decision: EUMerchantSummitDecision } =
-    useDeciderKey("eu_merchant_summit");
 
   const [hasLoggedBannerImpressions, setHasLoggedBannerImpressions] =
     useState(false);
@@ -93,9 +89,7 @@ const HomeBannerCarousel = (props: HomeBannerProps) => {
         if (item.id === "MerchantSummitBanner" && !MerchantSummitDecision) {
           return null;
         }
-        if (item.id === "EUMerchantSummitBanner" && !EUMerchantSummitDecision) {
-          return null;
-        }
+
         return (
           <HeroBanner.Item
             key={item.id}
@@ -258,12 +252,8 @@ const useBanners = (): {
   const { currentMerchant: paymentDetails } = payments;
   const { onboarding, backToOnboardingReason } = currentUser;
   const { isCnMerchant } = currentMerchant;
-  const { loggedInMerchantUser } = UserStore.instance();
-  const countryCode = loggedInMerchantUser?.businessAddress?.country?.code;
 
   const shouldShowMerchantBlogBanner = !isCnMerchant;
-  const shouldShowEUMerchantBanner =
-    countryCode === "GB" || countryCode === "UK";
 
   const shouldShowMfpBanner = initialData?.currentMerchant?.allowMfp || false;
 
@@ -295,15 +285,6 @@ const useBanners = (): {
             id: "MerchantSummitBanner",
             component: <MerchantSummitBanner />,
             shouldShow: () => isCnMerchant,
-            background: surfaceLightest,
-            logParams: {
-              merchant_id: currentMerchant.id,
-            },
-          },
-          {
-            id: "EUMerchantSummitBanner",
-            component: <EUMerchantSummitBanner />,
-            shouldShow: () => shouldShowEUMerchantBanner,
             background: surfaceLightest,
             logParams: {
               merchant_id: currentMerchant.id,
