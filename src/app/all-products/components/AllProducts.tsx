@@ -393,6 +393,9 @@ const AllProducts: React.FC<Props> = ({
                   {state.hasPriceError && (
                     <ErrorText>Prices must be greater than 0</ErrorText>
                   )}
+                  {state.hasInventoryError && (
+                    <ErrorText>Inventory must be a valid number</ErrorText>
+                  )}
                 </Layout.FlexColumn>
                 <PrimaryButton
                   onClick={async () => {
@@ -408,7 +411,7 @@ const AllProducts: React.FC<Props> = ({
 
                     setIsSubmitting(false);
                   }}
-                  isDisabled={state.hasPriceError}
+                  isDisabled={state.hasPriceError || state.hasInventoryError}
                 >
                   {ci18n(
                     "Text on a button merchants click to save their changes on a form",

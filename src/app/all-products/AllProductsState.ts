@@ -17,6 +17,7 @@ import {
   VariationInput,
 } from "@schema";
 import uniqBy from "lodash/uniqBy";
+import { isInteger } from "lodash";
 
 export default class AllProductsState {
   @observable
@@ -124,6 +125,17 @@ export default class AllProductsState {
   get hasPriceError(): boolean {
     return Array.from(this.newVariationPrices.values()).some(
       ({ newPrice }) => newPrice == null || newPrice.amount < 0.01,
+    );
+  }
+
+  @computed
+  get hasInventoryError(): boolean {
+    return Array.from(this.newVariationInventories.values()).some(
+      ({ newInventory }) => {
+        if (!newInventory) return true;
+        const floatValue = parseFloat(newInventory.toString());
+        return isNaN(floatValue) || !isInteger(floatValue);
+      },
     );
   }
 

@@ -51,6 +51,7 @@ import { useSortBy, useSortOrder } from "@all-products/stateHooks";
 import { useQuery } from "@apollo/client";
 import { useDeciderKey } from "@core/stores/ExperimentStore";
 import { useUserStore } from "@core/stores/UserStore";
+import { IntegerValidator } from "@core/toolkit/validators";
 
 type Props = BaseProps & {
   readonly state: AllProductsState;
@@ -1010,8 +1011,13 @@ const ProductTable: React.FC<Props> = ({
                   newInventory: valueAsNumber == null ? null : valueAsNumber,
                 });
               }}
-              disabled={isSubmitting || productRemoved || IsConsignmentAndNotBd}
               borderColor={localChange != null ? primary : undefined}
+              disabled={isSubmitting || productRemoved || IsConsignmentAndNotBd}
+              validators={[
+                new IntegerValidator({
+                  customMessage: "Inventory must be a valid number",
+                }),
+              ]}
             />
           );
         }}
