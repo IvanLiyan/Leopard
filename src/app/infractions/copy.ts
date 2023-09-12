@@ -1649,6 +1649,30 @@ const MerchantWarningReasonData: {
     policy: i`[Wish Standards Policy](${"https://merchant.wish.com/policy#wish_standards"})`,
     faq: undefined,
   },
+  SUSPENDED_FOR_UNDER_PERFORMING: {
+    title: ci18n("Merchant below Wish Core tail threshold", "Low performing"),
+    body: i`Your account has shown prolonged inactivity, insufficient performance, or a violation of the Merchant Terms of Service`,
+    policy: undefined,
+    faq: undefined,
+  },
+  PRODUCT_LIMIT_REACHED: {
+    title: ci18n(
+      "You have reached or exceeded the allowed number of products for your tier",
+      "Product limit reached",
+    ),
+    body: i`You have reached or exceeded the allowed number of products for your tier`,
+    policy: undefined,
+    faq: undefined,
+  },
+  ADDITIONAL_TAX_INFO: {
+    title: ci18n(
+      "You must submit additional tax information to meet your compliance obligations",
+      "Tax information required",
+    ),
+    body: i`You must submit additional tax information to meet your compliance obligations`,
+    policy: undefined,
+    faq: undefined,
+  },
   //
   // below infractions are deprecated, may be returned when viewing old infractions
   //

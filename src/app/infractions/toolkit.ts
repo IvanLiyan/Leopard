@@ -126,6 +126,9 @@ export const getDisputeFlow: {
   MERCHANT_HARASSMENT: (_, __) => "MERCHANT",
   REUPLOADING_COUNTERFEITS: (_, __) => "MERCHANT",
   PRODUCT_LOW_RATING_NO_REMOVE: (_, __) => "MERCHANT",
+  SUSPENDED_FOR_UNDER_PERFORMING: (_, __) => "MERCHANT",
+  ADDITIONAL_TAX_INFO: (_, __) => "MERCHANT",
+  PRODUCT_LIMIT_REACHED: (_, __) => "MERCHANT",
   /* eslint-enable @typescript-eslint/no-unused-vars */
 };
 

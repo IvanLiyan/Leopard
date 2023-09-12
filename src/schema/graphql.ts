@@ -2901,6 +2901,12 @@ export type CountryCode =
   | 'ZR'
   | 'ZW';
 
+export type CountryDiscountAmount = {
+  readonly __typename?: 'CountryDiscountAmount';
+  readonly country: Country;
+  readonly discountAmount?: Maybe<CurrencyValue>;
+};
+
 export type CountryEprSchema = {
   readonly __typename?: 'CountryEPRSchema';
   readonly categories: ReadonlyArray<CategoryEprSchema>;
@@ -2918,6 +2924,14 @@ export type CountryShippingInput = {
   readonly price?: InputMaybe<CurrencyInput>;
   readonly regionShipping?: InputMaybe<ReadonlyArray<RegionShippingInput>>;
   readonly timeToDoor?: InputMaybe<Scalars['Int']>;
+};
+
+export type CountryShippingPrice = {
+  readonly __typename?: 'CountryShippingPrice';
+  readonly country: Country;
+  readonly maxCalculatedShippingPrice?: Maybe<CurrencyValue>;
+  readonly merchantSetShippingPrice?: Maybe<CurrencyValue>;
+  readonly minCalculatedShippingPrice?: Maybe<CurrencyValue>;
 };
 
 export type CountryShippingSchema = {
@@ -3816,6 +3830,7 @@ export type DestinationShippingProfileSchema = {
 };
 
 export type DetailedMerchantWarningReason =
+  | 'ADDITIONAL_TAX_INFO'
   | 'BAD_CUSTOMER_SERVICE'
   | 'BAN_EARLY_STAGE_MERCHANT'
   | 'BRANDED_PRODUCT_GEOBLOCK'
@@ -3873,6 +3888,7 @@ export type DetailedMerchantWarningReason =
   | 'PRODUCT_HIGH_REFUND_RATIO'
   | 'PRODUCT_HIGH_REFUND_RATIO_NO_REMOVE'
   | 'PRODUCT_IS_INAPPROPRIATE'
+  | 'PRODUCT_LIMIT_REACHED'
   | 'PRODUCT_LOW_RATING'
   | 'PRODUCT_LOW_RATING_NO_REMOVE'
   | 'PROHIBITED_PRODUCT'
@@ -3886,6 +3902,7 @@ export type DetailedMerchantWarningReason =
   | 'STORE_VALIDATION_INCOMPLETE'
   | 'STRIKE_BASED_HIGH_RISK_PROHIBITED'
   | 'SUSPECTED_FRAUD'
+  | 'SUSPENDED_FOR_UNDER_PERFORMING'
   | 'TAKE_USER_OUTSIDE_WISH'
   | 'TAX_SETTING_NOT_UPDATED'
   | 'UNCONFIRMED_TRACKING_NUMBERS'
@@ -6472,6 +6489,8 @@ export type MfpCampaignCancelReason =
 
 export type MfpCampaignConstantsSchema = {
   readonly __typename?: 'MFPCampaignConstantsSchema';
+  readonly consumerMaxDiscountPercentage: Scalars['Float'];
+  readonly consumerMinDiscountPercentage: Scalars['Float'];
   readonly maxAllowedQuantity: Scalars['Int'];
   readonly maxCampaignDelayInHour: Scalars['Int'];
   readonly maxCampaignDurationInDays: Scalars['Int'];
@@ -6788,6 +6807,7 @@ export type MfpUnqualifiedVariationData = {
 
 export type MfpVariationDiscountData = {
   readonly __typename?: 'MFPVariationDiscountData';
+  readonly countryDiscountAmount?: Maybe<ReadonlyArray<CountryDiscountAmount>>;
   readonly discountAmount?: Maybe<CurrencyValue>;
   readonly discountPercentage: Scalars['Float'];
   readonly maxQuantity?: Maybe<Scalars['Int']>;
@@ -9055,6 +9075,7 @@ export type MerchantWarningProofType =
   | 'VARIATION';
 
 export type MerchantWarningReason =
+  | 'ADDITIONAL_TAX_INFO'
   | 'BAD_CUSTOMER_SERVICE'
   | 'BAN_EARLY_STAGE_MERCHANT'
   | 'BRANDED_PRODUCT_GEOBLOCK'
@@ -9110,6 +9131,7 @@ export type MerchantWarningReason =
   | 'PRODUCT_HIGH_REFUND_RATIO'
   | 'PRODUCT_HIGH_REFUND_RATIO_NO_REMOVE'
   | 'PRODUCT_IS_INAPPROPRIATE'
+  | 'PRODUCT_LIMIT_REACHED'
   | 'PRODUCT_LOW_RATING'
   | 'PRODUCT_LOW_RATING_NO_REMOVE'
   | 'RELATED_ACCOUNT_IS_BANNED'
@@ -9122,6 +9144,7 @@ export type MerchantWarningReason =
   | 'STORE_VALIDATION_INCOMPLETE'
   | 'STRIKE_BASED_HIGH_RISK_PROHIBITED'
   | 'SUSPECTED_FRAUD'
+  | 'SUSPENDED_FOR_UNDER_PERFORMING'
   | 'TAKE_USER_OUTSIDE_WISH'
   | 'TAX_SETTING_NOT_UPDATED'
   | 'UNCONFIRMED_TRACKING_NUMBERS'
@@ -14876,12 +14899,18 @@ export type ShippingProviderTrackerSchema = {
 export type ShippingSchema = {
   readonly __typename?: 'ShippingSchema';
   readonly calculatedShippingEnabled?: Maybe<Scalars['Boolean']>;
+  readonly countryShippingPrice?: Maybe<ReadonlyArray<CountryShippingPrice>>;
   readonly defaultShipping?: Maybe<ReadonlyArray<DefaultShippingSchema>>;
   readonly domesticShipping?: Maybe<ReadonlyArray<DomesticShippingSchema>>;
   readonly maxCalculatedShippingPrice?: Maybe<CurrencyValue>;
   readonly maxMerchantSetShippingPrice?: Maybe<CurrencyValue>;
   readonly warehouseCountryShipping?: Maybe<ReadonlyArray<WarehouseCountryShippingSchema>>;
   readonly wishpostEstimatedShipping?: Maybe<ReadonlyArray<WishPostShippingSchema>>;
+};
+
+
+export type ShippingSchemaCountryShippingPriceArgs = {
+  countries?: InputMaybe<ReadonlyArray<CountryCode>>;
 };
 
 
