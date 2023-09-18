@@ -132,7 +132,7 @@ export default class AllProductsState {
   get hasInventoryError(): boolean {
     return Array.from(this.newVariationInventories.values()).some(
       ({ newInventory }) => {
-        if (!newInventory) return true;
+        if (newInventory === null || newInventory === undefined) return true;
         const floatValue = parseFloat(newInventory.toString());
         return isNaN(floatValue) || !isInteger(floatValue);
       },
