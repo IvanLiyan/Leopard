@@ -495,23 +495,25 @@ const PerformanceShippingPage: NextPage<Record<string, never>> = () => {
           <Title className={commonStyles.title} style={{ padding: 0 }}>
             Your Metrics
           </Title>
-          <Button
-            secondary
-            onClick={() =>
-              exportCSV({
-                type: EXPORT_CSV_TYPE.MERCHANT,
-                stats_type: EXPORT_CSV_STATS_TYPE.FULFILLMENT_SHIPPING,
-                target_date:
-                  new Date(
-                    store.shippingData[
-                      store.shippingData.length - 1
-                    ].startDate.mmddyyyy,
-                  ).getTime() / 1000,
-              })
-            }
-          >
-            Export CSV
-          </Button>
+          {store.shippingData && store.shippingData.length > 0 && (
+            <Button
+              secondary
+              onClick={() =>
+                exportCSV({
+                  type: EXPORT_CSV_TYPE.MERCHANT,
+                  stats_type: EXPORT_CSV_STATS_TYPE.FULFILLMENT_SHIPPING,
+                  target_date:
+                    new Date(
+                      store.shippingData[
+                        store.shippingData.length - 1
+                      ].startDate.mmddyyyy,
+                    ).getTime() / 1000,
+                })
+              }
+            >
+              Export CSV
+            </Button>
+          )}
         </div>
         {loading ? (
           <LoadingIndicator className={commonStyles.loading} />

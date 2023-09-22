@@ -188,23 +188,25 @@ const RefundAggregateModule: React.FC = () => {
                 How to improve my Refund Metrics?
               </Link>
             </div>
-            <Button
-              secondary
-              onClick={() =>
-                exportCSV({
-                  type: EXPORT_CSV_TYPE.MERCHANT,
-                  stats_type: EXPORT_CSV_STATS_TYPE.REFUND_BREAKDOWN,
-                  target_date:
-                    new Date(
-                      store.aggregateData[
-                        store.aggregateData.length - 1
-                      ].startDate.mmddyyyy,
-                    ).getTime() / 1000,
-                })
-              }
-            >
-              Export CSV
-            </Button>
+            {store.aggregateData && store.aggregateData.length > 0 && (
+              <Button
+                secondary
+                onClick={() =>
+                  exportCSV({
+                    type: EXPORT_CSV_TYPE.MERCHANT,
+                    stats_type: EXPORT_CSV_STATS_TYPE.REFUND_BREAKDOWN,
+                    target_date:
+                      new Date(
+                        store.aggregateData[
+                          store.aggregateData.length - 1
+                        ].startDate.mmddyyyy,
+                      ).getTime() / 1000,
+                  })
+                }
+              >
+                Export CSV
+              </Button>
+            )}
           </div>
           {loading ? (
             <LoadingIndicator className={commonStyles.loading} />
