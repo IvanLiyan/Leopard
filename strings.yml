@@ -316,12 +316,3 @@ features:
       - src/pages/products/edit.prod.tsx
     description: >
       Page where merchants can manually add a product or edit an existing one.
-
-  - name: Merchant Summit - Leopard
-    owners:
-      - pmanoharan@wish.com
-    locales: ["zh-CN"]
-    files:
-      - src/app/MerchantSummit/MerchantSummitBanner.tsx
-    description: >
-      This feature contains Merchant Summit Banner that appears on a merchant's home page
