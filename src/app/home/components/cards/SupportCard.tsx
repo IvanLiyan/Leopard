@@ -89,7 +89,7 @@ const useStylesheet = () => {
           maxWidth: 610,
         },
         button: {
-          maxWidth: 200,
+          maxWidth: 250,
         },
       }),
     [textDark],
