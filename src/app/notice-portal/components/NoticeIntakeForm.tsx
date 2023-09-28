@@ -153,10 +153,12 @@ const NoticeIntakeForm: React.FC = () => {
         />
       </FormGroup>
       <FormGroup {...baseFormGroupProps}>
-        <Text variant="bodyL">{ci18n("Web URLs on the internet", "URLs")}</Text>
+        <Text variant="bodyL">
+          {ci18n("Web URLs on the internet", "Wish URLs*")}
+        </Text>
         <Text sx={{ color: "text.secondary" }}>
           {i18n(
-            "Add the Wish URLs you are reporting. Separate multiple URLs with newlines",
+            "Add the Wish URL(s) you're reporting. Separate multiple URLs with a , or -",
           )}
         </Text>
         <TextField
