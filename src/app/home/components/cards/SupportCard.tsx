@@ -44,7 +44,11 @@ const SupportCard = ({
           text={contentText}
           openLinksInNewTab
         />
-        <SecondaryButton href={buttonLink} className={css(styles.button)}>
+        <SecondaryButton
+          href={buttonLink}
+          className={css(styles.button)}
+          padding="5px 15px"
+        >
           {buttonText}
         </SecondaryButton>
       </div>
@@ -89,7 +93,7 @@ const useStylesheet = () => {
           maxWidth: 610,
         },
         button: {
-          maxWidth: 250,
+          width: "fit-content",
         },
       }),
     [textDark],
