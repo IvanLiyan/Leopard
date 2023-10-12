@@ -20,8 +20,6 @@ import PerformanceMetricsCardV2, {
   PerformanceMetricsCardPropsV2,
 } from "./PerformanceMetricsCardV2";
 import WssSection from "./WssSection";
-import Skeleton from "@core/components/Skeleton";
-import { useDeciderKey } from "@core/stores/ExperimentStore";
 
 type PerformanceMetricsProps = BaseProps & {
   readonly wssDetails?: PickedMerchantWssDetails | null;
@@ -184,102 +182,45 @@ const PerformanceMetricsBody: React.FC<
     };
   };
 
-  const {
-    decision: wss2p0InTransitionState,
-    isLoading: wss2p0InTransitionStateLoading,
-  } = useDeciderKey("wss_2_0_transition_state");
-  const {
-    decision: wss2p0InPostTransitionState,
-    isLoading: wss2p0InPostTransitionStateLoading,
-  } = useDeciderKey("wss_2_0_post_transition_state");
-
-  if (wss2p0InTransitionStateLoading || wss2p0InPostTransitionStateLoading) {
-    return <Skeleton height={434} />;
-  }
-
   return (
     <Layout.GridRow
       style={styles.body}
       templateColumns="repeat(3, 1fr)"
       smallScreenTemplateColumns={isVerySmallScreen ? "1fr" : "1fr 1fr"}
     >
-      {!wss2p0InPostTransitionState ? (
-        <>
-          <PerformanceMetricsCardV2
-            title={i`Average user rating`}
-            info={i`Average of product ratings on your orders`}
-            {...getCardProps("userRating")}
-          />
-          <PerformanceMetricsCardV2
-            title={i`Order fulfillment rate`}
-            info={i`Share of orders successfully fulfilled`}
-            {...getCardProps("orderFultillmentRate")}
-          />
-          <PerformanceMetricsCardV2
-            title={i`Product quality refund`}
-            info={i`Share of orders refunded due to product quality`}
-            {...getCardProps("productQualityRefundRate")}
-          />
-          <PerformanceMetricsCardV2
-            title={i`Confirmed fulfillment speed`}
-            info={i`Average time for an order to be confirmed fulfilled`}
-            {...getCardProps("fulfillmentSpeed")}
-          />
-          <PerformanceMetricsCardV2
-            title={i`Valid tracking rate`}
-            info={i`Share of 'marked shipped' orders that are 'confirmed shipped'`}
-            {...getCardProps("validTrackingRate")}
-          />
-          <PerformanceMetricsCardV2
-            title={i`Logistics refund`}
-            info={i`Share of orders refunded due to fulfillment related reasons`}
-            {...getCardProps("productLogisticsRefundRate")}
-          />
-          {wss2p0InTransitionState && (
-            <PerformanceMetricsCardV2
-              title={i`Underperforming products`}
-              info={i`Share of products in the last 90 days with high product quality refunds and low ratings`}
-              {...getCardProps("underperformingProducts")}
-              isNew
-              showDelayedImpactBanner
-            />
-          )}
-        </>
-      ) : (
-        <>
-          <PerformanceMetricsCardV2
-            title={i`Underperforming products`}
-            info={i`Share of products in the last 90 days with high product quality refunds and low ratings`}
-            {...getCardProps("underperformingProducts")}
-            isNew
-          />
-          <PerformanceMetricsCardV2
-            title={i`Product quality refund`}
-            info={i`Share of orders refunded due to product quality`}
-            {...getCardProps("productQualityRefundRate")}
-          />
-          <PerformanceMetricsCardV2
-            title={i`Confirmed fulfillment speed`}
-            info={i`Average time for an order to be confirmed fulfilled`}
-            {...getCardProps("fulfillmentSpeed")}
-          />
-          <PerformanceMetricsCardV2
-            title={i`Order fulfillment rate`}
-            info={i`Share of orders successfully fulfilled`}
-            {...getCardProps("orderFultillmentRate")}
-          />
-          <PerformanceMetricsCardV2
-            title={i`Average user rating`}
-            info={i`Average of product ratings on your orders`}
-            {...getCardProps("userRating")}
-          />
-          <PerformanceMetricsCardV2
-            title={i`Logistics refund`}
-            info={i`Share of orders refunded due to fulfillment related reasons`}
-            {...getCardProps("productLogisticsRefundRate")}
-          />
-        </>
-      )}
+      <>
+        <PerformanceMetricsCardV2
+          title={i`Underperforming products`}
+          info={i`Share of products in the last 90 days with high product quality refunds and low ratings`}
+          {...getCardProps("underperformingProducts")}
+          isNew
+        />
+        <PerformanceMetricsCardV2
+          title={i`Product quality refund`}
+          info={i`Share of orders refunded due to product quality`}
+          {...getCardProps("productQualityRefundRate")}
+        />
+        <PerformanceMetricsCardV2
+          title={i`Confirmed fulfillment speed`}
+          info={i`Average time for an order to be confirmed fulfilled`}
+          {...getCardProps("fulfillmentSpeed")}
+        />
+        <PerformanceMetricsCardV2
+          title={i`Order fulfillment rate`}
+          info={i`Share of orders successfully fulfilled`}
+          {...getCardProps("orderFultillmentRate")}
+        />
+        <PerformanceMetricsCardV2
+          title={i`Average user rating`}
+          info={i`Average of product ratings on your orders`}
+          {...getCardProps("userRating")}
+        />
+        <PerformanceMetricsCardV2
+          title={i`Logistics refund`}
+          info={i`Share of orders refunded due to fulfillment related reasons`}
+          {...getCardProps("productLogisticsRefundRate")}
+        />
+      </>
     </Layout.GridRow>
   );
 };

@@ -17,7 +17,6 @@ import PerformanceMetrics from "./PerformanceMetrics";
 import TierDetails from "./TierDetails";
 import WssBanner from "./WssBanner";
 import Skeleton from "@core/components/Skeleton";
-import TierPreviewBanner from "@performance/components/wish-standards/TierPreviewBanner";
 
 type Props = BaseProps & {
   readonly initialData: PerformanceHealthInitialData;
@@ -45,7 +44,6 @@ const Dashboard: React.FC<Props> = (props: Props) => {
 
   return (
     <Layout.FlexColumn style={[styles.root, className, style]}>
-      <TierPreviewBanner />
       <WssBanner merchantState={state} wssDetails={wssDetails} />
       <Layout.GridRow templateColumns={"auto auto"} gap={16}>
         <TierSection merchantState={state} wssDetails={wssDetails} />

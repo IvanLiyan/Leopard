@@ -30,7 +30,6 @@ import React, { useMemo } from "react";
 import { useQuery } from "@apollo/client";
 import Skeleton from "@core/components/Skeleton";
 import { Card } from "@ContextLogic/atlas-ui";
-import TierPreviewBanner from "@performance/components/wish-standards/TierPreviewBanner";
 
 const ValidTrackingRatePage: React.FC = () => {
   const styles = useStylesheet();
@@ -137,7 +136,6 @@ const ValidTrackingRatePage: React.FC = () => {
 
   return (
     <Card sx={{ padding: "20px 24px 24px 24px" }}>
-      <TierPreviewBanner sx={{ margin: "4px 0px 24px 0px" }} />
       <MetricHeaderSection
         formatter={formatter}
         compare={compareFn}

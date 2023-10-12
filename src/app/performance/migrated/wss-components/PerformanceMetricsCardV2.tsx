@@ -22,7 +22,6 @@ import { useTierThemesV2 } from "@performance/migrated/toolkit/stats";
 /* Types */
 import { WssMerchantLevelType } from "@schema";
 import Chip from "@mui/material/Chip";
-import { Alert } from "@ContextLogic/atlas-ui";
 
 type Score = {
   readonly level: WssMerchantLevelType | "PERFECT";
@@ -41,7 +40,6 @@ export type PerformanceMetricsCardPropsV2 = BaseProps & {
     readonly goal: Score;
   };
   isNew?: boolean;
-  showDelayedImpactBanner?: boolean; // this prop can be removed when cleaning up dkey wss_2_0_post_transition_state
 };
 
 const PerformanceMetricsCardV2: React.FC<PerformanceMetricsCardPropsV2> = ({
@@ -54,7 +52,6 @@ const PerformanceMetricsCardV2: React.FC<PerformanceMetricsCardPropsV2> = ({
   deltaText,
   stats,
   isNew,
-  showDelayedImpactBanner,
 }) => {
   const styles = useStylesheet();
   const tierThemes = useTierThemesV2();
@@ -183,12 +180,6 @@ const PerformanceMetricsCardV2: React.FC<PerformanceMetricsCardPropsV2> = ({
             )}
           </Text>
         </Link>
-      )}
-      {showDelayedImpactBanner && (
-        <Alert severity="info" icon={false}>
-          IMPORTANT: This new metric will not impact your Wish Standards Tier
-          until August 18th, 2023.
-        </Alert>
       )}
     </Layout.FlexColumn>
   );
