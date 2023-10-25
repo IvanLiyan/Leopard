@@ -316,3 +316,11 @@ features:
       - src/pages/products/edit.prod.tsx
     description: >
       Page where merchants can manually add a product or edit an existing one.
+
+  - name: Bank Document Page - Leopard
+    owners:
+      - kwan@wish.com
+    files:
+      - src/pages/seller-identity/bank-documents.prod.tsx
+    description: >
+      Page where merchants upload bank information and accept bank policy.
