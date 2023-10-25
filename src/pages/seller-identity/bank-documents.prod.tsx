@@ -1,4 +1,5 @@
 import { Box, Button, Container, Stack, Text } from "@ContextLogic/atlas-ui";
+import { Checkbox } from "@ContextLogic/lego";
 import { useMutation } from "@apollo/client";
 import PageGuide from "@core/components/PageGuide";
 import PageRoot from "@core/components/PageRoot";
@@ -15,10 +16,12 @@ import {
 import { observer } from "mobx-react";
 import { NextPage } from "next";
 import { useState } from "react";
+import { ci18n } from "@core/toolkit/i18n";
 
 const BankDocumentsPage: NextPage<Record<string, never>> = () => {
   const { borderPrimary, surfaceLightest } = useTheme();
   const [attachment, setAttachment] = useState<FileInput | null>(null);
+  const [confirmed, setConfirmed] = useState<boolean>(false);
 
   const toastStore = useToastStore();
 
@@ -32,6 +35,10 @@ const BankDocumentsPage: NextPage<Record<string, never>> = () => {
 
   const onSubmit = async () => {
     if (attachment == null) {
+      return;
+    }
+
+    if (confirmed === false) {
       return;
     }
 
@@ -69,18 +76,27 @@ const BankDocumentsPage: NextPage<Record<string, never>> = () => {
         >
           <Stack>
             <Box sx={{ mx: 3, mt: 3, mb: 2 }}>
-              <Text variant="bodyLStrong">Bank Information</Text>
+              <Text variant="bodyLStrong">
+                {ci18n("title of bank information module", "Bank Information")}
+              </Text>
             </Box>
             <Box maxWidth={"800px"} sx={{ alignSelf: "center" }}>
               <Text>
-                Please use your most recent bank statement or bank account
-                certificate. The name on your statement should be the legal name
-                used to sign up for your Wish Merchant account. Make sure the
-                document is complete before submitting.
+                {ci18n(
+                  "description of the upload file about bank information",
+                  "Please use your most recent bank account documentation.",
+                )}
+                {ci18n(
+                  "description of the upload file about bank information",
+                  "Make sure the document is valid and complete before submitting.",
+                )}
               </Text>
               <Box sx={{ mt: 3 }}>
                 <Text>
-                  Upload any bank-issued document (i.e.: bank statement)
+                  {ci18n(
+                    "tip of upload file",
+                    "Upload any bank-issued document (i.e.: bank statement, bank account certificate or bank account card, etc.)",
+                  )}
                 </Text>
                 <SecureFileInput
                   bucket="BANK_ACCOUNT_DOCUMENTS"
@@ -100,14 +116,37 @@ const BankDocumentsPage: NextPage<Record<string, never>> = () => {
                   maxAttachments={1}
                 />
                 <Text variant="bodyS">
-                  Select a {".pdf,.jpeg,.jpg,.png"} smaller than {5}MB.
+                  {ci18n(
+                    "description of the file limit",
+                    "Select a .pdf,.jpeg,.jpg,.png smaller than 5MB.",
+                  )}
                 </Text>
               </Box>
+            </Box>
+            <Box
+              sx={{
+                mt: 2,
+                p: 2,
+                borderTop: `solid 1px ${borderPrimary}`,
+                display: "flex",
+              }}
+            >
+              <Checkbox checked={confirmed} onChange={(e) => setConfirmed(e)} />
+              <Text sx={{ ml: 2 }}>
+                {ci18n(
+                  "text content of back information confirm",
+                  "I hereby confirm that the bank account documentation provided is indeed under the ownership of the respective merchant account, ",
+                )}
+                {ci18n(
+                  "text content of back information confirm",
+                  "and I have the full authority to use this account for all financial transactions related to my store.",
+                )}
+              </Text>
             </Box>
             <Box sx={{ mt: 2, p: 2, borderTop: `solid 1px ${borderPrimary}` }}>
               <Stack direction={"row-reverse"} spacing={1}>
                 <Button
-                  disabled={!attachment}
+                  disabled={!attachment || !confirmed}
                   primary
                   onClick={() => {
                     void onSubmit();
