@@ -13,6 +13,11 @@ import {
   UploadBankDocumentsRequest,
   UploadBankDocumentsResponse,
 } from "@seller-identity/bank-documents/toolkit";
+import {
+  AcceptMerchantPolicyResponseType,
+  ACCEPT_MERCHANT_POLICY_MUTATION,
+  MerchantTermsAgreedMutationsAcceptMerchantPolicyArgs,
+} from "@seller-identity/bank-documents/agreed";
 import { observer } from "mobx-react";
 import { NextPage } from "next";
 import { useState } from "react";
@@ -33,12 +38,27 @@ const BankDocumentsPage: NextPage<Record<string, never>> = () => {
     UploadBankDocumentsRequest
   >(UploadBankDocumentsMutation);
 
+  const [merchantPolicyConsent] = useMutation<
+    AcceptMerchantPolicyResponseType,
+    MerchantTermsAgreedMutationsAcceptMerchantPolicyArgs
+  >(ACCEPT_MERCHANT_POLICY_MUTATION, {
+    variables: {
+      input: {
+        agreed: true,
+        source: "BANK_INFORMATION_VALIDATION_FLOW",
+      },
+    },
+  });
+
   const onSubmit = async () => {
-    if (attachment == null) {
+    if (attachment == null || !confirmed) {
       return;
     }
 
-    if (confirmed === false) {
+    const { data } = await merchantPolicyConsent();
+
+    if (!data) {
+      toastStore.error(i`Something went wrong. Please try again.`);
       return;
     }
 
@@ -84,7 +104,7 @@ const BankDocumentsPage: NextPage<Record<string, never>> = () => {
               <Text>
                 {ci18n(
                   "description of the upload file about bank information",
-                  "Please use your most recent bank account documentation.",
+                  "Please use your bank account documentation.",
                 )}
                 {ci18n(
                   "description of the upload file about bank information",
@@ -95,7 +115,7 @@ const BankDocumentsPage: NextPage<Record<string, never>> = () => {
                 <Text>
                   {ci18n(
                     "tip of upload file",
-                    "Upload any bank-issued document (i.e.: bank statement, bank account certificate or bank account card, etc.)",
+                    "Upload any bank-issued document (i.e.: bank statement, bank account certificate or bank account card.)",
                   )}
                 </Text>
                 <SecureFileInput

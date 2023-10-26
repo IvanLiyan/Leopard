@@ -2445,6 +2445,7 @@ export type CommerceTransactionState =
   | 'SHIPPED';
 
 export type CommerceTransactionTaxEventType =
+  | 'COLORADO_DELIVERY_FEE'
   | 'REFUND_PRICE'
   | 'REFUND_SHIPPING'
   | 'SALE_PRICE'
@@ -2901,12 +2902,6 @@ export type CountryCode =
   | 'ZR'
   | 'ZW';
 
-export type CountryDiscountAmount = {
-  readonly __typename?: 'CountryDiscountAmount';
-  readonly country: Country;
-  readonly discountAmount?: Maybe<CurrencyValue>;
-};
-
 export type CountryEprSchema = {
   readonly __typename?: 'CountryEPRSchema';
   readonly categories: ReadonlyArray<CategoryEprSchema>;
@@ -2924,14 +2919,6 @@ export type CountryShippingInput = {
   readonly price?: InputMaybe<CurrencyInput>;
   readonly regionShipping?: InputMaybe<ReadonlyArray<RegionShippingInput>>;
   readonly timeToDoor?: InputMaybe<Scalars['Int']>;
-};
-
-export type CountryShippingPrice = {
-  readonly __typename?: 'CountryShippingPrice';
-  readonly country: Country;
-  readonly maxCalculatedShippingPrice?: Maybe<CurrencyValue>;
-  readonly merchantSetShippingPrice?: Maybe<CurrencyValue>;
-  readonly minCalculatedShippingPrice?: Maybe<CurrencyValue>;
 };
 
 export type CountryShippingSchema = {
@@ -3550,6 +3537,7 @@ export type DsaMutations = {
   readonly removeNotifier?: Maybe<RemoveNotifier>;
   readonly unclaimNotices?: Maybe<UnclaimNotices>;
   readonly updateNotifier?: Maybe<UpdateNotifier>;
+  readonly upsertNote?: Maybe<UpsertNote>;
 };
 
 
@@ -3585,6 +3573,11 @@ export type DsaMutationsUnclaimNoticesArgs = {
 
 export type DsaMutationsUpdateNotifierArgs = {
   input: UpdateNotifierInput;
+};
+
+
+export type DsaMutationsUpsertNoteArgs = {
+  input: UpsertNoteInput;
 };
 
 export type Datetime = {
@@ -5067,6 +5060,7 @@ export type FulfillmentSchema = {
   readonly fulfillmentCsv?: Maybe<FulfillmentCsvSchema>;
   readonly historicalOrders?: Maybe<ReadonlyArray<OrderSchema>>;
   readonly order?: Maybe<OrderSchema>;
+  readonly orderBatch?: Maybe<ReadonlyArray<OrderSchema>>;
   readonly orders?: Maybe<ReadonlyArray<OrderSchema>>;
   readonly ordersCount?: Maybe<Scalars['Int']>;
   readonly ordersCsvUrl?: Maybe<Scalars['String']>;
@@ -5119,6 +5113,11 @@ export type FulfillmentSchemaHistoricalOrdersArgs = {
 
 export type FulfillmentSchemaOrderArgs = {
   id: Scalars['String'];
+};
+
+
+export type FulfillmentSchemaOrderBatchArgs = {
+  ids: Scalars['String'];
 };
 
 
@@ -6534,6 +6533,7 @@ export type MfpCampaignSchema = {
   readonly genericFlashSaleDetails?: Maybe<Scalars['GenericScalar']>;
   readonly genericUnqualifiedProductVariations?: Maybe<Scalars['GenericScalar']>;
   readonly id: Scalars['ObjectIdType'];
+  readonly isNewVersion: Scalars['Boolean'];
   readonly name: Scalars['String'];
   readonly promotionType: MfpCampaignPromotionType;
   readonly skipShipping: Scalars['Boolean'];
@@ -6566,6 +6566,7 @@ export type MfpCampaignSearchType =
 export type MfpCampaignState =
   | 'APPROVED'
   | 'CANCELLED'
+  | 'CREATING'
   | 'PENDING';
 
 export type MfpConstantsSchema = {
@@ -6587,6 +6588,7 @@ export type MfpDiscountCampaignConstantsSchema = {
   readonly minimumCooldownDays: Scalars['Int'];
   readonly minimumPercentageRequired: Scalars['Int'];
   readonly minimumProductHistoryDays: Scalars['Int'];
+  readonly minimumProductRatingCountRequired: Scalars['Int'];
   readonly minimumProductRatingRequired: Scalars['Int'];
   readonly minimumProductSaleRequired: Scalars['Int'];
   readonly productAndShippingPriceDays: Scalars['Int'];
@@ -6605,6 +6607,7 @@ export type MfpFlashSaleConstantsSchema = {
   readonly minimumCooldownDays: Scalars['Int'];
   readonly minimumPercentageRequired: Scalars['Int'];
   readonly minimumProductHistoryDays: Scalars['Int'];
+  readonly minimumProductRatingCountRequired: Scalars['Int'];
   readonly minimumProductRatingRequired: Scalars['Int'];
   readonly minimumProductSaleRequired: Scalars['Int'];
   readonly productAndShippingPriceDays: Scalars['Int'];
@@ -6669,6 +6672,7 @@ export type MfpServiceSchema = {
   readonly campaigns?: Maybe<ReadonlyArray<MfpCampaignSchema>>;
   readonly campaignsCount?: Maybe<Scalars['Int']>;
   readonly checkEligibility?: Maybe<Scalars['GenericScalar']>;
+  readonly countryShippingEnabled?: Maybe<Scalars['Boolean']>;
   readonly eligibleProducts?: Maybe<ReadonlyArray<EligibleProductInfo>>;
   readonly eligibleProductsCount?: Maybe<Scalars['Int']>;
   readonly genericCampaigns?: Maybe<ReadonlyArray<Scalars['GenericScalar']>>;
@@ -6807,7 +6811,7 @@ export type MfpUnqualifiedVariationData = {
 
 export type MfpVariationDiscountData = {
   readonly __typename?: 'MFPVariationDiscountData';
-  readonly countryDiscountAmount?: Maybe<ReadonlyArray<CountryDiscountAmount>>;
+  readonly countryDiscountAmount?: Maybe<Scalars['GenericScalar']>;
   readonly discountAmount?: Maybe<CurrencyValue>;
   readonly discountPercentage: Scalars['Float'];
   readonly maxQuantity?: Maybe<Scalars['Int']>;
@@ -6831,6 +6835,7 @@ export type MfpVariationUnqualifiedReason =
   | 'FRS_NEGATIVE_PRICE'
   | 'INVALID_ID'
   | 'LOW_RATING'
+  | 'LOW_RATING_COUNT'
   | 'MERCHANT_ELIGIBILITY'
   | 'MININUM_VARIATION_PERCENTAGE'
   | 'NEGATIVE_PRODUCT_PRICE'
@@ -6838,6 +6843,7 @@ export type MfpVariationUnqualifiedReason =
   | 'NOT_OWNED_BY_MERCHANT'
   | 'PRODUCT_CATEGORY'
   | 'PRODUCT_LISTED_DAYS'
+  | 'PRODUCT_NOT_ACTIVE'
   | 'PRODUCT_PRICE'
   | 'PRODUCT_SHIPPING_PRICE'
   | 'PROMOTION_HISTORY'
@@ -8117,6 +8123,7 @@ export type MerchantPayoutHistoryDescription = {
 };
 
 export type MerchantPolicyAgreementSource =
+  | 'BANK_INFORMATION_VALIDATION_FLOW'
   | 'CN_SIGNUP_VALIDATION_FLOW'
   | 'EEA_KYC_VALIDATION_FLOW'
   | 'SELLER_PROFILE_VALIDATION_FLOW';
@@ -9443,6 +9450,7 @@ export type NoticeSchema = {
   readonly disputeSupportFiles?: Maybe<ReadonlyArray<MerchantFileSchema>>;
   readonly id: Scalars['ObjectIdType'];
   readonly lastClaimedUser?: Maybe<UserSchema>;
+  readonly note?: Maybe<Scalars['String']>;
   readonly notifier?: Maybe<NotifierSchema>;
   readonly notifierEmail: Scalars['String'];
   readonly notifierName: Scalars['String'];
@@ -10837,6 +10845,7 @@ export type PermissionType =
   | 'REVIEW_ONEOFF_REQ_ENABLE_COLLECTIONBOOST'
   | 'REVIEW_ONEOFF_REQ_ENABLE_DISABLE_CSP_FOR_ALL_ELIGIBLE_PRODUCTS'
   | 'REVIEW_ONEOFF_REQ_ENABLE_DYNAMIC_PRICING'
+  | 'REVIEW_ONEOFF_REQ_ENROLL_CURRENCY_MIGRATION_DISPUTE'
   | 'REVIEW_ONEOFF_REQ_ENROLL_MERCHANT_PLUS'
   | 'REVIEW_ONEOFF_REQ_ENROLL_PB_KICKSTART'
   | 'REVIEW_ONEOFF_REQ_ENROLL_PRICE_DROP'
@@ -12579,6 +12588,7 @@ export type ProductTaxonomyCategoryDisputeHubProductDisputeEligibilityArgs = {
 export type ProductTaxonomyCategoryDisputeSchema = {
   readonly __typename?: 'ProductTaxonomyCategoryDisputeSchema';
   readonly adminNote?: Maybe<Scalars['String']>;
+  readonly adminReviewerId?: Maybe<Scalars['String']>;
   readonly adminUnchangedReason?: Maybe<ProductTaxonomyCategoryDisputeAdminUnchangedReason>;
   readonly categoryApproved?: Maybe<TaxonomyCategorySchema>;
   readonly categoryDisputed: TaxonomyCategorySchema;
@@ -14899,9 +14909,9 @@ export type ShippingProviderTrackerSchema = {
 export type ShippingSchema = {
   readonly __typename?: 'ShippingSchema';
   readonly calculatedShippingEnabled?: Maybe<Scalars['Boolean']>;
-  readonly countryShippingPrice?: Maybe<ReadonlyArray<CountryShippingPrice>>;
   readonly defaultShipping?: Maybe<ReadonlyArray<DefaultShippingSchema>>;
   readonly domesticShipping?: Maybe<ReadonlyArray<DomesticShippingSchema>>;
+  readonly genericCountryShippingPriceInfo?: Maybe<Scalars['GenericScalar']>;
   readonly maxCalculatedShippingPrice?: Maybe<CurrencyValue>;
   readonly maxMerchantSetShippingPrice?: Maybe<CurrencyValue>;
   readonly warehouseCountryShipping?: Maybe<ReadonlyArray<WarehouseCountryShippingSchema>>;
@@ -14909,7 +14919,7 @@ export type ShippingSchema = {
 };
 
 
-export type ShippingSchemaCountryShippingPriceArgs = {
+export type ShippingSchemaGenericCountryShippingPriceInfoArgs = {
   countries?: InputMaybe<ReadonlyArray<CountryCode>>;
 };
 
@@ -15597,6 +15607,7 @@ export type TaxAuthorityType =
   | 'GCT'
   | 'GENERAL_SALES_AND_USE_TAX'
   | 'GIT'
+  | 'GOODS_AND_SERVICES_TAX'
   | 'GST'
   | 'HST'
   | 'ICMS'
@@ -17013,6 +17024,17 @@ export type UpsertMerchantWarningInput = {
   readonly messageInput?: InputMaybe<ReplyInfractionInput>;
   readonly requestPaymentInput?: InputMaybe<RequestPaymentInput>;
   readonly warningId?: InputMaybe<Scalars['ObjectIdType']>;
+};
+
+export type UpsertNote = {
+  readonly __typename?: 'UpsertNote';
+  readonly message?: Maybe<Scalars['String']>;
+  readonly ok: Scalars['Boolean'];
+};
+
+export type UpsertNoteInput = {
+  readonly note: Scalars['String'];
+  readonly noticeId: Scalars['ObjectIdType'];
 };
 
 export type UpsertOrderInfractionDispute = {
@@ -19593,6 +19615,13 @@ export type MfpTools_GetCampaignEventsQueryVariables = Exact<{
 
 export type MfpTools_GetCampaignEventsQuery = { readonly __typename?: 'RootQuery', readonly mfp?: { readonly __typename?: 'MFPServiceSchema', readonly campaignEventsCount?: number | null, readonly campaignEvents?: ReadonlyArray<{ readonly __typename?: 'CampaignEventInfo', readonly id: string, readonly name: string, readonly description?: string | null, readonly minDiscountPercentage: number, readonly promotionType: MfpCampaignPromotionType, readonly startTime: { readonly __typename?: 'Datetime', readonly formatted: string, readonly unix: number }, readonly endTime: { readonly __typename?: 'Datetime', readonly formatted: string, readonly unix: number }, readonly submissionDeadline: { readonly __typename?: 'Datetime', readonly formatted: string, readonly unix: number }, readonly productCategoryRestrictions: ReadonlyArray<{ readonly __typename?: 'TaxonomyCategorySchema', readonly id: string, readonly name: string }>, readonly countries: ReadonlyArray<{ readonly __typename?: 'Country', readonly code: CountryCode }> }> | null } | null };
 
+export type SellerIdentity_AcceptMerchantPolicyMutationVariables = Exact<{
+  input: AcceptMerchantPolicyInput;
+}>;
+
+
+export type SellerIdentity_AcceptMerchantPolicyMutation = { readonly __typename?: 'RootMutation', readonly currentMerchant?: { readonly __typename?: 'MerchantMutation', readonly merchantTermsAgreed?: { readonly __typename?: 'MerchantTermsAgreedMutations', readonly acceptMerchantPolicy: { readonly __typename?: 'AcceptMerchantPolicy', readonly ok: boolean, readonly message?: string | null } } | null } | null };
+
 export type SellerIdentity_UploadBankDocumentsMutationVariables = Exact<{
   input: UploadBankAccountDocumentInput;
 }>;
@@ -19751,5 +19780,6 @@ export const MfpTools_GetEligibleProductsCountDocument = {"kind":"Document","def
 export const GetWhitelistProducts_ProductWhitelistingSectionDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetWhitelistProducts_ProductWhitelistingSection"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"productIds"}},"type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ObjectIdType"}}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"offset"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"limit"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"merchantCurrency"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"PaymentCurrencyCode"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"mfp"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"activeWhitelistProducts"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"productIds"},"value":{"kind":"Variable","name":{"kind":"Name","value":"productIds"}}},{"kind":"Argument","name":{"kind":"Name","value":"offset"},"value":{"kind":"Variable","name":{"kind":"Name","value":"offset"}}},{"kind":"Argument","name":{"kind":"Name","value":"limit"},"value":{"kind":"Variable","name":{"kind":"Name","value":"limit"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"product"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"sales"}},{"kind":"Field","name":{"kind":"Name","value":"sku"}},{"kind":"Field","name":{"kind":"Name","value":"flatRateShippingCountryCandidates"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"country"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"code"}}]}},{"kind":"Field","name":{"kind":"Name","value":"price"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"convertedTo"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"currency"},"value":{"kind":"Variable","name":{"kind":"Name","value":"merchantCurrency"}}},{"kind":"Argument","name":{"kind":"Name","value":"rate"},"value":{"kind":"EnumValue","value":"WISH_LATEST"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"shipping"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"defaultShipping"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"price"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"convertedTo"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"currency"},"value":{"kind":"Variable","name":{"kind":"Name","value":"merchantCurrency"}}},{"kind":"Argument","name":{"kind":"Name","value":"rate"},"value":{"kind":"EnumValue","value":"WISH_LATEST"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"warehouseCountryShipping"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"countryShipping"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"price"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"convertedTo"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"currency"},"value":{"kind":"Variable","name":{"kind":"Name","value":"merchantCurrency"}}},{"kind":"Argument","name":{"kind":"Name","value":"rate"},"value":{"kind":"EnumValue","value":"WISH_LATEST"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"country"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"code"}}]}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"categories"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"l1Category"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"variations"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"inventory"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"count"}}]}},{"kind":"Field","name":{"kind":"Name","value":"color"}},{"kind":"Field","name":{"kind":"Name","value":"size"}},{"kind":"Field","name":{"kind":"Name","value":"price"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}},{"kind":"Field","name":{"kind":"Name","value":"currencyCode"}},{"kind":"Field","name":{"kind":"Name","value":"display"}},{"kind":"Field","name":{"kind":"Name","value":"convertedTo"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"currency"},"value":{"kind":"Variable","name":{"kind":"Name","value":"merchantCurrency"}}},{"kind":"Argument","name":{"kind":"Name","value":"rate"},"value":{"kind":"EnumValue","value":"WISH_LATEST"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"startTime"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"formatted"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"fmt"},"value":{"kind":"StringValue","value":"YYYY-MM-dd h:mm a z","block":false}}]},{"kind":"Field","name":{"kind":"Name","value":"unix"}}]}},{"kind":"Field","name":{"kind":"Name","value":"endTime"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"formatted"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"fmt"},"value":{"kind":"StringValue","value":"YYYY-MM-dd h:mm a z","block":false}}]},{"kind":"Field","name":{"kind":"Name","value":"unix"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"activeWhitelistProductsCount"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"productIds"},"value":{"kind":"Variable","name":{"kind":"Name","value":"productIds"}}}]}]}}]}}]} as unknown as DocumentNode<GetWhitelistProducts_ProductWhitelistingSectionQuery, GetWhitelistProducts_ProductWhitelistingSectionQueryVariables>;
 export const MfpTools_GetPrefillCampaignQueryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"MfpTools_GetPrefillCampaignQuery"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"merchantCurrency"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"PaymentCurrencyCode"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"mfp"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"campaigns"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"searchType"},"value":{"kind":"EnumValue","value":"CAMPAIGN_ID"}},{"kind":"Argument","name":{"kind":"Name","value":"searchQuery"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}},{"kind":"Argument","name":{"kind":"Name","value":"offset"},"value":{"kind":"IntValue","value":"0"}},{"kind":"Argument","name":{"kind":"Name","value":"limit"},"value":{"kind":"IntValue","value":"1"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"state"}},{"kind":"Field","name":{"kind":"Name","value":"startTime"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"unix"}}]}},{"kind":"Field","name":{"kind":"Name","value":"endTime"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"unix"}}]}},{"kind":"Field","name":{"kind":"Name","value":"countries"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"code"}}]}},{"kind":"Field","name":{"kind":"Name","value":"promotionType"}},{"kind":"Field","name":{"kind":"Name","value":"unqualifiedProductVariations"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"variation"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"productId"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"flashSaleDetails"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"maxQuantity"}},{"kind":"Field","name":{"kind":"Name","value":"discountPercentage"}},{"kind":"Field","name":{"kind":"Name","value":"product"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"sales"}},{"kind":"Field","name":{"kind":"Name","value":"sku"}},{"kind":"Field","name":{"kind":"Name","value":"categories"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"flatRateShippingCountryCandidates"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"country"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"code"}}]}},{"kind":"Field","name":{"kind":"Name","value":"price"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"convertedTo"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"currency"},"value":{"kind":"Variable","name":{"kind":"Name","value":"merchantCurrency"}}},{"kind":"Argument","name":{"kind":"Name","value":"rate"},"value":{"kind":"EnumValue","value":"WISH_LATEST"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"shipping"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"defaultShipping"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"price"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"convertedTo"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"currency"},"value":{"kind":"Variable","name":{"kind":"Name","value":"merchantCurrency"}}},{"kind":"Argument","name":{"kind":"Name","value":"rate"},"value":{"kind":"EnumValue","value":"WISH_LATEST"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"warehouseCountryShipping"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"countryShipping"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"price"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"convertedTo"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"currency"},"value":{"kind":"Variable","name":{"kind":"Name","value":"merchantCurrency"}}},{"kind":"Argument","name":{"kind":"Name","value":"rate"},"value":{"kind":"EnumValue","value":"WISH_LATEST"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"country"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"code"}}]}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"variations"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"color"}},{"kind":"Field","name":{"kind":"Name","value":"size"}},{"kind":"Field","name":{"kind":"Name","value":"productId"}},{"kind":"Field","name":{"kind":"Name","value":"price"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}},{"kind":"Field","name":{"kind":"Name","value":"currencyCode"}},{"kind":"Field","name":{"kind":"Name","value":"display"}},{"kind":"Field","name":{"kind":"Name","value":"convertedTo"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"currency"},"value":{"kind":"Variable","name":{"kind":"Name","value":"merchantCurrency"}}},{"kind":"Argument","name":{"kind":"Name","value":"rate"},"value":{"kind":"EnumValue","value":"WISH_LATEST"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"inventory"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"count"}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"variation"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"color"}},{"kind":"Field","name":{"kind":"Name","value":"size"}},{"kind":"Field","name":{"kind":"Name","value":"productId"}},{"kind":"Field","name":{"kind":"Name","value":"price"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}},{"kind":"Field","name":{"kind":"Name","value":"currencyCode"}},{"kind":"Field","name":{"kind":"Name","value":"display"}},{"kind":"Field","name":{"kind":"Name","value":"convertedTo"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"currency"},"value":{"kind":"Variable","name":{"kind":"Name","value":"merchantCurrency"}}},{"kind":"Argument","name":{"kind":"Name","value":"rate"},"value":{"kind":"EnumValue","value":"WISH_LATEST"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"inventory"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"count"}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"discountDetails"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"maxQuantity"}},{"kind":"Field","name":{"kind":"Name","value":"discountPercentage"}},{"kind":"Field","name":{"kind":"Name","value":"product"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"sales"}},{"kind":"Field","name":{"kind":"Name","value":"sku"}},{"kind":"Field","name":{"kind":"Name","value":"flatRateShippingCountryCandidates"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"country"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"code"}}]}},{"kind":"Field","name":{"kind":"Name","value":"price"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"convertedTo"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"currency"},"value":{"kind":"Variable","name":{"kind":"Name","value":"merchantCurrency"}}},{"kind":"Argument","name":{"kind":"Name","value":"rate"},"value":{"kind":"EnumValue","value":"WISH_LATEST"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"shipping"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"defaultShipping"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"price"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"convertedTo"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"currency"},"value":{"kind":"Variable","name":{"kind":"Name","value":"merchantCurrency"}}},{"kind":"Argument","name":{"kind":"Name","value":"rate"},"value":{"kind":"EnumValue","value":"WISH_LATEST"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"warehouseCountryShipping"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"countryShipping"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"price"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"convertedTo"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"currency"},"value":{"kind":"Variable","name":{"kind":"Name","value":"merchantCurrency"}}},{"kind":"Argument","name":{"kind":"Name","value":"rate"},"value":{"kind":"EnumValue","value":"WISH_LATEST"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"country"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"code"}}]}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"categories"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"variations"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"color"}},{"kind":"Field","name":{"kind":"Name","value":"size"}},{"kind":"Field","name":{"kind":"Name","value":"productId"}},{"kind":"Field","name":{"kind":"Name","value":"price"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}},{"kind":"Field","name":{"kind":"Name","value":"currencyCode"}},{"kind":"Field","name":{"kind":"Name","value":"display"}},{"kind":"Field","name":{"kind":"Name","value":"convertedTo"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"currency"},"value":{"kind":"Variable","name":{"kind":"Name","value":"merchantCurrency"}}},{"kind":"Argument","name":{"kind":"Name","value":"rate"},"value":{"kind":"EnumValue","value":"WISH_LATEST"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"inventory"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"count"}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"variation"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"color"}},{"kind":"Field","name":{"kind":"Name","value":"size"}},{"kind":"Field","name":{"kind":"Name","value":"productId"}},{"kind":"Field","name":{"kind":"Name","value":"price"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}},{"kind":"Field","name":{"kind":"Name","value":"currencyCode"}},{"kind":"Field","name":{"kind":"Name","value":"display"}},{"kind":"Field","name":{"kind":"Name","value":"convertedTo"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"currency"},"value":{"kind":"Variable","name":{"kind":"Name","value":"merchantCurrency"}}},{"kind":"Argument","name":{"kind":"Name","value":"rate"},"value":{"kind":"EnumValue","value":"WISH_LATEST"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"inventory"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"count"}}]}}]}}]}}]}}]}}]}}]} as unknown as DocumentNode<MfpTools_GetPrefillCampaignQueryQuery, MfpTools_GetPrefillCampaignQueryQueryVariables>;
 export const MfpTools_GetCampaignEventsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"MfpTools_GetCampaignEvents"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"offset"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"limit"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"sort"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"CampaignEventSort"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"startAtMin"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"DatetimeInput"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"submitAtMin"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"DatetimeInput"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"promotionTypes"}},"type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"MFPCampaignPromotionType"}}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"mfp"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"campaignEvents"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"offset"},"value":{"kind":"Variable","name":{"kind":"Name","value":"offset"}}},{"kind":"Argument","name":{"kind":"Name","value":"limit"},"value":{"kind":"Variable","name":{"kind":"Name","value":"limit"}}},{"kind":"Argument","name":{"kind":"Name","value":"sort"},"value":{"kind":"Variable","name":{"kind":"Name","value":"sort"}}},{"kind":"Argument","name":{"kind":"Name","value":"startAtMin"},"value":{"kind":"Variable","name":{"kind":"Name","value":"startAtMin"}}},{"kind":"Argument","name":{"kind":"Name","value":"submitAtMin"},"value":{"kind":"Variable","name":{"kind":"Name","value":"submitAtMin"}}},{"kind":"Argument","name":{"kind":"Name","value":"promotionTypes"},"value":{"kind":"Variable","name":{"kind":"Name","value":"promotionTypes"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"minDiscountPercentage"}},{"kind":"Field","name":{"kind":"Name","value":"promotionType"}},{"kind":"Field","name":{"kind":"Name","value":"startTime"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"formatted"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"fmt"},"value":{"kind":"StringValue","value":"MMM d","block":false}}]},{"kind":"Field","name":{"kind":"Name","value":"unix"}}]}},{"kind":"Field","name":{"kind":"Name","value":"endTime"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"formatted"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"fmt"},"value":{"kind":"StringValue","value":"MMM d","block":false}}]},{"kind":"Field","name":{"kind":"Name","value":"unix"}}]}},{"kind":"Field","name":{"kind":"Name","value":"submissionDeadline"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"formatted"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"fmt"},"value":{"kind":"StringValue","value":"MMM d, YYYY","block":false}}]},{"kind":"Field","name":{"kind":"Name","value":"unix"}}]}},{"kind":"Field","name":{"kind":"Name","value":"productCategoryRestrictions"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"countries"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"code"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"campaignEventsCount"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"startAtMin"},"value":{"kind":"Variable","name":{"kind":"Name","value":"startAtMin"}}},{"kind":"Argument","name":{"kind":"Name","value":"submitAtMin"},"value":{"kind":"Variable","name":{"kind":"Name","value":"submitAtMin"}}},{"kind":"Argument","name":{"kind":"Name","value":"promotionTypes"},"value":{"kind":"Variable","name":{"kind":"Name","value":"promotionTypes"}}}]}]}}]}}]} as unknown as DocumentNode<MfpTools_GetCampaignEventsQuery, MfpTools_GetCampaignEventsQueryVariables>;
+export const SellerIdentity_AcceptMerchantPolicyDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"SellerIdentity_AcceptMerchantPolicy"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"AcceptMerchantPolicyInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"currentMerchant"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"merchantTermsAgreed"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"acceptMerchantPolicy"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"ok"}},{"kind":"Field","name":{"kind":"Name","value":"message"}}]}}]}}]}}]}}]} as unknown as DocumentNode<SellerIdentity_AcceptMerchantPolicyMutation, SellerIdentity_AcceptMerchantPolicyMutationVariables>;
 export const SellerIdentity_UploadBankDocumentsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"SellerIdentity_UploadBankDocuments"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UploadBankAccountDocumentInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"currentMerchant"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"bankAccountVerification"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"uploadDocument"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"ok"}},{"kind":"Field","name":{"kind":"Name","value":"message"}}]}}]}}]}}]}}]} as unknown as DocumentNode<SellerIdentity_UploadBankDocumentsMutation, SellerIdentity_UploadBankDocumentsMutationVariables>;
 export const AdminCheckDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"AdminCheck"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"su"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}},{"kind":"Field","name":{"kind":"Name","value":"currentUser"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"isAdmin"}}]}}]}}]} as unknown as DocumentNode<AdminCheckQuery, AdminCheckQueryVariables>;

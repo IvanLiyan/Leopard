@@ -1938,8 +1938,9 @@ enum CommerceTransactionState {
 
 enum CommerceTransactionTaxEventType {
   REFUND_SHIPPING
-  SALE_SHIPPING
   REFUND_PRICE
+  SALE_SHIPPING
+  COLORADO_DELIVERY_FEE
   SALE_PRICE
 }
 
@@ -2383,11 +2384,6 @@ enum CountryCode {
   TV
 }
 
-type CountryDiscountAmount {
-  country: Country!
-  discountAmount: CurrencyValue
-}
-
 type CountryEPRSchema {
   country: Country!
   categoriesWithoutEpr: Int!
@@ -2404,13 +2400,6 @@ input CountryShippingInput {
   additionalPrice: CurrencyInput
   timeToDoor: Int
   regionShipping: [RegionShippingInput!]
-}
-
-type CountryShippingPrice {
-  country: Country!
-  minCalculatedShippingPrice: CurrencyValue
-  maxCalculatedShippingPrice: CurrencyValue
-  merchantSetShippingPrice: CurrencyValue
 }
 
 type CountryShippingSchema {
@@ -2883,6 +2872,7 @@ type DSAMutations {
   unclaimNotices(input: UnclaimNoticesInput!): UnclaimNotices
   completeNoticeReview(input: CompleteNoticeReviewInput!): CompleteNoticeReview
   completeDisputeReview(input: CompleteDisputeReviewInput!): CompleteDisputeReview
+  upsertNote(input: UpsertNoteInput!): UpsertNote
   public: PublicDSAMutations
 }
 
@@ -4088,6 +4078,7 @@ input FulfillmentOrdersFromCsvInput {
 
 type FulfillmentSchema {
   order(id: String!): OrderSchema
+  orderBatch(ids: String!): [OrderSchema!]
   orders(query: String, searchType: OrderHistorySearchType, offset: Int = 0, limit: Int = 20, sort: OrderHistorySort, states: [CommerceTransactionState!], wishExpress: Boolean): [OrderSchema!]
   historicalOrders(query: String, searchType: OrderHistorySearchType, offset: Int = 0, limit: Int = 20, sort: OrderHistorySort, wishExpress: Boolean): [OrderSchema!]
   ordersCsvUrl(query: String, searchType: OrderHistorySearchType, offset: Int = 0, limit: Int = 20, sort: OrderHistorySort, wishExpress: Boolean): String
@@ -5256,6 +5247,7 @@ enum MFPCampaignPromotionType {
 
 type MFPCampaignSchema {
   id: ObjectIdType!
+  isNewVersion: Boolean!
   name: String!
   promotionType: MFPCampaignPromotionType!
   creationTime: Datetime!
@@ -5286,6 +5278,7 @@ enum MFPCampaignState {
   PENDING
   CANCELLED
   APPROVED
+  CREATING
 }
 
 type MFPConstantsSchema {
@@ -5296,6 +5289,7 @@ type MFPConstantsSchema {
 
 type MFPDiscountCampaignConstantsSchema {
   minimumProductRatingRequired: Int!
+  minimumProductRatingCountRequired: Int!
   minimumProductSaleRequired: Int!
   minimumProductHistoryDays: Int!
   minimumCooldownDays: Int!
@@ -5312,6 +5306,7 @@ type MFPDiscountCampaignConstantsSchema {
 
 type MFPFlashSaleConstantsSchema {
   minimumProductRatingRequired: Int!
+  minimumProductRatingCountRequired: Int!
   minimumProductSaleRequired: Int!
   minimumProductHistoryDays: Int!
   minimumCooldownDays: Int!
@@ -5347,6 +5342,7 @@ type MFPServiceMutations {
 }
 
 type MFPServiceSchema {
+  countryShippingEnabled: Boolean
   genericCampaigns(startAtMin: DatetimeInput, startAtMax: DatetimeInput, endAtMin: DatetimeInput, endAtMax: DatetimeInput, searchType: MFPCampaignSearchType, searchQuery: String, states: [MFPCampaignState!], promotionTypes: [MFPCampaignPromotionType!], offset: Int = 0, limit: Int = 25, performanceStartDate: DatetimeInput, performanceEndDate: DatetimeInput): [GenericScalar!]
   campaigns(startAtMin: DatetimeInput, startAtMax: DatetimeInput, endAtMin: DatetimeInput, endAtMax: DatetimeInput, searchType: MFPCampaignSearchType, searchQuery: String, states: [MFPCampaignState!], promotionTypes: [MFPCampaignPromotionType!], offset: Int = 0, limit: Int = 25, eventIds: [ObjectIdType!], eventConfig: MFPCampaignEventConfig): [MFPCampaignSchema!]
   campaignsCount(startAtMin: DatetimeInput, startAtMax: DatetimeInput, endAtMin: DatetimeInput, endAtMax: DatetimeInput, searchType: MFPCampaignSearchType, searchQuery: String, states: [MFPCampaignState!], promotionTypes: [MFPCampaignPromotionType!], eventIds: [ObjectIdType!], eventConfig: MFPCampaignEventConfig): Int
@@ -5376,7 +5372,7 @@ type MFPVariationDiscountData {
   maxQuantity: Int
   discountPercentage: Float!
   discountAmount: CurrencyValue
-  countryDiscountAmount: [CountryDiscountAmount!]
+  countryDiscountAmount: GenericScalar
   scheduledStartTime: Datetime
   scheduledEndTime: Datetime
 }
@@ -5406,6 +5402,8 @@ enum MFPVariationUnqualifiedReason {
   COMPETING_PROMOTION
   PROMOTION_HISTORY
   NEGATIVE_PRODUCT_PRICE
+  LOW_RATING_COUNT
+  PRODUCT_NOT_ACTIVE
 }
 
 enum MFPWhitelistProductSortBy {
@@ -6345,8 +6343,9 @@ type MerchantPayoutHistoryDescription {
 }
 
 enum MerchantPolicyAgreementSource {
-  CN_SIGNUP_VALIDATION_FLOW
   SELLER_PROFILE_VALIDATION_FLOW
+  CN_SIGNUP_VALIDATION_FLOW
+  BANK_INFORMATION_VALIDATION_FLOW
   EEA_KYC_VALIDATION_FLOW
 }
 
@@ -7444,6 +7443,7 @@ type NoticeSchema {
   disputeReviewer: UserSchema
   disputeReviewResponse: String
   datetimeDisputeReviewed: Datetime
+  note: String
 }
 
 enum NoticeSortField {
@@ -8422,6 +8422,7 @@ enum PermissionType {
   EDIT_PRODUCTS
   PROMO_MANUAL_TAG
   VIEW_GLOBAL_LEADERBOARD
+  REVIEW_ONEOFF_REQ_ENROLL_CURRENCY_MIGRATION_DISPUTE
   REVIEW_ONEOFF_REQ_ENABLE_DISABLE_CSP_FOR_ALL_ELIGIBLE_PRODUCTS
   COUNTERFEIT_TAG_RESOLUTION
   MANAGE_WHITE_GLOVE
@@ -9818,6 +9819,7 @@ type ProductTaxonomyCategoryDisputeSchema {
   datetimeResolved: Datetime
   adminUnchangedReason: ProductTaxonomyCategoryDisputeAdminUnchangedReason
   adminNote: String
+  adminReviewerId: String
   merchantNote: String
   supportFiles: [MerchantFileSchema!]
   categoryDisputed: TaxonomyCategorySchema!
@@ -11840,9 +11842,9 @@ type ShippingSchema {
   warehouseCountryShipping(shippingTypes: [WarehouseShippingType!] = [1, 2]): [WarehouseCountryShippingSchema!]
   calculatedShippingEnabled: Boolean
   wishpostEstimatedShipping: [WishPostShippingSchema!]
+  genericCountryShippingPriceInfo(countries: [CountryCode!]): GenericScalar
   maxCalculatedShippingPrice(countries: [CountryCode!]): CurrencyValue
   maxMerchantSetShippingPrice(countries: [CountryCode!]): CurrencyValue
-  countryShippingPrice(countries: [CountryCode!]): [CountryShippingPrice!]
 }
 
 type ShippingSettingMutations {
@@ -12393,6 +12395,7 @@ enum TaxAuthorityType {
   NHIL
   COUNTY_RENTAL
   CITY_RENTAL
+  GOODS_AND_SERVICES_TAX
   CITY_FOOD_BEVERAGE
   ITBMS
   EEE
@@ -13589,6 +13592,16 @@ input UpsertMerchantWarningInput {
   cancelInput: CancelInfractionInput
   claimInput: ClaimInfractionInput
   closeInput: CloseInfractionInput
+}
+
+type UpsertNote {
+  ok: Boolean!
+  message: String
+}
+
+input UpsertNoteInput {
+  noticeId: ObjectIdType!
+  note: String!
 }
 
 type UpsertOrderInfractionDispute {
