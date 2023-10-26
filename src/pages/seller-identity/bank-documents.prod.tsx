@@ -104,7 +104,7 @@ const BankDocumentsPage: NextPage<Record<string, never>> = () => {
               <Text>
                 {ci18n(
                   "description of the upload file about bank information",
-                  "Please use your bank account documentation.",
+                  "Please use your bank account documentation. ",
                 )}
                 {ci18n(
                   "description of the upload file about bank information",
