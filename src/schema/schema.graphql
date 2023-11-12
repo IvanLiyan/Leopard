@@ -738,8 +738,10 @@ enum BalanceUpdateReason {
 type BankAccountDocumentSchema {
   id: ObjectIdType!
   documentFile: MerchantFileSchema
+  last4Digits: String!
   uploadedAt: Datetime!
   state: BankAccountVerificationStatus!
+  stateReason: BankAccountVerificationStatusReason
   comment: String
   documentType: BankAccountDocumentType
   reviewedAt: Datetime
@@ -747,9 +749,10 @@ type BankAccountDocumentSchema {
 }
 
 enum BankAccountDocumentType {
-  GOVERNMENT_DOCUMENT
   UNIDENTIFIED
-  BANK_DOCUMENT
+  BANK_STATEMENT
+  BANK_ACCOUNT_CERTIFICATE
+  BANK_ACCOUNT_CARD
 }
 
 type BankAccountVerificationMerchantMutations {
@@ -763,6 +766,7 @@ type BankAccountVerificationReviewerMutations {
 type BankAccountVerificationSchema {
   id: ObjectIdType!
   state: BankAccountVerificationStatus!
+  stateReason: BankAccountVerificationStatusReason
   lastReviewedAt: Datetime
   lastUploadedAt: Datetime
   bankAccountDocuments: [BankAccountDocumentSchema!]
@@ -773,6 +777,15 @@ enum BankAccountVerificationStatus {
   REJECTED
   APPROVED
   PENDING
+}
+
+enum BankAccountVerificationStatusReason {
+  MISMATCH_LAST_FOUR_DIGITS
+  PARTIAL_IMAGE
+  BLURRY_IMAGE
+  UNQUALIFIED_BANK_DOCUMENT
+  APPROVE
+  INVALID_DOCUMENT
 }
 
 type BdSignupCodeInfo {
@@ -2603,12 +2616,13 @@ input CreateUinInput {
 }
 
 input CreateWhitelistProductsInput {
-  merchantId: ObjectIdType!
+  merchantId: ObjectIdType
   productIds: [ObjectIdType!]!
 }
 
 type CreateWhitelistProductsMutation {
   ok: Boolean!
+  invalidProductIds: [String!]
   message: String
 }
 
@@ -10989,6 +11003,7 @@ input ReviewBankAccountDocumentInput {
   documentId: ObjectIdType!
   documentType: BankAccountDocumentType!
   state: BankAccountVerificationStatus!
+  stateReason: BankAccountVerificationStatusReason!
   comment: String
 }
 
@@ -13419,6 +13434,7 @@ type UploadBankAccountDocument {
 
 input UploadBankAccountDocumentInput {
   bankDocFile: FileInput!
+  last4Digits: String!
 }
 
 type UploadEUVATTaxQuestionnaire {

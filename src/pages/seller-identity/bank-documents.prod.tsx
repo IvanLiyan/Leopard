@@ -1,5 +1,5 @@
 import { Box, Button, Container, Stack, Text } from "@ContextLogic/atlas-ui";
-import { Checkbox } from "@ContextLogic/lego";
+import { Checkbox, TextInput } from "@ContextLogic/lego";
 import { useMutation } from "@apollo/client";
 import PageGuide from "@core/components/PageGuide";
 import PageRoot from "@core/components/PageRoot";
@@ -18,15 +18,54 @@ import {
   ACCEPT_MERCHANT_POLICY_MUTATION,
   MerchantTermsAgreedMutationsAcceptMerchantPolicyArgs,
 } from "@seller-identity/bank-documents/agreed";
+import {
+  RejectReasonMap,
+  formatSingleRejectReason,
+} from "@seller-identity/bank-documents/state-reason-format";
+import {
+  GET_MERCHANT_BANK_VERIFICATION_STATE_REASON,
+  BankStatusResponseData,
+} from "@seller-identity/bank-documents/getinfo";
 import { observer } from "mobx-react";
 import { NextPage } from "next";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ci18n } from "@core/toolkit/i18n";
+import { useRequest } from "@core/toolkit/restApi";
+import { GET_TODOS_ENDPOINT, GetTodoItemsResponse } from "@home/toolkit/todos";
+import { useQuery } from "@apollo/client";
+import {
+  MinMaxValueValidator,
+  CharacterLength,
+} from "@core/toolkit/validators";
 
 const BankDocumentsPage: NextPage<Record<string, never>> = () => {
   const { borderPrimary, surfaceLightest } = useTheme();
   const [attachment, setAttachment] = useState<FileInput | null>(null);
+  const [last4digits, setLast4Digits] = useState<string>("");
   const [confirmed, setConfirmed] = useState<boolean>(false);
+  const [isLast4DigitsValid, setIsLast4DigitsValid] = useState(true);
+  const [rejectReason, setRejectReason] = useState<
+    keyof RejectReasonMap | null | undefined
+  >(null);
+  const { data } = useQuery<BankStatusResponseData>(
+    GET_MERCHANT_BANK_VERIFICATION_STATE_REASON,
+  );
+
+  useEffect(() => {
+    setRejectReason(data?.currentMerchant.bankAccountVerification.stateReason);
+  }, [data?.currentMerchant.bankAccountVerification.stateReason]);
+
+  useEffect(() => {
+    const isValid =
+      last4digits.length === 4 &&
+      Number(last4digits) >= 0 &&
+      Number(last4digits) <= 9999;
+    setIsLast4DigitsValid(isValid);
+  }, [last4digits]);
+
+  const { data: todoItemsData } = useRequest<GetTodoItemsResponse>({
+    url: GET_TODOS_ENDPOINT,
+  });
 
   const toastStore = useToastStore();
 
@@ -63,7 +102,9 @@ const BankDocumentsPage: NextPage<Record<string, never>> = () => {
     }
 
     const resp = await upload({
-      variables: { input: { bankDocFile: attachment } },
+      variables: {
+        input: { bankDocFile: attachment, last4Digits: last4digits },
+      },
     });
     const result =
       resp.data?.currentMerchant?.bankAccountVerification?.uploadDocument;
@@ -95,6 +136,19 @@ const BankDocumentsPage: NextPage<Record<string, never>> = () => {
           }}
         >
           <Stack>
+            {todoItemsData &&
+              todoItemsData.results.map((item) => {
+                if (item.todo_type === "BANK_ACCOUNT_VERIFICATION") {
+                  return (
+                    <Box sx={{ mx: 3, mt: 3, mb: 2 }}>
+                      <Text sx={{ color: "red", fontWeight: "bold" }}>
+                        {ci18n("reject title", "Reject: ")}
+                        {formatSingleRejectReason(rejectReason)}
+                      </Text>
+                    </Box>
+                  );
+                }
+              })}
             <Box sx={{ mx: 3, mt: 3, mb: 2 }}>
               <Text variant="bodyLStrong">
                 {ci18n("title of bank information module", "Bank Information")}
@@ -149,6 +203,42 @@ const BankDocumentsPage: NextPage<Record<string, never>> = () => {
                 p: 2,
                 borderTop: `solid 1px ${borderPrimary}`,
                 display: "flex",
+                alignItems: "center",
+                justifyContent: "flex-start",
+              }}
+            >
+              <Text>
+                {ci18n(
+                  "title of last 4 digits input",
+                  "Last 4 digits of bank account:",
+                )}
+              </Text>
+              <TextInput
+                style={{ marginLeft: 20 }}
+                value={last4digits}
+                onChange={(value) => setLast4Digits(value.text)}
+                data-cy="input-max-quantity"
+                validators={[
+                  new MinMaxValueValidator({
+                    minAllowedValue: 0,
+                    maxAllowedValue: 9999,
+                    customMessage: i`Please enter a 4-digit number`,
+                    allowBlank: true,
+                  }),
+                  new CharacterLength({
+                    minimum: 4,
+                    maximum: 4,
+                    customMessage: i`Please enter a 4-digit number`,
+                  }),
+                ]}
+              />
+            </Box>
+            <Box
+              sx={{
+                mt: 2,
+                p: 2,
+                borderTop: `solid 1px ${borderPrimary}`,
+                display: "flex",
               }}
             >
               <Checkbox checked={confirmed} onChange={(e) => setConfirmed(e)} />
@@ -166,7 +256,7 @@ const BankDocumentsPage: NextPage<Record<string, never>> = () => {
             <Box sx={{ mt: 2, p: 2, borderTop: `solid 1px ${borderPrimary}` }}>
               <Stack direction={"row-reverse"} spacing={1}>
                 <Button
-                  disabled={!attachment || !confirmed}
+                  disabled={!attachment || !confirmed || !isLast4DigitsValid}
                   primary
                   onClick={() => {
                     void onSubmit();
