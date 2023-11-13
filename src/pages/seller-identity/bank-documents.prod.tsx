@@ -30,8 +30,6 @@ import { observer } from "mobx-react";
 import { NextPage } from "next";
 import { useState, useEffect } from "react";
 import { ci18n } from "@core/toolkit/i18n";
-import { useRequest } from "@core/toolkit/restApi";
-import { GET_TODOS_ENDPOINT, GetTodoItemsResponse } from "@home/toolkit/todos";
 import { useQuery } from "@apollo/client";
 import {
   MinMaxValueValidator,
@@ -44,6 +42,7 @@ const BankDocumentsPage: NextPage<Record<string, never>> = () => {
   const [last4digits, setLast4Digits] = useState<string>("");
   const [confirmed, setConfirmed] = useState<boolean>(false);
   const [isLast4DigitsValid, setIsLast4DigitsValid] = useState(true);
+  const [state, setState] = useState<string | undefined>(undefined);
   const [rejectReason, setRejectReason] = useState<
     keyof RejectReasonMap | null | undefined
   >(null);
@@ -52,8 +51,9 @@ const BankDocumentsPage: NextPage<Record<string, never>> = () => {
   );
 
   useEffect(() => {
+    setState(data?.currentMerchant.bankAccountVerification.state);
     setRejectReason(data?.currentMerchant.bankAccountVerification.stateReason);
-  }, [data?.currentMerchant.bankAccountVerification.stateReason]);
+  }, [data?.currentMerchant.bankAccountVerification]);
 
   useEffect(() => {
     const isValid =
@@ -62,10 +62,6 @@ const BankDocumentsPage: NextPage<Record<string, never>> = () => {
       Number(last4digits) <= 9999;
     setIsLast4DigitsValid(isValid);
   }, [last4digits]);
-
-  const { data: todoItemsData } = useRequest<GetTodoItemsResponse>({
-    url: GET_TODOS_ENDPOINT,
-  });
 
   const toastStore = useToastStore();
 
@@ -136,19 +132,14 @@ const BankDocumentsPage: NextPage<Record<string, never>> = () => {
           }}
         >
           <Stack>
-            {todoItemsData &&
-              todoItemsData.results.map((item) => {
-                if (item.todo_type === "BANK_ACCOUNT_VERIFICATION") {
-                  return (
-                    <Box sx={{ mx: 3, mt: 3, mb: 2 }}>
-                      <Text sx={{ color: "red", fontWeight: "bold" }}>
-                        {ci18n("reject title", "Reject: ")}
-                        {formatSingleRejectReason(rejectReason)}
-                      </Text>
-                    </Box>
-                  );
-                }
-              })}
+            {state === "REJECTED" && (
+              <Box sx={{ mx: 3, mt: 3, mb: 2 }}>
+                <Text sx={{ color: "red", fontWeight: "bold" }}>
+                  {ci18n("reject title", "Reject: ")}
+                  {formatSingleRejectReason(rejectReason)}
+                </Text>
+              </Box>
+            )}
             <Box sx={{ mx: 3, mt: 3, mb: 2 }}>
               <Text variant="bodyLStrong">
                 {ci18n("title of bank information module", "Bank Information")}

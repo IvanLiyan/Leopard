@@ -322,6 +322,6 @@ features:
       - kwan@wish.com
     files:
       - src/pages/seller-identity/bank-documents.prod.tsx
-      - src/pages/seller-identity/state-reason-format.prod.tsx
+      - src/app/seller-identity/bank-documents/state-reason-format.ts
     description: >
       Page where merchants upload bank information and accept bank policy.

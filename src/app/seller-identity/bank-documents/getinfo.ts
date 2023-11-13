@@ -5,6 +5,7 @@ export const GET_MERCHANT_BANK_VERIFICATION_STATE_REASON = gql(`
   query getMerchantBankVerificationStateReason {
     currentMerchant {
       bankAccountVerification {
+        state
         stateReason
       }
     }
@@ -15,7 +16,7 @@ export type BankStatusResponseData = {
   readonly currentMerchant: {
     readonly bankAccountVerification: Pick<
       BankAccountVerificationSchema,
-      "stateReason"
+      "state" | "stateReason"
     >;
   };
 };
