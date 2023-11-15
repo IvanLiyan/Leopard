@@ -139,27 +139,31 @@ const UnderperformingProductsHeader: React.FC = () => {
         value:
           currentScoreData.currentScoreDisplay ?? WSS_MISSING_SCORE_INDICATOR,
         illustration: tierThemes(currentScoreData.currentLevel).icon,
-        subtitle: () => (
-          <Stack direction="row" gap="40px" alignItems="center">
-            <Text>
-              Total products with orders:&nbsp;
-              {currentData?.productWithOrdersCount ?? "-"}
-            </Text>
-            <Text>
-              Underperforming products:&nbsp;
-              {currentData?.badProductCount ?? "-"} of&nbsp;
-              {currentData?.productWithOrdersCount ?? "-"}
-            </Text>
-            <Stack direction="row" alignItems="center">
-              <Icon sx={{ marginRight: "8px" }} name="calendar" size="medium" />
-              <Text>
-                {formattedStartDate &&
-                  formattedEndDate &&
-                  `${formattedStartDate} - ${formattedEndDate}`}
-              </Text>
+        subtitle: () => {
+          const productWithOrdersCount =
+            currentData?.productWithOrdersCount ?? "-";
+          const badProductCount = currentData?.badProductCount ?? "-";
+          const productWithOrdersText = i`Total products with orders: ${productWithOrdersCount}`;
+          const badProductText = i`Underperforming products: ${badProductCount} of ${productWithOrdersCount}`;
+          return (
+            <Stack direction="row" gap="40px" alignItems="center">
+              <Text>{productWithOrdersText}</Text>
+              <Text>{badProductText}</Text>
+              <Stack direction="row" alignItems="center">
+                <Icon
+                  sx={{ marginRight: "8px" }}
+                  name="calendar"
+                  size="medium"
+                />
+                <Text>
+                  {formattedStartDate &&
+                    formattedEndDate &&
+                    `${formattedStartDate} - ${formattedEndDate}`}
+                </Text>
+              </Stack>
             </Stack>
-          </Stack>
-        ),
+          );
+        },
         // ...getBannerProps(),
       }}
     />
