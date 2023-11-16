@@ -143,7 +143,7 @@ const AboutStoreSection: React.FC<Props> = ({
             </Layout.FlexRow>
             <Markdown
               className={css(styles.date)}
-              text={`Week of ${startDate.formatted} to ${endDate.formatted}`}
+              text={i`Week of ${startDate.formatted} to ${endDate.formatted}`}
             />
           </Layout.FlexColumn>
           <Link href={merchFeUrl("/performance-overview/wish-standards")}>
