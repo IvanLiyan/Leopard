@@ -23,8 +23,6 @@ import {
   ChromeStoreInitialQueryResponse,
 } from "@core/stores/ChromeStore";
 import { LoadingIndicator } from "@ContextLogic/lego";
-import { env } from "@core/stores/EnvironmentStore";
-import { datadogRum } from "@datadog/browser-rum";
 import FullPageError from "@core/components/FullPageError";
 import SalesforceWidget, {
   MerchantSupportConfigQuery,
@@ -38,20 +36,6 @@ import { useRouter } from "next/router";
 import { StepperTheme } from "@core/components/Stepper/Stepper";
 import { StepLabelTheme } from "@core/components/Stepper/StepLabel";
 import { useDeciderKey } from "@core/stores/ExperimentStore";
-
-datadogRum.init({
-  applicationId: "901bc1fd-28d9-4542-88ca-f109e88b2a43",
-  clientToken: "pube9541dcd2f9d452ec72945ca9d34a0f5",
-  site: "datadoghq.com",
-  service: "merchant-web-leopard",
-  // Specify a version number to identify the deployed version of your application in Datadog
-  version: process.env.BUILD_ID || "local",
-  env: env,
-  sampleRate: 100,
-  replaySampleRate: 25,
-  trackInteractions: true,
-  actionNameAttribute: "data-cy",
-});
 
 type MerchantDashboardProviderProps = {
   readonly isPublic?: boolean;
