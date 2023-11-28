@@ -21,6 +21,7 @@ const customJestConfig = {
     "@gql": "<rootDir>/src/schema/gql",
     "@deprecated/(.*)": "<rootDir>/src/deprecated/$1",
     "@public/(.*)": "<rootDir>/public/$1",
+    "@listing-fees/(.*)": "<rootDir>/src/app/listing-fees/$1",
   },
   // Add more setup options before each test is run
   testPathIgnorePatterns: ["<rootDir>/node_modules/", "<rootDir>/.next/"],

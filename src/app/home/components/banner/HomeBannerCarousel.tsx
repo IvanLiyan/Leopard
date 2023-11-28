@@ -28,6 +28,7 @@ import ProductBoostPromoBanner from "./banners/ProductBoostPromoBanner";
 import ProductBoostAutomatedCampaignBanner from "./banners/ProductBoostAutomatedCampaignBanner";
 import SellerProfileBanner from "./banners/SellerProfileBanner";
 import WishClipsBanner from "./banners/WishClipsBanner";
+import ProductListingFeesBanner from "./banners/ProductListingFeesBanner";
 import MfpBanner from "./banners/MfpBanner";
 import MerchantBlogBanner from "./banners/MerchantBlogBanner";
 import CustomerServiceProgramBanner from "./banners/CustomerServiceProgramBanner";
@@ -319,6 +320,15 @@ const useBanners = (): {
               (paymentDetails.fullyEnrolledInPaymentCycle &&
                 paymentDetails.paymentCycle === "WEEKLY") ||
               false,
+            background: surfaceLightest,
+            logParams: {
+              merchant_id: currentMerchant.id,
+            },
+          },
+          {
+            id: "ProductListingFeesBanner",
+            component: <ProductListingFeesBanner />,
+            shouldShow: () => false,
             background: surfaceLightest,
             logParams: {
               merchant_id: currentMerchant.id,

@@ -36,7 +36,8 @@
       "@schema": ["src/schema/graphql"],
       "@gql": ["src/schema/gql"],
       "@deprecated/*": ["src/deprecated/*"],
-      "@public/*": ["public/index", "public/*"]
+      "@public/*": ["public/index", "public/*"],
+      "@listing-fees/*": ["src/app/listing-fees/*"]
     },
     "experimentalDecorators": true,
     "incremental": true

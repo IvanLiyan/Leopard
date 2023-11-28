@@ -41,6 +41,12 @@ import {
   UserGateSchema,
   UserSchema,
   DeciderKeySchema,
+  DownloadUnderPerformingProducts,
+  ProductCatalogMutationsDownloadUnderPerformingProductsArgs,
+  ProductCatalogSchemaDownloadJobsCountArgs,
+  DownloadJobSchema,
+  ProductCatalogSchemaDownloadJobsArgs,
+  Scalars,
 } from "@schema";
 import { ci18n } from "@core/toolkit/i18n";
 import { IllustrationName } from "@core/components/Illustration";
@@ -1011,6 +1017,85 @@ export type GetProductsForExportResponseType = {
       })
     | null;
 };
+
+export const DOWNLOAD_UNDERPERFORMING_PRODUCTS_MUTATION = gql(`
+  mutation UnderperformingProducts_DownloadProductsMutation (
+    $input: DownloadUnderPerformingProductsInput!
+  ) {
+    productCatalog {
+      downloadUnderPerformingProducts(input: $input) {
+        ok
+        errorMessage
+      }
+    }
+  }
+`);
+
+export type DownloadUnderperformingProductsResponseType = {
+  readonly productCatalog: {
+    readonly downloadUnderPerformingProducts?: DownloadUnderPerformingProducts;
+  };
+};
+
+export type DownloadUnderperformingProductsRequestType =
+  ProductCatalogMutationsDownloadUnderPerformingProductsArgs;
+
+export const GET_DOWNLOAD_TOTAL_JOB_COUNTS = gql(`
+  query GET_DOWNLOAD_TOTAL_JOB_COUNTS (
+    $query: String
+  ) {
+    productCatalog {
+      downloadJobsCount(
+        query: $query
+      )
+    }
+  }
+`);
+
+export type GetDownloadTotalJobCountsResponseType = {
+  readonly productCatalog: {
+    readonly downloadJobsCount: Maybe<Scalars["Int"]>;
+  };
+};
+
+export type GetDownloadTotalJobCountsRequestType =
+  ProductCatalogSchemaDownloadJobsCountArgs;
+
+export const GET_DOWNLOAD_TOTAL_JOBS = gql(`
+  query GetDownloadTotalJobs($offset: Int, $limit: Int, $query: String) {
+    productCatalog {
+      downloadJobs(
+        query: $query
+        offset: $offset
+        limit: $limit
+      ) {
+        id
+        submittedDate {
+          unix
+          formatted(fmt:"MM/d/Y hh:mm:ss")
+        }
+        completedDate {
+          unix
+          formatted(fmt:"MM/d/Y hh:mm:ss")
+        }
+        jobType
+        status
+        downloadLink
+      }
+    }
+  }
+`);
+
+export type GetDownloadTotalJobsResponseType = {
+  readonly productCatalog: {
+    readonly downloadJobs?: Maybe<ReadonlyArray<DownloadJobSchema>>;
+  };
+};
+
+export type CsVDownloadTableData = DownloadJobSchema;
+
+export type GetDownloadTotalJobsRequestType =
+  ProductCatalogSchemaDownloadJobsArgs;
 
 const escapeForCsv = (s: string): string => {
   return `"${s.replace(/"/g, `""`)}"`;

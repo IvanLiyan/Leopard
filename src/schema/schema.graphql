@@ -187,6 +187,11 @@ enum AddressVerificationState {
   WPS_VERIFIED
 }
 
+type AdminCancelMFPCampaign {
+  ok: Boolean!
+  message: String
+}
+
 type AlertSchema {
   link: String
   description: String!
@@ -2692,6 +2697,15 @@ type CurrencyValue {
   convertedTo(currency: PaymentCurrencyCode!, rate: ConversionRate!): CurrencyValue!
 }
 
+type CurrentCycleListingFeeDetailsSchema {
+  currentBasedWssTierLevel: Int!
+  currentFreeThreshold: Int!
+  currentUnitPrice: CurrencyValue!
+  currentItemsOverThreshold: Int!
+  currentFeeToPay: CurrencyValue!
+  currentCyclePayTime: Datetime!
+}
+
 type CustomerIdentityInfo {
   number: String!
   numberName: String!
@@ -3388,6 +3402,24 @@ type DownloadEUComplianceProductLinks {
   errorMessage: String
 }
 
+type DownloadJobSchema {
+  id: ObjectIdType!
+  submittedDate: Datetime
+  completedDate: Datetime
+  jobType: String
+  status: String
+  downloadLink: String
+}
+
+type DownloadUnderPerformingProducts {
+  ok: Boolean!
+  errorMessage: String
+}
+
+input DownloadUnderPerformingProductsInput {
+  fileType: FileType = csv
+}
+
 type EPRMutations {
   createUin(input: CreateUinInput!): CreateUin
   updateUin(input: UpdateUinInput!): UpdateUin
@@ -3831,6 +3863,13 @@ type FactoryToMerchantConversionMutation {
 type FactoryUserMutations {
   convertMerchantToFactory(input: FactoryMerchantConversionInput!): MerchantToFactoryConversionMutation!
   convertFactoryToMerchant(input: FactoryMerchantConversionInput!): FactoryToMerchantConversionMutation!
+}
+
+type FeePolicyConfigSchema {
+  wssTierLevel: Int!
+  wssTierName: String!
+  freeThreshold: Int!
+  excessItemUnitPrice: CurrencyValue!
 }
 
 type FeedProcessingWorkflowSchema {
@@ -4667,6 +4706,10 @@ type LateDeliverySchema {
   threshhold: Float
 }
 
+type LatestListingFeeDetailsSchema {
+  latestItems: Int!
+}
+
 type LedgerAccountBalance {
   amount: Float!
   currency: PaymentCurrencyCode!
@@ -5261,6 +5304,7 @@ enum MFPCampaignPromotionType {
 
 type MFPCampaignSchema {
   id: ObjectIdType!
+  merchantId: ObjectIdType!
   isNewVersion: Boolean!
   name: String!
   promotionType: MFPCampaignPromotionType!
@@ -5345,6 +5389,7 @@ enum MFPProductSearchType {
 type MFPServiceAdminMutations {
   createWhitelistProducts(input: CreateWhitelistProductsInput!): CreateWhitelistProductsMutation!
   expireWhitelistProducts(input: ExpireWhitelistProductsInput!): ExpireWhitelistProductsMutation!
+  cancelMfpCampaign(input: CancelMFPCampaignInput!): AdminCancelMFPCampaign!
 }
 
 type MFPServiceMutations {
@@ -5358,8 +5403,8 @@ type MFPServiceMutations {
 type MFPServiceSchema {
   countryShippingEnabled: Boolean
   genericCampaigns(startAtMin: DatetimeInput, startAtMax: DatetimeInput, endAtMin: DatetimeInput, endAtMax: DatetimeInput, searchType: MFPCampaignSearchType, searchQuery: String, states: [MFPCampaignState!], promotionTypes: [MFPCampaignPromotionType!], offset: Int = 0, limit: Int = 25, performanceStartDate: DatetimeInput, performanceEndDate: DatetimeInput): [GenericScalar!]
-  campaigns(startAtMin: DatetimeInput, startAtMax: DatetimeInput, endAtMin: DatetimeInput, endAtMax: DatetimeInput, searchType: MFPCampaignSearchType, searchQuery: String, states: [MFPCampaignState!], promotionTypes: [MFPCampaignPromotionType!], offset: Int = 0, limit: Int = 25, eventIds: [ObjectIdType!], eventConfig: MFPCampaignEventConfig): [MFPCampaignSchema!]
-  campaignsCount(startAtMin: DatetimeInput, startAtMax: DatetimeInput, endAtMin: DatetimeInput, endAtMax: DatetimeInput, searchType: MFPCampaignSearchType, searchQuery: String, states: [MFPCampaignState!], promotionTypes: [MFPCampaignPromotionType!], eventIds: [ObjectIdType!], eventConfig: MFPCampaignEventConfig): Int
+  campaigns(merchantId: ObjectIdType, startAtMin: DatetimeInput, startAtMax: DatetimeInput, endAtMin: DatetimeInput, endAtMax: DatetimeInput, searchType: MFPCampaignSearchType, searchQuery: String, states: [MFPCampaignState!], promotionTypes: [MFPCampaignPromotionType!], offset: Int = 0, limit: Int = 25, eventIds: [ObjectIdType!], eventConfig: MFPCampaignEventConfig): [MFPCampaignSchema!]
+  campaignsCount(merchantId: ObjectIdType, startAtMin: DatetimeInput, startAtMax: DatetimeInput, endAtMin: DatetimeInput, endAtMax: DatetimeInput, searchType: MFPCampaignSearchType, searchQuery: String, states: [MFPCampaignState!], promotionTypes: [MFPCampaignPromotionType!], eventIds: [ObjectIdType!], eventConfig: MFPCampaignEventConfig): Int
   genericEligibleProducts(currency: PaymentCurrencyCode!, promotionType: MFPCampaignPromotionType, searchQuery: String, searchType: MFPProductSearchType, eventId: ObjectIdType, offset: Int = 0, limit: Int = 20, sort: ProductSort, countries: [CountryCode!]): GenericScalar
   eligibleProducts(promotionType: MFPCampaignPromotionType, searchQuery: String, searchType: MFPProductSearchType, eventId: ObjectIdType, offset: Int = 0, limit: Int = 20, sort: ProductSort): [EligibleProductInfo!]
   eligibleProductsCount(promotionType: MFPCampaignPromotionType, searchQuery: String, searchType: MFPProductSearchType, eventId: ObjectIdType): Int
@@ -6087,6 +6132,13 @@ input MerchantLeadYearlyRevenue {
   end: CurrencyInput!
 }
 
+type MerchantListingFeeHub {
+  feePolicyConfig: [FeePolicyConfigSchema!]!
+  latestListingFeeDetails: LatestListingFeeDetailsSchema!
+  currentCycleListingFeeDetails: CurrentCycleListingFeeDetailsSchema!
+  predictedListingFeeDetails: PredictedListingFeeDetailSchema!
+}
+
 type MerchantMobile {
   minimumAppVersion(platform: MobilePlatformType!, currentVersion: String!): String!
 }
@@ -6509,6 +6561,7 @@ type MerchantSchema {
   isBba: Boolean
   bypassProductRestrictions: [TaggingViolationSubcategory!]
   productListingPlan: ProductListingPlanHub
+  merchantListingFee: MerchantListingFeeHub
   isWishBlueSelfInventory: Boolean!
   isFactory: Boolean!
   taxIdentification: MerchantTaxIdentificationSchema
@@ -6836,6 +6889,7 @@ enum MerchantTodoItemType {
   REAUTHENTICATION_REGINFO
   EUR_CURRENCY_CODE_MIGRATION
   JOIN_WISH_EXPRESS
+  REVIEW_REMOVAL_PRODUCTS
   BRL_CURRENCY_CODE_MIGRATION
   CURRENCY_CODE_MIGRATION
   REAUTHENTICATION_SELLER_PROFILE
@@ -8306,6 +8360,17 @@ type PenaltySchema {
   reason: FineReason!
 }
 
+input PerformanceProductSort {
+  field: PerformanceProductSortFiled!
+  order: SortOrderType!
+}
+
+enum PerformanceProductSortFiled {
+  ORDER
+  GMV
+  IMPRESSION
+}
+
 type PermissionSchema {
   id: PermissionType!
   name: String!
@@ -8502,6 +8567,7 @@ enum PermissionType {
   CAN_BE_ASSIGNED_MANAGER
   VALIDATE_PROVIDER_DISBURSEMENT
   COUNTERFEIT_TAG_MANUAL
+  CAN_ACCESS_WISH_CORE_TAIL
   REVIEW_BRAND_AUTH
   VIEW_INTERNAL_HOLD
   CAN_MANAGE_JP_MERCHANT
@@ -9028,6 +9094,13 @@ enum PolicyType {
   FREE_RETURN_ACCEPTED
 }
 
+type PredictedListingFeeDetailSchema {
+  latestWssTierLevel: Int!
+  latestWssTierName: String!
+  nextUpdateDate: Datetime!
+  predictedFreeThreshold: Int!
+}
+
 enum ProductAnalyticsDimension {
   COUNTRY
   GENDER
@@ -9288,6 +9361,7 @@ type ProductCatalogMutations {
   upsertProductCsvFile(input: UpsertProductsFromCSVFileInput!): UpsertProductsFromCSVFile
   downloadAllProducts(input: DownloadAllProductsInput!): DownloadAllProducts
   downloadAllProductsCsv(input: DownloadAllProductsCSVInput!): DownloadAllProductsCSV
+  downloadUnderPerformingProducts(input: DownloadUnderPerformingProductsInput!): DownloadUnderPerformingProducts
   updateProductLogisticsMetadata(input: UpdateProductLogisticsMetadataInput!): UpdateProductLogisticsMetadata
   upsertVideo(input: VideoUpsertInput): UpsertVideo
   removeVideo(input: RemoveVideoInput!): RemoveVideo
@@ -9300,7 +9374,11 @@ type ProductCatalogSchema {
   products(query: String, searchType: ProductSearchType, shippingProfileIds: [ObjectIdType!], videoId: ObjectIdType, merchantId: ObjectIdType, offset: Int = 0, limit: Int = 20, sort: ProductSort, productStatuses: [CommerceProductStatus!] = [0, 1], shippingTypes: [WarehouseShippingType!] = [1, 2], videoStates: [ProductVideoState!], videoLinkEnabled: Boolean = true): [ProductSchema!]!
   productCount(query: String, productStatuses: [CommerceProductStatus!] = [0, 1], merchantId: ObjectIdType, shippingTypes: [WarehouseShippingType!] = [1, 2], searchType: ProductSearchType, shippingProfileIds: [ObjectIdType!], videoStates: [ProductVideoState!], videoLinkEnabled: Boolean = true): Int!
   productsV2(query: String, searchType: ProductSearchType, merchantId: ObjectIdType, offset: Int = 0, limit: Int = 20, sort: ProductSort, isEnabled: Boolean, state: ProductListingState, fpReviewStatus: ProductFPReviewStatus, isWishExpress: Boolean = false, hasBrand: Boolean = false, isPromoted: Boolean = false, isCleanImage: Boolean = false, isReturnEnrolled: Boolean = false): [ProductSchema!]!
+  productsV3(merchantId: ObjectIdType, offset: Int = 0, limit: Int = 20, sort: PerformanceProductSort, days: Int = 7, withPerformance: Boolean = false): [ProductSchema!]!
   productCountV2(query: String, merchantId: ObjectIdType, searchType: ProductSearchType, isEnabled: Boolean, state: ProductListingState, fpReviewStatus: ProductFPReviewStatus, isWishExpress: Boolean = false, hasBrand: Boolean = false, isPromoted: Boolean = false, isCleanImage: Boolean = false, isReturnEnrolled: Boolean = false): Int!
+  productCountV3(merchantId: ObjectIdType, withPerformance: Boolean = false): Int!
+  downloadJobsCount(merchantId: ObjectIdType, query: String): Int
+  downloadJobs(merchantId: ObjectIdType, query: String, offset: Int = 0, limit: Int = 10): [DownloadJobSchema!]
   variation(id: String = "Id of the variation", sku: String = "Variation SKU of the variation"): VariationSchema
   variations(query: String, searchType: VariationSearchType, offset: Int = 0, sort: VariationSort, limit: Int = 20): [VariationSchema!]!
   variationCount(query: String, searchType: VariationSearchType): Int
@@ -9592,6 +9670,7 @@ enum ProductPostErrorCode {
   INVALID_VIDEO_ID
   INVALID_PARAMETER
   RECORD_NOT_FOUND
+  INVALID_VIDEO_STATE
 }
 
 type ProductPostsMutations {
@@ -10025,6 +10104,7 @@ enum ProductVideoState {
   FAILED_OBJECT_DETECTION
   PENDING_REKOGNITION
   FAILED_REKOGNITION
+  SUSPENDED_REVIEW
 }
 
 type ProductVideoTaggerJobSchema {
@@ -10054,6 +10134,7 @@ enum ProductsCSVTemplateType {
   ENABLED
   SHIPPING
   CONTENT
+  UNDER_PERFORMING
   ALL_COLUMNS
   PRICE_AND_INVENTORY
 }

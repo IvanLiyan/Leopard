@@ -1,9 +1,4 @@
-/*
- * HeaderRow.tsx
- *
- * Created by Jonah Dlin on Tue Apr 26 2022
- * Copyright © 2022-present ContextLogic Inc. All rights reserved.
- */
+/* eslint-disable @typescript-eslint/no-misused-promises */
 import React, { useMemo, useState } from "react";
 import { StyleSheet } from "aphrodite";
 import { observer } from "mobx-react";
@@ -11,15 +6,23 @@ import {
   H5,
   Layout,
   PrimaryButton,
-  SecondaryButton,
   Text,
+  LoadingIndicator,
 } from "@ContextLogic/lego";
+import Link from "@core/components/Link";
+import { Alert, AlertTitle } from "@ContextLogic/atlas-ui";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import {
   PickedWarehouse,
   DOWNLOAD_PRODUCTS_MUTATION,
-  DownloadProductsResponseType,
   DownloadProductsRequestType,
+  DownloadProductsResponseType,
+  DOWNLOAD_UNDERPERFORMING_PRODUCTS_MUTATION,
+  DownloadUnderperformingProductsRequestType,
+  DownloadUnderperformingProductsResponseType,
   GET_PRODUCTS_FOR_EXPORT_QUERY,
   GetProductsForExportResponseType,
   GetProductsForExportRequestType,
@@ -68,10 +71,19 @@ const HeaderRow: React.FC<Props> = ({
   const navigationStore = useNavigationStore();
   const { client } = useApolloStore();
 
+  const [
+    loadingDownloadUnderperformingCsv,
+    setLoadingDownloadUnderperformingCsv,
+  ] = useState(false);
+  const [
+    showDownloadUnderperformingSuccBanner,
+    setShowDownloadUnderperformingSuccBanner,
+  ] = useState(false);
   const [loadingDownloadXlsx, setLoadingDownloadXlsx] = useState(false);
   const [loadingDownloadCsv, setLoadingDownloadCsv] = useState(false);
   const [loadingDownloadTable, setLoadingDownloadTable] = useState(false);
 
+  const [downloadType, setDownloadType] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [
@@ -79,12 +91,15 @@ const HeaderRow: React.FC<Props> = ({
     setConfirmDownloadModalConfirmationType,
   ] = useState<FileType | null>(null);
 
-  const warehouseName = warehouse.unitId;
-
   const [requestDownloadAll] = useMutation<
     DownloadProductsResponseType,
     DownloadProductsRequestType
   >(DOWNLOAD_PRODUCTS_MUTATION);
+
+  const [requestDownloadUnderperforming] = useMutation<
+    DownloadUnderperformingProductsResponseType,
+    DownloadUnderperformingProductsRequestType
+  >(DOWNLOAD_UNDERPERFORMING_PRODUCTS_MUTATION);
 
   const toggleLoadingDownloadState = (fileType: FileType, to: boolean) => {
     if (fileType == "CSV") {
@@ -141,104 +156,156 @@ const HeaderRow: React.FC<Props> = ({
     setLoadingDownloadTable(false);
   };
 
+  const handleDownloadUnderPerform = async (fileType: FileType) => {
+    setLoadingDownloadUnderperformingCsv(true);
+
+    const { data } = await requestDownloadUnderperforming({
+      variables: {
+        input: {
+          fileType,
+        },
+      },
+    });
+    const ok = data?.productCatalog.downloadUnderPerformingProducts?.ok;
+    const errorMessage =
+      data?.productCatalog.downloadUnderPerformingProducts?.errorMessage;
+    setLoadingDownloadUnderperformingCsv(false);
+
+    if (!ok) {
+      toastStore.negative(errorMessage || i`Something went wrong`);
+      return;
+    }
+    setShowDownloadUnderperformingSuccBanner(true);
+  };
+
+  const handleChange = (event: SelectChangeEvent) => {
+    setDownloadType(event.target.value);
+    switch (event.target.value) {
+      case "CSV for underperforming products":
+        return handleDownloadUnderPerform("CSV");
+      case "XLSX for all products":
+        return handleDownloadAll("XLSX");
+      case "CSV for all products":
+        return handleDownloadAll("CSV");
+      case "CSV for the current view":
+        return handleDownloadTable();
+      default:
+        return null;
+    }
+  };
+
   return (
-    <Layout.FlexRow
-      style={[styles.root, className, style]}
-      justifyContent="space-between"
-    >
-      <ConfirmDownloadModal
-        open={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        title={ci18n(
-          "Text on a confirmation modal telling the merchant that the export of their products is processing",
-          "Processing Export",
-        )}
-        text={
-          confirmDownloadModalConfirmationType === null
-            ? undefined
-            : FileTypeDisplayText[confirmDownloadModalConfirmationType]
-        }
-      />
-      <H5 style={styles.title}>
-        {count != null &&
-          cni18n(
-            "Title above table of products telling merchants how many products are in the table",
-            count,
-            "1 Product",
-            "{%1=number of products} Products",
-          )}
-      </H5>
+    <>
       <Layout.FlexRow
-        style={styles.buttonRow}
-        alignItems="stretch"
-        justifyContent="flex-end"
+        style={[styles.root, className, style]}
+        justifyContent="space-between"
       >
-        {totalCount != null && (
-          <SecondaryButton
-            style={styles.button}
-            padding="10px 16px"
-            onClick={() => void handleDownloadAll("XLSX")}
-            isLoading={loadingDownloadXlsx}
-          >
-            <Text weight="semibold" style={styles.buttonText}>
-              {cni18n(
-                "Name of button merchants can click to download all their products as an XLSX file. Included is the name of the warehouse and the number of rows that will be in the file.",
-                totalCount,
-                "Download XLSX [{%2=warehouse name}] ({%1=number of products} row)",
-                "Download XLSX [{%2=warehouse name}] ({%1=number of products} rows)",
-                warehouseName,
-              )}
-            </Text>
-          </SecondaryButton>
-        )}
-        {totalCount != null && (
-          <SecondaryButton
-            style={styles.button}
-            padding="10px 16px"
-            onClick={() => void handleDownloadAll("CSV")}
-            isLoading={loadingDownloadCsv}
-          >
-            <Text weight="semibold" style={styles.buttonText}>
-              {cni18n(
-                "Name of button merchants can click to download all their products as an CSV file. Included is the name of the warehouse and the number of rows that will be in the file.",
-                totalCount,
-                "Download CSV [{%2=warehouse name}] ({%1=number of products} row)",
-                "Download CSV [{%2=warehouse name}] ({%1=number of products} rows)",
-                warehouseName,
-              )}
-            </Text>
-          </SecondaryButton>
-        )}
-        {productsOnScreen != null && (
-          <SecondaryButton
-            style={styles.button}
-            padding="10px 16px"
-            onClick={() => void handleDownloadTable()}
-            isLoading={loadingDownloadTable}
-          >
-            <Text weight="semibold" style={styles.buttonText}>
-              {cni18n(
-                "Name of button merchants can click to export the products currently on-screen in the table as an CSV file. Included is the number of rows that will be in the file.",
-                productsOnScreen,
-                "Download current view ({%1=number of products} row)",
-                "Download current view ({%1=number of products} rows)",
-              )}
-            </Text>
-          </SecondaryButton>
-        )}
-        <PrimaryButton
-          style={styles.button}
-          onClick={() => navigationStore.navigate(merchFeUrl("/products/add"))}
-        >
-          <Text weight="semibold" style={styles.buttonText}>
-            {ci18n(
-              "Text on a button merchants can click to be redirected to the add product page",
-              "Add Product",
+        <ConfirmDownloadModal
+          open={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          title={ci18n(
+            "Text on a confirmation modal telling the merchant that the export of their products is processing",
+            "Processing Export",
+          )}
+          text={
+            confirmDownloadModalConfirmationType === null
+              ? undefined
+              : FileTypeDisplayText[confirmDownloadModalConfirmationType]
+          }
+        />
+        <H5 style={styles.title}>
+          {count != null &&
+            cni18n(
+              "Title above table of products telling merchants how many products are in the table",
+              count,
+              "1 Product",
+              "{%1=number of products} Products",
             )}
-          </Text>
-        </PrimaryButton>
+        </H5>
+        <Layout.FlexRow
+          style={styles.buttonRow}
+          alignItems="center"
+          justifyContent="flex-end"
+        >
+          <FormControl sx={{ m: 1, minWidth: 250 }} size="small">
+            <Select
+              value={downloadType}
+              onChange={handleChange}
+              autoWidth
+              displayEmpty
+              inputProps={{ "aria-label": "Without label" }}
+              renderValue={(selected) => {
+                if (selected.length === 0) {
+                  return i`Download as CSV/XLSX`;
+                }
+                return selected;
+              }}
+            >
+              <MenuItem disabled value="">
+                Download as CSV/XLSX
+              </MenuItem>
+              <MenuItem value={i`CSV for underperforming products`}>
+                CSV for underperforming products(Weekly)
+              </MenuItem>
+              {totalCount != null && (
+                <MenuItem value={i`XLSX for all products`}>
+                  XLSX for all products
+                </MenuItem>
+              )}
+              {totalCount != null && (
+                <MenuItem value={i`CSV for all products`}>
+                  CSV for all products
+                </MenuItem>
+              )}
+              {productsOnScreen != null && (
+                <MenuItem value={i`CSV for the current view`}>
+                  CSV for the current view ({productsOnScreen} rows)
+                </MenuItem>
+              )}
+            </Select>
+          </FormControl>
+          {(loadingDownloadUnderperformingCsv ||
+            loadingDownloadXlsx ||
+            loadingDownloadCsv ||
+            loadingDownloadTable) && <LoadingIndicator type="spinner" />}
+          <PrimaryButton
+            style={styles.button}
+            onClick={() =>
+              navigationStore.navigate(merchFeUrl("/products/add"))
+            }
+          >
+            <Text weight="semibold" style={styles.buttonText}>
+              {ci18n(
+                "Text on a button merchants can click to be redirected to the add product page",
+                "Add Product",
+              )}
+            </Text>
+          </PrimaryButton>
+        </Layout.FlexRow>
       </Layout.FlexRow>
-    </Layout.FlexRow>
+      <Layout.FlexRow>
+        {showDownloadUnderperformingSuccBanner && (
+          <Alert severity="success" sx={{ flex: 1 }}>
+            <AlertTitle>
+              Downloading CSV for underperforming products
+            </AlertTitle>
+            <div color="inherit">
+              {i`It may take a while for your file to download depending on its size.` +
+                `Go to the `}
+              <Link
+                href={merchFeUrl(`/md/products/csv-download-center`)}
+                variant="underlined"
+                openInNewTab
+                color="inherit"
+              >
+                CSV download center
+              </Link>
+              {i` to view, manage, and download your CSV when it’s ready.`}
+            </div>
+          </Alert>
+        )}
+      </Layout.FlexRow>
+    </>
   );
 };
 

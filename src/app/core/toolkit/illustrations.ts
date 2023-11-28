@@ -132,6 +132,7 @@ import bannerPbSeasonalThanksgivingUrl from "public/images/home/banner-images/pb
 import bannerSellerProfileUrl from "public/images/home/banner-images/banner-seller-profile.svg";
 import bannerWeeklyDisbUpgradeUrl from "public/images/home/banner-images/banner-weekly-disb-upgrade.svg";
 import bannerWishClipsUrl from "public/images/home/banner-images/banner-wish-clips.png";
+import bannerProductListingFeesUrl from "public/images/product-listing/home_listing_fees_banner.svg";
 
 import todoDeclineTaxSettingsUrl from "public/images/home/todo/todo-decline-tax-settings.svg";
 import todoWishExpressWithTextUrl from "public/images/home/todo/todo-wish-express-with-text.svg";
@@ -287,6 +288,7 @@ export const bannerPbSeasonalThanksgiving = bannerPbSeasonalThanksgivingUrl;
 export const bannerSellerProfile = bannerSellerProfileUrl;
 export const bannerWeeklyDisbUpgrade = bannerWeeklyDisbUpgradeUrl;
 export const bannerWishClips = bannerWishClipsUrl;
+export const bannerProductListingFees = bannerProductListingFeesUrl;
 export const todoDeclineTaxSettings = todoDeclineTaxSettingsUrl;
 export const todoWishExpressWithText = todoWishExpressWithTextUrl;
 export const topSeller = topSellerUrl;

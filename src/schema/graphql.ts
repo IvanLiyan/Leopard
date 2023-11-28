@@ -219,6 +219,12 @@ export type AddressVerificationState =
   | 'USER_VERIFIED'
   | 'WPS_VERIFIED';
 
+export type AdminCancelMfpCampaign = {
+  readonly __typename?: 'AdminCancelMFPCampaign';
+  readonly message?: Maybe<Scalars['String']>;
+  readonly ok: Scalars['Boolean'];
+};
+
 export type AlertSchema = {
   readonly __typename?: 'AlertSchema';
   readonly date?: Maybe<Datetime>;
@@ -3236,6 +3242,16 @@ export type CurrencyValueConvertedToArgs = {
   rate: ConversionRate;
 };
 
+export type CurrentCycleListingFeeDetailsSchema = {
+  readonly __typename?: 'CurrentCycleListingFeeDetailsSchema';
+  readonly currentBasedWssTierLevel: Scalars['Int'];
+  readonly currentCyclePayTime: Datetime;
+  readonly currentFeeToPay: CurrencyValue;
+  readonly currentFreeThreshold: Scalars['Int'];
+  readonly currentItemsOverThreshold: Scalars['Int'];
+  readonly currentUnitPrice: CurrencyValue;
+};
+
 export type CustomerIdentityInfo = {
   readonly __typename?: 'CustomerIdentityInfo';
   readonly number: Scalars['String'];
@@ -4145,6 +4161,26 @@ export type DownloadEuComplianceProductLinks = {
   readonly ok: Scalars['Boolean'];
 };
 
+export type DownloadJobSchema = {
+  readonly __typename?: 'DownloadJobSchema';
+  readonly completedDate?: Maybe<Datetime>;
+  readonly downloadLink?: Maybe<Scalars['String']>;
+  readonly id: Scalars['ObjectIdType'];
+  readonly jobType?: Maybe<Scalars['String']>;
+  readonly status?: Maybe<Scalars['String']>;
+  readonly submittedDate?: Maybe<Datetime>;
+};
+
+export type DownloadUnderPerformingProducts = {
+  readonly __typename?: 'DownloadUnderPerformingProducts';
+  readonly errorMessage?: Maybe<Scalars['String']>;
+  readonly ok: Scalars['Boolean'];
+};
+
+export type DownloadUnderPerformingProductsInput = {
+  readonly fileType?: InputMaybe<FileType>;
+};
+
 export type EprMutations = {
   readonly __typename?: 'EPRMutations';
   readonly acceptTos?: Maybe<AcceptTos>;
@@ -4710,6 +4746,14 @@ export type FactoryUserMutationsConvertFactoryToMerchantArgs = {
 
 export type FactoryUserMutationsConvertMerchantToFactoryArgs = {
   input: FactoryMerchantConversionInput;
+};
+
+export type FeePolicyConfigSchema = {
+  readonly __typename?: 'FeePolicyConfigSchema';
+  readonly excessItemUnitPrice: CurrencyValue;
+  readonly freeThreshold: Scalars['Int'];
+  readonly wssTierLevel: Scalars['Int'];
+  readonly wssTierName: Scalars['String'];
 };
 
 export type FeedProcessingWorkflowSchema = {
@@ -5878,6 +5922,11 @@ export type LateDeliverySchema = {
   readonly threshhold?: Maybe<Scalars['Float']>;
 };
 
+export type LatestListingFeeDetailsSchema = {
+  readonly __typename?: 'LatestListingFeeDetailsSchema';
+  readonly latestItems: Scalars['Int'];
+};
+
 export type LedgerAccountBalance = {
   readonly __typename?: 'LedgerAccountBalance';
   readonly amount: Scalars['Float'];
@@ -6547,6 +6596,7 @@ export type MfpCampaignSchema = {
   readonly genericUnqualifiedProductVariations?: Maybe<Scalars['GenericScalar']>;
   readonly id: Scalars['ObjectIdType'];
   readonly isNewVersion: Scalars['Boolean'];
+  readonly merchantId: Scalars['ObjectIdType'];
   readonly name: Scalars['String'];
   readonly promotionType: MfpCampaignPromotionType;
   readonly skipShipping: Scalars['Boolean'];
@@ -6633,8 +6683,14 @@ export type MfpProductSearchType =
 
 export type MfpServiceAdminMutations = {
   readonly __typename?: 'MFPServiceAdminMutations';
+  readonly cancelMfpCampaign: AdminCancelMfpCampaign;
   readonly createWhitelistProducts: CreateWhitelistProductsMutation;
   readonly expireWhitelistProducts: ExpireWhitelistProductsMutation;
+};
+
+
+export type MfpServiceAdminMutationsCancelMfpCampaignArgs = {
+  input: CancelMfpCampaignInput;
 };
 
 
@@ -6735,6 +6791,7 @@ export type MfpServiceSchemaCampaignsArgs = {
   eventConfig?: InputMaybe<MfpCampaignEventConfig>;
   eventIds?: InputMaybe<ReadonlyArray<Scalars['ObjectIdType']>>;
   limit?: InputMaybe<Scalars['Int']>;
+  merchantId?: InputMaybe<Scalars['ObjectIdType']>;
   offset?: InputMaybe<Scalars['Int']>;
   promotionTypes?: InputMaybe<ReadonlyArray<MfpCampaignPromotionType>>;
   searchQuery?: InputMaybe<Scalars['String']>;
@@ -6750,6 +6807,7 @@ export type MfpServiceSchemaCampaignsCountArgs = {
   endAtMin?: InputMaybe<DatetimeInput>;
   eventConfig?: InputMaybe<MfpCampaignEventConfig>;
   eventIds?: InputMaybe<ReadonlyArray<Scalars['ObjectIdType']>>;
+  merchantId?: InputMaybe<Scalars['ObjectIdType']>;
   promotionTypes?: InputMaybe<ReadonlyArray<MfpCampaignPromotionType>>;
   searchQuery?: InputMaybe<Scalars['String']>;
   searchType?: InputMaybe<MfpCampaignSearchType>;
@@ -7702,6 +7760,14 @@ export type MerchantLeadYearlyRevenue = {
   readonly start: CurrencyInput;
 };
 
+export type MerchantListingFeeHub = {
+  readonly __typename?: 'MerchantListingFeeHub';
+  readonly currentCycleListingFeeDetails: CurrentCycleListingFeeDetailsSchema;
+  readonly feePolicyConfig: ReadonlyArray<FeePolicyConfigSchema>;
+  readonly latestListingFeeDetails: LatestListingFeeDetailsSchema;
+  readonly predictedListingFeeDetails: PredictedListingFeeDetailSchema;
+};
+
 export type MerchantMobile = {
   readonly __typename?: 'MerchantMobile';
   readonly minimumAppVersion: Scalars['String'];
@@ -8302,6 +8368,7 @@ export type MerchantSchema = {
   readonly lead: UserSchema;
   readonly marketing: MarketingMerchantPropertySchema;
   readonly maxDeliveryDays: Scalars['Int'];
+  readonly merchantListingFee?: Maybe<MerchantListingFeeHub>;
   readonly merchantPolicyTier?: Maybe<MerchantPolicyTierSchema>;
   readonly merchantTermsAgreed?: Maybe<MerchantTermsAgreedSchema>;
   readonly onVacationMode: Scalars['Boolean'];
@@ -8764,6 +8831,7 @@ export type MerchantTodoItemType =
   | 'REJECTED_VIDEOS'
   | 'RESELLER_AGREEMENT'
   | 'REVIEW_CURRENCY'
+  | 'REVIEW_REMOVAL_PRODUCTS'
   | 'SETUP_TAX_INFO'
   | 'TAX_VERIFICATION_FAILED'
   | 'UK_VAT_OBLIGATION_NOTICE'
@@ -10487,6 +10555,16 @@ export type PenaltySchema = {
   readonly reason: FineReason;
 };
 
+export type PerformanceProductSort = {
+  readonly field: PerformanceProductSortFiled;
+  readonly order: SortOrderType;
+};
+
+export type PerformanceProductSortFiled =
+  | 'GMV'
+  | 'IMPRESSION'
+  | 'ORDER';
+
 export type PermissionSchema = {
   readonly __typename?: 'PermissionSchema';
   readonly description?: Maybe<Scalars['String']>;
@@ -10545,6 +10623,7 @@ export type PermissionType =
   | 'CAN_ACCESS_UPDATE_TRACKING'
   | 'CAN_ACCESS_V2_HOMEPAGE'
   | 'CAN_ACCESS_WISHPOST_EXTERNAL_V3_API'
+  | 'CAN_ACCESS_WISH_CORE_TAIL'
   | 'CAN_ACT_ON_ASIAN_MERCHANT'
   | 'CAN_ACT_ON_BR_MERCHANT'
   | 'CAN_ACT_ON_CN_MERCHANT'
@@ -11365,6 +11444,14 @@ export type PolicyType =
   | 'PREPAID_RETURN_ACCEPTED'
   | 'WISH_AUTO_REVIEW';
 
+export type PredictedListingFeeDetailSchema = {
+  readonly __typename?: 'PredictedListingFeeDetailSchema';
+  readonly latestWssTierLevel: Scalars['Int'];
+  readonly latestWssTierName: Scalars['String'];
+  readonly nextUpdateDate: Datetime;
+  readonly predictedFreeThreshold: Scalars['Int'];
+};
+
 export type ProductAnalyticsDimension =
   | 'COUNTRY'
   | 'GENDER';
@@ -11664,6 +11751,7 @@ export type ProductCatalogMutations = {
   readonly __typename?: 'ProductCatalogMutations';
   readonly downloadAllProducts?: Maybe<DownloadAllProducts>;
   readonly downloadAllProductsCsv?: Maybe<DownloadAllProductsCsv>;
+  readonly downloadUnderPerformingProducts?: Maybe<DownloadUnderPerformingProducts>;
   readonly forceApproveProduct?: Maybe<ForceApproveProduct>;
   readonly removeProduct?: Maybe<RemoveProduct>;
   readonly removeVideo?: Maybe<RemoveVideo>;
@@ -11683,6 +11771,11 @@ export type ProductCatalogMutationsDownloadAllProductsArgs = {
 
 export type ProductCatalogMutationsDownloadAllProductsCsvArgs = {
   input: DownloadAllProductsCsvInput;
+};
+
+
+export type ProductCatalogMutationsDownloadUnderPerformingProductsArgs = {
+  input: DownloadUnderPerformingProductsInput;
 };
 
 
@@ -11743,13 +11836,17 @@ export type ProductCatalogSchema = {
   readonly csvProductTemplateWithTaxonomyColumnNames?: Maybe<ReadonlyArray<Scalars['String']>>;
   readonly csvShippingHeaderNames: ReadonlyArray<Scalars['String']>;
   readonly csvTitleImagesDescriptionHeaderNames: ReadonlyArray<Scalars['String']>;
+  readonly downloadJobs?: Maybe<ReadonlyArray<DownloadJobSchema>>;
+  readonly downloadJobsCount?: Maybe<Scalars['Int']>;
   readonly gtinProductService: GtinProductServiceSchema;
   readonly product?: Maybe<ProductSchema>;
   readonly productCategoryTaxonomyTreeJson: Scalars['JSONString'];
   readonly productCount: Scalars['Int'];
   readonly productCountV2: Scalars['Int'];
+  readonly productCountV3: Scalars['Int'];
   readonly products: ReadonlyArray<ProductSchema>;
   readonly productsV2: ReadonlyArray<ProductSchema>;
+  readonly productsV3: ReadonlyArray<ProductSchema>;
   readonly upcProductService: UpcProductServiceSchema;
   readonly variation?: Maybe<VariationSchema>;
   readonly variationCount?: Maybe<Scalars['Int']>;
@@ -11786,6 +11883,20 @@ export type ProductCatalogSchemaCsvProductTemplateWithTaxonomyColumnNamesArgs = 
 };
 
 
+export type ProductCatalogSchemaDownloadJobsArgs = {
+  limit?: InputMaybe<Scalars['Int']>;
+  merchantId?: InputMaybe<Scalars['ObjectIdType']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  query?: InputMaybe<Scalars['String']>;
+};
+
+
+export type ProductCatalogSchemaDownloadJobsCountArgs = {
+  merchantId?: InputMaybe<Scalars['ObjectIdType']>;
+  query?: InputMaybe<Scalars['String']>;
+};
+
+
 export type ProductCatalogSchemaProductArgs = {
   id?: InputMaybe<Scalars['String']>;
   sku?: InputMaybe<Scalars['String']>;
@@ -11816,6 +11927,12 @@ export type ProductCatalogSchemaProductCountV2Args = {
   query?: InputMaybe<Scalars['String']>;
   searchType?: InputMaybe<ProductSearchType>;
   state?: InputMaybe<ProductListingState>;
+};
+
+
+export type ProductCatalogSchemaProductCountV3Args = {
+  merchantId?: InputMaybe<Scalars['ObjectIdType']>;
+  withPerformance?: InputMaybe<Scalars['Boolean']>;
 };
 
 
@@ -11850,6 +11967,16 @@ export type ProductCatalogSchemaProductsV2Args = {
   searchType?: InputMaybe<ProductSearchType>;
   sort?: InputMaybe<ProductSort>;
   state?: InputMaybe<ProductListingState>;
+};
+
+
+export type ProductCatalogSchemaProductsV3Args = {
+  days?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']>;
+  merchantId?: InputMaybe<Scalars['ObjectIdType']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  sort?: InputMaybe<PerformanceProductSort>;
+  withPerformance?: InputMaybe<Scalars['Boolean']>;
 };
 
 
@@ -12277,6 +12404,7 @@ export type ProductPostErrorCode =
   | 'INVALID_RULES'
   | 'INVALID_VIDEO'
   | 'INVALID_VIDEO_ID'
+  | 'INVALID_VIDEO_STATE'
   | 'LIMIT_IS_ZERO'
   | 'MISSING_PARAMETER'
   | 'NO_ERROR'
@@ -12881,6 +13009,7 @@ export type ProductVideoState =
   | 'PENDING_REVIEW'
   | 'PENDING_TRANSCODE'
   | 'REJECTED'
+  | 'SUSPENDED_REVIEW'
   | 'UNKNOWN_STATE';
 
 export type ProductVideoTaggerJobSchema = {
@@ -12912,7 +13041,8 @@ export type ProductsCsvTemplateType =
   | 'DEFAULT'
   | 'ENABLED'
   | 'PRICE_AND_INVENTORY'
-  | 'SHIPPING';
+  | 'SHIPPING'
+  | 'UNDER_PERFORMING';
 
 export type PromotableProduct = {
   readonly __typename?: 'PromotableProduct';
@@ -18715,6 +18845,29 @@ export type AllProducts_GetProductsForExportQueryVariables = Exact<{
 
 export type AllProducts_GetProductsForExportQuery = { readonly __typename?: 'RootQuery', readonly currentMerchant?: { readonly __typename?: 'MerchantSchema', readonly primaryCurrency: PaymentCurrencyCode } | null, readonly productCatalog?: { readonly __typename?: 'ProductCatalogSchema', readonly csvProductColumnEnums: ReadonlyArray<ProductCsvColumnName>, readonly productsV2: ReadonlyArray<{ readonly __typename?: 'ProductSchema', readonly id: string, readonly name: string, readonly description: string, readonly wishes: number, readonly sales: number, readonly sku?: string | null, readonly upc?: string | null, readonly fpReviewStatus: CommerceProductFpReviewStatus, readonly isPromoted: boolean, readonly isLtl?: boolean | null, readonly condition?: CommerceProductCondition | null, readonly maxQuantity?: number | null, readonly chemicalNames?: ReadonlyArray<string> | null, readonly warningType?: ContestWarningType | null, readonly categoryExperienceEligibility?: boolean | null, readonly subcategoryId?: number | null, readonly variationOptions?: ReadonlyArray<string> | null, readonly lastUpdateTime: { readonly __typename?: 'Datetime', readonly formatted: string }, readonly createTime: { readonly __typename?: 'Datetime', readonly formatted: string }, readonly msrp?: { readonly __typename?: 'CurrencyValue', readonly display: string } | null, readonly shipping: { readonly __typename?: 'ShippingSchema', readonly defaultShipping?: ReadonlyArray<{ readonly __typename?: 'DefaultShippingSchema', readonly warehouseId: string, readonly timeToDoor?: number | null, readonly price: { readonly __typename?: 'CurrencyValue', readonly display: string } }> | null, readonly warehouseCountryShipping?: ReadonlyArray<{ readonly __typename?: 'WarehouseCountryShippingSchema', readonly shippingType: WarehouseShippingType, readonly countryShipping?: ReadonlyArray<{ readonly __typename?: 'CountryShippingSchema', readonly timeToDoor?: number | null, readonly enabled: boolean, readonly country: { readonly __typename?: 'Country', readonly code: CountryCode }, readonly price?: { readonly __typename?: 'CurrencyValue', readonly display: string } | null }> | null }> | null }, readonly listingState: { readonly __typename?: 'ListingStateSchema', readonly state: CommerceProductListingState }, readonly mainImage: { readonly __typename?: 'ImageSchema', readonly wishUrl: string, readonly isCleanImage: boolean }, readonly extraImages?: ReadonlyArray<{ readonly __typename?: 'ImageSchema', readonly wishUrl: string, readonly isCleanImage: boolean }> | null, readonly trueTags?: ReadonlyArray<{ readonly __typename?: 'TrueTagSchema', readonly name: string, readonly id: string }> | null, readonly referenceArea?: { readonly __typename?: 'Area', readonly unit: AreaUnit, readonly value: number } | null, readonly referenceUnit?: { readonly __typename?: 'Count', readonly unit: CountUnit, readonly value: number } | null, readonly referenceWeight?: { readonly __typename?: 'Weight', readonly unit: WeightUnit, readonly value: number } | null, readonly referenceLength?: { readonly __typename?: 'Length', readonly unit: LengthUnit, readonly value: number } | null, readonly referenceVolume?: { readonly __typename?: 'Volume', readonly unit: VolumeUnit, readonly value: number } | null, readonly requestedBrand?: { readonly __typename?: 'BrandSchema', readonly id: string, readonly name: string } | null, readonly subcategory?: { readonly __typename?: 'TaxonomyCategorySchema', readonly id: string, readonly name: string } | null, readonly variations: ReadonlyArray<{ readonly __typename?: 'VariationSchema', readonly id: string, readonly sku: string, readonly size?: string | null, readonly color?: string | null, readonly gtin?: string | null, readonly customsHsCode?: string | null, readonly declaredLocalName?: string | null, readonly declaredName?: string | null, readonly hasLiquid?: boolean | null, readonly hasMetal?: boolean | null, readonly hasPowder?: boolean | null, readonly hasBattery?: boolean | null, readonly pieces?: number | null, readonly inventory: ReadonlyArray<{ readonly __typename?: 'InventorySchema', readonly warehouseId: string, readonly count: number }>, readonly price: { readonly __typename?: 'CurrencyValue', readonly display: string }, readonly image?: { readonly __typename?: 'ImageSchema', readonly wishUrl: string } | null, readonly length?: { readonly __typename?: 'Length', readonly unit: LengthUnit, readonly value: number } | null, readonly width?: { readonly __typename?: 'Length', readonly unit: LengthUnit, readonly value: number } | null, readonly height?: { readonly __typename?: 'Length', readonly unit: LengthUnit, readonly value: number } | null, readonly weight?: { readonly __typename?: 'Weight', readonly unit: WeightUnit, readonly value: number } | null, readonly declaredValue?: { readonly __typename?: 'CurrencyValue', readonly display: string } | null, readonly originCountry?: { readonly __typename?: 'Country', readonly name: string } | null, readonly quantityArea?: { readonly __typename?: 'Area', readonly unit: AreaUnit, readonly value: number } | null, readonly quantityUnit?: { readonly __typename?: 'Count', readonly unit: CountUnit, readonly value: number } | null, readonly quantityWeight?: { readonly __typename?: 'Weight', readonly unit: WeightUnit, readonly value: number } | null, readonly quantityLength?: { readonly __typename?: 'Length', readonly unit: LengthUnit, readonly value: number } | null, readonly quantityVolume?: { readonly __typename?: 'Volume', readonly unit: VolumeUnit, readonly value: number } | null, readonly options?: ReadonlyArray<{ readonly __typename?: 'MerchantProvidedAttributeSchema', readonly name: string, readonly value: ReadonlyArray<string> }> | null }> }> } | null };
 
+export type UnderperformingProducts_DownloadProductsMutationMutationVariables = Exact<{
+  input: DownloadUnderPerformingProductsInput;
+}>;
+
+
+export type UnderperformingProducts_DownloadProductsMutationMutation = { readonly __typename?: 'RootMutation', readonly productCatalog: { readonly __typename?: 'ProductCatalogMutations', readonly downloadUnderPerformingProducts?: { readonly __typename?: 'DownloadUnderPerformingProducts', readonly ok: boolean, readonly errorMessage?: string | null } | null } };
+
+export type Get_Download_Total_Job_CountsQueryVariables = Exact<{
+  query?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type Get_Download_Total_Job_CountsQuery = { readonly __typename?: 'RootQuery', readonly productCatalog?: { readonly __typename?: 'ProductCatalogSchema', readonly downloadJobsCount?: number | null } | null };
+
+export type GetDownloadTotalJobsQueryVariables = Exact<{
+  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']>;
+  query?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type GetDownloadTotalJobsQuery = { readonly __typename?: 'RootQuery', readonly productCatalog?: { readonly __typename?: 'ProductCatalogSchema', readonly downloadJobs?: ReadonlyArray<{ readonly __typename?: 'DownloadJobSchema', readonly id: string, readonly jobType?: string | null, readonly status?: string | null, readonly downloadLink?: string | null, readonly submittedDate?: { readonly __typename?: 'Datetime', readonly unix: number, readonly formatted: string } | null, readonly completedDate?: { readonly __typename?: 'Datetime', readonly unix: number, readonly formatted: string } | null }> | null } | null };
+
 export type AdminUsersTable_GetInternalUsersQueryQueryVariables = Exact<{
   offset: Scalars['Int'];
   limit: Scalars['Int'];
@@ -19059,6 +19212,11 @@ export type MmsWelcome_SubmitMmsMerchantLeadMutationMutationVariables = Exact<{
 
 
 export type MmsWelcome_SubmitMmsMerchantLeadMutationMutation = { readonly __typename?: 'RootMutation', readonly authentication?: { readonly __typename?: 'AuthenticationMutations', readonly mmsLeadSubmission?: { readonly __typename?: 'MMSLeadSubmissionMutation', readonly ok: boolean, readonly message?: string | null } | null } | null };
+
+export type MerchantListingFeeQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MerchantListingFeeQuery = { readonly __typename?: 'RootQuery', readonly currentMerchant?: { readonly __typename?: 'MerchantSchema', readonly merchantListingFee?: { readonly __typename?: 'MerchantListingFeeHub', readonly feePolicyConfig: ReadonlyArray<{ readonly __typename?: 'FeePolicyConfigSchema', readonly wssTierLevel: number, readonly wssTierName: string, readonly freeThreshold: number, readonly excessItemUnitPrice: { readonly __typename?: 'CurrencyValue', readonly amount: number, readonly currencyCode: string } }>, readonly latestListingFeeDetails: { readonly __typename?: 'LatestListingFeeDetailsSchema', readonly latestItems: number }, readonly currentCycleListingFeeDetails: { readonly __typename?: 'CurrentCycleListingFeeDetailsSchema', readonly currentBasedWssTierLevel: number, readonly currentFreeThreshold: number, readonly currentItemsOverThreshold: number, readonly currentUnitPrice: { readonly __typename?: 'CurrencyValue', readonly amount: number, readonly currencyCode: string }, readonly currentFeeToPay: { readonly __typename?: 'CurrencyValue', readonly amount: number, readonly currencyCode: string }, readonly currentCyclePayTime: { readonly __typename: 'Datetime', readonly formatted: string } }, readonly predictedListingFeeDetails: { readonly __typename?: 'PredictedListingFeeDetailSchema', readonly latestWssTierLevel: number, readonly latestWssTierName: string, readonly predictedFreeThreshold: number, readonly nextUpdateDate: { readonly __typename: 'Datetime', readonly formatted: string } } } | null } | null };
 
 export type NoticePortal_CreateNoticeMutationVariables = Exact<{
   input: CreateNoticeInput;
@@ -19676,6 +19834,9 @@ export const AllProducts_RemoveProductMutationDocument = {"kind":"Document","def
 export const AllProducts_DownloadProductsMutationDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"AllProducts_DownloadProductsMutation"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"DownloadAllProductsInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"productCatalog"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"downloadAllProducts"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"ok"}},{"kind":"Field","name":{"kind":"Name","value":"errorMessage"}}]}}]}}]}}]} as unknown as DocumentNode<AllProducts_DownloadProductsMutationMutation, AllProducts_DownloadProductsMutationMutationVariables>;
 export const AllProducts_DeleteWarehouseDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"AllProducts_DeleteWarehouse"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"DeleteMerchantWarehouseInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"currentMerchant"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"warehouseSettings"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"deleteWarehouse"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"ok"}},{"kind":"Field","name":{"kind":"Name","value":"message"}}]}}]}}]}}]}}]} as unknown as DocumentNode<AllProducts_DeleteWarehouseMutation, AllProducts_DeleteWarehouseMutationVariables>;
 export const AllProducts_GetProductsForExportDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"AllProducts_GetProductsForExport"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"query"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"searchType"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"ProductSearchType"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"merchantId"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"ObjectIdType"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"offset"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"limit"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"sort"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"ProductSort"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"isEnabled"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Boolean"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"state"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"ProductListingState"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"fpReviewStatus"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"ProductFPReviewStatus"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"isWishExpress"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Boolean"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"hasBrand"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Boolean"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"isPromoted"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Boolean"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"isCleanImage"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Boolean"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"isReturnEnrolled"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Boolean"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"warehouseId"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"currentMerchant"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"primaryCurrency"}}]}},{"kind":"Field","name":{"kind":"Name","value":"productCatalog"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"csvProductColumnEnums"}},{"kind":"Field","name":{"kind":"Name","value":"productsV2"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"query"},"value":{"kind":"Variable","name":{"kind":"Name","value":"query"}}},{"kind":"Argument","name":{"kind":"Name","value":"searchType"},"value":{"kind":"Variable","name":{"kind":"Name","value":"searchType"}}},{"kind":"Argument","name":{"kind":"Name","value":"merchantId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"merchantId"}}},{"kind":"Argument","name":{"kind":"Name","value":"offset"},"value":{"kind":"Variable","name":{"kind":"Name","value":"offset"}}},{"kind":"Argument","name":{"kind":"Name","value":"limit"},"value":{"kind":"Variable","name":{"kind":"Name","value":"limit"}}},{"kind":"Argument","name":{"kind":"Name","value":"sort"},"value":{"kind":"Variable","name":{"kind":"Name","value":"sort"}}},{"kind":"Argument","name":{"kind":"Name","value":"isEnabled"},"value":{"kind":"Variable","name":{"kind":"Name","value":"isEnabled"}}},{"kind":"Argument","name":{"kind":"Name","value":"state"},"value":{"kind":"Variable","name":{"kind":"Name","value":"state"}}},{"kind":"Argument","name":{"kind":"Name","value":"fpReviewStatus"},"value":{"kind":"Variable","name":{"kind":"Name","value":"fpReviewStatus"}}},{"kind":"Argument","name":{"kind":"Name","value":"isWishExpress"},"value":{"kind":"Variable","name":{"kind":"Name","value":"isWishExpress"}}},{"kind":"Argument","name":{"kind":"Name","value":"hasBrand"},"value":{"kind":"Variable","name":{"kind":"Name","value":"hasBrand"}}},{"kind":"Argument","name":{"kind":"Name","value":"isPromoted"},"value":{"kind":"Variable","name":{"kind":"Name","value":"isPromoted"}}},{"kind":"Argument","name":{"kind":"Name","value":"isCleanImage"},"value":{"kind":"Variable","name":{"kind":"Name","value":"isCleanImage"}}},{"kind":"Argument","name":{"kind":"Name","value":"isReturnEnrolled"},"value":{"kind":"Variable","name":{"kind":"Name","value":"isReturnEnrolled"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"wishes"}},{"kind":"Field","name":{"kind":"Name","value":"sales"}},{"kind":"Field","name":{"kind":"Name","value":"sku"}},{"kind":"Field","name":{"kind":"Name","value":"upc"}},{"kind":"Field","name":{"kind":"Name","value":"lastUpdateTime"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"formatted"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"fmt"},"value":{"kind":"StringValue","value":"YYYY-MM-dd k:mm:ss z","block":false}}]}]}},{"kind":"Field","name":{"kind":"Name","value":"createTime"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"formatted"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"fmt"},"value":{"kind":"StringValue","value":"YYYY-MM-dd k:mm:ss z","block":false}}]}]}},{"kind":"Field","name":{"kind":"Name","value":"msrp"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"display"}}]}},{"kind":"Field","name":{"kind":"Name","value":"shipping"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"warehouseId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"warehouseId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"defaultShipping"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"warehouseId"}},{"kind":"Field","name":{"kind":"Name","value":"price"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"display"}}]}},{"kind":"Field","name":{"kind":"Name","value":"timeToDoor"}}]}},{"kind":"Field","name":{"kind":"Name","value":"warehouseCountryShipping"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"shippingType"}},{"kind":"Field","name":{"kind":"Name","value":"countryShipping"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"country"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"code"}}]}},{"kind":"Field","name":{"kind":"Name","value":"timeToDoor"}},{"kind":"Field","name":{"kind":"Name","value":"enabled"}},{"kind":"Field","name":{"kind":"Name","value":"price"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"display"}}]}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"fpReviewStatus"}},{"kind":"Field","name":{"kind":"Name","value":"listingState"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"state"}}]}},{"kind":"Field","name":{"kind":"Name","value":"isPromoted"}},{"kind":"Field","name":{"kind":"Name","value":"isLtl"}},{"kind":"Field","name":{"kind":"Name","value":"mainImage"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"wishUrl"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"size"},"value":{"kind":"EnumValue","value":"TINY"}}]},{"kind":"Field","name":{"kind":"Name","value":"isCleanImage"}}]}},{"kind":"Field","name":{"kind":"Name","value":"extraImages"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"wishUrl"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"size"},"value":{"kind":"EnumValue","value":"TINY"}}]},{"kind":"Field","name":{"kind":"Name","value":"isCleanImage"}}]}},{"kind":"Field","name":{"kind":"Name","value":"trueTags"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"id"}}]}},{"kind":"Field","name":{"kind":"Name","value":"condition"}},{"kind":"Field","name":{"kind":"Name","value":"maxQuantity"}},{"kind":"Field","name":{"kind":"Name","value":"referenceArea"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"unit"}},{"kind":"Field","name":{"kind":"Name","value":"value"}}]}},{"kind":"Field","name":{"kind":"Name","value":"referenceUnit"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"unit"}},{"kind":"Field","name":{"kind":"Name","value":"value"}}]}},{"kind":"Field","name":{"kind":"Name","value":"referenceWeight"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"unit"}},{"kind":"Field","name":{"kind":"Name","value":"value"}}]}},{"kind":"Field","name":{"kind":"Name","value":"referenceLength"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"unit"}},{"kind":"Field","name":{"kind":"Name","value":"value"}}]}},{"kind":"Field","name":{"kind":"Name","value":"referenceVolume"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"unit"}},{"kind":"Field","name":{"kind":"Name","value":"value"}}]}},{"kind":"Field","name":{"kind":"Name","value":"chemicalNames"}},{"kind":"Field","name":{"kind":"Name","value":"warningType"}},{"kind":"Field","name":{"kind":"Name","value":"requestedBrand"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"categoryExperienceEligibility"}},{"kind":"Field","name":{"kind":"Name","value":"subcategoryId"}},{"kind":"Field","name":{"kind":"Name","value":"subcategory"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"variationOptions"}},{"kind":"Field","name":{"kind":"Name","value":"variations"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"sku"}},{"kind":"Field","name":{"kind":"Name","value":"size"}},{"kind":"Field","name":{"kind":"Name","value":"color"}},{"kind":"Field","name":{"kind":"Name","value":"gtin"}},{"kind":"Field","name":{"kind":"Name","value":"inventory"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"warehouseId"}},{"kind":"Field","name":{"kind":"Name","value":"count"}}]}},{"kind":"Field","name":{"kind":"Name","value":"price"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"display"}}]}},{"kind":"Field","name":{"kind":"Name","value":"image"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"wishUrl"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"size"},"value":{"kind":"EnumValue","value":"TINY"}}]}]}},{"kind":"Field","name":{"kind":"Name","value":"customsHsCode"}},{"kind":"Field","name":{"kind":"Name","value":"length"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"unit"}},{"kind":"Field","name":{"kind":"Name","value":"value"}}]}},{"kind":"Field","name":{"kind":"Name","value":"width"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"unit"}},{"kind":"Field","name":{"kind":"Name","value":"value"}}]}},{"kind":"Field","name":{"kind":"Name","value":"height"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"unit"}},{"kind":"Field","name":{"kind":"Name","value":"value"}}]}},{"kind":"Field","name":{"kind":"Name","value":"weight"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"unit"}},{"kind":"Field","name":{"kind":"Name","value":"value"}}]}},{"kind":"Field","name":{"kind":"Name","value":"declaredValue"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"display"}}]}},{"kind":"Field","name":{"kind":"Name","value":"originCountry"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"declaredLocalName"}},{"kind":"Field","name":{"kind":"Name","value":"declaredName"}},{"kind":"Field","name":{"kind":"Name","value":"hasLiquid"}},{"kind":"Field","name":{"kind":"Name","value":"hasMetal"}},{"kind":"Field","name":{"kind":"Name","value":"hasPowder"}},{"kind":"Field","name":{"kind":"Name","value":"hasBattery"}},{"kind":"Field","name":{"kind":"Name","value":"pieces"}},{"kind":"Field","name":{"kind":"Name","value":"quantityArea"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"unit"}},{"kind":"Field","name":{"kind":"Name","value":"value"}}]}},{"kind":"Field","name":{"kind":"Name","value":"quantityUnit"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"unit"}},{"kind":"Field","name":{"kind":"Name","value":"value"}}]}},{"kind":"Field","name":{"kind":"Name","value":"quantityWeight"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"unit"}},{"kind":"Field","name":{"kind":"Name","value":"value"}}]}},{"kind":"Field","name":{"kind":"Name","value":"quantityLength"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"unit"}},{"kind":"Field","name":{"kind":"Name","value":"value"}}]}},{"kind":"Field","name":{"kind":"Name","value":"quantityVolume"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"unit"}},{"kind":"Field","name":{"kind":"Name","value":"value"}}]}},{"kind":"Field","name":{"kind":"Name","value":"options"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"value"}}]}}]}}]}}]}}]}}]} as unknown as DocumentNode<AllProducts_GetProductsForExportQuery, AllProducts_GetProductsForExportQueryVariables>;
+export const UnderperformingProducts_DownloadProductsMutationDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UnderperformingProducts_DownloadProductsMutation"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"DownloadUnderPerformingProductsInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"productCatalog"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"downloadUnderPerformingProducts"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"ok"}},{"kind":"Field","name":{"kind":"Name","value":"errorMessage"}}]}}]}}]}}]} as unknown as DocumentNode<UnderperformingProducts_DownloadProductsMutationMutation, UnderperformingProducts_DownloadProductsMutationMutationVariables>;
+export const Get_Download_Total_Job_CountsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GET_DOWNLOAD_TOTAL_JOB_COUNTS"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"query"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"productCatalog"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"downloadJobsCount"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"query"},"value":{"kind":"Variable","name":{"kind":"Name","value":"query"}}}]}]}}]}}]} as unknown as DocumentNode<Get_Download_Total_Job_CountsQuery, Get_Download_Total_Job_CountsQueryVariables>;
+export const GetDownloadTotalJobsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetDownloadTotalJobs"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"offset"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"limit"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"query"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"productCatalog"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"downloadJobs"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"query"},"value":{"kind":"Variable","name":{"kind":"Name","value":"query"}}},{"kind":"Argument","name":{"kind":"Name","value":"offset"},"value":{"kind":"Variable","name":{"kind":"Name","value":"offset"}}},{"kind":"Argument","name":{"kind":"Name","value":"limit"},"value":{"kind":"Variable","name":{"kind":"Name","value":"limit"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"submittedDate"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"unix"}},{"kind":"Field","name":{"kind":"Name","value":"formatted"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"fmt"},"value":{"kind":"StringValue","value":"MM/d/Y hh:mm:ss","block":false}}]}]}},{"kind":"Field","name":{"kind":"Name","value":"completedDate"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"unix"}},{"kind":"Field","name":{"kind":"Name","value":"formatted"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"fmt"},"value":{"kind":"StringValue","value":"MM/d/Y hh:mm:ss","block":false}}]}]}},{"kind":"Field","name":{"kind":"Name","value":"jobType"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"downloadLink"}}]}}]}}]}}]} as unknown as DocumentNode<GetDownloadTotalJobsQuery, GetDownloadTotalJobsQueryVariables>;
 export const AdminUsersTable_GetInternalUsersQueryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"AdminUsersTable_GetInternalUsersQuery"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"offset"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"limit"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"query"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"sortField"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UsersSortFieldType"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"sortOrder"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"SortOrderType"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"includeDisabledUsers"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Boolean"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"roles"}},"type":{"kind":"NonNullType","type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"RoleType"}}}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"identity"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"users"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"offset"},"value":{"kind":"Variable","name":{"kind":"Name","value":"offset"}}},{"kind":"Argument","name":{"kind":"Name","value":"limit"},"value":{"kind":"Variable","name":{"kind":"Name","value":"limit"}}},{"kind":"Argument","name":{"kind":"Name","value":"query"},"value":{"kind":"Variable","name":{"kind":"Name","value":"query"}}},{"kind":"Argument","name":{"kind":"Name","value":"sortField"},"value":{"kind":"Variable","name":{"kind":"Name","value":"sortField"}}},{"kind":"Argument","name":{"kind":"Name","value":"sortOrder"},"value":{"kind":"Variable","name":{"kind":"Name","value":"sortOrder"}}},{"kind":"Argument","name":{"kind":"Name","value":"includeDisabledUsers"},"value":{"kind":"Variable","name":{"kind":"Name","value":"includeDisabledUsers"}}},{"kind":"Argument","name":{"kind":"Name","value":"roles"},"value":{"kind":"Variable","name":{"kind":"Name","value":"roles"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"bdMerchantCountry"}},{"kind":"Field","name":{"kind":"Name","value":"roles"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"manager"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"serviceTypes"}},{"kind":"Field","name":{"kind":"Name","value":"isEnabled"}},{"kind":"Field","name":{"kind":"Name","value":"isSalesRep"}},{"kind":"Field","alias":{"kind":"Name","value":"canBeAssignedToLogicalQueue"},"name":{"kind":"Name","value":"hasPermission"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"permissions"},"value":{"kind":"ListValue","values":[{"kind":"EnumValue","value":"HANDLE_CS_TICKETS"}]}}]}]}},{"kind":"Field","name":{"kind":"Name","value":"usersCount"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"query"},"value":{"kind":"Variable","name":{"kind":"Name","value":"query"}}},{"kind":"Argument","name":{"kind":"Name","value":"includeDisabledUsers"},"value":{"kind":"Variable","name":{"kind":"Name","value":"includeDisabledUsers"}}},{"kind":"Argument","name":{"kind":"Name","value":"roles"},"value":{"kind":"Variable","name":{"kind":"Name","value":"roles"}}}]}]}}]}}]} as unknown as DocumentNode<AdminUsersTable_GetInternalUsersQueryQuery, AdminUsersTable_GetInternalUsersQueryQueryVariables>;
 export const AdminUsersTable_LoginAsUserMutationDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"AdminUsersTable_LoginAsUserMutation"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ByUserIdInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"authentication"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"loginAs"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"user"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"ok"}},{"kind":"Field","name":{"kind":"Name","value":"error"}}]}}]}}]}}]}}]} as unknown as DocumentNode<AdminUsersTable_LoginAsUserMutationMutation, AdminUsersTable_LoginAsUserMutationMutationVariables>;
 export const MerchantSupportConfigQueryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"MerchantSupportConfigQuery"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"currentUser"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"displayName"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"supportConfig"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"isEnBd"}},{"kind":"Field","name":{"kind":"Name","value":"isNonEnBd"}}]}},{"kind":"Field","name":{"kind":"Name","value":"accountManager"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"email"}}]}}]}}]}}]} as unknown as DocumentNode<MerchantSupportConfigQueryQuery, MerchantSupportConfigQueryQueryVariables>;
@@ -19726,6 +19887,7 @@ export const Authentication_Okta_Url_QueryDocument = {"kind":"Document","definit
 export const Authentication_WechatCheckScanMutationDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"Authentication_WechatCheckScanMutation"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"WechatCheckScanInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"authentication"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"checkWechatScan"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"expireIn"}},{"kind":"Field","name":{"kind":"Name","value":"scanned"}},{"kind":"Field","name":{"kind":"Name","value":"ok"}},{"kind":"Field","name":{"kind":"Name","value":"error"}}]}}]}}]}}]} as unknown as DocumentNode<Authentication_WechatCheckScanMutationMutation, Authentication_WechatCheckScanMutationMutationVariables>;
 export const Questionnaire_MerchantLeadSubmitDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"Questionnaire_MerchantLeadSubmit"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"MerchantLeadSubmissionInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"authentication"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"merchantLeadSubmission"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"ok"}},{"kind":"Field","name":{"kind":"Name","value":"message"}}]}}]}}]}}]} as unknown as DocumentNode<Questionnaire_MerchantLeadSubmitMutation, Questionnaire_MerchantLeadSubmitMutationVariables>;
 export const MmsWelcome_SubmitMmsMerchantLeadMutationDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"MmsWelcome_SubmitMmsMerchantLeadMutation"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"MMSLeadSubmissionInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"authentication"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"mmsLeadSubmission"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"ok"}},{"kind":"Field","name":{"kind":"Name","value":"message"}}]}}]}}]}}]} as unknown as DocumentNode<MmsWelcome_SubmitMmsMerchantLeadMutationMutation, MmsWelcome_SubmitMmsMerchantLeadMutationMutationVariables>;
+export const MerchantListingFeeDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"MerchantListingFee"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"currentMerchant"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"merchantListingFee"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"feePolicyConfig"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"wssTierLevel"}},{"kind":"Field","name":{"kind":"Name","value":"wssTierName"}},{"kind":"Field","name":{"kind":"Name","value":"freeThreshold"}},{"kind":"Field","name":{"kind":"Name","value":"excessItemUnitPrice"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}},{"kind":"Field","name":{"kind":"Name","value":"currencyCode"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"latestListingFeeDetails"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"latestItems"}}]}},{"kind":"Field","name":{"kind":"Name","value":"currentCycleListingFeeDetails"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"currentBasedWssTierLevel"}},{"kind":"Field","name":{"kind":"Name","value":"currentFreeThreshold"}},{"kind":"Field","name":{"kind":"Name","value":"currentItemsOverThreshold"}},{"kind":"Field","name":{"kind":"Name","value":"currentUnitPrice"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}},{"kind":"Field","name":{"kind":"Name","value":"currencyCode"}}]}},{"kind":"Field","name":{"kind":"Name","value":"currentFeeToPay"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}},{"kind":"Field","name":{"kind":"Name","value":"currencyCode"}}]}},{"kind":"Field","name":{"kind":"Name","value":"currentCyclePayTime"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"formatted"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"fmt"},"value":{"kind":"StringValue","value":"MM/d/yy","block":false}}]},{"kind":"Field","name":{"kind":"Name","value":"__typename"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"predictedListingFeeDetails"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"latestWssTierLevel"}},{"kind":"Field","name":{"kind":"Name","value":"latestWssTierName"}},{"kind":"Field","name":{"kind":"Name","value":"nextUpdateDate"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"formatted"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"fmt"},"value":{"kind":"StringValue","value":"MM/d/yy","block":false}}]},{"kind":"Field","name":{"kind":"Name","value":"__typename"}}]}},{"kind":"Field","name":{"kind":"Name","value":"predictedFreeThreshold"}}]}}]}}]}}]}}]} as unknown as DocumentNode<MerchantListingFeeQuery, MerchantListingFeeQueryVariables>;
 export const NoticePortal_CreateNoticeDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"NoticePortal_CreateNotice"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CreateNoticeInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"dsa"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"public"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createNotice"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"ok"}},{"kind":"Field","name":{"kind":"Name","value":"message"}}]}}]}}]}}]}}]} as unknown as DocumentNode<NoticePortal_CreateNoticeMutation, NoticePortal_CreateNoticeMutationVariables>;
 export const Refund_PerformanceAggregateDataQueryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Refund_PerformanceAggregateDataQuery"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"weeks"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"currentMerchant"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"storeStats"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"weekly"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"weeks"},"value":{"kind":"Variable","name":{"kind":"Name","value":"weeks"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"refund"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"startDate"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"mmddyyyy"}}]}},{"kind":"Field","name":{"kind":"Name","value":"endDate"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"mmddyyyy"}}]}},{"kind":"Field","name":{"kind":"Name","value":"refunds"}},{"kind":"Field","name":{"kind":"Name","value":"refundRate"}},{"kind":"Field","name":{"kind":"Name","value":"refundRatePercentile"}},{"kind":"Field","name":{"kind":"Name","value":"itemNotMatchingListingPercentage"}},{"kind":"Field","name":{"kind":"Name","value":"itemNotFitPercentage"}},{"kind":"Field","name":{"kind":"Name","value":"shippingTakeTooLongPercentage"}},{"kind":"Field","name":{"kind":"Name","value":"itemDamagedPercentage"}},{"kind":"Field","name":{"kind":"Name","value":"receivedWrongItemPercentage"}},{"kind":"Field","name":{"kind":"Name","value":"itemReturnedPercentage"}},{"kind":"Field","name":{"kind":"Name","value":"itemNotWorkPercentage"}},{"kind":"Field","name":{"kind":"Name","value":"failToFulfillPercentage"}},{"kind":"Field","name":{"kind":"Name","value":"deliverWrongAddressPercentage"}},{"kind":"Field","name":{"kind":"Name","value":"incompleteOrderPercentage"}}]}}]}}]}}]}}]}}]} as unknown as DocumentNode<Refund_PerformanceAggregateDataQueryQuery, Refund_PerformanceAggregateDataQueryQueryVariables>;
 export const Refund_PerformanceBreakdownDataQueryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Refund_PerformanceBreakdownDataQuery"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"offset"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"limit"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"sort"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"ProductSort"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"weeks_from_the_latest"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"productCatalog"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"productCountV2"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"isEnabled"},"value":{"kind":"BooleanValue","value":true}}]},{"kind":"Field","name":{"kind":"Name","value":"productsV2"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"limit"},"value":{"kind":"Variable","name":{"kind":"Name","value":"limit"}}},{"kind":"Argument","name":{"kind":"Name","value":"offset"},"value":{"kind":"Variable","name":{"kind":"Name","value":"offset"}}},{"kind":"Argument","name":{"kind":"Name","value":"sort"},"value":{"kind":"Variable","name":{"kind":"Name","value":"sort"}}},{"kind":"Argument","name":{"kind":"Name","value":"isEnabled"},"value":{"kind":"BooleanValue","value":true}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"stats"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"weekly"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"weeksFromTheLatest"},"value":{"kind":"Variable","name":{"kind":"Name","value":"weeks_from_the_latest"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"startDate"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"mmddyyyy"}}]}},{"kind":"Field","name":{"kind":"Name","value":"endDate"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"mmddyyyy"}}]}},{"kind":"Field","name":{"kind":"Name","value":"refund"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"refunds"}},{"kind":"Field","name":{"kind":"Name","value":"itemNotMatchingListingPercentage"}},{"kind":"Field","name":{"kind":"Name","value":"itemNotFitPercentage"}},{"kind":"Field","name":{"kind":"Name","value":"shippingTakeTooLongPercentage"}},{"kind":"Field","name":{"kind":"Name","value":"itemDamagedPercentage"}},{"kind":"Field","name":{"kind":"Name","value":"receivedWrongItemPercentage"}},{"kind":"Field","name":{"kind":"Name","value":"itemReturnedPercentage"}},{"kind":"Field","name":{"kind":"Name","value":"itemNotWorkPercentage"}},{"kind":"Field","name":{"kind":"Name","value":"failToFulfillPercentage"}},{"kind":"Field","name":{"kind":"Name","value":"deliverWrongAddressPercentage"}},{"kind":"Field","name":{"kind":"Name","value":"incompleteOrderPercentage"}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"isReturnsEnabled"}}]}}]}}]}}]} as unknown as DocumentNode<Refund_PerformanceBreakdownDataQueryQuery, Refund_PerformanceBreakdownDataQueryQueryVariables>;
