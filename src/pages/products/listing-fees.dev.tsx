@@ -56,7 +56,7 @@ const ListingFeesPage: NextPage<Record<string, never>> = () => {
       >
         <div>
           View Listing Fees based on your number of active product listings and
-          Wish Tier status.
+          Wish Standards status.
           <Link
             href={merchFeUrl(`/md/learn-more`)}
             underline

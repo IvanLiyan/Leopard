@@ -1,12 +1,11 @@
 import React from "react";
-import { Heading } from "@ContextLogic/atlas-ui";
+import { Heading, Text } from "@ContextLogic/atlas-ui";
 import {
   Step,
   StepContent,
   StepLabel,
   Stepper,
 } from "@core/components/Stepper";
-import { Text } from "@ContextLogic/lego";
 import ListingFeesSection from "./ListingFeesSection";
 import { ci18n } from "@core/toolkit/i18n";
 import Link from "@deprecated/components/Link";
@@ -18,14 +17,32 @@ const ManageProductsSteps: React.FC = () => {
         "The steps of how to disable underperforming products to avoid listing fees",
         "Step 1",
       ),
-      content: i`Visit Product listing page`,
+      content: (
+        <Text>
+          Visit
+          <Link
+            href={merchFeUrl(`/md/products`)}
+            underline
+            openInNewTab
+            style={{
+              fontWeight: "bold",
+              marginLeft: 5,
+              marginRight: 5,
+              color: "#1E1E1C",
+            }}
+          >
+            Product listing
+          </Link>
+          page
+        </Text>
+      ),
     },
     {
       label: ci18n(
         "The steps of how to disable underperforming products to avoid listing fees",
         "Step 2",
       ),
-      content: `Click on the download button and select “CSV for underperforming products `,
+      content: i`Click on the download button and select “CSV for underperforming products” `,
     },
     {
       label: ci18n(
@@ -40,23 +57,23 @@ const ManageProductsSteps: React.FC = () => {
         "Step 4",
       ),
       content: (
-        <div>
+        <Text>
           Go to the
           <Link
-            href={merchFeUrl(`/md/products/csv-download-center`)}
+            href={merchFeUrl(`/md/products/csv`)}
             underline
             openInNewTab
             style={{
               fontWeight: "bold",
-              marginLeft: 10,
-              marginRight: 10,
+              marginLeft: 5,
+              marginRight: 5,
               color: "#1E1E1C",
             }}
           >
             CSV management
           </Link>
-          page,
-        </div>
+          page
+        </Text>
       ),
     },
     {
@@ -71,7 +88,25 @@ const ManageProductsSteps: React.FC = () => {
         "The steps of how to disable underperforming products to avoid listing fees",
         "Step 6",
       ),
-      content: i`Go to the CSV status page to check the process`,
+      content: (
+        <Text>
+          Go to the
+          <Link
+            href={merchFeUrl(`/products/csv-history`)}
+            underline
+            openInNewTab
+            style={{
+              fontWeight: "bold",
+              marginLeft: 5,
+              marginRight: 5,
+              color: "#1E1E1C",
+            }}
+          >
+            CSV status
+          </Link>
+          page to check the process
+        </Text>
+      ),
     },
   ];
 

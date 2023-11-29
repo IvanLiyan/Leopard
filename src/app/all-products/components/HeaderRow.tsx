@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-misused-promises */
 import React, { useMemo, useState } from "react";
 import { StyleSheet } from "aphrodite";
 import { observer } from "mobx-react";
@@ -230,6 +229,7 @@ const HeaderRow: React.FC<Props> = ({
           <FormControl sx={{ m: 1, minWidth: 250 }} size="small">
             <Select
               value={downloadType}
+              // eslint-disable-next-line @typescript-eslint/no-misused-promises
               onChange={handleChange}
               autoWidth
               displayEmpty
@@ -289,18 +289,33 @@ const HeaderRow: React.FC<Props> = ({
             <AlertTitle>
               Downloading CSV for underperforming products
             </AlertTitle>
-            <div color="inherit">
-              {i`It may take a while for your file to download depending on its size.` +
-                `Go to the `}
+            <div
+              color="inherit"
+              style={{
+                display: "flex",
+                fontSize: 14,
+                fontFamily: "Proxima Nova",
+              }}
+            >
+              <Text>
+                It may take a while for your file to download depending on its
+                size. Go to the
+              </Text>
               <Link
                 href={merchFeUrl(`/md/products/csv-download-center`)}
                 variant="underlined"
                 openInNewTab
                 color="inherit"
+                sx={{
+                  marginLeft: 1,
+                  marginRight: 1,
+                }}
               >
                 CSV download center
               </Link>
-              {i` to view, manage, and download your CSV when it’s ready.`}
+              <Text>
+                to view, manage, and download your CSV when it’s ready.
+              </Text>
             </div>
           </Alert>
         )}

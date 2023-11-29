@@ -75,12 +75,7 @@ const ListingFeesOverview: React.FC = () => {
               <Layout.FlexRow alignItems="center">
                 <Text style={styles.title}>Product listed</Text>
                 <Tooltip
-                  title={
-                    <div style={{ fontSize: "14px" }}>
-                      Average time from order placed to the time that you marked
-                      the order shipped
-                    </div>
-                  }
+                  title={i`Product listing information updated in 24 hours intervals`}
                 >
                   <Icon name="info" size={20} color={textBlack} />
                 </Tooltip>
