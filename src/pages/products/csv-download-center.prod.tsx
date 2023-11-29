@@ -31,17 +31,16 @@ const CsvDownloadCenterPage: NextPage<Record<string, never>> = () => {
         )}
       >
         <Text>
-          View download status, manage, and download your CSV files once they
-          are ready.
+          {i`View download status, manage, and download your CSV files once they are ready.`}
         </Text>
       </PageHeader>
       <PageGuide relaxed style={{ paddingTop: 20 }}>
         <Alert severity="info" sx={{ flex: 1 }}>
           <AlertTitle>
-            Only underperforming products are supported for downloading
+            {i`Only underperforming products are supported for downloading`}
           </AlertTitle>
           <div color="inherit">
-            At this moment, only underperforming products can be downloaded
+            {i`At this moment, only underperforming products can be downloaded`}
           </div>
         </Alert>
         <CsvdownloadCenterTable></CsvdownloadCenterTable>

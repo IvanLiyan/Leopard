@@ -121,7 +121,7 @@ const ListingFeesPage: NextPage<Record<string, never>> = () => {
                   freeThreshold={item.freeThreshold}
                   feeAmount={item.excessItemUnitPrice.amount}
                   feeCurrency={item.excessItemUnitPrice.currencyCode}
-                  level={item.wssTierName}
+                  level={store.levelText(item.wssTierLevel)}
                 ></FeeCalculationCard>
               ))}
             </Layout.GridRow>

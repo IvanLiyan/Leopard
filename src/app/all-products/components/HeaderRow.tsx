@@ -234,31 +234,25 @@ const HeaderRow: React.FC<Props> = ({
               autoWidth
               displayEmpty
               inputProps={{ "aria-label": "Without label" }}
-              renderValue={(selected) => {
-                if (selected.length === 0) {
-                  return i`Download as CSV/XLSX`;
-                }
-                return selected;
-              }}
             >
               <MenuItem disabled value="">
                 Download as CSV/XLSX
               </MenuItem>
-              <MenuItem value={i`CSV for underperforming products`}>
+              <MenuItem value="CSV for underperforming products">
                 CSV for underperforming products(Weekly)
               </MenuItem>
               {totalCount != null && (
-                <MenuItem value={i`XLSX for all products`}>
+                <MenuItem value="XLSX for all products">
                   XLSX for all products
                 </MenuItem>
               )}
               {totalCount != null && (
-                <MenuItem value={i`CSV for all products`}>
+                <MenuItem value="CSV for all products">
                   CSV for all products
                 </MenuItem>
               )}
               {productsOnScreen != null && (
-                <MenuItem value={i`CSV for the current view`}>
+                <MenuItem value="CSV for the current view">
                   CSV for the current view ({productsOnScreen} rows)
                 </MenuItem>
               )}

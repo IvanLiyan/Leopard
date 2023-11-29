@@ -28,6 +28,7 @@ query MerchantListingFee {
       }
       currentCycleListingFeeDetails{
         currentBasedWssTierLevel
+        currentBasedWssTierName
         currentFreeThreshold
         currentItemsOverThreshold
         currentUnitPrice {

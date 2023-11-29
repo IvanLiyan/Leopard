@@ -8,6 +8,7 @@
   mutation: RootMutation
 }
 
+
 type AcceptDEComplianceTermsOfService {
   ok: Boolean!
   message: String
@@ -2699,6 +2700,7 @@ type CurrencyValue {
 
 type CurrentCycleListingFeeDetailsSchema {
   currentBasedWssTierLevel: Int!
+  currentBasedWssTierName: String!
   currentFreeThreshold: Int!
   currentUnitPrice: CurrencyValue!
   currentItemsOverThreshold: Int!
