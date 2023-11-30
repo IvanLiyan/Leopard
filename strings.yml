@@ -325,3 +325,12 @@ features:
       - src/app/seller-identity/bank-documents/state-reason-format.ts
     description: >
       Page where merchants upload bank information and accept bank policy.
+
+  - name: CSV Download Center Page - Leopard
+    owners:
+      - ili@wish.com
+    files:
+      - src/app/all-products/*
+      - src/pages/products/csv-download-center.prod.tsx
+    description: >
+      View download status, manage, and download your CSV files once they are ready.
