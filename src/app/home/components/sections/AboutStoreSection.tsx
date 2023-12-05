@@ -4,7 +4,7 @@ import { observer } from "mobx-react";
 import { useQuery } from "@apollo/client";
 import numeral from "numeral";
 import { formatCurrency } from "@ContextLogic/lego/toolkit/currency";
-
+import CircularProgressSection from "@listing-fees/components/CircularProgress";
 import {
   Card,
   H4Markdown,
@@ -12,13 +12,17 @@ import {
   Link,
   Markdown,
   Layout,
+  Text,
 } from "@ContextLogic/lego";
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
 import {
   PickedMerchant,
   ACCOUNT_BALANCE_QUERY,
   AccountBalanceResponseData,
+  HOME_LISTING_FEE_DATA_QUERY,
+  HomeListingFeeDataResponse,
 } from "@home/toolkit/home";
+import { MerchantListingFeeHub } from "@schema";
 
 import HomeSection from "./HomeSection";
 
@@ -56,6 +60,14 @@ const AboutStoreSection: React.FC<Props> = ({
       balanceType: "CONFIRMED",
     },
   });
+
+  const { data: listingFeeData } = useQuery<HomeListingFeeDataResponse>(
+    HOME_LISTING_FEE_DATA_QUERY,
+  );
+
+  const ListingFee: Maybe<MerchantListingFeeHub> = useMemo(() => {
+    return listingFeeData?.currentMerchant?.merchantListingFee;
+  }, [listingFeeData?.currentMerchant?.merchantListingFee]);
 
   const ledgerConfirmedAccountBalances =
     data?.payments?.paymentInfo.ledgerAccountBalances.filter(
@@ -182,6 +194,37 @@ const AboutStoreSection: React.FC<Props> = ({
               />
             </Layout.FlexColumn>
             <Link href={accountBalanceLink}>View account balance</Link>
+          </Card>
+        )}
+        {ListingFee && (
+          <Card style={styles.card}>
+            <Layout.FlexRow justifyContent="space-between">
+              <Layout.FlexColumn>
+                <H6 className={css(styles.cardHeader)}>Products listed</H6>
+                <Text>Current / Free</Text>
+                <Text weight="bold" style={{ marginBottom: 16 }}>
+                  {ListingFee?.latestListingFeeDetails.latestItems} /
+                  {
+                    ListingFee?.currentCycleListingFeeDetails
+                      .currentFreeThreshold
+                  }
+                </Text>
+                <Link href={merchFeUrl("/md/products/listing-fees")}>
+                  View product listings
+                </Link>
+              </Layout.FlexColumn>
+              <Layout.FlexColumn>
+                <CircularProgressSection
+                  currentCount={
+                    ListingFee?.latestListingFeeDetails.latestItems || 0
+                  }
+                  freeCount={
+                    ListingFee?.currentCycleListingFeeDetails
+                      .currentFreeThreshold || 0
+                  }
+                ></CircularProgressSection>
+              </Layout.FlexColumn>
+            </Layout.FlexRow>
           </Card>
         )}
       </Layout.GridRow>

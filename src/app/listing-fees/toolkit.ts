@@ -15,11 +15,11 @@ query MerchantListingFee {
   currentMerchant {
     merchantListingFee {
       feePolicyConfig {
-          wssTierLevel,
-          wssTierName,
-          freeThreshold,
+          wssTierLevel
+          wssTierName
+          freeThreshold
           excessItemUnitPrice{
-              amount,
+              amount
               currencyCode
           }
       }

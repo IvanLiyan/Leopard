@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useEffect, useState } from "react";
 import { StyleSheet } from "aphrodite";
 import { observer } from "mobx-react";
 
@@ -7,12 +7,14 @@ import { Layout } from "@ContextLogic/lego";
 
 /* Toolkit */
 import { BaseProps } from "@ContextLogic/lego/toolkit/react";
-import { WssMerchantLevelType } from "@schema";
+import { WssMerchantLevelType, FeePolicyConfigSchema } from "@schema";
+import { useQuery } from "@apollo/client";
+import { gql } from "@gql";
 
 /* Relative Imports */
 import WssSection from "./WssSection";
 import TierDetailsCard, { TierStatus } from "./TierDetailsCard";
-import { PERKS_DETAILS } from "@performance/migrated/toolkit/perks";
+import { getNewPerks } from "@performance/migrated/toolkit/perks";
 
 type TierDetailsProps = BaseProps & {
   readonly level?: WssMerchantLevelType | null;
@@ -23,8 +25,49 @@ type PickedLevel = Extract<
   "BRONZE" | "SILVER" | "GOLD" | "PLATINUM"
 >;
 
+const LISTING_FEE_POLICY_CONFIG = gql(`
+query ListingFeePolicyConfig {
+  currentMerchant {
+    merchantListingFee {
+      feePolicyConfig {
+        wssTierLevel
+        wssTierName
+        freeThreshold
+        excessItemUnitPrice {
+          amount
+          currencyCode
+        }
+      }
+    }
+  }
+}
+`);
+
+type MerchantListingFeeResponse = {
+  readonly currentMerchant: {
+    readonly merchantListingFee: {
+      readonly feePolicyConfig: ReadonlyArray<FeePolicyConfigSchema>;
+    };
+  };
+};
+
 const TierDetails: React.FC<TierDetailsProps> = (props) => {
   const { className, style, level } = props;
+  const [newPerks, setNewPerks] = useState([50, 50, 200, 500, 1000, 2000]);
+
+  const { data } = useQuery<MerchantListingFeeResponse>(
+    LISTING_FEE_POLICY_CONFIG,
+  );
+
+  useEffect(() => {
+    if (data) {
+      const res =
+        data?.currentMerchant?.merchantListingFee?.feePolicyConfig.map(
+          (item) => item.freeThreshold,
+        );
+      setNewPerks(res);
+    }
+  }, [data]);
 
   const levelOrder: ReadonlyArray<PickedLevel> = [
     "BRONZE",
@@ -59,7 +102,7 @@ const TierDetails: React.FC<TierDetailsProps> = (props) => {
             key={level}
             level={level}
             status={getStatus(idx)}
-            perks={PERKS_DETAILS[level]}
+            perks={getNewPerks(newPerks)[level]}
             isLast={idx === levelOrder.length - 1}
           />
         ))}

@@ -334,3 +334,12 @@ features:
       - src/pages/products/csv-download-center.prod.tsx
     description: >
       View download status, manage, and download your CSV files once they are ready.
+
+  - name: Product Listing Fees Page - Leopard
+    owners:
+      - ili@wish.com
+    files:
+      - src/app/listing-fees/*
+      - src/pages/products/listing-fees.prod.tsx
+    description: >
+      View Listing Fees based on your number of active product listings and Wish Standards status.

@@ -14,12 +14,13 @@ import store from "@listing-fees/toolkit";
 import Illustration from "@core/components/Illustration";
 import { useTierThemes } from "@performance/migrated/toolkit/stats";
 import CircularProgressSection from "@listing-fees/components/CircularProgress";
+import { zendeskURL } from "@core/toolkit/url";
 
 const ListingFeesOverview: React.FC = () => {
   const { textBlack } = useTheme();
   const styles = useStylesheet();
   const tierThemes = useTierThemes();
-
+  const learnMoreLink = zendeskURL("19882610247195");
   const currentLevel: WssMerchantLevelType | null = store.levelText(
     store.currentCycleListingFeeDetails?.currentBasedWssTierLevel,
   );
@@ -179,7 +180,7 @@ const ListingFeesOverview: React.FC = () => {
                   )}
               </Text>
               <Link
-                href={merchFeUrl(`/md/learn-more`)}
+                href={learnMoreLink}
                 style={styles.linkText}
                 underline
                 openInNewTab

@@ -9,6 +9,7 @@ import { css } from "@core/toolkit/styling";
 import PageRoot from "@core/components/PageRoot";
 import PageHeader from "@core/components/PageHeader";
 import PageGuide from "@core/components/PageGuide";
+import { zendeskURL } from "@core/toolkit/url";
 /* Lego Components */
 import { Layout, Text, LoadingIndicator } from "@ContextLogic/lego";
 /* Model */
@@ -28,7 +29,7 @@ import commonStyles from "@performance-cn/styles/common.module.css";
 
 const ListingFeesPage: NextPage<Record<string, never>> = () => {
   const styles = useStylesheet();
-
+  const learnMoreLink = zendeskURL("19882610247195");
   const { data, loading } = useQuery<MerchantListingFeeResponse>(
     MERCHANT_LISTING_FEE_DATA,
   );
@@ -55,10 +56,12 @@ const ListingFeesPage: NextPage<Record<string, never>> = () => {
         )}
       >
         <div>
-          View Listing Fees based on your number of active product listings and
-          Wish Standards status.
+          <Text>
+            View Listing Fees based on your number of active product listings
+            and Wish Standards status.
+          </Text>
           <Link
-            href={merchFeUrl(`/md/learn-more`)}
+            href={learnMoreLink}
             underline
             openInNewTab
             style={{ marginLeft: 10 }}

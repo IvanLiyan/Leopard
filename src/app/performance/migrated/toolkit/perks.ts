@@ -10,7 +10,7 @@ export type Perk = {
 const learnMoreLink = zendeskURL("4419128653595");
 
 export const PERKS_SUMMARY: {
-  readonly [K in WssMerchantLevelType]: ReadonlyArray<Perk>;
+  [K in WssMerchantLevelType]: Array<Perk>;
 } = {
   BAN: [],
   UNASSESSED: [],
@@ -61,7 +61,7 @@ export const PERKS_SUMMARY: {
 };
 
 export const PERKS_DETAILS: {
-  readonly [K in WssMerchantLevelType]: ReadonlyArray<Perk>;
+  [K in WssMerchantLevelType]: Array<Perk>;
 } = {
   BAN: PERKS_SUMMARY.BAN,
   UNASSESSED: PERKS_SUMMARY.UNASSESSED,
@@ -75,4 +75,45 @@ export const PERKS_DETAILS: {
       text: ci18n("Perk of WSS platinum tier", "Weekly payments"),
     },
   ],
+};
+
+export const getNewPerks = (
+  data: Array<number>,
+): { [K in WssMerchantLevelType]: Array<Perk> } => {
+  return {
+    BAN: PERKS_SUMMARY.BAN,
+    UNASSESSED: PERKS_SUMMARY.UNASSESSED,
+    BRONZE: [
+      ...PERKS_SUMMARY.BRONZE,
+      {
+        icon: "gift",
+        text: i`${data[2]} free product listings`,
+      },
+    ],
+    SILVER: [
+      ...PERKS_SUMMARY.SILVER,
+      {
+        icon: "gift",
+        text: i`${data[3]} free product listings`,
+      },
+    ],
+    GOLD: [
+      ...PERKS_SUMMARY.GOLD,
+      {
+        icon: "gift",
+        text: i`${data[4]} free product listings`,
+      },
+    ],
+    PLATINUM: [
+      ...PERKS_SUMMARY.PLATINUM,
+      {
+        icon: "card",
+        text: ci18n("Perk of WSS platinum tier", "Weekly payments"),
+      },
+      {
+        icon: "gift",
+        text: i`${data[5]} free product listings`,
+      },
+    ],
+  };
 };

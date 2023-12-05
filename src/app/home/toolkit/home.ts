@@ -15,6 +15,7 @@ import {
   AnnouncementProgramSchema,
   RatingPerformanceStats,
   LedgerAccountBalance,
+  MerchantListingFeeHub,
 } from "@schema";
 
 export type PickedOnboardingStep = Pick<
@@ -293,5 +294,41 @@ export type GetOrdersAndAnnouncements = {
         "message" | "ctaLink" | "ctaText" | "title"
       >
     >;
+  };
+};
+
+export const HOME_LISTING_FEE_DATA_QUERY = gql(`
+  query HomeListingFeeDataQuery {
+    currentMerchant {
+      merchantListingFee {
+        latestListingFeeDetails{
+          latestItems
+        }
+        currentCycleListingFeeDetails{
+          currentBasedWssTierLevel
+          currentBasedWssTierName
+          currentFreeThreshold
+          currentItemsOverThreshold
+          currentUnitPrice {
+              amount
+              currencyCode
+          }
+          currentFeeToPay{
+              amount
+              currencyCode
+          }
+          currentCyclePayTime{
+              formatted(fmt: "MM/d/yy")
+              __typename
+          }
+        }
+      }
+    }
+  }
+`);
+
+export type HomeListingFeeDataResponse = {
+  readonly currentMerchant: {
+    readonly merchantListingFee: Maybe<MerchantListingFeeHub>;
   };
 };

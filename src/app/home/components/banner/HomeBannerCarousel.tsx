@@ -328,7 +328,7 @@ const useBanners = (): {
           {
             id: "ProductListingFeesBanner",
             component: <ProductListingFeesBanner />,
-            shouldShow: () => false,
+            shouldShow: () => true,
             background: surfaceLightest,
             logParams: {
               merchant_id: currentMerchant.id,

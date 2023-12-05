@@ -8,7 +8,6 @@
   mutation: RootMutation
 }
 
-
 type AcceptDEComplianceTermsOfService {
   ok: Boolean!
   message: String
@@ -191,6 +190,15 @@ enum AddressVerificationState {
 type AdminCancelMFPCampaign {
   ok: Boolean!
   message: String
+}
+
+type AdminRefreshCampaignQuantity {
+  ok: Boolean!
+  message: String
+}
+
+input AdminRefreshCampaignQuantityInput {
+  campaignId: ObjectIdType!
 }
 
 type AlertSchema {
@@ -4779,6 +4787,7 @@ type LedgerItem {
   creditAmount: CurrencyValue
   debitAmount: CurrencyValue
   type: LedgerLineItemType!
+  feeType: LedgerLineItemFeeType
 }
 
 type LedgerItemDescriptionDetails {
@@ -4791,6 +4800,63 @@ type LedgerItemInfo {
   itemList: [LedgerItem!]
   nextCutoffTime: Datetime
   nextCutoffId: String
+}
+
+enum LedgerLineItemFeeType {
+  EARLY_PAYMENT_DEDUCTION
+  PROMOTION_FEE
+  UNREASONABLE_PRICE_GAUGE
+  PRODUCT_LISTING_FEE
+  MERCHANT_CANCELLATION
+  FAKE_RATING
+  LEGAL_SETTLEMENT_RESERVED
+  INVALID_EU_RESPONSIBLE_PERSON
+  B2B_SALE_FEE
+  POLICY_VIOLATION
+  STORE_PAYMENT_DEDUCTION
+  CN_PROHIBITED_PRODUCTS
+  IP_INFRINGEMENT
+  LEGAL_SETTLEMENT_PAID
+  WITHHOLD_FUND
+  ONEOFF_FEE
+  UNFULFILLED_ORDER
+  MERCHANT_HARASSMENT
+  LOGISTIC_FEE
+  ONEOFF
+  PROHIBITED_PRODUCT_FINE
+  WISH_EXPRESS_VIOLATION
+  COLLECTIONS_BOOST_CAMPAIGN_FEE
+  RETURN_LABEL_FEE
+  EXTERNAL_BOOST_FEE
+  LEGAL_SETTLEMENT
+  WISH_PARCEL_SERVICE_ADJUST_FEE
+  WISHPOST_ADJUSTMENT_DEDUCTION
+  MERCHANT_INCENTIVE
+  FBW_FEE
+  PROMOTED_PRODUCT_DISABLE_FINE
+  MISLEADING_VARIATION
+  FAKE_TRACKING
+  UNCONFIRMED_CARRIER
+  DEP_INFRACTION
+  STORE_PAYMENT_CANCELLATION
+  WISH_EXPRESS_WITHHELD_ORDER
+  WISHPOST_LOGISTICS_FEE
+  SE_CASH_BACK
+  EXTERNAL_BOOST_CPA_FEE
+  WISHPOST_FULFILLMENT_FEE
+  QUALITY_REFUND_FINE
+  PAID_PLACEMENT_IMPRESSION_FEE
+  CN_ORDER_NOT_SHIP_WITH_WISHPOST
+  LCL_FBW_FEE
+  CONSOLIDATE_MP_FINE
+  REPEAT_IP_INFRINGEMENT
+  WISH_PARCEL_SERVICE_FEE
+  DECEPTIVE_FULFILLMENT
+  MISLEADING_LISTING
+  MISLEADING_LISTING_AUTHENTIC_BRAND
+  LATE_CONFIRMED_FULFILLMENT
+  PAID_PLACEMENT_ENROLLMENT_FEE
+  PRODUCT_SWAPPED
 }
 
 enum LedgerLineItemType {
@@ -5392,6 +5458,7 @@ type MFPServiceAdminMutations {
   createWhitelistProducts(input: CreateWhitelistProductsInput!): CreateWhitelistProductsMutation!
   expireWhitelistProducts(input: ExpireWhitelistProductsInput!): ExpireWhitelistProductsMutation!
   cancelMfpCampaign(input: CancelMFPCampaignInput!): AdminCancelMFPCampaign!
+  refreshCampaignQuantity(input: AdminRefreshCampaignQuantityInput!): AdminRefreshCampaignQuantity!
 }
 
 type MFPServiceMutations {
@@ -9376,9 +9443,9 @@ type ProductCatalogSchema {
   products(query: String, searchType: ProductSearchType, shippingProfileIds: [ObjectIdType!], videoId: ObjectIdType, merchantId: ObjectIdType, offset: Int = 0, limit: Int = 20, sort: ProductSort, productStatuses: [CommerceProductStatus!] = [0, 1], shippingTypes: [WarehouseShippingType!] = [1, 2], videoStates: [ProductVideoState!], videoLinkEnabled: Boolean = true): [ProductSchema!]!
   productCount(query: String, productStatuses: [CommerceProductStatus!] = [0, 1], merchantId: ObjectIdType, shippingTypes: [WarehouseShippingType!] = [1, 2], searchType: ProductSearchType, shippingProfileIds: [ObjectIdType!], videoStates: [ProductVideoState!], videoLinkEnabled: Boolean = true): Int!
   productsV2(query: String, searchType: ProductSearchType, merchantId: ObjectIdType, offset: Int = 0, limit: Int = 20, sort: ProductSort, isEnabled: Boolean, state: ProductListingState, fpReviewStatus: ProductFPReviewStatus, isWishExpress: Boolean = false, hasBrand: Boolean = false, isPromoted: Boolean = false, isCleanImage: Boolean = false, isReturnEnrolled: Boolean = false): [ProductSchema!]!
-  productsV3(merchantId: ObjectIdType, offset: Int = 0, limit: Int = 20, sort: PerformanceProductSort, days: Int = 7, withPerformance: Boolean = false): [ProductSchema!]!
+  productsV3(merchantId: ObjectIdType, offset: Int = 0, limit: Int = 20, sort: PerformanceProductSort, days: Int = 7, withPerformance: Boolean = false, query: String, searchType: ProductSearchType): [ProductSchema!]!
   productCountV2(query: String, merchantId: ObjectIdType, searchType: ProductSearchType, isEnabled: Boolean, state: ProductListingState, fpReviewStatus: ProductFPReviewStatus, isWishExpress: Boolean = false, hasBrand: Boolean = false, isPromoted: Boolean = false, isCleanImage: Boolean = false, isReturnEnrolled: Boolean = false): Int!
-  productCountV3(merchantId: ObjectIdType, withPerformance: Boolean = false): Int!
+  productCountV3(merchantId: ObjectIdType, withPerformance: Boolean = false, query: String, searchType: ProductSearchType): Int!
   downloadJobsCount(merchantId: ObjectIdType, query: String): Int
   downloadJobs(merchantId: ObjectIdType, query: String, offset: Int = 0, limit: Int = 10): [DownloadJobSchema!]
   variation(id: String = "Id of the variation", sku: String = "Variation SKU of the variation"): VariationSchema

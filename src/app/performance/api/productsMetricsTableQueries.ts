@@ -6,6 +6,7 @@ import {
   CurrencyValue,
   ProductTotalStats,
   ProductCatalogSchemaProductsV2Args,
+  ProductCatalogSchemaProductsV3Args,
 } from "@schema";
 
 export const PRODUCTS_METRICS_TABLE_COMPONENT_QUERY = gql(`
@@ -88,3 +89,65 @@ export type ProductsMetricsTableTableQueryVariables =
   ProductCatalogSchemaProductsV2Args & {
     readonly days: number;
   };
+
+export const PRODUCTS_METRICS_PERFORMANCE_TABLE_QUERY = gql(`
+query ProductsMetricsPerformanceTableQuery($offset: Int!, $limit: Int!, $days: Int!, $searchType: ProductSearchType, $query: String, $withPerformance: Boolean!, $sort: PerformanceProductSort) {
+  productCatalog {
+    productCountV3(withPerformance: $withPerformance)
+    productsV3(
+      limit: $limit
+      offset: $offset
+      sort: $sort
+      withPerformance: $withPerformance
+      days: $days
+      searchType: $searchType
+      query: $query
+    ) {
+      sku
+      name
+      id
+      variations {
+        price {
+          amount
+          display
+        }
+      }
+      stats {
+        totals(coreMetricsOnly: true, days: $days) {
+          gmv {
+            amount
+            display
+          }
+          orders
+          impressions
+        }
+      }
+    }
+  }
+}
+`);
+
+export type ProductsMetricsPerformanceTableResponse = {
+  readonly productCatalog?:
+    | (Pick<ProductCatalogSchema, "productCountV3"> & {
+        readonly productsV3: ReadonlyArray<
+          Pick<ProductSchema, "sku" | "name" | "id"> & {
+            readonly variations: ReadonlyArray<{
+              readonly price: Pick<CurrencyValue, "amount" | "display">;
+            }>;
+            readonly stats: {
+              readonly totals: Pick<
+                ProductTotalStats,
+                "orders" | "impressions"
+              > & {
+                readonly gmv: Pick<CurrencyValue, "amount" | "display">;
+              };
+            };
+          }
+        >;
+      })
+    | null;
+};
+
+export type ProductsMetricsPerformanceTableRequest =
+  ProductCatalogSchemaProductsV3Args;
