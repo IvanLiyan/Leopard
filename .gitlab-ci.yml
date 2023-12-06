@@ -97,6 +97,7 @@ extract strings for translation:
   when: on_success
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  tags: [leopard]
 #
 # temp disabling lighthouse so we can remove docker - will re-write at a later date
 # include:
