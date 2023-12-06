@@ -18,7 +18,7 @@ const ManageProductsSteps: React.FC = () => {
         "Step 1",
       ),
       content: (
-        <Text>
+        <Text style={{ fontSize: 16 }}>
           Visit
           <Link
             href={merchFeUrl(`/md/products`)}
@@ -57,7 +57,7 @@ const ManageProductsSteps: React.FC = () => {
         "Step 4",
       ),
       content: (
-        <Text>
+        <Text style={{ fontSize: 16 }}>
           Go to the
           <Link
             href={merchFeUrl(`/md/products/csv`)}
@@ -89,7 +89,7 @@ const ManageProductsSteps: React.FC = () => {
         "Step 6",
       ),
       content: (
-        <Text>
+        <Text style={{ fontSize: 16 }}>
           Go to the
           <Link
             href={merchFeUrl(`/products/csv-history`)}
@@ -114,7 +114,7 @@ const ManageProductsSteps: React.FC = () => {
     <ListingFeesSection
       title={i`Manage under-performing products`}
       subtitle={() => (
-        <Text>
+        <Text style={{ fontSize: 16 }}>
           {i`How to disable under-performing products using CSV to avoid listing fees`}
         </Text>
       )}
@@ -130,7 +130,14 @@ const ManageProductsSteps: React.FC = () => {
               <StepLabel>
                 <Heading variant="h3">{step.label}</Heading>
               </StepLabel>
-              <StepContent>{step.content}</StepContent>
+              <StepContent
+                style={{
+                  textAlign: "center",
+                  fontFamily: "Proxima-Regular,Arial,sans-serif",
+                }}
+              >
+                {step.content}
+              </StepContent>
             </Step>
           );
         })}

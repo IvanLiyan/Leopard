@@ -95,11 +95,13 @@ class Store {
   @action
   updateListingFeesData(data: MerchantListingFeeResponse) {
     const merchantListingFee = data?.currentMerchant?.merchantListingFee;
-    this.currentCycleListingFeeDetails =
-      merchantListingFee.currentCycleListingFeeDetails;
-    this.latestListingFeeDetails = merchantListingFee.latestListingFeeDetails;
-    this.predictedListingFeeDetails =
-      merchantListingFee.predictedListingFeeDetails;
+    if (merchantListingFee != null) {
+      this.currentCycleListingFeeDetails =
+        merchantListingFee.currentCycleListingFeeDetails;
+      this.latestListingFeeDetails = merchantListingFee.latestListingFeeDetails;
+      this.predictedListingFeeDetails =
+        merchantListingFee.predictedListingFeeDetails;
+    }
   }
 
   @action
@@ -136,6 +138,7 @@ class Store {
   @action
   feeCalculationData(data: MerchantListingFeeResponse) {
     const merchantListingFee = data?.currentMerchant?.merchantListingFee;
+    if (merchantListingFee == null) return null;
     const feePolicyConfigData = Array.from(merchantListingFee.feePolicyConfig);
     if (feePolicyConfigData.length > 0) {
       const feeCalculationData = feePolicyConfigData.filter((item) => {

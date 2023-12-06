@@ -276,6 +276,15 @@ const useBanners = (): {
         ]
       : [
           {
+            id: "ProductListingFeesBanner",
+            component: <ProductListingFeesBanner />,
+            shouldShow: () => true,
+            background: surfaceLightest,
+            logParams: {
+              merchant_id: currentMerchant.id,
+            },
+          },
+          {
             id: "WishClipsBanner",
             component: <WishClipsBanner />,
             shouldShow: () => true,
@@ -320,15 +329,6 @@ const useBanners = (): {
               (paymentDetails.fullyEnrolledInPaymentCycle &&
                 paymentDetails.paymentCycle === "WEEKLY") ||
               false,
-            background: surfaceLightest,
-            logParams: {
-              merchant_id: currentMerchant.id,
-            },
-          },
-          {
-            id: "ProductListingFeesBanner",
-            component: <ProductListingFeesBanner />,
-            shouldShow: () => true,
             background: surfaceLightest,
             logParams: {
               merchant_id: currentMerchant.id,

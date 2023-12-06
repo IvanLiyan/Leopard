@@ -55,7 +55,7 @@ const ListingFeesPage: NextPage<Record<string, never>> = () => {
           />
         )}
       >
-        <div>
+        <Layout.FlexRow>
           <Text>
             View Listing Fees based on your number of active product listings
             and Wish Standards status.
@@ -68,7 +68,7 @@ const ListingFeesPage: NextPage<Record<string, never>> = () => {
           >
             Learn more
           </Link>
-        </div>
+        </Layout.FlexRow>
       </PageHeader>
       <PageGuide relaxed style={{ paddingTop: 20 }}>
         <ListingFeesSection title={i`Overview`}>
@@ -86,8 +86,8 @@ const ListingFeesPage: NextPage<Record<string, never>> = () => {
                 Learn more about your performance metrics
               </Text>
               <Text style={styles.marginButtom}>
-                How to disable under-performing products using CSV to avoid
-                listing fees
+                Check your product listings quantities, performance, and find
+                ways to optimize your inventory
               </Text>
               <Button
                 className={css(styles.metricsButton)}
