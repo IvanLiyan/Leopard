@@ -39,7 +39,9 @@ const FeeCalculationCard: React.FC<FeeCalculationProps> = (props) => {
         <Text style={styles.badgeNumber} weight="semibold">
           {freeThreshold}
         </Text>
-        <Text style={styles.marginTop}>Fee amount per PID above threshold</Text>
+        <Text style={styles.marginTop}>
+          Fee amount per item above threshold
+        </Text>
         <Text style={styles.badgeNumber} weight="semibold">
           {formatCurrency(feeAmount, feeCurrency)}
         </Text>

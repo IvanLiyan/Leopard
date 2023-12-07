@@ -19,7 +19,7 @@ const ManageProductsSteps: React.FC = () => {
       ),
       content: (
         <Text style={{ fontSize: 16 }}>
-          Visit
+          {ci18n("Visit Product listing page", "Visit")}
           <Link
             href={merchFeUrl(`/md/products`)}
             underline
@@ -31,9 +31,9 @@ const ManageProductsSteps: React.FC = () => {
               color: "#1E1E1C",
             }}
           >
-            Product listing
+            {ci18n("Visit Product listing page", "Product listing")}
           </Link>
-          page
+          {ci18n("Visit Product listing page", "page")}
         </Text>
       ),
     },
@@ -58,7 +58,7 @@ const ManageProductsSteps: React.FC = () => {
       ),
       content: (
         <Text style={{ fontSize: 16 }}>
-          Go to the
+          {ci18n("Go to the CSV management page", "Go to the")}
           <Link
             href={merchFeUrl(`/md/products/csv`)}
             underline
@@ -70,9 +70,9 @@ const ManageProductsSteps: React.FC = () => {
               color: "#1E1E1C",
             }}
           >
-            CSV management
+            {ci18n("Go to the CSV management page", "CSV management")}
           </Link>
-          page
+          {ci18n("Go to the CSV management page", "page")}
         </Text>
       ),
     },
@@ -90,7 +90,7 @@ const ManageProductsSteps: React.FC = () => {
       ),
       content: (
         <Text style={{ fontSize: 16 }}>
-          Go to the
+          {ci18n("Go to the CSV status page to check the process", "Go to the")}
           <Link
             href={merchFeUrl(`/products/csv-history`)}
             underline
@@ -102,9 +102,15 @@ const ManageProductsSteps: React.FC = () => {
               color: "#1E1E1C",
             }}
           >
-            CSV status
+            {ci18n(
+              "Go to the CSV status page to check the process",
+              "CSV status",
+            )}
           </Link>
-          page to check the process
+          {ci18n(
+            "Go to the CSV status page to check the process",
+            "page to check the process",
+          )}
         </Text>
       ),
     },

@@ -44,12 +44,12 @@ const ListingFeesOverview: React.FC = () => {
       } else if (currentLevelNumber > lastestLevelNumber) {
         return (
           i`Based on your current tier, your free  items threshold may decrease to ${store.predictedListingFeeDetails?.predictedFreeThreshold} in ` +
-          ` ${store.predictedListingFeeDetails?.nextUpdateDate.formatted}`
+          i` ${store.predictedListingFeeDetails?.nextUpdateDate.formatted}`
         );
       } else if (currentLevelNumber < lastestLevelNumber) {
         return (
-          `Based on your current tier, your free  items threshold may increase to ${store.predictedListingFeeDetails?.predictedFreeThreshold} in ` +
-          ` ${store.predictedListingFeeDetails?.nextUpdateDate.formatted}`
+          i`Based on your current tier, your free  items threshold may increase to ${store.predictedListingFeeDetails?.predictedFreeThreshold} in ` +
+          i` ${store.predictedListingFeeDetails?.nextUpdateDate.formatted}`
         );
       } else {
         return "";
