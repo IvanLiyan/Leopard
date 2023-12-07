@@ -29,10 +29,15 @@ const ListingFeesOverview: React.FC = () => {
   );
 
   const wssTierText = useMemo(() => {
+    if (
+      store.currentCycleListingFeeDetails == null ||
+      store.predictedListingFeeDetails == null
+    )
+      return "";
     const currentLevelNumber =
-      store.currentCycleListingFeeDetails?.currentBasedWssTierLevel;
+      store.currentCycleListingFeeDetails.currentBasedWssTierLevel;
     const lastestLevelNumber =
-      store.predictedListingFeeDetails?.latestWssTierLevel;
+      store.predictedListingFeeDetails.latestWssTierLevel;
     if (
       currentLevelNumber &&
       lastestLevelNumber &&
@@ -40,16 +45,27 @@ const ListingFeesOverview: React.FC = () => {
       lastestLevelNumber > 0
     ) {
       if (currentLevelNumber === lastestLevelNumber) {
-        return i`Based on your current tier, there are no changes to your free items threshold.`;
+        return (
+          <div>
+            Based on your current tier, there are no changes to your free items
+            threshold.
+          </div>
+        );
       } else if (currentLevelNumber > lastestLevelNumber) {
         return (
-          i`Based on your current tier, your free  items threshold may decrease to ${store.predictedListingFeeDetails?.predictedFreeThreshold} in ` +
-          i` ${store.predictedListingFeeDetails?.nextUpdateDate.formatted}`
+          <div>
+            Based on your current tier, your free items threshold may decrease
+            to {store.predictedListingFeeDetails.predictedFreeThreshold} in
+            {store.predictedListingFeeDetails.nextUpdateDate.formatted}
+          </div>
         );
       } else if (currentLevelNumber < lastestLevelNumber) {
         return (
-          i`Based on your current tier, your free  items threshold may increase to ${store.predictedListingFeeDetails?.predictedFreeThreshold} in ` +
-          i` ${store.predictedListingFeeDetails?.nextUpdateDate.formatted}`
+          <div>
+            Based on your current tier, your free items threshold may increase
+            to {store.predictedListingFeeDetails.predictedFreeThreshold} in
+            {store.predictedListingFeeDetails.nextUpdateDate.formatted}
+          </div>
         );
       } else {
         return "";
