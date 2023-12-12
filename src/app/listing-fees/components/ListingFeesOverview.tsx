@@ -205,7 +205,14 @@ const ListingFeesOverview: React.FC = () => {
               </Link>
             </Layout.FlexColumn>
             <Layout.FlexColumn style={styles.overviewText}>
-              <Text>Next charge date</Text>
+              <Layout.FlexRow>
+                <Text style={{ marginRight: 10 }}>Next charge date</Text>
+                <Tooltip
+                  title={i`Actual date may vary between 1 and 3 business days.`}
+                >
+                  <Icon name="info" size={20} color={textBlack} />
+                </Tooltip>
+              </Layout.FlexRow>
               <Text style={{ marginBottom: 16 }}>
                 {
                   store.currentCycleListingFeeDetails?.currentCyclePayTime
