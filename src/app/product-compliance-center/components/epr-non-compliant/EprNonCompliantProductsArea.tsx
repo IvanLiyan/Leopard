@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { observer } from "mobx-react";
 import { useIntQueryParam, useStringQueryParam } from "@core/toolkit/url";
 import { wishURL } from "@core/toolkit/url";
@@ -42,8 +42,14 @@ import {
 } from "@product-compliance-center/toolkit/EprNonCompliantCommon";
 import MultilineCell from "./MultilineCell";
 import countries from "@core/toolkit/countries";
+import AddEprModal from "./../epr-page/AddEprModal";
 
 const DEFAULT_PAGE_SIZE = 10;
+
+const dafaultAddEprNumberModalData = {
+  category: -1,
+  categoryName: "all categories",
+};
 
 const EprNonCompliantProductsArea: React.FC = () => {
   const [searchTerm, setSearchTerm] = useStringQueryParam("search_term");
@@ -56,6 +62,15 @@ const EprNonCompliantProductsArea: React.FC = () => {
     useIntQueryParam("products_offset");
   const [rawProductsLimit, setProductsLimit] =
     useIntQueryParam("products_limit");
+
+  const [addModalOpen, setAddModalOpen] = useState(false);
+  const [addEprCategory, setAddEprCategory] = useState(
+    dafaultAddEprNumberModalData.category,
+  );
+  const [addEprCategoryName, setAddEprCategoryName] = useState(
+    dafaultAddEprNumberModalData.categoryName,
+  );
+  const [addEprCountry, setAddEprCountry] = useState<CountryCode>("FR");
 
   const { data: pageData, loading: loadingPageData } =
     useQuery<EprNonCompliantCountriesAvailableQueryResponse>(
@@ -126,213 +141,247 @@ const EprNonCompliantProductsArea: React.FC = () => {
     },
   };
 
-  return (
-    <Stack direction="column">
-      <Heading
-        variant="h3"
-        sx={{
-          marginTop: "24px",
-        }}
-      >
-        Products
-      </Heading>
-      {loadingPageData ? (
-        <Skeleton height={560} sx={{ margin: "12px 0px" }} />
-      ) : countriesOptions.length === 0 ? (
-        <Text variant="bodyL" sx={{ marginTop: "12px" }}>
-          You do not have any non-compliant products.
-        </Text>
-      ) : (
-        <>
-          <Stack
-            direction="row"
-            sx={{
-              margin: "12px 0px",
-              gap: 8,
-            }}
-            justifyContent="space-between"
-          >
-            <Stack direction="row">
-              <FormSelect
-                style={styles.filterPart}
-                options={countriesOptions}
-                onSelected={async (newCountry: string) => {
-                  await setProductsCountry(newCountry);
-                  await setProductsCategory(ALL_EPR_CATEGORIES_VALUE);
-                }}
-                selectedValue={productsCountry}
-              />
-              <FormSelect
-                style={styles.filterPart}
-                options={categoryOptions || []}
-                onSelected={async (newCategory: string) => {
-                  await setProductsCategory(parseInt(newCategory));
-                }}
-                selectedValue={productsCategory.toString()}
-              />
-              <TextField
-                placeholder={i`Search by product ID`}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <Icon size={16} name="search" />
-                    </InputAdornment>
-                  ),
-                }}
-                value={searchTerm}
-                onChange={(e) => {
-                  void setSearchTerm(e.target.value);
-                }}
-                data-cy="input-table-search-value"
-              />
-            </Stack>
-            <Stack direction="row">
-              <PageIndicator
-                style={{
-                  marginRight: "16px",
-                }}
-                totalItems={totalProductCount}
-                rangeStart={productsOffset + 1}
-                rangeEnd={Math.min(
-                  totalProductCount,
-                  productsOffset + productsLimit,
-                )}
-                hasNext={productsOffset + productsLimit < totalProductCount}
-                hasPrev={productsOffset > 0}
-                currentPage={Math.ceil(productsOffset / productsLimit)}
-                onPageChange={async (newPage: number) => {
-                  const newOffset = Math.max(0, newPage) * productsLimit;
-                  await setProductsOffset(newOffset);
-                }}
-              />
-              <FormSelect
-                options={PAGE_SIZE_OPTIONS}
-                onSelected={async (newLimit: string) => {
-                  await setProductsLimit(parseInt(newLimit));
-                }}
-                selectedValue={productsLimit.toString()}
-              />
-            </Stack>
-          </Stack>
+  const getValueByCategoryName = (categoryName: string) => {
+    const result = categoryOptions.find(function (category) {
+      return category.text === categoryName;
+    });
+    return result ? parseInt(result.value) : -1;
+  };
 
-          {
-            // Products table
-            loadingTableData ? (
-              <Skeleton height={592} />
-            ) : (
-              <Table data={summary?.productRecords}>
-                <Table.Column
-                  title={ci18n("Column title for product ID", "Product ID")}
-                  _key="productId"
-                  columnKey="productId"
-                >
-                  {({
-                    row,
-                  }: CellInfo<React.ReactNode, EprProductRecordSchema>) => (
-                    <Link href={wishURL(`/c/${row.productId}`)} openInNewTab>
-                      {row.productId}
-                    </Link>
-                  )}
-                </Table.Column>
-                <Table.Column
-                  title={i`Country`}
-                  _key="country"
-                  columnKey="country"
-                >
-                  {({
-                    row,
-                  }: CellInfo<React.ReactNode, EprProductRecordSchema>) => (
-                    <Text>{row.country.name}</Text>
-                  )}
-                </Table.Column>
-                <Table.Column
-                  title={ci18n(
-                    "Column title for EPR categories",
-                    "EPR Categories",
-                  )}
-                  _key="eprCategoryNames"
-                  columnKey="eprCategoryNames"
-                >
-                  {({
-                    row,
-                  }: CellInfo<React.ReactNode, EprProductRecordSchema>) => (
-                    <MultilineCell lines={row.eprCategoryNames} />
-                  )}
-                </Table.Column>
-                <Table.Column
-                  title={ci18n(
-                    "Column title for taxonomy categories in scope",
-                    "Taxonomy Categories in Scope",
-                  )}
-                  _key="taxonomyCategoryNames"
-                  columnKey="taxonomyCategoryNames"
-                >
-                  {({
-                    row,
-                  }: CellInfo<React.ReactNode, EprProductRecordSchema>) => (
-                    <MultilineCell lines={row.taxonomyCategoryNames} />
-                  )}
-                </Table.Column>
-                <Table.Column
-                  title={ci18n(
-                    "Column title for the disputing category action",
-                    "Dispute Category",
-                  )}
-                  _key="disputeCategory"
-                  columnKey="productId"
-                >
-                  {({
-                    row,
-                  }: CellInfo<React.ReactNode, EprProductRecordSchema>) => {
-                    const disputeUrl = merchFeUrl(
-                      `/product-taxonomy-category-dispute/create/${row.productId}`,
-                    );
-                    return (
-                      <NextLink href={disputeUrl} passHref>
-                        <Button
-                          secondary
-                          href={disputeUrl}
-                          data-cy="dispute-button"
-                          sx={{ margin: "6px" }}
-                        >
-                          Dispute Product Category
-                        </Button>
-                      </NextLink>
-                    );
+  const openAddEprNumberModal = (
+    row: CellInfo<React.ReactNode, EprProductRecordSchema>,
+  ) => {
+    const countryCode = row.row.country.code;
+    const categoryText = row.row.eprCategoryNames[0];
+    const categoryValue = getValueByCategoryName(row.row.eprCategoryNames[0]);
+    setAddEprCategory(categoryValue);
+    setAddEprCategoryName(categoryText);
+    setAddEprCountry(countryCode);
+    setAddModalOpen(true);
+  };
+
+  return (
+    <>
+      <AddEprModal
+        open={addModalOpen}
+        onClose={() => {
+          setAddModalOpen(false);
+        }}
+        category={addEprCategory}
+        categoryName={addEprCategoryName}
+        country={addEprCountry}
+      />
+      <Stack direction="column">
+        <Heading
+          variant="h3"
+          sx={{
+            marginTop: "24px",
+          }}
+        >
+          Products
+        </Heading>
+        {loadingPageData ? (
+          <Skeleton height={560} sx={{ margin: "12px 0px" }} />
+        ) : countriesOptions.length === 0 ? (
+          <Text variant="bodyL" sx={{ marginTop: "12px" }}>
+            You do not have any non-compliant products.
+          </Text>
+        ) : (
+          <>
+            <Stack
+              direction="row"
+              sx={{
+                margin: "12px 0px",
+                gap: 8,
+              }}
+              justifyContent="space-between"
+            >
+              <Stack direction="row">
+                <FormSelect
+                  style={styles.filterPart}
+                  options={countriesOptions}
+                  onSelected={async (newCountry: string) => {
+                    await setProductsCountry(newCountry);
+                    await setProductsCategory(ALL_EPR_CATEGORIES_VALUE);
                   }}
-                </Table.Column>
-                <Table.Column
-                  title={ci18n(
-                    "Column title for the adding EPR number action",
-                    "Add EPR Number",
+                  selectedValue={productsCountry}
+                />
+                <FormSelect
+                  style={styles.filterPart}
+                  options={categoryOptions || []}
+                  onSelected={async (newCategory: string) => {
+                    await setProductsCategory(parseInt(newCategory));
+                  }}
+                  selectedValue={productsCategory.toString()}
+                />
+                <TextField
+                  placeholder={i`Search by product ID`}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <Icon size={16} name="search" />
+                      </InputAdornment>
+                    ),
+                  }}
+                  value={searchTerm}
+                  onChange={(e) => {
+                    void setSearchTerm(e.target.value);
+                  }}
+                  data-cy="input-table-search-value"
+                />
+              </Stack>
+              <Stack direction="row">
+                <PageIndicator
+                  style={{
+                    marginRight: "16px",
+                  }}
+                  totalItems={totalProductCount}
+                  rangeStart={productsOffset + 1}
+                  rangeEnd={Math.min(
+                    totalProductCount,
+                    productsOffset + productsLimit,
                   )}
-                  _key="addEprNumber"
-                  columnKey="productId"
-                >
-                  {() => {
-                    const addEprNumberUrl = merchFeUrl(
-                      `/md/product-compliance-center`,
-                    );
-                    return (
-                      <NextLink href={addEprNumberUrl} passHref>
+                  hasNext={productsOffset + productsLimit < totalProductCount}
+                  hasPrev={productsOffset > 0}
+                  currentPage={Math.ceil(productsOffset / productsLimit)}
+                  onPageChange={async (newPage: number) => {
+                    const newOffset = Math.max(0, newPage) * productsLimit;
+                    await setProductsOffset(newOffset);
+                  }}
+                />
+                <FormSelect
+                  options={PAGE_SIZE_OPTIONS}
+                  onSelected={async (newLimit: string) => {
+                    await setProductsLimit(parseInt(newLimit));
+                  }}
+                  selectedValue={productsLimit.toString()}
+                />
+              </Stack>
+            </Stack>
+
+            {
+              // Products table
+              loadingTableData ? (
+                <Skeleton height={592} />
+              ) : (
+                <Table data={summary?.productRecords}>
+                  <Table.Column
+                    title={ci18n("Column title for product ID", "Product ID")}
+                    _key="productId"
+                    columnKey="productId"
+                  >
+                    {({
+                      row,
+                    }: CellInfo<React.ReactNode, EprProductRecordSchema>) => (
+                      <Link href={wishURL(`/c/${row.productId}`)} openInNewTab>
+                        {row.productId}
+                      </Link>
+                    )}
+                  </Table.Column>
+                  <Table.Column
+                    title={i`Country`}
+                    _key="country"
+                    columnKey="country"
+                  >
+                    {({
+                      row,
+                    }: CellInfo<React.ReactNode, EprProductRecordSchema>) => (
+                      <Text>{row.country.name}</Text>
+                    )}
+                  </Table.Column>
+                  <Table.Column
+                    title={ci18n(
+                      "Column title for EPR categories",
+                      "EPR Categories",
+                    )}
+                    _key="eprCategoryNames"
+                    columnKey="eprCategoryNames"
+                  >
+                    {({
+                      row,
+                    }: CellInfo<React.ReactNode, EprProductRecordSchema>) => (
+                      <MultilineCell lines={row.eprCategoryNames} />
+                    )}
+                  </Table.Column>
+                  <Table.Column
+                    title={ci18n(
+                      "Column title for taxonomy categories in scope",
+                      "Taxonomy Categories in Scope",
+                    )}
+                    _key="taxonomyCategoryNames"
+                    columnKey="taxonomyCategoryNames"
+                  >
+                    {({
+                      row,
+                    }: CellInfo<React.ReactNode, EprProductRecordSchema>) => (
+                      <MultilineCell lines={row.taxonomyCategoryNames} />
+                    )}
+                  </Table.Column>
+                  <Table.Column
+                    title={ci18n(
+                      "Column title for the disputing category action",
+                      "Dispute Category",
+                    )}
+                    _key="disputeCategory"
+                    columnKey="productId"
+                  >
+                    {({
+                      row,
+                    }: CellInfo<React.ReactNode, EprProductRecordSchema>) => {
+                      const disputeUrl = merchFeUrl(
+                        `/product-taxonomy-category-dispute/create/${row.productId}`,
+                      );
+                      return (
+                        <NextLink href={disputeUrl} passHref>
+                          <Button
+                            secondary
+                            href={disputeUrl}
+                            data-cy="dispute-button"
+                            sx={{ margin: "6px" }}
+                          >
+                            Dispute Product Category
+                          </Button>
+                        </NextLink>
+                      );
+                    }}
+                  </Table.Column>
+                  <Table.Column
+                    title={ci18n(
+                      "Column title for the adding EPR number action",
+                      "Add EPR Number",
+                    )}
+                    _key="addEprNumber"
+                    columnKey="productId"
+                  >
+                    {(row) => {
+                      return (
                         <Button
                           secondary
-                          href={addEprNumberUrl}
-                          data-cy="add-epr-number-button"
+                          onClick={() => openAddEprNumberModal(row)}
                           sx={{ margin: "6px" }}
                         >
                           Add EPR Number
                         </Button>
-                      </NextLink>
-                    );
-                  }}
-                </Table.Column>
-              </Table>
-            )
-          }
-        </>
-      )}
-    </Stack>
+                        // <NextLink href={addEprNumberUrl} passHref>
+                        //   <Button
+                        //     secondary
+                        //     href={addEprNumberUrl}
+                        //     data-cy="add-epr-number-button"
+                        //     sx={{ margin: "6px" }}
+                        //   >
+                        //     Add EPR Number
+                        //   </Button>
+                        // </NextLink>
+                      );
+                    }}
+                  </Table.Column>
+                </Table>
+              )
+            }
+          </>
+        )}
+      </Stack>
+    </>
   );
 };
 
