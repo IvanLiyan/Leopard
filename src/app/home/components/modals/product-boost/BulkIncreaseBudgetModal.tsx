@@ -287,11 +287,7 @@ const BulkIncreaseBudgetModal: React.FC<BulkIncreaseBudgetModalProps> = ({
         prompt={i`Copy Campaign ID`}
         copyOnBodyClick={false}
       >
-        <Link
-          className={css(styles.campaignName)}
-          openInNewTab
-          href={merchFeUrl(url)}
-        >
+        <Link className={css(styles.campaignName)} openInNewTab href={url}>
           {campaignName}
         </Link>
       </CopyButton>
