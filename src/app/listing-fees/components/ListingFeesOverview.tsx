@@ -140,13 +140,19 @@ const ListingFeesOverview: React.FC = () => {
                     />
                   </Layout.FlexRow>
                   <Layout.FlexRow style={{ marginTop: 24 }}>
-                    <Text>
-                      Max listings (
-                      {store.currentCycleListingFeeDetails &&
-                        store.currentCycleListingFeeDetails.currentPeakTime
-                          .formatted}
-                      )
-                    </Text>
+                    {store.currentCycleListingFeeDetails && (
+                      <>
+                        <Text>Max listings</Text>
+                        <Text>
+                          (
+                          {
+                            store.currentCycleListingFeeDetails.currentPeakTime
+                              .formatted
+                          }
+                          )
+                        </Text>
+                      </>
+                    )}
                     <Tooltip
                       title={i`The item threshold used to determine your listing fee.`}
                       style={styles.overviewTooltip}

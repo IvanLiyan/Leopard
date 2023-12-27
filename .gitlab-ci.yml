@@ -4,6 +4,9 @@ stages:
   - test
   - deploy
 
+variables:
+  MANUAL_EXTRACT_STRINGS: ""
+
 install dependencies:
   stage: install
   image: registry-gitlab.i.wish.com/contextlogic/leopard/node:18
@@ -97,6 +100,9 @@ extract strings for translation:
   when: on_success
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      when: always
+    - if: $MANUAL_EXTRACT_STRINGS == "true"
+      when: manual
 #
 # temp disabling lighthouse so we can remove docker - will re-write at a later date
 # include:
