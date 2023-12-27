@@ -142,10 +142,9 @@ const ListingFeesOverview: React.FC = () => {
                   <Layout.FlexRow style={{ marginTop: 24 }}>
                     <Text>
                       Max listings (
-                      {
-                        store.currentCycleListingFeeDetails?.currentPeakTime
-                          .formatted
-                      }
+                      {store.currentCycleListingFeeDetails &&
+                        store.currentCycleListingFeeDetails.currentPeakTime
+                          .formatted}
                       )
                     </Text>
                     <Tooltip
