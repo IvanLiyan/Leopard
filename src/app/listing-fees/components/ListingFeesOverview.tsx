@@ -5,7 +5,6 @@ import { StyleSheet } from "aphrodite";
 import { Card, Layout, Text } from "@ContextLogic/lego";
 import { Icon } from "src/app/performance-cn/components";
 import { useTheme } from "@core/stores/ThemeStore";
-import { css } from "@core/toolkit/styling";
 import Link from "@deprecated/components/Link";
 import { merchFeUrl } from "@core/toolkit/router";
 import { formatCurrency } from "@core/toolkit/currency";
@@ -14,65 +13,14 @@ import store from "@listing-fees/toolkit";
 import Illustration from "@core/components/Illustration";
 import { useTierThemes } from "@performance/migrated/toolkit/stats";
 import CircularProgressSection from "@listing-fees/components/CircularProgress";
-import { zendeskURL } from "@core/toolkit/url";
 
 const ListingFeesOverview: React.FC = () => {
   const { textBlack } = useTheme();
   const styles = useStylesheet();
   const tierThemes = useTierThemes();
-  const learnMoreLink = zendeskURL("19882610247195");
   const currentLevel: WssMerchantLevelType | null = store.levelText(
     store.currentCycleListingFeeDetails?.currentBasedWssTierLevel,
   );
-  const lastestLevel: WssMerchantLevelType | null = store.levelText(
-    store.predictedListingFeeDetails?.latestWssTierLevel,
-  );
-
-  const wssTierText = useMemo(() => {
-    if (
-      store.currentCycleListingFeeDetails == null ||
-      store.predictedListingFeeDetails == null
-    )
-      return "";
-    const currentLevelNumber =
-      store.currentCycleListingFeeDetails.currentBasedWssTierLevel;
-    const lastestLevelNumber =
-      store.predictedListingFeeDetails.latestWssTierLevel;
-    if (
-      currentLevelNumber &&
-      lastestLevelNumber &&
-      currentLevelNumber > 0 &&
-      lastestLevelNumber > 0
-    ) {
-      if (currentLevelNumber === lastestLevelNumber) {
-        return (
-          <div>
-            Based on your current tier, there are no changes to your free items
-            threshold.
-          </div>
-        );
-      } else if (currentLevelNumber > lastestLevelNumber) {
-        return (
-          <div>
-            Based on your current tier, your free items threshold may decrease
-            to {store.predictedListingFeeDetails.predictedFreeThreshold} in
-            {store.predictedListingFeeDetails.nextUpdateDate.formatted}
-          </div>
-        );
-      } else if (currentLevelNumber < lastestLevelNumber) {
-        return (
-          <div>
-            Based on your current tier, your free items threshold may increase
-            to {store.predictedListingFeeDetails.predictedFreeThreshold} in
-            {store.predictedListingFeeDetails.nextUpdateDate.formatted}
-          </div>
-        );
-      } else {
-        return "";
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [store.currentCycleListingFeeDetails, store.predictedListingFeeDetails]);
 
   return (
     <Layout.FlexRow style={styles.body}>
@@ -81,7 +29,7 @@ const ListingFeesOverview: React.FC = () => {
           <Layout.FlexRow>
             <div
               style={{
-                flex: 1,
+                flex: 5,
                 height: 180,
                 borderRight: "1px solid #DCDCDA",
                 marginRight: 24,
@@ -90,12 +38,7 @@ const ListingFeesOverview: React.FC = () => {
               }}
             >
               <Layout.FlexRow alignItems="center">
-                <Text style={styles.title}>Product listed</Text>
-                <Tooltip
-                  title={i`Product listing information updated in 24 hours intervals`}
-                >
-                  <Icon name="info" size={20} color={textBlack} />
-                </Tooltip>
+                <Text style={styles.title}>Current listing</Text>
               </Layout.FlexRow>
               <Layout.FlexRow justifyContent="space-between">
                 <Layout.FlexColumn style={{ marginRight: 50 }}>
@@ -107,16 +50,84 @@ const ListingFeesOverview: React.FC = () => {
                       store.currentCycleListingFeeDetails
                         ?.currentFreeThreshold || 0
                     }
+                    size={120}
                   ></CircularProgressSection>
                 </Layout.FlexColumn>
                 <Layout.FlexColumn style={styles.overviewText}>
-                  <Text>Current items</Text>
-                  <Text weight="bold" style={{ marginBottom: 16 }}>
+                  <Layout.FlexRow>
+                    <Text>Current items</Text>
+                    <Tooltip
+                      title={i`The number of items in your inventory is calculated daily. `}
+                      style={styles.overviewTooltip}
+                    >
+                      <Icon name="info" size={24} color={textBlack} />
+                    </Tooltip>
+                  </Layout.FlexRow>
+                  <Text
+                    style={[styles.overviewNumber, styles.marginBottom]}
+                    weight="bold"
+                  >
                     {store.latestListingFeeDetails?.latestItems || 0}
                   </Text>
-                  <Text>Free items</Text>
+                  <Link
+                    href={merchFeUrl(`/md/products`)}
+                    style={styles.linkText}
+                    underline
+                    openInNewTab
+                  >
+                    View product listings
+                  </Link>
+                </Layout.FlexColumn>
+              </Layout.FlexRow>
+            </div>
+            <div
+              style={{
+                flex: 5,
+                height: 180,
+                borderRight: "1px solid #DCDCDA",
+                marginRight: 24,
+                paddingRight: 24,
+                alignContent: "space-between",
+              }}
+            >
+              <Layout.FlexRow>
+                <Text style={styles.title}>Listing fee</Text>
+              </Layout.FlexRow>
+              <Layout.FlexRow justifyContent="space-between">
+                <Layout.FlexColumn style={styles.overviewText}>
+                  <Text>Current listing fee</Text>
+                  <Text style={styles.overviewNumber} weight="bold">
+                    {store.currentCycleListingFeeDetails &&
+                      formatCurrency(
+                        store.currentCycleListingFeeDetails.currentFeeToPay
+                          .amount,
+                        store.currentCycleListingFeeDetails.currentFeeToPay
+                          .currencyCode,
+                      )}
+                  </Text>
+                  <Text style={{ marginTop: 24 }}>Fee amount per item</Text>
+                  <Text style={styles.overviewNumber} weight="bold">
+                    {store.currentCycleListingFeeDetails &&
+                      formatCurrency(
+                        store.currentCycleListingFeeDetails.currentUnitPrice
+                          .amount,
+                        store.currentCycleListingFeeDetails.currentUnitPrice
+                          .currencyCode,
+                      )}
+                  </Text>
+                </Layout.FlexColumn>
+                <Layout.FlexColumn style={styles.overviewText}>
                   <Layout.FlexRow>
-                    <Text weight="bold">
+                    <Text>Free threshold</Text>
+                    <Tooltip
+                      title={i`Your free threshold is based on your highest Wish Standards tier within the last 90 days.`}
+                      style={styles.overviewTooltip}
+                    >
+                      <Icon name="info" size={24} color={textBlack} />
+                    </Tooltip>
+                  </Layout.FlexRow>
+                  <Layout.FlexRow>
+                    <Text style={styles.overviewNumber} weight="bold">
                       {
                         store.currentCycleListingFeeDetails
                           ?.currentFreeThreshold
@@ -128,111 +139,72 @@ const ListingFeesOverview: React.FC = () => {
                       style={styles.badgeSmallIcon}
                     />
                   </Layout.FlexRow>
+                  <Layout.FlexRow style={{ marginTop: 24 }}>
+                    <Text>
+                      Max listings (
+                      {
+                        store.currentCycleListingFeeDetails?.currentPeakTime
+                          .formatted
+                      }
+                      )
+                    </Text>
+                    <Tooltip
+                      title={i`The item threshold used to determine your listing fee.`}
+                      style={styles.overviewTooltip}
+                    >
+                      <Icon name="info" size={24} color={textBlack} />
+                    </Tooltip>
+                  </Layout.FlexRow>
+                  <Text style={styles.overviewNumber} weight="bold">
+                    {store.currentCycleListingFeeDetails?.currentPeakItems}
+                  </Text>
                 </Layout.FlexColumn>
               </Layout.FlexRow>
-              <Link
-                href={merchFeUrl(`/md/products`)}
-                style={styles.linkText}
-                underline
-                openInNewTab
-              >
-                View product listings
-              </Link>
             </div>
             <div
-              style={{ flex: 1, height: 180, alignContent: "space-between" }}
+              style={{ flex: 3, height: 180, alignContent: "space-between" }}
             >
               <Layout.FlexRow>
-                <Layout.FlexColumn style={styles.overviewText}>
-                  <Text style={styles.title}>Wish Standards tier</Text>
-                  <Layout.FlexRow
-                    alignItems="center"
-                    style={{ marginBottom: 24 }}
-                  >
-                    <Illustration
-                      name={tierThemes(lastestLevel).icon}
-                      alt={tierThemes(lastestLevel).icon}
-                      style={styles.badgeIcon}
-                    />
-                    <Text style={styles.badgeTitle} weight="bold">
-                      {tierThemes(lastestLevel).title}
-                    </Text>
-                  </Layout.FlexRow>
-                  <div className={css(styles.greyCard)}>{wssTierText}</div>
-                  <Link
-                    href={merchFeUrl(`/md/performance?tab=wish-standards`)}
-                    style={styles.linkText}
-                    underline
-                    openInNewTab
-                  >
-                    View Wish Standards
-                  </Link>
-                </Layout.FlexColumn>
+                <Text style={styles.title}>Listing fee schedule</Text>
               </Layout.FlexRow>
+              <Layout.FlexColumn style={styles.overviewText}>
+                <Layout.FlexRow>
+                  <Text>Calculation period</Text>
+                  <Tooltip
+                    title={i`The listing fee is calculated on a monthly cadence.`}
+                    style={styles.overviewTooltip}
+                  >
+                    <Icon name="info" size={24} color={textBlack} />
+                  </Tooltip>
+                </Layout.FlexRow>
+                <Text>
+                  {
+                    store.currentCycleListingFeeDetails?.currentCycleStartTime
+                      .formatted
+                  }
+                  -
+                  {
+                    store.currentCycleListingFeeDetails?.currentCycleEndTime
+                      .formatted
+                  }
+                </Text>
+                <Layout.FlexRow style={{ marginTop: 24 }}>
+                  <Text>Next charge date</Text>
+                  <Tooltip
+                    title={i`Listing fee charges may take a few days to process. `}
+                    style={styles.overviewTooltip}
+                  >
+                    <Icon name="info" size={24} color={textBlack} />
+                  </Tooltip>
+                </Layout.FlexRow>
+                <Text>
+                  {
+                    store.currentCycleListingFeeDetails?.currentCyclePayTime
+                      .formatted
+                  }
+                </Text>
+              </Layout.FlexColumn>
             </div>
-          </Layout.FlexRow>
-        </Card>
-      </Layout.FlexColumn>
-      <Layout.FlexColumn style={{ flex: 1 }}>
-        <Card style={styles.card}>
-          <Layout.FlexRow justifyContent="space-around">
-            <Layout.FlexColumn
-              style={{ flex: 1, alignContent: "space-between" }}
-            >
-              <Text style={styles.title}>Listing fee</Text>
-              <Text
-                style={{
-                  fontSize: 34,
-                  alignItems: "flex-start",
-                  height: "120px",
-                }}
-                weight="bold"
-              >
-                {store.currentCycleListingFeeDetails &&
-                  formatCurrency(
-                    store.currentCycleListingFeeDetails.currentFeeToPay.amount,
-                    store.currentCycleListingFeeDetails.currentFeeToPay
-                      .currencyCode,
-                  )}
-              </Text>
-              <Link
-                href={learnMoreLink}
-                style={styles.linkText}
-                underline
-                openInNewTab
-              >
-                Learn more
-              </Link>
-            </Layout.FlexColumn>
-            <Layout.FlexColumn style={styles.overviewText}>
-              <Layout.FlexRow>
-                <Text style={{ marginRight: 10 }}>Next charge date</Text>
-                <Tooltip
-                  title={i`Actual date may vary between 1 and 3 business days.`}
-                >
-                  <Icon name="info" size={20} color={textBlack} />
-                </Tooltip>
-              </Layout.FlexRow>
-              <Text style={{ marginBottom: 16 }}>
-                {
-                  store.currentCycleListingFeeDetails?.currentCyclePayTime
-                    .formatted
-                }
-              </Text>
-              <Text>Fee amount per item</Text>
-              <Text style={{ marginBottom: 16 }}>
-                {store.currentCycleListingFeeDetails &&
-                  formatCurrency(
-                    store.currentCycleListingFeeDetails.currentUnitPrice.amount,
-                    store.currentCycleListingFeeDetails.currentUnitPrice
-                      .currencyCode,
-                  )}
-              </Text>
-              <Text>Items charged</Text>
-              <Text>
-                {store.currentCycleListingFeeDetails?.currentItemsOverThreshold}
-              </Text>
-            </Layout.FlexColumn>
           </Layout.FlexRow>
         </Card>
       </Layout.FlexColumn>
@@ -270,24 +242,31 @@ const useStylesheet = () => {
           fontStyle: "normal",
           fontWeight: 700,
         },
-        overviewTitle: {
-          fontFamily: "ABC Ginto Normal",
+        overviewNumber: {
           fontSize: 20,
           fontStyle: "normal",
           fontWeight: 700,
-          lineHeight: 24,
+          lineHeight: "24px",
         },
         title: {
-          fontFamily: "ABC Ginto Normal",
-          fontSize: 20,
+          fontFamily: "ABC Ginto Nord",
+          fontSize: 16,
           fontWeight: 700,
-          color: textBlack,
+          color: "#0E161C",
           marginRight: 10,
+          lineHeight: "20px",
+          marginBottom: 16,
         },
         overviewText: {
           fontSize: 16,
           color: "#000",
           fontWeight: 400,
+          lineHeight: "24px",
+        },
+        overviewTooltip: {
+          display: "flex",
+          alignItems: "center",
+          marginLeft: 10,
         },
         marginTop: {
           fontSize: 16,
@@ -295,13 +274,15 @@ const useStylesheet = () => {
           fontWeight: 400,
           marginTop: 16,
         },
+        marginBottom: {
+          marginBottom: 16,
+        },
         body: {
           width: "100%",
           gap: 16,
         },
         line: { width: 0, height: 180, strokeWidth: 1, stroke: "#DCDCDA" },
         linkText: {
-          fontFamily: "ABC Ginto Normal",
           fontSize: 16,
           fontStyle: "normal",
           fontWeight: 500,

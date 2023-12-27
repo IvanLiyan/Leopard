@@ -222,6 +222,7 @@ const AboutStoreSection: React.FC<Props> = ({
                     ListingFee?.currentCycleListingFeeDetails
                       .currentFreeThreshold || 0
                   }
+                  size={100}
                 ></CircularProgressSection>
               </Layout.FlexColumn>
             </Layout.FlexRow>

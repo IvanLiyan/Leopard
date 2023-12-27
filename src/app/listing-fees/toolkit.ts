@@ -4,7 +4,6 @@ import {
   MerchantListingFeeHub,
   CurrentCycleListingFeeDetailsSchema,
   LatestListingFeeDetailsSchema,
-  PredictedListingFeeDetailSchema,
   WssMerchantLevelType,
   CurrencyValue,
   Scalars,
@@ -43,15 +42,16 @@ query MerchantListingFee {
             formatted(fmt: "MM/d/yy")
             __typename
         }
-      }
-      predictedListingFeeDetails{
-        latestWssTierLevel,
-        latestWssTierName,
-        nextUpdateDate{
-            formatted(fmt: "MM/d/yy")
-            __typename
+        currentPeakItems
+        currentPeakTime {
+          formatted(fmt: "%m/%d/%Y")
         }
-        predictedFreeThreshold
+        currentCycleStartTime {
+          formatted(fmt: "%m/%d/%Y")
+        }
+        currentCycleEndTime {
+          formatted(fmt: "%m/%d/%Y")
+        }
       }
     }
   }
@@ -86,12 +86,6 @@ class Store {
   @observable
   latestListingFeeDetails: LatestListingFeeDetailsSchema | null | undefined;
 
-  @observable
-  predictedListingFeeDetails:
-    | PredictedListingFeeDetailSchema
-    | null
-    | undefined;
-
   @action
   updateListingFeesData(data: MerchantListingFeeResponse) {
     const merchantListingFee = data?.currentMerchant?.merchantListingFee;
@@ -99,8 +93,6 @@ class Store {
       this.currentCycleListingFeeDetails =
         merchantListingFee.currentCycleListingFeeDetails;
       this.latestListingFeeDetails = merchantListingFee.latestListingFeeDetails;
-      this.predictedListingFeeDetails =
-        merchantListingFee.predictedListingFeeDetails;
     }
   }
 

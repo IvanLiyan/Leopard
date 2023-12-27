@@ -9,32 +9,29 @@ import CircularProgress, {
 const CircularProgressSection: React.FC<{
   currentCount: number;
   freeCount: number;
+  size: number;
 }> = (props) => {
-  const { currentCount, freeCount } = props;
+  const { currentCount, freeCount, size } = props;
 
   const process = useMemo(() => {
     const value = freeCount - currentCount;
     if (value <= 0) {
       return "over";
-    } else if (value < freeCount / 4) {
-      return "more";
     } else {
       return "less";
     }
   }, [currentCount, freeCount]);
 
   const processType = {
-    less: { value: 25, color: "#16A44C" },
-    more: {
-      value: 75,
-      color: "#FF9900",
-    },
+    less: { value: 50, color: "#16A44C" },
+
     over: {
       value: 100,
-      color: "#FF0100",
+      color: "#C8402A",
     },
   };
 
+  const boxSize = size + 20;
   const color = processType[process].color;
   const value = processType[process].value;
   const number = freeCount - currentCount;
@@ -43,8 +40,8 @@ const CircularProgressSection: React.FC<{
     <Box
       sx={{
         flexGrow: 1,
-        width: 120,
-        height: 120,
+        width: boxSize,
+        height: boxSize,
         background: "#fafafa",
         borderRadius: "50%",
         position: "relative",
@@ -55,8 +52,8 @@ const CircularProgressSection: React.FC<{
           position: "absolute",
           left: "50%",
           top: "50%",
-          width: 100,
-          height: 100,
+          width: size,
+          height: size,
           transform: "translate(-50%, -50%)",
         }}
       >
@@ -65,7 +62,7 @@ const CircularProgressSection: React.FC<{
           sx={{
             color: "#eee",
           }}
-          size={100}
+          size={size}
           thickness={8}
           value={100}
         />
@@ -75,6 +72,7 @@ const CircularProgressSection: React.FC<{
             left: "50%",
             top: "50%",
             fontSize: 14,
+            fontWeight: 700,
             transform: "translate(-50%, -50%)",
           }}
           weight="bold"
@@ -91,7 +89,7 @@ const CircularProgressSection: React.FC<{
               strokeLinecap: "round",
             },
           }}
-          size={100}
+          size={size}
           thickness={8}
           value={value}
         />

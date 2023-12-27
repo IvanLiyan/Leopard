@@ -201,6 +201,22 @@ input AdminRefreshCampaignQuantityInput {
   campaignId: ObjectIdType!
 }
 
+input AdminRemoveCountriesInput {
+  campaignId: ObjectIdType!
+  countries: [CountryCode!]!
+  comment: String!
+}
+
+type AdminRemoveCountriesMutation {
+  ok: Boolean!
+  message: String
+}
+
+type AdminRemoveProductsMutation {
+  ok: Boolean!
+  message: String
+}
+
 type AlertSchema {
   link: String
   description: String!
@@ -2712,6 +2728,10 @@ type CurrentCycleListingFeeDetailsSchema {
   currentFreeThreshold: Int!
   currentUnitPrice: CurrencyValue!
   currentItemsOverThreshold: Int!
+  currentPeakItems: Int!
+  currentPeakTime: Datetime!
+  currentCycleStartTime: Datetime!
+  currentCycleEndTime: Datetime!
   currentFeeToPay: CurrencyValue!
   currentCyclePayTime: Datetime!
 }
@@ -4788,6 +4808,7 @@ type LedgerItem {
   debitAmount: CurrencyValue
   type: LedgerLineItemType!
   feeType: LedgerLineItemFeeType
+  feeNote: String
 }
 
 type LedgerItemDescriptionDetails {
@@ -5387,6 +5408,7 @@ type MFPCampaignSchema {
   flashSaleDetails: [MFPVariationDiscountData!]
   flashSaleDetailsProductCount: Int
   countries: [Country!]
+  products: [GenericScalar!]
   skipShipping: Boolean!
   event: CampaignEventInfo
   genericUnqualifiedProductVariations: GenericScalar
@@ -5459,6 +5481,8 @@ type MFPServiceAdminMutations {
   expireWhitelistProducts(input: ExpireWhitelistProductsInput!): ExpireWhitelistProductsMutation!
   cancelMfpCampaign(input: CancelMFPCampaignInput!): AdminCancelMFPCampaign!
   refreshCampaignQuantity(input: AdminRefreshCampaignQuantityInput!): AdminRefreshCampaignQuantity!
+  removeProducts(input: RemoveProductsInput!): AdminRemoveProductsMutation!
+  removeCountries(input: AdminRemoveCountriesInput!): AdminRemoveCountriesMutation!
 }
 
 type MFPServiceMutations {
@@ -8520,7 +8544,7 @@ enum PermissionType {
   USER_GENERATED_PRODUCT_IMAGE_TAG
   COMPLETE_AUTHENTIC_BRAND_SELLER_BADGE_APPLICATIONS
   CAN_VIEW_TRANSACTION_DETAIL
-  MGC_IP_MANUAL_TAG
+  CAN_REQUEST_DATA_SYNTHESIS
   EDIT_ADMIN_PERMISSIONS
   CAN_VIEW_BRAND_LIST
   SHOW_PRODUCT_BOOST
@@ -8909,6 +8933,7 @@ enum PermissionType {
   CAN_VIEW_FRAUD_WORKERS
   VIEW_PAYMENT_DETAIL
   SHOW_PRODUCT_LOGISTIC_METADATA
+  MGC_IP_MANUAL_TAG
   LISTING_REVIEW_TAG_IN_HOUSE
   PRODUCT_RATING_TAG
   CAN_ACT_ON_CN_MERCHANT
@@ -10605,6 +10630,11 @@ type RemoveProduct {
 
 input RemoveProductInput {
   productId: ObjectIdType!
+}
+
+input RemoveProductsInput {
+  campaignId: ObjectIdType!
+  productIds: [ObjectIdType!]!
 }
 
 type RemoveShippingProfile {
