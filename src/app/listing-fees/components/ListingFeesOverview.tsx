@@ -154,7 +154,7 @@ const ListingFeesOverview: React.FC = () => {
                       </>
                     )}
                     <Tooltip
-                      title={i`The item threshold used to determine your listing fee.`}
+                      title={i`The max number of items used to determine your listing fee.`}
                       style={styles.overviewTooltip}
                     >
                       <Icon name="info" size={24} color={textBlack} />
