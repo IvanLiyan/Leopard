@@ -9,6 +9,7 @@ import { observer } from "mobx-react";
 import React, { useMemo } from "react";
 import { Alert, AlertTitle } from "@ContextLogic/atlas-ui";
 import Markdown from "@core/components/Markdown";
+import { merchFeUrl } from "@core/toolkit/router";
 
 type Props = {
   readonly merchantState: CommerceMerchantState;
@@ -42,7 +43,9 @@ const didNotUpgradeToPlatinumMarkdown =
 
 const bronzeFromInfractionsMarkdown =
   i`If you believe this is an error, you can ` +
-  i`**[dispute the infractions](${"/warnings/v2"})** to move up tiers`;
+  i`**[dispute the infractions](${merchFeUrl(
+    "/warnings/v2",
+  )})** to move up tiers`;
 
 const unvalidatedUnratedNoDataMarkdown =
   i`After you [validate your store](${"/seller-profile-verification"}), the rating will be ready when you've ` +

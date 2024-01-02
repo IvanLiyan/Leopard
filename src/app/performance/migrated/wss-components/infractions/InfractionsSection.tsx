@@ -14,6 +14,7 @@ import { StyleSheet } from "aphrodite";
 import { observer } from "mobx-react";
 import React, { useMemo } from "react";
 import { useQuery } from "@apollo/client";
+import { merchFeUrl } from "@core/toolkit/router";
 
 type Infraction = {
   readonly title: string;
@@ -114,7 +115,7 @@ const InfractionsSection: React.FC<InfractionsProps> = (props) => {
             </Text>
             <Markdown
               style={styles.subtitleText}
-              text={i`[View your infractions](${"/warnings/v2"})`}
+              text={i`[View your infractions](${merchFeUrl("/warnings/v2")})`}
               openLinksInNewTab
             />
           </Layout.FlexRow>
