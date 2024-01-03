@@ -111,12 +111,6 @@ const AboutStoreSection: React.FC<Props> = ({
     ? merchFeUrl("/account-balance-v2")
     : merchFeUrl("/account-balance");
 
-  if (storeStats.rating == null) {
-    return null;
-  }
-
-  const { averageProductRating, startDate, endDate } = storeStats.rating;
-
   const renderRight = () => (
     <Link href={merchFeUrl("/performance-overview")}>
       <Layout.FlexRow>
@@ -138,31 +132,38 @@ const AboutStoreSection: React.FC<Props> = ({
         templateColumns="1fr 1fr 1fr"
         className={css(styles.firstRow)}
       >
-        <Card contentContainerStyle={css(styles.card)}>
-          <Layout.FlexColumn>
-            <H6 className={css(styles.cardHeader)}>Average product rating</H6>
-            <Layout.FlexRow
-              justifyContent="flex-start"
-              className={css(styles.storeRating)}
-            >
-              {averageProductRating && (
-                <H4Markdown
-                  style={{ paddingRight: 8 }}
-                  text={numeral(averageProductRating).format("0.0")}
+        {storeStats.rating != null && (
+          <Card contentContainerStyle={css(styles.card)}>
+            <Layout.FlexColumn>
+              <H6 className={css(styles.cardHeader)}>Average product rating</H6>
+              <Layout.FlexRow
+                justifyContent="flex-start"
+                className={css(styles.storeRating)}
+              >
+                {storeStats.rating.averageProductRating && (
+                  <H4Markdown
+                    style={{ paddingRight: 8 }}
+                    text={numeral(
+                      storeStats.rating.averageProductRating,
+                    ).format("0.0")}
+                  />
+                )}
+                <StarRating
+                  ratingValue={storeStats.rating.averageProductRating || 0}
                 />
-              )}
-              <StarRating ratingValue={averageProductRating || 0} />
-            </Layout.FlexRow>
-            <Markdown
-              className={css(styles.date)}
-              text={i`Week of ${startDate.formatted} to ${endDate.formatted}`}
-            />
-          </Layout.FlexColumn>
-          <Link href={merchFeUrl("/performance-overview/wish-standards")}>
-            {ci18n("Refers to store metrics", "View Wish Standards")}
-          </Link>
-        </Card>
-        {confirmedAccountBalanceDisplay && (
+              </Layout.FlexRow>
+              <Markdown
+                className={css(styles.date)}
+                text={i`Week of ${storeStats.rating.startDate.formatted} to ${storeStats.rating.endDate.formatted}`}
+              />
+            </Layout.FlexColumn>
+            <Link href={merchFeUrl("/performance-overview/wish-standards")}>
+              {ci18n("Refers to store metrics", "View Wish Standards")}
+            </Link>
+          </Card>
+        )}
+
+        {storeStats.rating != null && confirmedAccountBalanceDisplay && (
           <Card contentContainerStyle={css(styles.card)}>
             <Layout.FlexColumn>
               <H6 className={css(styles.cardHeader)}>
@@ -177,25 +178,27 @@ const AboutStoreSection: React.FC<Props> = ({
             <Link href={accountBalanceLink}>View account balance</Link>
           </Card>
         )}
-        {pendingAccountBalanceDisplay && pendingAccountBalanceAmount != null && (
-          <Card contentContainerStyle={css(styles.card)}>
-            <Layout.FlexColumn>
-              <H6 className={css(styles.cardHeader)}>
-                {ci18n("Payment balance", "Pending balance") +
-                  ` (${primaryCurrency})`}
-              </H6>
-              <H4Markdown
-                className={css(styles.contentHeader)}
-                text={
-                  pendingAccountBalanceAmount < 0
-                    ? formatCurrency(0, primaryCurrency)
-                    : pendingAccountBalanceDisplay
-                }
-              />
-            </Layout.FlexColumn>
-            <Link href={accountBalanceLink}>View account balance</Link>
-          </Card>
-        )}
+        {storeStats.rating != null &&
+          pendingAccountBalanceDisplay &&
+          pendingAccountBalanceAmount != null && (
+            <Card contentContainerStyle={css(styles.card)}>
+              <Layout.FlexColumn>
+                <H6 className={css(styles.cardHeader)}>
+                  {ci18n("Payment balance", "Pending balance") +
+                    ` (${primaryCurrency})`}
+                </H6>
+                <H4Markdown
+                  className={css(styles.contentHeader)}
+                  text={
+                    pendingAccountBalanceAmount < 0
+                      ? formatCurrency(0, primaryCurrency)
+                      : pendingAccountBalanceDisplay
+                  }
+                />
+              </Layout.FlexColumn>
+              <Link href={accountBalanceLink}>View account balance</Link>
+            </Card>
+          )}
         {ListingFee && (
           <Card style={styles.card}>
             <Layout.FlexRow justifyContent="space-between">
