@@ -51,10 +51,16 @@ const ComplianceV2: React.FC<Props> = ({
   } = state;
 
   const learnMoreLink = zendeskURL("360025359874");
+  const learnMoreLink_CE = zendeskURL("115001731533");
   const p65Description =
     i`If you ship products to California, you may be required to ` +
     i`provide California Proposition 65 information. [Learn more](${learnMoreLink})`;
-  const docDescription = i`You are encouraged to use the field below to upload any compliance documentation, including any laboratory results, testing or certificates, that may be relevant to or relate to the product you are listing for sale.  If you are  selling the product into the State of California in the United States, and it may contain an ingredient or compound on the California Prop 65 List (The Proposition 65 List - OEHHA (ca.gov)), you can use this field to upload these compliance documents.`;
+  const docDescription = i`You are encouraged to use the field below to upload any compliance documentation, including any laboratory results, testing or certificates, that may be relevant to or relate to the product you are listing for sale.`;
+  const docDescription_forUS = i`If you are  selling the product into the State of California in the United States, and it may contain an ingredient or compound on the California Prop 65 List (The Proposition 65 List - OEHHA (ca.gov)), you can use this field to upload these compliance documents.`;
+  const docDescription_forCE = i`If you offer products with health, safety, or environmental conformity requirements, upload the conformity documentation here. This information may be provided to market surveillance authorities upon request. In your product listing, provide the applicable marking or labeling for the jurisdictions in which the product is marketed (e.g. CE, KC, and/or FCC mark).`;
+  const ceMarkingDescription =
+    i`If you ship products to EU you may be required to ` +
+    i`provide CE marking information. [Learn more](${learnMoreLink_CE})`;
 
   const sortedChems = useMemo(() => {
     const stripPrefixes = (c: string): string => {
@@ -133,18 +139,6 @@ const ComplianceV2: React.FC<Props> = ({
             />
           </Field>
         </Stack>
-        {showComplianceDocumentsUploadFlow && !dKeyIsLoading && (
-          <>
-            <Heading variant="h4">
-              {ci18n(
-                "Product add/edit form compliance section header",
-                "Compliance documentation",
-              )}
-            </Heading>
-            <Markdown>{docDescription}</Markdown>
-            <OptionalDocumentationUpload />
-          </>
-        )}
         {!hasVariations && (
           <>
             <Heading variant="h4">
@@ -159,6 +153,53 @@ const ComplianceV2: React.FC<Props> = ({
               disabled={isSubmitting}
               data-cy="compliance"
             />
+          </>
+        )}
+        <Heading variant="h4">
+          {ci18n(
+            "Product add/edit form compliance section header",
+            "CE marking",
+          )}
+        </Heading>
+        <Markdown>{ceMarkingDescription}</Markdown>
+        {showComplianceDocumentsUploadFlow && !dKeyIsLoading && (
+          <>
+            <Heading variant="h4">
+              {ci18n(
+                "Product add/edit form compliance section header",
+                "Compliance documentation",
+              )}
+            </Heading>
+            <Markdown>{docDescription}</Markdown>
+            <li>
+              <span className={css(styles.markdownFont)}>
+                {docDescription_forUS}
+              </span>
+            </li>
+            <li>
+              <span className={css(styles.markdownFont)}>
+                {docDescription_forCE}
+              </span>
+            </li>
+            <OptionalDocumentationUpload />
+            <span className={css(styles.markdownFont)}>
+              {i`File format accepted: `}
+              <b>PDF, DOC, DOCX, PNG, JPG</b>
+            </span>
+            <span className={css(styles.markdownFont)}>
+              {i`Max file size `}
+              <b>10 MB</b>
+            </span>
+            <span className={css(styles.markdownFont)}>
+              {i`Max character limit: `}
+              <b>
+                40{" "}
+                {ci18n(
+                  "Description in upload file limit prompt text",
+                  "characters",
+                )}
+              </b>
+            </span>
           </>
         )}
       </Stack>
@@ -180,6 +221,10 @@ const useStylesheet = () => {
           flex: 1,
           overflow: "hidden",
           minWidth: 0,
+        },
+        markdownFont: {
+          fontSize: 14,
+          color: "#0E161C",
         },
       }),
     [],
