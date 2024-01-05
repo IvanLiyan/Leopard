@@ -163,7 +163,7 @@ const AboutStoreSection: React.FC<Props> = ({
           </Card>
         )}
 
-        {storeStats.rating != null && confirmedAccountBalanceDisplay && (
+        {confirmedAccountBalanceDisplay && (
           <Card contentContainerStyle={css(styles.card)}>
             <Layout.FlexColumn>
               <H6 className={css(styles.cardHeader)}>
@@ -178,27 +178,25 @@ const AboutStoreSection: React.FC<Props> = ({
             <Link href={accountBalanceLink}>View account balance</Link>
           </Card>
         )}
-        {storeStats.rating != null &&
-          pendingAccountBalanceDisplay &&
-          pendingAccountBalanceAmount != null && (
-            <Card contentContainerStyle={css(styles.card)}>
-              <Layout.FlexColumn>
-                <H6 className={css(styles.cardHeader)}>
-                  {ci18n("Payment balance", "Pending balance") +
-                    ` (${primaryCurrency})`}
-                </H6>
-                <H4Markdown
-                  className={css(styles.contentHeader)}
-                  text={
-                    pendingAccountBalanceAmount < 0
-                      ? formatCurrency(0, primaryCurrency)
-                      : pendingAccountBalanceDisplay
-                  }
-                />
-              </Layout.FlexColumn>
-              <Link href={accountBalanceLink}>View account balance</Link>
-            </Card>
-          )}
+        {pendingAccountBalanceDisplay && pendingAccountBalanceAmount != null && (
+          <Card contentContainerStyle={css(styles.card)}>
+            <Layout.FlexColumn>
+              <H6 className={css(styles.cardHeader)}>
+                {ci18n("Payment balance", "Pending balance") +
+                  ` (${primaryCurrency})`}
+              </H6>
+              <H4Markdown
+                className={css(styles.contentHeader)}
+                text={
+                  pendingAccountBalanceAmount < 0
+                    ? formatCurrency(0, primaryCurrency)
+                    : pendingAccountBalanceDisplay
+                }
+              />
+            </Layout.FlexColumn>
+            <Link href={accountBalanceLink}>View account balance</Link>
+          </Card>
+        )}
         {ListingFee && (
           <Card style={styles.card}>
             <Layout.FlexRow justifyContent="space-between">
