@@ -4,7 +4,7 @@ body {
   margin: 0px;
   min-width: auto !important;
   background-color: #f8fafb;
-  font-family: Proxima-Regular;
+  font-family: Ginto-Regular;
 }
 
 a {
@@ -34,54 +34,35 @@ label {
 }
 
 @font-face {
-  font-family: Proxima;
+  font-family: Ginto;
   font-weight: 400;
-  src: url("//d2ujdsqe3ri19m.cloudfront.net/latest/assets/fonts/proximanova-regular")
+  src: url("//main.cdn.merchant.wish.com/latest/assets/fonts/ginto-regular.otf")
     format("opentype");
 }
 @font-face {
-  font-family: Proxima;
-  font-style: italic;
-  src: url("//d2ujdsqe3ri19m.cloudfront.net/latest/assets/fonts/proximanova-regularit")
+  font-family: Ginto;
+  font-weight: 400;
+  src: url("//main.cdn.merchant.wish.com/latest/assets/fonts/ginto-regular.otf")
     format("opentype");
 }
 @font-face {
-  font-family: Proxima;
-  font-weight: 500;
-  src: url("//d2ujdsqe3ri19m.cloudfront.net/latest/assets/fonts/proximanova-medium")
-    format("opentype");
-}
-@font-face {
-  font-family: Proxima;
-  font-weight: 500;
-  font-style: italic;
-  src: url("//d2ujdsqe3ri19m.cloudfront.net/latest/assets/fonts/proximanova-mediumit")
-    format("opentype");
-}
-@font-face {
-  font-family: Proxima;
+  font-family: Ginto;
   font-weight: 600;
-  src: url("//d2ujdsqe3ri19m.cloudfront.net/latest/assets/fonts/proximanova-semibold")
+  src: url("//main.cdn.merchant.wish.com/latest/assets/fonts/ginto-medium.otf")
     format("opentype");
 }
+
 @font-face {
-  font-family: Proxima;
-  font-weight: 600;
-  font-style: italic;
-  src: url("//d2ujdsqe3ri19m.cloudfront.net/latest/assets/fonts/proximanova-semiboldit")
-    format("opentype");
-}
-@font-face {
-  font-family: Proxima;
+  font-family: Ginto;
   font-weight: 700;
-  src: url("//d2ujdsqe3ri19m.cloudfront.net/latest/assets/fonts/proximanova-bold")
+  src: url("//main.cdn.merchant.wish.com/latest/assets/fonts/ginto-bold.otf")
     format("opentype");
 }
+
 @font-face {
-  font-family: Proxima;
-  font-weight: 700;
-  font-style: italic;
-  src: url("//d2ujdsqe3ri19m.cloudfront.net/latest/assets/fonts/proximanova-boldit")
+  font-family: Ginto;
+  font-weight: 200;
+  src: url("//main.cdn.merchant.wish.com/latest/assets/fonts/ginto-light.otf")
     format("opentype");
 }
 

@@ -138,7 +138,7 @@ const useStylesheet = ({
   return useMemo(() => {
     return StyleSheet.create({
       root: {
-        fontFamily: fonts.proxima,
+        fontFamily: fonts.ginto,
         display: "flex",
         WebkitFlexShrink: 0,
         WebkitFlexBasis: "auto",
@@ -181,7 +181,7 @@ const useStylesheet = ({
         fontSize: 20,
         lineHeight: 1.4,
         color: textBlack,
-        fontFamily: fonts.proxima,
+        fontFamily: fonts.ginto,
         marginTop: 20,
       },
       imageContainer: {

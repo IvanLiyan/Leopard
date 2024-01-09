@@ -167,7 +167,7 @@ const ThingsToWatchSectionBody: React.FC<{
                 row.type === "Performance metrics" ? (
                   <Link openInNewTab href={row.href}>
                     <Text
-                      style={{ fontFamily: "Proxima-Semibold" }}
+                      style={{ fontFamily: "Ginto-Medium" }}
                     >{i`${row.name}`}</Text>
                   </Link>
                 ) : (
@@ -260,7 +260,7 @@ const useStylesheet = () => {
           margin: "0px 4px 0px 4px",
         },
         fontFamily: {
-          fontFamily: `Proxima-Semibold`,
+          fontFamily: `Ginto-Medium`,
         },
       }),
     [borderPrimary, surfaceLightest],

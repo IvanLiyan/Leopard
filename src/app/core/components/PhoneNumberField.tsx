@@ -296,7 +296,7 @@ const useStylesheet = ({
           animationName: [errorKeyframes],
           animationDuration: "300ms",
           cursor: "default",
-          fontFamily: fonts.proxima,
+          fontFamily: fonts.ginto,
         },
       }),
     [errorMessage, borderColor, disabled, errorKeyframes],

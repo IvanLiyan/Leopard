@@ -210,7 +210,7 @@ const MessagesCard: React.FC<Pick<BaseProps, "className" | "style">> = ({
               variant={viewingTranslatedMessages ? "filled" : "outlined"}
               disableRipple
               sx={{
-                fontFamily: "Proxima",
+                fontFamily: "Ginto",
               }}
             />
           </div>

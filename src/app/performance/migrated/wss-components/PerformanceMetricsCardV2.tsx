@@ -113,7 +113,7 @@ const PerformanceMetricsCardV2: React.FC<PerformanceMetricsCardPropsV2> = ({
               color="primary"
               variant={"filled"}
               sx={{
-                fontFamily: "Proxima",
+                fontFamily: "Ginto",
               }}
             />
           </>

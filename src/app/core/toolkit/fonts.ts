@@ -1,4 +1,4 @@
-export const proxima = "Proxima";
+export const ginto = "Ginto";
 export const weightBold = "bold";
 export const weightMedium = 500;
 export const weightSemibold = 600;

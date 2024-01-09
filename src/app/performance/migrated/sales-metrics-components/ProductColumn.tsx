@@ -17,7 +17,7 @@ import { CopyButton } from "@ContextLogic/lego";
 /* Lego Toolkit */
 import { css } from "@core/toolkit/styling";
 import { palettes } from "@deprecated/pkg/toolkit/lego-legacy/DEPRECATED_colors";
-import { weightBold, proxima } from "@core/toolkit/fonts";
+import { weightBold, ginto } from "@core/toolkit/fonts";
 
 /* Merchant Components */
 import ProductDetailModal from "@core/components/products/ProductDetailModal";
@@ -203,7 +203,7 @@ const useStylesheet = ({
         textBodyId: {
           fontSize: 12,
           color: palettes.coreColors.DarkWishBlue,
-          fontFamily: proxima,
+          fontFamily: ginto,
         },
       }),
     [imageSize, fontSize, fontColor],

@@ -26,7 +26,7 @@
             <rect id="Mask" fill-opacity="0" fill="#D8D8D8" x="0" y="0" width="400" height="150"></rect>
             <g id="Group-4">
                 <rect id="Combined-Shape" fill-opacity="0" fill="#FFFFFF" opacity="0" x="0" y="0" width="400" height="112" rx="4"></rect>
-                <text id="off" font-family="ProximaNova-Medium, Proxima Nova" font-size="20" font-weight="400" line-spacing="28" fill="#4A5F6E">
+                <text id="off" font-family="Ginto" font-size="20" font-weight="400" line-spacing="28" fill="#4A5F6E">
                     <tspan x="218" y="75">off</tspan>
                 </text>
                 <g id="ProductBoost-logo" transform="translate(132.000000, 27.000000)" fill="#2FB7EC">
