@@ -51,7 +51,7 @@ const ComplianceV2: React.FC<Props> = ({
   } = state;
 
   const learnMoreLink = zendeskURL("360025359874");
-  const learnMoreLink_CE = zendeskURL("115001731533");
+  const learnMoreLink_CE = zendeskURL("21421618424603");
   const p65Description =
     i`If you ship products to California, you may be required to ` +
     i`provide California Proposition 65 information. [Learn more](${learnMoreLink})`;
