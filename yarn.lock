@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@ContextLogic/atlas-ui@^0.0.1-1686342553":
-  version "0.0.1-1686342553"
-  resolved "https://npm.infra.wish.com/@ContextLogic%2fatlas-ui/-/atlas-ui-0.0.1-1686342553.tgz#4e6e49c6a8a98ece7b40466a39822f1320a2c631"
-  integrity sha512-S2qVMcEalKJSM9hUtUiz1tO2jDQq5U3OgjQWUlScv7nx/M9UTmkKjzHftESmMNYO4sJ5aZjGel5QOKOqjzRvlg==
+"@ContextLogic/atlas-ui@^0.0.1-1704996381":
+  version "0.0.1-1704996381"
+  resolved "https://npm.infra.wish.com/@ContextLogic%2fatlas-ui/-/atlas-ui-0.0.1-1704996381.tgz#6a4dbef75c9124c44c39f530f0c302f688d1ae9a"
+  integrity sha512-fpSXsex7FfbrkQKeckJ72lpFdiqOg/y5TKveVarBXuQUxDfUkW7Cj2HvoZQzxztZX2rQZcq/9o7KnLk9YvDnVw==
   dependencies:
     "@emotion/react" "^11.10.4"
     "@emotion/styled" "^11.10.4"

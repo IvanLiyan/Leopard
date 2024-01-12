@@ -18,7 +18,7 @@
     "codegen": "graphql-codegen -o -w --debug --verbose"
   },
   "dependencies": {
-    "@ContextLogic/atlas-ui": "^0.0.1-1686342553",
+    "@ContextLogic/atlas-ui": "^0.0.1-1704996381",
     "@ContextLogic/lego": "^0.0.1-1684349368",
     "@ContextLogic/merchantstrings": "^0.0.1704334089",
     "@ContextLogic/zeus": "^0.0.1-1669324295",
