@@ -20,7 +20,7 @@
   "dependencies": {
     "@ContextLogic/atlas-ui": "^0.0.1-1704996381",
     "@ContextLogic/lego": "^0.0.1-1684349368",
-    "@ContextLogic/merchantstrings": "^0.0.1704334089",
+    "@ContextLogic/merchantstrings": "^0.0.1705473817",
     "@ContextLogic/zeus": "^0.0.1-1669324295",
     "@apollo/client": "^3.4.16",
     "@emotion/react": "^11.10.4",

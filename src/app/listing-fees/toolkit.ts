@@ -39,8 +39,7 @@ query MerchantListingFee {
             currencyCode
         }
         currentCyclePayTime{
-            formatted(fmt: "MM/d/yy")
-            __typename
+            formatted(fmt: "%m/%d/%Y")
         }
         currentPeakItems
         currentPeakTime {

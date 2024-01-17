@@ -29,8 +29,8 @@ const ListingFeesOverview: React.FC = () => {
           <Layout.FlexRow>
             <div
               style={{
-                flex: 5,
-                height: 180,
+                flex: 4,
+                height: 192,
                 borderRight: "1px solid #DCDCDA",
                 marginRight: 24,
                 paddingRight: 24,
@@ -38,7 +38,7 @@ const ListingFeesOverview: React.FC = () => {
               }}
             >
               <Layout.FlexRow alignItems="center">
-                <Text style={styles.title}>Current listing</Text>
+                <Text style={styles.title}>Active product listings</Text>
               </Layout.FlexRow>
               <Layout.FlexRow justifyContent="space-between">
                 <Layout.FlexColumn style={{ marginRight: 50 }}>
@@ -50,25 +50,26 @@ const ListingFeesOverview: React.FC = () => {
                       store.currentCycleListingFeeDetails
                         ?.currentFreeThreshold || 0
                     }
-                    size={120}
+                    size={100}
                   ></CircularProgressSection>
                 </Layout.FlexColumn>
                 <Layout.FlexColumn style={styles.overviewText}>
                   <Layout.FlexRow>
-                    <Text>Current items</Text>
+                    <Text>Active listings</Text>
                     <Tooltip
-                      title={i`The number of items in your inventory is calculated daily. `}
+                      title={i`It can take a few days for recently disabled or new active listings to reflect in this count. `}
                       style={styles.overviewTooltip}
                     >
                       <Icon name="info" size={24} color={textBlack} />
                     </Tooltip>
                   </Layout.FlexRow>
                   <Text
-                    style={[styles.overviewNumber, styles.marginBottom]}
+                    style={[styles.overviewBigNumber, styles.marginBottom]}
                     weight="bold"
                   >
                     {store.latestListingFeeDetails?.latestItems || 0}
                   </Text>
+
                   <Link
                     href={merchFeUrl(`/md/products`)}
                     style={styles.linkText}
@@ -83,7 +84,7 @@ const ListingFeesOverview: React.FC = () => {
             <div
               style={{
                 flex: 5,
-                height: 180,
+                height: 192,
                 borderRight: "1px solid #DCDCDA",
                 marginRight: 24,
                 paddingRight: 24,
@@ -91,12 +92,14 @@ const ListingFeesOverview: React.FC = () => {
               }}
             >
               <Layout.FlexRow>
-                <Text style={styles.title}>Listing fee</Text>
+                <Text style={styles.title}>Listing fees</Text>
               </Layout.FlexRow>
               <Layout.FlexRow justifyContent="space-between">
-                <Layout.FlexColumn style={styles.overviewText}>
+                <Layout.FlexColumn
+                  style={[styles.overviewText, styles.flexBasis]}
+                >
                   <Text>Current listing fee</Text>
-                  <Text style={styles.overviewNumber} weight="bold">
+                  <Text style={styles.overviewBigNumber} weight="bold">
                     {store.currentCycleListingFeeDetails &&
                       formatCurrency(
                         store.currentCycleListingFeeDetails.currentFeeToPay
@@ -105,19 +108,50 @@ const ListingFeesOverview: React.FC = () => {
                           .currencyCode,
                       )}
                   </Text>
-                  <Text style={{ marginTop: 24 }}>Fee amount per item</Text>
-                  <Text style={styles.overviewNumber} weight="bold">
-                    {store.currentCycleListingFeeDetails &&
-                      formatCurrency(
-                        store.currentCycleListingFeeDetails.currentUnitPrice
-                          .amount,
-                        store.currentCycleListingFeeDetails.currentUnitPrice
-                          .currencyCode,
-                      )}
+                  <Text style={[styles.feeText, styles.margin8Style]}>
+                    Your Listing fees are determined by the Listings subject to
+                    fee and Fee amount per item.
                   </Text>
                 </Layout.FlexColumn>
-                <Layout.FlexColumn style={styles.overviewText}>
+                <Layout.FlexColumn
+                  style={[
+                    styles.overviewText,
+                    styles.flexBasis,
+                    styles.marginLeft,
+                  ]}
+                >
                   <Layout.FlexRow>
+                    <Text>Listings subject to fee</Text>
+                    <Tooltip
+                      title={i`We will deduct a listing fee from your account based on this number of active listings. `}
+                      style={styles.overviewTooltip}
+                    >
+                      <Icon name="info" size={24} color={textBlack} />
+                    </Tooltip>
+                  </Layout.FlexRow>
+                  <Text style={[styles.overviewNumber]} weight="bold">
+                    {store.currentCycleListingFeeDetails &&
+                      (store.currentCycleListingFeeDetails?.currentPeakItems -
+                        store.currentCycleListingFeeDetails
+                          ?.currentFreeThreshold >
+                      0
+                        ? store.currentCycleListingFeeDetails
+                            ?.currentPeakItems -
+                          store.currentCycleListingFeeDetails
+                            ?.currentFreeThreshold
+                        : 0)}
+                  </Text>
+                  <Text style={styles.margin8Style}>Fee amount per item</Text>
+                  <Text style={styles.overviewNumber} weight="bold">
+                    {store.currentCycleListingFeeDetails &&
+                      formatCurrency(
+                        store.currentCycleListingFeeDetails.currentUnitPrice
+                          .amount,
+                        store.currentCycleListingFeeDetails.currentUnitPrice
+                          .currencyCode,
+                      )}
+                  </Text>
+                  <Layout.FlexRow style={styles.margin8Style}>
                     <Text>Free threshold</Text>
                     <Tooltip
                       title={i`Your free threshold is based on your highest Wish Standards tier within the last 90 days.`}
@@ -139,35 +173,11 @@ const ListingFeesOverview: React.FC = () => {
                       style={styles.badgeSmallIcon}
                     />
                   </Layout.FlexRow>
-                  <Layout.FlexRow style={{ marginTop: 24 }}>
-                    {store.currentCycleListingFeeDetails && (
-                      <>
-                        <Text>Max listings</Text>
-                        <Text>
-                          (
-                          {
-                            store.currentCycleListingFeeDetails.currentPeakTime
-                              .formatted
-                          }
-                          )
-                        </Text>
-                      </>
-                    )}
-                    <Tooltip
-                      title={i`The max number of items used to determine your listing fee.`}
-                      style={styles.overviewTooltip}
-                    >
-                      <Icon name="info" size={24} color={textBlack} />
-                    </Tooltip>
-                  </Layout.FlexRow>
-                  <Text style={styles.overviewNumber} weight="bold">
-                    {store.currentCycleListingFeeDetails?.currentPeakItems}
-                  </Text>
                 </Layout.FlexColumn>
               </Layout.FlexRow>
             </div>
             <div
-              style={{ flex: 3, height: 180, alignContent: "space-between" }}
+              style={{ flex: 3, height: 192, alignContent: "space-between" }}
             >
               <Layout.FlexRow>
                 <Text style={styles.title}>Listing fee schedule</Text>
@@ -194,9 +204,9 @@ const ListingFeesOverview: React.FC = () => {
                   }
                 </Text>
                 <Layout.FlexRow style={{ marginTop: 24 }}>
-                  <Text>Next charge date</Text>
+                  <Text>Next fee statement</Text>
                   <Tooltip
-                    title={i`Listing fee charges may take a few days to process. `}
+                    title={i`Fees are deducted on your next pay cycle.`}
                     style={styles.overviewTooltip}
                   >
                     <Icon name="info" size={24} color={textBlack} />
@@ -226,7 +236,7 @@ const useStylesheet = () => {
       StyleSheet.create({
         card: {
           boxSizing: "border-box",
-          height: 230,
+          height: 244,
           fontSize: 28,
           color: textBlack,
           padding: 24,
@@ -238,6 +248,9 @@ const useStylesheet = () => {
           height: 24,
           marginLeft: 4,
         },
+        marginLeft: {
+          marginLeft: "24px",
+        },
         badgeIcon: {
           height: 48,
           marginRight: 4,
@@ -247,8 +260,22 @@ const useStylesheet = () => {
           fontStyle: "normal",
           fontWeight: 700,
         },
+        flexBasis: { flex: 1 },
+        feeText: {
+          background: "rgba(239, 244, 246, 1)",
+          borderRadius: "8px",
+          padding: "17px",
+          fontSize: 14,
+          lineHeight: "20px",
+        },
         overviewNumber: {
-          fontSize: 20,
+          fontSize: 16,
+          fontStyle: "normal",
+          fontWeight: 700,
+          lineHeight: "24px",
+        },
+        overviewBigNumber: {
+          fontSize: 24,
           fontStyle: "normal",
           fontWeight: 700,
           lineHeight: "24px",
@@ -282,11 +309,14 @@ const useStylesheet = () => {
         marginBottom: {
           marginBottom: 16,
         },
+        margin8Style: {
+          marginTop: "8px",
+        },
         body: {
           width: "100%",
           gap: 16,
         },
-        line: { width: 0, height: 180, strokeWidth: 1, stroke: "#DCDCDA" },
+        line: { width: 0, height: 192, strokeWidth: 1, stroke: "#DCDCDA" },
         linkText: {
           fontSize: 16,
           fontStyle: "normal",

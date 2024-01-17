@@ -23,8 +23,7 @@ const CircularProgressSection: React.FC<{
   }, [currentCount, freeCount]);
 
   const processType = {
-    less: { value: 50, color: "#16A44C" },
-
+    less: { value: (currentCount / freeCount) * 100, color: "#16A44C" },
     over: {
       value: 100,
       color: "#C8402A",
@@ -34,67 +33,67 @@ const CircularProgressSection: React.FC<{
   const boxSize = size + 20;
   const color = processType[process].color;
   const value = processType[process].value;
-  const number = freeCount - currentCount;
-  const numberText = number > 0 ? `+${number}` : number;
   return (
-    <Box
-      sx={{
-        flexGrow: 1,
-        width: boxSize,
-        height: boxSize,
-        background: "#fafafa",
-        borderRadius: "50%",
-        position: "relative",
-      }}
-    >
+    <div>
       <Box
         sx={{
-          position: "absolute",
-          left: "50%",
-          top: "50%",
-          width: size,
-          height: size,
-          transform: "translate(-50%, -50%)",
+          flexGrow: 1,
+          width: boxSize,
+          height: boxSize,
+          background: "#fafafa",
+          borderRadius: "50%",
+          position: "relative",
         }}
       >
-        <CircularProgress
-          variant="determinate"
+        <Box
           sx={{
-            color: "#eee",
-          }}
-          size={size}
-          thickness={8}
-          value={100}
-        />
-        <Text
-          style={{
             position: "absolute",
             left: "50%",
             top: "50%",
-            fontSize: 14,
-            fontWeight: 700,
+            width: size,
+            height: size,
             transform: "translate(-50%, -50%)",
           }}
-          weight="bold"
         >
-          {numberText}
-        </Text>
-        <CircularProgress
-          variant="determinate"
-          sx={{
-            color: color,
-            position: "absolute",
-            left: 0,
-            [`& .${circularProgressClasses.circle}`]: {
-              strokeLinecap: "round",
-            },
-          }}
-          size={size}
-          thickness={8}
-          value={value}
-        />
+          <CircularProgress
+            variant="determinate"
+            sx={{
+              color: "#eee",
+            }}
+            size={size}
+            thickness={8}
+            value={100}
+          />
+
+          <CircularProgress
+            variant="determinate"
+            sx={{
+              color: color,
+              position: "absolute",
+              left: 0,
+              [`& .${circularProgressClasses.circle}`]: {
+                strokeLinecap: "round",
+              },
+            }}
+            size={size}
+            thickness={8}
+            value={value}
+          />
+        </Box>
       </Box>
-    </Box>
+      <Text
+        style={{
+          fontSize: 14,
+          fontWeight: 700,
+          with: boxSize,
+          textAlign: "center",
+          marginTop: 10,
+        }}
+        weight="bold"
+      >
+        {currentCount} / {freeCount}
+      </Text>
+    </div>
   );
 };
 

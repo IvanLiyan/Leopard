@@ -121,7 +121,7 @@ const ManageProductsSteps: React.FC = () => {
       title={i`Manage underperforming products`}
       subtitle={() => (
         <Text style={{ fontSize: 16 }}>
-          {i`How to disable underperforming products using CSV to avoid listing fees`}
+          {i`How to disable underperforming products to minimize or avoid listing fees`}
         </Text>
       )}
     >
