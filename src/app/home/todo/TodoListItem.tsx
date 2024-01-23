@@ -120,7 +120,11 @@ const TodoListItem: React.FC<TodoListItemProps> = ({
         if (specialActionRoute !== undefined) {
           SpecialActionRouteActions[specialActionRoute]();
         } else {
-          await navigationStore.navigate(merchFeUrl(action.url));
+          if (action.url.startsWith("https://")) {
+            await navigationStore.navigate(action.url);
+          } else {
+            await navigationStore.navigate(merchFeUrl(action.url));
+          }
         }
 
         if (action.complete_on_click) {
