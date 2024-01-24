@@ -29,7 +29,7 @@ const ListingFeesOverview: React.FC = () => {
           <Layout.FlexRow>
             <div
               style={{
-                flex: 4,
+                flex: 2,
                 height: 192,
                 borderRight: "1px solid #DCDCDA",
                 marginRight: 24,
@@ -83,9 +83,8 @@ const ListingFeesOverview: React.FC = () => {
             </div>
             <div
               style={{
-                flex: 5,
+                flex: 4,
                 height: 192,
-                borderRight: "1px solid #DCDCDA",
                 marginRight: 24,
                 paddingRight: 24,
                 alignContent: "space-between",
@@ -94,7 +93,10 @@ const ListingFeesOverview: React.FC = () => {
               <Layout.FlexRow>
                 <Text style={styles.title}>Listing fees</Text>
               </Layout.FlexRow>
-              <Layout.FlexRow justifyContent="space-between">
+              <Layout.FlexRow
+                justifyContent="space-between"
+                alignItems="flex-start"
+              >
                 <Layout.FlexColumn
                   style={[styles.overviewText, styles.flexBasis]}
                 >
@@ -109,8 +111,8 @@ const ListingFeesOverview: React.FC = () => {
                       )}
                   </Text>
                   <Text style={[styles.feeText, styles.margin8Style]}>
-                    Your Listing fees are determined by the Listings subject to
-                    fee and Fee amount per item.
+                    Your Listing fees are based on any Active listings that
+                    exceed your Free threshold within the Calculation period.
                   </Text>
                 </Layout.FlexColumn>
                 <Layout.FlexColumn
@@ -121,7 +123,7 @@ const ListingFeesOverview: React.FC = () => {
                   ]}
                 >
                   <Layout.FlexRow>
-                    <Text>Listings subject to fee</Text>
+                    <Text>Max active listings</Text>
                     <Tooltip
                       title={i`We will deduct a listing fee from your account based on this number of active listings. `}
                       style={styles.overviewTooltip}
@@ -129,18 +131,21 @@ const ListingFeesOverview: React.FC = () => {
                       <Icon name="info" size={24} color={textBlack} />
                     </Tooltip>
                   </Layout.FlexRow>
-                  <Text style={[styles.overviewNumber]} weight="bold">
-                    {store.currentCycleListingFeeDetails &&
-                      (store.currentCycleListingFeeDetails?.currentPeakItems -
-                        store.currentCycleListingFeeDetails
-                          ?.currentFreeThreshold >
-                      0
-                        ? store.currentCycleListingFeeDetails
-                            ?.currentPeakItems -
-                          store.currentCycleListingFeeDetails
-                            ?.currentFreeThreshold
-                        : 0)}
-                  </Text>
+                  {store.currentCycleListingFeeDetails && (
+                    <div style={{ display: "flex" }}>
+                      <Text style={styles.overviewNumber} weight="bold">
+                        {store.currentCycleListingFeeDetails.currentPeakItems}
+                      </Text>
+                      <Text style={{ fontWeight: "normal", marginLeft: "5px" }}>
+                        (
+                        {
+                          store.currentCycleListingFeeDetails.currentPeakTime
+                            .formatted
+                        }
+                        )
+                      </Text>
+                    </div>
+                  )}
                   <Text style={styles.margin8Style}>Fee amount per item</Text>
                   <Text style={styles.overviewNumber} weight="bold">
                     {store.currentCycleListingFeeDetails &&
@@ -174,51 +179,44 @@ const ListingFeesOverview: React.FC = () => {
                     />
                   </Layout.FlexRow>
                 </Layout.FlexColumn>
+                <Layout.FlexColumn style={styles.overviewText}>
+                  <Layout.FlexRow>
+                    <Text>Calculation period</Text>
+                    <Tooltip
+                      title={i`The listing fee is calculated on a monthly cadence.`}
+                      style={styles.overviewTooltip}
+                    >
+                      <Icon name="info" size={24} color={textBlack} />
+                    </Tooltip>
+                  </Layout.FlexRow>
+                  <Text>
+                    {
+                      store.currentCycleListingFeeDetails?.currentCycleStartTime
+                        .formatted
+                    }
+                    -
+                    {
+                      store.currentCycleListingFeeDetails?.currentCycleEndTime
+                        .formatted
+                    }
+                  </Text>
+                  <Layout.FlexRow style={{ marginTop: 24 }}>
+                    <Text>Next fee statement</Text>
+                    <Tooltip
+                      title={i`Fees are deducted on your next pay cycle.`}
+                      style={styles.overviewTooltip}
+                    >
+                      <Icon name="info" size={24} color={textBlack} />
+                    </Tooltip>
+                  </Layout.FlexRow>
+                  <Text>
+                    {
+                      store.currentCycleListingFeeDetails?.currentCyclePayTime
+                        .formatted
+                    }
+                  </Text>
+                </Layout.FlexColumn>
               </Layout.FlexRow>
-            </div>
-            <div
-              style={{ flex: 3, height: 192, alignContent: "space-between" }}
-            >
-              <Layout.FlexRow>
-                <Text style={styles.title}>Listing fee schedule</Text>
-              </Layout.FlexRow>
-              <Layout.FlexColumn style={styles.overviewText}>
-                <Layout.FlexRow>
-                  <Text>Calculation period</Text>
-                  <Tooltip
-                    title={i`The listing fee is calculated on a monthly cadence.`}
-                    style={styles.overviewTooltip}
-                  >
-                    <Icon name="info" size={24} color={textBlack} />
-                  </Tooltip>
-                </Layout.FlexRow>
-                <Text>
-                  {
-                    store.currentCycleListingFeeDetails?.currentCycleStartTime
-                      .formatted
-                  }
-                  -
-                  {
-                    store.currentCycleListingFeeDetails?.currentCycleEndTime
-                      .formatted
-                  }
-                </Text>
-                <Layout.FlexRow style={{ marginTop: 24 }}>
-                  <Text>Next fee statement</Text>
-                  <Tooltip
-                    title={i`Fees are deducted on your next pay cycle.`}
-                    style={styles.overviewTooltip}
-                  >
-                    <Icon name="info" size={24} color={textBlack} />
-                  </Tooltip>
-                </Layout.FlexRow>
-                <Text>
-                  {
-                    store.currentCycleListingFeeDetails?.currentCyclePayTime
-                      .formatted
-                  }
-                </Text>
-              </Layout.FlexColumn>
             </div>
           </Layout.FlexRow>
         </Card>
