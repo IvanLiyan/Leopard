@@ -14,10 +14,10 @@
     date-fns "^2.30.0"
     react-day-picker "^8.7.1"
 
-"@ContextLogic/lego@^0.0.1-1684349368":
-  version "0.0.1-1684349368"
-  resolved "https://npm.infra.wish.com/@ContextLogic%2flego/-/lego-0.0.1-1684349368.tgz#ab43b1938f4bdf57faf506f53afd89ac889a69e4"
-  integrity sha512-3nVMSoIR1vjddSdhd3x26DDzdXxRl6La7CeeBXjcUtd7E9UdfemywZjtem60OHraQtsI2v1NLHOSQTxooS8GPw==
+"@ContextLogic/lego@^0.0.1-1706717255":
+  version "0.0.1-1706717255"
+  resolved "https://npm.infra.wish.com/@ContextLogic%2flego/-/lego-0.0.1-1706717255.tgz#ff9b25c61e7752ca15cdd638cf8f4ac6afbbce3b"
+  integrity sha512-82W2iyvJrVAFiF6r+7gS0bkLSOqB9/0Su4ZKK2IEKd+cK/kjEqozIOmg2cY0tBz2hYY5bF9LsWbzSJp6BlVwSg==
   dependencies:
     "@ContextLogic/legostrings" "0.0.1664165201"
     "@ContextLogic/zeus" "0.0.1-1669324295"
