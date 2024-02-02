@@ -59,7 +59,7 @@ const ProductTableActions: React.FC<Props> = ({
             ),
             onClick: () =>
               void navigationStore.navigate(
-                merchFeUrl(`/products/edit/${product.id}`),
+                merchFeUrl(`/md/products/edit?pid=${product.id}`),
               ),
           },
           ...(!product.isLtl && !product.isReturnsEnabled

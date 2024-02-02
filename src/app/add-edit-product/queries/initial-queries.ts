@@ -155,6 +155,7 @@ export const EDIT_PRODUCT_INITIAL_DATA_QUERY = gql(`
         chemicalNames
         isConsignmentEligible
         consignmentOriginalPid
+        consignmentReferenceLink
         subcategory {
           id
           name
@@ -462,6 +463,7 @@ export type InitialProductState = Pick<
   | "attributes"
   | "consignmentOriginalPid"
   | "isConsignmentEligible"
+  | "consignmentReferenceLink"
 > & {
   readonly variations: ReadonlyArray<VariationInitialState>;
   readonly requestedBrand: PickedBrandSchema | undefined | null;

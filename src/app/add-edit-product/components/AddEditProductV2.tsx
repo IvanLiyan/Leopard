@@ -55,7 +55,7 @@ const AddEditProductV2 = ({ className, style, state }: Props) => {
   const [categorizationOpen, setCategorizationOpen] = useState(true);
   const [maxquantityOpen, setMaxquantityOpen] = useState(true);
 
-  const { hasVariations, isNewProduct, subcategoryId, IsConsignmentAndBd } =
+  const { hasVariations, isNewProduct, subcategoryId, IsConsignmentMode } =
     state;
 
   const showTips = false;
@@ -63,7 +63,7 @@ const AddEditProductV2 = ({ className, style, state }: Props) => {
   return (
     <Layout.FlexColumn style={[styles.root, className, style]}>
       <Layout.FlexColumn>
-        {IsConsignmentAndBd && (
+        {IsConsignmentMode && (
           <ConsignmentOverwrite
             style={styles.section}
             isOpen={consignmentOverwriteOpen}

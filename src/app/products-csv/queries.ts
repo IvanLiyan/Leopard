@@ -4,6 +4,7 @@ import {
   ProductCatalogMutationsUpsertProductCsvFileArgs,
   ProductCatalogSchema,
   TaxonomySchema,
+  MerchantSchema,
   UpsertProductsFromCsvFile,
   ProductCatalogSchemaCsvAllHeaderNamesArgs,
   ProductCatalogSchemaCsvEditVariationsHeaderNamesArgs,
@@ -165,4 +166,30 @@ export type DownloadEnableDisableHeadersResponseType = {
     ProductCatalogSchema,
     "csvEnableDisableHeaderNames"
   > | null;
+};
+
+export const DOWNLOAD_CSV_CONSIGNMENT_HEADERS_QUERY = gql(`
+  query DownloadCsvConsignmentHeaders {
+    productCatalog {
+      csvConsignmentHeaderNames
+    }
+  }
+`);
+
+export type DownloadCsvConsignmentHeadersResponseType = {
+  readonly productCatalog?: Pick<
+    ProductCatalogSchema,
+    "csvConsignmentHeaderNames"
+  > | null;
+};
+
+export const MERCHANT_CONSIGNMENT_MODE_QUERY = gql(`
+  query merchantConsignmentModeQuery {
+    currentMerchant {
+      isConsignmentMode
+    }
+  }
+`);
+export type GetConsignmentModeResponseType = {
+  readonly currentMerchant: Pick<MerchantSchema, "isConsignmentMode">;
 };

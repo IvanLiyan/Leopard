@@ -760,6 +760,9 @@ export default class AddEditProductState {
   canShowMaxDeliveryDays: boolean;
 
   @observable
+  IsConsignmentMode: boolean;
+
+  @observable
   IsConsignmentAndBd: boolean;
 
   @observable
@@ -939,6 +942,12 @@ export default class AddEditProductState {
     | undefined;
 
   @observable
+  consignmentReferenceLink?:
+    | InitialProductState["consignmentReferenceLink"]
+    | null
+    | undefined;
+
+  @observable
   isConsignmentEligible?:
     | InitialProductState["isConsignmentEligible"]
     | null
@@ -1004,6 +1013,7 @@ export default class AddEditProductState {
     this.isStoreMerchant = isStoreMerchant;
     this.canShowMaxDeliveryDays =
       isCnForFulfillment == null || !isCnForFulfillment;
+    this.IsConsignmentMode = !!isConsignmentMode;
     this.showConsignmentOverwrite = !!showConsignmentOverwrite;
     this.IsConsignmentAndBd =
       !!isConsignmentMode && !!isBd && !!showConsignmentOverwrite;
@@ -1025,6 +1035,8 @@ export default class AddEditProductState {
       initialState == null ? undefined : initialState?.consignmentOriginalPid;
     this.isConsignmentEligible =
       initialState == null ? undefined : initialState?.isConsignmentEligible;
+    this.consignmentReferenceLink =
+      initialState == null ? undefined : initialState?.consignmentReferenceLink;
 
     const countryShippingStates: Map<CountryCode, CountryShipping> = new Map();
     const warehouseCountryShippingSettings =
@@ -2748,15 +2760,6 @@ export default class AddEditProductState {
   // Consignment Overwrite
   // =============================
 
-  @computed
-  get consignmentListingCheckboxEnable(): boolean {
-    const { consignmentOriginalPid, variations } = this;
-    const getAllSupplyCost = variations.every(
-      (item) => item.consignmentSupplyCost,
-    );
-    return !!consignmentOriginalPid && getAllSupplyCost;
-  }
-
   // =============================
   // Whole page
   // =============================
@@ -3248,6 +3251,7 @@ export default class AddEditProductState {
       additionalAttributes,
       consignmentOriginalPid,
       isConsignmentEligible,
+      consignmentReferenceLink,
     } = this;
 
     const countryShippingInputList = Array.from(countryShippingStates.values())
@@ -3382,6 +3386,7 @@ export default class AddEditProductState {
       description,
       condition,
       consignmentOriginalPid,
+      consignmentReferenceLink,
       isConsignmentEligible:
         isConsignmentEligible === true ? isConsignmentEligible : false,
       warningType: caProp65Warning == null ? null : caProp65Warning,

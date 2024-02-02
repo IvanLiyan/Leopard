@@ -1372,6 +1372,21 @@ enum CSVExportFilterType {
   FBS
 }
 
+type CSVProductImportJobDetailSchema {
+  id: ObjectIdType!
+  startTime: Datetime!
+  completedTime: Datetime
+  fileName: String
+  feedType: ProductCSVJobType!
+  status: String!
+  totalCount: Int!
+  aliveCount: Int!
+  errorsCount: Int!
+  processingCount: Int!
+  underReviewCount: Int!
+  noChangesCount: Int!
+}
+
 type CSVProductImportJobSchema {
   id: ObjectIdType!
   feedType: ProductCSVJobType!
@@ -1386,6 +1401,16 @@ type CSVProductImportJobSchema {
   fpBlockedCount: Int!
   csvUrl: String
   fileName: String
+}
+
+type CSVProductImportJobSchemaV2 {
+  id: ObjectIdType!
+  startTime: Datetime!
+  completedTime: Datetime
+  fileName: String
+  feedType: ProductCSVJobType!
+  status: String
+  version: Int
 }
 
 type CSVValidationSchema {
@@ -5476,6 +5501,34 @@ enum MFPProductSearchType {
   SKU
 }
 
+type MFPPromotionSchema {
+  id: ObjectIdType!
+  eventId: ObjectIdType
+  campaignId: ObjectIdType!
+  merchantId: Boolean!
+  promotionType: MFPCampaignPromotionType!
+  startTime: Datetime!
+  endTime: Datetime!
+  cancelAt: Datetime
+  state: MFPPromotionStateType!
+  countries: [Country!]!
+  availableQuantity: Int!
+  maxQuantity: Int!
+  productVariationData: ProductVariationData!
+  discountData: PromotionDiscountData!
+}
+
+enum MFPPromotionSearchType {
+  PROMOTION_ID
+  CAMPAIGN_ID
+  PRODUCT_ID
+}
+
+enum MFPPromotionStateType {
+  APPROVED
+  CANCELLED
+}
+
 type MFPServiceAdminMutations {
   createWhitelistProducts(input: CreateWhitelistProductsInput!): CreateWhitelistProductsMutation!
   expireWhitelistProducts(input: ExpireWhitelistProductsInput!): ExpireWhitelistProductsMutation!
@@ -5495,6 +5548,7 @@ type MFPServiceMutations {
 
 type MFPServiceSchema {
   countryShippingEnabled: Boolean
+  promotions(searchType: MFPPromotionSearchType, searchQuery: String, offset: Int = 0, limit: Int = 25): [MFPPromotionSchema!]
   genericCampaigns(startAtMin: DatetimeInput, startAtMax: DatetimeInput, endAtMin: DatetimeInput, endAtMax: DatetimeInput, searchType: MFPCampaignSearchType, searchQuery: String, states: [MFPCampaignState!], promotionTypes: [MFPCampaignPromotionType!], offset: Int = 0, limit: Int = 25, performanceStartDate: DatetimeInput, performanceEndDate: DatetimeInput): [GenericScalar!]
   campaigns(merchantId: ObjectIdType, startAtMin: DatetimeInput, startAtMax: DatetimeInput, endAtMin: DatetimeInput, endAtMax: DatetimeInput, searchType: MFPCampaignSearchType, searchQuery: String, states: [MFPCampaignState!], promotionTypes: [MFPCampaignPromotionType!], offset: Int = 0, limit: Int = 25, eventIds: [ObjectIdType!], eventConfig: MFPCampaignEventConfig): [MFPCampaignSchema!]
   campaignsCount(merchantId: ObjectIdType, startAtMin: DatetimeInput, startAtMax: DatetimeInput, endAtMin: DatetimeInput, endAtMax: DatetimeInput, searchType: MFPCampaignSearchType, searchQuery: String, states: [MFPCampaignState!], promotionTypes: [MFPCampaignPromotionType!], eventIds: [ObjectIdType!], eventConfig: MFPCampaignEventConfig): Int
@@ -8531,6 +8585,7 @@ enum PermissionType {
   EDIT_ORDERS
   LISTING_REVIEW_TAG
   LOGIN_TO_WISH_LOCAL
+  VIEW_PRODUCT_LISTING_FEE
   PRODUCT_RATING_IMAGE_MANUAL_TAG
   CREATE_PUBLIC_MERCHANT_APP
   MANAGE_ERP_PARTNERS
@@ -8682,6 +8737,7 @@ enum PermissionType {
   EDIT_FRAUD_TEAM_PERMISSIONS
   VIEW_CUSTOMER_PROFILE_PAGE
   CREATE_TERM_OF_SERVICE_EPC_BILL_HOLD
+  CAN_ACCESS_LISTING_WHITE_LIST
   VIEW_WARNING_MANUAL_HOLD
   CAN_UNENROLL_WHITE_GLOVE
   SEND_SYSTEM_UPDATE_TO_BD
@@ -9478,6 +9534,9 @@ type ProductCatalogSchema {
   variationCount(query: String, searchType: VariationSearchType): Int
   upcProductService: UPCProductServiceSchema!
   bulkCsvProductImportJobs(offset: Int! = 0, limit: Int! = 25, feedType: ProductCSVJobType): [CSVProductImportJobSchema!]!
+  newBulkCsvJobs(offset: Int! = 0, limit: Int! = 25, feedType: ProductCSVJobType): [CSVProductImportJobSchemaV2!]!
+  newBulkCsvJobsCount(feedType: ProductCSVJobType): Int!
+  newBulkCsvJobDetail(bulkCsvJobId: String!): CSVProductImportJobDetailSchema
   csvProductImportJobsCount(feedType: ProductCSVJobType): Int!
   csvProductColumnNames: [String!]!
   csvProductColumnEnums: [ProductCSVColumnName!]!
@@ -9489,6 +9548,7 @@ type ProductCatalogSchema {
   productCategoryTaxonomyTreeJson: JSONString!
   gtinProductService: GtinProductServiceSchema!
   csvEnableDisableHeaderNames: [String!]!
+  csvConsignmentHeaderNames: [String!]!
   videoService: ProductVideoServiceSchema!
   csvProductTemplateWithTaxonomyColumnNames(categoryId: Int!, treeVersion: String!): [String!]
 }
@@ -9929,6 +9989,7 @@ type ProductSchema {
   warningType: ContestWarningType
   isConsignmentEligible: Boolean
   consignmentOriginalPid: ObjectIdType
+  consignmentReferenceLink: String
   chemicalNames: [String!]
   performance(startDate: DatetimeInput!, endDate: DatetimeInput!): ProductPerformanceSchema
   taxonomyCategory: TaxonomyCategorySchema
@@ -10072,8 +10133,14 @@ input ProductUpsertInput {
   warningType: ContestWarningType
   isConsignmentEligible: Boolean
   consignmentOriginalPid: ObjectIdType
+  consignmentReferenceLink: String
   chemicalNames: [String!]
   subcategoryId: Int
+}
+
+type ProductVariationData {
+  productId: ObjectIdType!
+  variationId: ObjectIdType!
 }
 
 type ProductVideo {
@@ -10228,6 +10295,7 @@ enum ProductsCSVTemplateType {
   ENABLED
   SHIPPING
   CONTENT
+  CONSIGNMENT
   UNDER_PERFORMING
   ALL_COLUMNS
   PRICE_AND_INVENTORY
@@ -10236,6 +10304,12 @@ enum ProductsCSVTemplateType {
 type PromotableProduct {
   product: ProductSchema!
   isInTrendingCategory: Boolean!
+}
+
+type PromotionDiscountData {
+  discountAmount: CurrencyValue
+  localizedDiscountAmount: CurrencyValue
+  discountPercentage: Float
 }
 
 type PublicDSAMutations {
@@ -10635,6 +10709,7 @@ input RemoveProductInput {
 input RemoveProductsInput {
   campaignId: ObjectIdType!
   productIds: [ObjectIdType!]!
+  comment: String!
 }
 
 type RemoveShippingProfile {
@@ -12447,6 +12522,7 @@ enum TaggingViolationSubReasonCode {
   NAZI_MEMORABILIA
   HATE_SPEECH
   MAGNETS_AS_TOYS
+  WATER_BEADS
   IMITATION_CURRENCY
   EXPLOSIVE_WEAPONS
   CD
@@ -12470,7 +12546,7 @@ enum TaggingViolationSubReasonCode {
   STANDALONE_LITHIUM_BATTERY
   LASER_POINTERS
   VALUE_VARIANCE
-  SEXUALLY_EXPLICIT_MATERIAL
+  BABY_HOODED_SLEEP_PRODUCTS
   BULLION
   JAMMERS
   FIREARMS_AND_GUNS
@@ -12492,6 +12568,7 @@ enum TaggingViolationSubReasonCode {
   INJECTABLE_ITEMS
   CONTAINS_HARMFUL_CONTENT
   HYPERREALISTIC_CONTENT
+  SEXUALLY_EXPLICIT_MATERIAL
   SIZE_COLOR_OPTION_GAMING
   HATE_GROUPS
   QANON_MEMORABILIA

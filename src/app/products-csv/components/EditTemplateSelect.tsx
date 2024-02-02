@@ -1,4 +1,5 @@
 import React from "react";
+import { useQuery } from "@apollo/client";
 import { observer } from "mobx-react";
 import { FormSelect, Layout, Ul } from "@ContextLogic/lego";
 import { useTheme } from "@core/stores/ThemeStore";
@@ -9,6 +10,10 @@ import {
   DownloadTemplateType,
   EditDownloadTemplateType,
 } from "@products-csv/toolkit";
+import {
+  MERCHANT_CONSIGNMENT_MODE_QUERY,
+  GetConsignmentModeResponseType,
+} from "../queries";
 
 type EditTemplateSelectProps = {
   readonly selectedType: EditDownloadTemplateType | undefined;
@@ -20,12 +25,31 @@ const EditTemplateSelect: React.FC<EditTemplateSelectProps> = ({
   onSelect,
 }: EditTemplateSelectProps) => {
   const { textDark } = useTheme();
-  const downloadTypeOptions = Object.entries(EDIT_DOWNLOAD_TEMPLATE_NAMES).map(
-    ([type, text]) => ({
-      value: type as EditDownloadTemplateType,
-      text,
-    }),
+
+  const { data: initialData } = useQuery<GetConsignmentModeResponseType>(
+    MERCHANT_CONSIGNMENT_MODE_QUERY,
+    {
+      variables: {},
+    },
   );
+
+  const isConsignmentMode = initialData?.currentMerchant?.isConsignmentMode;
+
+  const EDIT_DOWNLOAD_TEMPLATE_NAMES_LOCAL: Partial<
+    typeof EDIT_DOWNLOAD_TEMPLATE_NAMES
+  > = EDIT_DOWNLOAD_TEMPLATE_NAMES;
+
+  if (isConsignmentMode === false) {
+    delete EDIT_DOWNLOAD_TEMPLATE_NAMES_LOCAL["EDIT_CONSIGNMENT_INFO"];
+  }
+
+  const downloadTypeOptions = Object.entries(
+    EDIT_DOWNLOAD_TEMPLATE_NAMES_LOCAL,
+  ).map(([type, text]) => ({
+    value: type as EditDownloadTemplateType,
+    text,
+  }));
+
   const templateInfos = selectedType
     ? EDIT_DOWNLOAD_TEMPLATE_INFOS[selectedType]
     : undefined;

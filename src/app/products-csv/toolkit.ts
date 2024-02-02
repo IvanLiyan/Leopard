@@ -9,6 +9,7 @@ import {
   DOWNLOAD_PRICE_INVENTORY_HEADERS_QUERY,
   DOWNLOAD_SHIPPING_HEADERS_QUERY,
   DOWNLOAD_TITLE_IMAGE_DESC_HEADERS_QUERY,
+  DOWNLOAD_CSV_CONSIGNMENT_HEADERS_QUERY,
   DownloadAllHeadersRequestType,
   DownloadAllHeadersResponseType,
   DownloadEditVariationHeadersRequestType,
@@ -17,6 +18,7 @@ import {
   DownloadPriceInventoryHeadersResponseType,
   DownloadShippingHeadersResponseType,
   DownloadTitleImageDescHeadersResponseType,
+  DownloadCsvConsignmentHeadersResponseType,
 } from "./queries";
 
 export type UploadTemplateType = Extract<
@@ -45,7 +47,8 @@ export type DownloadTemplateType =
   | "EDIT_BY_CATEGORY"
   | "EDIT_ALL"
   | "ADD_VARIATIONS"
-  | "ENABLED_DISABLE_PRODUCT";
+  | "ENABLED_DISABLE_PRODUCT"
+  | "EDIT_CONSIGNMENT_INFO";
 
 export type EditDownloadTemplateType = Exclude<
   DownloadTemplateType,
@@ -71,6 +74,10 @@ export const EDIT_DOWNLOAD_TEMPLATE_NAMES: Record<
   ENABLED_DISABLE_PRODUCT: ci18n(
     "Product edit type",
     "Enable or disable products",
+  ),
+  EDIT_CONSIGNMENT_INFO: ci18n(
+    "Consignment csv uploading",
+    "Consignment csv uploading",
   ),
 };
 
@@ -142,6 +149,15 @@ export const EDIT_DOWNLOAD_TEMPLATE_INFOS: Record<
       ci18n("Product field", "Enabled"),
     ],
   },
+  EDIT_CONSIGNMENT_INFO: {
+    title: i`Edit consignment information`,
+    description: i`Download a template with the following fields:`,
+    fieldNames: [
+      ci18n("Product field", "Supply price"),
+      ci18n("Product field", "Existing PID"),
+      ci18n("Product field", "Reference link"),
+    ],
+  },
 };
 
 export const DOWNLOAD_TEMPLATE_FILENAME: Record<DownloadTemplateType, string> =
@@ -178,6 +194,10 @@ export const DOWNLOAD_TEMPLATE_FILENAME: Record<DownloadTemplateType, string> =
       "CSV filename for enable/disable product template, please do not include any space in translation",
       "enable_disable_products",
     ),
+    EDIT_CONSIGNMENT_INFO: ci18n(
+      "CSV filename for enable/disable product template, please do not include any space in translation",
+      "edit_consignment_info",
+    ),
   };
 
 export const DOWNLOAD_CATALOG_TEMPLATE_INPUT_TYPES: Partial<
@@ -189,6 +209,7 @@ export const DOWNLOAD_CATALOG_TEMPLATE_INPUT_TYPES: Partial<
   EDIT_SHIPPING: "SHIPPING",
   ENABLED_DISABLE_PRODUCT: "ENABLED",
   EDIT_BY_CATEGORY: "CATEGORY",
+  EDIT_CONSIGNMENT_INFO: "CONSIGNMENT",
 };
 
 export const useDownloadTemplateQuery = ({
@@ -263,6 +284,14 @@ export const useDownloadTemplateQuery = ({
     { skip: templateType !== "ENABLED_DISABLE_PRODUCT" },
   );
 
+  const {
+    loading: loadingCsvConsignmentHeaders,
+    data: csvConsignmentHeadersData,
+  } = useQuery<DownloadCsvConsignmentHeadersResponseType>(
+    DOWNLOAD_CSV_CONSIGNMENT_HEADERS_QUERY,
+    { skip: templateType !== "EDIT_CONSIGNMENT_INFO" },
+  );
+
   switch (templateType) {
     case "ADD_PRODUCT": {
       return {
@@ -318,6 +347,13 @@ export const useDownloadTemplateQuery = ({
         templateHeaders:
           enableDisableHeadersData?.productCatalog?.csvEnableDisableHeaderNames,
         loading: loadingEnableDisableHeaders,
+      };
+    }
+    case "EDIT_CONSIGNMENT_INFO": {
+      return {
+        templateHeaders:
+          csvConsignmentHeadersData?.productCatalog?.csvConsignmentHeaderNames,
+        loading: loadingCsvConsignmentHeaders,
       };
     }
     default:

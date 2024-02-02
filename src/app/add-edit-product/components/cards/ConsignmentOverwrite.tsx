@@ -22,10 +22,7 @@ import { Stack, Text } from "@ContextLogic/atlas-ui";
 import { css } from "@core/toolkit/styling";
 import Section, { SectionProps } from "./Section";
 import { useTheme } from "@core/stores/ThemeStore";
-import {
-  MinMaxValueValidator,
-  RequiredValidator,
-} from "@core/toolkit/validators";
+import { MinMaxValueValidator, UrlValidator } from "@core/toolkit/validators";
 import AddEditProductState, {
   Variation,
 } from "@add-edit-product/AddEditProductState";
@@ -42,10 +39,14 @@ const ConsignmentOverwrite: React.FC<Props> = (props: Props) => {
   const {
     primaryCurrency,
     consignmentOriginalPid,
+    consignmentReferenceLink,
     isConsignmentEligible,
     showRevampedAddEditProductUI,
     variations,
+    IsConsignmentAndBd,
+    IsConsignmentAndNotBd,
     updateVariation,
+    initialState,
   } = state;
 
   if (variations.length == 0) {
@@ -64,134 +65,169 @@ const ConsignmentOverwrite: React.FC<Props> = (props: Props) => {
     >
       <Layout.FlexColumn style={styles.content}>
         <Layout.FlexRow alignItems="flex-start" style={styles.field}>
-          <Field style={styles.rowField} title={i`Existing PID`}>
-            <TextInput
-              value={consignmentOriginalPid}
-              placeholder={i`Enter existing PID to import and map`}
-              onChange={({ text }) => (state.consignmentOriginalPid = text)}
-              validators={[new RequiredValidator()]}
-              data-cy="input-ExistingPID"
-            />
-          </Field>
-          <Field title={i`Merchant set cost`} style={styles.rowField}>
-            {state.variations && state.variations.length > 1 ? (
-              <Table
-                data={variations}
-                hideBorder
-                rowHeight={64}
-                actionColumnWidth={70}
-                cellPadding="0px 12px"
-                rowDataCy={(row: Variation) =>
-                  `variation-row-${row.sku ?? row.clientSideId}`
+          <Layout.FlexColumn style={{ flex: 1 }}>
+            <Field
+              style={[styles.rowField, styles.accordionSection]}
+              title={i`Existing PID`}
+            >
+              <TextInput
+                value={consignmentOriginalPid}
+                placeholder={i`Enter existing PID to import and map`}
+                onChange={({ text }) => (state.consignmentOriginalPid = text)}
+                data-cy="input-ExistingPID"
+                disabled={
+                  initialState?.consignmentOriginalPid != null &&
+                  IsConsignmentAndNotBd
                 }
-              >
-                <Table.Column
-                  _key="sku"
-                  title={ci18n(
-                    "Table column header, product SKU, the asterisk symbol means required field",
-                    "SKU",
-                  )}
-                  columnKey="sku"
-                  columnDataCy="column-sku"
-                  handleEmptyRow
-                >
-                  {({
-                    row: variation,
-                  }: CellInfo<React.ReactNode, Variation>) => (
-                    <Stack direction="column">
-                      <Text>
-                        {variation.sku == null ? null : variation.sku}
-                      </Text>
-                    </Stack>
-                  )}
-                </Table.Column>
-                <Table.Column
-                  _key="consignmentSupplyCost"
-                  title={ci18n(
-                    "Table column header, product consignment supply cost, the asterisk symbol means required field",
-                    "Merchant set cost",
-                  )}
-                  columnKey="consignmentSupplyCost"
-                  minWidth={80}
-                  columnDataCy="column-consignment-supply-cost"
-                  handleEmptyRow
-                >
-                  {({
-                    row: variation,
-                  }: CellInfo<React.ReactNode, Variation>) => {
-                    const currentAmount = variation.consignmentSupplyCost;
-                    return (
-                      <CurrencyInput
-                        inputContainerStyle={css(styles.costInputContainer)}
-                        value={
-                          currentAmount == null
-                            ? null
-                            : currentAmount.toString()
-                        }
-                        placeholder="0.00"
-                        currencyCode={primaryCurrency}
-                        hideCheckmarkWhenValid
-                        onChange={({ textAsNumber }) =>
-                          updateVariation({
-                            clientSideId: variation.clientSideId,
-                            newProps: {
-                              consignmentSupplyCost: textAsNumber,
-                            },
-                          })
-                        }
-                        validators={[
-                          new MinMaxValueValidator({
-                            minAllowedValue: 0,
-                            customMessage: i`Value cannot be negative`,
-                            allowBlank: true,
-                          }),
-                        ]}
-                        inputStyle={{ padding: "0px 9px" }}
-                        data-cy="input-variation-consignment-supply-cost"
-                      />
-                    );
-                  }}
-                </Table.Column>
-              </Table>
-            ) : (
-              <CurrencyInput
-                value={variations[0].consignmentSupplyCost}
-                placeholder="0.00"
-                currencyCode={primaryCurrency}
-                hideCheckmarkWhenValid
-                onChange={({ textAsNumber }) =>
-                  updateVariation({
-                    clientSideId: variations[0].clientSideId,
-                    newProps: {
-                      consignmentSupplyCost: textAsNumber,
-                    },
-                  })
-                }
-                validators={[
-                  new MinMaxValueValidator({
-                    minAllowedValue: 0,
-                    customMessage: i`Value cannot be negative`,
-                    allowBlank: true,
-                  }),
-                ]}
-                data-cy="input-variation-consignment-supply-cost"
               />
-            )}
-          </Field>
+            </Field>
+            <Field style={styles.rowField} title={i`Reference Link`}>
+              <TextInput
+                value={consignmentReferenceLink}
+                placeholder={i`Enter consignment reference link`}
+                onChange={({ text }) => (state.consignmentReferenceLink = text)}
+                validators={
+                  state.consignmentReferenceLink?.length == 0
+                    ? []
+                    : [new UrlValidator()]
+                }
+                data-cy="input-ConsignmentReferenceLink"
+                disabled={
+                  initialState?.consignmentReferenceLink != null &&
+                  IsConsignmentAndNotBd
+                }
+              />
+            </Field>
+          </Layout.FlexColumn>
+          <Layout.FlexColumn style={{ flex: 1 }}>
+            <Field title={i`Merchant set cost`} style={styles.rowField}>
+              {state.variations && state.variations.length > 1 ? (
+                <Table
+                  data={variations}
+                  hideBorder
+                  rowHeight={64}
+                  actionColumnWidth={70}
+                  cellPadding="0px 12px"
+                  rowDataCy={(row: Variation) =>
+                    `variation-row-${row.sku ?? row.clientSideId}`
+                  }
+                >
+                  <Table.Column
+                    _key="sku"
+                    title={ci18n(
+                      "Table column header, product SKU, the asterisk symbol means required field",
+                      "SKU",
+                    )}
+                    columnKey="sku"
+                    columnDataCy="column-sku"
+                    handleEmptyRow
+                  >
+                    {({
+                      row: variation,
+                    }: CellInfo<React.ReactNode, Variation>) => (
+                      <Stack direction="column">
+                        <Text>
+                          {variation.sku == null ? null : variation.sku}
+                        </Text>
+                      </Stack>
+                    )}
+                  </Table.Column>
+                  <Table.Column
+                    _key="consignmentSupplyCost"
+                    title={ci18n(
+                      "Table column header, product consignment supply cost, the asterisk symbol means required field",
+                      "Merchant set cost",
+                    )}
+                    columnKey="consignmentSupplyCost"
+                    minWidth={80}
+                    columnDataCy="column-consignment-supply-cost"
+                    handleEmptyRow
+                  >
+                    {({
+                      row: variation,
+                      index,
+                    }: CellInfo<React.ReactNode, Variation>) => {
+                      const currentAmount = variation.consignmentSupplyCost;
+                      return (
+                        <CurrencyInput
+                          inputContainerStyle={css(styles.costInputContainer)}
+                          value={
+                            currentAmount == null
+                              ? null
+                              : currentAmount.toString()
+                          }
+                          placeholder="0.00"
+                          disabled={
+                            initialState?.variations[index]
+                              .consignmentSupplyCost != null &&
+                            IsConsignmentAndNotBd
+                          }
+                          currencyCode={primaryCurrency}
+                          hideCheckmarkWhenValid
+                          onChange={({ textAsNumber }) =>
+                            updateVariation({
+                              clientSideId: variation.clientSideId,
+                              newProps: {
+                                consignmentSupplyCost: textAsNumber,
+                              },
+                            })
+                          }
+                          validators={[
+                            new MinMaxValueValidator({
+                              minAllowedValue: 0,
+                              customMessage: i`Value cannot be negative`,
+                              allowBlank: true,
+                            }),
+                          ]}
+                          inputStyle={{ padding: "0px 9px" }}
+                          data-cy="input-variation-consignment-supply-cost"
+                        />
+                      );
+                    }}
+                  </Table.Column>
+                </Table>
+              ) : (
+                <CurrencyInput
+                  value={variations[0].consignmentSupplyCost}
+                  placeholder="0.00"
+                  currencyCode={primaryCurrency}
+                  hideCheckmarkWhenValid
+                  onChange={({ textAsNumber }) =>
+                    updateVariation({
+                      clientSideId: variations[0].clientSideId,
+                      newProps: {
+                        consignmentSupplyCost: textAsNumber,
+                      },
+                    })
+                  }
+                  validators={[
+                    new MinMaxValueValidator({
+                      minAllowedValue: 0,
+                      customMessage: i`Value cannot be negative`,
+                      allowBlank: true,
+                    }),
+                  ]}
+                  data-cy="input-variation-consignment-supply-cost"
+                />
+              )}
+            </Field>
+          </Layout.FlexColumn>
         </Layout.FlexRow>
-        <Layout.FlexRow alignItems="flex-start" style={styles.field}>
-          <CheckboxField
-            title={i`Enable consignment listing`}
-            style={styles.field}
-            checked={
-              isConsignmentEligible === true ? isConsignmentEligible : false
-            }
-            onChange={(checked) => {
-              state.isConsignmentEligible = checked;
-            }}
-            data-cy="checkbox-enable-consignment-listing"
-          />
-        </Layout.FlexRow>
+        {IsConsignmentAndBd && (
+          <Layout.FlexRow alignItems="flex-start" style={styles.field}>
+            <CheckboxField
+              title={i`Enable consignment listing`}
+              style={styles.field}
+              checked={
+                isConsignmentEligible === true ? isConsignmentEligible : false
+              }
+              onChange={(checked) => {
+                state.isConsignmentEligible = checked;
+              }}
+              data-cy="checkbox-enable-consignment-listing"
+            />
+          </Layout.FlexRow>
+        )}
       </Layout.FlexColumn>
     </Section>
   );
@@ -217,9 +253,7 @@ const useStylesheet = () => {
         rowField: {
           flex: 1,
           display: "flex",
-          ":not(:last-child)": {
-            marginRight: 16,
-          },
+          marginRight: 16,
         },
         unit: {
           fontSize: 14,

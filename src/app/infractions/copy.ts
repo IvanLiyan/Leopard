@@ -26,11 +26,13 @@ const getDeprecatedInfractionData = (title: string): Copy => ({
   faq: undefined,
 });
 
-const TaggingViolationSubReasonCodeData: {
-  readonly [reason in TaggingViolationSubReasonCode]: Partial<Copy> & {
+type OptionalKeys = {
+  [K in TaggingViolationSubReasonCode]?: Partial<Copy> & {
     readonly parent: CounterfeitReasonCode;
   };
-} = {
+};
+
+const TaggingViolationSubReasonCodeData: OptionalKeys = {
   BRAND_DISCREPANCY: {
     parent: "MISLEADING_LISTING",
     title: ci18n("name of warning", "Brand Discrepancy"),
@@ -2148,26 +2150,26 @@ export const getInfractionCopy = (
           inappropriateReason &&
             CounterfeitReasonData[inappropriateReason].title,
           inappropriateSubreason &&
-            TaggingViolationSubReasonCodeData[inappropriateSubreason].title,
+            TaggingViolationSubReasonCodeData[inappropriateSubreason]?.title,
         ),
         body: getBody(
           MerchantWarningReasonData[reason].body,
           inappropriateReason &&
             CounterfeitReasonData[inappropriateReason].body,
           inappropriateSubreason &&
-            TaggingViolationSubReasonCodeData[inappropriateSubreason].body,
+            TaggingViolationSubReasonCodeData[inappropriateSubreason]?.body,
         ),
         policy: getCopy(
           MerchantWarningReasonData[reason].policy,
           inappropriateReason &&
             CounterfeitReasonData[inappropriateReason].policy,
           inappropriateSubreason &&
-            TaggingViolationSubReasonCodeData[inappropriateSubreason].policy,
+            TaggingViolationSubReasonCodeData[inappropriateSubreason]?.policy,
         ),
         faq: getCopy(
           MerchantWarningReasonData[reason].faq,
           inappropriateReason && CounterfeitReasonData[inappropriateReason].faq,
           inappropriateSubreason &&
-            TaggingViolationSubReasonCodeData[inappropriateSubreason].faq,
+            TaggingViolationSubReasonCodeData[inappropriateSubreason]?.faq,
         ),
       };
