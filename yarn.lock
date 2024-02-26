@@ -55,10 +55,10 @@
   resolved "https://npm.infra.wish.com/@ContextLogic%2flegostrings/-/legostrings-0.0.1664165201.tgz#b31cb7457fe931c7471fb956bf03b560219fd2f9"
   integrity sha512-GsxxS3heScUVxpDinLJsYcQ0x4lILolSIeQRKpe+UH+Vn9nDjVg2RUqQ43DEiZIWG6GnRIht6Dqbhk57QuyjHw==
 
-"@ContextLogic/merchantstrings@0.0.1706839672":
-  version "0.0.1706839672"
-  resolved "https://npm.infra.wish.com/@ContextLogic%2fmerchantstrings/-/merchantstrings-0.0.1706839672.tgz#7e4887bbfe4b5b61a35756819590ef826fbbfd12"
-  integrity sha512-BLxOGaHQywunoyIXvbbTJCrid2y9GUuH0CVdcB08iTNcLolPq6pW3osLjOxTqITgUBqJBlcIUzqSYYhm9ST4nA==
+"@ContextLogic/merchantstrings@0.0.1708913253":
+  version "0.0.1708913253"
+  resolved "https://npm.infra.wish.com/@ContextLogic%2fmerchantstrings/-/merchantstrings-0.0.1708913253.tgz#f62cdaa01eb645d425f18a059e7de0a2fb6af717"
+  integrity sha512-/E5PA7NkR8AOwn88lhpXMHDpxMgEtzaNAfSwFbKZx9mCPgA2SEb64KdR7FgYuIjy9yD6iF50jCfLVMNIYl+ayw==
 
 "@ContextLogic/zeus@0.0.1-1669324295", "@ContextLogic/zeus@^0.0.1-1669324295":
   version "0.0.1-1669324295"
@@ -7141,6 +7141,14 @@ csstype@^3.1.0, csstype@^3.1.1:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/csstype/-/csstype-3.1.1.tgz#841b532c45c758ee546a11d5bd7b7b473c8c30b9"
   integrity sha512-DJR/VvkAvSZW9bTouZue2sSxDwdTN92uHjqeKVm+0dAqdfNykRzQ95tay8aXMBAAPpUiq4Qcug2L7neoRh2Egw==
+
+csv-loader@^3.0.5:
+  version "3.0.5"
+  resolved "https://registry.yarnpkg.com/csv-loader/-/csv-loader-3.0.5.tgz#7becd534f9289f871ea78db525a1cf58578072ec"
+  integrity sha512-vO01k3mtxlSeipH4bvLgzM3yuhlF3efNBnx3xXpvyG/yZT4cyNgk3jh3cuoilKPHpGC5uvGCvq4pYxoafa5jsQ==
+  dependencies:
+    loader-utils "^2.0.0"
+    papaparse "^5.2.0"
 
 csvtojson@^2.0.8:
   version "2.0.10"

@@ -47,6 +47,8 @@ import {
   DownloadJobSchema,
   ProductCatalogSchemaDownloadJobsArgs,
   Scalars,
+  DownloadCsvJobRowsDetail,
+  ProductCatalogMutationsDownloadBulkCsvProductsArgs,
 } from "@schema";
 import { ci18n } from "@core/toolkit/i18n";
 import { IllustrationName } from "@core/components/Illustration";
@@ -442,6 +444,30 @@ export type RemoveProductResponseType = {
   };
 };
 export type RemoveProductRequestType = ProductCatalogMutationsRemoveProductArgs;
+
+// Download csv job mutation
+export const DOWNLOAD_CSV_MUTATION = gql(`
+  mutation Products_DownloadProductsMutation(
+    $input: DownloadBulkCsvProductsInput!
+  ) {
+    productCatalog {
+      downloadBulkCsvProducts(input: $input) {
+        downloadUrl
+        ok
+        errorMessage
+      }
+    }
+  }
+`);
+
+export type DownloadCsvResponseType = {
+  readonly productCatalog: {
+    readonly downloadBulkCsvProducts?: DownloadCsvJobRowsDetail;
+  };
+};
+
+export type DownloadCsvRequestType =
+  ProductCatalogMutationsDownloadBulkCsvProductsArgs;
 
 // Request download mutation
 export const DOWNLOAD_PRODUCTS_MUTATION = gql(`

@@ -77,6 +77,20 @@ const moduleExports = (phase, { defaultConfig }) => {
           }),
         );
 
+        config.module.rules.push({
+          test: /\.(csv|tsv)$/,
+          use: [
+            {
+              loader: 'csv-loader',
+              options: {
+                dynamicTyping: true,
+                header: true,
+                skipEmptyLines: true,
+              },
+            },
+          ],
+        });
+
         return config;
       },
       typescript: {

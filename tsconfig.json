@@ -55,7 +55,7 @@
     "scripts/create-certs.js",
     "server.js",
     "lighthouserc.js",
-    "tests/*"
+    "tests/*",
   ],
   "exclude": ["node_modules"]
 }

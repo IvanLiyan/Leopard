@@ -40,3 +40,4 @@ declare module "worker-loader!*" {
   export default WebpackWorker;
 }
 declare module "styled-components";
+declare module "@legacy/core/api";

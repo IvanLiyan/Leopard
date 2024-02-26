@@ -20,7 +20,7 @@
   "dependencies": {
     "@ContextLogic/atlas-ui": "^0.0.1-1704996381",
     "@ContextLogic/lego": "^0.0.1-1706717255",
-    "@ContextLogic/merchantstrings": "0.0.1706839672",
+    "@ContextLogic/merchantstrings": "0.0.1708913253",
     "@ContextLogic/zeus": "^0.0.1-1669324295",
     "@apollo/client": "^3.4.16",
     "@emotion/react": "^11.10.4",
@@ -184,6 +184,7 @@
     "circular-dependency-plugin": "^5.2.0",
     "commander": "^4.0.1",
     "css-loader": "^0.28.11",
+    "csv-loader": "^3.0.5",
     "csvtojson": "^2.0.8",
     "devcert": "^1.2.2",
     "eslint": "^7.13.0",

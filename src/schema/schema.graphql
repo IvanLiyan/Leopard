@@ -1700,6 +1700,7 @@ input ChangeVacationSettingsInput {
   startDate: DatetimeInput
   endDate: DatetimeInput
   primaryWarehouseOnly: Boolean!
+  vacationMode: Int
 }
 
 type ChangeVacationSettingsMutation {
@@ -3450,6 +3451,22 @@ input DownloadAllProductsInput {
   warehouseId: ObjectIdType
   templateType: ProductsCSVTemplateType = 1
   categoryIds: [Int!]
+}
+
+enum DownloadBulkCsvFileType {
+  ERROR
+  LIVE
+}
+
+input DownloadBulkCsvProductsInput {
+  bulkCsvJobId: String!
+  fileType: DownloadBulkCsvFileType!
+}
+
+type DownloadCsvJobRowsDetail {
+  downloadUrl: String
+  ok: Boolean!
+  errorMessage: String
 }
 
 type DownloadEUComplianceProductLinks {
@@ -6030,11 +6047,13 @@ enum MerchantFacingPayoutState {
 enum MerchantFeedJobStatus {
   EXCEPTION
   NEW_AND_EMAILED
-  FINISHED
   RUNNING
+  FINISHED
+  FAILURE
   FINISHED_AND_EMAILED
   CANCELLED
   NEW
+  FINISHED_WITH_ERRORS
   PENDING
 }
 
@@ -6653,6 +6672,7 @@ type MerchantSchema {
   displayName: String!
   onVacationMode: Boolean!
   vacationSettings: VacationSettingsSchema
+  vacationPause: VacationPauseSchema
   signupTime: Datetime!
   revShare: Float!
   canManageShipping: Boolean!
@@ -8969,6 +8989,7 @@ enum PermissionType {
   EDIT_PRODUCT_LOGISTIC_METADATA
   GENDER_TAG_MANUAL
   EDIT_LOGICAL_TICKET_QUEUE_LIMITED
+  REVIEW_ONEOFF_REQ_ENABLE_EXTERNALBOOST
   REVIEW_ONEOFF_REQ_ENROLL_PB_KICKSTART
   LISTING_REVIEW_AUDIT_TAG
   SEND_BD_ANNOUNCEMENTS
@@ -9517,6 +9538,7 @@ type ProductCatalogMutations {
   removeVideo(input: RemoveVideoInput!): RemoveVideo
   forceApproveProduct(input: ForceApproveProductInput!): ForceApproveProduct
   uploadProductComplianceDocument(input: [ProductComplianceDocumentInput!]!): UploadProductComplianceDocuments
+  downloadBulkCsvProducts(input: DownloadBulkCsvProductsInput!): DownloadCsvJobRowsDetail
 }
 
 type ProductCatalogSchema {
@@ -10165,6 +10187,9 @@ type ProductVideo {
   audioStartTime: Float
   videoSource: ProductVideoSource
   lastUpdated: Datetime
+  viewCountV2: Int
+  addToCartV2: Int
+  ordersV2: Int
 }
 
 type ProductVideoAudio {
@@ -10211,6 +10236,7 @@ type ProductVideoContentTagMutations {
 type ProductVideoDailyStats {
   date: Datetime!
   views: Int
+  viewsV2: Int
   likes: Int
   watchTime: Float
   gmv: Float
@@ -10218,7 +10244,9 @@ type ProductVideoDailyStats {
   engagedViews: Int!
   buyerIntent: Float!
   addToCart: Int!
+  addToCartV2: Int
   conversions: Float!
+  ordersV2: Int
 }
 
 type ProductVideoIPTagMutations {
@@ -10239,7 +10267,7 @@ enum ProductVideoIPViolationReason {
 
 type ProductVideoServiceSchema {
   videoCount(query: String, videoStates: [ProductVideoState!], merchantId: ObjectIdType, searchType: VideoSearchType): Int!
-  videos(query: String, searchType: VideoSearchType, merchantId: ObjectIdType, offset: Int = 0, limit: Int = 20, sort: VideoSort, videoStates: [ProductVideoState!]): [ProductVideo!]!
+  videos(query: String, searchType: VideoSearchType, merchantId: ObjectIdType, offset: Int = 0, limit: Int = 20, sort: VideoSort, videoStates: [ProductVideoState!], startDate: DatetimeInput, endDate: DatetimeInput): [ProductVideo!]!
   leaderboard(category: VideoCategory = all, offset: Int = 0, limit: Int = 20): VideoLeaderboard
   performance(startDate: DatetimeInput, endDate: DatetimeInput, videoId: ObjectIdType): VideoPerformance
   audioCount(trackTitle: String, moodEmotion: AudioMoodEmotion, productCategory: AudioProductCategory, genre: AudioGenre): Int!
@@ -14245,6 +14273,12 @@ enum UsersSortFieldType {
   EMAIL
 }
 
+type VacationPauseSchema {
+  primaryWarehouseOnly: Boolean!
+  vacationStartDate: Datetime
+  vacationEndDate: Datetime
+}
+
 type VacationSettings {
   changeVacationSettings(input: ChangeVacationSettingsInput!): ChangeVacationSettingsMutation!
   clearVacationSettings: ClearVacationSettingsMutation!
@@ -14412,6 +14446,7 @@ type VideoMutations {
 
 type VideoPerformance {
   totalViewsPercentChange: Float!
+  totalViewsV2PercentChange: Float!
   totalLikesPercentChange: Float!
   totalWatchTimePercentChange: Float!
   totalGmvPercentChange: Float!
@@ -14419,7 +14454,9 @@ type VideoPerformance {
   engagedViewsPercentChange: Float!
   buyerIntentPercentChange: Float!
   addToCartPercentChange: Float!
+  addToCartV2PercentChange: Float!
   conversionsPercentChange: Float!
+  ordersV2PercentChange: Float!
   dailyStats: [ProductVideoDailyStats!]!
 }
 
