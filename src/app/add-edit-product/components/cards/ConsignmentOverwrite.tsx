@@ -175,9 +175,9 @@ const ConsignmentOverwrite: React.FC<Props> = (props: Props) => {
                           maxLength={9}
                           validators={[
                             new MinMaxValueValidator({
-                              minAllowedValue: 0,
+                              minAllowedValue: 0.00001,
                               maxAllowedValue: 999999999,
-                              customMessage: i`Value cannot be negative`,
+                              customMessage: i`Value cannot be zero or less`,
                               allowBlank: true,
                             }),
                           ]}
@@ -209,9 +209,9 @@ const ConsignmentOverwrite: React.FC<Props> = (props: Props) => {
                   maxLength={9}
                   validators={[
                     new MinMaxValueValidator({
-                      minAllowedValue: 0,
+                      minAllowedValue: 0.00001,
                       maxAllowedValue: 999999999,
-                      customMessage: i`Value cannot be negative`,
+                      customMessage: i`Value cannot be zero or less`,
                       allowBlank: true,
                     }),
                   ]}
