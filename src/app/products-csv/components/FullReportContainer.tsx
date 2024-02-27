@@ -11,6 +11,7 @@ import { StyleSheet } from "aphrodite";
 import { observer } from "mobx-react";
 import { useQuery } from "@apollo/client";
 import { gql } from "@gql";
+import { ci18n } from "@core/toolkit/i18n";
 
 /* Lego Components */
 import { Layout, Text, Breadcrumbs, RichTextBanner } from "@ContextLogic/lego";
@@ -105,27 +106,31 @@ const FullReportContainer: React.FC = () => {
             items={[
               {
                 href: "/products/csv-history",
-                name: "Product Listing Feed Status",
+                name: i`Product Listing Feed Status`,
                 style: {
                   color: "#0E161C",
                 },
               },
               {
                 href: "#",
-                name: "View Full Report",
+                name: i`View full report`,
               },
             ]}
           />
           <Text style={styles.subtitle}>{i`Product Listing Status`}</Text>
           <Text style={styles.statusTitle}>
-            {data?.productCatalog.newBulkCsvJobDetail.status}
+            {data &&
+              ci18n(
+                "product review status",
+                data.productCatalog.newBulkCsvJobDetail.status,
+              )}
           </Text>
           {shouldRenderRichTextBanner && (
             <RichTextBanner
               buttonText=""
               description={descriptionNode}
               sentiment="warning"
-              title="Data Upload Error"
+              title={i`Data Upload Error`}
             />
           )}
         </Layout.FlexColumn>
