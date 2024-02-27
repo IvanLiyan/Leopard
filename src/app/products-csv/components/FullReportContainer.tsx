@@ -94,6 +94,30 @@ const FullReportContainer: React.FC = () => {
     );
   };
 
+  const STATUS_ENUM = {
+    "In Progress": ci18n(
+      "a label showing a merchant the status of a bulk CSV job, the job is in progress",
+      "In progress",
+    ),
+    Failed: ci18n(
+      "a label showing a merchant the status of a bulk CSV job, the job was stopped before it could complete",
+      "Failed",
+    ),
+    "Completed with errors": ci18n(
+      "a label showing a merchant the status of a bulk CSV job, the job has finished but may have had errors",
+      "Completed with errors",
+    ),
+    Completed: ci18n(
+      "a label showing a merchant the status of a bulk CSV job, the job has finished but may have had errors",
+      "Completed",
+    ),
+  };
+
+  type StatusEnum = keyof typeof STATUS_ENUM;
+
+  const getStatusText = (status: string) =>
+    STATUS_ENUM[status as StatusEnum] || "";
+
   const shouldRenderRichTextBanner =
     data?.productCatalog.newBulkCsvJobDetail.status === "Failed" ||
     data?.productCatalog.newBulkCsvJobDetail.status === "Completed with errors";
@@ -120,10 +144,7 @@ const FullReportContainer: React.FC = () => {
           <Text style={styles.subtitle}>{i`Product Listing Status`}</Text>
           <Text style={styles.statusTitle}>
             {data &&
-              ci18n(
-                "product review status",
-                data.productCatalog.newBulkCsvJobDetail.status,
-              )}
+              getStatusText(data.productCatalog.newBulkCsvJobDetail.status)}
           </Text>
           {shouldRenderRichTextBanner && (
             <RichTextBanner
