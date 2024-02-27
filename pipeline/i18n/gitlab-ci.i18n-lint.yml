@@ -1,0 +1,10 @@
+i18n_lint:
+  image: $CI_REGISTRY/contextlogic/strings:latest_v2
+  stage: test
+  script:
+    - export LEOPARD_HOME=$(pwd)
+    - /go/bin/strings lint $LEOPARD_HOME/src/app --manifests-path="${LEOPARD_HOME}/src/app"
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: never
+    - when: on_success
