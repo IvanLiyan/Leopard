@@ -84,7 +84,7 @@ const UploadTemplateSection: React.FC = () => {
       toastStore.positive(
         i`Success! You will receive an email when your update is ready for review. ` +
           i`[Return to Product Listing Feed Status](${merchFeUrl(
-            "/products/csv-history",
+            "/md/products/csv-history",
           )})`,
       );
       setAttachments([]);
