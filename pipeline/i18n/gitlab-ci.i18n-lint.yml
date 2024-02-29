@@ -3,7 +3,7 @@ i18n_lint:
   stage: test
   script:
     - export LEOPARD_HOME=$(pwd)
-    - /go/bin/strings lint $LEOPARD_HOME/src/app --manifests-path="${LEOPARD_HOME}/src/app"
+    - /go/bin/strings lint $LEOPARD_HOME/ --manifests-path="${LEOPARD_HOME}/"
   rules:
     - if: '$CI_PIPELINE_SOURCE == "schedule"'
       when: never

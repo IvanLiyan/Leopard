@@ -6,7 +6,7 @@ set -e
 # build packages
 BUILD_NUMBER="0.0.$(date +%s)"
 rm -rf /tmp/strings-build
-/go/bin/strings build-packages $LEOPARD_HOME/strings.yml --output=/tmp/strings-build --build-number=$BUILD_NUMBER --smartling-api-secrets="${SMARTLING_API_SECRETS}"
+/go/bin/strings build-packages $LEOPARD_HOME/strings.yml --output=/tmp/strings-build --build-number=$BUILD_NUMBER
 
 # Upload javascript package to NPM
 cd /tmp/strings-build/javascript
