@@ -16,7 +16,7 @@ npm publish --registry https://npm.infra.wish.com --verbose --scope=@ContextLogi
 
 # bump package.json version
 cd $LEOPARD_HOME
-yarn add "@ContextLogic/leopardstrings@${BUILD_NUMBER}"
+npm install "@ContextLogic/leopardstrings@${BUILD_NUMBER}"
 
 # commit changes to git
 git add -A
