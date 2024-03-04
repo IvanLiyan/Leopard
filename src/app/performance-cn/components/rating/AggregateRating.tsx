@@ -202,11 +202,11 @@ const AggregateRating: React.FC = () => {
             "-"
           ) : lowProductRatingPercentage > 0 &&
             lowProductRatingPercentage <= 0.15 ? (
+            formatPercentage(String(lowProductRatingPercentage), "1", 2)
+          ) : (
             <ThemedLabel theme={"Red"} className={commonStyles.themedLabel}>
               {formatPercentage(String(lowProductRatingPercentage), "1", 2)}
             </ThemedLabel>
-          ) : (
-            formatPercentage(String(lowProductRatingPercentage), "1", 2)
           ),
       },
       {
