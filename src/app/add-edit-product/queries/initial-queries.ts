@@ -38,6 +38,7 @@ export const ADD_PRODUCT_INITIAL_DATA_QUERY = gql(`
       primaryCurrency
       canManageShipping
       isCnForFulfillment
+      isCnMerchant
       isStoreMerchant
       shippingSettings(enabled: true) {
         country {
@@ -52,9 +53,6 @@ export const ADD_PRODUCT_INITIAL_DATA_QUERY = gql(`
             expectedTimeToDoor
           }
         }
-      }
-      countryOfDomicile {
-        code
       }
     }
     currentUser {
@@ -92,6 +90,7 @@ export const EDIT_PRODUCT_INITIAL_DATA_QUERY = gql(`
       primaryCurrency
       canManageShipping
       isCnForFulfillment
+      isCnMerchant
       shippingSettings(enabled: true) {
         country {
           name
@@ -105,10 +104,7 @@ export const EDIT_PRODUCT_INITIAL_DATA_QUERY = gql(`
             expectedTimeToDoor
           }
         }
-      }
-      countryOfDomicile {
-        code
-      }
+      } 
     }
     currentUser {
       gating {
@@ -514,9 +510,9 @@ export type AddEditProductInitialData = {
     | "canManageShipping"
     | "isCnForFulfillment"
     | "isConsignmentMode"
+    | "isCnMerchant"
   > & {
     readonly shippingSettings: ReadonlyArray<PickedShippingSettingsSchema>;
-    readonly countryOfDomicile?: Pick<Country, "code"> | null;
   };
 
   readonly currentUser: {
