@@ -22,7 +22,7 @@ yarn add "@ContextLogic/leopardstrings@${BUILD_NUMBER}"
 
 # commit changes to git
 git add -A
-git commit -m "[localization] sync leopard translations"
+git commit -m "[localization] sync leopard translations-test"
 git checkout -b tmp-branch
 
 echo 'pushing to master'
