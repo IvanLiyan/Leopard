@@ -1727,10 +1727,10 @@
   "resolved" "https://npm.infra.wish.com/@ContextLogic%2flegostrings/-/legostrings-0.0.1664165201.tgz"
   "version" "0.0.1664165201"
 
-"@ContextLogic/leopardstrings@^0.0.1709602285":
-  "integrity" "sha512-5BN9J5TV9byK7WZQdqsdg0221QyEC2ibdmDdtd4xZEbDMWJmqPSH0sCKn2MGgp1Rfe5fYPAr9R1bIodp3T4XUw=="
-  "resolved" "https://npm.infra.wish.com/@ContextLogic%2fleopardstrings/-/leopardstrings-0.0.1709602285.tgz"
-  "version" "0.0.1709602285"
+"@ContextLogic/leopardstrings@^0.0.1709603099":
+  "integrity" "sha512-Z6p7Mg8tGixM82XM01PR2zcqKQ97DJvVWRE7J9Bw05JPIGXEvRi3AT6GxaKWdRuIHMmZEmTv4o5OSNTsi9e8OA=="
+  "resolved" "https://npm.infra.wish.com/@ContextLogic%2fleopardstrings/-/leopardstrings-0.0.1709603099.tgz"
+  "version" "0.0.1709603099"
 
 "@ContextLogic/merchantstrings@0.0.1709025818":
   "integrity" "sha512-TpQ8Tdp+uAh3tj+oJyJSqclLct8EwJDgTc4NCRkvAn3A/kGXCWYVIgGphfodIv6Jvv6/y+nBMvv7mm34yI+svw=="
