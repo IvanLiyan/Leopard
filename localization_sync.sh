@@ -20,11 +20,17 @@ npm install "@ContextLogic/leopardstrings@${BUILD_NUMBER}"
 
 # commit changes to git
 git add -A
-git commit -m "[localization] sync leopard translations-test"
+git commit -m "[localization] sync leopard translations"
 git checkout -b tmp-branch
 
-echo 'pushing to master'
-git push origin tmp-branch:master
+# echo 'pushing to master'
+# git push origin tmp-branch:master
+
+echo 'fetching'
+git fetch github $CI_COMMIT_REF_NAME:refs/remotes/github/$CI_COMMIT_REF_NAME
+git pull --rebase origin $CI_COMMIT_REF_NAME
+echo 'pushing'
+git push github tmp-branch:$CI_COMMIT_REF_NAME
 
 git checkout master
 git branch -D tmp-branch

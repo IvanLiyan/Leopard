@@ -1,4 +1,4 @@
-extract strings for translation to i18n:
+extract_strings_for_translation_to_i18n:
   stage: deploy
   image: registry-gitlab.i.wish.com/contextlogic/strings:node-v16-latest_v2
   script:
@@ -10,8 +10,8 @@ extract strings for translation to i18n:
     - if: $MANUAL_EXTRACT_STRINGS == "true"
       when: manual
 
-download translations from i18n and build package:
-  stage: test
+download_translations_from_i18n_and_build_package:
+  stage: schedule
   image: $CI_REGISTRY/contextlogic/strings:node-v16-latest_v2
   script:
     - START_TIME=$SECONDS
@@ -28,3 +28,5 @@ download translations from i18n and build package:
     - ls /tmp
     - sh $LEOPARD_HOME/localization_sync.sh
     - echo 'leopard_string_build_from_i18n_backend_runtime_seconds' $((SECONDS-START_TIME)) | curl --data-binary @- http://pushgateway.infra.wish.com:9091/metrics/job/gitlab
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule" && $SCHEDULE=="download_translations_from_i18n_and_build_package"'
