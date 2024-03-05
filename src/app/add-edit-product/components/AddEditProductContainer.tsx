@@ -51,7 +51,7 @@ const AddEditProductContainer: React.FC<Props> = ({ initialData }: Props) => {
       isStoreMerchant,
       canManageShipping,
       isCnForFulfillment,
-      countryOfDomicile,
+      isCnMerchant,
       isConsignmentMode,
     },
     currentUser: {
@@ -87,7 +87,7 @@ const AddEditProductContainer: React.FC<Props> = ({ initialData }: Props) => {
       showRevampedAddEditProductUI,
       showInventoryOnHand: deciderKey?.showInventoryOnHand,
       showConsignmentOverwrite: deciderKey?.showConsignmentOverwrite,
-      isCnMerchant: countryOfDomicile?.code === "CN",
+      isCnMerchant,
       isConsignmentMode,
       isBd: su ? su.isBd : false,
     }),

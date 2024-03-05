@@ -1944,6 +1944,7 @@ export default class AddEditProductState {
       quantityValue,
       customCustomsLogistics: variationCustomsLogistics,
       attributes: variationAttributes,
+      consignmentSupplyCost,
     } = variation;
 
     const {
@@ -1961,6 +1962,14 @@ export default class AddEditProductState {
     const attributes = hasVariations
       ? variationAttributes
       : additionalAttributes;
+
+    if (
+      this.IsConsignmentMode &&
+      consignmentSupplyCost != null &&
+      consignmentSupplyCost <= 0
+    ) {
+      return i`Value cannot be zero or less`;
+    }
 
     if (image == null) {
       return hasVariations

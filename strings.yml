@@ -7,7 +7,7 @@ smartling:
 package:
   platforms:
     javascript:
-      package_name: merchantstrings
+      package_name: leopardstrings
   dependent_projects:
     - "Merchant Content"
     - "Merchant Legal"

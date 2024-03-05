@@ -18,11 +18,12 @@
     "codegen": "graphql-codegen -o -w --debug --verbose"
   },
   "dependencies": {
+    "@apollo/client": "^3.4.16",
     "@ContextLogic/atlas-ui": "^0.0.1-1704996381",
     "@ContextLogic/lego": "^0.0.1-1706717255",
+    "@ContextLogic/leopardstrings": "^0.0.1709605596",
     "@ContextLogic/merchantstrings": "0.0.1709025818",
     "@ContextLogic/zeus": "^0.0.1-1669324295",
-    "@apollo/client": "^3.4.16",
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
     "@fortawesome/fontawesome": "^1.1.5",

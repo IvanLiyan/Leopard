@@ -1,0 +1,30 @@
+extract strings for translation to i18n:
+  stage: deploy
+  image: registry-gitlab.i.wish.com/contextlogic/strings:node-v16-latest_v2
+  script:
+    - /go/bin/strings extract $(pwd) --client-id="${XTM_CLIENT_ID}" --client-secret="${XTM_CLIENT_SECRET}"
+  when: on_success
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      when: always
+    - if: $MANUAL_EXTRACT_STRINGS == "true"
+      when: manual
+
+download translations from i18n and build package:
+  stage: test
+  image: $CI_REGISTRY/contextlogic/strings:node-v16-latest_v2
+  script:
+    - START_TIME=$SECONDS
+    # setup git credentials
+    - mkdir /root/.ssh/ && touch /root/.ssh/id_rsa
+    - echo $GITHUB_DEPLOY_KEY | base64 -di > /root/.ssh/id_rsa
+    - git config --global user.email "gitlab@wish.com"
+    - git config --global user.name "Gitlab Bot"
+    - git remote set-url origin git@github.com:ContextLogic/leopard.git
+    - chmod 700 /root/.ssh/id_rsa
+    - ssh-keyscan -t rsa github.com >> /root/.ssh/known_hosts
+
+    - export LEOPARD_HOME=$(pwd)
+    - ls /tmp
+    - sh $LEOPARD_HOME/localization_sync.sh
+    - echo 'leopard_string_build_from_i18n_backend_runtime_seconds' $((SECONDS-START_TIME)) | curl --data-binary @- http://pushgateway.infra.wish.com:9091/metrics/job/gitlab
