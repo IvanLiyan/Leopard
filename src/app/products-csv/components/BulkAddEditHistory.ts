@@ -43,6 +43,7 @@ export type newBulkCsvJobDetail = Pick<
   CsvProductImportJobDetailSchema,
   | "id"
   | "fileName"
+  | "fileLink"
   | "startTime"
   | "completedTime"
   | "feedType"

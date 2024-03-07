@@ -44,6 +44,7 @@ const GET_NEW_CSV_JOB_DETAIL = gql(`
             unix
           }
           fileName
+          fileLink
           feedType
           status
           totalCount
