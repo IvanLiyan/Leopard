@@ -381,7 +381,7 @@ export default class AllProductsState {
       toastStore.negative(
         uniquePidFailures > 0 && failures != null
           ? failures[0].message
-          : i`Something went wrong`,
+          : "Something went wrong",
       );
     } else {
       toastStore.positive(`Products updated`);

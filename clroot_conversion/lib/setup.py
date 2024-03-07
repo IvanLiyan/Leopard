@@ -136,7 +136,7 @@ def update_npm_packages() -> None:
         for pkg in [
             "@ContextLogic/lego",
             "@ContextLogic/zeus",
-            "@ContextLogic/merchantstrings",
+            "@ContextLogic/leopardstrings",
         ]:
             logging.warning(f"updating {pkg}")
             try:

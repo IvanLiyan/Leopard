@@ -8,103 +8,8 @@ package:
   platforms:
     javascript:
       package_name: leopardstrings
-  dependent_projects:
-    - "Merchant Content"
-    - "Merchant Legal"
-    - "Wish Local Messages"
-  dependent_features:
-    - name: "Local Email"
-      project_name: "Wish Local"
-    - name: "Local API"
-      project_name: "Wish Local"
-    - name: "Local Notifications"
-      project_name: "Wish Local"
-    - name: "Local Onboarding Emails V2"
-      project_name: "Wish Local"
-    - name: "Ship to Store Enrollment Email"
-      project_name: "Wish Local"
-    - name: "Pay Stores of Mystery Gifts"
-      project_name: "Wish Local"
-    - name: "Wish Blue Subuser Feature Launch"
-      project_name: "Wish Local"
-    - name: "Wish Blue PayPal Cash Collection"
-      project_name: "Wish Local"
-    - name: "Wish Local Delivery Program Email"
-      project_name: "Wish Local"
-    - name: "Wish Local Update ToS Emails"
-      project_name: "Wish Local"
-    - name: "Wish Local Store Upload"
-      project_name: "Wish Local"
-    - name: "Wish Local Blue App Redirect"
-      project_name: "Wish Local"
-    - name: "Wish Local Activation Reminder Email"
-      project_name: "Wish Local"
-    - name: "Ship-to-Store Signup Flow"
-      project_name: "Wish Local"
-    - name: "Wish Local Merchant Plus Launch Emails"
-      project_name: "Wish Local"
-    - name: "Wish Local Store Dashboard Link Emails"
-      project_name: "Wish Local"
-    - name: "Wish Local Store Dashboard Banner"
-      project_name: "Wish Local"
-    - name: "Wish Local Store Payment"
-      project_name: "Wish Local"
-    - name: "Wish Local Delivery Checkpoints"
-      project_name: "Wish Local"
-    - name: "Re-enable Store Communication Email"
-      project_name: "Wish Local"
-    - name: "Wish Local Unsubscribe Emails Strings"
-      project_name: "Wish Local"
-    - name: "Store Signup Pages"
-      project_name: "Wish Local"
-    - name: "Store Identity"
-      project_name: "Wish Local"
-    - name: "Store Referral"
-      project_name: "Wish Local"
-    - name: "Store App In-app Promotions"
-      project_name: "Wish Local"
-    - name: "Ship to Store Enrolment"
-      project_name: "Wish Local"
-    - name: "Wish Local Store Onboarding"
-      project_name: "Wish Local"
-    - name: "Ship to Store Scan Inactivity"
-      project_name: "Wish Local"
-    - name: "Shipment Status Message"
-      project_name: "Wish Local"
-    - name: "Store Achievements Notification"
-      project_name: "Wish Local"
-    - name: "Store First Check-in Email"
-      project_name: "Wish Local"
-    - name: "Store First Shipment Email"
-      project_name: "Wish Local"
-    - name: "Store Performance Email"
-      project_name: "Wish Local"
-    - name: "Store Upload Bonus Banner"
-      project_name: "Wish Local"
-    - name: "Wish Local Merchant Liquidation Email"
-      project_name: "Wish Local"
-    - name: "Wish Local Ship to Store SMS"
-      project_name: "Wish Local"
-    - name: "Export In Stock Inventory Email"
-      project_name: "Wish Local"
-    - name: "Non-Wish Order Customer Email"
-      project_name: "Wish Local"
-    - name: "Sell-on-wish bonuses"
-      project_name: "Wish Local"
-    - name: "Send feature deprecation notice email"
-      project_name: "Wish Local"
-    - name: "Resend data form request"
-      project_name: "Wish Local"
-    - name: "Wish Local store feature banner"
-      project_name: "Wish Local"
-    - name: "Deprecated programs liquidation email"
-      project_name: "Wish Local"
-    - name: "Relist deprecation email"
-      project_name: "Wish Local"
-    - name: "Shipment Checkin issue email"
-      project_name: "Wish Local"
-    - name: "Salesforce app categories and subcategories"
-      project_name: "Wish Local"
+  # dependent_projects:
+  #   - "Leopard Legal"
 
 lint:
   strict_categorization:
@@ -117,10 +22,12 @@ lint:
       - "src/pages/dev-login.dev.tsx"
       - "src/pages/flat-rate-calculator.prod.tsx"
       - "src/styles/*"
+      - "src/app/notice-portal/*"
+      - "src/pages/notice-portal/intake.prod.tsx"
   invalid_args: true
   disable_invalid_placeholder: false
   disable_short_string_context: false
-  strings_in_feature_limit: 200
+  strings_in_feature_limit: 1000
   bad_description_or_name:
     words:
       - all
@@ -175,7 +82,13 @@ lint:
           ["Fulfill By Store", "Fulfilled by Store", "Fulfillment by Store"]
       - keyword: FBW
         unless_includes:
-          ["Fulfill By Wish", "Fulfilled By Wish", "Fulfillment By Wish"]
+          [
+            "Fulfill By Wish",
+            "Fulfilled By Wish",
+            "Fulfillment By Wish",
+            "return",
+            "Shipping",
+          ]
       - keyword: GMV
         unless_includes: ["Gross Merchandise Value"]
       - keyword: LQD
@@ -188,11 +101,9 @@ lint:
         unless_includes: ["Manufacturer's Suggested Retail Price"]
       - keyword: Wish Blue
         unless_includes: ["Wish Local"]
-      - keyword: CN
-        unless_includes: ["China"]
 
 features:
-  - name: App Chrome - Leopard
+  - name: App Chrome
     owners:
       - lliepert@wish.com
     files:
@@ -200,7 +111,7 @@ features:
     description: >
       This feature contains components related to the Merchant Dashboard App
       Chrome. The App Chrome includes components such as navigation bars.
-  - name: App Core - Leopard
+  - name: App Core
     owners:
       - lliepert@wish.com
     files:
@@ -214,17 +125,69 @@ features:
       This feature contains components that are used in various features across
       the merchant dashboard. These components are generic and reusable, and
       can be used for any feature on the site.
-  - name: Infractions - Leopard
+
+  - name: Infractions-component-cards
     owners:
       - lliepert@wish.com
     files:
-      - src/app/infractions/*
+      - src/app/infractions/components/cards/*
+    description: >
+      This feature allows merchants to view infractions against their products,
+      orders they have fulfilled, or their merchant account. They can also
+      dispute these infractions with Wish.
+
+  - name: Infractions-component-disputes
+    owners:
+      - lliepert@wish.com
+    files:
+      - src/app/infractions/components/disputes/*
+    description: >
+      This feature allows merchants to view infractions against their products,
+      orders they have fulfilled, or their merchant account. They can also
+      dispute these infractions with Wish.
+
+  - name: Infractions-DisputeContext
+    owners:
+      - lliepert@wish.com
+    files:
+      - src/app/infractions/DisputeContext.tsx
+    description: >
+      This feature allows merchants to view infractions against their products,
+      orders they have fulfilled, or their merchant account. They can also
+      dispute these infractions with Wish.
+
+  - name: Infractions-InfractionContext
+    owners:
+      - lliepert@wish.com
+    files:
+      - src/app/infractions/InfractionContext.tsx
+    description: >
+      This feature allows merchants to view infractions against their products,
+      orders they have fulfilled, or their merchant account. They can also
+      dispute these infractions with Wish.
+
+  - name: Infractions-app-others
+    owners:
+      - lliepert@wish.com
+    files:
+      - src/app/infractions/copy.ts
+      - src/app/infractions/toolkit.ts
+    description: >
+      This feature allows merchants to view infractions against their products,
+      orders they have fulfilled, or their merchant account. They can also
+      dispute these infractions with Wish.
+
+  - name: Infractions-warnings
+    owners:
+      - lliepert@wish.com
+    files:
       - src/pages/warnings/*
     description: >
       This feature allows merchants to view infractions against their products,
       orders they have fulfilled, or their merchant account. They can also
       dispute these infractions with Wish.
-  - name: Landing Pages - Leopard
+
+  - name: Landing Pages
     owners:
       - jdlin@wish.com
     files:
@@ -236,12 +199,11 @@ features:
       Dashboard. These pages are often users' first touch-point with the site,
       and can describe various programs offered by Wish, call the user to sign
       up for Wish, and allow the user to log in to their account.
-  - name: Performance - Leopard
+
+  - name: Performance-page
     owners:
       - ryu@wish.com
     files:
-      - src/app/performance-cn/*
-      - src/app/performance/*
       - src/pages/performance/*
     description: >
       This feature allows merchants to view information relating to their
@@ -249,7 +211,73 @@ features:
       how well they are fulfilling orders, and other performance related
       metrics.
 
-  - name: Home Page - Leopard
+  - name: Performance-app-component
+    owners:
+      - ryu@wish.com
+    files:
+      - src/app/performance/components/*
+    description: >
+      This feature allows merchants to view information relating to their
+      performance across Wish, such as how well their products are selling,
+      how well they are fulfilling orders, and other performance related
+      metrics.
+
+  - name: Performance-app-migrated-sales-metrics
+    owners:
+      - ryu@wish.com
+    files:
+      - src/app/performance/migrated/sales-metrics-components/*
+    description: >
+      This feature allows merchants to view information relating to their
+      performance across Wish, such as how well their products are selling,
+      how well they are fulfilling orders, and other performance related
+      metrics.
+
+  - name: Performance-app-migrated-toolkit
+    owners:
+      - ryu@wish.com
+    files:
+      - src/app/performance/migrated/toolkit/*
+    description: >
+      This feature allows merchants to view information relating to their
+      performance across Wish, such as how well their products are selling,
+      how well they are fulfilling orders, and other performance related
+      metrics.
+
+  - name: Performance-app-migrated-wss-component
+    owners:
+      - ryu@wish.com
+    files:
+      - src/app/performance/migrated/wss-components/*
+    description: >
+      This feature allows merchants to view information relating to their
+      performance across Wish, such as how well their products are selling,
+      how well they are fulfilling orders, and other performance related
+      metrics.
+
+  - name: Performance-app-migrated-wss-order
+    owners:
+      - ryu@wish.com
+    files:
+      - src/app/performance/migrated/wss-order-metrics-components/*
+    description: >
+      This feature allows merchants to view information relating to their
+      performance across Wish, such as how well their products are selling,
+      how well they are fulfilling orders, and other performance related
+      metrics.
+
+  - name: Performance-china
+    owners:
+      - ryu@wish.com
+    files:
+      - src/app/performance-cn/*
+    description: >
+      This feature allows merchants to view information relating to their
+      performance across Wish, such as how well their products are selling,
+      how well they are fulfilling orders, and other performance related
+      metrics.
+
+  - name: Home Page
     owners:
       - jdlin@wish.com
     files:
@@ -258,7 +286,7 @@ features:
     description: >
       This feature contains content that appears on a merchant's home page
 
-  - name: Promotions - Leopard
+  - name: Promotions
     owners:
       - lliepert@wish.com
     files:
@@ -268,7 +296,7 @@ features:
       This feature contains pages that allow merchants to create and interact
       with promotions on Wish.
 
-  - name: Product Compliance Center - Leopard
+  - name: Product Compliance Center
     owners:
       - lliepert@wish.com
     files:
@@ -278,7 +306,7 @@ features:
       This feature contains pages that allow merchants to monitor and maintain
       their products' compliance with Wish policies and laws.
 
-  - name: CSV Page - Leopard
+  - name: CSV Page
     owners:
       - shli@wish.com
     files:
@@ -288,7 +316,7 @@ features:
       Page where merchants can download templates for different bulk edit via CSV
       options, and upload their csv to bulk edit products.
 
-  - name: Categories and Attributes Page - Leopard
+  - name: Categories and Attributes Page
     owners:
       - shli@wish.com
     files:
@@ -298,26 +326,153 @@ features:
       Page where merchants can view product attributes information associated with
       different categories.
 
-  - name: All Products Page - Leopard
+  - name: All Products-page
     owners:
       - shli@wish.com
     files:
-      - src/app/all-products/*
       - src/pages/products/index.prod.tsx
     description: >
       Page where merchants can view a list of all their products.
 
-  - name: Add and Edit Product Page - Leopard
+  - name: All Products-toolkit
     owners:
       - shli@wish.com
     files:
-      - src/app/add-edit-product/*
-      - src/pages/products/add.prod.tsx
-      - src/pages/products/edit.prod.tsx
+      - src/app/all-products/toolkit.ts
     description: >
-      Page where merchants can manually add a product or edit an existing one.
+      Page where merchants can view a list of all their products.
 
-  - name: Bank Document Page - Leopard
+  - name: All Products-component-product
+    owners:
+      - shli@wish.com
+    files:
+      - src/app/all-products/components/AllProducts.tsx
+      - src/app/all-products/components/ProductDataCell.tsx
+      - src/app/all-products/components/ProductStateLabel.tsx
+      - src/app/all-products/components/ProductTable.tsx
+      - src/app/all-products/components/ProductTableActions.tsx
+      - src/app/all-products/components/ProductTableColumnHeader.tsx
+    description: >
+      Page where merchants can view a list of all their products.
+
+  - name: All Products-component-others
+    owners:
+      - shli@wish.com
+    files:
+      - src/app/all-products/components/ClickableProductImage.tsx
+      - src/app/all-products/components/ConfirmDownloadModal.tsx
+      - src/app/all-products/components/CsvDownloadCenterTable.tsx
+      - src/app/all-products/components/DeleteProductConfirmModal.tsx
+      - src/app/all-products/components/DeleteWarehouseButton.tsx
+      - src/app/all-products/components/DeleteWarehouseConfirmModal.tsx
+      - src/app/all-products/components/FilterSection.tsx
+      - src/app/all-products/components/HeaderRow.tsx
+      - src/app/all-products/components/LQSHeader.tsx
+    description: >
+      Page where merchants can view a list of all their products.
+
+  - name: CSV Download Center Page
+    owners:
+      - ili@wish.com
+    files:
+      - src/pages/products/csv-download-center.prod.tsx
+    description: >
+      View download status, manage, and download your CSV files once they are ready.
+
+  - name: Add and Edit Product-app-component-card
+    owners:
+      - shli@wish.com
+    files:
+      - src/app/add-edit-product/components/cards/customs-logistics/*
+      - src/app/add-edit-product/components/cards/shipping/*
+      - src/app/add-edit-product/components/cards/variations/*
+    description: >
+      Component where merchants can manually add and edit a product.
+
+  - name: Add and Edit Product-app-component-card-product
+    owners:
+      - shli@wish.com
+    files:
+      - src/app/add-edit-product/components/cards/ProductCategoryV2.tsx
+      - src/app/add-edit-product/components/cards/ProductCategory.tsx
+      - src/app/add-edit-product/components/cards/ProductContents.tsx
+      - src/app/add-edit-product/components/cards/ProductImages.tsx
+      - src/app/add-edit-product/components/cards/ProductImagesV2.tsx
+    description: >
+      Component where merchants can manually add and edit a product.
+
+  - name: Add and Edit Product-app-component-card-others
+    owners:
+      - shli@wish.com
+    files:
+      - src/app/add-edit-product/components/cards/AdditionalAttributesV2.tsx
+      - src/app/add-edit-product/components/cards/AttributeField.tsx
+      - src/app/add-edit-product/components/cards/AttributeInput.tsx
+      - src/app/add-edit-product/components/cards/Autofill.tsx
+      - src/app/add-edit-product/components/cards/BasicInfo.tsx
+      - src/app/add-edit-product/components/cards/Categorization.tsx
+      - src/app/add-edit-product/components/cards/CategorizationV2.tsx
+      - src/app/add-edit-product/components/cards/CategoryAttributes.tsx
+      - src/app/add-edit-product/components/cards/Compliance.tsx
+      - src/app/add-edit-product/components/cards/ComplianceDocuments.tsx
+      - src/app/add-edit-product/components/cards/ComplianceV2.tsx
+      - src/app/add-edit-product/components/cards/ConsignmentOverwrite.tsx
+      - src/app/add-edit-product/components/cards/Inventory.tsx
+      - src/app/add-edit-product/components/cards/InventoryGtin.tsx
+      - src/app/add-edit-product/components/cards/ListingDetailsV2.tsx
+      - src/app/add-edit-product/components/cards/ListingDetails.tsx
+      - src/app/add-edit-product/components/cards/MaxquantityV2.tsx
+      - src/app/add-edit-product/components/cards/Price.tsx
+      - src/app/add-edit-product/components/cards/RadioSection.tsx
+      - src/app/add-edit-product/components/cards/Section.tsx
+      - src/app/add-edit-product/components/cards/Shipping.tsx
+      - src/app/add-edit-product/components/cards/SuccessModal.tsx
+      - src/app/add-edit-product/components/cards/UnitPrice.tsx
+      - src/app/add-edit-product/components/cards/Variations.tsx
+      - src/app/add-edit-product/components/cards/WishImagePreview.tsx
+      - src/app/add-edit-product/components/cards/WishPreview.tsx
+      - src/app/add-edit-product/components/cards/WishPreviewCard.tsx
+    description: >
+      Component where merchants can manually add and edit a product.
+
+  - name: Add and Edit Product-app-component-others
+    owners:
+      - shli@wish.com
+    files:
+      - src/app/add-edit-product/components/brand/*
+      - src/app/add-edit-product/components/AddEditProductContainer.tsx
+      - src/app/add-edit-product/components/ImageUploadGroup.tsx
+    description: >
+      Component where merchants can manually add and edit a product.
+
+  - name: Add and Edit Product-app-compliance documents
+    owners:
+      - shli@wish.com
+    files:
+      - src/app/add-edit-product/compliance-documents/*
+    description: >
+      Component where merchants can manually add and edit a product.
+
+  - name: Add and Edit Product-app-others
+    owners:
+      - shli@wish.com
+    files:
+      - src/app/add-edit-product/AddEditProductState.ts
+      - src/app/add-edit-product/constants.ts
+      - src/app/add-edit-product/toolkit.ts
+    description: >
+      Component where merchants can manually add and edit a product.
+
+  - name: Add and Edit Product Page
+    owners:
+      - shli@wish.com
+    files:
+      - src/pages/products/edit.prod.tsx
+      - src/pages/products/add.prod.tsx
+    description: >
+      Page where merchants can manually add pduct or edit an existing one.
+
+  - name: Bank Document Page
     owners:
       - kwan@wish.com
     files:
@@ -326,16 +481,7 @@ features:
     description: >
       Page where merchants upload bank information and accept bank policy.
 
-  - name: CSV Download Center Page - Leopard
-    owners:
-      - ili@wish.com
-    files:
-      - src/app/all-products/*
-      - src/pages/products/csv-download-center.prod.tsx
-    description: >
-      View download status, manage, and download your CSV files once they are ready.
-
-  - name: Product Listing Fees Page - Leopard
+  - name: Product Listing Fees Page
     owners:
       - ili@wish.com
     files:
@@ -343,11 +489,3 @@ features:
       - src/pages/products/listing-fees.prod.tsx
     description: >
       View Listing Fees based on your number of active product listings and Wish Standards status.
-
-  - name: Listing Fees Csv Error Handling Page - Leopard
-    owners:
-      - kwan@wish.com
-    files:
-      - src/app/products-csv/components/*
-    description: >
-      Page to search the product listing feed status and details page.

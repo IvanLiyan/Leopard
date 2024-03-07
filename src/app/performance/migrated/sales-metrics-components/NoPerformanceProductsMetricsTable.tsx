@@ -17,7 +17,7 @@ import {
 } from "@ContextLogic/lego";
 
 /* Legacy */
-import { ni18n } from "@core/toolkit/i18n";
+import { ci18n, ni18n } from "@core/toolkit/i18n";
 
 /* Lego Toolkit */
 import { css } from "@core/toolkit/styling";
@@ -377,7 +377,7 @@ const NoPerformanceProductsMetricsTable = (props: Props) => {
             <Table.Column
               _key={"gmv"}
               columnKey="gmv"
-              title={i`GMV`}
+              title={ci18n("Gross Merchandise Value", "GMV")}
               columnDataCy={"gmv-column"}
             />
             <Table.Column

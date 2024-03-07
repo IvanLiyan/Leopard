@@ -25,6 +25,7 @@ import ModalFooter from "@core/components/modal/ModalFooter";
 import { Heading, Text } from "@ContextLogic/atlas-ui";
 import numeral from "numeral";
 import { merchFeUrl } from "@core/toolkit/router";
+import { ci18n } from "@core/toolkit/i18n";
 
 export type BulkDuplicateAutomatedModalProps = BaseProps &
   Pick<ModalProps, "open"> & {
@@ -233,7 +234,7 @@ const BulkDuplicateAutomatedModal: React.FC<
             />
             <Table.CurrencyColumn
               _key={undefined}
-              title={i`GMV`}
+              title={ci18n("Gross Merchandise Value", "GMV")}
               columnKey="gmv"
               currencyCode={currencyCode}
             />

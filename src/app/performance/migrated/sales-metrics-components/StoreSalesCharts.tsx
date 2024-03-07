@@ -16,6 +16,9 @@ import {
   Layout,
 } from "@ContextLogic/lego";
 
+/* Legacy */
+import { ci18n } from "@core/toolkit/i18n";
+
 /* Lego Toolkit */
 import { css } from "@core/toolkit/styling";
 import { useTheme } from "@core/stores/ThemeStore";
@@ -246,7 +249,11 @@ const StoreSalesCharts = (props: Props) => {
           <>
             <StoreChart
               graphData={graphData}
-              firstLineProps={{ name: i`GMV`, dataKey: "gmv", stroke: primary }}
+              firstLineProps={{
+                name: ci18n("Gross Merchandise Value", "GMV"),
+                dataKey: "gmv",
+                stroke: primary,
+              }}
               secondLineProps={{
                 name: i`Average order value`,
                 dataKey: "avgOrderValue",
