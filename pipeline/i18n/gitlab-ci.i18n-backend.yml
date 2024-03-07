@@ -3,6 +3,9 @@ extract_strings_for_translation_to_i18n:
   image: registry-gitlab.i.wish.com/contextlogic/strings:node-v16-latest_v2
   script:
     - /go/bin/strings extract $(pwd) --client-id="${XTM_CLIENT_ID}" --client-secret="${XTM_CLIENT_SECRET}"
+    # push prometheus metric
+    - echo 'leopard_string_extraction_to_i18n_backend_runtime_seconds' $((SECONDS-START_TIME)) | curl --data-binary @- http://pushgateway.infra.wish.com:9091/metrics/job/gitlab
+    - echo 'leopard_string_extraction_to_i18n_backend_last_success_timestamp' $(date -u +%s) | curl --data-binary @- http://pushgateway.infra.wish.com:9091/metrics/job/gitlab
   when: on_success
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
