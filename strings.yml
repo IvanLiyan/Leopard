@@ -277,7 +277,7 @@ features:
       how well they are fulfilling orders, and other performance related
       metrics.
 
-  - name: Home Page
+  - name: Home Page Leopard
     owners:
       - jdlin@wish.com
     files:
