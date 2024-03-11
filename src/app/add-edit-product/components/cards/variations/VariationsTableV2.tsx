@@ -149,7 +149,7 @@ const VariationsTableV2: React.FC<Props> = (props: Props) => {
   const actions = [
     {
       key: "discard",
-      name: i`Discard`,
+      name: ci18n("discard variation", "Discard"),
       canBatch: false,
       canApplyToRow: (variation: Variation) => !isVariationSaved(variation),
       apply: (variations: ReadonlyArray<Variation>) => {
@@ -300,7 +300,7 @@ const VariationsTableV2: React.FC<Props> = (props: Props) => {
               ni18n(
                 variations.length,
                 "Variation has been discarded",
-                "%1$d variations have been discarded",
+                "{%1=variation amount} variations have been discarded",
               ),
             );
             setIsDiscardModalOpen(false);
@@ -327,7 +327,7 @@ const VariationsTableV2: React.FC<Props> = (props: Props) => {
           >
             <Stack direction="row" alignItems="center" sx={{ gap: "16px" }}>
               <NumberButton
-                buttonText={i`Apply price`}
+                buttonText={ci18n("apply price button", "Apply price")}
                 onSubmit={(value) =>
                   Array.from(selectedRowIds).forEach((clientSideId) =>
                     updateVariation({
@@ -342,7 +342,7 @@ const VariationsTableV2: React.FC<Props> = (props: Props) => {
                 data-cy="apply-price"
               />
               <NumberButton
-                buttonText={i`Apply inventory`}
+                buttonText={ci18n("apply inventory button", "Apply inventory")}
                 onSubmit={(value) => {
                   if (value != null) {
                     Array.from(selectedRowIds).forEach((clientSideId) =>
@@ -406,7 +406,7 @@ const VariationsTableV2: React.FC<Props> = (props: Props) => {
                 }}
                 data-cy="button-discard"
               >
-                Discard
+                {ci18n("discard button", "Discard")}
               </Button>
             </Stack>
           </Stack>
@@ -727,7 +727,10 @@ const VariationsTableV2: React.FC<Props> = (props: Props) => {
         {showUnitPrice && (
           <Table.Column
             _key="quantityValue"
-            title={i`Quantity value`}
+            title={ci18n(
+              "total quantity of the product variant",
+              "Quantity value",
+            )}
             columnKey="quantityValue"
             columnDataCy="column-quantity-value"
             handleEmptyRow

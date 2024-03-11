@@ -3,7 +3,9 @@ i18n_lint:
   stage: test
   script:
     - export LEOPARD_HOME=$(pwd)
-    - /go/bin/strings lint $LEOPARD_HOME/ --manifests-path="${LEOPARD_HOME}/"
+    - git remote set-branches --add origin master
+    - git fetch origin master --depth=1
+    - /go/bin/strings lint $LEOPARD_HOME/ --manifests-path=${LEOPARD_HOME}/ --compare-branch=master
   rules:
     - if: '$CI_PIPELINE_SOURCE == "schedule"'
       when: never

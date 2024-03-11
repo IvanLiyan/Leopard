@@ -179,7 +179,7 @@ const Autofill: React.FC<Props> = (props: Props) => {
     toastStore.positive(
       ci18n(
         "popup indicating to the merchant they have successfully imported a new product (placeholder is singular)",
-        'Successfully imported "%1$s"',
+        'Successfully imported "{%1=product title}"',
         product.title,
       ),
     );
@@ -195,7 +195,10 @@ const Autofill: React.FC<Props> = (props: Props) => {
       <Text className={css(styles.title)}>
         Enter the product’s GTIN to autofill your images and listing details.
       </Text>
-      <Field title={i`GTIN`} className={css(styles.field)}>
+      <Field
+        title={ci18n("varaition UPC, EAN, ISBN", "GTIN")}
+        className={css(styles.field)}
+      >
         <Layout.FlexRow style={styles.content}>
           <TextInput
             placeholder={i`Enter a GTIN (UPC, EAN, ISBN) for each variation, separated by commas`}
@@ -228,7 +231,7 @@ const Autofill: React.FC<Props> = (props: Props) => {
             }}
             data-cy="button-autofill"
           >
-            Autofill
+            {ci18n("submit to auto fill", "Autofill")}
           </Button>
         </Layout.FlexRow>
       </Field>

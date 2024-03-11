@@ -3454,7 +3454,7 @@ export default class AddEditProductState {
     toastStore.info(
       ci18n(
         "popup telling the merchant a product has been removed to their store",
-        '"%1$s" has been removed from your store',
+        "{%1=name} has been removed from your store",
         name,
       ),
     );
@@ -3526,7 +3526,7 @@ export default class AddEditProductState {
         ci18n(
           "popup telling the merchant a new product has been added to their store, (placeholder is singular). " +
             "The product name is placed in a link that leads to a page where they merchant can view the product",
-          "[%1$s](%2$s) has been added to your store",
+          "[{%1=name}]({%2=produc url}) has been added to your store",
           name,
           merchFeUrl(`/md/products/edit?pid=${productId}`),
         ),
@@ -3539,7 +3539,7 @@ export default class AddEditProductState {
         ci18n(
           "popup telling the merchant a product has been updated, (placeholder is singular), " +
             "The product name is placed in a link that leads to a page where they merchant can view the product",
-          "[%1$s](%2$s) has been updated",
+          "[{%1=name}]({%2=produc url}) has been updated",
           name,
           merchFeUrl(`/md/products/edit?pid=${productId}`),
         ),

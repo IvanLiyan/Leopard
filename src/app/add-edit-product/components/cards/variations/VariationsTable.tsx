@@ -156,7 +156,7 @@ const VariationsTable: React.FC<Props> = (props: Props) => {
   const actions = [
     {
       key: "discard",
-      name: i`Discard`,
+      name: ci18n("discard variation", "Discard"),
       canBatch: false,
       canApplyToRow: (variation: Variation) => !isVariationSaved(variation),
       apply: (variations: ReadonlyArray<Variation>) => {
@@ -306,7 +306,7 @@ const VariationsTable: React.FC<Props> = (props: Props) => {
               ni18n(
                 variations.length,
                 "Variation has been discarded",
-                "%1$d variations have been discarded",
+                "{%1=variation amount} variations have been discarded",
               ),
             );
             setIsDiscardModalOpen(false);
@@ -360,7 +360,7 @@ const VariationsTable: React.FC<Props> = (props: Props) => {
             <Layout.FlexRow style={styles.bulkActions}>
               <NumberButton
                 style={styles.bulkAction}
-                buttonText={i`Apply price`}
+                buttonText={ci18n("apply price button", "Apply price")}
                 onSubmit={(value) =>
                   Array.from(selectedRowIds).forEach((clientSideId) =>
                     updateVariation({
@@ -376,7 +376,7 @@ const VariationsTable: React.FC<Props> = (props: Props) => {
               />
               <NumberButton
                 style={styles.bulkAction}
-                buttonText={i`Apply inventory`}
+                buttonText={ci18n("apply inventory button", "Apply inventory")}
                 onSubmit={(value) => {
                   if (value != null) {
                     Array.from(selectedRowIds).forEach((clientSideId) =>
@@ -402,7 +402,7 @@ const VariationsTable: React.FC<Props> = (props: Props) => {
                 }}
                 data-cy="button-discard"
               >
-                Discard
+                {ci18n("discard button", "Discard")}
               </Button>
             </Layout.FlexRow>
             <Text weight="semibold" style={styles.bulkNumberText}>
@@ -445,7 +445,7 @@ const VariationsTable: React.FC<Props> = (props: Props) => {
       >
         <Table.Column
           _key="image"
-          title={i`Image`}
+          title={ci18n("variation image", "Image")}
           columnKey="image.wishUrl"
           columnDataCy="column-image"
           handleEmptyRow
@@ -466,7 +466,7 @@ const VariationsTable: React.FC<Props> = (props: Props) => {
           })}
         <Table.Column
           _key="sku"
-          title={i`SKU`}
+          title={ci18n("variation sku", "SKU")}
           columnKey="sku"
           columnDataCy="column-sku"
           handleEmptyRow
@@ -495,7 +495,7 @@ const VariationsTable: React.FC<Props> = (props: Props) => {
         </Table.Column>
         <Table.Column
           _key="price"
-          title={i`Price`}
+          title={ci18n("variation price", "Price")}
           columnKey="price"
           minWidth={80}
           columnDataCy="column-price"
@@ -528,7 +528,7 @@ const VariationsTable: React.FC<Props> = (props: Props) => {
         </Table.Column>
         <Table.Column
           _key="inventory"
-          title={i`Inventory`}
+          title={ci18n("variation inventory", "Inventory")}
           columnKey="inventory"
           columnDataCy="column-inventory"
           handleEmptyRow
@@ -561,7 +561,7 @@ const VariationsTable: React.FC<Props> = (props: Props) => {
         </Table.Column>
         <Table.Column
           _key="gtin"
-          title={i`GTIN`}
+          title={ci18n("variation GTIN", "GTIN")}
           columnKey="gtin"
           columnDataCy="column-gtin"
           handleEmptyRow
@@ -599,7 +599,10 @@ const VariationsTable: React.FC<Props> = (props: Props) => {
         {showUnitPrice && (
           <Table.Column
             _key="weight"
-            title={i`Quantity value`}
+            title={ci18n(
+              "total quantity of the product variant",
+              "Quantity value",
+            )}
             columnKey="weight"
             columnDataCy="column-quantity-value"
             handleEmptyRow
