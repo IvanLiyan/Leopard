@@ -18,7 +18,7 @@ type Props = Omit<SectionProps, "title"> & {
   readonly state: AddEditProductState;
 };
 
-const MAX_TAGS = 20;
+const MAX_TAGS = 10;
 
 const CategorizationV2: React.FC<Props> = (props: Props) => {
   const { className, style, state, ...sectionProps } = props;
@@ -36,7 +36,7 @@ const CategorizationV2: React.FC<Props> = (props: Props) => {
   return (
     <Section
       style={[className, style]}
-      title={i`Categorization`}
+      title={ci18n("product category", "Categorization")}
       {...sectionProps}
     >
       <Stack direction="row" sx={{ gap: "8px" }}>

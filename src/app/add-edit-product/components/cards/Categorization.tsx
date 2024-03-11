@@ -31,12 +31,13 @@ import BrandCardItem from "@add-edit-product/components/brand/BrandCard";
 import BrandSearch from "@add-edit-product/components/brand/BrandSearch";
 import { zendeskURL } from "@core/toolkit/url";
 import { merchFeUrl } from "@core/toolkit/router";
+import { ci18n } from "@core/toolkit/i18n";
 
 type Props = BaseProps & {
   readonly state: AddEditProductState;
 };
 
-const MAX_TAGS = 20;
+const MAX_TAGS = 10;
 
 const Categorization: React.FC<Props> = (props: Props) => {
   const { className, style, state } = props;
@@ -56,7 +57,7 @@ const Categorization: React.FC<Props> = (props: Props) => {
   return (
     <Section
       className={css(className, style)}
-      title={i`Categorization`}
+      title={ci18n("product category", "Categorization")}
       alwaysOpen
     >
       <Field
@@ -109,7 +110,7 @@ const Categorization: React.FC<Props> = (props: Props) => {
         )}
       </Field>
       <Field
-        title={i`Tags (optional)`}
+        title={ci18n("product tags", "Tags (optional)")}
         style={styles.field}
         description={
           i`Non-hierarchical keyword or term assigned to each product in your feed. This ` +
