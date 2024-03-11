@@ -92,7 +92,7 @@ const ManageProductsSteps: React.FC = () => {
         <Text style={{ fontSize: 16 }}>
           {ci18n("Go to the CSV status page to check the process", "Go to the")}
           <Link
-            href={merchFeUrl(`/products/csv-history`)}
+            href={merchFeUrl(`/md/products/csv-history`)}
             underline
             openInNewTab
             style={{
