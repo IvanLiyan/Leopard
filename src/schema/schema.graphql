@@ -1377,6 +1377,7 @@ type CSVProductImportJobDetailSchema {
   startTime: Datetime!
   completedTime: Datetime
   fileName: String
+  fileLink: String
   feedType: ProductCSVJobType!
   status: String!
   totalCount: Int!

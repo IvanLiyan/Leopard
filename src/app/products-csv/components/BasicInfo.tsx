@@ -12,7 +12,7 @@ import { ci18n } from "@core/toolkit/i18n";
 import { ProductCsvJobTypeDisplayNames } from "./BulkAddEditHistory";
 
 /* Lego Components */
-import { Layout, Text } from "@ContextLogic/lego";
+import { Layout, Text, Link } from "@ContextLogic/lego";
 
 /* Lego Toolkit */
 import { css } from "@core/toolkit/styling";
@@ -32,6 +32,13 @@ type Props = BaseProps & {
 const ProductCsvHistory: React.FC<Props> = (props: Props) => {
   const { className, style, propData } = props;
   const styles = useStylesheet();
+
+  const onDownload = () => {
+    const fileLink = propData?.fileLink;
+    if (fileLink && typeof fileLink === "string") {
+      window.open(fileLink);
+    }
+  };
 
   const body = (
     <>
@@ -56,7 +63,9 @@ const ProductCsvHistory: React.FC<Props> = (props: Props) => {
               <Text style={styles.text}>{propData?.id}</Text>
             </Layout.FlexRow>
             <Layout.FlexRow>
-              <Text style={styles.text}>{propData?.fileName}</Text>
+              <Link onClick={onDownload}>
+                <Text style={styles.text}>{propData?.fileName}</Text>
+              </Link>
             </Layout.FlexRow>
             <Layout.FlexRow>
               <Text style={styles.text}>

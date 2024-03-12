@@ -29,10 +29,6 @@ type Props = BaseProps & {
 
 const ProductCsvHistory: React.FC<Props> = (props: Props) => {
   const { className, style, initialData } = props;
-
-  // eslint-disable-next-line no-console
-  console.log("initialDataKKK", initialData);
-
   const body = (
     <>
       <Layout.FlexColumn>
