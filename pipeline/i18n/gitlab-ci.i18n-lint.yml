@@ -9,6 +9,4 @@ i18n_lint:
     - printenv CI_COMMIT_REF_NAME
     - /go/bin/strings lint $LEOPARD_HOME/ --manifests-path=${LEOPARD_HOME}/ --compare-branch=master
   rules:
-    - if: '$CI_PIPELINE_SOURCE == "schedule"'
-      when: never
-    - when: on_success
+    - if: '$CI_COMMIT_REF_NAME != "master"'
