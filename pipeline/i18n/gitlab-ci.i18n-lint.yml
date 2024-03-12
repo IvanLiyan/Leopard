@@ -1,10 +1,12 @@
 i18n_lint:
-  image: $CI_REGISTRY/contextlogic/strings:latest_v2
+  image: $CI_REGISTRY/contextlogic/strings:node-v16-latest_v2
   stage: test
   script:
     - export LEOPARD_HOME=$(pwd)
     - git remote set-branches --add origin master
     - git fetch origin master --depth=1
+    - export CI_COMMIT_REF_NAME=$CI_COMMIT_REF_NAME
+    - printenv CI_COMMIT_REF_NAME
     - /go/bin/strings lint $LEOPARD_HOME/ --manifests-path=${LEOPARD_HOME}/ --compare-branch=master
   rules:
     - if: '$CI_PIPELINE_SOURCE == "schedule"'
