@@ -55,10 +55,10 @@
   resolved "https://npm.infra.wish.com/@ContextLogic%2flegostrings/-/legostrings-0.0.1664165201.tgz"
   integrity sha512-GsxxS3heScUVxpDinLJsYcQ0x4lILolSIeQRKpe+UH+Vn9nDjVg2RUqQ43DEiZIWG6GnRIht6Dqbhk57QuyjHw==
 
-"@ContextLogic/leopardstrings@0.0.1710320832":
-  version "0.0.1710320832"
-  resolved "https://npm.infra.wish.com/@ContextLogic%2fleopardstrings/-/leopardstrings-0.0.1710320832.tgz#a20994b7742dc20a4b94c8dd446b91783c7b1145"
-  integrity sha512-zpjZFyl5QEn+3GHxJbcELNZVGrIvCeIKov/hMPvbGVjAk9CfljRfZMgzNbClgPIYtigDdk9KYwyb5mpvmK29ag==
+"@ContextLogic/leopardstrings@0.0.1710386922":
+  version "0.0.1710386922"
+  resolved "https://npm.infra.wish.com/@ContextLogic%2fleopardstrings/-/leopardstrings-0.0.1710386922.tgz#903d6a9d1ddb668f270f49329c6be53f4a21b37e"
+  integrity sha512-tNiXBVaiXyjISBpWBSSYfmmqnFSLd5UtTTF0w7OuwuHgvd+I5xbR/czGDxXK+h/PVbp6mZ3Cmm6aD+QbTw2yAQ==
 
 "@ContextLogic/zeus@0.0.1-1669324295", "@ContextLogic/zeus@^0.0.1-1669324295":
   version "0.0.1-1669324295"
