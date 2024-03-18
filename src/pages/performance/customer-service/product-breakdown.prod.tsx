@@ -359,7 +359,7 @@ const ProductView: React.FC = () => {
           },
           {
             name: i`Customer Service Performance`,
-            href: "/md/performance/customer-service",
+            href: merchFeUrl("/md/performance/customer-service"),
           },
           {
             name: ci18n(

@@ -223,7 +223,7 @@ const ProductBreakdownPage = () => {
           },
           {
             name: ci18n("refund page breadcrumb", "Refund Performance"),
-            href: "/md/performance/refund",
+            href: merchFeUrl("/md/performance/refund"),
           },
           {
             name: ci18n("refund page breadcrumb", "Product Breakdown"),
