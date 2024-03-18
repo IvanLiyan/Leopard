@@ -31,6 +31,7 @@ import PageHeader from "@core/components/PageHeader";
 import PageGuide from "@core/components/PageGuide";
 import { merchFeUrl } from "@core/toolkit/router";
 import { useTheme } from "@core/stores/ThemeStore";
+import { ci18n } from "@core/toolkit/i18n";
 
 const PerformanceShippingPage: NextPage<Record<string, never>> = () => {
   const { textBlack, textLight } = useTheme();
@@ -53,7 +54,7 @@ const PerformanceShippingPage: NextPage<Record<string, never>> = () => {
   const columns = useMemo(() => {
     const columns: ReadonlyArray<TableColumn<AugmentedShipping>> = [
       {
-        title: i`Time Period`,
+        title: ci18n("Gross Merchandise Value", "Time Period"),
         key: "timePeriod",
         align: "left",
         render: ({ row: { startDate, endDate } }) => (
@@ -64,7 +65,9 @@ const PerformanceShippingPage: NextPage<Record<string, never>> = () => {
         key: "ordersFulfilled",
         titleRender: () => (
           <>
-            <span>Orders Fulfilled</span>
+            <span>
+              {ci18n("Number of orders marked shipped", "Orders Fulfilled")}
+            </span>
             <Tooltip
               className={commonStyles.tableTooltip}
               title={
@@ -211,7 +214,12 @@ const PerformanceShippingPage: NextPage<Record<string, never>> = () => {
         key: "preFulfillmentCancellations",
         titleRender: () => (
           <>
-            <span>Pre-fulfillment Cancellations</span>
+            <span>
+              {ci18n(
+                " Number of orders that are refunded",
+                "Pre-fulfillment Cancellations",
+              )}
+            </span>
             <Tooltip
               className={commonStyles.tableTooltip}
               title={
@@ -347,7 +355,12 @@ const PerformanceShippingPage: NextPage<Record<string, never>> = () => {
         key: "ordersConfirmedDelivered",
         titleRender: () => (
           <>
-            <span>Orders Delivered</span>
+            <span>
+              {ci18n(
+                "Number of orders confirmed delivered by the carrier",
+                "Orders Delivered",
+              )}
+            </span>
             <Tooltip
               className={commonStyles.tableTooltip}
               title={
@@ -476,11 +489,21 @@ const PerformanceShippingPage: NextPage<Record<string, never>> = () => {
       <PageHeader
         relaxed
         breadcrumbs={[
-          { name: i`Home`, href: merchFeUrl("/home") },
-          { name: i`Performance`, href: merchFeUrl("/performance-overview") },
-          { name: i`Shipping Performance`, href: window.location.href },
+          {
+            name: ci18n("shipping page breadcrumb", "Home"),
+            href: merchFeUrl("/md/home"),
+          },
+          {
+            name: ci18n("shipping page breadcrumb", "Performance"),
+            href: merchFeUrl("/md/performance"),
+          },
+          {
+            name: ci18n("shipping page breadcrumb", "Shipping Performance"),
+
+            href: window.location.href,
+          },
         ]}
-        title={i`Shipping Performance`}
+        title={ci18n("shipping page breadcrumb", "Shipping Performance")}
       />
       <PageGuide relaxed style={{ paddingTop: 20 }}>
         <Alert
@@ -493,7 +516,7 @@ const PerformanceShippingPage: NextPage<Record<string, never>> = () => {
         <BenchMarksModel />
         <div className={commonStyles.toolkit}>
           <Title className={commonStyles.title} style={{ padding: 0 }}>
-            Your Metrics
+            {ci18n("shipping page metrics", "Your Metrics")}
           </Title>
           {store.shippingData && store.shippingData.length > 0 && (
             <Button
@@ -511,7 +534,7 @@ const PerformanceShippingPage: NextPage<Record<string, never>> = () => {
                 })
               }
             >
-              Export CSV
+              {ci18n("export shipping CSV", "Export CSV")}
             </Button>
           )}
         </div>

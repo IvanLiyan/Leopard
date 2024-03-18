@@ -35,6 +35,7 @@ import PageHeader from "@core/components/PageHeader";
 import PageGuide from "@core/components/PageGuide";
 import { addCommas } from "@core/toolkit/stringUtils";
 import { useTheme } from "@core/stores/ThemeStore";
+import { ci18n } from "@core/toolkit/i18n";
 
 const ProductBreakdownPage = () => {
   const toastStore = useToastStore();
@@ -66,7 +67,7 @@ const ProductBreakdownPage = () => {
     const columns: Array<TableColumn<AugmentedRefundBreakdown>> = [
       {
         key: "RangeDate",
-        title: i`Time Period`,
+        title: ci18n("refund range date", "Time Period"),
         align: "left",
         render: ({ row: { startDate: rowStartDate, endDate: rowEndDate } }) => {
           // check if we have data for the row; if not, bail to the overall page's data
@@ -83,7 +84,7 @@ const ProductBreakdownPage = () => {
       },
       {
         key: "id",
-        title: i`Product Id`,
+        title: ci18n("refund product id", "Product Id"),
         align: "left",
         render: ({ row }) => {
           const url = wishURL(`/product/${row.id}?share=web`);
@@ -109,7 +110,12 @@ const ProductBreakdownPage = () => {
         key: "refunds",
         titleRender: () => (
           <>
-            <span>Refunds</span>
+            <span>
+              {ci18n(
+                "Number of refunds that occurred during the time period",
+                "Refunds",
+              )}
+            </span>
             <Tooltip
               className={commonStyles.tableTooltip}
               title={
@@ -134,7 +140,7 @@ const ProductBreakdownPage = () => {
       },
       {
         key: "isReturnsEnabled",
-        title: i`Returns Enrolled`,
+        title: ci18n("isReturnsEnabled", "Returns Enrolled"),
         render: ({ row }) => {
           return row.isReturnsEnabled ? (
             <div
@@ -145,7 +151,7 @@ const ProductBreakdownPage = () => {
               }}
             >
               <div style={{ display: "flex" }}>
-                <span>Yes</span>
+                <span>{ci18n("checkCircle yes", "Yes")}</span>
                 <Icon
                   className={css(styles.burger)}
                   name="checkCircle"
@@ -160,7 +166,7 @@ const ProductBreakdownPage = () => {
                   className={commonStyles.linkStyle}
                   openInNewTab
                 >
-                  View
+                  {ci18n("view product return setting", "View")}
                 </Link>
               </div>
             </div>
@@ -173,7 +179,7 @@ const ProductBreakdownPage = () => {
               }}
             >
               <div style={{ display: "flex" }}>
-                <span>No</span>
+                <span>{ci18n("checkCircle no", "No")}</span>
                 <Icon
                   className={css(styles.burger)}
                   name="error"
@@ -188,7 +194,7 @@ const ProductBreakdownPage = () => {
                   className={commonStyles.linkStyle}
                   openInNewTab
                 >
-                  Enroll
+                  {ci18n("enroll product return setting", "Enroll")}
                 </Link>
               </div>
             </div>
@@ -207,13 +213,22 @@ const ProductBreakdownPage = () => {
       <PageHeader
         relaxed
         breadcrumbs={[
-          { name: i`Home`, href: merchFeUrl("/home") },
-          { name: i`Performance`, href: merchFeUrl("/performance-overview") },
           {
-            name: i`Refund Performance`,
-            href: "/performance/refund",
+            name: ci18n("refund page breadcrumb", "Home"),
+            href: merchFeUrl("/md/home"),
           },
-          { name: i`Product Breakdown`, href: window.location.href },
+          {
+            name: ci18n("refund page breadcrumb", "Performance"),
+            href: merchFeUrl("/md/performance"),
+          },
+          {
+            name: ci18n("refund page breadcrumb", "Refund Performance"),
+            href: "/md/performance/refund",
+          },
+          {
+            name: ci18n("refund page breadcrumb", "Product Breakdown"),
+            href: window.location.href,
+          },
         ]}
         title={i`Product Breakdown${dateRange}`}
       />
@@ -236,7 +251,7 @@ const ProductBreakdownPage = () => {
                   });
                 }}
               >
-                Export CSV
+                {ci18n("export refund CSV", "Export CSV")}
               </Button>
             )}
           </div>

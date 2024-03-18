@@ -34,6 +34,7 @@ import {
   round,
 } from "src/app/core/toolkit/stringUtils";
 import AggregateBenchMarksModel from "src/app/performance-cn/components/customer-service/AggregateBenchmarksModel";
+import { ci18n } from "@core/toolkit/i18n";
 
 const CustomerServiceAggregateModule: React.FC = () => {
   const { textBlack } = useTheme();
@@ -58,7 +59,7 @@ const CustomerServiceAggregateModule: React.FC = () => {
     const columns: Array<TableColumn<PickedCustomerServiceAggregate>> = [
       {
         key: "timePeriod",
-        title: i`Date Range`,
+        title: ci18n("timePeriod", "Date Range"),
         align: "left",
         render: ({ row: { startDate, endDate }, index }) => {
           return (
@@ -82,7 +83,7 @@ const CustomerServiceAggregateModule: React.FC = () => {
         key: "gmv",
         titleRender: () => (
           <div>
-            <span>GMV</span>
+            <span>{ci18n("Gross Merchandise Value", "GMV")}</span>
             <Tooltip
               className={commonStyles.tableTooltip}
               title={
@@ -102,7 +103,12 @@ const CustomerServiceAggregateModule: React.FC = () => {
         key: "orders",
         titleRender: () => (
           <>
-            <span>Orders</span>
+            <span>
+              {ci18n(
+                "Number of times your products were bought in the date range",
+                "Orders",
+              )}
+            </span>
             <Tooltip
               className={commonStyles.tableTooltip}
               title={
@@ -259,7 +265,9 @@ const CustomerServiceAggregateModule: React.FC = () => {
         key: "chargeback",
         titleRender: () => (
           <>
-            <span>Chargebacks</span>
+            <span>
+              {ci18n(" Number of chargebacks occurred", "Chargebacks")}
+            </span>
             <Tooltip
               className={commonStyles.tableTooltip}
               title={
@@ -277,7 +285,12 @@ const CustomerServiceAggregateModule: React.FC = () => {
         key: "chargebackRatio",
         titleRender: () => (
           <>
-            <span>Chargeback Ratio</span>
+            <span>
+              {ci18n(
+                " Number of chargebacks divided by number of orders",
+                "Chargeback Ratio",
+              )}
+            </span>
             <Tooltip
               className={commonStyles.tableTooltip}
               title={
@@ -305,7 +318,9 @@ const CustomerServiceAggregateModule: React.FC = () => {
         key: "chargebackAmount",
         titleRender: () => (
           <>
-            <span>Chargeback Amount</span>
+            <span>
+              {ci18n("Dollar value of the chargebacks", "Chargeback Amount")}
+            </span>
             <Tooltip
               className={commonStyles.tableTooltip}
               title={
@@ -358,7 +373,7 @@ const CustomerServiceAggregateModule: React.FC = () => {
         key: "tickets",
         titleRender: () => (
           <>
-            <span>Tickets</span>
+            <span>{ci18n("Number of new tickets", "Tickets")}</span>
             <Tooltip
               className={commonStyles.tableTooltip}
               title={
@@ -374,7 +389,12 @@ const CustomerServiceAggregateModule: React.FC = () => {
         key: "ticketRatio",
         titleRender: () => (
           <>
-            <span>Ticket Ratio</span>
+            <span>
+              {ci18n(
+                " Number of tickets divided by total number of orders",
+                "Ticket Ratio",
+              )}
+            </span>
             <Tooltip
               className={commonStyles.tableTooltip}
               title={
@@ -453,7 +473,12 @@ const CustomerServiceAggregateModule: React.FC = () => {
         key: "customerSatisfaction",
         titleRender: () => (
           <>
-            <span>Customer Satisfaction</span>
+            <span>
+              {ci18n(
+                "Number of ticket responses rated",
+                "Customer Satisfaction",
+              )}
+            </span>
             <Tooltip
               className={commonStyles.tableTooltip}
               title={
@@ -487,8 +512,17 @@ const CustomerServiceAggregateModule: React.FC = () => {
       <PageHeader
         relaxed
         breadcrumbs={[
-          { name: i`Home`, href: merchFeUrl("/home") },
-          { name: i`Performance`, href: merchFeUrl("/performance-overview") },
+          {
+            name: ci18n("customer service creadcrumb home", "Home"),
+            href: merchFeUrl("/md/home"),
+          },
+          {
+            name: ci18n(
+              "customer service creadcrumb performance",
+              "Performance",
+            ),
+            href: merchFeUrl("/md/performance"),
+          },
           { name: i`Customer Service Performance`, href: window.location.href },
         ]}
         title={i`Customer Service Performance`}
@@ -504,7 +538,7 @@ const CustomerServiceAggregateModule: React.FC = () => {
         <AggregateBenchMarksModel />
         <div className={commonStyles.toolkit} style={{ alignItems: "center" }}>
           <Title style={{ padding: 0 }} className={commonStyles.title}>
-            Your Metrics
+            {ci18n("aggregate benchmarks metrics", "Your Metrics")}
           </Title>
 
           {tableData && tableData.length > 0 && (
@@ -522,7 +556,7 @@ const CustomerServiceAggregateModule: React.FC = () => {
                 })
               }
             >
-              Export CSV
+              {ci18n("export customer service csv", "Export CSV")}
             </Button>
           )}
         </div>

@@ -34,6 +34,7 @@ import { merchFeUrl } from "@core/toolkit/router";
 import PageGuide from "@core/components/PageGuide";
 import PageHeader from "@core/components/PageHeader";
 import { useTheme } from "@core/stores/ThemeStore";
+import { ci18n } from "@core/toolkit/i18n";
 
 const SalesProductBreakdownPage: NextPage<Record<string, never>> = () => {
   const [pageNo, setPageNo] = useState(0);
@@ -74,7 +75,7 @@ const SalesProductBreakdownPage: NextPage<Record<string, never>> = () => {
     const columns: Array<TableColumn<AugmentedSalesBreakdown>> = [
       {
         key: "rangeDate",
-        title: i`Date Range`,
+        title: ci18n("sales range date", "Date Range"),
         align: "left",
         render: ({ row: { startDate: rowStartDate, endDate: rowEndDate } }) => {
           // check if we have data for the row; if not, bail to the overall page's data
@@ -91,7 +92,7 @@ const SalesProductBreakdownPage: NextPage<Record<string, never>> = () => {
       },
       {
         key: "id",
-        title: i`Product Id`,
+        title: ci18n("sales product id", "Product Id"),
         align: "left",
         render: ({ row: { id } }) => {
           const url = wishURL(`/product/${id}?share=web`); // "?share=web" keep as old page url
@@ -117,7 +118,7 @@ const SalesProductBreakdownPage: NextPage<Record<string, never>> = () => {
         key: "gmv",
         titleRender: () => (
           <>
-            <span>GMV</span>
+            <span>{ci18n("Gross Merchandise Value", "GMV")}</span>
             <Tooltip
               title={
                 <div style={{ fontSize: "14px" }}>
@@ -146,13 +147,22 @@ const SalesProductBreakdownPage: NextPage<Record<string, never>> = () => {
       <PageHeader
         relaxed
         breadcrumbs={[
-          { name: i`Home`, href: merchFeUrl("/home") },
-          { name: i`Performance`, href: merchFeUrl("/performance-overview") },
           {
-            name: i`Sales Performance`,
-            href: "/performance/sales",
+            name: ci18n("sales page breadcrumb", "Home"),
+            href: merchFeUrl("/md/home"),
           },
-          { name: i`Product Breakdown`, href: window.location.href },
+          {
+            name: ci18n("sales page breadcrumb", "Performance"),
+            href: merchFeUrl("/md/performance"),
+          },
+          {
+            name: ci18n("sales page breadcrumb", "Sales Performance"),
+            href: merchFeUrl("/md/performance/sales"),
+          },
+          {
+            name: ci18n("sales page breadcrumb", "Product Breakdown"),
+            href: window.location.href,
+          },
         ]}
         title={i`Product Breakdown${dateRange}`}
       />
@@ -175,7 +185,7 @@ const SalesProductBreakdownPage: NextPage<Record<string, never>> = () => {
                 });
               }}
             >
-              Export CSV
+              {ci18n("sales data export csv", "Export CSV")}
             </Button>
           )}
         </div>

@@ -37,6 +37,7 @@ import { merchFeUrl } from "@core/toolkit/router";
 import PageGuide from "@core/components/PageGuide";
 import PageHeader from "@core/components/PageHeader";
 import { useTheme } from "@core/stores/ThemeStore";
+import { ci18n } from "@core/toolkit/i18n";
 
 const ProductView: React.FC = () => {
   const [pageNo, setPageNo] = useState(0);
@@ -78,7 +79,9 @@ const ProductView: React.FC = () => {
       {
         key: "rangeDate",
         align: "left",
-        titleRender: () => <span>Benchmark</span>,
+        titleRender: () => (
+          <span>{ci18n("customer service benchmark", "Benchmark")}</span>
+        ),
         render: ({ row: { startDate: rowStartDate, endDate: rowEndDate } }) => {
           const displayStartDate = rowStartDate?.mmddyyyy || startDate;
           const displayEndDate = rowEndDate?.mmddyyyy || endDate;
@@ -93,7 +96,7 @@ const ProductView: React.FC = () => {
       },
       {
         key: "id",
-        title: i`Product Id`,
+        title: ci18n("customer seriver product id", "Product Id"),
         align: "left",
         render: ({ row: { id } }) => {
           const url = wishURL(`/product/${id}`);
@@ -119,7 +122,7 @@ const ProductView: React.FC = () => {
         key: "gmv",
         titleRender: () => (
           <>
-            <span>GMV</span>
+            <span>{ci18n("Gross Merchandise Value", "GMV")}</span>
             <Tooltip
               className={commonStyles.tableTooltip}
               title={
@@ -139,7 +142,12 @@ const ProductView: React.FC = () => {
         key: "orders",
         titleRender: () => (
           <>
-            <span>Orders</span>
+            <span>
+              {ci18n(
+                " Number of times customer serive products were bought in the date range",
+                "Orders",
+              )}
+            </span>
             <Tooltip
               className={commonStyles.tableTooltip}
               title={
@@ -307,7 +315,9 @@ const ProductView: React.FC = () => {
         key: "averageRating30d",
         titleRender: () => (
           <>
-            <span>Average Rating</span>
+            <span>
+              {ci18n("Average rating for the product", "Average Rating")}
+            </span>
             <Tooltip
               className={commonStyles.tableTooltip}
               title={
@@ -339,13 +349,25 @@ const ProductView: React.FC = () => {
       <PageHeader
         relaxed
         breadcrumbs={[
-          { name: i`Home`, href: merchFeUrl("/home") },
-          { name: i`Performance`, href: merchFeUrl("/performance-overview") },
+          {
+            name: ci18n("customer service page breadcrumb", "Home"),
+            href: merchFeUrl("/md/home"),
+          },
+          {
+            name: ci18n("customer service page breadcrumb", "Performance"),
+            href: merchFeUrl("/md/performance"),
+          },
           {
             name: i`Customer Service Performance`,
-            href: "/performance/customer-service",
+            href: "/md/performance/customer-service",
           },
-          { name: i`Product Breakdown`, href: window.location.href },
+          {
+            name: ci18n(
+              "customer service page breadcrumb",
+              "Product Breakdown",
+            ),
+            href: window.location.href,
+          },
         ]}
         title={i`Product Breakdown${dateRange}`}
       />
@@ -372,7 +394,7 @@ const ProductView: React.FC = () => {
                 });
               }}
             >
-              Export CSV
+              {ci18n("export customer service CSV", "Export CSV")}
             </Button>
           )}
         </div>

@@ -30,6 +30,7 @@ import styles from "@performance-cn/styles/sales.module.css";
 import { merchFeUrl } from "@core/toolkit/router";
 import PageGuide from "@core/components/PageGuide";
 import { useTheme } from "@core/stores/ThemeStore";
+import { ci18n } from "@core/toolkit/i18n";
 
 const SalesAggregateModel: React.FC = () => {
   const { textBlack } = useTheme();
@@ -54,7 +55,7 @@ const SalesAggregateModel: React.FC = () => {
     const columns: Array<TableColumn<PickedSales>> = [
       {
         key: "rangeDate",
-        title: i`Date Range`,
+        title: ci18n("sale product breakdown date range", "Date Range"),
         align: "left",
         render: ({ row: { startDate, endDate }, index }) => {
           return (
@@ -78,7 +79,8 @@ const SalesAggregateModel: React.FC = () => {
         key: "gmv",
         titleRender: () => (
           <>
-            <span>GMV</span>
+            <span>{ci18n("Gross Merchandise Value", "GMV")}</span>
+
             <Tooltip
               title={
                 <div style={{ fontSize: "14px" }}>
@@ -105,14 +107,24 @@ const SalesAggregateModel: React.FC = () => {
       <PageHeader
         relaxed
         breadcrumbs={[
-          { name: i`Home`, href: merchFeUrl("/home") },
           {
-            name: i`Performance`,
-            href: merchFeUrl("/performance-overview"),
+            name: ci18n("sale page breadcrumb home", "Home"),
+            href: merchFeUrl("/md/home"),
           },
-          { name: i`Sales Performance`, href: window.location.href },
+
+          {
+            name: ci18n("sale page breadcrumb performance", "Performance"),
+            href: merchFeUrl("/md/performance"),
+          },
+          {
+            name: ci18n(
+              "sale page breadcrumb sale performance",
+              "Sales Performance",
+            ),
+            href: window.location.href,
+          },
         ]}
-        title={i`Sales Performance`}
+        title={ci18n("sale page title", "Sales Performance")}
       />
       <PageGuide relaxed style={{ paddingTop: 20 }}>
         <Alert
@@ -136,7 +148,7 @@ const SalesAggregateModel: React.FC = () => {
                 })
               }
             >
-              Export CSV
+              {ci18n("export sales csv", "Export CSV")}
             </Button>
           )}
         </div>

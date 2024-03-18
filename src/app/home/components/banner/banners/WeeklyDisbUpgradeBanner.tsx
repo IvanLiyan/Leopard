@@ -25,7 +25,7 @@ const WeeklyDisbUpgradeBanner: React.FC<WeeklyDisbUpgradeBannerProps> = ({
       bannerImg="bannerWeeklyDisbUpgrade"
       cta={{
         text: i`Visit Wish Standards`,
-        href: merchFeUrl("/performance-overview/wish-standards"),
+        href: merchFeUrl("/md/performance?tab=wish-standards"),
         style: {},
       }}
     />

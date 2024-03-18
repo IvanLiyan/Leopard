@@ -112,7 +112,7 @@ const AboutStoreSection: React.FC<Props> = ({
     : merchFeUrl("/account-balance");
 
   const renderRight = () => (
-    <Link href={merchFeUrl("/performance-overview")}>
+    <Link href={merchFeUrl("/md/performance")}>
       <Layout.FlexRow>
         {i`View sales performance`}
         <Icon name="arrowRight" color={primary} />
@@ -157,7 +157,7 @@ const AboutStoreSection: React.FC<Props> = ({
                 text={i`Week of ${storeStats.rating.startDate.formatted} to ${storeStats.rating.endDate.formatted}`}
               />
             </Layout.FlexColumn>
-            <Link href={merchFeUrl("/performance-overview/wish-standards")}>
+            <Link href={merchFeUrl("/md/performance?tab=wish-standards")}>
               {ci18n("Refers to store metrics", "View Wish Standards")}
             </Link>
           </Card>
@@ -201,7 +201,9 @@ const AboutStoreSection: React.FC<Props> = ({
           <Card style={styles.card}>
             <Layout.FlexRow justifyContent="space-between">
               <Layout.FlexColumn>
-                <H6 className={css(styles.cardHeader)}>Products listed</H6>
+                <H6 className={css(styles.cardHeader)}>
+                  {ci18n("Listing fee list", "Products listed")}
+                </H6>
                 <Text>Current / Free</Text>
                 <Text weight="bold" style={{ marginBottom: 16 }}>
                   {ListingFee?.latestListingFeeDetails.latestItems} /

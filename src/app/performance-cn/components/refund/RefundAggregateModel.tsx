@@ -32,6 +32,7 @@ import PageGuide from "@core/components/PageGuide";
 import PageHeader from "@core/components/PageHeader";
 import { useTheme } from "@core/stores/ThemeStore";
 import { addCommas, formatPercentage } from "@core/toolkit/stringUtils";
+import { ci18n } from "@core/toolkit/i18n";
 
 const RefundAggregateModule: React.FC = () => {
   const refundBaseColumn = useRefundBaseColumn();
@@ -55,7 +56,7 @@ const RefundAggregateModule: React.FC = () => {
     const columns: Array<TableColumn<AugmentedRefundAggregate>> = [
       {
         key: "rangeDate",
-        title: i`Time Period`,
+        title: ci18n("rangeDate", "Time Period"),
         align: "left",
         render: ({ row: { startDate, endDate }, index }) => {
           return (
@@ -79,7 +80,12 @@ const RefundAggregateModule: React.FC = () => {
         key: "refunds",
         titleRender: () => (
           <>
-            <span>Refunds</span>
+            <span>
+              {ci18n(
+                "Number of refunds that occurred during the time period",
+                "Refunds",
+              )}
+            </span>
             <Tooltip
               className={commonStyles.tableTooltip}
               title={
@@ -102,7 +108,12 @@ const RefundAggregateModule: React.FC = () => {
         key: "refundRate",
         titleRender: () => (
           <>
-            <span>Refund Rate</span>
+            <span>
+              {ci18n(
+                "Percent of total transactions that were refunded",
+                "Refund Rate",
+              )}
+            </span>
             <Tooltip
               className={commonStyles.tableTooltip}
               title={
@@ -139,11 +150,26 @@ const RefundAggregateModule: React.FC = () => {
       <PageHeader
         relaxed
         breadcrumbs={[
-          { name: i`Home`, href: merchFeUrl("/home") },
-          { name: i`Performance`, href: merchFeUrl("/performance-overview") },
-          { name: i` Refund Performance`, href: window.location.href },
+          {
+            name: ci18n("refund page breadcrumb home", "Home"),
+            href: merchFeUrl("/md/home"),
+          },
+          {
+            name: ci18n("refund page breadcrumb performance", "Performance"),
+            href: merchFeUrl("/md/performance"),
+          },
+          {
+            name: ci18n(
+              "refund page breadcrumb refund performance",
+              "Refund Performance",
+            ),
+            href: window.location.href,
+          },
         ]}
-        title={i`Refund Performance`}
+        title={ci18n(
+          "refund page breadcrumb refund performance",
+          "Refund Performance",
+        )}
       />
       <PageGuide relaxed style={{ paddingTop: 20 }}>
         <Alert
@@ -157,7 +183,7 @@ const RefundAggregateModule: React.FC = () => {
           text={i`Customers have to ship products back to your warehouse before receiving a refund.`}
           link={{
             url: zendeskURL("360050732014"),
-            text: i`Learn more`,
+            text: ci18n("Enroll in the Wish Returns Program", "Learn more"),
           }}
         />
         <BenchMarksModel />
@@ -172,7 +198,7 @@ const RefundAggregateModule: React.FC = () => {
                 className={commonStyles.title}
                 style={{ marginTop: "2px" }}
               >
-                Your Metrics
+                {ci18n("refund breakdown metrics", "Your Metrics")}
               </Title>
               {store.aggregateData[0]?.refundRatePercentile && (
                 <span>
@@ -204,7 +230,7 @@ const RefundAggregateModule: React.FC = () => {
                   })
                 }
               >
-                Export CSV
+                {ci18n("export refunde breakdown csv", "Export CSV")}
               </Button>
             )}
           </div>

@@ -11,6 +11,7 @@ import RefundRateModel from "src/app/performance-cn/components/customer-experien
 import AverageShippingTimeModel from "src/app/performance-cn/components/customer-experience-graphs/AverageShippingTimeModel";
 import AverageShippingDelayModel from "src/app/performance-cn/components/customer-experience-graphs/AverageShippingDelayModel";
 import AverageRatingModel from "src/app/performance-cn/components/customer-experience-graphs/AverageRatingModel";
+import { ci18n } from "@core/toolkit/i18n";
 
 const CustomerExperienceGraphsPage: NextPage<Record<string, never>> = () => {
   return (
@@ -18,8 +19,17 @@ const CustomerExperienceGraphsPage: NextPage<Record<string, never>> = () => {
       <PageHeader
         relaxed
         breadcrumbs={[
-          { name: i`Home`, href: merchFeUrl("/home") },
-          { name: i`Performance`, href: merchFeUrl("/performance-overview") },
+          {
+            name: ci18n("customer experience page breadcrumb home", "Home"),
+            href: merchFeUrl("/md/home"),
+          },
+          {
+            name: ci18n(
+              "customer experience page breadcrumb performance",
+              "Performance",
+            ),
+            href: merchFeUrl("/md/performance"),
+          },
           { name: i`Customer Experience Graph`, href: window.location.href },
         ]}
         title={i`Customer Experience Graph`}

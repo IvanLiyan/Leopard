@@ -27,6 +27,7 @@ import commonStyles from "@performance-cn/styles/common.module.css";
 import PageHeader from "@core/components/PageHeader";
 import { merchFeUrl } from "@core/toolkit/router";
 import { useTheme } from "@core/stores/ThemeStore";
+import { ci18n } from "@core/toolkit/i18n";
 
 const PerformanceProductPage: NextPage<Record<string, never>> = () => {
   const { textBlack } = useTheme();
@@ -51,7 +52,7 @@ const PerformanceProductPage: NextPage<Record<string, never>> = () => {
   const columns = useMemo(() => {
     const columns: ReadonlyArray<TableColumn<PickedProduct>> = [
       {
-        title: i`Time Period`,
+        title: ci18n("product time period", "Time Period"),
         key: "RangeDate",
         align: "left",
         render: ({ row: { startDate, endDate } }) => (
@@ -87,7 +88,7 @@ const PerformanceProductPage: NextPage<Record<string, never>> = () => {
         key: "activeSkus",
         titleRender: () => (
           <>
-            <span>Total SKUs</span>
+            <span>{ci18n("Number of active SKUs", "Total SKUs")}</span>
             <Tooltip
               title={
                 <div style={{ fontSize: "14px" }}>Number of active SKUs</div>
@@ -134,11 +135,9 @@ const PerformanceProductPage: NextPage<Record<string, never>> = () => {
         key: "averagePrice",
         titleRender: () => (
           <>
-            <span>Average Price</span>
+            <span>{ci18n("Average price of orders", "Average Price")}</span>
             <Tooltip
-              title={
-                <div style={{ fontSize: "14px" }}>Average price of orders</div>
-              }
+              title={<div style={{ fontSize: "14px" }}></div>}
               className={commonStyles.tableTooltip}
             >
               <Icon name="help" size={20} color={textBlack} />
@@ -154,7 +153,9 @@ const PerformanceProductPage: NextPage<Record<string, never>> = () => {
         key: "averageShippingPrice",
         titleRender: () => (
           <>
-            <span>Average Shipping</span>
+            <span>
+              {ci18n("Average shipping price of orders", "Average Shipping")}
+            </span>
             <Tooltip
               title={
                 <div style={{ fontSize: "14px" }}>
@@ -225,10 +226,15 @@ const PerformanceProductPage: NextPage<Record<string, never>> = () => {
         },
       },
       {
-        key: "productImpressions",
+        key: "product Impressions",
         titleRender: () => (
           <>
-            <span>Impressions</span>
+            <span>
+              {ci18n(
+                "Number of times your products were viewed",
+                "Impressions",
+              )}
+            </span>
             <Tooltip
               title={
                 <div style={{ fontSize: "14px" }}>
@@ -252,7 +258,7 @@ const PerformanceProductPage: NextPage<Record<string, never>> = () => {
         key: "gmv",
         titleRender: () => (
           <>
-            <span>GMV</span>
+            <span>{ci18n("Gross Merchandise Value", "GMV")}</span>
             <Tooltip
               title={
                 <div style={{ fontSize: "14px" }}>
@@ -278,11 +284,21 @@ const PerformanceProductPage: NextPage<Record<string, never>> = () => {
       <PageHeader
         relaxed
         breadcrumbs={[
-          { name: i`Home`, href: merchFeUrl("/home") },
-          { name: i`Performance`, href: merchFeUrl("/performance-overview") },
-          { name: i`Product Performance`, href: window.location.href },
+          {
+            name: ci18n("product page breadcrumb", "Home"),
+            href: merchFeUrl("/md/home"),
+          },
+          {
+            name: ci18n("product page breadcrumb", "Performance"),
+
+            href: merchFeUrl("/md/performance"),
+          },
+          {
+            name: ci18n("product page breadcrumb", "Product Performance"),
+            href: window.location.href,
+          },
         ]}
-        title={i`Product Performance`}
+        title={ci18n("product page tilte", "Product Performance")}
       />
       <PageGuide relaxed style={{ paddingTop: 20 }}>
         <Alert
@@ -306,7 +322,7 @@ const PerformanceProductPage: NextPage<Record<string, never>> = () => {
                 })
               }
             >
-              Export CSV
+              {ci18n("export product csv", "Export CSV")}
             </Button>
           )}
         </div>

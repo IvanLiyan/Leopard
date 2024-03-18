@@ -15,6 +15,7 @@ import { merchFeUrl } from "@core/toolkit/router";
 import PageGuide from "@core/components/PageGuide";
 import PageHeader from "@core/components/PageHeader";
 import { RATING_TAB_TYPE } from "src/app/performance-cn/toolkit/enums";
+import { ci18n } from "@core/toolkit/i18n";
 
 const RatingPerformance: NextPage<Record<string, never>> = () => {
   const [ratingTabType, setRatingTabType] = useState(
@@ -29,11 +30,20 @@ const RatingPerformance: NextPage<Record<string, never>> = () => {
       <PageHeader
         relaxed
         breadcrumbs={[
-          { name: i`Home`, href: merchFeUrl("/home") },
-          { name: i`Performance`, href: merchFeUrl("/performance-overview") },
-          { name: i`Rating Performance`, href: window.location.href },
+          {
+            name: ci18n("rating page crumb", "Home"),
+            href: merchFeUrl("/md/home"),
+          },
+          {
+            name: ci18n("rating page crumb", "Performance"),
+            href: merchFeUrl("/md/performance"),
+          },
+          {
+            name: ci18n("rating page crumb", "Rating Performance"),
+            href: window.location.href,
+          },
         ]}
-        title={i`Rating Performance`}
+        title={ci18n("rating page title", "Rating Performance")}
       />
       <PageGuide relaxed style={{ paddingTop: 20 }}>
         <Alert
@@ -56,8 +66,10 @@ const RatingPerformance: NextPage<Record<string, never>> = () => {
               <Tab label={i`Store Rating Breakdown`} />
               <Tab label={i`Weekly Product Rating`} />
               <Tab label={i`Product Rating Breakdown`} />
-              <Tab label={i`Store Rating`} />
-              <Tab label={i`Product Rating`} />
+              <Tab label={ci18n("store rating performance", "Store Rating")} />
+              <Tab
+                label={ci18n("product rating performance", "Product Rating")}
+              />
             </Tabs>
           </div>
           <TabPanel
