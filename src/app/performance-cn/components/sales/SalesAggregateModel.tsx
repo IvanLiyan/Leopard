@@ -108,23 +108,23 @@ const SalesAggregateModel: React.FC = () => {
         relaxed
         breadcrumbs={[
           {
-            name: ci18n("sale page breadcrumb home", "Home"),
+            name: ci18n("home page", "Home"),
             href: merchFeUrl("/md/home"),
           },
 
           {
-            name: ci18n("sale page breadcrumb performance", "Performance"),
+            name: ci18n("performance page", "Performance"),
             href: merchFeUrl("/md/performance"),
           },
           {
-            name: ci18n(
-              "sale page breadcrumb sale performance",
-              "Sales Performance",
-            ),
+            name: ci18n("sale performance page ", "Sales Performance"),
             href: window.location.href,
           },
         ]}
-        title={ci18n("sale page title", "Sales Performance")}
+        title={ci18n(
+          "its a page title for sale performance page",
+          "Sales Performance",
+        )}
       />
       <PageGuide relaxed style={{ paddingTop: 20 }}>
         <Alert

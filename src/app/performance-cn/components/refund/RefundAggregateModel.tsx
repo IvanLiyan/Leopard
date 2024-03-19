@@ -151,23 +151,20 @@ const RefundAggregateModule: React.FC = () => {
         relaxed
         breadcrumbs={[
           {
-            name: ci18n("refund page breadcrumb home", "Home"),
+            name: ci18n("home page", "Home"),
             href: merchFeUrl("/md/home"),
           },
           {
-            name: ci18n("refund page breadcrumb performance", "Performance"),
+            name: ci18n("performance page", "Performance"),
             href: merchFeUrl("/md/performance"),
           },
           {
-            name: ci18n(
-              "refund page breadcrumb refund performance",
-              "Refund Performance",
-            ),
+            name: ci18n("refund performance page", "Refund Performance"),
             href: window.location.href,
           },
         ]}
         title={ci18n(
-          "refund page breadcrumb refund performance",
+          "its a page title for refund performance page",
           "Refund Performance",
         )}
       />

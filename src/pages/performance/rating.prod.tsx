@@ -31,19 +31,19 @@ const RatingPerformance: NextPage<Record<string, never>> = () => {
         relaxed
         breadcrumbs={[
           {
-            name: ci18n("rating page crumb", "Home"),
+            name: ci18n("home page", "Home"),
             href: merchFeUrl("/md/home"),
           },
           {
-            name: ci18n("rating page crumb", "Performance"),
+            name: ci18n("performance page", "Performance"),
             href: merchFeUrl("/md/performance"),
           },
           {
-            name: ci18n("rating page crumb", "Rating Performance"),
+            name: ci18n("rating performance page", "Rating Performance"),
             href: window.location.href,
           },
         ]}
-        title={ci18n("rating page title", "Rating Performance")}
+        title={ci18n("its a page title for rating page", "Rating Performance")}
       />
       <PageGuide relaxed style={{ paddingTop: 20 }}>
         <Alert

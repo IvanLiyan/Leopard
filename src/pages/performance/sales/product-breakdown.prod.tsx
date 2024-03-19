@@ -148,19 +148,19 @@ const SalesProductBreakdownPage: NextPage<Record<string, never>> = () => {
         relaxed
         breadcrumbs={[
           {
-            name: ci18n("sales page breadcrumb", "Home"),
+            name: ci18n("home page", "Home"),
             href: merchFeUrl("/md/home"),
           },
           {
-            name: ci18n("sales page breadcrumb", "Performance"),
+            name: ci18n("performance page", "Performance"),
             href: merchFeUrl("/md/performance"),
           },
           {
-            name: ci18n("sales page breadcrumb", "Sales Performance"),
+            name: ci18n("sales performance page", "Sales Performance"),
             href: merchFeUrl("/md/performance/sales"),
           },
           {
-            name: ci18n("sales page breadcrumb", "Product Breakdown"),
+            name: ci18n("sales performance page", "Product Breakdown"),
             href: window.location.href,
           },
         ]}

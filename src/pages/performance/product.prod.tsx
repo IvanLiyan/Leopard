@@ -285,20 +285,22 @@ const PerformanceProductPage: NextPage<Record<string, never>> = () => {
         relaxed
         breadcrumbs={[
           {
-            name: ci18n("product page breadcrumb", "Home"),
+            name: ci18n("home page", "Home"),
             href: merchFeUrl("/md/home"),
           },
           {
-            name: ci18n("product page breadcrumb", "Performance"),
-
+            name: ci18n("performance page", "Performance"),
             href: merchFeUrl("/md/performance"),
           },
           {
-            name: ci18n("product page breadcrumb", "Product Performance"),
+            name: ci18n("product performance page", "Product Performance"),
             href: window.location.href,
           },
         ]}
-        title={ci18n("product page tilte", "Product Performance")}
+        title={ci18n(
+          "its a page tilte for product performance page",
+          "Product Performance",
+        )}
       />
       <PageGuide relaxed style={{ paddingTop: 20 }}>
         <Alert

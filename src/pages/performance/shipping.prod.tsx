@@ -490,20 +490,23 @@ const PerformanceShippingPage: NextPage<Record<string, never>> = () => {
         relaxed
         breadcrumbs={[
           {
-            name: ci18n("shipping page breadcrumb", "Home"),
+            name: ci18n("home page", "Home"),
             href: merchFeUrl("/md/home"),
           },
           {
-            name: ci18n("shipping page breadcrumb", "Performance"),
+            name: ci18n("performance page", "Performance"),
             href: merchFeUrl("/md/performance"),
           },
           {
-            name: ci18n("shipping page breadcrumb", "Shipping Performance"),
+            name: ci18n("shipping performance page", "Shipping Performance"),
 
             href: window.location.href,
           },
         ]}
-        title={ci18n("shipping page breadcrumb", "Shipping Performance")}
+        title={ci18n(
+          "its a page title for shipping page",
+          "Shipping Performance",
+        )}
       />
       <PageGuide relaxed style={{ paddingTop: 20 }}>
         <Alert

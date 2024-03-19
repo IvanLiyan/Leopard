@@ -214,19 +214,19 @@ const ProductBreakdownPage = () => {
         relaxed
         breadcrumbs={[
           {
-            name: ci18n("refund page breadcrumb", "Home"),
+            name: ci18n("home page", "Home"),
             href: merchFeUrl("/md/home"),
           },
           {
-            name: ci18n("refund page breadcrumb", "Performance"),
+            name: ci18n("performance page", "Performance"),
             href: merchFeUrl("/md/performance"),
           },
           {
-            name: ci18n("refund page breadcrumb", "Refund Performance"),
+            name: ci18n("refund performance page", "Refund Performance"),
             href: merchFeUrl("/md/performance/refund"),
           },
           {
-            name: ci18n("refund page breadcrumb", "Product Breakdown"),
+            name: ci18n("product breakdown page", "Product Breakdown"),
             href: window.location.href,
           },
         ]}

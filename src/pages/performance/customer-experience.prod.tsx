@@ -20,14 +20,11 @@ const CustomerExperienceGraphsPage: NextPage<Record<string, never>> = () => {
         relaxed
         breadcrumbs={[
           {
-            name: ci18n("customer experience page breadcrumb home", "Home"),
+            name: ci18n("home page", "Home"),
             href: merchFeUrl("/md/home"),
           },
           {
-            name: ci18n(
-              "customer experience page breadcrumb performance",
-              "Performance",
-            ),
+            name: ci18n("performance page", "Performance"),
             href: merchFeUrl("/md/performance"),
           },
           { name: i`Customer Experience Graph`, href: window.location.href },

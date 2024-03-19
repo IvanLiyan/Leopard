@@ -350,11 +350,11 @@ const ProductView: React.FC = () => {
         relaxed
         breadcrumbs={[
           {
-            name: ci18n("customer service page breadcrumb", "Home"),
+            name: ci18n("home page", "Home"),
             href: merchFeUrl("/md/home"),
           },
           {
-            name: ci18n("customer service page breadcrumb", "Performance"),
+            name: ci18n("performance page", "Performance"),
             href: merchFeUrl("/md/performance"),
           },
           {
@@ -362,10 +362,7 @@ const ProductView: React.FC = () => {
             href: merchFeUrl("/md/performance/customer-service"),
           },
           {
-            name: ci18n(
-              "customer service page breadcrumb",
-              "Product Breakdown",
-            ),
+            name: ci18n("product breakdown page", "Product Breakdown"),
             href: window.location.href,
           },
         ]}

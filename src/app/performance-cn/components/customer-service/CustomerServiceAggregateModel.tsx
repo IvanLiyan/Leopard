@@ -513,14 +513,11 @@ const CustomerServiceAggregateModule: React.FC = () => {
         relaxed
         breadcrumbs={[
           {
-            name: ci18n("customer service creadcrumb home", "Home"),
+            name: ci18n("home page", "Home"),
             href: merchFeUrl("/md/home"),
           },
           {
-            name: ci18n(
-              "customer service creadcrumb performance",
-              "Performance",
-            ),
+            name: ci18n("performance page", "Performance"),
             href: merchFeUrl("/md/performance"),
           },
           { name: i`Customer Service Performance`, href: window.location.href },
