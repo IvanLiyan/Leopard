@@ -58,7 +58,7 @@ const ConsignmentOverwrite: React.FC<Props> = (props: Props) => {
       title={
         showRevampedAddEditProductUI
           ? ci18n("Section title", "Consignment Overwrite")
-          : i`Consignment Overwrite`
+          : ci18n("Section title", "Consignment Overwrite")
       }
       {...sectionProps}
       contentStyle={{ padding: 0 }}
@@ -68,7 +68,7 @@ const ConsignmentOverwrite: React.FC<Props> = (props: Props) => {
           <Layout.FlexColumn style={{ flex: 1 }}>
             <Field
               style={[styles.rowField, styles.accordionSection]}
-              title={i`Existing PID`}
+              title={ci18n("Section title", "Existing PID")}
             >
               <TextInput
                 value={consignmentOriginalPid}
@@ -81,7 +81,10 @@ const ConsignmentOverwrite: React.FC<Props> = (props: Props) => {
                 }
               />
             </Field>
-            <Field style={styles.rowField} title={i`Reference Link`}>
+            <Field
+              style={styles.rowField}
+              title={ci18n("Section title", "Reference Link")}
+            >
               <TextInput
                 value={consignmentReferenceLink}
                 placeholder={i`Enter consignment reference link`}
@@ -158,6 +161,7 @@ const ConsignmentOverwrite: React.FC<Props> = (props: Props) => {
                           }
                           placeholder="0.00"
                           disabled={
+                            initialState?.variations[index] != null &&
                             initialState?.variations[index]
                               .consignmentSupplyCost != null &&
                             IsConsignmentAndNotBd
