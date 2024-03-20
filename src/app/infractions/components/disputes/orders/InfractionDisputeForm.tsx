@@ -248,6 +248,9 @@ const InfractionDisputeForm = (props: Props) => {
   const showDeliveredDateField =
     state.infractionType === "ORDER_NOT_DELIVERED" ||
     state.infractionType === "WAREHOUSE_FULFILLMENT_POLICY_VIOLATION";
+  const showDeliveredDateFieldOptional =
+    state.infractionType === "LATE_CONFIRMED_FULFILLMENT_VIOLATION" &&
+    disputeReason === "INCORRECT_CONFIRMED_FULFILLMENT_DATE";
   const showDestinationCountry =
     disputeReason === "INCORRECT_CONFIRMED_FULFILLMENT_DATE" ||
     state.infractionType === "ORDER_NOT_DELIVERED";
@@ -343,38 +346,32 @@ const InfractionDisputeForm = (props: Props) => {
   const renderDisputeSupportFields = () => {
     return (
       <>
-        <Row
-          title={
-            showFulfillDateField
-              ? i`Confirmed fulfillment date from shipping carrier`
-              : i`Confirmed fulfillment date from shipping carrier (optional)`
-          }
-        >
-          <TextInput
-            placeholder={ci18n("date format", "mm/dd/yyyy")}
-            validators={
-              showFulfillDateField
-                ? [requiredValidator, dateValidator]
-                : [dateValidator]
-            }
-            hideCheckmarkWhenValid
-            value={state.reportedFulfillmentDate}
-            onChange={({ text }) => (state.reportedFulfillmentDate = text)}
-            onValidityChanged={(isValid) => (state.formDataValid = isValid)}
-          />
-        </Row>
-        <Row
-          title={i`Confirmed delivered date from shipping carrier (optional)`}
-        >
-          <TextInput
-            placeholder={ci18n("date format", "mm/dd/yyyy")}
-            validators={[dateValidator]}
-            hideCheckmarkWhenValid
-            value={state.reportedDeliveredDate}
-            onChange={({ text }) => (state.reportedDeliveredDate = text)}
-            onValidityChanged={(isValid) => (state.formDataValid = isValid)}
-          />
-        </Row>
+        {showFulfillDateField && (
+          <Row title={i`Confirmed fulfillment date from shipping carrier`}>
+            <TextInput
+              placeholder={ci18n("date format", "mm/dd/yyyy")}
+              validators={[requiredValidator, dateValidator]}
+              hideCheckmarkWhenValid
+              value={state.reportedFulfillmentDate}
+              onChange={({ text }) => (state.reportedFulfillmentDate = text)}
+              onValidityChanged={(isValid) => (state.formDataValid = isValid)}
+            />
+          </Row>
+        )}
+        {showDeliveredDateFieldOptional && (
+          <Row
+            title={i`Confirmed delivered date from shipping carrier (optional)`}
+          >
+            <TextInput
+              placeholder={ci18n("date format", "mm/dd/yyyy")}
+              validators={[dateValidator]}
+              hideCheckmarkWhenValid
+              value={state.reportedDeliveredDate}
+              onChange={({ text }) => (state.reportedDeliveredDate = text)}
+              onValidityChanged={(isValid) => (state.formDataValid = isValid)}
+            />
+          </Row>
+        )}
         {showDeliveredDateField && (
           <Row title={i`Confirmed delivered date from shipping carrier`}>
             <TextInput

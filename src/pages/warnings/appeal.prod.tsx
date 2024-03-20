@@ -26,30 +26,16 @@ import {
   BulkDisputeContextProvider,
   useBulkDisputeInfractionIds,
 } from "@infractions/DisputeContext";
-import { RichTextBanner } from "@ContextLogic/lego";
+import { ci18n } from "@core/toolkit/i18n";
 
 const PageLayout = ({ children }: { children: React.ReactNode }) => {
   const styles = useInfractionDetailsStylesheet();
-  const warningDescriptionNode = () => {
-    return (
-      <div>
-        {i`If the order has been delivered, please make sure to fill in the "Confirmed fulfillment date from shipping carrier" and "Confirmed delivered date from shipping carrier" to release the payment. `}
-        <br />
-        {i`If the order hasn’t been delivered yet, please try to dispute the possible upcoming Order-Not-Delivered Infraction to fill in the confirmed delivered date. `}
-        <br />
-        {i`If the order’s payment is still ineligible, please reach out to your Account Manager.`}
-      </div>
-    );
-  };
   return (
     <PageRoot>
-      <PageHeader title={i`Dispute Infraction`} />
+      <PageHeader
+        title={ci18n("infraction page tip title", "Dispute Infraction")}
+      />
       <PageGuide contentContainerStyle={styles.disputeContent}>
-        <RichTextBanner
-          description={warningDescriptionNode}
-          sentiment="warning"
-          title={""}
-        />
         {children}
       </PageGuide>
     </PageRoot>
