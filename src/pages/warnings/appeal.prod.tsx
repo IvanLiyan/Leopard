@@ -26,16 +26,45 @@ import {
   BulkDisputeContextProvider,
   useBulkDisputeInfractionIds,
 } from "@infractions/DisputeContext";
+import { RichTextBanner } from "@ContextLogic/lego";
 import { ci18n } from "@core/toolkit/i18n";
 
 const PageLayout = ({ children }: { children: React.ReactNode }) => {
+  const [infractionId] = useStringQueryParam("id");
+  const { merchantId } = useUserStore();
+  const [bulkInfractionIds] = useBulkDisputeInfractionIds();
+  const { infractionContext } = useInfractionProvider({
+    infractionId: infractionId || bulkInfractionIds[0],
+    merchantId,
+  });
+  const isLateConfirmedFulfillment =
+    infractionContext?.infraction.type ===
+    "LATE_CONFIRMED_FULFILLMENT_VIOLATION";
   const styles = useInfractionDetailsStylesheet();
+  const warningDescriptionNode = () => {
+    return (
+      <div>
+        {i`If the order has been delivered, please make sure to fill in the "Confirmed fulfillment date from shipping carrier" and "Confirmed delivered date from shipping carrier" to release the payment. `}
+        <br />
+        {i`If the order hasn’t been delivered yet, please try to dispute the possible upcoming Order-Not-Delivered Infraction to fill in the confirmed delivered date. `}
+        <br />
+        {i`If the order’s payment is still ineligible, please reach out to your Account Manager.`}
+      </div>
+    );
+  };
   return (
     <PageRoot>
       <PageHeader
-        title={ci18n("infraction page tip title", "Dispute Infraction")}
+        title={ci18n("Dispute infraction tip title", "Dispute Infraction")}
       />
       <PageGuide contentContainerStyle={styles.disputeContent}>
+        {isLateConfirmedFulfillment && (
+          <RichTextBanner
+            description={warningDescriptionNode}
+            sentiment="warning"
+            title={""}
+          />
+        )}
         {children}
       </PageGuide>
     </PageRoot>
@@ -45,7 +74,6 @@ const PageLayout = ({ children }: { children: React.ReactNode }) => {
 const InfractionsPage: NextPage<Record<string, never>> = () => {
   const [infractionId] = useStringQueryParam("id");
   const { merchantId } = useUserStore();
-
   const [bulkInfractionIds] = useBulkDisputeInfractionIds();
 
   const { InfractionProvider, loading, error, infractionContext } =
