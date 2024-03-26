@@ -994,6 +994,7 @@ export type BankAccountVerificationReviewerMutationsReviewDocumentArgs = {
 export type BankAccountVerificationSchema = {
   readonly __typename?: 'BankAccountVerificationSchema';
   readonly bankAccountDocuments?: Maybe<ReadonlyArray<BankAccountDocumentSchema>>;
+  readonly dueDate?: Maybe<Datetime>;
   readonly id: Scalars['ObjectIdType'];
   readonly lastReviewedAt?: Maybe<Datetime>;
   readonly lastUploadedAt?: Maybe<Datetime>;
@@ -1731,6 +1732,9 @@ export type BusinessDocTypes =
   | 'RECENT_BUSINESS_RETURNS'
   | 'SHARE_ALLOCATION_CERTIFICATE'
   | 'TAX_FORM'
+  | 'TAX_FORM_W8_BEN'
+  | 'TAX_FORM_W8_BEN_E'
+  | 'TAX_FORM_W9'
   | 'TAX_FORM_W_8'
   | 'TAX_FORM_W_9'
   | 'UTILITY_BILL_STATEMENT';
@@ -7857,15 +7861,49 @@ export type MerchantGamingReviewUpdateInput = {
   readonly policyTier?: InputMaybe<MerchantGamingReviewPolicyTierType>;
 };
 
+export type MerchantIdentityDocumentSchema = {
+  readonly __typename?: 'MerchantIdentityDocumentSchema';
+  readonly comment?: Maybe<Scalars['String']>;
+  readonly documentFile?: Maybe<MerchantFileSchema>;
+  readonly documentType: MerchantIdentityDocumentType;
+  readonly id: Scalars['ObjectIdType'];
+  readonly reviewedAt?: Maybe<Datetime>;
+  readonly reviewer?: Maybe<UserSchema>;
+  readonly state: MerchantIdentityVerificationStatus;
+  readonly stateReason?: Maybe<ReadonlyArray<Maybe<TaxVerificationStatusReason>>>;
+  readonly uploadedAt?: Maybe<Datetime>;
+};
+
+export type MerchantIdentityDocumentType =
+  | 'ARTICLES_OF_INCORPORATION'
+  | 'CERTIFICATE_OF_INCORPORATION'
+  | 'CREDIT_CARD_STATEMENT'
+  | 'ENTITY_TRADING_NAME'
+  | 'GOVERNMENT_ISSUED_BUSINESS_LICENSE'
+  | 'OFFICIAL_BANK_STATEMENT'
+  | 'PRODUCT_LICENSING'
+  | 'RECENT_BUSINESS_RETURNS'
+  | 'SHARE_ALLOCATION_CERTIFICATE'
+  | 'TAX_FORM'
+  | 'TAX_FORM_W8_BEN'
+  | 'TAX_FORM_W8_BEN_E'
+  | 'TAX_FORM_W9'
+  | 'TAX_FORM_W_8'
+  | 'TAX_FORM_W_9'
+  | 'UTILITY_BILL_STATEMENT';
+
 export type MerchantIdentityMutations = {
   readonly __typename?: 'MerchantIdentityMutations';
-  readonly bankAccountVerification: BankAccountVerificationReviewerMutations;
+  readonly bankAccountVerification?: Maybe<BankAccountVerificationReviewerMutations>;
+  readonly merchantIdentityVerification?: Maybe<MerchantIdentityVerificationReviewerMutations>;
 };
 
 export type MerchantIdentityServiceSchema = {
   readonly __typename?: 'MerchantIdentityServiceSchema';
   readonly bankAccountVerifications?: Maybe<ReadonlyArray<BankAccountVerificationSchema>>;
   readonly bankAccountVerificationsCount?: Maybe<Scalars['Int']>;
+  readonly merchantIdentityVerifications?: Maybe<ReadonlyArray<MerchantIdentityVerificationSchema>>;
+  readonly merchantIdentityVerificationsCount?: Maybe<Scalars['Int']>;
 };
 
 
@@ -7881,6 +7919,67 @@ export type MerchantIdentityServiceSchemaBankAccountVerificationsCountArgs = {
   merchantId?: InputMaybe<Scalars['ObjectIdType']>;
   state?: InputMaybe<BankAccountVerificationStatus>;
 };
+
+
+export type MerchantIdentityServiceSchemaMerchantIdentityVerificationsArgs = {
+  limit?: InputMaybe<Scalars['Int']>;
+  merchantId?: InputMaybe<Scalars['ObjectIdType']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  state?: InputMaybe<MerchantIdentityVerificationStatus>;
+  verificationType?: InputMaybe<MerchantIdentityVerificationType>;
+};
+
+
+export type MerchantIdentityServiceSchemaMerchantIdentityVerificationsCountArgs = {
+  merchantId?: InputMaybe<Scalars['ObjectIdType']>;
+  state?: InputMaybe<MerchantIdentityVerificationStatus>;
+  verificationType?: InputMaybe<MerchantIdentityVerificationType>;
+};
+
+export type MerchantIdentityVerificationMutations = {
+  readonly __typename?: 'MerchantIdentityVerificationMutations';
+  readonly uploadDocument: UploadMerchantIdentityDocument;
+};
+
+
+export type MerchantIdentityVerificationMutationsUploadDocumentArgs = {
+  input: UploadMerchantIdentityDocumentInput;
+};
+
+export type MerchantIdentityVerificationReviewerMutations = {
+  readonly __typename?: 'MerchantIdentityVerificationReviewerMutations';
+  readonly reviewIdentityVerificationDocument?: Maybe<ReviewMerchantIdentityDocument>;
+};
+
+
+export type MerchantIdentityVerificationReviewerMutationsReviewIdentityVerificationDocumentArgs = {
+  input: ReviewMerchantIdentityDocumentInput;
+};
+
+export type MerchantIdentityVerificationSchema = {
+  readonly __typename?: 'MerchantIdentityVerificationSchema';
+  readonly bankAccountDocuments?: Maybe<ReadonlyArray<MerchantIdentityDocumentSchema>>;
+  readonly dueDate?: Maybe<Datetime>;
+  readonly id: Scalars['ObjectIdType'];
+  readonly lastReviewedAt?: Maybe<Datetime>;
+  readonly lastUploadedAt?: Maybe<Datetime>;
+  readonly latestMerchantIdentityDocument?: Maybe<MerchantIdentityDocumentSchema>;
+  readonly merchantId: Scalars['ObjectIdType'];
+  readonly merchantIdentityDocuments?: Maybe<ReadonlyArray<MerchantIdentityDocumentSchema>>;
+  readonly state: MerchantIdentityVerificationStatus;
+  readonly stateReason: ReadonlyArray<Maybe<TaxVerificationStatusReason>>;
+  readonly verificationType: MerchantIdentityVerificationType;
+};
+
+export type MerchantIdentityVerificationStatus =
+  | 'APPROVED'
+  | 'PENDING'
+  | 'REJECTED'
+  | 'SUBMITTED';
+
+export type MerchantIdentityVerificationType =
+  | 'BANK_ACCOUNT'
+  | 'TAX_FORM';
 
 export type MerchantInviteInfo = {
   readonly __typename?: 'MerchantInviteInfo';
@@ -7978,6 +8077,7 @@ export type MerchantMutation = {
   readonly changeDisplayName: ChangeDisplayNameMutation;
   readonly changePreferredUnits: ChangePreferredUnitsMutation;
   readonly euVatTax?: Maybe<EuvatTaxMutations>;
+  readonly merchantIdentityVerification: MerchantIdentityVerificationMutations;
   readonly merchantSenderAddress: MerchantSenderAddressMutations;
   readonly merchantTaxIdentification: MerchantTaxIdentificationMutations;
   readonly merchantTermsAgreed?: Maybe<MerchantTermsAgreedMutations>;
@@ -8561,6 +8661,7 @@ export type MerchantSchema = {
   readonly lead: UserSchema;
   readonly marketing: MarketingMerchantPropertySchema;
   readonly maxDeliveryDays: Scalars['Int'];
+  readonly merchantIdentityVerification?: Maybe<MerchantIdentityVerificationSchema>;
   readonly merchantListingFee?: Maybe<MerchantListingFeeHub>;
   readonly merchantPolicyTier?: Maybe<MerchantPolicyTierSchema>;
   readonly merchantTermsAgreed?: Maybe<MerchantTermsAgreedSchema>;
@@ -8601,6 +8702,11 @@ export type MerchantSchema = {
   readonly warehouses?: Maybe<ReadonlyArray<MerchantWarehouseSchema>>;
   readonly wishSellerStandard: MerchantWishSellerStandardDetails;
   readonly wps?: Maybe<MerchantWpsSchema>;
+};
+
+
+export type MerchantSchemaMerchantIdentityVerificationArgs = {
+  verificationType?: InputMaybe<MerchantIdentityVerificationType>;
 };
 
 
@@ -9027,6 +9133,7 @@ export type MerchantTodoItemType =
   | 'REVIEW_CURRENCY'
   | 'REVIEW_REMOVAL_PRODUCTS'
   | 'SETUP_TAX_INFO'
+  | 'TAX_FORM_VERIFICATION'
   | 'TAX_VERIFICATION_FAILED'
   | 'UK_VAT_OBLIGATION_NOTICE'
   | 'UPLOAD_NEW_PRODUCTS'
@@ -10900,6 +11007,7 @@ export type PermissionType =
   | 'CAN_REVIEW_MERCHANT_KYC'
   | 'CAN_REVIEW_PRODUCT_CATEGORY_DISPUTE'
   | 'CAN_REVIEW_RESPONSIBLE_PERSON'
+  | 'CAN_REVIEW_TAX_FORM'
   | 'CAN_REVIEW_TRACKING_DISPUTES'
   | 'CAN_REVIEW_TRUE_BRAND_REQUEST'
   | 'CAN_REVIEW_UNSAFE'
@@ -10914,6 +11022,7 @@ export type PermissionType =
   | 'CAN_TRANSFER_ANY_MERCHANTS'
   | 'CAN_TRANSFER_MERCHANTS'
   | 'CAN_TRIGGER_BANK_ACCOUNT_VERIFICATION'
+  | 'CAN_TRIGGER_TAX_FORM_VERIFICATION'
   | 'CAN_UNCOMBINE_APLUS_ORDERS'
   | 'CAN_UNENROLL_WHITE_GLOVE'
   | 'CAN_UPDATE_COLLECTIONBOOST'
@@ -14357,6 +14466,22 @@ export type ReviewBankAccountDocumentInput = {
   readonly stateReason: BankAccountVerificationStatusReason;
 };
 
+export type ReviewMerchantIdentityDocument = {
+  readonly __typename?: 'ReviewMerchantIdentityDocument';
+  readonly message?: Maybe<Scalars['String']>;
+  readonly ok: Scalars['Boolean'];
+};
+
+export type ReviewMerchantIdentityDocumentInput = {
+  readonly comment?: InputMaybe<Scalars['String']>;
+  readonly documentId: Scalars['ObjectIdType'];
+  readonly documentType: BusinessDocTypes;
+  readonly merchantId: Scalars['ObjectIdType'];
+  readonly state: MerchantIdentityVerificationStatus;
+  readonly stateReason: ReadonlyArray<TaxVerificationStatusReason>;
+  readonly verificationType: MerchantIdentityVerificationType;
+};
+
 export type ReviewMerchantTaxIdentificationInput = {
   readonly merchantTaxIdentificationId: Scalars['ObjectIdType'];
   readonly rejectedReason?: InputMaybe<MerchantTaxIdentificationRejectReson>;
@@ -16290,6 +16415,20 @@ export type TaxType =
   | 'US_ZR'
   | 'Undefined';
 
+export type TaxVerificationStatusReason =
+  | 'APPROVE'
+  | 'CERTIFICATION_UNCHECKED'
+  | 'INCORRECT_NAME'
+  | 'INCORRECT_SSN_TIN_FTIN'
+  | 'INCORRECT_TAX_FORM_TYPE'
+  | 'MISSING_OR_INCORRECT_SIGNATURE'
+  | 'MISSING_OR_OUTDATED_SIGNING_DATE'
+  | 'OTHERS'
+  | 'UNCLEAR_TAX_FORM'
+  | 'W8_BEN_E_ITEM_4'
+  | 'W8_BEN_E_ITEM_5'
+  | 'W9_ITEM_3';
+
 export type TaxonomyAttributeSchema = {
   readonly __typename?: 'TaxonomyAttributeSchema';
   readonly dataType: AttributeDataType;
@@ -17241,6 +17380,18 @@ export type UploadEuvatTaxQuestionnaire = {
   readonly __typename?: 'UploadEUVATTaxQuestionnaire';
   readonly errorMessage?: Maybe<Scalars['String']>;
   readonly ok: Scalars['Boolean'];
+};
+
+export type UploadMerchantIdentityDocument = {
+  readonly __typename?: 'UploadMerchantIdentityDocument';
+  readonly message?: Maybe<Scalars['String']>;
+  readonly ok: Scalars['Boolean'];
+};
+
+export type UploadMerchantIdentityDocumentInput = {
+  readonly merchantIdentityDocFile: FileInput;
+  readonly proofOfBizDocType: BusinessDocTypes;
+  readonly verificationType: MerchantIdentityVerificationType;
 };
 
 export type UploadMutations = {
@@ -20125,7 +20276,14 @@ export type SellerIdentity_AcceptMerchantPolicyMutation = { readonly __typename?
 export type GetMerchantBankVerificationStateReasonQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetMerchantBankVerificationStateReasonQuery = { readonly __typename?: 'RootQuery', readonly currentMerchant?: { readonly __typename?: 'MerchantSchema', readonly bankAccountVerification?: { readonly __typename?: 'BankAccountVerificationSchema', readonly state: BankAccountVerificationStatus, readonly stateReason?: BankAccountVerificationStatusReason | null } | null } | null };
+export type GetMerchantBankVerificationStateReasonQuery = { readonly __typename?: 'RootQuery', readonly currentMerchant?: { readonly __typename?: 'MerchantSchema', readonly bankAccountVerification?: { readonly __typename?: 'BankAccountVerificationSchema', readonly state: BankAccountVerificationStatus, readonly stateReason?: BankAccountVerificationStatusReason | null, readonly dueDate?: { readonly __typename?: 'Datetime', readonly formatted: string } | null, readonly bankAccountDocuments?: ReadonlyArray<{ readonly __typename?: 'BankAccountDocumentSchema', readonly id: string, readonly state: BankAccountVerificationStatus, readonly comment?: string | null }> | null } | null } | null };
+
+export type GetMerchantTaxIdentityVerificationStateQueryVariables = Exact<{
+  verificationType?: InputMaybe<MerchantIdentityVerificationType>;
+}>;
+
+
+export type GetMerchantTaxIdentityVerificationStateQuery = { readonly __typename?: 'RootQuery', readonly currentMerchant?: { readonly __typename?: 'MerchantSchema', readonly id: string, readonly countryOfDomicile?: { readonly __typename?: 'Country', readonly code: CountryCode } | null, readonly merchantIdentityVerification?: { readonly __typename?: 'MerchantIdentityVerificationSchema', readonly state: MerchantIdentityVerificationStatus, readonly stateReason: ReadonlyArray<TaxVerificationStatusReason | null>, readonly latestMerchantIdentityDocument?: { readonly __typename?: 'MerchantIdentityDocumentSchema', readonly id: string, readonly state: MerchantIdentityVerificationStatus, readonly stateReason?: ReadonlyArray<TaxVerificationStatusReason | null> | null, readonly comment?: string | null } | null, readonly dueDate?: { readonly __typename?: 'Datetime', readonly formatted: string } | null } | null } | null, readonly currentUser?: { readonly __typename?: 'UserSchema', readonly entityType?: UserEntityType | null } | null };
 
 export type SellerIdentity_UploadBankDocumentsMutationVariables = Exact<{
   input: UploadBankAccountDocumentInput;
@@ -20133,6 +20291,13 @@ export type SellerIdentity_UploadBankDocumentsMutationVariables = Exact<{
 
 
 export type SellerIdentity_UploadBankDocumentsMutation = { readonly __typename?: 'RootMutation', readonly currentMerchant?: { readonly __typename?: 'MerchantMutation', readonly bankAccountVerification: { readonly __typename?: 'BankAccountVerificationMerchantMutations', readonly uploadDocument: { readonly __typename?: 'UploadBankAccountDocument', readonly ok: boolean, readonly message?: string | null } } } | null };
+
+export type UploadMerchantIdentityDocumentMutationVariables = Exact<{
+  input: UploadMerchantIdentityDocumentInput;
+}>;
+
+
+export type UploadMerchantIdentityDocumentMutation = { readonly __typename?: 'RootMutation', readonly currentMerchant?: { readonly __typename?: 'MerchantMutation', readonly merchantIdentityVerification: { readonly __typename?: 'MerchantIdentityVerificationMutations', readonly uploadDocument: { readonly __typename?: 'UploadMerchantIdentityDocument', readonly ok: boolean, readonly message?: string | null } } } | null };
 
 export type AdminCheckQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -20298,6 +20463,8 @@ export const GetWhitelistProducts_ProductWhitelistingSectionDocument = {"kind":"
 export const MfpTools_GetPrefillCampaignQueryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"MfpTools_GetPrefillCampaignQuery"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"merchantCurrency"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"PaymentCurrencyCode"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"mfp"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"campaigns"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"searchType"},"value":{"kind":"EnumValue","value":"CAMPAIGN_ID"}},{"kind":"Argument","name":{"kind":"Name","value":"searchQuery"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}},{"kind":"Argument","name":{"kind":"Name","value":"offset"},"value":{"kind":"IntValue","value":"0"}},{"kind":"Argument","name":{"kind":"Name","value":"limit"},"value":{"kind":"IntValue","value":"1"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"state"}},{"kind":"Field","name":{"kind":"Name","value":"startTime"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"unix"}}]}},{"kind":"Field","name":{"kind":"Name","value":"endTime"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"unix"}}]}},{"kind":"Field","name":{"kind":"Name","value":"countries"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"code"}}]}},{"kind":"Field","name":{"kind":"Name","value":"promotionType"}},{"kind":"Field","name":{"kind":"Name","value":"unqualifiedProductVariations"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"variation"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"productId"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"flashSaleDetails"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"maxQuantity"}},{"kind":"Field","name":{"kind":"Name","value":"discountPercentage"}},{"kind":"Field","name":{"kind":"Name","value":"product"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"sales"}},{"kind":"Field","name":{"kind":"Name","value":"sku"}},{"kind":"Field","name":{"kind":"Name","value":"categories"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"flatRateShippingCountryCandidates"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"country"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"code"}}]}},{"kind":"Field","name":{"kind":"Name","value":"price"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"convertedTo"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"currency"},"value":{"kind":"Variable","name":{"kind":"Name","value":"merchantCurrency"}}},{"kind":"Argument","name":{"kind":"Name","value":"rate"},"value":{"kind":"EnumValue","value":"WISH_LATEST"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"shipping"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"defaultShipping"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"price"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"convertedTo"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"currency"},"value":{"kind":"Variable","name":{"kind":"Name","value":"merchantCurrency"}}},{"kind":"Argument","name":{"kind":"Name","value":"rate"},"value":{"kind":"EnumValue","value":"WISH_LATEST"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"warehouseCountryShipping"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"countryShipping"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"price"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"convertedTo"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"currency"},"value":{"kind":"Variable","name":{"kind":"Name","value":"merchantCurrency"}}},{"kind":"Argument","name":{"kind":"Name","value":"rate"},"value":{"kind":"EnumValue","value":"WISH_LATEST"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"country"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"code"}}]}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"variations"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"color"}},{"kind":"Field","name":{"kind":"Name","value":"size"}},{"kind":"Field","name":{"kind":"Name","value":"productId"}},{"kind":"Field","name":{"kind":"Name","value":"price"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}},{"kind":"Field","name":{"kind":"Name","value":"currencyCode"}},{"kind":"Field","name":{"kind":"Name","value":"display"}},{"kind":"Field","name":{"kind":"Name","value":"convertedTo"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"currency"},"value":{"kind":"Variable","name":{"kind":"Name","value":"merchantCurrency"}}},{"kind":"Argument","name":{"kind":"Name","value":"rate"},"value":{"kind":"EnumValue","value":"WISH_LATEST"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"inventory"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"count"}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"variation"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"color"}},{"kind":"Field","name":{"kind":"Name","value":"size"}},{"kind":"Field","name":{"kind":"Name","value":"productId"}},{"kind":"Field","name":{"kind":"Name","value":"price"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}},{"kind":"Field","name":{"kind":"Name","value":"currencyCode"}},{"kind":"Field","name":{"kind":"Name","value":"display"}},{"kind":"Field","name":{"kind":"Name","value":"convertedTo"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"currency"},"value":{"kind":"Variable","name":{"kind":"Name","value":"merchantCurrency"}}},{"kind":"Argument","name":{"kind":"Name","value":"rate"},"value":{"kind":"EnumValue","value":"WISH_LATEST"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"inventory"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"count"}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"discountDetails"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"maxQuantity"}},{"kind":"Field","name":{"kind":"Name","value":"discountPercentage"}},{"kind":"Field","name":{"kind":"Name","value":"product"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"sales"}},{"kind":"Field","name":{"kind":"Name","value":"sku"}},{"kind":"Field","name":{"kind":"Name","value":"flatRateShippingCountryCandidates"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"country"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"code"}}]}},{"kind":"Field","name":{"kind":"Name","value":"price"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"convertedTo"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"currency"},"value":{"kind":"Variable","name":{"kind":"Name","value":"merchantCurrency"}}},{"kind":"Argument","name":{"kind":"Name","value":"rate"},"value":{"kind":"EnumValue","value":"WISH_LATEST"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"shipping"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"defaultShipping"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"price"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"convertedTo"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"currency"},"value":{"kind":"Variable","name":{"kind":"Name","value":"merchantCurrency"}}},{"kind":"Argument","name":{"kind":"Name","value":"rate"},"value":{"kind":"EnumValue","value":"WISH_LATEST"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"warehouseCountryShipping"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"countryShipping"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"price"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"convertedTo"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"currency"},"value":{"kind":"Variable","name":{"kind":"Name","value":"merchantCurrency"}}},{"kind":"Argument","name":{"kind":"Name","value":"rate"},"value":{"kind":"EnumValue","value":"WISH_LATEST"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"country"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"code"}}]}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"categories"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"variations"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"color"}},{"kind":"Field","name":{"kind":"Name","value":"size"}},{"kind":"Field","name":{"kind":"Name","value":"productId"}},{"kind":"Field","name":{"kind":"Name","value":"price"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}},{"kind":"Field","name":{"kind":"Name","value":"currencyCode"}},{"kind":"Field","name":{"kind":"Name","value":"display"}},{"kind":"Field","name":{"kind":"Name","value":"convertedTo"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"currency"},"value":{"kind":"Variable","name":{"kind":"Name","value":"merchantCurrency"}}},{"kind":"Argument","name":{"kind":"Name","value":"rate"},"value":{"kind":"EnumValue","value":"WISH_LATEST"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"inventory"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"count"}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"variation"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"color"}},{"kind":"Field","name":{"kind":"Name","value":"size"}},{"kind":"Field","name":{"kind":"Name","value":"productId"}},{"kind":"Field","name":{"kind":"Name","value":"price"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}},{"kind":"Field","name":{"kind":"Name","value":"currencyCode"}},{"kind":"Field","name":{"kind":"Name","value":"display"}},{"kind":"Field","name":{"kind":"Name","value":"convertedTo"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"currency"},"value":{"kind":"Variable","name":{"kind":"Name","value":"merchantCurrency"}}},{"kind":"Argument","name":{"kind":"Name","value":"rate"},"value":{"kind":"EnumValue","value":"WISH_LATEST"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"inventory"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"count"}}]}}]}}]}}]}}]}}]}}]} as unknown as DocumentNode<MfpTools_GetPrefillCampaignQueryQuery, MfpTools_GetPrefillCampaignQueryQueryVariables>;
 export const MfpTools_GetCampaignEventsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"MfpTools_GetCampaignEvents"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"offset"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"limit"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"sort"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"CampaignEventSort"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"startAtMin"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"DatetimeInput"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"submitAtMin"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"DatetimeInput"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"promotionTypes"}},"type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"MFPCampaignPromotionType"}}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"mfp"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"campaignEvents"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"offset"},"value":{"kind":"Variable","name":{"kind":"Name","value":"offset"}}},{"kind":"Argument","name":{"kind":"Name","value":"limit"},"value":{"kind":"Variable","name":{"kind":"Name","value":"limit"}}},{"kind":"Argument","name":{"kind":"Name","value":"sort"},"value":{"kind":"Variable","name":{"kind":"Name","value":"sort"}}},{"kind":"Argument","name":{"kind":"Name","value":"startAtMin"},"value":{"kind":"Variable","name":{"kind":"Name","value":"startAtMin"}}},{"kind":"Argument","name":{"kind":"Name","value":"submitAtMin"},"value":{"kind":"Variable","name":{"kind":"Name","value":"submitAtMin"}}},{"kind":"Argument","name":{"kind":"Name","value":"promotionTypes"},"value":{"kind":"Variable","name":{"kind":"Name","value":"promotionTypes"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"minDiscountPercentage"}},{"kind":"Field","name":{"kind":"Name","value":"promotionType"}},{"kind":"Field","name":{"kind":"Name","value":"startTime"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"formatted"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"fmt"},"value":{"kind":"StringValue","value":"MMM d","block":false}}]},{"kind":"Field","name":{"kind":"Name","value":"unix"}}]}},{"kind":"Field","name":{"kind":"Name","value":"endTime"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"formatted"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"fmt"},"value":{"kind":"StringValue","value":"MMM d","block":false}}]},{"kind":"Field","name":{"kind":"Name","value":"unix"}}]}},{"kind":"Field","name":{"kind":"Name","value":"submissionDeadline"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"formatted"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"fmt"},"value":{"kind":"StringValue","value":"MMM d, YYYY","block":false}}]},{"kind":"Field","name":{"kind":"Name","value":"unix"}}]}},{"kind":"Field","name":{"kind":"Name","value":"productCategoryRestrictions"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"countries"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"code"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"campaignEventsCount"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"startAtMin"},"value":{"kind":"Variable","name":{"kind":"Name","value":"startAtMin"}}},{"kind":"Argument","name":{"kind":"Name","value":"submitAtMin"},"value":{"kind":"Variable","name":{"kind":"Name","value":"submitAtMin"}}},{"kind":"Argument","name":{"kind":"Name","value":"promotionTypes"},"value":{"kind":"Variable","name":{"kind":"Name","value":"promotionTypes"}}}]}]}}]}}]} as unknown as DocumentNode<MfpTools_GetCampaignEventsQuery, MfpTools_GetCampaignEventsQueryVariables>;
 export const SellerIdentity_AcceptMerchantPolicyDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"SellerIdentity_AcceptMerchantPolicy"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"AcceptMerchantPolicyInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"currentMerchant"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"merchantTermsAgreed"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"acceptMerchantPolicy"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"ok"}},{"kind":"Field","name":{"kind":"Name","value":"message"}}]}}]}}]}}]}}]} as unknown as DocumentNode<SellerIdentity_AcceptMerchantPolicyMutation, SellerIdentity_AcceptMerchantPolicyMutationVariables>;
-export const GetMerchantBankVerificationStateReasonDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getMerchantBankVerificationStateReason"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"currentMerchant"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"bankAccountVerification"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"state"}},{"kind":"Field","name":{"kind":"Name","value":"stateReason"}}]}}]}}]}}]} as unknown as DocumentNode<GetMerchantBankVerificationStateReasonQuery, GetMerchantBankVerificationStateReasonQueryVariables>;
+export const GetMerchantBankVerificationStateReasonDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getMerchantBankVerificationStateReason"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"currentMerchant"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"bankAccountVerification"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"state"}},{"kind":"Field","name":{"kind":"Name","value":"stateReason"}},{"kind":"Field","name":{"kind":"Name","value":"dueDate"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"formatted"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"fmt"},"value":{"kind":"StringValue","value":"%m/%d/%Y","block":false}}]}]}},{"kind":"Field","name":{"kind":"Name","value":"bankAccountDocuments"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"state"}},{"kind":"Field","name":{"kind":"Name","value":"comment"}}]}}]}}]}}]}}]} as unknown as DocumentNode<GetMerchantBankVerificationStateReasonQuery, GetMerchantBankVerificationStateReasonQueryVariables>;
+export const GetMerchantTaxIdentityVerificationStateDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getMerchantTaxIdentityVerificationState"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"verificationType"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"MerchantIdentityVerificationType"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"currentMerchant"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"countryOfDomicile"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"code"}}]}},{"kind":"Field","name":{"kind":"Name","value":"merchantIdentityVerification"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"verificationType"},"value":{"kind":"Variable","name":{"kind":"Name","value":"verificationType"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"state"}},{"kind":"Field","name":{"kind":"Name","value":"latestMerchantIdentityDocument"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"state"}},{"kind":"Field","name":{"kind":"Name","value":"stateReason"}},{"kind":"Field","name":{"kind":"Name","value":"comment"}}]}},{"kind":"Field","name":{"kind":"Name","value":"stateReason"}},{"kind":"Field","name":{"kind":"Name","value":"dueDate"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"formatted"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"fmt"},"value":{"kind":"StringValue","value":"%m/%d/%Y","block":false}}]}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"currentUser"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"entityType"}}]}}]}}]} as unknown as DocumentNode<GetMerchantTaxIdentityVerificationStateQuery, GetMerchantTaxIdentityVerificationStateQueryVariables>;
 export const SellerIdentity_UploadBankDocumentsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"SellerIdentity_UploadBankDocuments"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UploadBankAccountDocumentInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"currentMerchant"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"bankAccountVerification"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"uploadDocument"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"ok"}},{"kind":"Field","name":{"kind":"Name","value":"message"}}]}}]}}]}}]}}]} as unknown as DocumentNode<SellerIdentity_UploadBankDocumentsMutation, SellerIdentity_UploadBankDocumentsMutationVariables>;
+export const UploadMerchantIdentityDocumentDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"uploadMerchantIdentityDocument"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UploadMerchantIdentityDocumentInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"currentMerchant"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"merchantIdentityVerification"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"uploadDocument"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"ok"}},{"kind":"Field","name":{"kind":"Name","value":"message"}}]}}]}}]}}]}}]} as unknown as DocumentNode<UploadMerchantIdentityDocumentMutation, UploadMerchantIdentityDocumentMutationVariables>;
 export const AdminCheckDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"AdminCheck"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"su"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}},{"kind":"Field","name":{"kind":"Name","value":"currentUser"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"isAdmin"}}]}}]}}]} as unknown as DocumentNode<AdminCheckQuery, AdminCheckQueryVariables>;

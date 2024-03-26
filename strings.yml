@@ -481,7 +481,15 @@ features:
     description: >
       Page where merchants upload bank information and accept bank policy.
 
-  - name: Product Listing Fees Page
+  - name: Tax Document Page - Leopard
+    owners:
+      - ili@wish.com
+    files:
+      - src/pages/seller-identity/tax-documents.prod.tsx
+    description: >
+      Page where merchants upload tax information and accept bank policy.
+
+  - name: Product Listing Fees Page - Leopard
     owners:
       - ili@wish.com
     files:

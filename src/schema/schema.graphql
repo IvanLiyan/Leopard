@@ -800,6 +800,7 @@ type BankAccountVerificationSchema {
   lastReviewedAt: Datetime
   lastUploadedAt: Datetime
   bankAccountDocuments: [BankAccountDocumentSchema!]
+  dueDate: Datetime
 }
 
 enum BankAccountVerificationStatus {
@@ -1304,12 +1305,15 @@ enum BusinessDocTypes {
   CERTIFICATE_OF_INCORPORATION
   TAX_FORM
   CREDIT_CARD_STATEMENT
+  TAX_FORM_W9
   UTILITY_BILL_STATEMENT
   GOVERNMENT_ISSUED_BUSINESS_LICENSE
   ENTITY_TRADING_NAME
   ARTICLES_OF_INCORPORATION
   TAX_FORM_W_8
+  TAX_FORM_W8_BEN_E
   PRODUCT_LICENSING
+  TAX_FORM_W8_BEN
 }
 
 enum BuyerFraudReasonCategory {
@@ -6220,13 +6224,81 @@ input MerchantGamingReviewUpdateInput {
   infractionIds: String
 }
 
+type MerchantIdentityDocumentSchema {
+  id: ObjectIdType!
+  state: MerchantIdentityVerificationStatus!
+  stateReason: [TaxVerificationStatusReason]
+  comment: String
+  documentFile: MerchantFileSchema
+  documentType: MerchantIdentityDocumentType!
+  uploadedAt: Datetime
+  reviewedAt: Datetime
+  reviewer: UserSchema
+}
+
+enum MerchantIdentityDocumentType {
+  TAX_FORM_W_9
+  OFFICIAL_BANK_STATEMENT
+  RECENT_BUSINESS_RETURNS
+  SHARE_ALLOCATION_CERTIFICATE
+  CERTIFICATE_OF_INCORPORATION
+  TAX_FORM
+  CREDIT_CARD_STATEMENT
+  TAX_FORM_W9
+  UTILITY_BILL_STATEMENT
+  GOVERNMENT_ISSUED_BUSINESS_LICENSE
+  ENTITY_TRADING_NAME
+  ARTICLES_OF_INCORPORATION
+  TAX_FORM_W_8
+  TAX_FORM_W8_BEN_E
+  PRODUCT_LICENSING
+  TAX_FORM_W8_BEN
+}
+
 type MerchantIdentityMutations {
-  bankAccountVerification: BankAccountVerificationReviewerMutations!
+  bankAccountVerification: BankAccountVerificationReviewerMutations
+  merchantIdentityVerification: MerchantIdentityVerificationReviewerMutations
 }
 
 type MerchantIdentityServiceSchema {
   bankAccountVerificationsCount(merchantId: ObjectIdType, state: BankAccountVerificationStatus): Int
   bankAccountVerifications(offset: Int = 0, limit: Int = 50, merchantId: ObjectIdType, state: BankAccountVerificationStatus): [BankAccountVerificationSchema!]
+  merchantIdentityVerificationsCount(merchantId: ObjectIdType, state: MerchantIdentityVerificationStatus, verificationType: MerchantIdentityVerificationType): Int
+  merchantIdentityVerifications(offset: Int = 0, limit: Int = 50, merchantId: ObjectIdType, state: MerchantIdentityVerificationStatus, verificationType: MerchantIdentityVerificationType): [MerchantIdentityVerificationSchema!]
+}
+
+type MerchantIdentityVerificationMutations {
+  uploadDocument(input: UploadMerchantIdentityDocumentInput!): UploadMerchantIdentityDocument!
+}
+
+type MerchantIdentityVerificationReviewerMutations {
+  reviewIdentityVerificationDocument(input: ReviewMerchantIdentityDocumentInput!): ReviewMerchantIdentityDocument
+}
+
+type MerchantIdentityVerificationSchema {
+  id: ObjectIdType!
+  merchantId: ObjectIdType!
+  state: MerchantIdentityVerificationStatus!
+  stateReason: [TaxVerificationStatusReason]!
+  verificationType: MerchantIdentityVerificationType!
+  lastUploadedAt: Datetime
+  lastReviewedAt: Datetime
+  latestMerchantIdentityDocument: MerchantIdentityDocumentSchema
+  bankAccountDocuments: [MerchantIdentityDocumentSchema!]
+  merchantIdentityDocuments: [MerchantIdentityDocumentSchema!]
+  dueDate: Datetime
+}
+
+enum MerchantIdentityVerificationStatus {
+  SUBMITTED
+  REJECTED
+  APPROVED
+  PENDING
+}
+
+enum MerchantIdentityVerificationType {
+  TAX_FORM
+  BANK_ACCOUNT
 }
 
 type MerchantInviteInfo {
@@ -6324,6 +6396,7 @@ type MerchantMutation {
   sellerIdentityVerification: SellerIdentityVerificationMutations!
   sellerIdentityCnVerification: SellerIdentityCNVerificationMutations!
   bankAccountVerification: BankAccountVerificationMerchantMutations!
+  merchantIdentityVerification: MerchantIdentityVerificationMutations!
   returnSettings: MerchantReturnSettingsMutations!
   returnWarehouseSettings: MerchantReturnWarehouseMutations
   mftOptOut(input: ChangeMFTOptOutInput!): ChangeMFTOptOutMutation
@@ -6756,6 +6829,7 @@ type MerchantSchema {
   canAccessCalculatedShippingAccountConfig: Boolean
   isMerchantFulfillmentTimeOptOut: Boolean
   isConsignmentMode: Boolean
+  merchantIdentityVerification(verificationType: MerchantIdentityVerificationType): MerchantIdentityVerificationSchema
 }
 
 type MerchantSenderAddressMutations {
@@ -7060,6 +7134,7 @@ enum MerchantTodoItemType {
   REVIEW_REMOVAL_PRODUCTS
   BRL_CURRENCY_CODE_MIGRATION
   CURRENCY_CODE_MIGRATION
+  TAX_FORM_VERIFICATION
   REAUTHENTICATION_SELLER_PROFILE
   NON_CN_UPLOAD_NEW_PRODUCTS
   REAUTHENTICATION_KYC_PROFILE
@@ -8722,6 +8797,7 @@ enum PermissionType {
   MANAGE_PRODUCT_GEOBLOCK
   SHOW_MERCHANT_PROFILE
   VIEW_DISBURSEMENT_INFO
+  CAN_TRIGGER_TAX_FORM_VERIFICATION
   CAN_VIEW_GS_MERCHANT_INFO
   PRODUCT_CATEGORY_DISPUTE_EDIT
   VIEW_JP_MERCHANTS
@@ -8937,6 +9013,7 @@ enum PermissionType {
   CAN_ACCESS_UPDATE_CONFIRMED
   CAN_REVERSE_FINE
   VIEW_RESTRICTED_PRODUCT_REQUEST
+  CAN_REVIEW_TAX_FORM
   IP_VIOLATION_AUDIT_TAG
   GENDER_AUDIT_TAG
   CAN_ISSUE_PB_CREDITS
@@ -11291,6 +11368,21 @@ input ReviewBankAccountDocumentInput {
   comment: String
 }
 
+type ReviewMerchantIdentityDocument {
+  ok: Boolean!
+  message: String
+}
+
+input ReviewMerchantIdentityDocumentInput {
+  merchantId: ObjectIdType!
+  documentId: ObjectIdType!
+  documentType: BusinessDocTypes!
+  verificationType: MerchantIdentityVerificationType!
+  state: MerchantIdentityVerificationStatus!
+  stateReason: [TaxVerificationStatusReason!]!
+  comment: String
+}
+
 input ReviewMerchantTaxIdentificationInput {
   merchantTaxIdentificationId: ObjectIdType!
   reviewAction: MerchantTaxIdentificationReviewAction!
@@ -12945,6 +13037,21 @@ enum TaxType {
   INTERNATIONAL_MA
 }
 
+enum TaxVerificationStatusReason {
+  MISSING_OR_INCORRECT_SIGNATURE
+  MISSING_OR_OUTDATED_SIGNING_DATE
+  INCORRECT_NAME
+  W9_ITEM_3
+  W8_BEN_E_ITEM_5
+  W8_BEN_E_ITEM_4
+  UNCLEAR_TAX_FORM
+  INCORRECT_SSN_TIN_FTIN
+  INCORRECT_TAX_FORM_TYPE
+  OTHERS
+  CERTIFICATION_UNCHECKED
+  APPROVE
+}
+
 type TaxonomyAttributeSchema {
   id: Int!
   name: String!
@@ -13726,6 +13833,17 @@ input UploadBankAccountDocumentInput {
 type UploadEUVATTaxQuestionnaire {
   ok: Boolean!
   errorMessage: String
+}
+
+type UploadMerchantIdentityDocument {
+  ok: Boolean!
+  message: String
+}
+
+input UploadMerchantIdentityDocumentInput {
+  merchantIdentityDocFile: FileInput!
+  verificationType: MerchantIdentityVerificationType!
+  proofOfBizDocType: BusinessDocTypes!
 }
 
 type UploadMutations {

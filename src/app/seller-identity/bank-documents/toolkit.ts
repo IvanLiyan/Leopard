@@ -2,6 +2,7 @@ import { gql } from "@gql";
 import {
   UploadBankAccountDocument,
   UploadBankAccountDocumentInput,
+  UploadMerchantIdentityDocumentInput,
 } from "@schema";
 
 export type UploadBankDocumentsResponse = {
@@ -31,4 +32,32 @@ export const UploadBankDocumentsMutation = gql(`
       }
     }
   }
+`);
+
+export type UploadTaxDocumentsResponse = {
+  readonly currentMerchant?: {
+    readonly merchantIdentityVerification?: {
+      readonly uploadDocument?: Pick<
+        UploadBankAccountDocument,
+        "ok" | "message"
+      >;
+    };
+  };
+};
+
+export type UploadTaxDocumentsRequest = {
+  readonly input: UploadMerchantIdentityDocumentInput;
+};
+
+export const UploadTaxDocumentsMutation = gql(`
+mutation uploadMerchantIdentityDocument($input:UploadMerchantIdentityDocumentInput!) {
+  currentMerchant {
+      merchantIdentityVerification {
+          uploadDocument(input: $input) {
+              ok
+              message
+          }
+      }
+  }
+}
 `);

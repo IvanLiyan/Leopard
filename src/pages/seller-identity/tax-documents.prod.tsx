@@ -1,0 +1,552 @@
+import { useMemo } from "react";
+import { StyleSheet } from "aphrodite";
+import { css } from "@core/toolkit/styling";
+import { Box, Button, Stack, Text } from "@ContextLogic/atlas-ui";
+import { Layout, LoadingIndicator } from "@ContextLogic/lego";
+import commonStyles from "@performance-cn/styles/common.module.css";
+import Icon from "@core/components/Icon";
+import { absExtURL } from "@core/toolkit/url";
+import { useMutation } from "@apollo/client";
+import Image from "@core/components/Image";
+import PageHeader from "@core/components/PageHeader";
+import PageGuide from "@core/components/PageGuide";
+import PageRoot from "@core/components/PageRoot";
+import SecureFileInput from "@core/components/SecureFileInput";
+import { useTheme } from "@core/stores/ThemeStore";
+import { useToastStore } from "@core/stores/ToastStore";
+import { merchFeUrl, useRouter } from "@core/toolkit/router";
+import { FileInput, Datetime, TaxVerificationStatusReason } from "@schema";
+import {
+  UploadTaxDocumentsMutation,
+  UploadTaxDocumentsResponse,
+  UploadTaxDocumentsRequest,
+} from "@seller-identity/bank-documents/toolkit";
+import {
+  GET_MERCHANT_TAX_VERIFICATION_STATE,
+  TaxStatusRequestData,
+  TaxStatusResponseData,
+} from "@seller-identity/bank-documents/getinfo";
+import { observer } from "mobx-react";
+import { NextPage } from "next";
+import { useState, useEffect } from "react";
+import { ci18n } from "@core/toolkit/i18n";
+import { useQuery } from "@apollo/client";
+import Link from "@deprecated/components/Link";
+import { zendeskURL } from "@core/toolkit/url";
+import { Heading } from "@ContextLogic/atlas-ui";
+import Illustration from "@core/components/Illustration";
+import {
+  Step,
+  StepContent,
+  StepLabel,
+  Stepper,
+} from "@core/components/Stepper";
+
+const TaxDocumentsPage: NextPage<Record<string, never>> = () => {
+  const styles = useStylesheet();
+  const { textWhite, primary } = useTheme();
+  const [attachment, setAttachment] = useState<FileInput | null>(null);
+  const [countryCode, setCountryCode] = useState<string | null | undefined>("");
+  const [formType, setFormType] = useState<string | null | undefined>("");
+  const [entityType, setEntityType] = useState<string | null | undefined>("");
+  const [state, setState] = useState<string | undefined>(undefined);
+  const [IrsLink, setIrsLink] = useState<string>("");
+  const [TemplateLink, setTemplateLink] = useState<string>("");
+  const LinkWhyINeed = zendeskURL("1260801395329");
+  const [rejectReason, setRejectReason] =
+    useState<ReadonlyArray<Maybe<TaxVerificationStatusReason>>>();
+  const [dueDate, setDueDate] = useState<Datetime | undefined | null>(
+    undefined,
+  );
+  const [comment, setComment] = useState<string | null | undefined>("");
+
+  const { data } = useQuery<TaxStatusResponseData, TaxStatusRequestData>(
+    GET_MERCHANT_TAX_VERIFICATION_STATE,
+    {
+      variables: {
+        verificationType: "TAX_FORM",
+      },
+    },
+  );
+
+  useEffect(() => {
+    const countryCode = data?.currentMerchant?.countryOfDomicile?.code;
+    const entityType = data?.currentUser.entityType;
+
+    if (countryCode === "US") {
+      setIrsLink("https://www.irs.gov/forms-pubs/about-form-w-9");
+      setTemplateLink("https://www.irs.gov/pub/irs-pdf/fw9.pdf");
+      setFormType("W-9");
+    } else if (entityType === "INDIVIDUAL") {
+      setIrsLink("https://www.irs.gov/forms-pubs/about-form-w-8-ben");
+      setTemplateLink("https://www.irs.gov/pub/irs-pdf/fw8ben.pdf");
+      setFormType("W-8BEN");
+    } else if (entityType === "COMPANY") {
+      setIrsLink("https://www.irs.gov/forms-pubs/about-form-w-8-ben-e");
+      setTemplateLink("https://www.irs.gov/pub/irs-pdf/fw8bene.pdf");
+      setFormType("W-8BEN-E");
+    }
+
+    setState(data?.currentMerchant.merchantIdentityVerification?.state);
+    setRejectReason(
+      data?.currentMerchant.merchantIdentityVerification?.stateReason,
+    );
+    setCountryCode(countryCode);
+    setEntityType(entityType);
+    setDueDate(data?.currentMerchant.merchantIdentityVerification?.dueDate);
+    setComment(
+      data?.currentMerchant.merchantIdentityVerification
+        ?.latestMerchantIdentityDocument?.comment,
+    );
+  }, [data]);
+
+  const toastStore = useToastStore();
+  const router = useRouter();
+  const sellerProfile = "/settings#seller-profile";
+
+  type RejectTaxReasonMap = {
+    APPROVE: string;
+    CERTIFICATION_UNCHECKED: string;
+    INCORRECT_NAME: string;
+    INCORRECT_SSN_TIN_FTIN: string;
+    INCORRECT_TAX_FORM_TYPE: string;
+    MISSING_OR_INCORRECT_SIGNATURE: string;
+    MISSING_OR_OUTDATED_SIGNING_DATE: string;
+    OTHERS: string;
+    UNCLEAR_TAX_FORM: string;
+    W8_BEN_E_ITEM_4: string;
+    W8_BEN_E_ITEM_5: string;
+    W9_ITEM_3: string;
+  };
+
+  const formatTaxRejectReason = (
+    originalTaxReason: keyof RejectTaxReasonMap | null | undefined,
+  ) => {
+    const formatMap = {
+      APPROVE: ci18n("state reason of tax verification", "Approve"),
+      CERTIFICATION_UNCHECKED: ci18n(
+        "Keep 'Certification' in EN;",
+        "“Certification” unchecked",
+      ),
+      INCORRECT_NAME: ci18n(
+        "reject reason of tax verification",
+        "Incorrect name",
+      ),
+      INCORRECT_SSN_TIN_FTIN: ci18n(
+        "reject reason of tax verification",
+        "Incorrect SSN/TIN/FTIN",
+      ),
+      INCORRECT_TAX_FORM_TYPE: ci18n(
+        "reject reason of tax verification",
+        "Incorrect tax form type",
+      ),
+      MISSING_OR_INCORRECT_SIGNATURE: ci18n(
+        "reject reason of tax verification",
+        "Missing/incorrect signature",
+      ),
+      MISSING_OR_OUTDATED_SIGNING_DATE: ci18n(
+        "reject reason of tax verification",
+        "Missing signing date/Signing Date out of range",
+      ),
+      OTHERS: ci18n("reject reason of tax verification", "Others"),
+      UNCLEAR_TAX_FORM: ci18n(
+        "reject reason of tax verification",
+        "Unclear tax form",
+      ),
+      W8_BEN_E_ITEM_4: ci18n(
+        "reject reason of tax verification",
+        "W-8BEN-E, Item 4: You must select one box, and one box only.",
+      ),
+      W8_BEN_E_ITEM_5: ci18n(
+        "Keep 'Active NFFE' in EN",
+        "W-8BEN-E, Item 5: You must select one box, and one box only. If you are an entity that operates an active trade or business other than that of a financial business, your status is likely “Active NFFE”.",
+      ),
+      W9_ITEM_3: ci18n(
+        "reject reason of tax verification",
+        "W-9, Item 3: You must select one box, and one box only.",
+      ),
+    };
+    if (originalTaxReason) return formatMap[originalTaxReason];
+  };
+
+  const steps = useMemo(() => {
+    return [
+      {
+        label: i`Download Tax template`,
+        description:
+          entityType === "INDIVIDUAL"
+            ? i`Based on your country of domicile (${countryCode}) and the information you submitted in the registration (individual seller), please download and submit ${formType} form.`
+            : i`Based on your country of domicile (${countryCode}) and the information you submitted in the registration (business entities), please download and submit ${formType} form.`,
+        content: (
+          <Button
+            secondary
+            startIcon={<Icon name="download" color={primary} />}
+            data-cy="button-download-template"
+            sx={{ marginTop: "24px", fontSize: "14px" }}
+          >
+            <Link
+              href={absExtURL(TemplateLink)}
+              style={styles.templateLinkText}
+              openInNewTab
+            >
+              {ci18n(
+                "Button text, download tax form template",
+                "Download tax form",
+              )}
+            </Link>
+          </Button>
+        ),
+      },
+      {
+        label: i`Upload your tax form`,
+        description: i`Make sure your information is correct and includes your signature.`,
+        content: (
+          <Box sx={{ mt: 3 }}>
+            <SecureFileInput
+              bucket="TEMP_UPLOADS_V2"
+              accepts=".pdf"
+              prompt={i`Upload tax form`}
+              backgroundColor={textWhite}
+              maxSizeMB={5}
+              style={{ width: 200, color: primary, marginBottom: 10 }}
+              onAttachmentsChanged={(attachments) => {
+                if (attachments.length == 0) {
+                  setAttachment(null);
+                  return;
+                }
+                setAttachment({
+                  fileName: attachments[0].fileName,
+                  url: attachments[0].url,
+                });
+              }}
+              data-cy="tax-document-file-input"
+              maxAttachments={1}
+            />
+            <Text variant="bodyS">
+              {ci18n(
+                "description of the file limit",
+                "Select a PDF smaller than 5MB.",
+              )}
+            </Text>
+          </Box>
+        ),
+      },
+    ];
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [entityType, countryCode]);
+
+  const [upload] = useMutation<
+    UploadTaxDocumentsResponse,
+    UploadTaxDocumentsRequest
+  >(UploadTaxDocumentsMutation);
+
+  const onSubmit = async () => {
+    if (attachment == null) {
+      return;
+    }
+
+    const resp = await upload({
+      variables: {
+        input: {
+          merchantIdentityDocFile: attachment,
+          verificationType: "TAX_FORM",
+          proofOfBizDocType: "TAX_FORM_W9",
+        },
+      },
+    });
+    const result =
+      resp.data?.currentMerchant?.merchantIdentityVerification?.uploadDocument;
+    if (!result) {
+      return;
+    }
+    const { ok, message } = result;
+
+    if (!ok) {
+      toastStore.error(message || i`Something went wrong. Please try again.`);
+      return;
+    }
+
+    toastStore.positive(i`Your document has been uploaded`);
+    void router.push(merchFeUrl(sellerProfile));
+  };
+
+  return (
+    <PageRoot style={styles.root}>
+      <PageHeader
+        className={css(styles.header)}
+        title={ci18n("title of tax information module", "Tax Information")}
+        relaxed
+        illustration={() => (
+          <Image
+            src="/md/images/seller-identity/taxInfoBanner.svg"
+            alt={ci18n("alt text for an image", "Tax information banner")}
+            width={168}
+            height={178}
+          />
+        )}
+      >
+        <Layout.FlexRow>
+          <Text className={css(styles.headerText)}>
+            Supporting documents are any documents issued by the government that
+            verify your name and tax identification number.
+          </Text>
+        </Layout.FlexRow>
+      </PageHeader>
+      <PageGuide relaxed style={styles.guide}>
+        {countryCode ? (
+          <>
+            {state === "REJECTED" &&
+              dueDate &&
+              rejectReason?.map((reason) => {
+                return (
+                  <Box className={css(styles.bannerInfo)} key={reason}>
+                    <Illustration
+                      name="bankInfoBannerBadge"
+                      className={css(styles.icon)}
+                      alt={i`Tax documents info`}
+                    />
+                    <div className={css(styles.bannerText)}>
+                      <Text
+                        sx={{
+                          color: "textBlack",
+                          fontWeight: "bold",
+                          fontSize: "14px",
+                          lineHeight: "18px",
+                        }}
+                      >
+                        Resubmit tax information
+                      </Text>
+                      {reason !== "OTHERS" ? (
+                        <Text
+                          sx={{
+                            color: "textBlack",
+                            fontSize: "14px",
+                            lineHeight: "20px",
+                          }}
+                        >
+                          {`${formatTaxRejectReason(reason)}. ` +
+                            `Upload your tax form by ` +
+                            `${dueDate.formatted} ` +
+                            `to avoid payment withholding. `}
+                        </Text>
+                      ) : (
+                        <Text
+                          sx={{
+                            color: "textBlack",
+                            fontSize: "14px",
+                            lineHeight: "20px",
+                          }}
+                        >
+                          {`${formatTaxRejectReason(reason)}. ` +
+                            `: ${comment}` +
+                            `Upload your tax form by ` +
+                            `${dueDate.formatted} ` +
+                            `to avoid payment withholding. `}
+                        </Text>
+                      )}
+                    </div>
+                  </Box>
+                );
+              })}
+            <div className={css(styles.contentBox)}>
+              <Stepper orientation="vertical" sx={{ flex: 4 }}>
+                {steps.map((step) => {
+                  return (
+                    <Step key={step.label} active>
+                      <StepLabel>
+                        <Heading variant="h3">{step.label}</Heading>
+                      </StepLabel>
+                      <StepContent sx={{ minHeight: "200px" }}>
+                        <div>
+                          <Text>{step.description}</Text>
+                          <div>{step.content}</div>
+                        </div>
+                      </StepContent>
+                    </Step>
+                  );
+                })}
+              </Stepper>
+              <Box
+                sx={{
+                  flex: 2,
+                  borderLeft: "1px solid rgba(170, 170, 164, 1)",
+                  paddingLeft: "36px",
+                }}
+              >
+                <div style={{ height: "280px" }}>
+                  <div className={css(styles.linkBox)}>
+                    <Image
+                      src="/md/images/seller-identity/linkIcon.svg"
+                      alt={ci18n(
+                        "alt text for an image",
+                        "Tax information banner",
+                      )}
+                      width={24}
+                      height={24}
+                    />
+                    <Link
+                      href={LinkWhyINeed}
+                      style={styles.linkText}
+                      underline
+                      openInNewTab
+                    >
+                      Why do I need to submit the {formType} form?
+                    </Link>
+                  </div>
+                  <div className={css(styles.linkBox)}>
+                    <Image
+                      src="/md/images/seller-identity/linkIcon.svg"
+                      alt={ci18n(
+                        "alt text for an image",
+                        "Tax information banner",
+                      )}
+                      width={24}
+                      height={24}
+                    />
+                    <Link
+                      href={absExtURL(IrsLink)}
+                      style={styles.linkText}
+                      underline
+                      openInNewTab
+                    >
+                      Link to IRS {formType} form page
+                    </Link>
+                  </div>
+                  <div className={css(styles.linkBox)}>
+                    <Image
+                      src="/md/images/seller-identity/linkIcon.svg"
+                      alt={ci18n(
+                        "alt text for an image",
+                        "Tax information banner",
+                      )}
+                      width={"24px"}
+                      height={"24px"}
+                    />
+                    <Link
+                      href={`mailto:merchant_support@wish.com`}
+                      style={styles.linkText}
+                      underline
+                      openInNewTab
+                    >
+                      {ci18n("Email to wish customer support", "Need support?")}
+                    </Link>
+                  </div>
+                </div>
+                <div>
+                  <div className={css(styles.linkBox)}>
+                    <Image
+                      src="/md/images/seller-identity/linkIcon.svg"
+                      alt={ci18n(
+                        "alt text for an image",
+                        "Tax information banner",
+                      )}
+                      width={"24px"}
+                      height={"24px"}
+                    />
+                    <Link
+                      href={merchFeUrl(sellerProfile)}
+                      style={styles.linkText}
+                      underline
+                      openInNewTab
+                    >
+                      Link to seller profile to view status
+                    </Link>
+                  </div>
+                </div>
+              </Box>
+            </div>
+            <Box sx={{ mt: 2, pt: 4 }}>
+              <Stack direction={"row"} spacing={1}>
+                <Button
+                  disabled={!attachment}
+                  primary
+                  onClick={() => {
+                    void onSubmit();
+                  }}
+                >
+                  {ci18n("Submit button copy", "Submit")}
+                </Button>
+              </Stack>
+            </Box>
+          </>
+        ) : (
+          <LoadingIndicator className={commonStyles.loading} />
+        )}
+      </PageGuide>
+    </PageRoot>
+  );
+};
+
+export default observer(TaxDocumentsPage);
+
+const useStylesheet = () => {
+  return useMemo(
+    () =>
+      StyleSheet.create({
+        root: {
+          background: "#fff",
+        },
+        header: {
+          display: "flex",
+          alignItems: "center",
+          fontSize: "34px",
+          lineHeight: "40px",
+          fontWeight: 700,
+        },
+        headerText: { fontSize: "16px", fontWeight: 400, lineHeight: "24px" },
+        bannerInfo: {
+          borderRadius: "8px",
+          background: "#FFC72C",
+          padding: "12px",
+          display: "flex",
+          marginTop: "14px",
+        },
+        bannerText: {
+          display: "flex",
+          flexDirection: "column",
+        },
+        icon: {
+          width: 24,
+          height: 24,
+          margin: 10,
+        },
+        guide: {},
+        uploadTitle: {
+          fontSize: "20px",
+          fontWeight: 700,
+          lineHeight: "24px",
+          display: "flex",
+        },
+        uploadText: {
+          fontSize: "16px",
+          fontWeight: 400,
+          lineHeight: "24px",
+          marginBottom: "40px",
+        },
+        contentBox: {
+          display: "flex",
+          marginTop: "40px",
+        },
+        linkBox: {
+          display: "flex",
+          lineHeight: "24px",
+          marginBottom: "24px",
+        },
+        linkText: {
+          fontSize: 16,
+          fontWeight: 500,
+          textDecorationLine: "underline",
+          color: "#0E161C",
+          marginLeft: "8px",
+        },
+        templateLinkText: {
+          fontSize: 16,
+          fontWeight: 500,
+          textDecorationLine: "underline",
+          color: "rgba(48, 91, 239, 1)",
+          marginLeft: "8px",
+        },
+      }),
+    [],
+  );
+};
