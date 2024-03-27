@@ -1,10 +1,15 @@
 import "../styles/global.css";
 
+import { useEffect } from "react";
 import { AppProps } from "next/app";
 import Head from "next/head";
 import Script from "next/script";
 import MerchantDashboardProvider from "@chrome/MerchantDashboardProvider";
 import { isProd } from "@core/stores/EnvironmentStore";
+import {
+  sardineScriptId,
+  useSardineConstants,
+} from "@core/stores/SardineStore";
 
 const TRUSTARC_DOMAIN = isProd ? "wish.com" : "wish-test.com";
 
@@ -39,6 +44,57 @@ const MerchantDashboard = ({
 };
 
 const App = (props: AppProps): JSX.Element => {
+  const { sardineHost, sardineClientId, sardineSessionKey } =
+    useSardineConstants();
+
+  useEffect(() => {
+    if (
+      !window.sardineContext &&
+      sardineHost &&
+      sardineClientId &&
+      sardineSessionKey
+    ) {
+      const scriptContent = `
+      (function () {
+        window.onSardineLoadedProm = new Promise(resolve => {
+            window.onSardineLoaded = () => {
+            try {
+              if (!window.sardineContext) {
+                  window.sardineContext = window._Sardine.createContext({
+                  clientId: "${sardineClientId}",
+                  sessionKey: "${sardineSessionKey}",
+                  flow: "app",
+                  environment: "${sardineHost}" === "api.sardine.ai" ? "production": "sandbox",
+                  parentElement: document.body,
+                  onDeviceResponse: function(data) {
+                  }
+                  });
+              }
+            } finally {
+              resolve();
+            }
+            };
+        });
+        var loader = document.createElement('script');
+        loader.type = 'text/javascript';
+        loader.async = true;
+        loader.src = 'https://${sardineHost}/assets/loader.min.js';
+        loader.onload = window.onSardineLoaded
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(loader, s);
+      })();
+      `;
+
+      // Dynamically insert the script
+      const script = document.createElement("script");
+      script.id = sardineScriptId;
+      script.type = "text/javascript";
+      script.async = true;
+      script.innerHTML = scriptContent;
+      document.head.appendChild(script);
+    }
+  }, [sardineHost, sardineClientId, sardineSessionKey]);
+
   return (
     <div suppressHydrationWarning>
       <Head>

@@ -9219,6 +9219,20 @@ export type MerchantUserGateMutationsAllowUsersArgs = {
   input: MerchantUserGateAllowUsersInput;
 };
 
+export type MerchantVerificationStatusReason =
+  | 'APPROVE'
+  | 'CERTIFICATION_UNCHECKED'
+  | 'INCORRECT_NAME'
+  | 'INCORRECT_SSN_TIN_FTIN'
+  | 'INCORRECT_TAX_FORM_TYPE'
+  | 'MISSING_OR_INCORRECT_SIGNATURE'
+  | 'MISSING_OR_OUTDATED_SIGNING_DATE'
+  | 'OTHERS'
+  | 'UNCLEAR_TAX_FORM'
+  | 'W8_BEN_E_ITEM_4'
+  | 'W8_BEN_E_ITEM_5'
+  | 'W9_ITEM_3';
+
 export type MerchantWpsSchema = {
   readonly __typename?: 'MerchantWPSSchema';
   readonly enabledDestinationCountries: ReadonlyArray<Country>;
@@ -11434,6 +11448,7 @@ export type PlatformConstants = {
   readonly productListing: ReadonlyArray<ProductListingTierSchema>;
   readonly regions?: Maybe<ReadonlyArray<Region>>;
   readonly returnCancelReasons: ReadonlyArray<CustomerSupportTicketCancelReturnReasonSchema>;
+  readonly sardineConstants: SardineConstants;
   readonly sellerProfileRegionConstants: SellerProfileRegionConstants;
   readonly staticFines?: Maybe<StaticFines>;
   readonly tax: TaxConstants;
@@ -13696,6 +13711,7 @@ export type RefundReasonCategory =
   | 'MERCHANT_REPORTED_ORDER'
   | 'MERCHANT_SENT_TO_WRONG_ADDRESS'
   | 'MISLEADING_LISTING'
+  | 'MISSING_ITEM_OR_PACKAGE'
   | 'MISSING_ITEM_OR_PARTS'
   | 'NOT_QUALIFIED_SHIPPING_PROVIDER'
   | 'ONEOFF_WISH_ERROR'
@@ -14341,6 +14357,7 @@ export type ReturnRequestRefundReason =
   | 'MERCHANT_REPORTED_ORDER'
   | 'MERCHANT_SENT_TO_WRONG_ADDRESS'
   | 'MISLEADING_LISTING'
+  | 'MISSING_ITEM_OR_PACKAGE'
   | 'MISSING_ITEM_OR_PARTS'
   | 'NOT_QUALIFIED_SHIPPING_PROVIDER'
   | 'ONEOFF_WISH_ERROR'
@@ -14727,6 +14744,13 @@ export type SanctionScreeningMutations = {
 
 export type SanctionScreeningMutationsBulkReviewArgs = {
   input: BulkReviewInput;
+};
+
+export type SardineConstants = {
+  readonly __typename?: 'SardineConstants';
+  readonly sardineClientId?: Maybe<Scalars['String']>;
+  readonly sardineHost?: Maybe<Scalars['String']>;
+  readonly sardineSessionKey?: Maybe<Scalars['String']>;
 };
 
 export type ScheduledAddBudgetSchema = {
@@ -19405,6 +19429,11 @@ export type LocalizationStore_InitialQueryQueryVariables = Exact<{ [key: string]
 
 export type LocalizationStore_InitialQueryQuery = { readonly __typename?: 'RootQuery', readonly currentLocale: Locale, readonly currentProperLocale: string, readonly platformConstants?: { readonly __typename?: 'PlatformConstants', readonly availableLocales?: ReadonlyArray<Locale> | null } | null };
 
+export type SardineStore_GetSardineConstantsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type SardineStore_GetSardineConstantsQuery = { readonly __typename?: 'RootQuery', readonly platformConstants?: { readonly __typename?: 'PlatformConstants', readonly sardineConstants: { readonly __typename?: 'SardineConstants', readonly sardineHost?: string | null, readonly sardineClientId?: string | null, readonly sardineSessionKey?: string | null } } | null };
+
 export type UserStore_InitialQueryQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -20346,6 +20375,7 @@ export const ChromeStore_InitialQueryDocument = {"kind":"Document","definitions"
 export const ExperimentStore_GetBucketForExperimentDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"ExperimentStore_GetBucketForExperiment"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"name"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"currentMerchant"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"exp"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"bucket"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"name"},"value":{"kind":"Variable","name":{"kind":"Name","value":"name"}}}]}]}}]}}]}}]} as unknown as DocumentNode<ExperimentStore_GetBucketForExperimentQuery, ExperimentStore_GetBucketForExperimentQueryVariables>;
 export const ExperimentStore_GetDeciderKeyDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"ExperimentStore_GetDeciderKey"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"name"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"platformConstants"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"deciderKey"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"decideForName"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"name"},"value":{"kind":"Variable","name":{"kind":"Name","value":"name"}}}]}]}}]}}]}}]} as unknown as DocumentNode<ExperimentStore_GetDeciderKeyQuery, ExperimentStore_GetDeciderKeyQueryVariables>;
 export const LocalizationStore_InitialQueryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"LocalizationStore_InitialQuery"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"currentLocale"}},{"kind":"Field","name":{"kind":"Name","value":"currentProperLocale"}},{"kind":"Field","name":{"kind":"Name","value":"platformConstants"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"availableLocales"}}]}}]}}]} as unknown as DocumentNode<LocalizationStore_InitialQueryQuery, LocalizationStore_InitialQueryQueryVariables>;
+export const SardineStore_GetSardineConstantsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"SardineStore_GetSardineConstants"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"platformConstants"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"sardineConstants"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"sardineHost"}},{"kind":"Field","name":{"kind":"Name","value":"sardineClientId"}},{"kind":"Field","name":{"kind":"Name","value":"sardineSessionKey"}}]}}]}}]}}]} as unknown as DocumentNode<SardineStore_GetSardineConstantsQuery, SardineStore_GetSardineConstantsQueryVariables>;
 export const UserStore_InitialQueryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"UserStore_InitialQuery"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"currentCountry"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"code"}}]}},{"kind":"Field","name":{"kind":"Name","value":"currentMerchant"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"isStoreMerchant"}},{"kind":"Field","name":{"kind":"Name","value":"primaryCurrency"}},{"kind":"Field","name":{"kind":"Name","value":"state"}}]}},{"kind":"Field","name":{"kind":"Name","value":"currentUser"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"merchantId"}},{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}},{"kind":"Field","name":{"kind":"Name","value":"displayName"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"phoneNumber"}},{"kind":"Field","name":{"kind":"Name","value":"companyName"}},{"kind":"Field","name":{"kind":"Name","value":"entityType"}},{"kind":"Field","name":{"kind":"Name","value":"isStoreOrMerchantUser"}},{"kind":"Field","name":{"kind":"Name","value":"isApiUser"}},{"kind":"Field","name":{"kind":"Name","value":"isAdmin"}},{"kind":"Field","name":{"kind":"Name","value":"roles"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"businessAddress"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"streetAddress1"}},{"kind":"Field","name":{"kind":"Name","value":"streetAddress2"}},{"kind":"Field","name":{"kind":"Name","value":"city"}},{"kind":"Field","name":{"kind":"Name","value":"state"}},{"kind":"Field","name":{"kind":"Name","value":"zipcode"}},{"kind":"Field","name":{"kind":"Name","value":"country"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"code"}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"su"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"isAdmin"}}]}},{"kind":"Field","name":{"kind":"Name","value":"recentUsers"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"displayName"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"isStoreOrMerchantUser"}}]}}]}}]} as unknown as DocumentNode<UserStore_InitialQueryQuery, UserStore_InitialQueryQueryVariables>;
 export const Fashion_GetLeafCategoriesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Fashion_GetLeafCategories"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"l1CategoryId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"taxonomy"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"leafCategories"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"l1CategoryId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"l1CategoryId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"categoriesAlongPath"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"categoryChildren"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]}}]}}]} as unknown as DocumentNode<Fashion_GetLeafCategoriesQuery, Fashion_GetLeafCategoriesQueryVariables>;
 export const Fashion_GetCategoryAttributesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Fashion_GetCategoryAttributes"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"categoryId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"taxonomy"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"attributes"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"categoryId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"categoryId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"values"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"value"}}]}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"dataType"}},{"kind":"Field","name":{"kind":"Name","value":"dataTypeFormat"}},{"kind":"Field","name":{"kind":"Name","value":"level"}},{"kind":"Field","name":{"kind":"Name","value":"usage"}},{"kind":"Field","name":{"kind":"Name","value":"isVariationAttribute"}},{"kind":"Field","name":{"kind":"Name","value":"mode"}},{"kind":"Field","name":{"kind":"Name","value":"maxMultiSelect"}},{"kind":"Field","name":{"kind":"Name","value":"enabledForVariations"}}]}}]}}]}}]} as unknown as DocumentNode<Fashion_GetCategoryAttributesQuery, Fashion_GetCategoryAttributesQueryVariables>;

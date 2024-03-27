@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import { StyleSheet } from "aphrodite";
 import { observer } from "mobx-react";
 import { useQuery } from "@apollo/client";
@@ -10,6 +10,10 @@ import { Layout } from "@ContextLogic/lego";
 import { useIntQueryParam, useStringQueryParam } from "@core/toolkit/url";
 import { useRouter } from "@core/toolkit/router";
 import { useMountEffect } from "@ContextLogic/lego/toolkit/hooks";
+import {
+  SARDINE_FLOW,
+  initAndUpdatedateSardineSDK,
+} from "@core/toolkit/sardineSDK";
 
 import {
   OKTA_OAUTH_URL_QUERY,
@@ -21,6 +25,7 @@ import LoginForm from "@landing-pages/authentication/LoginForm";
 import SiteFooter from "@core/components/SiteFooter";
 
 /* Merchant Store */
+import { useSardineConstants } from "@core/stores/SardineStore";
 import { useTheme } from "@core/stores/ThemeStore";
 import { useToastStore } from "@core/stores/ToastStore";
 import LoggedOutChrome from "@landing-pages/common/logged-out-chrome/LoggedOutChrome";
@@ -41,6 +46,28 @@ const LoginContainer: React.FC = () => {
   );
 
   const oktaUrl = oktaOauthUrlData?.platformConstants?.oktaOauthUri;
+
+  const { sardineHost, sardineClientId, sardineSessionKey } =
+    useSardineConstants();
+
+  useEffect(() => {
+    const effect = async () => {
+      try {
+        await initAndUpdatedateSardineSDK(
+          SARDINE_FLOW.SIGNIN,
+          sardineHost,
+          sardineClientId,
+          sardineSessionKey,
+          null,
+        );
+      } catch (error) {
+        // Want a console log here for debugging purpose
+        // eslint-disable-next-line no-console
+        console.error(error);
+      }
+    };
+    void effect();
+  }, [sardineHost, sardineClientId, sardineSessionKey]);
 
   useMountEffect(() => {
     if (reset) {

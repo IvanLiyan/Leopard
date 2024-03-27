@@ -7204,6 +7204,21 @@ type MerchantUserGateMutations {
   allowAll(input: MerchantUserGateAllowAllInput!): MerchantUserGateAllowAll
 }
 
+enum MerchantVerificationStatusReason {
+  MISSING_OR_INCORRECT_SIGNATURE
+  MISSING_OR_OUTDATED_SIGNING_DATE
+  INCORRECT_NAME
+  W9_ITEM_3
+  W8_BEN_E_ITEM_5
+  W8_BEN_E_ITEM_4
+  UNCLEAR_TAX_FORM
+  INCORRECT_SSN_TIN_FTIN
+  INCORRECT_TAX_FORM_TYPE
+  OTHERS
+  CERTIFICATION_UNCHECKED
+  APPROVE
+}
+
 type MerchantWPSSchema {
   enabledDestinationCountries: [Country!]!
   enabledOriginCountries: [Country!]!
@@ -9192,6 +9207,7 @@ type PlatformConstants {
   expeditedProcessDaysToPayment: Timedelta!
   product: ProductConstantsSchema!
   sellerProfileRegionConstants: SellerProfileRegionConstants!
+  sardineConstants: SardineConstants!
 }
 
 type PlatformSweepMutations {
@@ -10622,6 +10638,7 @@ enum RefundReasonCategory {
   MERCHANT_REPORTED_BUYER_FRAUD
   MISLEADING_LISTING
   BLUE_STORE_QUIT
+  MISSING_ITEM_OR_PACKAGE
   ITEM_DID_NOT_MEET_EXPECTATIONS
   ITEM_DOES_NOT_WORK_AS_DESCRIBED
   PRODUCT_LISTING_MISSING_INFO
@@ -11216,6 +11233,7 @@ enum ReturnRequestRefundReason {
   MERCHANT_REPORTED_BUYER_FRAUD
   MISLEADING_LISTING
   BLUE_STORE_QUIT
+  MISSING_ITEM_OR_PACKAGE
   ITEM_DID_NOT_MEET_EXPECTATIONS
   ITEM_DOES_NOT_WORK_AS_DESCRIBED
   PRODUCT_LISTING_MISSING_INFO
@@ -11613,6 +11631,12 @@ enum SanctionScreeningHitStateType {
 
 type SanctionScreeningMutations {
   bulkReview(input: BulkReviewInput!): BulkReviewMutation
+}
+
+type SardineConstants {
+  sardineHost: String
+  sardineClientId: String
+  sardineSessionKey: String
 }
 
 type ScheduledAddBudgetSchema {
