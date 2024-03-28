@@ -1,7 +1,7 @@
 /* Constants */
 export const SARDINE_FLOW = {
-  SIGNIN: "md.signin",
-  SIGNUP: "md.signup",
+  SIGNIN: "md_signin",
+  SIGNUP: "md_signup",
   APP: "app",
 } as const; // values need match definition in clroot repo: sweeper/merchant_dashboard/lib/sardine/flows.py
 

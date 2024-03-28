@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import { StyleSheet } from "aphrodite";
 import { observer } from "mobx-react";
 
@@ -9,6 +9,11 @@ import StoreDetails from "./StoreDetails";
 import MerchantDetails from "./MerchantDetails";
 import CNOnlyDetails from "./CNOnlyDetails";
 import MerchantLeadSubmissionState from "./MerchantLeadSubmissionState";
+import { useSardineConstants } from "@core/stores/SardineStore";
+import {
+  SARDINE_FLOW,
+  initAndUpdatedateSardineSDK,
+} from "@core/toolkit/sardineSDK";
 
 type SignupFormProps = BaseProps & {
   readonly isLoading?: boolean;
@@ -18,6 +23,28 @@ type SignupFormProps = BaseProps & {
 const SignupForm = (props: SignupFormProps) => {
   const { className, style, submissionState, isLoading } = props;
   const styles = useStylesheet();
+
+  const { sardineHost, sardineClientId, sardineSessionKey } =
+    useSardineConstants();
+
+  useEffect(() => {
+    const effect = async () => {
+      try {
+        await initAndUpdatedateSardineSDK(
+          SARDINE_FLOW.SIGNUP,
+          sardineHost,
+          sardineClientId,
+          sardineSessionKey,
+          null,
+        );
+      } catch (error) {
+        // Want a console log here for debugging purpose
+        // eslint-disable-next-line no-console
+        console.error(error);
+      }
+    };
+    void effect();
+  }, [sardineHost, sardineClientId, sardineSessionKey]);
 
   return (
     <Layout.FlexColumn alignItems="center" style={[className, style]}>
