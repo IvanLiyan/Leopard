@@ -15,7 +15,12 @@ import SecureFileInput from "@core/components/SecureFileInput";
 import { useTheme } from "@core/stores/ThemeStore";
 import { useToastStore } from "@core/stores/ToastStore";
 import { merchFeUrl, useRouter } from "@core/toolkit/router";
-import { FileInput, Datetime, TaxVerificationStatusReason } from "@schema";
+import {
+  FileInput,
+  Datetime,
+  TaxVerificationStatusReason,
+  BusinessDocTypes,
+} from "@schema";
 import {
   UploadTaxDocumentsMutation,
   UploadTaxDocumentsResponse,
@@ -49,6 +54,8 @@ const TaxDocumentsPage: NextPage<Record<string, never>> = () => {
   const [countryCode, setCountryCode] = useState<string | null | undefined>("");
   const [formType, setFormType] = useState<string | null | undefined>("");
   const [entityType, setEntityType] = useState<string | null | undefined>("");
+  const [proofOfBizDocType, setProofOfBizDocType] =
+    useState<BusinessDocTypes>("TAX_FORM_W9");
   const [state, setState] = useState<string | undefined>(undefined);
   const [IrsLink, setIrsLink] = useState<string>("");
   const [TemplateLink, setTemplateLink] = useState<string>("");
@@ -77,14 +84,17 @@ const TaxDocumentsPage: NextPage<Record<string, never>> = () => {
       setIrsLink("https://www.irs.gov/forms-pubs/about-form-w-9");
       setTemplateLink("https://www.irs.gov/pub/irs-pdf/fw9.pdf");
       setFormType("W-9");
+      setProofOfBizDocType("TAX_FORM_W9");
     } else if (entityType === "INDIVIDUAL") {
       setIrsLink("https://www.irs.gov/forms-pubs/about-form-w-8-ben");
       setTemplateLink("https://www.irs.gov/pub/irs-pdf/fw8ben.pdf");
       setFormType("W-8BEN");
+      setProofOfBizDocType("TAX_FORM_W8_BEN");
     } else if (entityType === "COMPANY") {
       setIrsLink("https://www.irs.gov/forms-pubs/about-form-w-8-ben-e");
       setTemplateLink("https://www.irs.gov/pub/irs-pdf/fw8bene.pdf");
       setFormType("W-8BEN-E");
+      setProofOfBizDocType("TAX_FORM_W8_BEN_E");
     }
 
     setState(data?.currentMerchant.merchantIdentityVerification?.state);
@@ -126,32 +136,32 @@ const TaxDocumentsPage: NextPage<Record<string, never>> = () => {
       APPROVE: ci18n("state reason of tax verification", "Approve"),
       CERTIFICATION_UNCHECKED: ci18n(
         "Keep 'Certification' in EN;",
-        "“Certification” unchecked",
+        "“Certification” unchecked.",
       ),
       INCORRECT_NAME: ci18n(
         "reject reason of tax verification",
-        "Incorrect name",
+        "Incorrect name.",
       ),
       INCORRECT_SSN_TIN_FTIN: ci18n(
         "reject reason of tax verification",
-        "Incorrect SSN/TIN/FTIN",
+        "Incorrect SSN/TIN/FTIN.",
       ),
       INCORRECT_TAX_FORM_TYPE: ci18n(
         "reject reason of tax verification",
-        "Incorrect tax form type",
+        "Incorrect tax form type.",
       ),
       MISSING_OR_INCORRECT_SIGNATURE: ci18n(
         "reject reason of tax verification",
-        "Missing/incorrect signature",
+        "Missing/incorrect signature.",
       ),
       MISSING_OR_OUTDATED_SIGNING_DATE: ci18n(
         "reject reason of tax verification",
-        "Missing signing date/Signing Date out of range",
+        "Missing signing date/Signing Date out of range.",
       ),
       OTHERS: ci18n("reject reason of tax verification", "Others"),
       UNCLEAR_TAX_FORM: ci18n(
         "reject reason of tax verification",
-        "Unclear tax form",
+        "Unclear tax form.",
       ),
       W8_BEN_E_ITEM_4: ci18n(
         "reject reason of tax verification",
@@ -250,7 +260,7 @@ const TaxDocumentsPage: NextPage<Record<string, never>> = () => {
         input: {
           merchantIdentityDocFile: attachment,
           verificationType: "TAX_FORM",
-          proofOfBizDocType: "TAX_FORM_W9",
+          proofOfBizDocType: proofOfBizDocType,
         },
       },
     });
@@ -324,10 +334,10 @@ const TaxDocumentsPage: NextPage<Record<string, never>> = () => {
                             lineHeight: "20px",
                           }}
                         >
-                          {`${formatTaxRejectReason(reason)}. ` +
-                            `Upload your tax form by ` +
-                            `${dueDate.formatted} ` +
-                            `to avoid payment withholding. `}
+                          {i`${formatTaxRejectReason(reason)} ` +
+                            i`Upload your tax form by ` +
+                            i`${dueDate.formatted} ` +
+                            i`to avoid payment withholding. `}
                         </Text>
                       ) : (
                         <Text
@@ -337,11 +347,11 @@ const TaxDocumentsPage: NextPage<Record<string, never>> = () => {
                             lineHeight: "20px",
                           }}
                         >
-                          {`${formatTaxRejectReason(reason)}. ` +
-                            `: ${comment}` +
-                            `Upload your tax form by ` +
-                            `${dueDate.formatted} ` +
-                            `to avoid payment withholding. `}
+                          {i`${formatTaxRejectReason(reason)} ` +
+                            i`Comment: ${comment}. ` +
+                            i`Upload your tax form by ` +
+                            i`${dueDate.formatted} ` +
+                            i`to avoid payment withholding. `}
                         </Text>
                       )}
                     </div>

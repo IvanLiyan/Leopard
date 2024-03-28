@@ -90,14 +90,14 @@ const BankDocumentsPage: NextPage<Record<string, never>> = () => {
         dueDate == null
           ? ""
           : BankAccountDocument.comment == ""
-          ? `${formatSingleRejectReason(rejectReason)} .` +
-            `To avoid account deactivation, resubmit your bank information by ` +
-            `${dueDate.formatted}. `
-          : `${formatSingleRejectReason(rejectReason)} : ${
+          ? i`${formatSingleRejectReason(rejectReason)} ` +
+            i`To avoid account deactivation, resubmit your bank information by ` +
+            i`${dueDate.formatted}.`
+          : i`${formatSingleRejectReason(rejectReason)} Comment: ${
               BankAccountDocument.comment
             }. ` +
-            `To avoid account deactivation, resubmit your bank information by ` +
-            `${dueDate.formatted} .`;
+            i`To avoid account deactivation, resubmit your bank information by ` +
+            i`${dueDate.formatted}.`;
 
       setRejectReasonText(text);
     }
@@ -202,9 +202,9 @@ const BankDocumentsPage: NextPage<Record<string, never>> = () => {
                 <Layout.FlexRow>
                   {dueDate && (
                     <Text className={css(styles.headerText)}>
-                      {`Submit your bank information by ` +
-                        `${dueDate.formatted}` +
-                        ` to avoid account deactivation.`}
+                      {i`Submit your bank information by ` +
+                        i`${dueDate.formatted}` +
+                        i` to avoid account deactivation.`}
                     </Text>
                   )}
                 </Layout.FlexRow>

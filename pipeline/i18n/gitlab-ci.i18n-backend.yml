@@ -11,7 +11,7 @@ extract_strings_for_translation_to_i18n:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       when: always
     - if: $MANUAL_EXTRACT_STRINGS == "true"
-      when: manual
+      when: always
 
 download_translations_from_i18n_and_build_package:
   stage: schedule
