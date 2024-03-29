@@ -5,8 +5,7 @@ i18n_lint:
     - export LEOPARD_HOME=$(pwd)
     - git remote set-branches --add origin master
     - git fetch origin master --depth=1
-    - export CI_COMMIT_REF_NAME=$CI_COMMIT_REF_NAME
-    - printenv CI_COMMIT_REF_NAME
+    - echo $CI_COMMIT_REF_NAME
     - /go/bin/strings lint $LEOPARD_HOME/ --manifests-path=${LEOPARD_HOME}/ --compare-branch=master
   rules:
     - if: '$CI_COMMIT_REF_NAME != "master"'

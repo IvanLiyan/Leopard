@@ -26,10 +26,10 @@ git checkout -b tmp-branch
 echo 'fetching'
 git fetch origin $CI_COMMIT_REF_NAME:refs/remotes/github/$CI_COMMIT_REF_NAME
 git pull --rebase origin $CI_COMMIT_REF_NAME
-echo 'pushing to master'
+echo 'pushing to CI_COMMIT_REF_NAME'
 git push origin tmp-branch:$CI_COMMIT_REF_NAME
 
-git checkout master
+git checkout $CI_COMMIT_REF_NAME
 git branch -D tmp-branch
 
 # push prometheus metrics
