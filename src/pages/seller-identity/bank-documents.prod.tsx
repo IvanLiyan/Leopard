@@ -45,6 +45,7 @@ import { useQuery } from "@apollo/client";
 import {
   MinMaxValueValidator,
   CharacterLength,
+  NumbersOnlyValidator,
 } from "@core/toolkit/validators";
 import Illustration from "@core/components/Illustration";
 import { useDeciderKey } from "@core/stores/ExperimentStore";
@@ -307,11 +308,13 @@ const BankDocumentsPage: NextPage<Record<string, never>> = () => {
                         minAllowedValue: 0,
                         maxAllowedValue: 9999,
                         customMessage: i`Please enter a 4-digit number`,
-                        allowBlank: true,
                       }),
                       new CharacterLength({
                         minimum: 4,
                         maximum: 4,
+                        customMessage: i`Please enter a 4-digit number`,
+                      }),
+                      new NumbersOnlyValidator({
                         customMessage: i`Please enter a 4-digit number`,
                       }),
                     ]}
@@ -455,11 +458,13 @@ const BankDocumentsPage: NextPage<Record<string, never>> = () => {
                           minAllowedValue: 0,
                           maxAllowedValue: 9999,
                           customMessage: i`Please enter a 4-digit number`,
-                          allowBlank: true,
                         }),
                         new CharacterLength({
                           minimum: 4,
                           maximum: 4,
+                          customMessage: i`Please enter a 4-digit number`,
+                        }),
+                        new NumbersOnlyValidator({
                           customMessage: i`Please enter a 4-digit number`,
                         }),
                       ]}
