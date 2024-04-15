@@ -123,6 +123,10 @@ const FullReportContainer: React.FC = () => {
     data?.productCatalog.newBulkCsvJobDetail.status === "Failed" ||
     data?.productCatalog.newBulkCsvJobDetail.status === "Completed with errors";
 
+  const refreshPage = () => {
+    window.location.reload();
+  };
+
   return (
     <PageRoot>
       <PlusWelcomeHeader veryRelaxed>
@@ -139,6 +143,7 @@ const FullReportContainer: React.FC = () => {
               {
                 href: "#",
                 name: i`View full report`,
+                onClick: refreshPage,
               },
             ]}
           />

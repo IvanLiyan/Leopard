@@ -23,9 +23,14 @@ import {
   ProductCsvJobTypeDisplayNames,
 } from "./BulkAddEditHistory";
 import BulkJobStateLabel from "./BulkJobStateLabel";
+import { ci18n } from "@core/toolkit/i18n";
 
 type Props = BaseProps & {
   readonly jobs: ReadonlyArray<newBulkCsvJobs>;
+};
+const JOB_VERSION_ENUM = {
+  OLD_PAGE: 0,
+  NEW_PAGE: 1,
 };
 
 const ProductCsvHistoryTable: React.FC<Props> = (props: Props) => {
@@ -37,7 +42,13 @@ const ProductCsvHistoryTable: React.FC<Props> = (props: Props) => {
       key: "view",
       name: i`View full report`,
       apply: ([row]: ReadonlyArray<newBulkCsvJobs>) => {
-        void navigationStore.navigate(`/md/uploads/job?jobid=${row.id}`, {
+        let path = "";
+        if (row.version === JOB_VERSION_ENUM.OLD_PAGE) {
+          path = `/uploads/job/${row.id}`;
+        } else if (row.version === JOB_VERSION_ENUM.NEW_PAGE) {
+          path = `/md/uploads/job?jobid=${row.id}`;
+        }
+        void navigationStore.navigate(path, {
           openInNewTab: true,
         });
       },
@@ -56,7 +67,7 @@ const ProductCsvHistoryTable: React.FC<Props> = (props: Props) => {
     >
       <Table.Column
         _key={undefined}
-        title={i`Job ID`}
+        title={ci18n("A table column title", "Job ID")}
         columnKey="id"
         width={100}
       >
@@ -67,7 +78,7 @@ const ProductCsvHistoryTable: React.FC<Props> = (props: Props) => {
 
       <Table.DatetimeColumn
         _key={undefined}
-        title={i`Submitted time`}
+        title={ci18n("A table column title", "Submitted time")}
         format="M/D/YY hh:mm:ss"
         columnKey="startTime.unix"
         align="left"
@@ -76,7 +87,7 @@ const ProductCsvHistoryTable: React.FC<Props> = (props: Props) => {
 
       <Table.DatetimeColumn
         _key={undefined}
-        title={i`Completed time`}
+        title={ci18n("A table column title", "Completed time")}
         format="M/D/YY hh:mm:ss"
         columnKey="completedTime.unix"
         align="left"
@@ -85,7 +96,7 @@ const ProductCsvHistoryTable: React.FC<Props> = (props: Props) => {
 
       <Table.Column
         _key={undefined}
-        title={i`File name`}
+        title={ci18n("A table column title", "File name")}
         columnKey="fileName"
         align="left"
         width={150}
@@ -94,7 +105,7 @@ const ProductCsvHistoryTable: React.FC<Props> = (props: Props) => {
 
       <Table.Column
         _key={undefined}
-        title={i`Update type`}
+        title={ci18n("A table column title", "Update type")}
         columnKey="feedType"
         align="center"
         width={180}
@@ -107,7 +118,7 @@ const ProductCsvHistoryTable: React.FC<Props> = (props: Props) => {
 
       <Table.Column
         _key={undefined}
-        title={i`Status`}
+        title={ci18n("A table column title", "Status")}
         columnKey="status"
         align="center"
         width={180}

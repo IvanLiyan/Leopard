@@ -31,7 +31,13 @@ export type CsvProductJobType = Pick<
 
 export type newBulkCsvJobs = Pick<
   CsvProductImportJobSchemaV2,
-  "completedTime" | "feedType" | "fileName" | "id" | "startTime" | "status"
+  | "completedTime"
+  | "feedType"
+  | "fileName"
+  | "id"
+  | "startTime"
+  | "status"
+  | "version"
 >;
 
 export type newBulkCsvJobsCount = Pick<

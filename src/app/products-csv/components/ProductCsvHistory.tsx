@@ -41,7 +41,7 @@ import {
 import ProductFeedHistoryTable from "./ProductFeedHistoryTable";
 
 const GET_BULK_ADD_EDIT_JOBS_V2 = gql(`
-  query ProductCsvHistory_GetNewBulkAddEditJobs(
+  query ProductCsvHistory_GetNewBulkAddEditJobsV2(
       $offset: Int!,
       $limit: Int!,
       $feedType: ProductCSVJobType
@@ -58,6 +58,7 @@ const GET_BULK_ADD_EDIT_JOBS_V2 = gql(`
           fileName
           feedType
           status
+          version
         }
         newBulkCsvJobsCount(feedType: $feedType)
       }
@@ -118,7 +119,7 @@ const ProductCsvHistory: React.FC<Props> = (props: Props) => {
           <FormSelect
             style={[styles.filterSelect, styles.tableControl]}
             options={[
-              { value: "", text: i`All` },
+              { value: "", text: ci18n("An option in select", "All") },
               ...ProductCsvJobTypeOrder.map((type: ProductCsvJobType) => ({
                 value: type,
                 text: ProductCsvJobTypeDisplayNames[type],
