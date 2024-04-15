@@ -18,7 +18,7 @@ import { merchFeUrl, useRouter } from "@core/toolkit/router";
 import {
   FileInput,
   Datetime,
-  TaxVerificationStatusReason,
+  MerchantVerificationStatusReason,
   BusinessDocTypes,
 } from "@schema";
 import {
@@ -61,7 +61,7 @@ const TaxDocumentsPage: NextPage<Record<string, never>> = () => {
   const [TemplateLink, setTemplateLink] = useState<string>("");
   const LinkWhyINeed = zendeskURL("1260801395329");
   const [rejectReason, setRejectReason] =
-    useState<ReadonlyArray<Maybe<TaxVerificationStatusReason>>>();
+    useState<ReadonlyArray<Maybe<MerchantVerificationStatusReason>>>();
   const [dueDate, setDueDate] = useState<Datetime | undefined | null>(
     undefined,
   );
@@ -114,69 +114,58 @@ const TaxDocumentsPage: NextPage<Record<string, never>> = () => {
   const router = useRouter();
   const sellerProfile = "/settings#seller-profile";
 
-  type RejectTaxReasonMap = {
-    APPROVE: string;
-    CERTIFICATION_UNCHECKED: string;
-    INCORRECT_NAME: string;
-    INCORRECT_SSN_TIN_FTIN: string;
-    INCORRECT_TAX_FORM_TYPE: string;
-    MISSING_OR_INCORRECT_SIGNATURE: string;
-    MISSING_OR_OUTDATED_SIGNING_DATE: string;
-    OTHERS: string;
-    UNCLEAR_TAX_FORM: string;
-    W8_BEN_E_ITEM_4: string;
-    W8_BEN_E_ITEM_5: string;
-    W9_ITEM_3: string;
-  };
-
   const formatTaxRejectReason = (
-    originalTaxReason: keyof RejectTaxReasonMap | null | undefined,
+    originalTaxReason: MerchantVerificationStatusReason | null | undefined,
   ) => {
-    const formatMap = {
-      APPROVE: ci18n("state reason of tax verification", "Approve"),
-      CERTIFICATION_UNCHECKED: ci18n(
-        "Keep 'Certification' in EN;",
-        "“Certification” unchecked.",
-      ),
-      INCORRECT_NAME: ci18n(
-        "reject reason of tax verification",
-        "Incorrect name.",
-      ),
-      INCORRECT_SSN_TIN_FTIN: ci18n(
-        "reject reason of tax verification",
-        "Incorrect SSN/TIN/FTIN.",
-      ),
-      INCORRECT_TAX_FORM_TYPE: ci18n(
-        "reject reason of tax verification",
-        "Incorrect tax form type.",
-      ),
-      MISSING_OR_INCORRECT_SIGNATURE: ci18n(
-        "reject reason of tax verification",
-        "Missing/incorrect signature.",
-      ),
-      MISSING_OR_OUTDATED_SIGNING_DATE: ci18n(
-        "reject reason of tax verification",
-        "Missing signing date/Signing Date out of range.",
-      ),
-      OTHERS: ci18n("reject reason of tax verification", "Others"),
-      UNCLEAR_TAX_FORM: ci18n(
-        "reject reason of tax verification",
-        "Unclear tax form.",
-      ),
-      W8_BEN_E_ITEM_4: ci18n(
-        "reject reason of tax verification",
-        "W-8BEN-E, Item 4: You must select one box, and one box only.",
-      ),
-      W8_BEN_E_ITEM_5: ci18n(
-        "Keep 'Active NFFE' in EN",
-        "W-8BEN-E, Item 5: You must select one box, and one box only. If you are an entity that operates an active trade or business other than that of a financial business, your status is likely “Active NFFE”.",
-      ),
-      W9_ITEM_3: ci18n(
-        "reject reason of tax verification",
-        "W-9, Item 3: You must select one box, and one box only.",
-      ),
-    };
-    if (originalTaxReason) return formatMap[originalTaxReason];
+    const formatMap: Partial<Record<MerchantVerificationStatusReason, string>> =
+      {
+        APPROVE: ci18n("state reason of tax verification", "Approve"),
+        CERTIFICATION_UNCHECKED: ci18n(
+          "Keep 'Certification' in EN;",
+          "“Certification” unchecked.",
+        ),
+        INCORRECT_NAME: ci18n(
+          "reject reason of tax verification",
+          "Incorrect name.",
+        ),
+        INCORRECT_SSN_TIN_FTIN: ci18n(
+          "reject reason of tax verification",
+          "Incorrect SSN/TIN/FTIN.",
+        ),
+        INCORRECT_TAX_FORM_TYPE: ci18n(
+          "reject reason of tax verification",
+          "Incorrect tax form type.",
+        ),
+        MISSING_OR_INCORRECT_SIGNATURE: ci18n(
+          "reject reason of tax verification",
+          "Missing/incorrect signature.",
+        ),
+        MISSING_OR_OUTDATED_SIGNING_DATE: ci18n(
+          "reject reason of tax verification",
+          "Missing signing date/Signing Date out of range.",
+        ),
+        OTHERS: ci18n("reject reason of tax verification", "Others"),
+        UNCLEAR_TAX_FORM: ci18n(
+          "reject reason of tax verification",
+          "Unclear tax form.",
+        ),
+        W8_BEN_E_ITEM_4: ci18n(
+          "reject reason of tax verification",
+          "W-8BEN-E, Item 4: You must select one box, and one box only.",
+        ),
+        W8_BEN_E_ITEM_5: ci18n(
+          "Keep 'Active NFFE' in EN",
+          "W-8BEN-E, Item 5: You must select one box, and one box only. If you are an entity that operates an active trade or business other than that of a financial business, your status is likely “Active NFFE”.",
+        ),
+        W9_ITEM_3: ci18n(
+          "reject reason of tax verification",
+          "W-9, Item 3: You must select one box, and one box only.",
+        ),
+      };
+    if (originalTaxReason && originalTaxReason in formatMap) {
+      return formatMap[originalTaxReason];
+    }
+    return undefined;
   };
 
   const steps = useMemo(() => {

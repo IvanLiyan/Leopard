@@ -2531,6 +2531,7 @@ export type CommerceTransactionTaxEventType =
   | 'SALE_SHIPPING';
 
 export type CommerceTransactionTaxRemitType =
+  | 'CARRIER_REMIT'
   | 'MERCHANT_REMIT'
   | 'NO_REMIT'
   | 'TBD_REMIT'
@@ -6752,6 +6753,7 @@ export type MfpCampaignSchemaGenericDiscountDetailsArgs = {
   offset?: InputMaybe<Scalars['Int']>;
   performanceEndDate?: InputMaybe<DatetimeInput>;
   performanceStartDate?: InputMaybe<DatetimeInput>;
+  targetProductId?: InputMaybe<Scalars['ObjectIdType']>;
 };
 
 
@@ -6760,6 +6762,7 @@ export type MfpCampaignSchemaGenericFlashSaleDetailsArgs = {
   offset?: InputMaybe<Scalars['Int']>;
   performanceEndDate?: InputMaybe<DatetimeInput>;
   performanceStartDate?: InputMaybe<DatetimeInput>;
+  targetProductId?: InputMaybe<Scalars['ObjectIdType']>;
 };
 
 export type MfpCampaignSearchType =
@@ -6983,6 +6986,8 @@ export type MfpServiceSchemaCampaignsArgs = {
   promotionTypes?: InputMaybe<ReadonlyArray<MfpCampaignPromotionType>>;
   searchQuery?: InputMaybe<Scalars['String']>;
   searchType?: InputMaybe<MfpCampaignSearchType>;
+  skipVariationDiscountDetail?: InputMaybe<Scalars['Boolean']>;
+  skipVariationsDiscountData?: InputMaybe<Scalars['Boolean']>;
   startAtMax?: InputMaybe<DatetimeInput>;
   startAtMin?: InputMaybe<DatetimeInput>;
   states?: InputMaybe<ReadonlyArray<MfpCampaignState>>;
@@ -7870,7 +7875,7 @@ export type MerchantIdentityDocumentSchema = {
   readonly reviewedAt?: Maybe<Datetime>;
   readonly reviewer?: Maybe<UserSchema>;
   readonly state: MerchantIdentityVerificationStatus;
-  readonly stateReason?: Maybe<ReadonlyArray<Maybe<TaxVerificationStatusReason>>>;
+  readonly stateReason?: Maybe<ReadonlyArray<Maybe<MerchantVerificationStatusReason>>>;
   readonly uploadedAt?: Maybe<Datetime>;
 };
 
@@ -7958,7 +7963,6 @@ export type MerchantIdentityVerificationReviewerMutationsReviewIdentityVerificat
 
 export type MerchantIdentityVerificationSchema = {
   readonly __typename?: 'MerchantIdentityVerificationSchema';
-  readonly bankAccountDocuments?: Maybe<ReadonlyArray<MerchantIdentityDocumentSchema>>;
   readonly dueDate?: Maybe<Datetime>;
   readonly id: Scalars['ObjectIdType'];
   readonly lastReviewedAt?: Maybe<Datetime>;
@@ -7966,8 +7970,9 @@ export type MerchantIdentityVerificationSchema = {
   readonly latestMerchantIdentityDocument?: Maybe<MerchantIdentityDocumentSchema>;
   readonly merchantId: Scalars['ObjectIdType'];
   readonly merchantIdentityDocuments?: Maybe<ReadonlyArray<MerchantIdentityDocumentSchema>>;
+  readonly rejectReasons?: Maybe<Scalars['JSONString']>;
   readonly state: MerchantIdentityVerificationStatus;
-  readonly stateReason: ReadonlyArray<Maybe<TaxVerificationStatusReason>>;
+  readonly stateReason: ReadonlyArray<Maybe<MerchantVerificationStatusReason>>;
   readonly verificationType: MerchantIdentityVerificationType;
 };
 
@@ -9221,14 +9226,19 @@ export type MerchantUserGateMutationsAllowUsersArgs = {
 
 export type MerchantVerificationStatusReason =
   | 'APPROVE'
+  | 'BLURRY_IMAGE'
   | 'CERTIFICATION_UNCHECKED'
   | 'INCORRECT_NAME'
   | 'INCORRECT_SSN_TIN_FTIN'
   | 'INCORRECT_TAX_FORM_TYPE'
+  | 'INVALID_DOCUMENT'
+  | 'MISMATCH_LAST_FOUR_DIGITS'
   | 'MISSING_OR_INCORRECT_SIGNATURE'
   | 'MISSING_OR_OUTDATED_SIGNING_DATE'
   | 'OTHERS'
+  | 'PARTIAL_IMAGE'
   | 'UNCLEAR_TAX_FORM'
+  | 'UNQUALIFIED_BANK_DOCUMENT'
   | 'W8_BEN_E_ITEM_4'
   | 'W8_BEN_E_ITEM_5'
   | 'W9_ITEM_3';
@@ -14495,7 +14505,7 @@ export type ReviewMerchantIdentityDocumentInput = {
   readonly documentType: BusinessDocTypes;
   readonly merchantId: Scalars['ObjectIdType'];
   readonly state: MerchantIdentityVerificationStatus;
-  readonly stateReason: ReadonlyArray<TaxVerificationStatusReason>;
+  readonly stateReason: ReadonlyArray<MerchantVerificationStatusReason>;
   readonly verificationType: MerchantIdentityVerificationType;
 };
 
@@ -16178,6 +16188,7 @@ export type TaxAuthorityType =
   | 'IGV'
   | 'II'
   | 'IMI'
+  | 'IMPORT'
   | 'IPI'
   | 'IPSI'
   | 'ISS'
@@ -16438,20 +16449,6 @@ export type TaxType =
   | 'US_ZE'
   | 'US_ZR'
   | 'Undefined';
-
-export type TaxVerificationStatusReason =
-  | 'APPROVE'
-  | 'CERTIFICATION_UNCHECKED'
-  | 'INCORRECT_NAME'
-  | 'INCORRECT_SSN_TIN_FTIN'
-  | 'INCORRECT_TAX_FORM_TYPE'
-  | 'MISSING_OR_INCORRECT_SIGNATURE'
-  | 'MISSING_OR_OUTDATED_SIGNING_DATE'
-  | 'OTHERS'
-  | 'UNCLEAR_TAX_FORM'
-  | 'W8_BEN_E_ITEM_4'
-  | 'W8_BEN_E_ITEM_5'
-  | 'W9_ITEM_3';
 
 export type TaxonomyAttributeSchema = {
   readonly __typename?: 'TaxonomyAttributeSchema';
@@ -20312,7 +20309,7 @@ export type GetMerchantTaxIdentityVerificationStateQueryVariables = Exact<{
 }>;
 
 
-export type GetMerchantTaxIdentityVerificationStateQuery = { readonly __typename?: 'RootQuery', readonly currentMerchant?: { readonly __typename?: 'MerchantSchema', readonly id: string, readonly countryOfDomicile?: { readonly __typename?: 'Country', readonly code: CountryCode } | null, readonly merchantIdentityVerification?: { readonly __typename?: 'MerchantIdentityVerificationSchema', readonly state: MerchantIdentityVerificationStatus, readonly stateReason: ReadonlyArray<TaxVerificationStatusReason | null>, readonly latestMerchantIdentityDocument?: { readonly __typename?: 'MerchantIdentityDocumentSchema', readonly id: string, readonly state: MerchantIdentityVerificationStatus, readonly stateReason?: ReadonlyArray<TaxVerificationStatusReason | null> | null, readonly comment?: string | null } | null, readonly dueDate?: { readonly __typename?: 'Datetime', readonly formatted: string } | null } | null } | null, readonly currentUser?: { readonly __typename?: 'UserSchema', readonly entityType?: UserEntityType | null } | null };
+export type GetMerchantTaxIdentityVerificationStateQuery = { readonly __typename?: 'RootQuery', readonly currentMerchant?: { readonly __typename?: 'MerchantSchema', readonly id: string, readonly countryOfDomicile?: { readonly __typename?: 'Country', readonly code: CountryCode } | null, readonly merchantIdentityVerification?: { readonly __typename?: 'MerchantIdentityVerificationSchema', readonly state: MerchantIdentityVerificationStatus, readonly stateReason: ReadonlyArray<MerchantVerificationStatusReason | null>, readonly latestMerchantIdentityDocument?: { readonly __typename?: 'MerchantIdentityDocumentSchema', readonly id: string, readonly state: MerchantIdentityVerificationStatus, readonly stateReason?: ReadonlyArray<MerchantVerificationStatusReason | null> | null, readonly comment?: string | null } | null, readonly dueDate?: { readonly __typename?: 'Datetime', readonly formatted: string } | null } | null } | null, readonly currentUser?: { readonly __typename?: 'UserSchema', readonly entityType?: UserEntityType | null } | null };
 
 export type SellerIdentity_UploadBankDocumentsMutationVariables = Exact<{
   input: UploadBankAccountDocumentInput;

@@ -2023,6 +2023,7 @@ enum CommerceTransactionTaxRemitType {
   WISH_REMIT
   NO_REMIT
   TBD_REMIT
+  CARRIER_REMIT
 }
 
 type CompleteDisputeReview {
@@ -5459,8 +5460,8 @@ type MFPCampaignSchema {
   skipShipping: Boolean!
   event: CampaignEventInfo
   genericUnqualifiedProductVariations: GenericScalar
-  genericDiscountDetails(performanceStartDate: DatetimeInput, performanceEndDate: DatetimeInput, offset: Int, limit: Int): GenericScalar
-  genericFlashSaleDetails(performanceStartDate: DatetimeInput, performanceEndDate: DatetimeInput, offset: Int, limit: Int): GenericScalar
+  genericDiscountDetails(targetProductId: ObjectIdType, performanceStartDate: DatetimeInput, performanceEndDate: DatetimeInput, offset: Int, limit: Int): GenericScalar
+  genericFlashSaleDetails(targetProductId: ObjectIdType, performanceStartDate: DatetimeInput, performanceEndDate: DatetimeInput, offset: Int, limit: Int): GenericScalar
 }
 
 enum MFPCampaignSearchType {
@@ -5572,7 +5573,7 @@ type MFPServiceSchema {
   countryShippingEnabled: Boolean
   promotions(searchType: MFPPromotionSearchType, searchQuery: String, offset: Int = 0, limit: Int = 25): [MFPPromotionSchema!]
   genericCampaigns(startAtMin: DatetimeInput, startAtMax: DatetimeInput, endAtMin: DatetimeInput, endAtMax: DatetimeInput, searchType: MFPCampaignSearchType, searchQuery: String, states: [MFPCampaignState!], promotionTypes: [MFPCampaignPromotionType!], offset: Int = 0, limit: Int = 25, performanceStartDate: DatetimeInput, performanceEndDate: DatetimeInput): [GenericScalar!]
-  campaigns(merchantId: ObjectIdType, startAtMin: DatetimeInput, startAtMax: DatetimeInput, endAtMin: DatetimeInput, endAtMax: DatetimeInput, searchType: MFPCampaignSearchType, searchQuery: String, states: [MFPCampaignState!], promotionTypes: [MFPCampaignPromotionType!], offset: Int = 0, limit: Int = 25, eventIds: [ObjectIdType!], eventConfig: MFPCampaignEventConfig): [MFPCampaignSchema!]
+  campaigns(merchantId: ObjectIdType, startAtMin: DatetimeInput, startAtMax: DatetimeInput, endAtMin: DatetimeInput, endAtMax: DatetimeInput, searchType: MFPCampaignSearchType, searchQuery: String, states: [MFPCampaignState!], promotionTypes: [MFPCampaignPromotionType!], offset: Int = 0, limit: Int = 25, eventIds: [ObjectIdType!], eventConfig: MFPCampaignEventConfig, skipVariationDiscountDetail: Boolean = false, skipVariationsDiscountData: Boolean = false): [MFPCampaignSchema!]
   campaignsCount(merchantId: ObjectIdType, startAtMin: DatetimeInput, startAtMax: DatetimeInput, endAtMin: DatetimeInput, endAtMax: DatetimeInput, searchType: MFPCampaignSearchType, searchQuery: String, states: [MFPCampaignState!], promotionTypes: [MFPCampaignPromotionType!], eventIds: [ObjectIdType!], eventConfig: MFPCampaignEventConfig): Int
   genericEligibleProducts(currency: PaymentCurrencyCode!, promotionType: MFPCampaignPromotionType, searchQuery: String, searchType: MFPProductSearchType, eventId: ObjectIdType, offset: Int = 0, limit: Int = 20, sort: ProductSort, countries: [CountryCode!]): GenericScalar
   eligibleProducts(promotionType: MFPCampaignPromotionType, searchQuery: String, searchType: MFPProductSearchType, eventId: ObjectIdType, offset: Int = 0, limit: Int = 20, sort: ProductSort): [EligibleProductInfo!]
@@ -6227,7 +6228,7 @@ input MerchantGamingReviewUpdateInput {
 type MerchantIdentityDocumentSchema {
   id: ObjectIdType!
   state: MerchantIdentityVerificationStatus!
-  stateReason: [TaxVerificationStatusReason]
+  stateReason: [MerchantVerificationStatusReason]
   comment: String
   documentFile: MerchantFileSchema
   documentType: MerchantIdentityDocumentType!
@@ -6279,14 +6280,14 @@ type MerchantIdentityVerificationSchema {
   id: ObjectIdType!
   merchantId: ObjectIdType!
   state: MerchantIdentityVerificationStatus!
-  stateReason: [TaxVerificationStatusReason]!
+  stateReason: [MerchantVerificationStatusReason]!
   verificationType: MerchantIdentityVerificationType!
   lastUploadedAt: Datetime
   lastReviewedAt: Datetime
   latestMerchantIdentityDocument: MerchantIdentityDocumentSchema
-  bankAccountDocuments: [MerchantIdentityDocumentSchema!]
   merchantIdentityDocuments: [MerchantIdentityDocumentSchema!]
   dueDate: Datetime
+  rejectReasons: JSONString
 }
 
 enum MerchantIdentityVerificationStatus {
@@ -7209,14 +7210,19 @@ enum MerchantVerificationStatusReason {
   MISSING_OR_OUTDATED_SIGNING_DATE
   INCORRECT_NAME
   W9_ITEM_3
+  MISMATCH_LAST_FOUR_DIGITS
   W8_BEN_E_ITEM_5
   W8_BEN_E_ITEM_4
   UNCLEAR_TAX_FORM
   INCORRECT_SSN_TIN_FTIN
+  PARTIAL_IMAGE
+  BLURRY_IMAGE
+  UNQUALIFIED_BANK_DOCUMENT
   INCORRECT_TAX_FORM_TYPE
   OTHERS
   CERTIFICATION_UNCHECKED
   APPROVE
+  INVALID_DOCUMENT
 }
 
 type MerchantWPSSchema {
@@ -11397,7 +11403,7 @@ input ReviewMerchantIdentityDocumentInput {
   documentType: BusinessDocTypes!
   verificationType: MerchantIdentityVerificationType!
   state: MerchantIdentityVerificationStatus!
-  stateReason: [TaxVerificationStatusReason!]!
+  stateReason: [MerchantVerificationStatusReason!]!
   comment: String
 }
 
@@ -12798,6 +12804,7 @@ enum TaxAuthorityType {
   GST
   CITY_AMUSEMENT
   HST
+  IMPORT
   PIS
   STATE_FOOD_BEVERAGE
   GIT
@@ -13059,21 +13066,6 @@ enum TaxType {
   US_NL
   INTERNATIONAL_IM
   INTERNATIONAL_MA
-}
-
-enum TaxVerificationStatusReason {
-  MISSING_OR_INCORRECT_SIGNATURE
-  MISSING_OR_OUTDATED_SIGNING_DATE
-  INCORRECT_NAME
-  W9_ITEM_3
-  W8_BEN_E_ITEM_5
-  W8_BEN_E_ITEM_4
-  UNCLEAR_TAX_FORM
-  INCORRECT_SSN_TIN_FTIN
-  INCORRECT_TAX_FORM_TYPE
-  OTHERS
-  CERTIFICATION_UNCHECKED
-  APPROVE
 }
 
 type TaxonomyAttributeSchema {
