@@ -52,4 +52,18 @@ export type EprQueryResponse = {
   };
 };
 
+export type CategoriesData = ReadonlyArray<
+  Pick<
+    CategoryEprSchema,
+    | "category"
+    | "categoryName"
+    | "uin"
+    | "responsibleEntityName"
+    | "status"
+    | "inScopePidCount"
+  > & {
+    readonly eprId: CategoryEprSchema["id"];
+  }
+>;
+
 export type EprQueryVariables = ExtendedProducerResponsibilitySchemaCountryArgs;

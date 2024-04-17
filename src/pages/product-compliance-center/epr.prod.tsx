@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { NextPage } from "next";
 import { observer } from "mobx-react";
 import PageRoot from "@core/components/PageRoot";
@@ -17,6 +17,7 @@ import {
   EPR_QUERY,
   EprQueryResponse,
   EprQueryVariables,
+  CategoriesData,
 } from "@product-compliance-center/api/eprQuery";
 import EprCategoryCard from "@product-compliance-center/components/epr-page/EprCategoryCard";
 import Image from "@core/components/Image";
@@ -97,7 +98,9 @@ const PageLayout = ({
             padding: "24px",
           }}
         >
-          <Heading variant="h3">Categories</Heading>
+          <Heading variant="h3">
+            {ci18n("card heading of categories", "Categories")}
+          </Heading>
           <style jsx>{`
             div {
               margin-top: 16px;
@@ -118,7 +121,7 @@ const ProductComplianceCenterPage: NextPage<Record<string, never>> = () => {
   const countryIntermediary = countryParam.toUpperCase();
   const countryOk = countryIntermediary in countries;
   const country = countryIntermediary as keyof typeof countries; // guaranteed by above check
-
+  const [categoriesData, SetCategoriesData] = useState<CategoriesData>();
   const { data, loading, error, refetch } = useQuery<
     EprQueryResponse,
     EprQueryVariables
@@ -128,6 +131,13 @@ const ProductComplianceCenterPage: NextPage<Record<string, never>> = () => {
     },
     skip: !countryOk,
   });
+
+  useEffect(() => {
+    const res =
+      data?.policy?.productCompliance?.extendedProducerResponsibility.country
+        .categories;
+    SetCategoriesData(res);
+  }, [data]);
 
   if (!countryOk) {
     return <FullPageError error={"404"} />;
@@ -170,10 +180,10 @@ const ProductComplianceCenterPage: NextPage<Record<string, never>> = () => {
         blocking
       />
       <RefetchEprQueryContext.Provider value={refetch}>
-        <PageLayout
-          country={country}
-          cards={data.policy?.productCompliance?.extendedProducerResponsibility.country.categories.map(
-            (config, i) => (
+        {categoriesData && (
+          <PageLayout
+            country={country}
+            cards={categoriesData.map((config, i) => (
               <EprCategoryCard
                 key={i}
                 id={config.eprId}
@@ -185,9 +195,9 @@ const ProductComplianceCenterPage: NextPage<Record<string, never>> = () => {
                 country={country}
                 inScopePidCount={config.inScopePidCount}
               />
-            ),
-          )}
-        />
+            ))}
+          />
+        )}
       </RefetchEprQueryContext.Provider>
     </>
   );

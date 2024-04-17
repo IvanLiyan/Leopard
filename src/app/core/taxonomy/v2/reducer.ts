@@ -126,9 +126,11 @@ const reducer = (
           ? newCategoryMap.get(parentId)?.childrenIds ?? []
           : [];
         const siblings = children.filter((child) => child !== checkedId);
-        const shouldSelectParent = siblings.every((id) =>
-          state.selectedNodes.has(id),
-        );
+        // There is only one single-select children, choose not to take parentId
+        const shouldSelectParent =
+          siblings.length > 0
+            ? siblings.every((id) => state.selectedNodes.has(id))
+            : false;
         const selectId =
           shouldSelectParent &&
           parentId &&

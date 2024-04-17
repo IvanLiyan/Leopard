@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { observer } from "mobx-react";
 import Modal, { ModalProps } from "@core/components/modal/Modal";
 import ModalTitle from "@core/components/modal/ModalTitle";
@@ -37,6 +37,12 @@ const EditEprModal: React.FC<Props> = ({
   const [confirmationChecked, setConfirmationChecked] = useState(
     DEFAULT_CONFIRMATION_CHECKED,
   );
+
+  useEffect(() => {
+    setEpr(initialEpr);
+    setPro(initialPro);
+  }, [initialEpr, initialPro]);
+
   const refetchEprQuery = useContext(RefetchEprQueryContext);
   const [editEpr, { loading }] = useMutation<
     EditEprMutationResponse,
