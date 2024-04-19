@@ -52,6 +52,7 @@ import {
 } from "@landing-pages/authentication/toolkit/gen-token";
 import { useStringQueryParam } from "@core/toolkit/url";
 import { merchFeUrl, useRouter } from "@core/toolkit/router";
+import { ci18n, i18n } from "@core/toolkit/i18n";
 
 type LoginFormProps = BaseProps;
 
@@ -323,7 +324,10 @@ const LoginForm: React.FC<LoginFormProps> = (props: LoginFormProps) => {
                       onLinkClicked={() => setShowWechatQr(true)}
                     />
                   )
-                : i`Enter code`
+                : ci18n(
+                    "Let the user enter the verification code",
+                    "Enter code",
+                  )
             }
           >
             <TextInput
@@ -344,7 +348,10 @@ const LoginForm: React.FC<LoginFormProps> = (props: LoginFormProps) => {
                   (allowPhoneCall
                     ? i` or receive a [phone call](${"#call"})`
                     : "")
-                : i`Try again in ${countDownLeft / 1000}s`)
+                : i18n(
+                    "Try again in {%1=Time count down left}s",
+                    countDownLeft / 1000,
+                  ))
             }
             onLinkClicked={(event) => void handleResendCode(event)}
           />
@@ -353,7 +360,7 @@ const LoginForm: React.FC<LoginFormProps> = (props: LoginFormProps) => {
             isDisabled={!canSubmit}
             isLoading={isLoading}
           >
-            Done
+            {ci18n("A button to submit input field", "Done")}
           </PrimaryButton>
         </>
       )}
@@ -414,8 +421,10 @@ const LoginForm: React.FC<LoginFormProps> = (props: LoginFormProps) => {
               />
               <Ul>
                 <Ul.Li>Verification Code: {verificationCode}</Ul.Li>
-                <Ul.Li>Photo ID</Ul.Li>
-                <Ul.Li>Business address</Ul.Li>
+                <Ul.Li>{ci18n("photo id", "Photo ID")}</Ul.Li>
+                <Ul.Li>
+                  {ci18n("address for business", "Business address")}
+                </Ul.Li>
                 <Ul.Li>
                   External store URL (e.g. AliExpress store URL, Amazon store
                   URL)
@@ -436,7 +445,11 @@ const LoginForm: React.FC<LoginFormProps> = (props: LoginFormProps) => {
       )}
     </LoginCard>
   ) : (
-    <LoginCard className={className} style={style} title={i`Login`}>
+    <LoginCard
+      className={className}
+      style={style}
+      title={ci18n("Login form's header", "Login")}
+    >
       <Field style={styles.field} title={i`Email address or username`}>
         <TextInput
           style={styles.field}
@@ -451,7 +464,7 @@ const LoginForm: React.FC<LoginFormProps> = (props: LoginFormProps) => {
       <PasswordField
         type="CURRENT"
         style={[styles.field, styles.passwordField]}
-        placeholder={i`Password`}
+        placeholder={ci18n("login account password", "Password")}
         password={password}
         disabled={isLoading}
         onPasswordChange={(text: string) => setPassword(text)}
@@ -464,7 +477,7 @@ const LoginForm: React.FC<LoginFormProps> = (props: LoginFormProps) => {
       >
         <CheckboxField
           style={styles.rememberMe}
-          title={i`Remember me`}
+          title={ci18n("A checkbox to set remember", "Remember me")}
           onChange={() => {
             setRememberMe(!rememberMe);
           }}
@@ -475,7 +488,7 @@ const LoginForm: React.FC<LoginFormProps> = (props: LoginFormProps) => {
           href={merchFeUrl("/forget_password")}
           style={styles.forgetPassword}
         >
-          Forgot password?
+          {ci18n("Forgot login account password", "Forgot password?")}
         </Link>
       </Layout.FlexRow>
       {showCaptcha && captchaComponent}
@@ -484,7 +497,7 @@ const LoginForm: React.FC<LoginFormProps> = (props: LoginFormProps) => {
         isDisabled={!canSubmit}
         isLoading={isLoading}
       >
-        Log in
+        {ci18n("login account button", "Login")}
       </PrimaryButton>
     </LoginCard>
   );
