@@ -22,6 +22,7 @@ import { css } from "@core/toolkit/styling";
 import { ModalProps } from "@core/components/modal/Modal";
 import ModalTitle from "@core/components/modal/ModalTitle";
 import { Skeleton } from "@mui/material";
+import { ci18n } from "@core/toolkit/i18n";
 
 type ProductDetailModalContentProps = BaseProps &
   Pick<ModalProps, "open" | "onClose"> & {
@@ -39,6 +40,9 @@ const GET_PRODUCT_QUERY = gql(`
         }
         description
         isRemoved
+        listingState{
+          state
+        }
       }
     }
   }
@@ -48,7 +52,10 @@ type GetProductRequestType = ProductCatalogSchemaProductArgs;
 type GetProductResponseType = {
   readonly productCatalog?: {
     readonly product?:
-      | (Pick<ProductSchema, "id" | "name" | "description" | "isRemoved"> & {
+      | (Pick<
+          ProductSchema,
+          "id" | "name" | "description" | "isRemoved" | "listingState"
+        > & {
           readonly mainImage: Pick<ImageSchema, "wishUrl">;
         })
       | null;
@@ -80,11 +87,12 @@ const ProductDetailModal: React.FC<ProductDetailModalContentProps> = ({
   });
 
   const product = data?.productCatalog?.product;
+  const productState = product?.listingState?.state;
 
   return (
     <Modal open={open} onClose={onClose} fullWidth>
       <ModalTitle
-        title={i`Product Details`}
+        title={ci18n("details of product", "Product Details")}
         onClose={
           onClose === undefined
             ? undefined
@@ -121,7 +129,7 @@ const ProductDetailModal: React.FC<ProductDetailModalContentProps> = ({
                     weight="semibold"
                     renderAsSpan
                   >
-                    Name:
+                    {ci18n("product name", "Name:")}
                   </Text>
                   {product == null ? (
                     <Skeleton
@@ -142,7 +150,7 @@ const ProductDetailModal: React.FC<ProductDetailModalContentProps> = ({
                     weight="semibold"
                     renderAsSpan
                   >
-                    ID:
+                    {ci18n("product id", "ID:")}
                   </Text>
                   {product == null ? (
                     <Skeleton
@@ -169,7 +177,9 @@ const ProductDetailModal: React.FC<ProductDetailModalContentProps> = ({
                     <Skeleton variant="text" sx={{ fontSize: 15, width: 30 }} />
                   ) : (
                     <Text style={styles.fieldText} renderAsSpan>
-                      {product.isRemoved ? i`No` : i`Yes`}
+                      {productState === "ACTIVE"
+                        ? ci18n("Is the product available for sale?", "Yes")
+                        : ci18n("Is the product available for sale?", "No")}
                     </Text>
                   )}
                 </Layout.FlexRow>
@@ -191,7 +201,7 @@ const ProductDetailModal: React.FC<ProductDetailModalContentProps> = ({
                 style={[styles.fieldTitle, styles.marginBottom]}
                 weight="semibold"
               >
-                Description
+                {ci18n("product description", "Description")}
               </Text>
               {product == null ? (
                 <Skeleton variant="text" sx={{ fontSize: 15 }} height={60} />
