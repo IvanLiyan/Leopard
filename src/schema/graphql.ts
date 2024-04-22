@@ -5008,11 +5008,13 @@ export type FranceProductUniqueIdentificationNumberCategory =
   | 'BATTERIES'
   | 'ELECTRIC_AND_ELECTRONIC_EQUIPMENTS'
   | 'FURNITURE'
+  | 'GARDEN_DIY'
   | 'PAPER'
   | 'PRIMARY_PACKAGING'
   | 'SECONDARY_PACKAGING'
   | 'TEXTILE'
-  | 'TIRES';
+  | 'TIRES'
+  | 'TOYS';
 
 export type FranceProductUniqueIdentificationNumberSchema = {
   readonly __typename?: 'FranceProductUniqueIdentificationNumberSchema';

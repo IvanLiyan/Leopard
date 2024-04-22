@@ -4103,12 +4103,14 @@ enum FranceProductUniqueIdentificationNumberAction {
 
 enum FranceProductUniqueIdentificationNumberCategory {
   SECONDARY_PACKAGING
+  GARDEN_DIY
   ELECTRIC_AND_ELECTRONIC_EQUIPMENTS
   PRIMARY_PACKAGING
   TEXTILE
   BATTERIES
   PAPER
   TIRES
+  TOYS
   FURNITURE
 }
 
