@@ -4064,6 +4064,13 @@ enum FineReason {
   PRODUCT_SWAPPED
 }
 
+enum FirstThreeSecondsVideoQualityLevel {
+  UNKNOWN_LEVEL
+  AVERAGE
+  GOOD
+  BAD
+}
+
 type FlatRateShippingCountryCandidate {
   country: Country!
   price: CurrencyValue!
@@ -6268,6 +6275,7 @@ type MerchantIdentityServiceSchema {
   bankAccountVerifications(offset: Int = 0, limit: Int = 50, merchantId: ObjectIdType, state: BankAccountVerificationStatus): [BankAccountVerificationSchema!]
   merchantIdentityVerificationsCount(merchantId: ObjectIdType, state: MerchantIdentityVerificationStatus, verificationType: MerchantIdentityVerificationType): Int
   merchantIdentityVerifications(offset: Int = 0, limit: Int = 50, merchantId: ObjectIdType, state: MerchantIdentityVerificationStatus, verificationType: MerchantIdentityVerificationType): [MerchantIdentityVerificationSchema!]
+  rejectReasons(verificationType: MerchantIdentityVerificationType): JSONString
 }
 
 type MerchantIdentityVerificationMutations {
@@ -6289,7 +6297,6 @@ type MerchantIdentityVerificationSchema {
   latestMerchantIdentityDocument: MerchantIdentityDocumentSchema
   merchantIdentityDocuments: [MerchantIdentityDocumentSchema!]
   dueDate: Datetime
-  rejectReasons: JSONString
 }
 
 enum MerchantIdentityVerificationStatus {
@@ -7209,22 +7216,27 @@ type MerchantUserGateMutations {
 
 enum MerchantVerificationStatusReason {
   MISSING_OR_INCORRECT_SIGNATURE
-  MISSING_OR_OUTDATED_SIGNING_DATE
-  INCORRECT_NAME
-  W9_ITEM_3
-  MISMATCH_LAST_FOUR_DIGITS
-  W8_BEN_E_ITEM_5
-  W8_BEN_E_ITEM_4
-  UNCLEAR_TAX_FORM
-  INCORRECT_SSN_TIN_FTIN
-  PARTIAL_IMAGE
-  BLURRY_IMAGE
+  MISSING_OR_INCORRECT_NAME
   UNQUALIFIED_BANK_DOCUMENT
   INCORRECT_TAX_FORM_TYPE
-  OTHERS
-  CERTIFICATION_UNCHECKED
-  APPROVE
+  MISSING_ADDRESS
+  W8_BEN_E_ITEM_5
+  W8_BEN_E_ITEM_4
+  MISSING_DATE_OF_BIRTH
   INVALID_DOCUMENT
+  MISSING_CITY_STATE_ZIP_CODE
+  W9_ITEM_3
+  UNCLEAR_TAX_FORM
+  BLURRY_IMAGE
+  OTHERS
+  MISSING_OR_INCORRECT_SSN_TIN_FTIN
+  APPROVE
+  MISSING_OR_OUTDATED_SIGNING_DATE
+  MISMATCH_LAST_FOUR_DIGITS
+  MISSING_COUNTRY
+  PARTIAL_IMAGE
+  CERTIFICATION_UNCHECKED
+  NOT_IN_ENGLISH
 }
 
 type MerchantWPSSchema {
@@ -12443,6 +12455,7 @@ input SubmitProductVideoContentManualReviewInput {
   videoTraits: ProductVideoContentReviewTraits!
   videoRelatesToProduct: Boolean!
   videoQuality: VideoQualityLevel!
+  firstThreeSecondsVideoQuality: FirstThreeSecondsVideoQualityLevel
 }
 
 type SubmitProductVideoContentReview {
@@ -12455,6 +12468,7 @@ input SubmitProductVideoContentReviewInput {
   videoTraits: ProductVideoContentReviewTraits!
   videoRelatesToProduct: Boolean!
   videoQuality: VideoQualityLevel!
+  firstThreeSecondsVideoQuality: FirstThreeSecondsVideoQualityLevel
 }
 
 type SubmitProductVideoIPManualReview {

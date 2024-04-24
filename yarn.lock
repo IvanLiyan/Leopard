@@ -55,10 +55,10 @@
   resolved "https://npm.infra.wish.com/@ContextLogic%2flegostrings/-/legostrings-0.0.1664165201.tgz"
   integrity sha512-GsxxS3heScUVxpDinLJsYcQ0x4lILolSIeQRKpe+UH+Vn9nDjVg2RUqQ43DEiZIWG6GnRIht6Dqbhk57QuyjHw==
 
-"@ContextLogic/leopardstrings@0.0.1713768994":
-  version "0.0.1713768994"
-  resolved "https://npm.infra.wish.com/@ContextLogic%2fleopardstrings/-/leopardstrings-0.0.1713768994.tgz#751e98b2968c599a547c495cb30dcfe60bf0516f"
-  integrity sha512-oWTo5trhOceZlFLGzTy4EEfB+95jP1ddlbC+n/Gf0RAHu2gpUam2Z19tDb58J9UlGo34/G7klogbtUBOipen9A==
+"@ContextLogic/leopardstrings@0.0.1713848486":
+  version "0.0.1713848486"
+  resolved "https://npm.infra.wish.com/@ContextLogic%2fleopardstrings/-/leopardstrings-0.0.1713848486.tgz#fd99f29edd91480d1c804e230015773bedd4d426"
+  integrity sha512-PeQRRh7ZkMUUE+LfDCFYxVUZnz+KMZNfKbdSysc+nXJMDVu+j39pwyyWEK9fyLQVCfpMQfzI3kDkw9GIwDbMbg==
 
 "@ContextLogic/zeus@0.0.1-1669324295", "@ContextLogic/zeus@^0.0.1-1669324295":
   version "0.0.1-1669324295"
@@ -2335,7 +2335,7 @@
 
 "@graphql-typed-document-node/core@3.2.0", "@graphql-typed-document-node/core@^3.1.1", "@graphql-typed-document-node/core@^3.2.0":
   version "3.2.0"
-  resolved "https://registry.npmjs.org/@graphql-typed-document-node/core/-/core-3.2.0.tgz"
+  resolved "https://registry.yarnpkg.com/@graphql-typed-document-node/core/-/core-3.2.0.tgz#5f3d96ec6b2354ad6d8a28bf216a1d97b5426861"
   integrity sha512-mB9oAsNCm9aM3/SOv4YtBMqZbYj10R7dkq8byBqxGY/ncFwhf2oQzMV+LCRlWoDSEBJ3COiR1yeDvMtsoOsuFQ==
 
 "@graphql-typed-document-node/core@^3.0.0":

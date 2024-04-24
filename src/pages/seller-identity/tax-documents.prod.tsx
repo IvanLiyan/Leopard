@@ -30,6 +30,10 @@ import {
   GET_MERCHANT_TAX_VERIFICATION_STATE,
   TaxStatusRequestData,
   TaxStatusResponseData,
+  GET_SELLER_IDENTITY_REJECTREASONS,
+  TaxRejectReasonRequestData,
+  TaxRejectReasonResponseData,
+  TaxRejectReasonObj,
 } from "@seller-identity/bank-documents/getinfo";
 import { observer } from "mobx-react";
 import { NextPage } from "next";
@@ -62,6 +66,8 @@ const TaxDocumentsPage: NextPage<Record<string, never>> = () => {
   const LinkWhyINeed = zendeskURL("1260801395329");
   const [rejectReason, setRejectReason] =
     useState<ReadonlyArray<Maybe<MerchantVerificationStatusReason>>>();
+  const [sellerIdentityRejectReasons, setSellerIdentityRejectReasons] =
+    useState<TaxRejectReasonObj>();
   const [dueDate, setDueDate] = useState<Datetime | undefined | null>(
     undefined,
   );
@@ -75,6 +81,15 @@ const TaxDocumentsPage: NextPage<Record<string, never>> = () => {
       },
     },
   );
+
+  const { data: rejectData } = useQuery<
+    TaxRejectReasonResponseData,
+    TaxRejectReasonRequestData
+  >(GET_SELLER_IDENTITY_REJECTREASONS, {
+    variables: {
+      verificationType: "TAX_FORM",
+    },
+  });
 
   useEffect(() => {
     const countryCode = data?.currentMerchant?.countryOfDomicile?.code;
@@ -110,63 +125,17 @@ const TaxDocumentsPage: NextPage<Record<string, never>> = () => {
     );
   }, [data]);
 
+  useEffect(() => {
+    const rejectReasonStringify = rejectData?.merchantIdentity?.rejectReasons;
+    if (rejectReasonStringify) {
+      const res = JSON.parse(rejectReasonStringify) as TaxRejectReasonObj;
+      setSellerIdentityRejectReasons(res);
+    }
+  }, [rejectData]);
+
   const toastStore = useToastStore();
   const router = useRouter();
   const sellerProfile = "/settings#seller-profile";
-
-  const formatTaxRejectReason = (
-    originalTaxReason: MerchantVerificationStatusReason | null | undefined,
-  ) => {
-    const formatMap: Partial<Record<MerchantVerificationStatusReason, string>> =
-      {
-        APPROVE: ci18n("state reason of tax verification", "Approve"),
-        CERTIFICATION_UNCHECKED: ci18n(
-          "Keep 'Certification' in EN;",
-          "“Certification” unchecked.",
-        ),
-        INCORRECT_NAME: ci18n(
-          "reject reason of tax verification",
-          "Incorrect name.",
-        ),
-        INCORRECT_SSN_TIN_FTIN: ci18n(
-          "reject reason of tax verification",
-          "Incorrect SSN/TIN/FTIN.",
-        ),
-        INCORRECT_TAX_FORM_TYPE: ci18n(
-          "reject reason of tax verification",
-          "Incorrect tax form type.",
-        ),
-        MISSING_OR_INCORRECT_SIGNATURE: ci18n(
-          "reject reason of tax verification",
-          "Missing/incorrect signature.",
-        ),
-        MISSING_OR_OUTDATED_SIGNING_DATE: ci18n(
-          "reject reason of tax verification",
-          "Missing signing date/Signing Date out of range.",
-        ),
-        OTHERS: ci18n("reject reason of tax verification", "Others"),
-        UNCLEAR_TAX_FORM: ci18n(
-          "reject reason of tax verification",
-          "Unclear tax form.",
-        ),
-        W8_BEN_E_ITEM_4: ci18n(
-          "reject reason of tax verification",
-          "W-8BEN-E, Item 4: You must select one box, and one box only.",
-        ),
-        W8_BEN_E_ITEM_5: ci18n(
-          "Keep 'Active NFFE' in EN",
-          "W-8BEN-E, Item 5: You must select one box, and one box only. If you are an entity that operates an active trade or business other than that of a financial business, your status is likely “Active NFFE”.",
-        ),
-        W9_ITEM_3: ci18n(
-          "reject reason of tax verification",
-          "W-9, Item 3: You must select one box, and one box only.",
-        ),
-      };
-    if (originalTaxReason && originalTaxReason in formatMap) {
-      return formatMap[originalTaxReason];
-    }
-    return undefined;
-  };
 
   const steps = useMemo(() => {
     return [
@@ -296,6 +265,8 @@ const TaxDocumentsPage: NextPage<Record<string, never>> = () => {
           <>
             {state === "REJECTED" &&
               dueDate &&
+              sellerIdentityRejectReasons != null &&
+              rejectReason != null &&
               rejectReason?.map((reason) => {
                 return (
                   <Box className={css(styles.bannerInfo)} key={reason}>
@@ -315,7 +286,7 @@ const TaxDocumentsPage: NextPage<Record<string, never>> = () => {
                       >
                         Resubmit tax information
                       </Text>
-                      {reason !== "OTHERS" ? (
+                      {reason && reason !== "OTHERS" ? (
                         <Text
                           sx={{
                             color: "textBlack",
@@ -323,25 +294,27 @@ const TaxDocumentsPage: NextPage<Record<string, never>> = () => {
                             lineHeight: "20px",
                           }}
                         >
-                          {i`${formatTaxRejectReason(reason)} ` +
+                          {i`${sellerIdentityRejectReasons[reason]} ` +
                             i`Upload your tax form by ` +
                             i`${dueDate.formatted} ` +
                             i`to avoid payment withholding. `}
                         </Text>
                       ) : (
-                        <Text
-                          sx={{
-                            color: "textBlack",
-                            fontSize: "14px",
-                            lineHeight: "20px",
-                          }}
-                        >
-                          {i`${formatTaxRejectReason(reason)} ` +
-                            i`Comment: ${comment}. ` +
-                            i`Upload your tax form by ` +
-                            i`${dueDate.formatted} ` +
-                            i`to avoid payment withholding. `}
-                        </Text>
+                        reason && (
+                          <Text
+                            sx={{
+                              color: "textBlack",
+                              fontSize: "14px",
+                              lineHeight: "20px",
+                            }}
+                          >
+                            {i`${sellerIdentityRejectReasons[reason]}. ` +
+                              i`Comment: ${comment}. ` +
+                              i`Upload your tax form by ` +
+                              i`${dueDate.formatted} ` +
+                              i`to avoid payment withholding. `}
+                          </Text>
+                        )
                       )}
                     </div>
                   </Box>
@@ -502,6 +475,7 @@ const useStylesheet = () => {
         },
         bannerText: {
           display: "flex",
+          flex: 1,
           flexDirection: "column",
         },
         icon: {

@@ -7,7 +7,9 @@ import {
   MerchantSchema,
   Country,
   UserEntityType,
+  MerchantVerificationStatusReason,
 } from "@schema";
+import { ResultOf, VariablesOf } from "@graphql-typed-document-node/core";
 
 export const GET_MERCHANT_BANK_VERIFICATION_STATE_REASON = gql(`
   query getMerchantBankVerificationStateReason {
@@ -84,4 +86,24 @@ export type TaxStatusResponseData = {
   readonly currentUser: {
     readonly entityType: Maybe<UserEntityType>;
   };
+};
+
+export const GET_SELLER_IDENTITY_REJECTREASONS = gql(`
+  query getSellerIdentityRejectReasons($verificationType: MerchantIdentityVerificationType) {
+    merchantIdentity {
+      rejectReasons(verificationType: $verificationType)
+    }
+  }
+`);
+
+export type TaxRejectReasonResponseData = ResultOf<
+  typeof GET_SELLER_IDENTITY_REJECTREASONS
+>;
+
+export type TaxRejectReasonRequestData = VariablesOf<
+  typeof GET_SELLER_IDENTITY_REJECTREASONS
+>;
+
+export type TaxRejectReasonObj = {
+  [key in MerchantVerificationStatusReason]: string;
 };
