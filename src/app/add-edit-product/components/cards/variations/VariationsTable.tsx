@@ -317,7 +317,7 @@ const VariationsTable: React.FC<Props> = (props: Props) => {
     );
   };
 
-  const learnMoreLink = zendeskURL("4405383834267");
+  const learnMoreLink = zendeskURL("1260805100070");
 
   return (
     <Layout.FlexColumn alignItems="stretch" style={[style, className]}>

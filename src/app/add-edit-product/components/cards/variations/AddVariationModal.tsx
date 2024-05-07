@@ -2,7 +2,7 @@ import React, { useMemo, useState } from "react";
 import { StyleSheet } from "aphrodite";
 import { observer } from "mobx-react";
 import uniq from "lodash/uniq";
-
+import { ci18n } from "@core/toolkit/i18n";
 /* Lego Components */
 import Modal, { ModalProps } from "@core/components/modal/Modal";
 
@@ -217,7 +217,7 @@ const AddVariationModal: React.FC<AddVariationModalProps> = ({
     sizeVariations.length > 0
       ? uniq(sizeVariations.map((v) => v.size || ""))
       : undefined;
-  const learnMoreLink = zendeskURL("4405383834267");
+  const learnMoreLink = zendeskURL("1260805100070");
   return (
     <Modal open={open} onClose={onClose} maxWidth="sm" fullWidth>
       <ModalTitle title={i`Add a variation`} onClose={onClose} />
@@ -225,7 +225,10 @@ const AddVariationModal: React.FC<AddVariationModalProps> = ({
         <div className={css(styles.content)}>
           <div className={css(styles.sideBySide)}>
             {!onlySize && (
-              <Field title={i`Color`} className={css(styles.field)}>
+              <Field
+                title={ci18n("Field name", "Color")}
+                className={css(styles.field)}
+              >
                 <TextInput
                   placeholder={i`Enter a color`}
                   value={color}
@@ -238,7 +241,10 @@ const AddVariationModal: React.FC<AddVariationModalProps> = ({
               </Field>
             )}
             {!onlyColor && (
-              <Field title={i`Size`} className={css(styles.field)}>
+              <Field
+                title={ci18n("Field name", "Size")}
+                className={css(styles.field)}
+              >
                 <TextInput
                   placeholder={i`Enter a size`}
                   value={size}
@@ -251,7 +257,10 @@ const AddVariationModal: React.FC<AddVariationModalProps> = ({
             )}
           </div>
           <div className={css(styles.sideBySide)}>
-            <Field title={i`Price`} className={css(styles.field)}>
+            <Field
+              title={ci18n("Field name", "Price")}
+              className={css(styles.field)}
+            >
               <CurrencyInput
                 value={priceText}
                 placeholder="0.00"
@@ -265,7 +274,10 @@ const AddVariationModal: React.FC<AddVariationModalProps> = ({
                 onValidityChanged={(isValid) => setPriceIsValid(isValid)}
               />
             </Field>
-            <Field title={i`Inventory`} className={css(styles.field)}>
+            <Field
+              title={ci18n("Field name", "Inventory")}
+              className={css(styles.field)}
+            >
               <NumericInput
                 value={inventory}
                 onChange={({ valueAsNumber }) => {
@@ -284,7 +296,10 @@ const AddVariationModal: React.FC<AddVariationModalProps> = ({
             </Field>
           </div>
           <div className={css(styles.sideBySide)}>
-            <Field title={i`SKU`} className={css(styles.field)}>
+            <Field
+              title={ci18n("Field name", "SKU")}
+              className={css(styles.field)}
+            >
               <TextInput
                 style={styles.input}
                 placeholder={i`Enter a SKU`}
@@ -304,7 +319,7 @@ const AddVariationModal: React.FC<AddVariationModalProps> = ({
             </Field>
             {showUnitPrice && (
               <Field
-                title={i`Quantity value`}
+                title={ci18n("Field name", "Quantity value")}
                 className={css(styles.field)}
                 description={
                   i`The total quantity of the product variant (in the given unit) ` +
@@ -350,9 +365,11 @@ const AddVariationModal: React.FC<AddVariationModalProps> = ({
           </div>
         </div>
         <div className={css(styles.footer)}>
-          <Button onClick={onClose}>Cancel</Button>
+          <Button onClick={onClose}>
+            {ci18n("Button copy text", "Cancel")}
+          </Button>
           <PrimaryButton onClick={onSubmit} isDisabled={!canSubmit}>
-            Save
+            {ci18n("Button copy text", "Save")}
           </PrimaryButton>
         </div>
       </div>

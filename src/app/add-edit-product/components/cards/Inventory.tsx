@@ -10,7 +10,7 @@ import { observer } from "mobx-react";
 
 import numeral from "numeral";
 import faker from "faker/locale/en";
-
+import { ci18n } from "@core/toolkit/i18n";
 import { Field, TextInput, NumericInput, Layout } from "@ContextLogic/lego";
 
 /* Lego Toolkit */
@@ -61,16 +61,16 @@ const Inventory: React.FC<Props> = (props: Props) => {
   const quantityValue = variation == null ? undefined : variation.quantityValue;
   const sku = variation == null ? undefined : variation.sku;
 
-  const learnMoreLink = zendeskURL("4405383834267");
+  const learnMoreLink = zendeskURL("1260805100070");
   return (
     <Section
       className={css(style, className)}
-      title={i`Inventory`}
+      title={ci18n("add products section title", "Inventory")}
       {...sectionProps}
     >
       <div className={css(styles.parent)}>
         <Field
-          title={i`SKU`}
+          title={ci18n("add products section title", "SKU")}
           style={styles.field}
           description={
             i`Provide the unique SKU number you use internally to identify ` +
@@ -169,7 +169,7 @@ const Inventory: React.FC<Props> = (props: Props) => {
         </Field>
         {showUnitPrice && (
           <Field
-            title={i`Quantity value`}
+            title={ci18n("add products section title", "Quantity value")}
             style={styles.field}
             description={
               i`The total quantity of the product variant (in the given unit) ` +

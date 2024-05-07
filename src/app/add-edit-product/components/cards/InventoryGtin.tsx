@@ -34,7 +34,7 @@ const InventoryGtin: React.FC<Props> = (props: Props) => {
     showUnitPrice,
   } = state;
 
-  const learnMoreLink = zendeskURL("4405383834267");
+  const learnMoreLink = zendeskURL("1260805100070");
   const attributesLearnMoreLink = zendeskURL("1260805100070");
 
   const variation = variations[0];
@@ -108,7 +108,7 @@ const InventoryGtin: React.FC<Props> = (props: Props) => {
         {showUnitPrice && (
           <Grid item xs={6}>
             <Field
-              title={i`Quantity value`}
+              title={ci18n("add products section title", "Quantity value")}
               description={
                 i`The total quantity of the product variant (in the given unit) ` +
                 i`that is used to calculate the price per unit of a product. Note ` +

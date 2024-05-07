@@ -240,7 +240,7 @@ const AddVariationModalV2: React.FC<AddVariationModalV2Props> = ({
     sizeVariations.length > 0
       ? uniq(sizeVariations.map((v) => v.size || ""))
       : undefined;
-  const learnMoreLink = zendeskURL("4405383834267");
+  const learnMoreLink = zendeskURL("1260805100070");
 
   return (
     <Modal open={open} onClose={onClose} maxWidth="sm" fullWidth>

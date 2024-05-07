@@ -104,6 +104,7 @@ const ComplianceV2: React.FC<Props> = ({
             }
           >
             <FormSelect
+              showArrow
               placeholder={i`Select the warning type`}
               options={ContestWarningOptions}
               selectedValue={caProp65Warning}
@@ -188,7 +189,7 @@ const ComplianceV2: React.FC<Props> = ({
             </span>
             <span className={css(styles.markdownFont)}>
               {i`Max file size `}
-              <b>10 MB</b>
+              <b>{ci18n("Max file size", "10 MB")}</b>
             </span>
             <span className={css(styles.markdownFont)}>
               {i`Max character limit: `}

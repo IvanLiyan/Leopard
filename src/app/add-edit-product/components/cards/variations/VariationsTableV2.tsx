@@ -68,7 +68,7 @@ const VariationsTableV2: React.FC<Props> = (props: Props) => {
   >([]);
   const toastStore = useToastStore();
 
-  const learnMoreLink = zendeskURL("4405383834267");
+  const learnMoreLink = zendeskURL("1260805100070");
   const attributesLearnMoreLink = zendeskURL("1260805100070");
 
   const {

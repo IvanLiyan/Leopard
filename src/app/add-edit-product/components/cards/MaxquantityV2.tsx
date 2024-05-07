@@ -6,6 +6,7 @@ import AddEditProductState from "@add-edit-product/AddEditProductState";
 import Section, { SectionProps } from "./Section";
 import { ci18n } from "@core/toolkit/i18n";
 import { Stack } from "@ContextLogic/atlas-ui";
+import { IntegerValidator, NonZeroValidator } from "@core/toolkit/validators";
 
 type Props = Omit<SectionProps, "title"> & {
   readonly state: AddEditProductState;
@@ -19,15 +20,18 @@ const MaxquantityV2: React.FC<Props> = (props: Props) => {
   return (
     <Section
       style={[className, style]}
-      title={i`Max quantity`}
+      title={ci18n("add products section title", "Max quantity")}
       {...sectionProps}
     >
       <Stack direction="row" sx={{ gap: "8px" }}>
         <Field title={ci18n("Field name", "Max quantity")} style={styles.field}>
           <NumericInput
             value={maxQuantity}
-            incrementStep={1}
-            onChange={(value) => (state.maxQuantity = value.valueAsNumber)}
+            validators={[new IntegerValidator(), new NonZeroValidator()]}
+            onChange={({ valueAsNumber }) =>
+              (state.maxQuantity =
+                valueAsNumber == null ? undefined : Math.max(0, valueAsNumber))
+            }
           />
         </Field>
       </Stack>
