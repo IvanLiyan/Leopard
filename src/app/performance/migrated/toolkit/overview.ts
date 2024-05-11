@@ -56,7 +56,7 @@ export const WSSMetricTypeMapping: {
       "A category of metrics used to compute WSS tier",
       "Performance metrics",
     ),
-    href: "/performance/wish-standards/user-rating",
+    href: "performance/wish-standards/user-rating",
   },
   LOGISTICS_REFUND: {
     name: ci18n("Name of a WSS performance metric", "Logistics refund"),
@@ -64,7 +64,7 @@ export const WSSMetricTypeMapping: {
       "A category of metrics used to compute WSS tier",
       "Performance metrics",
     ),
-    href: "/performance/wish-standards/logistics-refund",
+    href: "performance/wish-standards/logistics-refund",
   },
   BAD_PRODUCT_RATE: {
     name: ci18n("Name of a WSS performance metric", "Underperforming products"),
@@ -72,7 +72,7 @@ export const WSSMetricTypeMapping: {
       "A category of metrics used to compute WSS tier",
       "Performance metrics",
     ),
-    href: "/performance/wish-standards/underperforming-products",
+    href: "performance/wish-standards/underperforming-products",
   },
   ORDER_FULFILLMENT_RATE: {
     name: ci18n("Name of a WSS performance metric", "Order fulfillment rate"),
@@ -80,7 +80,7 @@ export const WSSMetricTypeMapping: {
       "A category of metrics used to compute WSS tier",
       "Performance metrics",
     ),
-    href: "/performance/wish-standards/fulfillment-rate",
+    href: "performance/wish-standards/fulfillment-rate",
   },
   ORDER_FULFILLMENT_SPEED: {
     name: ci18n(
@@ -91,7 +91,7 @@ export const WSSMetricTypeMapping: {
       "A category of metrics used to compute WSS tier",
       "Performance metrics",
     ),
-    href: "/performance/wish-standards/fulfillment-speed",
+    href: "performance/wish-standards/fulfillment-speed",
   },
   PRODUCT_QUALITY_REFUND: {
     name: ci18n("Name of a WSS performance metric", "Product quality refund"),
@@ -99,7 +99,7 @@ export const WSSMetricTypeMapping: {
       "A category of metrics used to compute WSS tier",
       "Performance metrics",
     ),
-    href: "/performance/wish-standards/quality-refund",
+    href: "performance/wish-standards/quality-refund",
   },
   VALID_TRACKING_RATE: {
     name: ci18n("Name of a WSS performance metric", "Valid tracking rate"),
@@ -107,7 +107,7 @@ export const WSSMetricTypeMapping: {
       "A category of metrics used to compute WSS tier",
       "Performance metrics",
     ),
-    href: "/performance/wish-standards/valid-tracking",
+    href: "performance/wish-standards/valid-tracking",
   },
   LATE_CONFIRMED_FULFILLMENT: {
     name: ci18n(
