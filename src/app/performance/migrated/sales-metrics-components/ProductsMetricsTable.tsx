@@ -17,7 +17,7 @@ import {
 } from "@ContextLogic/lego";
 
 /* Legacy */
-import { ni18n, ci18n } from "@core/toolkit/i18n";
+import { ci18n } from "@core/toolkit/i18n";
 
 /* Lego Toolkit */
 import { css } from "@core/toolkit/styling";
@@ -222,7 +222,7 @@ const ProductsMetricsTable = (props: Props) => {
 
   const tableActions = (productId: string, index: number) => [
     {
-      href: "/product",
+      href: `/md/products/edit?pid=${productId}`,
       onClick: () =>
         logTableActionClick("EDIT_PRODUCT_LISTING", { productId, index }),
       key: "editProduct",
@@ -275,22 +275,31 @@ const ProductsMetricsTable = (props: Props) => {
                   setSearchTypeQuery(value),
                 options: [
                   {
-                    text: i`Product name`,
+                    text: ci18n(
+                      "products metrics table select options",
+                      "Product name",
+                    ),
                     value: "NAME",
                   },
                   {
-                    text: i`SKU`,
+                    text: ci18n("products metrics table select options", "SKU"),
                     value: "SKU",
                   },
                   {
-                    text: i`Product ID`,
+                    text: ci18n(
+                      "products metrics table select options",
+                      "Product ID",
+                    ),
                     value: "ID",
                   },
                 ],
                 selectedValue: searchType,
               }}
               textInputProps={{
-                placeholder: i`Search`,
+                placeholder: ci18n(
+                  "products metrics table text input placeholder",
+                  "Search",
+                ),
                 onChange: async ({ text }) => await onSearchInputChange(text),
               }}
             />
@@ -345,7 +354,7 @@ const ProductsMetricsTable = (props: Props) => {
           >
             <ProductColumn
               _key={"product"}
-              title={ni18n(1, "Product", "Products")}
+              title={ci18n("products metrics table column", "Product")}
               columnKey="id"
               align="left"
               showFullName={false}
@@ -354,12 +363,12 @@ const ProductsMetricsTable = (props: Props) => {
             <Table.ObjectIdColumn
               _key={"productId"}
               columnKey="productId"
-              title={i`Product ID`}
+              title={ci18n("products metrics table column", "Product ID")}
               columnDataCy={"product-id-column"}
             />
             <Table.Column
               _key={"price"}
-              title={i`Price`}
+              title={ci18n("products metrics table column", "Price")}
               columnKey="variations"
               align="left"
               minWidth={70}
@@ -381,19 +390,19 @@ const ProductsMetricsTable = (props: Props) => {
             <Table.Column
               _key={"orders"}
               columnKey="orders"
-              title={i`Orders`}
+              title={ci18n("products metrics table column", "Orders")}
               columnDataCy={"orders-column"}
             />
             <Table.Column
               _key={"impressions"}
               columnKey="impressions"
-              title={i`Impressions`}
+              title={ci18n("products metrics table column", "Impressions")}
               columnDataCy={"impresssions-column"}
             />
             <Table.Column
               _key={"actions"}
               columnKey="actions"
-              title={i`Actions`}
+              title={ci18n("products metrics table column", "Actions")}
               width={100}
               columnDataCy={"actions-column"}
             >
