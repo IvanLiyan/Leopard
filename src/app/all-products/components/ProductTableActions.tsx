@@ -30,6 +30,9 @@ const ProductTableActions: React.FC<Props> = ({
   const navigationStore = useNavigationStore();
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 
+  const { state: productState } = getProductState(product);
+  const productRemoved =
+    productState == "REMOVED_BY_MERCHANT" || productState == "REMOVED_BY_WISH";
   return (
     <>
       <DeleteProductConfirmModal
@@ -52,16 +55,20 @@ const ProductTableActions: React.FC<Props> = ({
         dropdownButtonBorders={false}
         data-cy="action"
         actions={[
-          {
-            text: ci18n(
-              "An action merchants can take on a product listing, leads to the page where they can edit the listing.",
-              "Edit Listing",
-            ),
-            onClick: () =>
-              void navigationStore.navigate(
-                merchFeUrl(`/md/products/edit?pid=${product.id}`),
-              ),
-          },
+          ...(!productRemoved
+            ? [
+                {
+                  text: ci18n(
+                    "An action merchants can take on a product listing, leads to the page where they can edit the listing.",
+                    "Edit Listing",
+                  ),
+                  onClick: () =>
+                    void navigationStore.navigate(
+                      merchFeUrl(`/md/products/edit?pid=${product.id}`),
+                    ),
+                },
+              ]
+            : []),
           ...(!product.isLtl && !product.isReturnsEnabled
             ? [
                 {
