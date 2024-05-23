@@ -230,6 +230,81 @@ enum AlertSentiment {
   NEGATIVE
 }
 
+type AllProductV2ProductSchema {
+  id: ObjectIdType!
+  sku: String
+  name: String!
+  smallPictureUrl: String!
+  categories: [TrueTagSchema!]
+  description: String!
+  enabled: Boolean!
+  variations(offset: Int = 0, limit: Int = 0): [VariationSchema!]!
+  mainImage: ImageSchema!
+  extraImages: [ImageSchema!]
+  shipping(warehouseId: String): ShippingSchema!
+  createTime: Datetime!
+  lastUpdateTime: Datetime!
+  sales: Int!
+  totalInventory: Int!
+  variationCount: Int!
+  merchantId: ObjectIdType!
+  tags: [String!]!
+  reviewStatus: CommerceProductReviewStatus!
+  fpWorkflow: FeedProcessingWorkflowSchema
+  invalidCategoryNote: String
+  infractions: [InfractionSchema!]!
+  productTrueTagInfo: ProductTrueTagInfoSchema
+  fpReviewStatus: CommerceProductFPReviewStatus!
+  listingState: ListingStateSchema!
+  wishes: Int!
+  isUnityBlacklisted: Boolean!
+  isUnityPendingStandardWarehouse: Boolean!
+  unityEffectiveDateStandardWarehouse: Datetime
+  isPromoted: Boolean!
+  requestedBrandId: ObjectIdType
+  requestedBrand: BrandSchema
+  msrp: CurrencyValue
+  upc: String
+  shippingProfile: ShippingProfileSchema
+  totalGmv: CurrencyValue!
+  demoVideo(useGroupings: Boolean = false): ProductVideo
+  isRemovedByWish: Boolean!
+  isRemovedByMerchant: Boolean!
+  isRemoved: Boolean!
+  isEuCompliant: Boolean!
+  stats: ProductStats!
+  analyticsService: ProductAnalyticsSchema!
+  condition: CommerceProductCondition
+  trueTags: [TrueTagSchema!]
+  eligibleForCategoryDispute: ProductCategoryDisputeEligibility
+  referenceWeight: Weight
+  referenceLength: Length
+  referenceVolume: Volume
+  referenceArea: Area
+  referenceUnit: Count
+  countryBlocks: [ProductCountryBlockSchema!]
+  maxQuantity: Int
+  attributes: [MerchantProvidedAttributeSchema!]
+  warningType: ContestWarningType
+  isConsignmentEligible: Boolean
+  consignmentOriginalPid: ObjectIdType
+  consignmentReferenceLink: String
+  chemicalNames: [String!]
+  performance(startDate: DatetimeInput!, endDate: DatetimeInput!): ProductPerformanceSchema
+  taxonomyCategory: TaxonomyCategorySchema
+  l1Category: TaxonomyCategorySchema
+  categoryExperienceEligibility: Boolean
+  subcategoryId: Int
+  subcategory: TaxonomyCategorySchema
+  variationOptions: [String!]
+  isReturnsEnabled: Boolean
+  isLtl: Boolean
+  hasBrand: Boolean
+  isWishExpress: Boolean!
+  flatRateShippingCountryCandidates: [FlatRateShippingCountryCandidate!]
+  productComplianceDocuments: [ProductComplianceDocumentSchema!]
+}
+
 type AnalyticsServiceMutations {
   log(input: LogToTreasureDataInput!): LogToTreasureData
 }
@@ -6410,6 +6485,7 @@ type MerchantMutation {
   returnSettings: MerchantReturnSettingsMutations!
   returnWarehouseSettings: MerchantReturnWarehouseMutations
   mftOptOut(input: ChangeMFTOptOutInput!): ChangeMFTOptOutMutation
+  redirectToQoo10(input: RedirectToQoo10MutationInput!): RedirectToQoo10Mutation
 }
 
 enum MerchantOnboardingStep {
@@ -6840,6 +6916,11 @@ type MerchantSchema {
   isMerchantFulfillmentTimeOptOut: Boolean
   isConsignmentMode: Boolean
   merchantIdentityVerification(verificationType: MerchantIdentityVerificationType): MerchantIdentityVerificationSchema
+  isQoo10Candidate: Boolean
+  qsmAutoLoginSecret: String
+  isQoo10Registered: Boolean
+  wishSalesStats: WishSalesStats
+  qoo10SalesStats: Qoo10SalesStats
 }
 
 type MerchantSenderAddressMutations {
@@ -7223,10 +7304,12 @@ enum MerchantVerificationStatusReason {
   W8_BEN_E_ITEM_5
   W8_BEN_E_ITEM_4
   MISSING_DATE_OF_BIRTH
+  UNCLEAR_TAX_FORM
   INVALID_DOCUMENT
   MISSING_CITY_STATE_ZIP_CODE
   W9_ITEM_3
-  UNCLEAR_TAX_FORM
+  PART_XXV_UNCHECKED
+  CERTIFICATION_UNCHECKED
   BLURRY_IMAGE
   OTHERS
   MISSING_OR_INCORRECT_SSN_TIN_FTIN
@@ -7235,7 +7318,7 @@ enum MerchantVerificationStatusReason {
   MISMATCH_LAST_FOUR_DIGITS
   MISSING_COUNTRY
   PARTIAL_IMAGE
-  CERTIFICATION_UNCHECKED
+  STORE_VERIFICATION_UNCOMPLETED
   NOT_IN_ENGLISH
 }
 
@@ -9659,7 +9742,7 @@ type ProductCatalogSchema {
   product(id: String, sku: String): ProductSchema
   products(query: String, searchType: ProductSearchType, shippingProfileIds: [ObjectIdType!], videoId: ObjectIdType, merchantId: ObjectIdType, offset: Int = 0, limit: Int = 20, sort: ProductSort, productStatuses: [CommerceProductStatus!] = [0, 1], shippingTypes: [WarehouseShippingType!] = [1, 2], videoStates: [ProductVideoState!], videoLinkEnabled: Boolean = true): [ProductSchema!]!
   productCount(query: String, productStatuses: [CommerceProductStatus!] = [0, 1], merchantId: ObjectIdType, shippingTypes: [WarehouseShippingType!] = [1, 2], searchType: ProductSearchType, shippingProfileIds: [ObjectIdType!], videoStates: [ProductVideoState!], videoLinkEnabled: Boolean = true): Int!
-  productsV2(query: String, searchType: ProductSearchType, merchantId: ObjectIdType, offset: Int = 0, limit: Int = 20, sort: ProductSort, isEnabled: Boolean, state: ProductListingState, fpReviewStatus: ProductFPReviewStatus, isWishExpress: Boolean = false, hasBrand: Boolean = false, isPromoted: Boolean = false, isCleanImage: Boolean = false, isReturnEnrolled: Boolean = false): [ProductSchema!]!
+  productsV2(query: String, searchType: ProductSearchType, merchantId: ObjectIdType, offset: Int = 0, limit: Int = 20, sort: ProductSort, isEnabled: Boolean, state: ProductListingState, fpReviewStatus: ProductFPReviewStatus, isWishExpress: Boolean = false, hasBrand: Boolean = false, isPromoted: Boolean = false, isCleanImage: Boolean = false, isReturnEnrolled: Boolean = false): [AllProductV2ProductSchema!]!
   productsV3(merchantId: ObjectIdType, offset: Int = 0, limit: Int = 20, sort: PerformanceProductSort, days: Int = 7, withPerformance: Boolean = false, query: String, searchType: ProductSearchType): [ProductSchema!]!
   productCountV2(query: String, merchantId: ObjectIdType, searchType: ProductSearchType, isEnabled: Boolean, state: ProductListingState, fpReviewStatus: ProductFPReviewStatus, isWishExpress: Boolean = false, hasBrand: Boolean = false, isPromoted: Boolean = false, isCleanImage: Boolean = false, isReturnEnrolled: Boolean = false): Int!
   productCountV3(merchantId: ObjectIdType, withPerformance: Boolean = false, query: String, searchType: ProductSearchType): Int!
@@ -10473,6 +10556,18 @@ input PublishAnnouncementInput {
   publishDate: DatetimeInput
 }
 
+type Qoo10SalesStats {
+  onSale: Int
+  aboutToExpire: Int
+  stockLessThan3: Int
+  newOrders: Int
+  shippingDelay: Int
+  refundOrCancelRequests: Int
+  exchangeRequests: Int
+  waitingForReply: Int
+  csCenter: Int
+}
+
 type RaccVideoAsset {
   url: String!
   contentType: String!
@@ -10510,6 +10605,28 @@ enum Reason {
   INVALID_CURRENCY
   INCORRECT_TOTAL_AMOUNT
   INCONSISTENT_PET
+}
+
+type RedirectToQoo10Mutation {
+  ok: Boolean!
+  redirectUrl: String!
+}
+
+input RedirectToQoo10MutationInput {
+  name: RedirectToQoo10PageName!
+}
+
+enum RedirectToQoo10PageName {
+  ABOUT_TO_EXPIRE
+  CS_CENTER
+  DEFAULT
+  EXCHANGE_REQUESTS
+  NEW_ORDERS
+  ON_SALE
+  REFUND_OR_CANCEL_REQUESTS
+  SHIPPING_DELAY
+  STOCK_LESS_THAN_3
+  WAITING_FOR_REPLY
 }
 
 enum RedirectType {
@@ -15225,6 +15342,13 @@ type WishPostShippingUpdatesSchema {
   date: Datetime!
   paymentDate: Datetime
   reason: String!
+}
+
+type WishSalesStats {
+  onSale: Int
+  newOrders: Int
+  refundOrCancelRequests: Int
+  waitingForReply: Int
 }
 
 type WishSellerStandardStats {

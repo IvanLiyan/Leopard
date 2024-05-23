@@ -168,7 +168,11 @@ export type GetAppTopbarDataResponse = {
   readonly currentUser: Pick<UserSchema, "firstName">;
   readonly currentMerchant: Pick<
     MerchantSchema,
-    "id" | "isStoreMerchant" | "canAccessHome"
+    | "id"
+    | "isStoreMerchant"
+    | "canAccessHome"
+    | "isQoo10Candidate"
+    | "isQoo10Registered"
   >;
 };
 
@@ -186,6 +190,8 @@ export const GET_APP_TOPBAR_DATA_QUERY = gql(`
       id
       isStoreMerchant
       canAccessHome
+      isQoo10Candidate
+      isQoo10Registered
     }
     currentUser {
       firstName

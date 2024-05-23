@@ -160,6 +160,9 @@ import productsParcelUrl from "public/images/products-parcel.svg";
 import bankInfoBannerUrl from "public/images/seller-identity/bankInfoBanner.svg";
 import taxInfoBannerUrl from "public/images/seller-identity/taxInfoBanner.svg";
 import taxInfoLinkIconUrl from "public/images/seller-identity/linkIcon.svg";
+import launchToQmsUrl from "public/images/launch-to-qsm.svg";
+import wishLogoSlimWhiteUrl from "public/images/wish-logo-slim/wish-logo-slim-white.svg";
+import wishLogoSlimGreenUrl from "public/images/wish-logo-slim/wish-logo-slim-green.svg";
 
 export const wishLogoInk = wishLogoInkUrl;
 export const wishLogoWhite = wishLogoWhiteUrl;
@@ -318,3 +321,6 @@ export const productsParcel = productsParcelUrl;
 export const bankInfoBanner = bankInfoBannerUrl;
 export const taxInfoBanner = taxInfoBannerUrl;
 export const taxInfoLinkIcon = taxInfoLinkIconUrl;
+export const launchToQms = launchToQmsUrl;
+export const wishLogoSlimWhite = wishLogoSlimWhiteUrl;
+export const wishLogoSlimGreen = wishLogoSlimGreenUrl;

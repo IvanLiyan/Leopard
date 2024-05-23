@@ -16,6 +16,8 @@ import {
   RatingPerformanceStats,
   LedgerAccountBalance,
   MerchantListingFeeHub,
+  WishSalesStats,
+  Qoo10SalesStats,
 } from "@schema";
 
 export type PickedOnboardingStep = Pick<
@@ -51,7 +53,11 @@ export type PickedSellerVerification = Pick<
 
 export type PickedMerchant = Pick<
   MerchantSchema,
-  "isStoreMerchant" | "primaryCurrency" | "isFactory"
+  | "isStoreMerchant"
+  | "primaryCurrency"
+  | "isFactory"
+  | "isQoo10Registered"
+  | "isQoo10Candidate"
 > & {
   readonly sellerVerification: PickedSellerVerification;
   readonly accountManager: Pick<UserSchema, "name" | "email" | "qqGroupNumber">;
@@ -79,6 +85,11 @@ export type PickedAnnouncement = Pick<
   };
   readonly program?: Pick<AnnouncementProgramSchema, "text" | "type"> | null;
 };
+
+export type PickedSalesStats = Pick<
+  MerchantSchema,
+  "wishSalesStats" | "qoo10SalesStats"
+>;
 
 export const GET_HOME_INITIAL_DATA = gql(`
   query Home_GetInitialData {
@@ -157,6 +168,8 @@ export const GET_HOME_INITIAL_DATA = gql(`
         email
         qqGroupNumber
       }
+      isQoo10Registered
+      isQoo10Candidate
     }
   }
 `);
@@ -168,6 +181,37 @@ export type HomeInitialData = {
   readonly currentMerchant: PickedMerchant;
   readonly announcements?: {
     readonly forUsers?: ReadonlyArray<PickedAnnouncement> | null;
+  };
+};
+
+export const GET_MERCHANT_SALES_STATS_DATA = gql(`
+  query Home_GetMerchantSalesStatsData {
+    currentMerchant {
+      wishSalesStats {
+        onSale
+        newOrders
+        refundOrCancelRequests
+        waitingForReply
+      }
+      qoo10SalesStats {
+        onSale
+        aboutToExpire
+        stockLessThan3
+        newOrders
+        shippingDelay
+        refundOrCancelRequests
+        exchangeRequests
+        waitingForReply
+        csCenter
+      }
+    }
+  }
+`);
+
+export type MerchantSalesStatsData = {
+  readonly currentMerchant?: {
+    readonly wishSalesStats?: WishSalesStats;
+    readonly qoo10SalesStats?: Qoo10SalesStats;
   };
 };
 
