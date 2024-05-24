@@ -96,10 +96,7 @@ const MerchantAppTopbar: React.FC<MerchantAppTopbarProps> = ({
         return false;
       }
     } else {
-      window.open(
-        "https://www.qoo10.com/gmkt.inc/Member/WelcomeWishMerchant.aspx",
-        "_blank",
-      );
+      window.open("https://plus.wish.com/welcome_wish_merchant", "_blank");
     }
   };
 

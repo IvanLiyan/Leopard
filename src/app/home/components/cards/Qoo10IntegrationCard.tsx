@@ -9,10 +9,7 @@ import { ci18n } from "@core/toolkit/i18n";
 const title = "Expanding sales channels through Wish - Qoo10 integration";
 
 const redirectToQoo10 = () => {
-  window.open(
-    "https://www.qoo10.com/gmkt.inc/Member/WelcomeWishMerchant.aspx",
-    "_blank",
-  );
+  window.open("https://plus.wish.com/welcome_wish_merchant", "_blank");
 };
 
 const buttonStyle = { borderRadius: 4, marginTop: 18 };
