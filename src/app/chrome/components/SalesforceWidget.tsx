@@ -9,6 +9,7 @@ import { UserSchema } from "@schema";
 import { StyleSheet } from "aphrodite";
 import Script from "next/script";
 import { useMemo } from "react";
+import { ci18n } from "@core/toolkit/i18n";
 
 declare global {
   interface Window {
@@ -60,15 +61,24 @@ const SalesforceWidget: React.FC<{
             window.embedded_svc.settings.language = localeProper;
 
             window.embedded_svc.settings.defaultMinimizedText = i`Chat with Us`;
-            window.embedded_svc.settings.disabledMinimizedText = i`Agent Offline`;
+            window.embedded_svc.settings.disabledMinimizedText = ci18n(
+              "agent person offline",
+              "Agent Offline",
+            );
 
-            window.embedded_svc.settings.loadingText = i`Loading`;
+            window.embedded_svc.settings.loadingText = ci18n(
+              "loading text",
+              "Loading",
+            );
 
             window.embedded_svc.settings.prepopulatedPrechatFields = {
               SuppliedName: loggedInUser.displayName,
               SuppliedEmail: loggedInUser.email,
             };
-            window.embedded_svc.settings.offlineSupportMinimizedText = i`Contact Us`;
+            window.embedded_svc.settings.offlineSupportMinimizedText = ci18n(
+              "contact us",
+              "Contact Us",
+            );
 
             window.embedded_svc.settings.enabledFeatures = ["LiveAgent"];
             window.embedded_svc.settings.entryFeature = "LiveAgent";
@@ -120,7 +130,7 @@ const SalesforceWidget: React.FC<{
       >
         <Text renderAsSpan style={styles.fakeQuestionMark}>{`?`}</Text>
         <Text weight="bold" renderAsSpan style={styles.fakeSupportText}>
-          Support
+          {ci18n("Support", "Support")}
         </Text>
       </Link>
       {children}
@@ -130,23 +140,37 @@ const SalesforceWidget: React.FC<{
   // If merchant is in US or CN support group, show
   // Salesforce chat widget
   if (loggedInUser.supportConfig?.isEnBd) {
+    // eslint-disable-next-line
+    console.log("loggedInUser.supportConfig?.isEnBd");
     if (showWidget) {
+      // eslint-disable-next-line
+      console.log("showWidget");
       return chatScript(Config.salesforceUS);
     }
+    // eslint-disable-next-line
+    console.log("children");
     // Non-CN Zendesk is EOL, show nothing
     return <>{children}</>;
   }
 
   if (loggedInUser?.supportConfig?.isNonEnBd) {
+    // eslint-disable-next-line
+    console.log("loggedInUser?.supportConfig?.isNonEnBd");
     // In case CN zendesk proxy is broken, we can turn on this dkey to
     // show a mailto: link in place so that merchants still have a way to reach support
     if (forceCnMailTo) {
+      // eslint-disable-next-line
+      console.log("forceCnMailTo");
       return mailToFAB;
     }
     // This dkey is likely going to remain OFF as CN does not want to use Salesforce
     if (showWidgetCN) {
+      // eslint-disable-next-line
+      console.log("showWidgetCN", Config.salesforceCN);
       return chatScript(Config.salesforceCN);
     }
+    // eslint-disable-next-line
+    console.log("showWidgetCN default");
     // CN Zendesk is still live, so show it
     return (
       <>
@@ -184,13 +208,19 @@ const SalesforceWidget: React.FC<{
   // Otherwise, if merchant has a BD assigned specifically,
   // show a mailto: link
   if (loggedInUser.accountManager?.email) {
+    // eslint-disable-next-line
+    console.log(
+      "loggedInUser.accountManager?.email",
+      loggedInUser.accountManager?.email,
+    );
     return mailToFAB;
   }
+  // eslint-disable-next-line
+  console.log("loggedInUser.accountManager?.email default");
 
   // Otherwise, show nothing
   return <>{children}</>;
 };
-
 const useStylesheet = () => {
   const { textWhite, secondaryDarkest } = useTheme();
   return useMemo(
