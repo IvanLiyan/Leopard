@@ -116,8 +116,6 @@ const MerchantDashboardProvider: React.FC<MerchantDashboardProviderProps> = ({
     client,
     skip: isPublic || xsrfCheckLoading,
   });
-  // eslint-disable-next-line
-  console.log("isPublic", isPublic, xsrfCheckLoading);
 
   // Customer support widget API calls
   const { decision: showWidget, isLoading: showWidgetLoading } = useDeciderKey(

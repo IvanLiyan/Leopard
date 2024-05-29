@@ -140,37 +140,23 @@ const SalesforceWidget: React.FC<{
   // If merchant is in US or CN support group, show
   // Salesforce chat widget
   if (loggedInUser.supportConfig?.isEnBd) {
-    // eslint-disable-next-line
-    console.log("loggedInUser.supportConfig?.isEnBd");
     if (showWidget) {
-      // eslint-disable-next-line
-      console.log("showWidget");
       return chatScript(Config.salesforceUS);
     }
-    // eslint-disable-next-line
-    console.log("children");
     // Non-CN Zendesk is EOL, show nothing
     return <>{children}</>;
   }
 
   if (loggedInUser?.supportConfig?.isNonEnBd) {
-    // eslint-disable-next-line
-    console.log("loggedInUser?.supportConfig?.isNonEnBd");
     // In case CN zendesk proxy is broken, we can turn on this dkey to
     // show a mailto: link in place so that merchants still have a way to reach support
     if (forceCnMailTo) {
-      // eslint-disable-next-line
-      console.log("forceCnMailTo");
       return mailToFAB;
     }
     // This dkey is likely going to remain OFF as CN does not want to use Salesforce
     if (showWidgetCN) {
-      // eslint-disable-next-line
-      console.log("showWidgetCN", Config.salesforceCN);
       return chatScript(Config.salesforceCN);
     }
-    // eslint-disable-next-line
-    console.log("showWidgetCN default");
     // CN Zendesk is still live, so show it
     return (
       <>
@@ -208,16 +194,8 @@ const SalesforceWidget: React.FC<{
   // Otherwise, if merchant has a BD assigned specifically,
   // show a mailto: link
   if (loggedInUser.accountManager?.email) {
-    // eslint-disable-next-line
-    console.log(
-      "loggedInUser.accountManager?.email",
-      loggedInUser.accountManager?.email,
-    );
     return mailToFAB;
   }
-  // eslint-disable-next-line
-  console.log("loggedInUser.accountManager?.email default");
-
   // Otherwise, show nothing
   return <>{children}</>;
 };
