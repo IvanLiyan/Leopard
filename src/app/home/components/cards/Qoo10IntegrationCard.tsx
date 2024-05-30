@@ -30,9 +30,8 @@ const Qoo10IntegrationCard = () => {
             {i`Increased sales: Expand your sales channels to increase revenue.`}
           </li>
           <li>
-            {i`Automatic product management: Simply apply for the Wish - Qoo10 Sales Integration Service and your Wish products will be automatically copied `}{" "}
-            +
-            {i`and registered on Qoo10 without the need for separate product registration, along with convenient management services.`}
+            {i`Automatic product management: Simply apply for the Wish - Qoo10 Sales Integration Service and your Wish products will be automatically copied ` +
+              i`and registered on Qoo10 without the need for separate product registration, along with convenient management services.`}
           </li>
         </ul>
         <PrimaryButton
