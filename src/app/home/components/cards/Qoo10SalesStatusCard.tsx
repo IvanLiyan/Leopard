@@ -200,7 +200,10 @@ const Qoo10SalesStatusCard: React.FC<Props> = ({ data }: Props) => {
           void redirectToQoo10("DEFAULT");
         }}
       >
-        {ci18n("button text, click to qoo10", "View Qoo10 performance")}
+        {ci18n(
+          "button text, click to Wish plus performance",
+          "View Wish+ performance",
+        )}
       </PrimaryButton>
     </div>
   );
