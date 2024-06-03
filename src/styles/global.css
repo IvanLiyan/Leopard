@@ -35,7 +35,13 @@ label {
 
 @font-face {
   font-family: Ginto;
-  font-weight: 400;
+  font-weight: 200;
+  src: url("//main.cdn.merchant.wish.com/latest/assets/fonts/ginto-light.otf")
+    format("opentype");
+}
+@font-face {
+  font-family: Ginto;
+  font-weight: normal;
   src: url("//main.cdn.merchant.wish.com/latest/assets/fonts/ginto-regular.otf")
     format("opentype");
 }
@@ -43,6 +49,12 @@ label {
   font-family: Ginto;
   font-weight: 400;
   src: url("//main.cdn.merchant.wish.com/latest/assets/fonts/ginto-regular.otf")
+    format("opentype");
+}
+@font-face {
+  font-family: Ginto;
+  font-weight: 500;
+  src: url("//main.cdn.merchant.wish.com/latest/assets/fonts/ginto-medium.otf")
     format("opentype");
 }
 @font-face {
@@ -61,8 +73,8 @@ label {
 
 @font-face {
   font-family: Ginto;
-  font-weight: 200;
-  src: url("//main.cdn.merchant.wish.com/latest/assets/fonts/ginto-light.otf")
+  font-weight: bold;
+  src: url("//main.cdn.merchant.wish.com/latest/assets/fonts/ginto-bold.otf")
     format("opentype");
 }
 
