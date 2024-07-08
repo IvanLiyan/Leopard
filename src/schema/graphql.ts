@@ -5116,6 +5116,7 @@ export type FranceProductUniqueIdentificationNumberCategory =
   | 'PAPER'
   | 'PRIMARY_PACKAGING'
   | 'SECONDARY_PACKAGING'
+  | 'SPORTING_AND_RECREATIONAL'
   | 'TEXTILE'
   | 'TIRES'
   | 'TOYS';
@@ -11071,6 +11072,7 @@ export type PermissionType =
   | 'CAN_ACCESS_ONEOFF_REQ_TOOL'
   | 'CAN_ACCESS_ONEOFF_VIEW_ALL_REQUESTS'
   | 'CAN_ACCESS_ORDERS_MANAGER'
+  | 'CAN_ACCESS_Q10_TOOLS'
   | 'CAN_ACCESS_REFRESHING_TRACKING'
   | 'CAN_ACCESS_SHIPPING_PROVIDER'
   | 'CAN_ACCESS_TRACKING_NUMBER_PAGE'
@@ -13603,6 +13605,24 @@ export type PublishAnnouncementInput = {
   readonly publishDate?: InputMaybe<DatetimeInput>;
 };
 
+export type Q10ServiceSchema = {
+  readonly __typename?: 'Q10ServiceSchema';
+  readonly translation?: Maybe<Q10TranslationSchema>;
+};
+
+
+export type Q10ServiceSchemaTranslationArgs = {
+  targetLanguage: TranslationLanguageType;
+  text: Scalars['String'];
+};
+
+export type Q10TranslationSchema = {
+  readonly __typename?: 'Q10TranslationSchema';
+  readonly errorMessage?: Maybe<Scalars['String']>;
+  readonly sourceLanguage?: Maybe<TranslationLanguageType>;
+  readonly translatedText?: Maybe<Scalars['String']>;
+};
+
 export type Qoo10SalesStats = {
   readonly __typename?: 'Qoo10SalesStats';
   readonly aboutToExpire?: Maybe<Scalars['Int']>;
@@ -14745,6 +14765,7 @@ export type RoleType =
   | 'PAYMENT_PROVIDER'
   | 'PENDING_USER'
   | 'QA'
+  | 'QOO10_AGENT'
   | 'REQUEST_INFO_USER'
   | 'SALES_REP'
   | 'SHIP_PROVIDER'
@@ -14857,6 +14878,7 @@ export type RootQuery = {
   readonly policyPublic?: Maybe<PolicyPublicSchema>;
   readonly productCatalog?: Maybe<ProductCatalogSchema>;
   readonly publicShippingProviderDocs?: Maybe<PublicShippingProviderDocs>;
+  readonly q10?: Maybe<Q10ServiceSchema>;
   readonly recentUsers?: Maybe<ReadonlyArray<UserSchema>>;
   readonly shippingProfileCollection?: Maybe<ShippingProfileCollectionSchema>;
   readonly storefront?: Maybe<StorefrontServiceSchema>;
@@ -17001,6 +17023,29 @@ export type TransactionPaymentType =
   | 'UNKNOWN'
   | 'XENDIT_INVOICE';
 
+export type TranslationLanguageType =
+  | 'ARABIC'
+  | 'CHINESE'
+  | 'CZECH'
+  | 'DANISH'
+  | 'DUTCH'
+  | 'ENGLISH'
+  | 'FRENCH'
+  | 'GERMAN'
+  | 'HUNGARIAN'
+  | 'ITALIAN'
+  | 'JAPANESE'
+  | 'KOREAN'
+  | 'LITHUANIAN'
+  | 'NORWEGIAN'
+  | 'POLISH'
+  | 'PORTUGUESE'
+  | 'ROMANSH'
+  | 'SPANISH'
+  | 'SWEDISH'
+  | 'TURKISH'
+  | 'VIETNAMESE';
+
 export type TrueTagSchema = {
   readonly __typename?: 'TrueTagSchema';
   readonly id: Scalars['ObjectIdType'];
@@ -19103,6 +19148,7 @@ export type WebhookTopicName =
   | 'PRODUCT_IMAGE_JOB_STATUS_UPDATE'
   | 'PRODUCT_INVENTORY_CHANGE_MERCHANT'
   | 'PRODUCT_INVENTORY_CHANGE_WISH_USER'
+  | 'PRODUCT_SOLDOUT'
   | 'PRODUCT_TAGGING_UPDATE'
   | 'PRODUCT_UPDATE_MERCHANT'
   | 'TICKET_AWAITING_MERCHANT';

@@ -4184,16 +4184,17 @@ enum FranceProductUniqueIdentificationNumberAction {
 }
 
 enum FranceProductUniqueIdentificationNumberCategory {
-  SECONDARY_PACKAGING
-  GARDEN_DIY
-  ELECTRIC_AND_ELECTRONIC_EQUIPMENTS
-  PRIMARY_PACKAGING
-  TEXTILE
   BATTERIES
-  PAPER
-  TIRES
-  TOYS
+  ELECTRIC_AND_ELECTRONIC_EQUIPMENTS
   FURNITURE
+  PAPER
+  TEXTILE
+  TIRES
+  PRIMARY_PACKAGING
+  SECONDARY_PACKAGING
+  TOYS
+  GARDEN_DIY
+  SPORTING_AND_RECREATIONAL
 }
 
 type FranceProductUniqueIdentificationNumberSchema {
@@ -9259,6 +9260,7 @@ enum PermissionType {
   CAN_BLOCK_USER_ON_USER_REVIEW
   UPDATE_ACTION_RULE
   USE_CUSTOM_COLORS
+  CAN_ACCESS_Q10_TOOLS
   GET_CURRENCY_INFO
   REVIEW_ONEOFF_REQ_REMOVE_PRODUCTS
   SHIPPING_ETA_TICKET_MERCHANT
@@ -10556,6 +10558,16 @@ input PublishAnnouncementInput {
   publishDate: DatetimeInput
 }
 
+type Q10ServiceSchema {
+  translation(text: String!, targetLanguage: TranslationLanguageType!): Q10TranslationSchema
+}
+
+type Q10TranslationSchema {
+  translatedText: String
+  sourceLanguage: TranslationLanguageType
+  errorMessage: String
+}
+
 type Qoo10SalesStats {
   onSale: Int
   aboutToExpire: Int
@@ -11636,6 +11648,7 @@ enum RoleType {
   STAGE_ADMIN
   REQUEST_INFO_USER
   TASKUS_MC_WORKER
+  QOO10_AGENT
   TRANSCOSMOS_LEAD
   TAGGER_LEAD
   LANGUAGE_SPECIALIST
@@ -11728,6 +11741,7 @@ type RootQuery {
   listingQualityInsights: ListingQualityInsightsSchema
   merchantIdentity: MerchantIdentityServiceSchema
   dsa: DSAHub
+  q10: Q10ServiceSchema
 }
 
 type SalesPerformanceStats {
@@ -13511,6 +13525,30 @@ enum TransactionPaymentType {
   BRAINTREE_VENMO
 }
 
+enum TranslationLanguageType {
+  SWEDISH
+  DANISH
+  LITHUANIAN
+  HUNGARIAN
+  CHINESE
+  NORWEGIAN
+  CZECH
+  SPANISH
+  DUTCH
+  JAPANESE
+  FRENCH
+  ROMANSH
+  GERMAN
+  VIETNAMESE
+  TURKISH
+  ENGLISH
+  POLISH
+  ARABIC
+  KOREAN
+  PORTUGUESE
+  ITALIAN
+}
+
 type TrueTagSchema {
   id: ObjectIdType!
   name: String!
@@ -15262,6 +15300,7 @@ enum WebhookTopicName {
   PRODUCT_TAGGING_UPDATE
   PRODUCT_INVENTORY_CHANGE_WISH_USER
   PRODUCT_INVENTORY_CHANGE_MERCHANT
+  PRODUCT_SOLDOUT
 }
 
 type WebhookTopicSchema {
