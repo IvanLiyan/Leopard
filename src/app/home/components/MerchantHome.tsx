@@ -20,7 +20,6 @@ import HomeBannerCarousel from "./banner/HomeBannerCarousel";
 import UsefulLinksCard from "./cards/UsefulLinksCard";
 import LoadingIndicatorCard from "./cards/LoadingIndicatorCard";
 import TodoListSection from "./sections/TodoListSection";
-import GlobalSalesStatusSection from "./sections/GlobalSalesStatusSection";
 
 type Props = BaseProps & {
   readonly initialData?: HomeInitialData;
@@ -89,15 +88,6 @@ const MerchantHome: React.FC<Props> = ({
             >
               <Layout.FlexColumn>
                 <TodoListSection className={css(styles.section)} />
-                <GlobalSalesStatusSection
-                  className={css(styles.section)}
-                  isQoo10Registered={
-                    initialData?.currentMerchant?.isQoo10Registered
-                  }
-                  isQoo10Candidate={
-                    initialData?.currentMerchant?.isQoo10Candidate
-                  }
-                />
                 {!isNewStore && (
                   <AboutStoreSection
                     className={css(styles.section)}

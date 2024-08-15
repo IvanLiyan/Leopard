@@ -29,8 +29,6 @@ import Chrome from "./Chrome";
 import NotificationsButton from "./NotificationsButton";
 import PlusUserAvatar from "./PlusUserAvatar";
 import MerchantAppSearch from "./MerchantAppSearch";
-import LaunchToQmsBtn from "../LaunchToQmsBtn";
-import { getUrl } from "@core/toolkit/qoo10redirect";
 
 type MerchantAppTopbarProps = BaseProps & {
   readonly disableMenu?: boolean;
@@ -71,34 +69,13 @@ const MerchantAppTopbar: React.FC<MerchantAppTopbarProps> = ({
 
   const {
     su,
-    currentMerchant: {
-      id: merchantId,
-      isStoreMerchant,
-      canAccessHome,
-      isQoo10Candidate,
-      isQoo10Registered,
-    },
+    currentMerchant: { id: merchantId, isStoreMerchant, canAccessHome },
   } = data;
 
   const canToggleAdminEdit = su?.hasPermission || false;
 
   const hasMerchantId = merchantId != null;
   const canSeeUpdatesSwitch = isProd && canToggleAdminEdit;
-
-  const launchToQms = async () => {
-    if (isQoo10Registered) {
-      try {
-        const res = await getUrl({ name: "DEFAULT" });
-        const redirectUrl: string | undefined = res?.currentMerchant
-          ?.redirectToQoo10?.redirectUrl as string;
-        window.open(redirectUrl, "_blank");
-      } catch {
-        return false;
-      }
-    } else {
-      window.open("https://plus.wish.com/welcome_wish_merchant", "_blank");
-    }
-  };
 
   return (
     <SearchStoreProvider tree={tree}>
@@ -131,16 +108,6 @@ const MerchantAppTopbar: React.FC<MerchantAppTopbarProps> = ({
             <Link href={merchFeUrl("/home")}>
               <WishLogo mode={appIconTheme} style={styles.logo} />
             </Link>
-            {isQoo10Candidate && (
-              <Link
-                onClick={(event) => {
-                  event.preventDefault();
-                  void launchToQms();
-                }}
-              >
-                <LaunchToQmsBtn style={styles.logo} />
-              </Link>
-            )}
           </Layout.FlexRow>
         )}
         renderSearch={

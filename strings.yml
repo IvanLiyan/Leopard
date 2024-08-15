@@ -497,12 +497,3 @@ features:
       - src/pages/products/listing-fees.prod.tsx
     description: >
       View Listing Fees based on your number of active product listings and Wish Standards status.
-
-  - name: Performance Q10 integration
-    owners:
-      - ryu@wish.com
-    files:
-      - src/app/core/toolkit/qoo10redirect.ts
-      - src/app/chrome/components/LaunchToQmsBtn.tsx
-    description: >
-      Add performance data on homepage of MD who sell products on Q10.

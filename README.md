@@ -15,7 +15,7 @@
 4. Run `yarn install`.
 5. Run `yarn dev`.
    > **Note** `dev` starts a Next.JS development server running on port 8080.
-6. Navigate to `https://leopard.corp.contextlogic.com:3000/md/login` and follow the instructions there to log in via the credentials in your `.env.local` file.
+6. Navigate to `https://leopard.corp.contextlogic.com:3000/md/dev-login` and follow the instructions there to log in via the credentials in your `.env.local` file.
 7. Navigate to `https://leopard.corp.contextlogic.com:3000/md/<page>`.
 
 ## Project Tour

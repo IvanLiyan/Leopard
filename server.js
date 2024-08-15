@@ -18,7 +18,7 @@ const options = {
 app.prepare().then(() => {
   createServer(options, (req, res) => handle(req, res)).listen(port, (err) => {
     if (err) throw err;
-    console.log(`> Ready on https://${hostname}:${port}/md`);
-    console.log(`> Log in through https://${hostname}:${port}/md/login`);
+    console.log(`> Ready on https://${hostname}/md`);
+    console.log(`> Log in through https://${hostname}/md/dev-login`);
   });
 });
