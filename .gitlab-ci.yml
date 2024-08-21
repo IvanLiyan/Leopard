@@ -33,7 +33,7 @@ lint:
   script:
     - yarn lint
     - yarn graphql-codegen --overwrite --verbose
-    - git diff --no-patch --exit-code
+    - git diff --exit-code
   dependencies:
     - install dependencies
 
@@ -94,7 +94,6 @@ deploy prod:
   tags: [leopard]
   dependencies:
     - build prod
-
 #
 # temp disabling lighthouse so we can remove docker - will re-write at a later date
 # include:

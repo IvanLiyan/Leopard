@@ -51,6 +51,7 @@ query MerchantListingFee {
         currentCycleEndTime {
           formatted(fmt: "%m/%d/%Y")
         }
+        isInWhitelist
       }
     }
   }

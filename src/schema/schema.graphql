@@ -2841,6 +2841,7 @@ type CurrentCycleListingFeeDetailsSchema {
   currentCycleEndTime: Datetime!
   currentFeeToPay: CurrencyValue!
   currentCyclePayTime: Datetime!
+  isInWhitelist: Boolean!
 }
 
 type CustomerIdentityInfo {

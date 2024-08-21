@@ -13,7 +13,7 @@ import store from "@listing-fees/toolkit";
 import Illustration from "@core/components/Illustration";
 import { useTierThemes } from "@performance/migrated/toolkit/stats";
 import CircularProgressSection from "@listing-fees/components/CircularProgress";
-
+import { ci18n } from "@core/toolkit/i18n";
 const ListingFeesOverview: React.FC = () => {
   const { textBlack } = useTheme();
   const styles = useStylesheet();
@@ -55,7 +55,7 @@ const ListingFeesOverview: React.FC = () => {
                 </Layout.FlexColumn>
                 <Layout.FlexColumn style={styles.overviewText}>
                   <Layout.FlexRow>
-                    <Text>Active listings</Text>
+                    <Text>{ci18n("Active listings", "Active listings")}</Text>
                     <Tooltip
                       title={i`It can take a few days for recently disabled or new active listings to reflect in this count. `}
                       style={styles.overviewTooltip}
@@ -91,7 +91,9 @@ const ListingFeesOverview: React.FC = () => {
               }}
             >
               <Layout.FlexRow>
-                <Text style={styles.title}>Listing fees</Text>
+                <Text style={styles.title}>
+                  {ci18n("Listing fees", "Listing fees")}
+                </Text>
               </Layout.FlexRow>
               <Layout.FlexRow
                 justifyContent="space-between"
@@ -157,7 +159,7 @@ const ListingFeesOverview: React.FC = () => {
                       )}
                   </Text>
                   <Layout.FlexRow style={styles.margin8Style}>
-                    <Text>Free threshold</Text>
+                    <Text>{ci18n("Free threshold", "Free threshold")}</Text>
                     <Tooltip
                       title={i`Your free threshold is based on your highest Wish Standards tier within the last 90 days.`}
                       style={styles.overviewTooltip}
@@ -172,16 +174,20 @@ const ListingFeesOverview: React.FC = () => {
                           ?.currentFreeThreshold
                       }
                     </Text>
-                    <Illustration
-                      name={tierThemes(currentLevel).icon}
-                      alt={tierThemes(currentLevel).icon}
-                      style={styles.badgeSmallIcon}
-                    />
+                    {!store.currentCycleListingFeeDetails?.isInWhitelist && (
+                      <Illustration
+                        name={tierThemes(currentLevel).icon}
+                        alt={tierThemes(currentLevel).icon}
+                        style={styles.badgeSmallIcon}
+                      />
+                    )}
                   </Layout.FlexRow>
                 </Layout.FlexColumn>
                 <Layout.FlexColumn style={styles.overviewText}>
                   <Layout.FlexRow>
-                    <Text>Calculation period</Text>
+                    <Text>
+                      {ci18n("Calculation period", "Calculation period")}
+                    </Text>
                     <Tooltip
                       title={i`The listing fee is calculated on a monthly cadence.`}
                       style={styles.overviewTooltip}
