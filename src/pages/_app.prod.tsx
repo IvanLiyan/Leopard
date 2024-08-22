@@ -175,6 +175,25 @@ const App = (props: AppProps): JSX.Element => {
           });
         `}
       </Script>
+      {process.env.NEXT_PUBLIC_ENV !== "dev" && (
+        <Script id="ali-monitor">
+          {`
+        !(function(c,b,d,a){c[a]||(c[a]={});c[a].config=
+          {
+            pid:"ex0iaqfvtf@cacf83f59bede27",
+            appType:"web",
+            imgUrl:"https://arms-retcode.aliyuncs.com/r.png?",
+            sendResource:true,
+            enableLinkTrace:true,
+            behavior:true
+          };
+        with(b)with(body)with(insertBefore(createElement("script"),firstChild))setAttribute("crossorigin","",src=d)
+        })(window,document,"https://sdk.rum.aliyuncs.com/v1/bl.js","__bl");
+        
+      `}
+        </Script>
+      )}
+
       {/* GTM and TA required body html */}
       <noscript>
         <iframe
