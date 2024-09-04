@@ -81,7 +81,7 @@ const moduleExports = (phase, { defaultConfig }) => {
           test: /\.(csv|tsv)$/,
           use: [
             {
-              loader: 'csv-loader',
+              loader: "csv-loader",
               options: {
                 dynamicTyping: true,
                 header: true,

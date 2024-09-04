@@ -175,7 +175,7 @@ const App = (props: AppProps): JSX.Element => {
           });
         `}
       </Script>
-      {process.env.NEXT_PUBLIC_ENV !== "dev" && (
+      {process.env.NEXT_PUBLIC_ENV === "fe_prod" && (
         <Script id="ali-monitor">
           {`
         !(function(c,b,d,a){c[a]||(c[a]={});c[a].config=
