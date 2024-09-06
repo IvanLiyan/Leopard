@@ -28,7 +28,6 @@ const SalesforceWidget: React.FC<{
   merchantSupportConfigInitialData,
 }) => {
   const { localeProper } = useLocalizationStore();
-
   const loggedInUser = merchantSupportConfigInitialData?.currentUser;
 
   if (!loggedInUser) {
@@ -73,6 +72,7 @@ const SalesforceWidget: React.FC<{
           src="https://static.zdassets.com/ekr/snippet.js?key=a45697a9-912b-43e4-b6a7-b1c874344ad8"
           onLoad={() => ZenLoad(false)}
         />
+        {children}
       </>
     );
   }
