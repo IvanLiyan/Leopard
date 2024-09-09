@@ -41,6 +41,10 @@ const ContactInfo = (props: Props) => {
   const { locale } = useLocalizationStore();
   const navigationStore = useNavigationStore();
   const toastStore = useToastStore();
+  const hasCookies = () => {
+    // Check if there are any cookies
+    return document.cookie && document.cookie !== "";
+  };
 
   const [changeLocale, { loading: isLoading }] = useMutation<
     ChangeLocalResponseType,
@@ -48,14 +52,21 @@ const ContactInfo = (props: Props) => {
   >(CHANGE_LOCALE_MUTATION);
 
   const onLocaleChanged = async (locale: Locale): Promise<void> => {
-    const response = await changeLocale({ variables: { input: { locale } } });
-    if (!response.data?.locale.changeLocale.ok) {
-      toastStore.error(
-        response.data?.locale.changeLocale.message ?? i`Something went wrong`,
-      );
-      return;
+    if (!hasCookies()) return;
+    try {
+      const response = await changeLocale({ variables: { input: { locale } } });
+      if (!response.data?.locale?.changeLocale?.ok) {
+        toastStore.error(
+          response.data?.locale?.changeLocale?.message ??
+            i`Something went wrong`,
+        );
+        return;
+      }
+      navigationStore.reload({ fullReload: true }); // full reload required to load app in new language
+    } catch (error) {
+      toastStore.error(i`Something went wrong`);
+      return undefined;
     }
-    navigationStore.reload({ fullReload: true }); // full reload required to load app in new language
   };
 
   return (

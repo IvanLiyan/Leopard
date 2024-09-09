@@ -30,16 +30,27 @@ type SardineStore = {
 
 export const useSardineStore = (): SardineStore => {
   const { client } = useApolloStore();
+  const hasCookies = () => {
+    // Check if there are any cookies
+    return document.cookie && document.cookie !== "";
+  };
 
   const getSardineConstants = async () => {
-    const { data } = await client.query<
-      GetSardineConstantsResponseType,
-      SardineConstants
-    >({
-      query: GET_SARDINE_CONSTANTS,
-      fetchPolicy: "no-cache",
-    });
-    return data.platformConstants.sardineConstants;
+    if (!hasCookies()) {
+      return undefined;
+    }
+    try {
+      const { data } = await client.query<
+        GetSardineConstantsResponseType,
+        SardineConstants
+      >({
+        query: GET_SARDINE_CONSTANTS,
+        fetchPolicy: "no-cache",
+      });
+      return data.platformConstants.sardineConstants;
+    } catch (error) {
+      return undefined;
+    }
   };
 
   return {
